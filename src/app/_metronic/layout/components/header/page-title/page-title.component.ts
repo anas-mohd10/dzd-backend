@@ -6,7 +6,6 @@ import { PageInfoService, PageLink } from '../../../core/page-info.service';
 @Component({
   selector: 'app-page-title',
   templateUrl: './page-title.component.html',
-  styleUrls: ['./page-title.component.css']
 })
 export class PageTitleComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
@@ -25,6 +24,14 @@ export class PageTitleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title$ = this.pageInfo.title.asObservable();
+    this.description$ = this.pageInfo.description.asObservable();
+    this.bc$ = this.pageInfo.breadcrumbs.asObservable();
+    this.showTitle = this.layout.getProp('pageTitle.display') as boolean;
+    this.showBC = this.layout.getProp('pageTitle.breadCrumbs') as boolean;
+    this.pageTitleCssClass = this.layout.getStringCSSClasses('pageTitle');
+    this.pageTitleDirection = this.layout.getProp(
+      'pageTitle.direction'
+    ) as string;
   }
 
   ngOnDestroy() {

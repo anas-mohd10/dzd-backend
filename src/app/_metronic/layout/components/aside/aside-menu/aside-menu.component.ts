@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { appRoutes } from 'src/app/config/routes';
 
 @Component({
   selector: 'app-aside-menu',
@@ -9,9 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class AsideMenuComponent implements OnInit {
-  appAngularVersion: string = environment.appVersion;
-  appPreviewChangelogUrl: string = environment.appPreviewChangelogUrl;
-
+  appRoute = appRoutes;
   constructor(private http: HttpClient) {}
 
   rootUrl = "http://localhost:3000/api/v1/w/admin/auth";
