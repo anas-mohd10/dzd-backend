@@ -19,7 +19,7 @@ function appInitializer(authService: AuthService) {
   return () => {
     return new Promise((resolve) => {
       authService.getUserByToken().subscribe().add(resolve);
-    });
+    });                             
   };
 }
 

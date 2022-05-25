@@ -6,7 +6,7 @@ import { brandEndpoints } from '../../config/endpoints';
 @Injectable({
   providedIn: 'root',
 })
-export class CourseService {
+export class BrandService {
   brandEndpoints = brandEndpoints;
 
   constructor(private http: HttpClient, private commonService: CommonService) {}
@@ -14,5 +14,11 @@ export class CourseService {
   addBrand(data: any) {
     const url = this.commonService.getFullUrl(this.brandEndpoints.add_brand);
     return this.http.post(`${url}`, data);
+  }
+
+  getBrand(){
+    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand);
+    console.log(url)
+    return this.http.get(`${url}`);
   }
 }

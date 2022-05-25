@@ -22,6 +22,7 @@ import {
   styleUrls: ['./aside.component.scss'],
 })
 export class AsideComponent implements OnInit, OnDestroy {
+  asideTheme: string = '';
   asideMinimize: boolean = false;
   asideMenuCSSClasses: string = '';
   appPreviewDocsUrl: string = environment.appPreviewDocsUrl;
@@ -31,6 +32,7 @@ export class AsideComponent implements OnInit, OnDestroy {
   constructor(private layout: LayoutService, private router: Router) {}
 
   ngOnInit(): void {
+    this.asideTheme = this.layout.getProp('aside.theme') as string;
     this.asideMinimize = this.layout.getProp('aside.minimize') as boolean;
     this.asideMenuCSSClasses = this.layout.getStringCSSClasses('asideMenu');
     this.routingChanges();

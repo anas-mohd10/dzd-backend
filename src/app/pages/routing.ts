@@ -10,7 +10,7 @@ export const Routing: Routes = [
   {
     path: 'brand',
     loadChildren: () =>
-      import('./catalog/brand/brand.module').then((m) => m.DashboardModule),
+      import('./catalog/brand/brand-list/brand-list.module').then((m) => m.DashboardModule),
   },
   {
     path: '',
