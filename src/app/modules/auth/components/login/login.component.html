@@ -1,4 +1,10 @@
-<!--begin::Form-->
+<div class="mb-12">
+  <img
+    alt="Logo"
+    src="../../../assets/media/logos/cc-logo.png"
+    class="h-60px"
+  />
+</div>
 <form
   class="form w-100"
   [formGroup]="loginForm"
@@ -6,33 +12,9 @@
   id="kt_login_signin_form"
   (ngSubmit)="submit()"
 >
-  <!--begin::Heading-->
-  <div class="text-center mb-10">
-    <h1 class="text-dark mb-3">Sign In to Metronic</h1>
-    <div class="text-gray-400 fw-bold fs-4">
-      New Here?
-      <a
-        routerLink="/auth/registration"
-        id="kt_login_signup"
-        class="link-primary fw-bolder"
-        >{{ "AUTH.GENERAL.SIGNUP_BUTTON" | translate }}</a
-      >
-    </div>
+  <div class="mb-10">
+    <h1 class="text-dark mb-3">Sign In</h1>
   </div>
-  <!--end::Heading-->
-
-  <!-- begin::Alert info-->
-  <ng-container *ngIf="!hasError">
-    <div class="mb-10 bg-light-info p-8 rounded">
-      <div class="text-info">
-        Use account <strong>{{ defaultAuth.email }}</strong> and password
-        <strong>{{ defaultAuth.password }}</strong> to continue.
-      </div>
-    </div>
-  </ng-container>
-  <!-- end::Alert info-->
-
-  <!-- begin::Alert error-->
   <ng-container *ngIf="hasError">
     <div class="mb-lg-15 alert alert-danger">
       <div class="alert-text font-weight-bold">
@@ -40,9 +22,6 @@
       </div>
     </div>
   </ng-container>
-  <!-- end::Alert error-->
-
-  <!--begin::Form group-->
   <div class="fv-row mb-10">
     <label class="form-label fs-6 fw-bolder text-dark">Email</label>
     <input
@@ -89,24 +68,12 @@
       }"
     ></ng-container>
   </div>
-  <!--end::Form group-->
-
-  <!--begin::Form group-->
   <div class="fv-row mb-10">
     <div class="d-flex justify-content-between mt-n5">
       <div class="d-flex flex-stack mb-2">
         <label class="form-label fw-bolder text-dark fs-6 mb-0">Password</label>
-        <a
-          routerLink="/auth/forgot-password"
-          class="link-primary fs-6 fw-bolder"
-          id="kt_login_forgot"
-          [style.margin-left]="'5px'"
-        >
-          Forgot Password ?
-        </a>
       </div>
     </div>
-
     <input
       class="form-control form-control-lg form-control-solid"
       type="password"
@@ -143,9 +110,6 @@
       }"
     ></ng-container>
   </div>
-  <!--end::Form group-->
-
-  <!--begin::Action-->
   <div class="text-center">
     <button
       type="submit"
@@ -165,33 +129,8 @@
         <span class="indicator-label">Continue</span>
       </ng-container>
     </button>
-
-    <!-- begin::Separator  -->
-    <div class="text-center text-muted text-uppercase fw-bolder mb-5">or</div>
-    <!-- end::Separator  -->
-
-    <a
-      class="
-        btn btn-flex
-        flex-center
-        btn-light btn-lg
-        w-100
-        mb-5
-        cursor-pointer
-      "
-    >
-      <img
-        class="h-20px me-3"
-        src="./assets/media/svg/brand-logos/google-icon.svg"
-      />
-
-      Continue with Google
-    </a>
   </div>
-  <!--end::Action-->
 </form>
-<!--end::Form-->
-
 <ng-template
   #formError
   let-control="control"

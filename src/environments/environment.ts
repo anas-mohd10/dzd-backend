@@ -9,8 +9,7 @@ export const environment = {
   isMockEnabled: true,
   apiUrl: 'https:/localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'https:/localhost:3000/api/v1/w/',
-  
-  // apiUrl: 'api',
+  loginUrl: 'api',
   appThemeName: 'Metronic',
   appPurchaseUrl: 'https://1.envato.market/EA4JP',
   appHTMLIntegration: 'https://preview.keenthemes.com/metronic8/demo1/documentation/base/helpers/flex-layouts.html',

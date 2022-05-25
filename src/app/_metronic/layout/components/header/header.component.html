@@ -2,20 +2,13 @@
   [ngClass]="headerContainerCssClasses"
   class="d-flex align-items-stretch justify-content-between"
 >
-  <!-- begin::Aside mobile toggle -->
   <ng-container *ngIf="asideDisplay">
     <div
       class="d-flex align-items-center d-lg-none ms-n3 me-1"
       title="Show aside menu"
     >
       <div
-        class="
-          btn btn-icon btn-active-light-primary
-          w-30px
-          h-30px
-          w-md-40px
-          h-md-40px
-        "
+        class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
         id="kt_aside_mobile_toggle"
       >
         <span
@@ -25,17 +18,20 @@
       </div>
     </div>
   </ng-container>
-  <!-- end::Aside mobile toggle -->
-
-  <!-- begin::Logo -->
+  <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+    <a routerLink="/dashboard">
+      <img
+        alt="Logo"
+        class="h-50px logo"
+        src="./assets//media/logos/cc-logo.png"
+      />
+    </a>
+  </div>
   <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
     <a routerLink="/dashboard" class="d-lg-none">
       <img src="./assets/media/logos/logo-2.svg" class="h-30px" />
     </a>
   </div>
-  <!-- end::Logo -->
-
-  <!-- begin::Wrapper -->
   <div
     class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
   >
@@ -55,29 +51,13 @@
           data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}"
         >
           <app-header-menu
-            class="
-              menu
-              menu-lg-rounded
-              menu-column
-              menu-lg-row
-              menu-state-bg
-              menu-title-gray-700
-              menu-state-title-primary
-              menu-state-icon-primary
-              menu-state-bullet-primary
-              menu-arrow-gray-400
-              fw-bold
-              my-5 my-lg-0
-              align-items-stretch
-            "
+            class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch"
             id="#kt_header_menu"
             data-kt-menu="true"
           ></app-header-menu>
         </div>
       </div>
     </ng-container>
-    <!-- begin::Navbar -->
-
     <ng-container *ngIf="headerLeft === 'page-title'">
       <div class="d-flex align-items-center" id="kt_header_nav">
         <app-page-title
@@ -92,5 +72,4 @@
       <app-topbar class="d-flex align-items-stretch flex-shrink-0"></app-topbar>
     </div>
   </div>
-  <!-- end::Wrapper -->
 </div>

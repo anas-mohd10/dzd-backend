@@ -8,7 +8,7 @@ import { AuthModel } from '../../../models/auth.model';
 import { UsersTable } from '../../../../../_fake/users.table';
 import { environment } from '../../../../../../environments/environment';
 
-const API_USERS_URL = `${environment.apiUrl}/users`;
+const API_USERS_URL = `${environment.loginUrl}/users`;
 
 @Injectable({
   providedIn: 'root',
@@ -82,6 +82,7 @@ export class AuthHTTPService {
   }
 
   getAllUsers(): Observable<UserModel[]> {
+    console.log(API_USERS_URL)
     return this.http.get<UserModel[]>(API_USERS_URL);
   }
 }

@@ -1,29 +1,4 @@
-<!-- begin::Brand -->
-<div class="aside-logo flex-column-auto" id="kt_aside_logo">
-  <!-- begin::Logo -->
-  <ng-container *ngIf="asideTheme === 'dark'">
-    <a routerLink="/dashboard">
-      <img
-        alt="Logo"
-        class="h-50px logo"
-        src="./assets/media/logos/cc-logo.png"
-      />
-    </a>
-  </ng-container>
-
-  <ng-container *ngIf="asideTheme === 'light'">
-    <a routerLink="/dashboard">
-      <img
-        alt="Logo"
-        class="h-50px logo"
-        src="./assets//media/logos/cc-logo.png"
-      />
-    </a>
-  </ng-container>
-
-  <!-- end::Logo -->
-
-  <!-- begin::Aside toggle -->
+<div class="aside-logo justify-content-end flex-column-auto" id="kt_aside_logo">
   <ng-container *ngIf="asideMinimize">
     <div
       id="kt_aside_toggle"
@@ -39,11 +14,7 @@
       ></span>
     </div>
   </ng-container>
-  <!-- end::Aside toggler -->
 </div>
-<!-- end::Brand  -->
-
-<!-- begin::Aside menu -->
 <div class="aside-menu flex-column-fluid">
   <div
     #ktAsideScroll
@@ -73,24 +44,3 @@
     </div>
   </div>
 </div>
-<!-- end::Aside menu -->
-
-<!-- begin::Footer -->
-<!-- <div class="aside-footer flex-column-auto pt-5 pb-7 px-5" id="kt_aside_footer">
-  <a
-    target="_blank"
-    class="btn btn-custom btn-primary w-100"
-    [href]="appPreviewDocsUrl"
-    data-bs-toggle="tooltip"
-    data-bs-trigger="hover"
-    data-bs-dismiss-="click"
-    ngbDropdown="Check out the complete documentation with over 100 components"
-  >
-    <span class="btn-label">Docs & Components</span>
-    <span
-      [inlineSVG]="'./assets/media/icons/duotune/general/gen005.svg'"
-      class="svg-icon btn-icon svg-icon-2"
-    ></span>
-  </a>
-</div> -->
-<!-- end::Footer -->

@@ -8,6 +8,11 @@ export const Routing: Routes = [
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
+    path: 'brand',
+    loadChildren: () =>
+      import('./catalog/brand/brand.module').then((m) => m.DashboardModule),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',
