@@ -44,9 +44,9 @@ body {
 		}
 
 		// Fixed header & fixed toolbar modes
-		.header-fixed.toolbar-fixed & {
-			padding-top: calc(#{get($header-config, fixed, height, desktop)} + var(--kt-toolbar-height));
-		}
+		// .header-fixed.toolbar-fixed & {
+		// 	padding-top: calc(#{get($header-config, fixed, height, desktop)} + var(--kt-toolbar-height));
+		// }
 	}
 }
 

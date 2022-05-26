@@ -8,9 +8,14 @@ export const Routing: Routes = [
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
-    path: 'brand',
+    path: 'app',
     loadChildren: () =>
-      import('./catalog/brand/brand-list/brand-list.module').then((m) => m.DashboardModule),
+      import('./catalog/brand/brand-list/brand-list.module').then((m) => m.BrandModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/brand/manage-brand/manage-brand.module').then((m) => m.ManageBrandModule),
   },
   {
     path: '',

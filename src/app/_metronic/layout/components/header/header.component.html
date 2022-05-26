@@ -35,7 +35,7 @@
   <div
     class="d-flex align-items-stretch justify-content-between flex-lg-grow-1"
   >
-    <ng-container *ngIf="headerLeft === 'menu'">
+    <ng-container >
       <div class="d-flex align-items-stretch" id="kt_header_nav">
         <div
           class="header-menu align-items-stretch"
@@ -58,7 +58,7 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="headerLeft === 'page-title'">
+    <!-- <ng-container *ngIf="headerLeft === 'page-title'">
       <div class="d-flex align-items-center" id="kt_header_nav">
         <app-page-title
           #ktPageTitle
@@ -66,8 +66,7 @@
           [ngClass]="pageTitleCssClasses"
         ></app-page-title>
       </div>
-    </ng-container>
-
+    </ng-container> -->
     <div class="d-flex align-items-stretch flex-shrink-0">
       <app-topbar class="d-flex align-items-stretch flex-shrink-0"></app-topbar>
     </div>

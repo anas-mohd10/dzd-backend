@@ -18,7 +18,6 @@ export class BrandService {
 
   getBrand(){
     const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand);
-    console.log(url)
     return this.http.get(`${url}`);
   }
 }

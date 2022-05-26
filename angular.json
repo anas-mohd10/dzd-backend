@@ -34,7 +34,13 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/select2/dist/js/select2.min.js",
+              "node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js"
+            ]
           },
           "configurations": {
             "production": {

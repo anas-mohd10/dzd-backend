@@ -7,9 +7,9 @@ const category = '/category'
 
 export const appRoutes = {
     DASHBOARD : `${dashboardRoute}`,
-    catalog: {
-        ADD_BRAND: `${catalogRoute}/brand/add`,
-        BRAND_LIST: `${catalogRoute}/brand`,
+    brand: {
+        ADD_BRAND: `${app}${brandRoute}/add`,
+        BRAND_LIST: `${app}${brandRoute}`,
         ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
     }
 }

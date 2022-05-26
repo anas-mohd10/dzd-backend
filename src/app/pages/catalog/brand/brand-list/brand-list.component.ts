@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-brand',
@@ -8,23 +10,34 @@ import { BrandService } from '../../../../includes/services/brand.service';
   styleUrls: ['./brand-list.component.scss'],
 })
 export class BrandComponent implements OnInit {
+  @ViewChild(DataTableDirective, { static: true })
+  public dtElement: DataTableDirective;
+  public dtOptions: DataTables.Settings = {};
+  public dtTrigger: Subject<any> = new Subject();
+
   appRoute = appRoutes;
   brandData: any;
+
   constructor(private brandService: BrandService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getBrand();
+    // this.dtOptions = {
+    //   pagingType: 'full_numbers',
+    //   pageLength: 5,
+    //   lengthMenu: [5, 10, 25],
+    //   processing: true,
+    // };
+  }
 
   getBrand() {
     this.brandService.getBrand().subscribe((res: any) => {
-      console.log(res?.result
-        
-        )
-      switch (res?.ErrorCode) {
+      switch (res?.errorCode) {
         case 0:
-          this.brandData = res?.result
+          this.brandData = res?.result;
           break;
       }
+      this.dtTrigger.next();
     });
-    console.log(this.brandData)
   }
 }
