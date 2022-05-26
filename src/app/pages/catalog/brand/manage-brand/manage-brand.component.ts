@@ -29,6 +29,7 @@ export class ManageBrandComponent implements OnInit {
 
   isSubmitted = false;
   params: any;
+  fileData: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,6 +42,13 @@ export class ManageBrandComponent implements OnInit {
 
   get bf() {
     return this.brandForm.controls;
+  }
+
+  handleInputChange(fileInput: any) {
+    const file = fileInput.dataTransfer
+      ? fileInput.dataTransfer.files[0]
+      : fileInput.target.files[0];
+    this.fileData = <File>fileInput.target.files[0];
   }
 
   ngOnInit(): void {
@@ -88,7 +96,7 @@ export class ManageBrandComponent implements OnInit {
     }
     this.BrandService.addBrand(this.brandForm.value).subscribe((res: any) => {
       console.log(res)
-      this.toast.success('Successfully added');
+      this.toast.success('Successfully added'); //Not working properly
       this.router.navigate([this.appRoute.brand.BRAND_LIST]);
     });
   }
