@@ -4,8 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
-import { ToastService } from '../../../../includes/services/toast.service';
-// import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-brand',
@@ -36,8 +34,6 @@ export class ManageBrandComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private BrandService: BrandService,
-    private toast: ToastService,
-    // private toast: ToastrService
   ) {}
 
   get bf() {
@@ -94,9 +90,15 @@ export class ManageBrandComponent implements OnInit {
     if (!this.brandForm.valid) {
       return;
     }
-    this.BrandService.addBrand(this.brandForm.value).subscribe((res: any) => {
+    const formData = new FormData();
+    if (this.fileData != null && this.fileData != undefined) {
+      formData.append("file", this.fileData);
+    }
+    for (const data of Object.keys(this.brandForm.value)) {
+      formData.append(data, this.brandForm.value[data]);
+    }
+    this.BrandService.addBrand(formData).subscribe((res: any) => {
       console.log(res)
-      this.toast.success('Successfully added'); //Not working properly
       this.router.navigate([this.appRoute.brand.BRAND_LIST]);
     });
   }

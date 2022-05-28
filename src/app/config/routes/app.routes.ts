@@ -11,5 +11,9 @@ export const appRoutes = {
         ADD_BRAND: `${app}${brandRoute}/add`,
         BRAND_LIST: `${app}${brandRoute}`,
         ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
+    },
+    category:{
+        ADD_CATEGORY: `${app}${category}/add`,
+        CATEGORY_LIST: `${app}${category}`
     }
 }

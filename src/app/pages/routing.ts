@@ -18,6 +18,11 @@ export const Routing: Routes = [
       import('./catalog/brand/manage-brand/manage-brand.module').then((m) => m.ManageBrandModule),
   },
   {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',

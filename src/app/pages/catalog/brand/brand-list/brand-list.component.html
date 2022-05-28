@@ -48,7 +48,13 @@
                   <td>
                     <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
                   </td>
-                  <td><img src="{{ brand?.logo }}" alt="Brand Logo" /></td>
+                  <td>
+                    <img
+                      class="brand-logo"
+                      src="{{brand?.logo}}"
+                      alt="Brand Logo"
+                    />
+                  </td>
                   <td>
                     <ng-container *ngIf="brand?.isActive == true">
                       <h2 class="table-avatar fs-5">Active</h2>
