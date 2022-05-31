@@ -1,0 +1,74 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">Attributes</li>
+        </ul>
+        <button
+          class="btn btn-primary cursor-pointer"
+          color="primary"
+          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
+          [queryParams]="{ category: category }"
+        >
+          Add Attribute
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              datatable
+              class="table table-center table-striped mb-0 datatable"
+            >
+              <thead class="thead">
+                <tr>
+                  <th class="text-dark fw-bolder fs-5">Sl No.</th>
+                  <th class="text-dark fw-bolder fs-5">Attribute</th>
+                  <th class="text-dark fw-bolder fs-5">Values</th>
+                  <th class="text-dark fw-bolder fs-5">Status</th>
+                  <th class="text-dark fw-bolder fs-5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let attribute of attributeData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ attribute?.name }}</h2>
+                  </td>
+                  <td>
+                    <ng-container *ngFor="let value of attribute?.value">
+                      <h2 class="fs-5">
+                        {{ value }}
+                      </h2>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="attribute?.isActive == true">
+                      <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <a class="fs-5 cursor-pointer text-darker"> Edit </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -22,12 +22,6 @@ export class BrandComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBrand();
-    // this.dtOptions = {
-    //   pagingType: 'full_numbers',
-    //   pageLength: 5,
-    //   lengthMenu: [5, 10, 25],
-    //   processing: true,
-    // };
   }
 
   getBrand() {

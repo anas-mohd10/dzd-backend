@@ -12,12 +12,30 @@ export class CategoryService {
   constructor(private http: HttpClient, private commonService: CommonService) {}
 
   addCategory(data: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.add_category);
+    const url = this.commonService.getFullUrl(
+      this.categoryEndpoints.add_category
+    );
     return this.http.post(`${url}`, data);
   }
 
-  getCategory(){
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category);
+  getCategory() {
+    const url = this.commonService.getFullUrl(
+      this.categoryEndpoints.get_category
+    );
+    return this.http.get(`${url}`);
+  }
+
+  getCategoryById(id: any) {
+    const url = this.commonService.getFullUrl(
+      this.categoryEndpoints.get_category_by_id + id
+    );
+    return this.http.get(`${url}`);
+  }
+
+  getCategoryBySlug(slug: any) {
+    const url = this.commonService.getFullUrl(
+      this.categoryEndpoints.get_category_by_slug + '/' + slug
+    );
     return this.http.get(`${url}`);
   }
 }

@@ -23,6 +23,21 @@ export const Routing: Routes = [
       import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
   },
   {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/category/manage-category/manage-category.module').then((m) => m.ManageCategoryModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/attritube/manage-attribute/manage-attribute.module').then((m) => m.ManageAttributeModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/attritube/attribute-list/attribute-list.module').then((m) => m.AttributeModule),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',

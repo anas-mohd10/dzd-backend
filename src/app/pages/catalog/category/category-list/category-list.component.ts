@@ -21,9 +21,11 @@ export class CategoryComponent implements OnInit {
   constructor(private categoryService: CategoryService) {}
 
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getCategory()
+  }
 
-  getBrand() {
+  getCategory() {
     this.categoryService.getCategory().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:

@@ -3,7 +3,8 @@ const dashboardRoute = '/dashboard'
 const catalogRoute = '/catalog'
 const brandRoute = '/brand'
 const product = '/product'
-const category = '/category'
+const categoryRoute = '/category'
+const attributeRoute = '/attribute'
 
 export const appRoutes = {
     DASHBOARD : `${dashboardRoute}`,
@@ -13,7 +14,11 @@ export const appRoutes = {
         ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
     },
     category:{
-        ADD_CATEGORY: `${app}${category}/add`,
-        CATEGORY_LIST: `${app}${category}`
+        ADD_CATEGORY: `${app}${categoryRoute}/add`,
+        CATEGORY_LIST: `${app}${categoryRoute}`
+    },
+    attribute:{
+        ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,
+        ATTRIBUTE_LIST: `${app}${attributeRoute}`
     }
 }

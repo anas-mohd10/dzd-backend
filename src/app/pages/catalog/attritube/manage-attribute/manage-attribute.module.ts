@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ManageBrandComponent } from './manage-brand.component';
+import { ManageAttributeComponent } from './manage-attribute.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [ManageBrandComponent],
+  declarations: [ManageAttributeComponent],
   imports: [
     CommonModule,
     DataTablesModule,
@@ -20,10 +20,10 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     RouterModule.forChild([
       {
-        path: 'brand/add',
-        component: ManageBrandComponent,
+        path: 'attribute/add',
+        component: ManageAttributeComponent,
       },
     ]),
   ],
 })
-export class ManageBrandModule {}
+export class ManageAttributeModule {}

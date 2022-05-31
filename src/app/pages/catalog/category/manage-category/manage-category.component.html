@@ -1,0 +1,108 @@
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fs-2">
+          {{ editMode ? "Update Category" : "Add Category" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            {{ editMode ? "Update Category" : "Add Category" }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-5">
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="categoryForm">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Category Details</span></h5>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Name</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-12">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="rootCheck"
+                    (change)="handleCheckBox()"
+                  />
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Root Category
+                  </label>
+                </div>
+              </div>
+              <ng-container *ngIf="isChecked == false">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3 fw-bold">Parent Id</label>
+                      <select
+                        class="form-select"
+                        aria-label="-- select --"
+                      >
+                        <option selected>-- Select --</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                    </div>
+                  </div>
+              </ng-container>
+              <ng-container *ngIf="isChecked == true">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3 fw-bold">Parent Id</label>
+                      <select
+                        class="form-select"
+                        aria-label="-- select --"
+                        disabled
+                      >
+                        <option selected>-- Select --</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                    </div>
+                  </div>
+              </ng-container>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Logo</label>
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    (change)="handleInputChange($event)"
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary fs-5">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
