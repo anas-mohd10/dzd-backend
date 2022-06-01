@@ -1,18 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
-import { CategoryService } from '../../../../includes/services/category.service';
+import { ProductService } from '../../../../includes/services/product.service';
 
 @Component({
-  selector: 'app-manage-category',
-  templateUrl: './manage-category.component.html',
-  styleUrls: ['./manage-category.component.scss'],
+  selector: 'app-manage-product',
+  templateUrl: './manage-product.component.html',
+  styleUrls: ['./manage-product.component.scss'],
 })
-
-export class ManageCategoryComponent implements OnInit {
-  categoryForm: FormGroup;
+export class ManageProductComponent implements OnInit {
+  productForm: FormGroup;
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
@@ -30,16 +35,18 @@ export class ManageCategoryComponent implements OnInit {
   params: any;
   fileData: File;
   isChecked = false;
+  productType : any
+  isSingle: boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private CategoryService: CategoryService
+    private ProductService: ProductService
   ) {}
 
-  get bf() {
-    return this.categoryForm.controls;
+  get pf() {
+    return this.productForm.controls;
   }
 
   handleInputChange(fileInput: any) {
@@ -65,9 +72,33 @@ export class ManageCategoryComponent implements OnInit {
   }
 
   initForm() {
-    this.categoryForm = this.formBuilder.group({
+    this.productForm = this.formBuilder.group({
       name: ['', Validators.required],
+      productType: ['configurable', Validators.required],
+      sku: ['', Validators.required],
+      hsn: ['', Validators.required],
+      mrpPrice: ['', Validators.required],
+      offerprice: ['', Validators.required],
+      stock: ['', Validators.required],
+      moq: ['', Validators.required],
+      stockwarning: ['', Validators.required],
+      productdescription: ['', Validators.required],
+      featuredescription: ['', Validators.required],
+      additionalbutton: ['', Validators.required],
+      buttonredireturl: ['', Validators.required],
+      returndays: ['', Validators.required],
+      weight: ['', Validators.required],
+      position: ['', Validators.required],
     });
+  }
+
+  handleProductType(){
+    this.productType = this.productForm.get('productType')
+    if(this.productType.value == "single"){
+      this.isSingle = true
+    }else if(this.productType.value == "configurable"){
+      this.isSingle = false
+    }
   }
 
   managePage() {
@@ -97,6 +128,10 @@ export class ManageCategoryComponent implements OnInit {
 
   //Add brand
   addBrand() {
+    console.log('Clicked submit button');
+    // console.log()
+    this.productType = this.productForm.get('productType')
+
     //   if (!this.categoryForm.valid) {
     //     return;
     //   }

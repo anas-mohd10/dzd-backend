@@ -1,0 +1,453 @@
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fs-2">
+          {{ editMode ? "Update Product" : "Add Product" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            {{ editMode ? "Update Product" : "Add Product" }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Header -->
+
+  <!-- Page Content -->
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-5">
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Product Details</span></h5>
+              </div>
+
+              <!-- Product Type -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Product Type</label>
+                  <select
+                    class="form-select"
+                    aria-label="product type"
+                    name="productType"
+                    formControlName="productType"
+                    (change)="handleProductType()"
+                  >
+                    <option selected>-- Select Product Type --</option>
+                    <option value="single">Single</option>
+                    <option value="configurable">Configurable</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Name -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Name</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+
+              <!-- Store Keeping Unit -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Store Keeping Unit</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="sku"
+                  />
+                </div>
+              </div>
+
+              <!-- HSN Number -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">HSN No.</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="hsn"
+                  />
+                </div>
+              </div>
+
+              <!-- MRP Price -->
+              <ng-container *ngIf="isSingle">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Price (MRP)</label>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text">Rs.</span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-label="MRP price"
+                        formControlName="mrpPrice"
+                      />
+                      <span class="input-group-text">.00</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Offer Price -->
+              <ng-container *ngIf="isSingle">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Offer Price</label>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text">Rs.</span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        aria-label="Offer price"
+                        formControlName="offerprice"
+                      />
+                      <span class="input-group-text">.00</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Stock -->
+              <ng-container *ngIf="isSingle">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Stock</label>
+                    <input
+                      type="number"
+                      class="form-control fs-5"
+                      formControlName="stock"
+                    />
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- MOQ -->
+              <ng-container *ngIf="isSingle">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">MOQ</label>
+                    <input
+                      type="text"
+                      class="form-control fs-5"
+                      formControlName="moq"
+                    />
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Stock Warning -->
+              <ng-container *ngIf="isSingle">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Stock Warning</label>
+                    <input
+                      type="text"
+                      class="form-control fs-5"
+                      formControlName="stockwarning"
+                    />
+                  </div>
+                </div>
+              </ng-container>
+
+              <div class="col-12 col-sm-6"></div>
+
+              <!-- Description -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Description</label>
+                  <textarea
+                    class="form-control fs-5"
+                    formControlName="productdescription"
+                    style="resize: none"
+                    id="productdescription"
+                    rows="3"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Features -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Features</label>
+                  <textarea
+                    class="form-control fs-5"
+                    formControlName="featuredescription"
+                    style="resize: none"
+                    id="featuredescription"
+                    rows="3"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Category -->
+              <ng-container>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Category</label>
+                    <select class="form-select" aria-label="-- select --">
+                      <option selected>-- Select a Category --</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Brand -->
+              <ng-container>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Brand</label>
+                    <select class="form-select" aria-label="-- select --">
+                      <option selected>-- Select a Brand --</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Additional Button Text -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold"
+                    >Additional Button Text</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="additionalbutton"
+                  />
+                </div>
+              </div>
+
+              <!-- Button Redirect Url -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Button Redirect URL</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="buttonredireturl"
+                  />
+                </div>
+              </div>
+              
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="featured"
+                    id="defaultCheck1"
+                  />
+                  <label class="form-check-label" for="defaultCheck1">
+                    Featured Product ???
+                  </label>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <label class="fs-5 mb-3 fw-bold">Returnable Product ???</label>
+                <div class="form-check mb-5">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="returnYes"
+                  />
+                  <label class="form-check-label" for="returnYes"> Yes </label>
+                </div>
+                <div class="form-check mb-5">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="flexRadioDefault"
+                    id="returnNo"
+                    checked
+                  />
+                  <label class="form-check-label" for="returnNo"> No </label>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Return Days</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="returndays"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Shipping Method</label>
+                  <select
+                    class="form-select"
+                    aria-label="shipping method"
+                    name="shippingMethod"
+                  >
+                    <option value="paid" selected>Paid Shipping</option>
+                    <option value="unpaid">Unpaid Shipping</option>
+                    <option value="thirdparty">
+                      External Shipping Service
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold"
+                    >Shipping Cost
+                    <span class="badge bg-secondary text-dark"
+                      >For Paid Shipping Only</span
+                    ></label
+                  >
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-label="Amount (to the nearest rupees)"
+                      formControlName="mrpPrice"
+                    />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Weight</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">gms</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="weight"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Tax Class</label>
+                  <select
+                    class="form-select"
+                    aria-label="Tax Class"
+                    name="taxClass"
+                  >
+                    <option selected>-- Select Tax Class --</option>
+                    <option value="common">Common Tax</option>
+                    <option value="gst12">GST 12%</option>
+                    <option value="gst18">GST 18%</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6"></div>
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="cod"
+                    id="cod"
+                  />
+                  <label class="form-check-label" for="defaultCheck1">
+                    COD Available ???
+                  </label>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold"
+                    >COD Charge
+                    <span class="badge bg-secondary text-dark"
+                      >If COD available</span
+                    ></label
+                  >
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-label="Amount (to the nearest rupees)"
+                      formControlName="mrpPrice"
+                    />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Search Keywordss</label>
+                  <select class="form-select" aria-label="search keywords">
+                    <option selected>-- Select Search Keywords --</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Related Productss</label>
+                  <select class="form-select" aria-label="related keywords">
+                    <option selected>-- Select Related Products --</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Position</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="position"
+                  />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Product Image</label>
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    (change)="handleInputChange($event)"
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary fs-5">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content -->
+</div>

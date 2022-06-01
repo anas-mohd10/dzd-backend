@@ -1,24 +1,28 @@
-const app = '/app'
-const dashboardRoute = '/dashboard'
-const catalogRoute = '/catalog'
-const brandRoute = '/brand'
-const product = '/product'
-const categoryRoute = '/category'
-const attributeRoute = '/attribute'
+const app = '/app';
+const dashboardRoute = '/dashboard';
+const catalogRoute = '/catalog';
+const brandRoute = '/brand';
+const productRoute = '/product';
+const categoryRoute = '/category';
+const attributeRoute = '/attribute';
 
 export const appRoutes = {
-    DASHBOARD : `${dashboardRoute}`,
-    brand: {
-        ADD_BRAND: `${app}${brandRoute}/add`,
-        BRAND_LIST: `${app}${brandRoute}`,
-        ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
-    },
-    category:{
-        ADD_CATEGORY: `${app}${categoryRoute}/add`,
-        CATEGORY_LIST: `${app}${categoryRoute}`
-    },
-    attribute:{
-        ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,
-        ATTRIBUTE_LIST: `${app}${attributeRoute}`
-    }
-}
+  DASHBOARD: `${dashboardRoute}`,
+  brand: {
+    ADD_BRAND: `${app}${brandRoute}/add`,
+    BRAND_LIST: `${app}${brandRoute}`,
+    ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
+  },
+  category: {
+    ADD_CATEGORY: `${app}${categoryRoute}/add`,
+    CATEGORY_LIST: `${app}${categoryRoute}`,
+  },
+  attribute: {
+    ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,
+    ATTRIBUTE_LIST: `${app}${attributeRoute}`,
+  },
+  product: {
+    ADD_PRODUCT: `${app}${productRoute}/add`,
+    PRODUCT_LIST: `${app}${productRoute}`,
+  },
+};

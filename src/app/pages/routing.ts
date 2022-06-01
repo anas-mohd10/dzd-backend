@@ -38,6 +38,16 @@ export const Routing: Routes = [
       import('./catalog/attritube/attribute-list/attribute-list.module').then((m) => m.AttributeModule),
   },
   {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/product/product-list/product-list.module').then((m) => m.ProductModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/product/manage-product/manage-product.module').then((m) => m.ManageProductModule),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',
