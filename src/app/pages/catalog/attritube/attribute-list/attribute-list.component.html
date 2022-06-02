@@ -4,35 +4,28 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          <li class="breadcrumb-item fs-5"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
+          <li class="breadcrumb-item fs-5"><a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a></li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{ category: category }">Attributes</a>
           </li>
-          <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
-          </li>
-          <li class="breadcrumb-item active fs-5">Attributes</li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer"
-          color="primary"
-          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
-          [queryParams]="{ category: category }"
-        >
+        <button class="btn btn-primary cursor-pointer" color="primary" 
+                routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
+                [queryParams]="{ category: category }">
           Add Attribute
         </button>
       </div>
     </div>
   </div>
   <!-- /Page Header -->
+  <!-- Page Content -->
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive">
-            <table
-              datatable
-              class="table table-center table-striped mb-0 datatable"
-            >
+            <table datatable class="table table-center table-striped mb-0 datatable">
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-5">Sl No.</th>
@@ -50,14 +43,15 @@
                   </td>
                   <td>
                     <ng-container *ngFor="let value of attribute?.value">
-                      <h2 class="fs-5">
-                        {{ value }}
-                      </h2>
+                        <h2 class="attribute-value fs-5">{{ value }}</h2>
                     </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="attribute?.isActive == true">
                       <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                    <ng-container *ngIf="attribute?.isActive == false">
+                      <h2 class="table-avatar fs-5">Inactive</h2>
                     </ng-container>
                   </td>
                   <td>
@@ -71,4 +65,5 @@
       </div>
     </div>
   </div>
+  <!-- Page Content -->
 </div>

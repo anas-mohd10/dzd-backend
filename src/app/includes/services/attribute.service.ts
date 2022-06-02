@@ -11,6 +11,13 @@ export class AttributeService {
 
   constructor(private http: HttpClient, private commonService: CommonService) {}
 
+  addAttribute(data: any) {
+    const url = this.commonService.getFullUrl(
+      this.attributeEndpoints.add_attribute
+    );
+    return this.http.post(`${url}`, data);
+  }
+
   getCategoryById(id: string) {
     const url = this.commonService.getFullUrl(
       this.attributeEndpoints.get_attribute_by_category + '/' + id

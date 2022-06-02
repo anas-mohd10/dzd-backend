@@ -40,11 +40,8 @@ export class AttributeComponent implements OnInit {
         }
         this.AttributeService.getCategoryById(this.categoryId).subscribe(
           (res: any) => {
-            this.attributeData = res?.result[0]?.value;
-            for(let attribute of this.attributeData){
-              console.log(attribute)
-            }
-            this.attributeLength = this.attributeData.length;
+            this.attributeData = res?.result
+            console.log(this.attributeData)
           }
         );
       }

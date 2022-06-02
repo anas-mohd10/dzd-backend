@@ -1,4 +1,4 @@
-<div class="category-page-container">
+<div class="product-page-container">
   <!-- Page Header -->
   <div class="page-header">
     <div class="row align-items-center">
@@ -7,7 +7,9 @@
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">Products</li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST}}">Products</a>
+          </li>
         </ul>
         <button
           class="btn btn-primary cursor-pointer"
@@ -19,4 +21,84 @@
       </div>
     </div>
   </div>
+  <!-- Page Header -->
+  <!-- Page Content -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              datatable
+              [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger"
+              class="table table-center table-striped mb-0 datatable"
+            >
+              <thead class="thead">
+                <tr>
+                  <th class="text-dark fw-bolder fs-5">Sl No.</th>
+                  <th class="text-dark fw-bolder fs-5">SKU</th>
+                  <th class="text-dark fw-bolder fs-5">Product</th>
+                  <th class="text-dark fw-bolder fs-5">Type</th>
+                  <th class="text-dark fw-bolder fs-5">Category</th>
+                  <th class="text-dark fw-bolder fs-5">Price</th>
+                  <th class="text-dark fw-bolder fs-5">Stock</th>
+                  <th class="text-dark fw-bolder fs-5">Image</th>
+                  <th class="text-dark fw-bolder fs-5">Status</th>
+                  <th class="text-dark fw-bolder fs-5">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- <tr *ngFor="let product of productData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.name }}</h2>
+                  </td>
+                  <ng-container *ngIf="product?.rootId">
+                    <td>
+                      <h2 class="table-avatar fs-5">{{ product?.rootId.name }}</h2>
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="product?.parentId">
+                    <td>
+                      <h2 class="table-avatar fs-5">{{ product?.parentId.name }}</h2>
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="!product?.rootId">
+                    <td>
+                      <h2 class="table-avatar fs-5">-</h2>
+                    </td>
+                  </ng-container>
+                  <ng-container *ngIf="!product?.parentId">
+                    <td>
+                      <h2 class="table-avatar fs-5">-</h2>
+                    </td>
+                  </ng-container>
+                  <td>
+                    <img
+                      class="product-logo"
+                      src="{{product?.logo}}"
+                      alt="product Logo"
+                    />
+                  </td>
+                  <td>
+                    <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{product: product?.slug}" class="fs-5 cursor-pointer text-darker">Attributes</a>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="product?.isActive == true">
+                      <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <a class="fs-5 cursor-pointer text-darker"> Edit </a>
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Page Content -->
 </div>

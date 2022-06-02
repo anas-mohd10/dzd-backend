@@ -7,7 +7,9 @@
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">Brand</li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.brand.BRAND_LIST}}">Brands</a>
+          </li>
         </ul>
         <button
           class="btn btn-primary cursor-pointer"
@@ -38,6 +40,7 @@
                   <th class="text-dark fw-bolder fs-5">Sl No.</th>
                   <th class="text-dark fw-bolder fs-5">Brand</th>
                   <th class="text-dark fw-bolder fs-5">Logo</th>
+                  <th class="text-dark fw-bolder fs-5">Featured</th>
                   <th class="text-dark fw-bolder fs-5">Status</th>
                   <th class="text-dark fw-bolder fs-5">Action</th>
                 </tr>
@@ -48,16 +51,34 @@
                   <td>
                     <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
                   </td>
-                  <td>
+                  <!-- <td>
                     <img
                       class="brand-logo"
                       src="{{brand?.logo}}"
                       alt="Brand Logo"
                     />
+                  </td> -->
+                  <td>
+                    <img
+                      class="brand-logo"
+                      src="../../../../../assets/media/products/11.png"
+                      alt="Brand Logo"
+                    />
+                  </td>
+                  <td>
+                    <ng-container *ngIf="brand?.isFeatured == true">
+                      <h2 class="table-avatar fs-5">Yes</h2>
+                    </ng-container>
+                    <ng-container *ngIf="brand?.isFeatured == false">
+                      <h2 class="table-avatar fs-5">No</h2>
+                    </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="brand?.isActive == true">
                       <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                    <ng-container *ngIf="brand?.isActive == false">
+                      <h2 class="table-avatar fs-5">Inactive</h2>
                     </ng-container>
                   </td>
                   <td>

@@ -53,7 +53,7 @@
                   <input
                     type="text"
                     class="form-control fs-5"
-                    formControlName="name"
+                    formControlName="values"
                   />
                 </div>
               </div>
@@ -65,6 +65,7 @@
                     value=""
                     id="rootCheck"
                     (change)="handleCheckBox()"
+                    formControlName="filtered"
                   />
                   <label class="form-check-label" for="flexCheckDefault">
                     Is this a filtered attribute ?
@@ -77,6 +78,7 @@
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
+                    formControlName="status"
                   >
                     <option value="Active" selected>Active</option>
                     <option value="Inactive">Inactive</option>

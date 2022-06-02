@@ -1,5 +1,5 @@
 export const attributeEndpoints = {
-    add_attribute: '/upload-attribute',
+    add_attribute: '/attribute/create',
     get_attribute: '/attributes',
     get_active_attribute: '/active-attributes',
     get_attribute_by_id: '/attribute',

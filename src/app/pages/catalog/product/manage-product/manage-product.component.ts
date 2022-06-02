@@ -26,7 +26,7 @@ export class ManageProductComponent implements OnInit {
     name: [
       {
         type: 'required',
-        message: 'Category name is required',
+        message: 'Product name is required',
       },
     ],
   };

@@ -67,6 +67,8 @@ export class ManageCategoryComponent implements OnInit {
   initForm() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
+      rootCategory: ['', Validators.required],
+      parentId: ['-- Select Parent Category --', Validators.required]
     });
   }
 

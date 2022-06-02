@@ -4,6 +4,11 @@
 
 // Replace above style with this SCSS file to enable dark mode styles
 // @import "./assets/sass/style.dark";
+.toast-container{
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
 
 .table {
 	color: #333;

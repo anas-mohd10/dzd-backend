@@ -7,7 +7,9 @@
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">Categories</li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+          </li>
         </ul>
         <button
           class="btn btn-primary cursor-pointer"
@@ -52,12 +54,16 @@
                   </td>
                   <ng-container *ngIf="category?.rootId">
                     <td>
-                      <h2 class="table-avatar fs-5">{{ category?.rootId.name }}</h2>
+                      <h2 class="table-avatar fs-5">
+                        {{ category?.rootId.name }}
+                      </h2>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="category?.parentId">
                     <td>
-                      <h2 class="table-avatar fs-5">{{ category?.parentId.name }}</h2>
+                      <h2 class="table-avatar fs-5">
+                        {{ category?.parentId.name }}
+                      </h2>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="!category?.rootId">
@@ -70,15 +76,27 @@
                       <h2 class="table-avatar fs-5">-</h2>
                     </td>
                   </ng-container>
-                  <td>
+                  <!-- <td>
                     <img
                       class="category-logo"
                       src="{{category?.logo}}"
                       alt="Category Logo"
                     />
+                  </td> -->
+                  <td>
+                    <img
+                      class="category-logo"
+                      src="../../../../../assets/media/products/11.png"
+                      alt="category Logo"
+                    />
                   </td>
                   <td>
-                    <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{category: category?.slug}" class="fs-5 cursor-pointer text-darker">Attributes</a>
+                    <a
+                      routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
+                      [queryParams]="{ category: category?.slug }"
+                      class="fs-5 cursor-pointer text-darker"
+                      >Attributes</a
+                    >
                   </td>
                   <td>
                     <ng-container *ngIf="category?.isActive == true">
