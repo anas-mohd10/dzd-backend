@@ -11,10 +11,10 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Category</a>
+            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            {{ editMode ? "Update Category" : "Add Category" }}
+            <a routerLink="{{ appRoute.category.ADD_CATEGORY }}">{{ editMode ? "Update Category" : "Add Category" }}</a>
           </li>
         </ul>
       </div>

@@ -10,7 +10,7 @@
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{ category: category }">Attributes</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer" color="primary" 
+        <button class="btn btn-primary cursor-pointer fw-bolder" color="primary" 
                 routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
                 [queryParams]="{ category: category }">
           Add Attribute
@@ -25,14 +25,14 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive">
-            <table datatable class="table table-center table-striped mb-0 datatable">
+            <table datatable class="table table-striped mb-0 datatable table-borderless">
               <thead class="thead">
                 <tr>
-                  <th class="text-dark fw-bolder fs-5">Sl No.</th>
-                  <th class="text-dark fw-bolder fs-5">Attribute</th>
-                  <th class="text-dark fw-bolder fs-5">Values</th>
-                  <th class="text-dark fw-bolder fs-5">Status</th>
-                  <th class="text-dark fw-bolder fs-5">Action</th>
+                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
+                  <th class="text-dark fw-bolder fs-4">Attribute</th>
+                  <th class="text-dark fw-bolder fs-4">Values</th>
+                  <th class="text-dark fw-bolder fs-4">Status</th>
+                  <th class="text-dark fw-bolder fs-4">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,7 +43,9 @@
                   </td>
                   <td>
                     <ng-container *ngFor="let value of attribute?.value">
-                        <h2 class="attribute-value fs-5">{{ value }}</h2>
+                        <div class="row">
+                          <div class="col"><h2 class="attribute-value fs-5">{{ value }}</h2></div>
+                        </div>
                     </ng-container>
                   </td>
                   <td>

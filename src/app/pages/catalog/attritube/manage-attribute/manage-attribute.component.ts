@@ -35,8 +35,9 @@ export class ManageAttributeComponent implements OnInit {
   categoryData: any;
   categoryId: any;
   attributeData: {};
-  isFiltered: boolean = false;
   status: boolean;
+  filtered: string;
+  isFiltered: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,7 +59,7 @@ export class ManageAttributeComponent implements OnInit {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
       values: ['', Validators.required],
-      filtered: ['', Validators.required],
+      filtered: ['No', Validators.required],
       status: ['Active', Validators.required],
     });
   }
@@ -101,11 +102,18 @@ export class ManageAttributeComponent implements OnInit {
     }
     this.attributeValues = this.attributeForm.get('values')?.value;
     this.attributeValues = this.attributeValues.split(',');
-    this.isFiltered = this.attributeForm.get('filtered')?.value;
+    this.filtered = this.attributeForm.get('filtered')?.value;
+
     if (this.attributeForm.get('status')?.value == 'Active') {
       this.status = true;
     } else if (this.attributeForm.get('status')?.value == 'Inactive') {
       this.status = false;
+    }
+
+    if (this.filtered == "Yes") {
+      this.isFiltered = true;
+    } else if (this.filtered == "No") {
+      this.isFiltered = false;
     }
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
@@ -114,9 +122,13 @@ export class ManageAttributeComponent implements OnInit {
       isFiltered: this.isFiltered,
       isActive: this.status,
     };
-    this.AttributeService.addAttribute(this.attributeData).subscribe((res) => {
-      this.toastr.success('Attribute added successfully');
-      this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {queryParams: {"category": this.category}});
+    this.AttributeService.addAttribute(this.attributeData).subscribe((res: any) => {
+      if(res.errorCode != 0){
+        this.toastr.error('Something went wrong');
+      }else if(res?.errorCode == 0){
+        this.toastr.success('Attribute added successfully');
+        this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {queryParams: {"category": this.category}});
+      }
     });
   }
 

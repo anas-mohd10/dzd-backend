@@ -166,7 +166,7 @@
                 </div>
               </ng-container>
 
-              <div class="col-12 col-sm-6"></div>
+              <div class="col-12 col-sm-6" *ngIf="isSingle"></div>
 
               <!-- Description -->
               <div class="col-12 col-sm-6">
@@ -212,19 +212,27 @@
               </ng-container>
 
               <!-- Brand -->
-              <ng-container>
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 fw-bold">Brand</label>
-                    <select class="form-select" aria-label="-- select --">
-                      <option selected>-- Select a Brand --</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Brand</label>
+                  <select
+                    [(ngModel)]="selected"
+                    name="brand"
+                    formControlName="brand"
+                    placeholder="Select Brand"
+                    (ngModelChange)="onOptionsSelected()"
+                    class="form-select"
+                  >
+                    <option selected>-- Select Brand --</option>
+                    <option
+                      *ngFor="let brand of brandData; let i = index"
+                      value="{{ brand?.name }}"
+                    >
+                      {{ brand?.name }}
+                    </option>
+                  </select>
                 </div>
-              </ng-container>
+              </div>
 
               <!-- Additional Button Text -->
               <div class="col-12 col-sm-6">
@@ -251,7 +259,7 @@
                   />
                 </div>
               </div>
-              
+
               <div class="col-12 col-sm-6">
                 <div class="form-check">
                   <input
@@ -361,7 +369,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6"></div>
+              <div class="col-12 col-sm-6" *ngIf="isSingle"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-check">
                   <input

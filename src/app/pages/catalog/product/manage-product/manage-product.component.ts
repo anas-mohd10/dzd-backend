@@ -10,6 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
   selector: 'app-manage-product',
@@ -35,14 +36,18 @@ export class ManageProductComponent implements OnInit {
   params: any;
   fileData: File;
   isChecked = false;
-  productType : any
-  isSingle: boolean = false
+  productType: any;
+  isSingle: boolean = false;
+  brandData: any;
+  selected: any;
+  filtered: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private ProductService: ProductService
+    private ProductService: ProductService,
+    private brandService: BrandService
   ) {}
 
   get pf() {
@@ -69,6 +74,7 @@ export class ManageProductComponent implements OnInit {
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.params = this.route.snapshot;
     this.managePage();
+    this.getBrandDetail();
   }
 
   initForm() {
@@ -77,6 +83,7 @@ export class ManageProductComponent implements OnInit {
       productType: ['configurable', Validators.required],
       sku: ['', Validators.required],
       hsn: ['', Validators.required],
+      brand: ['-- Select Brand --', Validators.required],
       mrpPrice: ['', Validators.required],
       offerprice: ['', Validators.required],
       stock: ['', Validators.required],
@@ -92,12 +99,12 @@ export class ManageProductComponent implements OnInit {
     });
   }
 
-  handleProductType(){
-    this.productType = this.productForm.get('productType')
-    if(this.productType.value == "single"){
-      this.isSingle = true
-    }else if(this.productType.value == "configurable"){
-      this.isSingle = false
+  handleProductType() {
+    this.productType = this.productForm.get('productType');
+    if (this.productType.value == 'single') {
+      this.isSingle = true;
+    } else if (this.productType.value == 'configurable') {
+      this.isSingle = false;
     }
   }
 
@@ -114,37 +121,30 @@ export class ManageProductComponent implements OnInit {
     }
   }
 
+  getBrandDetail() {
+    this.brandService.getBrand().subscribe((res: any) => {
+      this.brandData = res?.result;
+      console.log(this.brandData);
+    });
+  }
+
+  onOptionsSelected() {
+    console.log(this.selected);
+    this.filtered = this.brandData.filter(
+      (t: { value: any }) => t.value == this.selected
+    );
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
-      this.updateBrand();
+      this.updateProduct();
     } else {
-      this.addBrand();
+      this.addProduct();
     }
   }
 
-  //Update exsisting brand
-  updateBrand() {}
+  updateProduct() {}
 
-  //Add brand
-  addBrand() {
-    console.log('Clicked submit button');
-    // console.log()
-    this.productType = this.productForm.get('productType')
-
-    //   if (!this.categoryForm.valid) {
-    //     return;
-    //   }
-    //   const formData = new FormData();
-    //   if (this.fileData != null && this.fileData != undefined) {
-    //     formData.append("file", this.fileData);
-    //   }
-    //   for (const data of Object.keys(this.brandForm.value)) {
-    //     formData.append(data, this.brandForm.value[data]);
-    //   }
-    //   this.CategoryService.addBrand(formData).subscribe((res: any) => {
-    //     console.log(res)
-    //     this.router.navigate([this.appRoute.brand.BRAND_LIST]);
-    //   });
-  }
+  addProduct() {}
 }
