@@ -20,4 +20,9 @@ export class CollectionService {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection);
     return this.http.get(`${url}`);
   }
+
+  getCollectionBySlug(slug: any){
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_by_slug + "?" + "slug=" + slug);
+    return this.http.get(`${url}`);
+  }
 }

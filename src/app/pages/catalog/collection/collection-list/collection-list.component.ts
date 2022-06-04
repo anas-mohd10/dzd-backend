@@ -22,6 +22,7 @@ export class CollectionListComponent implements OnInit {
   ngOnInit(): void {
     this.getCollection();
   }
+  
   getCollection() {
     this.collectionService.getCollection().subscribe((res:any)=>{
       switch(res?.errorCode){

@@ -7,16 +7,27 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
-          <li class="breadcrumb-item fs-5"><a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a></li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+          </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{ category: category }">Attributes</a>
+            <a
+              routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
+              [queryParams]="{ category: category }"
+              >Attributes</a
+            >
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer" color="primary" 
-                routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
-                [queryParams]="{ category: category }">
-          Add Attribute
+        <button
+          class="btn btn-primary cursor-pointer"
+          color="primary"
+          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
+          [queryParams]="{ category: category }"
+        >
+          <i class="bi bi-plus-square-dotted"></i> Add Attribute
         </button>
       </div>
     </div>
@@ -28,7 +39,10 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive">
-            <table datatable class="table table-striped mb-0 datatable table-borderless">
+            <table
+              datatable
+              class="table table-striped mb-0 datatable table-borderless"
+            >
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
@@ -46,9 +60,11 @@
                   </td>
                   <td>
                     <ng-container *ngFor="let value of attribute?.value">
-                        <div class="row">
-                          <div class="col"><h2 class="attribute-value fs-5">{{ value }}</h2></div>
+                      <div class="row">
+                        <div class="col">
+                          <h2 class="attribute-value fs-5">{{ value }}</h2>
                         </div>
+                      </div>
                     </ng-container>
                   </td>
                   <td>
@@ -60,7 +76,9 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker"> Edit </a>
+                    <a class="fs-5 cursor-pointer text-darker"
+                      ><i class="bi bi-pen"></i> Edit
+                    </a>
                   </td>
                 </tr>
               </tbody>
