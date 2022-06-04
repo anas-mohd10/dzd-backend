@@ -28,7 +28,6 @@ export const appRoutes = {
   },
   collection: {
     ADD_COLLECTION: `${app}${collectionRoute}/add`,
-    COLLECTION_LIST: `${app}${collectionRoute}`,
-    UPDATE_COLLECTION: `${app}${collectionRoute}/update`
+    COLLECTION_LIST: `${app}${collectionRoute}`
   }
 };

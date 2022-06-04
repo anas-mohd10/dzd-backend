@@ -21,7 +21,7 @@
           color="primary"
           routerLink="{{ appRoute.collection.ADD_COLLECTION }}"
         >
-        <i class="bi bi-plus-square"></i> Add Collection
+          Add Collection
         </button>
       </div>
     </div>
@@ -43,7 +43,6 @@
                 <tr>
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
                   <th class="text-dark fw-bolder fs-4">Collection</th>
-                  <th class="text-dark fw-bolder fs-4">Image</th>
                   <th class="text-dark fw-bolder fs-4">Featured</th>
                   <th class="text-dark fw-bolder fs-4">Status</th>
                   <th class="text-dark fw-bolder fs-4">Action</th>
@@ -54,20 +53,6 @@
                   <td>{{ i + 1 }}</td>
                   <td>
                     <h2 class="table-avatar fs-5">{{ collection?.name }}</h2>
-                  </td>
-                  <!-- <td>
-                    <img
-                      class="category-logo"
-                      src="{{category?.logo}}"
-                      alt="Category Logo"
-                    />
-                  </td> -->
-                  <td>
-                    <img
-                      class="collection-logo"
-                      src="../../../../../assets/media/products/11.png"
-                      alt="collection Logo"
-                    />
                   </td>
                   <td>
                     <ng-container *ngIf="collection?.isFeatured == true">
@@ -83,7 +68,7 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker"> <i class="bi bi-pen"></i> Edit </a>
+                    <a class="fs-5 cursor-pointer text-darker"> Edit </a>
                   </td>
                 </tr>
               </tbody>

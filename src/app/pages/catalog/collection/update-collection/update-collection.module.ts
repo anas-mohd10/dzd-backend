@@ -1,20 +1,25 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { UpdateCollectionComponent } from './update-collection.component';
-import { DataTablesModule } from 'angular-datatables';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@NgModule({
-  declarations: [UpdateCollectionComponent],
-  imports: [
-    CommonModule,
-    DataTablesModule,
-    RouterModule.forChild([
-      {
-        path: 'collection/update',
-        component: UpdateCollectionComponent,
-      },
-    ]),
-  ],
-})
-export class UpdateCollectionModule {}
+import { UpdateCollectionComponent } from './update-collection.component';
+
+describe('UpdateCollectionComponent', () => {
+  let component: UpdateCollectionComponent;
+  let fixture: ComponentFixture<UpdateCollectionComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ UpdateCollectionComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UpdateCollectionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
