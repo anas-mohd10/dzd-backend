@@ -58,6 +58,11 @@ export const Routing: Routes = [
       import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
   },
   {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
+  },
+  {
     path: '',
     redirectTo: '/dashboard',
     pathMatch: 'full',

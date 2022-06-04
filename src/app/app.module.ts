@@ -14,11 +14,6 @@ import { environment } from 'src/environments/environment';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
 import { ToastrModule } from 'ngx-toastr';
-import { UpdateCollectionComponent } from './pages/catalog/collection/update-collection/update-collection.component';
-import { UpdateProductComponent } from './pages/catalog/product/update-product/update-product.component';
-import { UpdateCategoryComponent } from './pages/catalog/category/update-category/update-category.component';
-import { UpdateBrandComponent } from './pages/catalog/brand/update-brand/update-brand.component';
-import { UpdateAttributeComponent } from './pages/catalog/attritube/update-attribute/update-attribute.component';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -30,7 +25,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, UpdateCollectionComponent, UpdateProductComponent, UpdateCategoryComponent, UpdateBrandComponent, UpdateAttributeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
