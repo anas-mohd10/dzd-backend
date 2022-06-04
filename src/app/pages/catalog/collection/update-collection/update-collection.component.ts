@@ -20,6 +20,7 @@ export class UpdateCollectionComponent implements OnInit {
   appRoute = appRoutes
   collectionData: any;
   collection: any;
+  collectionName: any;
 
   constructor(
     private collectionService: CollectionService,
@@ -33,6 +34,16 @@ export class UpdateCollectionComponent implements OnInit {
     this.collection = this.route.snapshot.queryParams.collection || '';
     this.getCollection();
     this.managePage()
+    this.initForm()
+  }
+
+  initForm() {
+    this.collectionForm = this.formBuilder.group({
+      name: [ '', Validators.required],
+      products: ['', Validators.required],
+      featured: ['No', Validators.required],
+      status: ['Active', Validators.required],
+    });
   }
 
   managePage() {
@@ -53,7 +64,8 @@ export class UpdateCollectionComponent implements OnInit {
     this.collectionService.getCollectionBySlug(this.collection).subscribe((res:any)=>{
       switch(res?.errorCode){
         case 0:
-          this.collectionData = res?.result
+          this.collectionData = res?.result[0]
+          this.collectionName = this.collectionData?.name
           break
       }
     })

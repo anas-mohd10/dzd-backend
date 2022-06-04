@@ -22,7 +22,7 @@ export class AddAttributeComponent implements OnInit {
     name: [
       {
         type: 'required',
-        message: 'Attribute name is required',
+        message: 'Category name is required',
       },
     ],
   };

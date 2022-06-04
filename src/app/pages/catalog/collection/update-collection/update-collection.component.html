@@ -16,9 +16,11 @@
             >
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}" [queryParams]="{collection: collection}">{{
-              editMode ? "Update Collection" : "Add Collection"
-            }}</a>
+            <a
+              routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+              [queryParams]="{ collection: collection }"
+              >{{ editMode ? "Update Collection" : "Add Collection" }}</a
+            >
           </li>
         </ul>
       </div>
@@ -26,7 +28,7 @@
   </div>
   <div class="row mt-10">
     <div class="col-sm-12 fs-5">
-      <div class="card">
+      <div class="card" ngForm>
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm">
             <div class="row">
@@ -46,11 +48,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Image </label>
-                  <input
-                    type="file"
-                    class="form-control fs-5"
-                    formControlName="values"
-                  />
+                  <input type="file" class="form-control fs-5" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -65,7 +63,9 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Featured Collection ???</label>
+                  <label class="fs-5 mb-3 fw-bold"
+                    >Featured Collection ???</label
+                  >
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
@@ -73,6 +73,19 @@
                   >
                     <option value="No" selected>No</option>
                     <option value="Yes">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Status</label>
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="status"
+                  >
+                    <option value="Active" selected>Active</option>
+                    <option value="Inactive">Inactive</option>
                   </select>
                 </div>
               </div>
