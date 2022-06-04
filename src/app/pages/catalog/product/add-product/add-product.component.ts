@@ -13,11 +13,11 @@ import { ProductService } from '../../../../includes/services/product.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
-  selector: 'app-manage-product',
-  templateUrl: './manage-product.component.html',
-  styleUrls: ['./manage-product.component.scss'],
+  selector: 'app-add-product',
+  templateUrl: './add-product.component.html',
+  styleUrls: ['./add-product.component.scss'],
 })
-export class ManageProductComponent implements OnInit {
+export class AddProductComponent implements OnInit {
   productForm: FormGroup;
   task = PageTasks.ADD;
   editMode = false;

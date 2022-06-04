@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BrandComponent } from './brand-list.component';
+import { CollectionListComponent } from './collection-list.component';
 import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
-  declarations: [BrandComponent],
+  declarations: [CollectionListComponent],
   imports: [
     CommonModule,
     DataTablesModule,
     RouterModule.forChild([
       {
-        path: 'brand',
-        component: BrandComponent,
+        path: 'collection',
+        component: CollectionListComponent,
       },
     ]),
   ],
 })
-export class BrandModule {}
+export class CollectionModule {}

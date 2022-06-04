@@ -3,16 +3,16 @@ import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
-import { BrandService } from '../../../../includes/services/brand.service';
-import { ToastrService } from 'ngx-toastr';
+import { CategoryService } from '../../../../includes/services/category.service';
 
 @Component({
-  selector: 'app-manage-brand',
-  templateUrl: './manage-brand.component.html',
-  styleUrls: ['./manage-brand.component.scss'],
+  selector: 'app-add-category',
+  templateUrl: './add-category.component.html',
+  styleUrls: ['./add-category.component.scss'],
 })
-export class ManageBrandComponent implements OnInit {
-  brandForm: FormGroup;
+
+export class AddCategoryComponent implements OnInit {
+  categoryForm: FormGroup;
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
@@ -21,7 +21,7 @@ export class ManageBrandComponent implements OnInit {
     name: [
       {
         type: 'required',
-        message: 'Brand name is required',
+        message: 'Category name is required',
       },
     ],
   };
@@ -29,18 +29,17 @@ export class ManageBrandComponent implements OnInit {
   isSubmitted = false;
   params: any;
   fileData: File;
-  status: boolean;
+  isChecked = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private BrandService: BrandService,
-    private toastr: ToastrService
+    private CategoryService: CategoryService
   ) {}
 
   get bf() {
-    return this.brandForm.controls;
+    return this.categoryForm.controls;
   }
 
   handleInputChange(fileInput: any) {
@@ -48,6 +47,14 @@ export class ManageBrandComponent implements OnInit {
       ? fileInput.dataTransfer.files[0]
       : fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
+  }
+
+  handleCheckBox() {
+    if (this.isChecked == false) {
+      this.isChecked = true;
+    } else if (this.isChecked == true) {
+      this.isChecked = false;
+    }
   }
 
   ngOnInit(): void {
@@ -58,10 +65,10 @@ export class ManageBrandComponent implements OnInit {
   }
 
   initForm() {
-    this.brandForm = this.formBuilder.group({
+    this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
-      status: ['Active', Validators.required],
-      featured: ['No', Validators.required],
+      rootCategory: ['', Validators.required],
+      parentId: ['-- Select Parent Category --', Validators.required]
     });
   }
 
@@ -87,31 +94,24 @@ export class ManageBrandComponent implements OnInit {
     }
   }
 
-  handleCheckBox() {}
-
   //Update exsisting brand
   updateBrand() {}
 
   //Add brand
   addBrand() {
-    if (!this.brandForm.valid) {
-      return;
-    }
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    }
-    console.log(this.brandForm.value?.featured)
-    formData.append('name', this.brandForm.value?.name);
-    formData.append('isActive', this.brandForm.value?.status);
-    formData.append('isFeatured', this.brandForm.value?.featured)
-    this.BrandService.addBrand(formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Brand Added Successfully');
-        this.router.navigate([this.appRoute.brand.BRAND_LIST]);
-      }
-    });
+    //   if (!this.categoryForm.valid) {
+    //     return;
+    //   }
+    //   const formData = new FormData();
+    //   if (this.fileData != null && this.fileData != undefined) {
+    //     formData.append("file", this.fileData);
+    //   }
+    //   for (const data of Object.keys(this.brandForm.value)) {
+    //     formData.append(data, this.brandForm.value[data]);
+    //   }
+    //   this.CategoryService.addBrand(formData).subscribe((res: any) => {
+    //     console.log(res)
+    //     this.router.navigate([this.appRoute.brand.BRAND_LIST]);
+    //   });
   }
 }

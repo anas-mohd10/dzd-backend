@@ -14,7 +14,7 @@
             <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            {{ editMode ? "Update Product" : "Add Product" }}
+            <a routerLink="{{ appRoute.product.ADD_PRODUCT }}">{{ editMode ? "Update Product" : "Add Product" }}</a>
           </li>
         </ul>
       </div>

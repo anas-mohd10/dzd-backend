@@ -1,8 +1,8 @@
-<div class="brand-page-container">
+<div class="collection-page-container">
   <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder">Brands</h1>
+      <h1 class="fw-bolder">Collections</h1>
     </div>
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
@@ -11,22 +11,23 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.brand.BRAND_LIST}}">Brands</a>
+            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}"
+              >Collections</a
+            >
           </li>
         </ul>
         <button
-          class="btn btn-primary cursor-pointer fs-5"
+          class="btn btn-primary cursor-pointer"
           color="primary"
-          routerLink="{{ appRoute.brand.ADD_BRAND }}"
+          routerLink="{{ appRoute.collection.ADD_COLLECTION }}"
         >
-          Add Brand
+          Add Collection
         </button>
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
-
-  <!-- Table start -->
+  <!-- Page Header -->
+  <!-- Page Content -->
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
@@ -36,52 +37,34 @@
               datatable
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
-              class="table table-borderless table-striped mb-0 datatable"
+              class="table table-center table-striped mb-0 datatable"
             >
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
-                  <th class="text-dark fw-bolder fs-4">Brand</th>
-                  <th class="text-dark fw-bolder fs-4">Logo</th>
+                  <th class="text-dark fw-bolder fs-4">Collection</th>
                   <th class="text-dark fw-bolder fs-4">Featured</th>
                   <th class="text-dark fw-bolder fs-4">Status</th>
                   <th class="text-dark fw-bolder fs-4">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let brand of brandData; let i = index">
+                <tr *ngFor="let collection of collectionData; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
-                  </td>
-                  <!-- <td>
-                    <img
-                      class="brand-logo"
-                      src="{{brand?.logo}}"
-                      alt="Brand Logo"
-                    />
-                  </td> -->
-                  <td>
-                    <img
-                      class="brand-logo"
-                      src="../../../../../assets/media/products/11.png"
-                      alt="Brand Logo"
-                    />
+                    <h2 class="table-avatar fs-5">{{ collection?.name }}</h2>
                   </td>
                   <td>
-                    <ng-container *ngIf="brand?.isFeatured == true">
+                    <ng-container *ngIf="collection?.isFeatured == true">
                       <h2 class="table-avatar fs-5">Yes</h2>
                     </ng-container>
-                    <ng-container *ngIf="brand?.isFeatured == false">
+                    <ng-container *ngIf="collection?.isFeatured == false">
                       <h2 class="table-avatar fs-5">No</h2>
                     </ng-container>
                   </td>
                   <td>
-                    <ng-container *ngIf="brand?.isActive == true">
+                    <ng-container *ngIf="collection?.isActive == true">
                       <h2 class="table-avatar fs-5">Active</h2>
-                    </ng-container>
-                    <ng-container *ngIf="brand?.isActive == false">
-                      <h2 class="table-avatar fs-5">Inactive</h2>
                     </ng-container>
                   </td>
                   <td>
@@ -95,5 +78,5 @@
       </div>
     </div>
   </div>
-  <!-- Table end -->
+  <!-- Page Content -->
 </div>

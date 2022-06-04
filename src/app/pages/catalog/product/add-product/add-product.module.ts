@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ManageProductComponent } from './manage-product.component';
+import { AddProductComponent } from './add-product.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [ManageProductComponent],
+  declarations: [AddProductComponent],
   imports: [
     CommonModule,
     DataTablesModule,
@@ -21,9 +21,9 @@ import { ToastrModule } from 'ngx-toastr';
     RouterModule.forChild([
       {
         path: 'product/add',
-        component: ManageProductComponent,
+        component: AddProductComponent,
       },
     ]),
   ],
 })
-export class ManageProductModule {}
+export class AddProductModule {}

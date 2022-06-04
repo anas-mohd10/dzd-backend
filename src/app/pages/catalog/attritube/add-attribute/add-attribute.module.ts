@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ManageAttributeComponent } from './manage-attribute.component';
+import { AddAttributeComponent } from './add-attribute.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [ManageAttributeComponent],
+  declarations: [AddAttributeComponent],
   imports: [
     CommonModule,
     DataTablesModule,
@@ -21,9 +21,9 @@ import { ToastrModule } from 'ngx-toastr';
     RouterModule.forChild([
       {
         path: 'attribute/add',
-        component: ManageAttributeComponent,
+        component: AddAttributeComponent,
       },
     ]),
   ],
 })
-export class ManageAttributeModule {}
+export class AddAttributeModule {}

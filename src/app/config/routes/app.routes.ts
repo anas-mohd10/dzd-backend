@@ -5,9 +5,10 @@ const brandRoute = '/brand';
 const productRoute = '/product';
 const categoryRoute = '/category';
 const attributeRoute = '/attribute';
+const collectionRoute = '/collection'
 
 export const appRoutes = {
-  DASHBOARD: `${dashboardRoute}`,
+  DASHBOARD: `${app}${dashboardRoute}`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,
@@ -25,4 +26,8 @@ export const appRoutes = {
     ADD_PRODUCT: `${app}${productRoute}/add`,
     PRODUCT_LIST: `${app}${productRoute}`,
   },
+  collection: {
+    ADD_COLLECTION: `${app}${collectionRoute}/add`,
+    COLLECTION_LIST: `${app}${collectionRoute}`
+  }
 };

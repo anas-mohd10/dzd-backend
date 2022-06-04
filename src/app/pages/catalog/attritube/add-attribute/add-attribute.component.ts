@@ -8,11 +8,11 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-manage-attribute',
-  templateUrl: './manage-attribute.component.html',
-  styleUrls: ['./manage-attribute.component.scss'],
+  selector: 'app-add-attribute',
+  templateUrl: './add-attribute.component.html',
+  styleUrls: ['./add-attribute.component.scss'],
 })
-export class ManageAttributeComponent implements OnInit {
+export class AddAttributeComponent implements OnInit {
   attributeForm: FormGroup;
   task = PageTasks.ADD;
   editMode = false;

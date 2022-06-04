@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 export const Routing: Routes = [
   {
-    path: 'dashboard',
+    path: 'app',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
@@ -15,7 +15,7 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
-      import('./catalog/brand/manage-brand/manage-brand.module').then((m) => m.ManageBrandModule),
+      import('./catalog/brand/add-brand/add-brand.module').then((m) => m.AddBrandModule),
   },
   {
     path: 'app',
@@ -25,12 +25,12 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
-      import('./catalog/category/manage-category/manage-category.module').then((m) => m.ManageCategoryModule),
+      import('./catalog/category/add-category/add-category.module').then((m) => m.AddCategoryModule),
   },
   {
     path: 'app',
     loadChildren: () =>
-      import('./catalog/attritube/manage-attribute/manage-attribute.module').then((m) => m.ManageAttributeModule),
+      import('./catalog/attritube/add-attribute/add-attribute.module').then((m) => m.AddAttributeModule),
   },
   {
     path: 'app',
@@ -45,7 +45,17 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
-      import('./catalog/product/manage-product/manage-product.module').then((m) => m.ManageProductModule),
+      import('./catalog/product/add-product/add-product.module').then((m) => m.AddProductModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
   },
   {
     path: '',

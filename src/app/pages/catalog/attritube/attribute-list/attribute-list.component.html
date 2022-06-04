@@ -1,6 +1,9 @@
 <div class="page-container">
   <!-- Page Header -->
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Attributes</h1>
+    </div>
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
@@ -10,7 +13,7 @@
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{ category: category }">Attributes</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fw-bolder" color="primary" 
+        <button class="btn btn-primary cursor-pointer" color="primary" 
                 routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
                 [queryParams]="{ category: category }">
           Add Attribute

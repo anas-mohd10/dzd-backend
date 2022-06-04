@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ManageCategoryComponent } from './manage-category.component';
+import { AddCollectionComponent } from './add-collection.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [ManageCategoryComponent],
+  declarations: [AddCollectionComponent],
   imports: [
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    ToastrModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
@@ -20,10 +21,10 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     RouterModule.forChild([
       {
-        path: 'category/add',
-        component: ManageCategoryComponent,
+        path: 'collection/add',
+        component: AddCollectionComponent,
       },
     ]),
   ],
 })
-export class ManageCategoryModule {}
+export class AddCollectionModule {}
