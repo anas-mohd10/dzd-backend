@@ -5,6 +5,8 @@ import { AddCollectionComponent } from './add-collection.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
+import { NgSelect2Module } from 'ng-select2';
 
 @NgModule({
   declarations: [AddCollectionComponent],
@@ -13,6 +15,8 @@ import { ToastrModule } from 'ngx-toastr';
     DataTablesModule,
     ReactiveFormsModule,
     ToastrModule,
+    NgSelect2Module,
+    FormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

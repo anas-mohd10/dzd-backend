@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 export const Routing: Routes = [
   {
-    path: 'app',
+    path: '',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },

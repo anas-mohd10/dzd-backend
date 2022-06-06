@@ -65,7 +65,7 @@
                   <td>
                     <img
                       class="collection-logo"
-                      src="../../../../../assets/media/svg/products-categories/watch.svg"
+                      src="../../../../../assets/media/products/18.png"
                       alt="collection Logo"
                     />
                   </td>
@@ -80,6 +80,9 @@
                   <td>
                     <ng-container *ngIf="collection?.isActive == true">
                       <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                    <ng-container *ngIf="collection?.isActive == false">
+                      <h2 class="table-avatar fs-5">Inactive</h2>
                     </ng-container>
                   </td>
                   <td>

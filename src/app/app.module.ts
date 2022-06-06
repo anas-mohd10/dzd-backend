@@ -11,15 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { NgSelect2Module } from 'ng-select2';
+
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
-import { ToastrModule } from 'ngx-toastr';
-import { UpdateCollectionComponent } from './pages/catalog/collection/update-collection/update-collection.component';
-import { UpdateProductComponent } from './pages/catalog/product/update-product/update-product.component';
-import { UpdateCategoryComponent } from './pages/catalog/category/update-category/update-category.component';
-import { UpdateBrandComponent } from './pages/catalog/brand/update-brand/update-brand.component';
-import { UpdateAttributeComponent } from './pages/catalog/attritube/update-attribute/update-attribute.component';
 // #fake-end#
+
+import { ToastrModule } from 'ngx-toastr';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -37,7 +35,9 @@ function appInitializer(authService: AuthService) {
     TranslateModule.forRoot(),
     HttpClientModule,
     ClipboardModule,
+    NgSelect2Module,
     ToastrModule.forRoot(),
+
     // #fake-start#
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
@@ -46,6 +46,7 @@ function appInitializer(authService: AuthService) {
         })
       : [],
     // #fake-end#
+    
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,

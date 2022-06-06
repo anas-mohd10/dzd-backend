@@ -8,7 +8,7 @@ const attributeRoute = '/attribute';
 const collectionRoute = '/collection'
 
 export const appRoutes = {
-  DASHBOARD: `${app}${dashboardRoute}`,
+  DASHBOARD: `${dashboardRoute}`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,

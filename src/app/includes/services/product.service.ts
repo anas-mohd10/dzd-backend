@@ -12,30 +12,27 @@ export class ProductService {
   constructor(private http: HttpClient, private commonService: CommonService) {}
 
   addProduct(data: any) {
-    const url = this.commonService.getFullUrl(
-      this.productEndpoints.add_product
-    );
+    const url = this.commonService.getFullUrl(this.productEndpoints.add_product);
     return this.http.post(`${url}`, data);
   }
 
   getProduct() {
-    const url = this.commonService.getFullUrl(
-      this.productEndpoints.get_product
-    );
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_product);
     return this.http.get(`${url}`);
   }
 
   getActiveProduct() {
-    const url = this.commonService.getFullUrl(
-      this.productEndpoints.get_active_products
-    );
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_active_products);
     return this.http.get(`${url}`);
   }
 
   getProductById(id: any) {
-    const url = this.commonService.getFullUrl(
-      this.productEndpoints.get_product_by_id + '/' + id
-    );
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_product_by_id + '/' + id);
+    return this.http.get(`${url}`);
+  }
+
+  getProductNames() {
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_product_names);
     return this.http.get(`${url}`);
   }
 }

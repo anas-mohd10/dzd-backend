@@ -129,7 +129,6 @@ export class AddProductComponent implements OnInit {
   }
 
   onOptionsSelected() {
-    console.log(this.selected);
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
     );
