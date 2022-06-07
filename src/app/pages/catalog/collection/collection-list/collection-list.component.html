@@ -21,7 +21,7 @@
           color="primary"
           routerLink="{{ appRoute.collection.ADD_COLLECTION }}"
         >
-          <i class="bi bi-plus-square-dotted"></i> Add Collection
+          <i class="bi bi-plus-lg fs-6"></i> Add Collection
         </button>
       </div>
     </div>
@@ -37,7 +37,7 @@
               datatable
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
-              class="table table-center table-striped mb-0 datatable"
+              class="table table-center table-striped mb-0 datatable table-bordered"
             >
               <thead class="thead">
                 <tr>
@@ -89,7 +89,7 @@
                     <ng-container>
                       <a
                         routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-                        [queryParams]="{collection: collection?.slug}"
+                        [queryParams]="{ collection: collection?.slug }"
                         class="fs-5 cursor-pointer text-darker"
                         ><i class="bi bi-pen"></i> Edit
                       </a>

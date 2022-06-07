@@ -1,0 +1,110 @@
+<div class="offer-page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title"><h1 class="fw-bolder">Offers</h1></div>
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
+          </li>
+        </ul>
+        <button
+          class="btn btn-primary cursor-pointer fs-5"
+          color="primary"
+          routerLink="{{ appRoute.offer.ADD_OFFER }}"
+        >
+          <i class="bi bi-plus-lg fs-6"></i> Add Offer
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Page Header -->
+
+  <!-- Table Start -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              datatable
+              [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger"
+              class="table table-borderless table-center table-striped mb-0 datatable"
+            >
+              <thead class="thead">
+                <tr>
+                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
+                  <th class="text-dark fw-bolder fs-4">Offer</th>
+                  <th class="text-dark fw-bolder fs-4">Description</th>
+                  <th class="text-dark fw-bolder fs-4">Image</th>
+                  <th class="text-dark fw-bolder fs-4">Valid From</th>
+                  <th class="text-dark fw-bolder fs-4">Valid To</th>
+                  <th class="text-dark fw-bolder fs-4">Featured</th>
+                  <th class="text-dark fw-bolder fs-4">Status</th>
+                  <th class="text-dark fw-bolder fs-4">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let offer of offerData; let i = index">
+                  <td>
+                    <h2 class="table-avatar">{{ i + 1 }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ offer?.name }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ offer?.description }}</h2>
+                  </td>
+                  <td>
+                    <img
+                      class="offer-image"
+                      src="../../../../../assets/media/offers/offer_image.png"
+                      alt="Offer Image"
+                    />
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ offer?.fromDate }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ offer?.lastDate }}</h2>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="offer?.isFeatured == true">
+                      <h2 class="table-avatar avatar-item fs-5">Yes</h2>
+                    </ng-container>
+                    <ng-container *ngIf="offer?.isFeatured == false">
+                      <h2 class="table-avatar avatar-item fs-5">No</h2>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="offer?.isActive == true">
+                      <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                    <ng-container *ngIf="offer?.isActive == false">
+                      <h2 class="table-avatar fs-5">Inactive</h2>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <a
+                      class="fs-5 h-100 cursor-pointer table-avatar text-darker"
+                      routerLink="{{ appRoute.offer.UPDATE_OFFER }}"
+                      [queryParams]="{offer: offer?.slug}"
+                    >
+                      <i class="bi bi-pen"></i> Edit
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Table Start -->
+</div>

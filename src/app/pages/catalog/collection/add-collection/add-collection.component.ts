@@ -6,8 +6,8 @@ import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
-import { Options } from 'select2';
-import { Select2OptionData } from 'ng-select2';
+// import { Options } from 'select2';
+// import { Select2OptionData } from 'ng-select2';
 
 @Component({
   selector: 'app-add-collection',
@@ -17,7 +17,7 @@ import { Select2OptionData } from 'ng-select2';
 export class AddCollectionComponent implements OnInit {
   collectionForm: FormGroup;
   task = PageTasks.ADD;
-  public options: Options;
+  // public options: Options;
   productValue: any;
   editMode = false;
   fileData: any;
@@ -40,7 +40,6 @@ export class AddCollectionComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-
   get value(): string[] {
     return this.productValue;
   }
@@ -53,12 +52,12 @@ export class AddCollectionComponent implements OnInit {
     this.initForm();
     this.getCollection();
     this.getProduct();
-    this.options = {
-      width: '500',
-      multiple: true,
-      tags: true,
-    };
-    this.productValue = [""];
+    // this.options = {
+    //   width: '500',
+    //   multiple: true,
+    //   tags: true,
+    // };
+    // this.productValue = [""];
   }
 
   initForm() {
@@ -103,18 +102,6 @@ export class AddCollectionComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.products = res?.result;
-          this.products.map((res) => {
-            if (res.hasOwnProperty('_id')) {
-              res.id = res._id;
-              delete res._id;
-            }
-            if (res.hasOwnProperty('name')) {
-              res.text = res.name;
-              delete res.name;
-            }
-            return res;
-          });
-          alert(this.products);
           break;
       }
     });
@@ -129,11 +116,11 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
-  onOptionsSelected() {
-    this.filtered = this.collectionData.filter(
-      (t: { value: any }) => t.value == this.selected
-    );
-  }
+  // onOptionsSelected() {
+  //   this.filtered = this.collectionData.filter(
+  //     (t: { value: any }) => t.value == this.selected
+  //   );
+  // }
 
   addBrand() {
     if (!this.collectionForm.valid) {

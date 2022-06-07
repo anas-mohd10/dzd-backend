@@ -19,7 +19,7 @@
           color="primary"
           routerLink="{{ appRoute.category.ADD_CATEGORY }}"
         >
-          <i class="bi bi-plus-square-dotted"></i> Add Category
+        <i class="bi bi-plus-lg fs-6"></i> Add Category
         </button>
       </div>
     </div>
@@ -35,7 +35,7 @@
               datatable
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
-              class="table table-center table-striped mb-0 datatable"
+              class="table table-center table-striped mb-0 datatable table-bordered"
             >
               <thead class="thead">
                 <tr>
@@ -79,13 +79,6 @@
                       <h2 class="table-avatar fs-5">-</h2>
                     </td>
                   </ng-container>
-                  <!-- <td>
-                    <img
-                      class="category-logo"
-                      src="{{category?.logo}}"
-                      alt="Category Logo"
-                    />
-                  </td> -->
                   <td>
                     <img
                       class="category-logo"
@@ -108,7 +101,7 @@
                   </td>
                   <td>
                     <a class="fs-5 cursor-pointer text-darker"
-                      ><i class="bi bi-pen"></i> Edit
+                      ><i class="bi bi-pen fs-4"></i> Edit
                     </a>
                   </td>
                 </tr>

@@ -52,13 +52,16 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Products</label>
-                  <ng-select2
-                    [data]="products"
-                    formControlName="products"
-                    width="500"
-                    [options]="options"
-                    [(ngModel)]="value"
-                  ></ng-select2>
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="featured"
+                  >
+                    <option value="" selected>Product</option>
+                    <option value="">Product</option>
+                    <option value="" selected>Product</option>
+                    <option value="">Product</option>
+                  </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6">

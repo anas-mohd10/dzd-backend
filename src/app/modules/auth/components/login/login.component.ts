@@ -32,21 +32,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router
   ) {
     this.isLoading$ = this.authService.isLoading$;
-    // redirect to home if already logged in
+    // Redirect to home if already logged in
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/app/dashboard']);
     }
   }
 
   ngOnInit(): void {
     this.initForm();
-    // get return url from route parameters or default to '/'
+    // Get return url from route parameters or default to '/'
     this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
-      console.log(this.returnUrl)
+      this.route.snapshot.queryParams['returnUrl'.toString()] || '/app/dashboard';
   }
 
-  // convenience getter for easy access to form fields
+  // Convenience getter for easy access to form fields
   get f() {
     return this.loginForm.controls;
   }

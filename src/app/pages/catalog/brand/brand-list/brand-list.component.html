@@ -19,7 +19,7 @@
           color="primary"
           routerLink="{{ appRoute.brand.ADD_BRAND }}"
         >
-          <i class="bi bi-plus-square-dotted"></i> Add Brand
+          <i class="bi bi-plus-lg fs-6"></i> Add Brand
         </button>
       </div>
     </div>
@@ -36,7 +36,7 @@
               datatable
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
-              class="table table-borderless table-striped mb-0 datatable"
+              class="table table-bordered table-center table-striped mb-0 datatable"
             >
               <thead class="thead">
                 <tr>
@@ -50,17 +50,10 @@
               </thead>
               <tbody>
                 <tr *ngFor="let brand of brandData; let i = index">
-                  <td>{{ i + 1 }}</td>
+                  <td><h2 class="table-avatar fs-5">{{ i + 1 }}</h2></td>
                   <td>
                     <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
                   </td>
-                  <!-- <td>
-                    <img
-                      class="brand-logo"
-                      src="{{brand?.logo}}"
-                      alt="Brand Logo"
-                    />
-                  </td> -->
                   <td>
                     <img
                       class="brand-logo"

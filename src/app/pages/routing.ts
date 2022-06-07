@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 export const Routing: Routes = [
   {
-    path: '',
+    path: 'app',
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
@@ -61,6 +61,21 @@ export const Routing: Routes = [
     path: 'app',
     loadChildren: () =>
       import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./marketing/offer/offer-list/offer-list.module').then((m) => m.OfferModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./marketing/offer/add-offer/add-offer.module').then((m) => m.AddOfferModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
   },
   {
     path: '',

@@ -4,17 +4,34 @@
 
 // Replace above style with this SCSS file to enable dark mode styles
 // @import "./assets/sass/style.dark";
-.toast-container {
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-}
+// .toast-container {
+//   -moz-box-shadow: none !important;
+//   -webkit-box-shadow: none !important;
+//   box-shadow: none !important;
+// }
 
 .table {
   color: #333;
   max-width: 100%;
   margin-bottom: 0;
   width: 100%;
+}
+
+
+.table-td {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+// table td{
+//   height: 100%;
+//   display: flex;
+//   align-items: center;
+// }
+
+.card-table {
+  margin: 20px 0 0 0;
 }
 
 .table > :not(:first-child) {
@@ -56,6 +73,7 @@ table.table td h2 {
   vertical-align: middle;
 }
 table.table td h2.table-avatar {
+  height: 100%;
   align-items: center;
   display: inline-flex;
   font-size: inherit;
@@ -100,9 +118,11 @@ table.table td h2 span {
   border-color: transparent;
 }
 .table-striped tbody tr:nth-of-type(even) {
+  height: 100px !important;
   background-color: rgba(255, 255, 255, 0.3);
 }
 .table-striped tbody tr:nth-of-type(odd) {
+  height: 100px !important;
   background-color: rgba(235, 235, 235, 0.4);
 }
 .table-bordered {
