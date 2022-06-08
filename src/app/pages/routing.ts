@@ -20,6 +20,11 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
+      import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
       import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
   },
   {

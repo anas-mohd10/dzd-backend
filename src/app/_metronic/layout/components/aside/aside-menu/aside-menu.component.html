@@ -1,34 +1,55 @@
 <!-- Dashboard -->
 <div class="menu-item main-accordion">
-  <a class="menu-link without-sub" routerLink="{{appRoute.DASHBOARD}}" routerLinkActive="active">
+  <a
+    class="menu-link without-sub"
+    routerLink="{{ appRoute.DASHBOARD }}"
+    routerLinkActive="active"
+  >
     <span class="menu-icon">
       <i class="bi bi-clipboard-data fs-1"></i>
     </span>
-    <span class="menu-title">Dashboard</span>
+    <span class="menu-title fw-bold">Dashboard</span>
   </a>
 </div>
 
 <!-- Sales -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-receipt fs-1"></i>
     </span>
-      <span class="menu-title">Sales</span>
-      <span class="menu-arrow"></span >
+    <span class="menu-title">Sales</span>
+    <span class="menu-arrow"></span>
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
+    <div
+      class="menu-item menu-accordion"
+      routerLinkActive="here show"
+      data-kt-menu-trigger="click"
+    >
       <span class="menu-link">
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
-        <span class="menu-title" data-link="/crafted/pages/profile">Orders</span>
+        <span class="menu-title" data-link="/crafted/pages/profile"
+          >Orders</span
+        >
         <span class="menu-arrow"></span>
       </span>
-      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+      <div
+        class="menu-sub menu-sub-accordion"
+        routerLinkActive="menu-active-bg"
+      >
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -36,15 +57,23 @@
           </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/projects"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
             <span class="menu-title">Accepted Orders</span>
-          </a >
+          </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -55,29 +84,45 @@
     </div>
   </div>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
+    <div
+      class="menu-item menu-accordion"
+      routerLinkActive="here show"
+      data-kt-menu-trigger="click"
+    >
       <span class="menu-link">
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
-        <span class="menu-title" data-link="/crafted/pages/profile">Returns</span>
+        <span class="menu-title" data-link="/crafted/pages/profile"
+          >Returns</span
+        >
       </span>
     </div>
   </div>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
+    <div
+      class="menu-item menu-accordion"
+      routerLinkActive="here show"
+      data-kt-menu-trigger="click"
+    >
       <span class="menu-link">
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
-        <span class="menu-title" data-link="/crafted/pages/profile">Vouchers</span>
+        <span class="menu-title" data-link="/crafted/pages/profile"
+          >Vouchers</span
+        >
       </span>
     </div>
   </div>
 </div>
 
 <!-- Admin users -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-people fs-1"></i>
@@ -87,7 +132,11 @@
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/account/overview">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/account/overview"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
@@ -95,26 +144,38 @@
       </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Vendors</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Admin Users</span>
-      </a >
+      </a>
     </div>
   </div>
 </div>
 
 <!-- Catalog -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-box-seam fs-1"></i>
@@ -124,7 +185,11 @@
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{appRoute.brand.BRAND_LIST}}">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="{{ appRoute.brand.BRAND_LIST }}"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
@@ -132,23 +197,35 @@
       </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{appRoute.category.CATEGORY_LIST}}">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="{{ appRoute.category.CATEGORY_LIST }}"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Categories</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{appRoute.product.PRODUCT_LIST}}">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="{{ appRoute.product.PRODUCT_LIST }}"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Products</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{appRoute.collection.COLLECTION_LIST}}">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="{{ appRoute.collection.COLLECTION_LIST }}"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
@@ -156,26 +233,38 @@
       </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Reviews</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Cart</span>
-      </a >
+      </a>
     </div>
   </div>
 </div>
 
 <!-- Management -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-megaphone fs-1"></i>
@@ -185,34 +274,50 @@
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{appRoute.offer.OFFER_LIST}}">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="{{ appRoute.offer.OFFER_LIST }}"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Offers</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Coupons</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Notification & Emails</span>
-      </a >
+      </a>
     </div>
   </div>
 </div>
 
 <!-- Design -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-palette fs-1"></i>
@@ -222,26 +327,38 @@
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Layouts</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Banners</span>
-      </a >
+      </a>
     </div>
   </div>
 </div>
 
 <!-- Pages -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-book fs-1"></i>
@@ -251,61 +368,94 @@
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Home</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">About</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Terms and Condition</span>
-      </a >
+      </a>
     </div>
     <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="/crafted/pages/profile/projects"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Privacy Policy</span>
-      </a >
+      </a>
     </div>
   </div>
 </div>
 
 <!-- Settings -->
-<div class="menu-item main-accordion menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
+<div
+  class="menu-item main-accordion menu-accordion"
+  data-kt-menu-trigger="click"
+  routerLinkActive="here show"
+>
   <span class="menu-link">
     <span class="menu-icon">
       <i class="bi bi-sliders fs-1"></i>
     </span>
-      <span class="menu-title">Settings</span>
-      <span class="menu-arrow"></span >
+    <span class="menu-title">Settings</span>
+    <span class="menu-arrow"></span>
   </span>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
+    <div
+      class="menu-item menu-accordion"
+      routerLinkActive="here show"
+      data-kt-menu-trigger="click"
+    >
       <span class="menu-link">
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
-        <span class="menu-title" data-link="/crafted/pages/profile">General</span>
+        <span class="menu-title" data-link="/crafted/pages/profile"
+          >General</span
+        >
         <span class="menu-arrow"></span>
       </span>
-      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+      <div
+        class="menu-sub menu-sub-accordion"
+        routerLinkActive="menu-active-bg"
+      >
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -313,15 +463,23 @@
           </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/projects"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
             <span class="menu-title">Social Media</span>
-          </a >
+          </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -329,7 +487,11 @@
           </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -340,17 +502,30 @@
     </div>
   </div>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
+    <div
+      class="menu-item menu-accordion"
+      routerLinkActive="here show"
+      data-kt-menu-trigger="click"
+    >
       <span class="menu-link">
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
-        <span class="menu-title" data-link="/crafted/pages/profile">Localization</span>
+        <span class="menu-title" data-link="/crafted/pages/profile"
+          >Localization</span
+        >
         <span class="menu-arrow"></span>
       </span>
-      <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+      <div
+        class="menu-sub menu-sub-accordion"
+        routerLinkActive="menu-active-bg"
+      >
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -358,15 +533,23 @@
           </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/projects"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
             <span class="menu-title">Shipping</span>
-          </a >
+          </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a
+            class="menu-link without-sub"
+            routerLinkActive="active"
+            routerLink="/crafted/pages/profile/overview"
+          >
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>

@@ -28,14 +28,14 @@ export class OfferListComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.getOffer();
-    this.dtOptions = {
-      pagingType: "full_numbers",
-      pageLength: 5,
-      lengthMenu: [5, 10, 25],
-      processing: true,
-      retrieve: true,
-      destroy: true,
-    };
+    // this.dtOptions = {
+    //   pagingType: "full_numbers",
+    //   pageLength: 5,
+    //   lengthMenu: [5, 10, 25],
+    //   processing: true,
+    //   retrieve: true,
+    //   destroy: true,
+    // };
   }
 
   initForm() {

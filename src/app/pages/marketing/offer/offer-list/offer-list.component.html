@@ -29,7 +29,7 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
+          <!-- <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
             <div class="active-filter-container col-sm-3">
               <label class="fs-5 mb-3 fw-bold">Active Offers</label>
               <select
@@ -42,13 +42,15 @@
                 <option value="No">No</option>
               </select>
             </div>
-          </form>
+          </form> -->
           <div class="table-responsive">
             <table
               datatable
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
-              class="table table-borderless table-center table-striped mb-0 datatable"
+              class="table table-bordered display nowrap table-center table-striped mb-0 datatable"
+              cellspacing="0"
+              width="100%"
             >
               <thead class="thead">
                 <tr>

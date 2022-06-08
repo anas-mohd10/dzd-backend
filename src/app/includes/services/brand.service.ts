@@ -20,4 +20,9 @@ export class BrandService {
     const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand);
     return this.http.get(`${url}`);
   }
+
+  updateBrand(slug: any, data: any){
+    const url = this.commonService.getFullUrl(this.brandEndpoints.update_brand + "/" + slug);
+    return this.http.post(`${url}`, data);
+  }
 }

@@ -50,7 +50,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let brand of brandData; let i = index">
-                  <td><h2 class="table-avatar fs-5">{{ i + 1 }}</h2></td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                  </td>
                   <td>
                     <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
                   </td>
@@ -78,7 +80,10 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker"
+                    <a
+                      routerLink="{{ appRoute.brand.UPDATE_BRAND }}"
+                      [queryParams]="{brand: brand?.slug}"
+                      class="fs-5 cursor-pointer text-darker"
                       ><i class="bi bi-pen"></i> Edit
                     </a>
                   </td>
