@@ -79,7 +79,7 @@ export const Routing: Routes = [
   },
   {
     path: '',
-    redirectTo: '/dashboard',
+    redirectTo: '/app/dashboard',
     pathMatch: 'full',
   },
   {

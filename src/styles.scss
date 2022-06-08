@@ -1,14 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
-
-// Replace above style with this SCSS file to enable dark mode styles
-// @import "./assets/sass/style.dark";
-// .toast-container {
-//   -moz-box-shadow: none !important;
-//   -webkit-box-shadow: none !important;
-//   box-shadow: none !important;
-// }
 
 .table {
   color: #333;
@@ -23,12 +14,6 @@
   display: flex;
   align-items: center;
 }
-
-// table td{
-//   height: 100%;
-//   display: flex;
-//   align-items: center;
-// }
 
 .card-table {
   margin: 20px 0 0 0;
@@ -86,9 +71,7 @@ table.table td h2.table-avatar {
 table.table td h2 a {
   color: #333;
 }
-// table.table td h2 a:hover {
-// 	color: #FFBC53;
-// }
+
 table.table td h2 span {
   color: #888;
   display: block;
@@ -98,19 +81,12 @@ table.table td h2 span {
 .table thead tr th {
   font-weight: 600;
 }
-// .table tbody tr {
-// 	border-bottom: 1px solid #dee2e6;
-// }
+
 .table.table-center td,
 .table.table-center th {
   vertical-align: middle;
 }
-// .table-hover tbody tr:hover {
-// 	background-color: #f7f7f7;
-// }
-// .table-hover tbody tr:hover td {
-// 	color: #474648;
-// }
+
 .table-striped thead tr {
   border-color: transparent;
 }
@@ -148,12 +124,6 @@ table.table td h2 span {
   padding: 1rem 0.75rem;
   white-space: nowrap;
 }
-
-// .card-table .table tr td {
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
-// }
 
 .table .thead-light th {
   color: #495057;

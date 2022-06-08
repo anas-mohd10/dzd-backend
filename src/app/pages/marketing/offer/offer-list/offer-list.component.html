@@ -29,6 +29,20 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
+            <div class="active-filter-container col-sm-3">
+              <label class="fs-5 mb-3 fw-bold">Active Offers</label>
+              <select
+                class="form-select"
+                aria-label="Active offers"
+                formControlName="active"
+                (change)="onChange()"
+              >
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+          </form>
           <div class="table-responsive">
             <table
               datatable
@@ -93,7 +107,7 @@
                     <a
                       class="fs-5 h-100 cursor-pointer table-avatar text-darker"
                       routerLink="{{ appRoute.offer.UPDATE_OFFER }}"
-                      [queryParams]="{offer: offer?.slug}"
+                      [queryParams]="{ offer: offer?.slug }"
                     >
                       <i class="bi bi-pen"></i> Edit
                     </a>

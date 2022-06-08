@@ -18,6 +18,7 @@ export class UpdateOfferComponent implements OnInit {
   task = PageTasks.UPDATE;
   fileData: File;
   isSubmitted: boolean;
+  slug: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,6 +29,7 @@ export class UpdateOfferComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.slug = this.route.snapshot.queryParams.offer || '';
     this.initForm();
     this.managePage();
   }
