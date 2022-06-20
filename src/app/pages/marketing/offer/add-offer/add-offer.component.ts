@@ -35,12 +35,17 @@ export class AddOfferComponent implements OnInit {
   initForm() {
     this.offerForm = this.formBuilder.group({
       name: ['', Validators.required],
+      file: ['', Validators.required],
       description: ['', Validators.required],
-      fromDate: ['No', Validators.required],
-      lastDate: ['No', Validators.required],
+      fromDate: ['', Validators.required],
+      lastDate: ['', Validators.required],
       featured: ['No', Validators.required],
       status: ['Active', Validators.required],
     });
+  }
+
+  get of() {
+    return this.offerForm.controls;
   }
 
   managePage() {

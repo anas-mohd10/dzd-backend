@@ -17,6 +17,7 @@ export class AddBrandComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
 
+
   validationMessages = {
     name: [
       {
@@ -26,10 +27,12 @@ export class AddBrandComponent implements OnInit {
     ],
   };
 
+
   isSubmitted = false;
   params: any;
   fileData: File;
   status: boolean;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,9 +42,11 @@ export class AddBrandComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
+
   get bf() {
     return this.brandForm.controls;
   }
+
 
   handleInputChange(fileInput: any) {
     const file = fileInput.dataTransfer
@@ -60,6 +65,7 @@ export class AddBrandComponent implements OnInit {
   initForm() {
     this.brandForm = this.formBuilder.group({
       name: ['', Validators.required],
+      file: ['', Validators.required],
       status: ['Active', Validators.required],
       featured: ['No', Validators.required],
     });
