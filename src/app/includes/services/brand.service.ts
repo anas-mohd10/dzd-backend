@@ -21,8 +21,13 @@ export class BrandService {
     return this.http.get(`${url}`);
   }
 
+  getBrandBySlug(slug: any){
+    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_by_slug + "/" + slug);
+    return this.http.get(`${url}`);
+  }
+
   updateBrand(slug: any, data: any){
     const url = this.commonService.getFullUrl(this.brandEndpoints.update_brand + "/" + slug);
-    return this.http.post(`${url}`, data);
+    return this.http.put(`${url}`, data);
   }
 }

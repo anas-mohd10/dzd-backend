@@ -101,7 +101,6 @@ export class AddBrandComponent implements OnInit {
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
     }
-    console.log(this.brandForm.value?.featured)
     formData.append('name', this.brandForm.value?.name);
     formData.append('isActive', this.brandForm.value?.status);
     formData.append('isFeatured', this.brandForm.value?.featured)

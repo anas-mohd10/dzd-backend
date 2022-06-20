@@ -3,9 +3,7 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-2">
-          {{ editMode ? "Update Offer" : "Add Offer" }}
-        </h3>
+        <h3 class="page-title fs-2">{{ editMode ? "Update Offer" : "Add Offer" }}</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -14,10 +12,7 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.offer.UPDATE_OFFER }}"
-              [queryParams]="{ offer: slug }"
-            >
+            <a routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer}">
               {{ editMode ? "Update Offer" : "Add Offer" }}
             </a>
           </li>
@@ -39,61 +34,37 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="name"/>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Image</label>
-                  <input
-                    type="file"
-                    class="form-control fs-5"
-                    (change)="handleInputChange($event)"
-                  />
+                  <input type="file" class="form-control fs-5" (change)="handleInputChange($event)"/>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Description</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="description"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="description"/>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">From Date</label>
-                  <input
-                    type="date"
-                    class="form-control fs-5"
-                    formControlName="fromDate"
-                  />
+                  <input type="date" class="form-control fs-5" formControlName="fromDate"/>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Last Date</label>
-                  <input
-                    type="date"
-                    class="form-control fs-5"
-                    formControlName="lastDate"
-                  />
+                  <input type="date" class="form-control fs-5" formControlName="lastDate"/>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="featured"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="featured">
                     <option value="Yes" selected>Yes</option>
                     <option value="No">No</option>
                   </select>
@@ -102,20 +73,14 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="status"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="status">
                     <option value="Active" selected>Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">
-                  Submit
-                </button>
+                <button type="submit" class="btn btn-primary fs-4">Submit</button>
               </div>
             </div>
           </form>

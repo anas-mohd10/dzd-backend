@@ -22,12 +22,13 @@ export class UpdateBrandComponent implements OnInit {
   fileData: File;
   status: boolean;
   brand: any;
+  brandData: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private BrandService: BrandService,
+    private brandService: BrandService,
     private toastr: ToastrService
   ) {}
 
@@ -39,15 +40,15 @@ export class UpdateBrandComponent implements OnInit {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.brand = this.route.snapshot.queryParams.brand || '';
-    this.params = this.route.snapshot;
     this.managePage();
+    this.getBrand()
   }
 
   initForm() {
     this.brandForm = this.formBuilder.group({
       name: [''],
-      isActive: ['-- Select An Option --'],
-      isFeatured: ['-- Select An Option --'],
+      isActive: [''],
+      isFeatured: [''],
     });
   }
 
@@ -65,12 +66,19 @@ export class UpdateBrandComponent implements OnInit {
   }
 
   handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
+    const file = fileInput.dataTransfer? fileInput.dataTransfer.files[0]: fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
   }
 
+  getBrand() {
+    this.brandService.getBrandBySlug(this.brand).subscribe((res: any) => {
+      switch (res?.errorCode) {
+        case 0:
+          this.brandData = res?.result[0];
+          break;
+      }
+    });
+  }
 
   onSubmit() {
     this.isSubmitted = true;
@@ -91,12 +99,12 @@ export class UpdateBrandComponent implements OnInit {
       formData.append('file', this.fileData);
     }
     for (const data of Object.keys(this.brandForm.value)) {
-      if(this.brandForm.value[data]){
-        
-      }
+      if(this.brandForm.value[data] != '' || null){
+        formData.append(data, this.brandForm.value[data])
+      } 
     }
 
-    this.BrandService.updateBrand(this.brand, formData).subscribe((res: any) => {
+    this.brandService.updateBrand(this.brand, formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

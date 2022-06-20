@@ -14,11 +14,11 @@ import { OfferService } from 'src/app/includes/services/offer.service';
 export class UpdateOfferComponent implements OnInit {
   offerForm: FormGroup;
   appRoute = appRoutes;
-  editMode = false;
   task = PageTasks.UPDATE;
+  editMode = false;
   fileData: File;
   isSubmitted: boolean;
-  slug: any;
+  offer: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,19 +29,19 @@ export class UpdateOfferComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.slug = this.route.snapshot.queryParams.offer || '';
+    this.offer = this.route.snapshot.queryParams.offer || '';
     this.initForm();
     this.managePage();
   }
 
   initForm() {
     this.offerForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      fromDate: ['No', Validators.required],
-      lastDate: ['No', Validators.required],
-      featured: ['No', Validators.required],
-      status: ['Active', Validators.required],
+      name: ['',],
+      description: ['',],
+      fromDate: ['',],
+      lastDate: ['',],
+      featured: ['',],
+      status: ['',],
     });
   }
 
@@ -59,9 +59,7 @@ export class UpdateOfferComponent implements OnInit {
   }
 
   handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
+    const file = fileInput.dataTransfer? fileInput.dataTransfer.files[0]: fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
   }
 
@@ -74,41 +72,29 @@ export class UpdateOfferComponent implements OnInit {
     }
   }
 
-  addBrand() {
+  addBrand() {}
+  updateBrand() {
+    console.log("Update offer")
     if (!this.offerForm.valid) {
       return;
     }
     const formData = new FormData();
-
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
     }
-    formData.append('name', this.offerForm.value?.name);
-    formData.append('description', this.offerForm.value?.description);
-    if (this.offerForm.value?.fromDate) {
-      formData.append(
-        'fromDate',
-        new Date(this.offerForm.value?.fromDate).toDateString()
-      );
+    for (const data of Object.keys(this.offerForm.value)) {
+      if(this.offerForm.value[data] != '' || null){
+        formData.append(data, this.offerForm.value[data])
+      } 
     }
 
-    if (this.offerForm.value?.lastDate) {
-      formData.append(
-        'lastDate',
-        new Date(this.offerForm.value?.lastDate).toDateString()
-      );
-    }
-    formData.append('isActive', this.offerForm.value?.status);
-    formData.append('isFeatured', this.offerForm.value?.featured);
-    this.offerService.addOffer(formData).subscribe((res: any) => {
+    this.offerService.updateOffer(this.offer, formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Offer Added Successfully');
+        this.toastr.success('Brand Updated Successfully');
         this.router.navigate([this.appRoute.offer.OFFER_LIST]);
       }
     });
   }
-
-  updateBrand() {}
 }
