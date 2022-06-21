@@ -83,6 +83,11 @@ export const Routing: Routes = [
       import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
   },
   {
+    path: 'app',
+    loadChildren: () =>
+      import('./settings/localization/tax/tax-list/tax-list.component.module').then((m) => m.TaxModule),
+  },
+  {
     path: '',
     redirectTo: '/app/dashboard',
     pathMatch: 'full',

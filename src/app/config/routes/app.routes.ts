@@ -7,6 +7,7 @@ const categoryRoute = '/category';
 const attributeRoute = '/attribute';
 const collectionRoute = '/collection'
 const offerRoute = '/offer'
+const taxRoute = '/tax'
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -37,5 +38,8 @@ export const appRoutes = {
     ADD_OFFER: `${app}${offerRoute}/add`,
     OFFER_LIST: `${app}${offerRoute}`,
     UPDATE_OFFER: `${app}${offerRoute}/update`
+  },
+  tax:{
+    TAX_LIST: `${app}${taxRoute}`
   }
 };
