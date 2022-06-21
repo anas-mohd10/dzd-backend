@@ -21,7 +21,7 @@
           color="primary"
           routerLink="{{ appRoute.collection.ADD_COLLECTION }}"
         >
-          <i class="bi bi-plus-lg fs-6"></i> Add Collection
+         <i class="bi bi-file-earmark-plus fs-2"></i> Add Collection
         </button>
       </div>
     </div>
@@ -37,16 +37,16 @@
               datatable
               [dtOptions]="dtOptions"
               [dtTrigger]="dtTrigger"
-              class="table table-center table-striped mb-0 datatable table-bordered"
+              class="table table-center table-striped mb-0 datatable table-borderless"
             >
               <thead class="thead">
                 <tr>
-                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
-                  <th class="text-dark fw-bolder fs-4">Collection</th>
-                  <th class="text-dark fw-bolder fs-4">Image</th>
-                  <th class="text-dark fw-bolder fs-4">Featured</th>
-                  <th class="text-dark fw-bolder fs-4">Status</th>
-                  <th class="text-dark fw-bolder fs-4">Action</th>
+                  <th class="text-dark fw-bolder fs-4 col-md-2">Sl No.</th>
+                  <th class="text-dark fw-bolder fs-4 col-md-2">Collection</th>
+                  <th class="text-dark fw-bolder fs-4 col-md-2">Image</th>
+                  <th class="text-dark fw-bolder fs-4 col-md-2">Featured</th>
+                  <th class="text-dark fw-bolder fs-4 col-md-2">Status</th>
+                  <th class="text-dark fw-bolder fs-4 col-md-2">Action</th>
                 </tr>
               </thead>
               <tbody>
