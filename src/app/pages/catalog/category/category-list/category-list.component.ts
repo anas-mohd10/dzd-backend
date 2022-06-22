@@ -17,12 +17,19 @@ export class CategoryComponent implements OnInit {
 
   appRoute = appRoutes;
   categoryData: any;
+  displayTable: boolean;
 
   constructor(private categoryService: CategoryService) {}
 
 
   ngOnInit(): void {
     this.getCategory()
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 5,
+      processing: true,
+    };
   }
 
   getCategory() {
@@ -32,7 +39,8 @@ export class CategoryComponent implements OnInit {
           this.categoryData = res?.result;
           break;
       }
-      this.dtTrigger.next();
+      // this.dtTrigger.next();
+      this.displayTable = true;
     });
   }
 }

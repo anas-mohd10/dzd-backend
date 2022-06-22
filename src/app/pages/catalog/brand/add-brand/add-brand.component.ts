@@ -27,12 +27,10 @@ export class AddBrandComponent implements OnInit {
     ],
   };
 
-
   isSubmitted = false;
   params: any;
   fileData: File;
   status: boolean;
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,11 +40,9 @@ export class AddBrandComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-
   get bf() {
     return this.brandForm.controls;
   }
-
 
   handleInputChange(fileInput: any) {
     const file = fileInput.dataTransfer

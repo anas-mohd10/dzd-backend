@@ -43,11 +43,10 @@
               </select>
             </div>
           </form> -->
-          <div class="table-responsive">
+          <div class="table-responsive" *ngIf="displayTable">
             <table
               datatable
               [dtOptions]="dtOptions"
-              [dtTrigger]="dtTrigger"
               class="table table-borderless table-center table-striped mb-0 datatable"
               cellspacing="0"
               width="100%"

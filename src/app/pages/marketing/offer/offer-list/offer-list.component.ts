@@ -14,11 +14,12 @@ export class OfferListComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
+  // public dtTrigger: Subject<any> = new Subject();
   appRoute = appRoutes;
   offerData: any;
   activeFilter: boolean = false;
   offerForm: FormGroup;
+  displayTable: boolean = false;
 
   constructor(
     private offerService: OfferService,
@@ -28,14 +29,12 @@ export class OfferListComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.getOffer();
-    // this.dtOptions = {
-    //   pagingType: "full_numbers",
-    //   pageLength: 5,
-    //   lengthMenu: [5, 10, 25],
-    //   processing: true,
-    //   retrieve: true,
-    //   destroy: true,
-    // };
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 5,
+      processing: true,
+    };
   }
 
   initForm() {
@@ -73,7 +72,8 @@ export class OfferListComponent implements OnInit {
             }
             break;
         }
-        this.dtTrigger.next();
+        // this.dtTrigger.next();
+        this.displayTable = true;
       });
     } else if (this.activeFilter == true) {
       this.offerService.getActiveOffer().subscribe((res: any) => {
@@ -92,7 +92,8 @@ export class OfferListComponent implements OnInit {
             }
             break;
         }
-        this.dtTrigger.next();
+        // this.dtTrigger.next();
+        this.displayTable = true;
       });
     }
   }

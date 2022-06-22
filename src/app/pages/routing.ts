@@ -85,7 +85,17 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
-      import('./settings/localization/tax/tax-list/tax-list.component.module').then((m) => m.TaxModule),
+      import('./settings/localization/tax/tax-classes/tax-class-list/tax-class-list.component.module').then((m) => m.TaxClassModule)
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./settings/localization/tax/tax-classes/add-tax-class/add-tax-class.component.module').then((m) => m.AddTaxClassModule)
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import('./settings/localization/tax/tax-classes/update-tax-class/update-tax-class.component.module').then((m) => m.UpdateTaxClassModule)
   },
   {
     path: '',

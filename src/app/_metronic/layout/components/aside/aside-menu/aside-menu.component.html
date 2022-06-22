@@ -544,18 +544,50 @@
             <span class="menu-title">Shipping</span>
           </a>
         </div>
-        <div class="menu-item">
-          <a
-            class="menu-link without-sub"
-            routerLinkActive="active"
-            routerLink="{{ appRoute.tax.TAX_LIST}}"
+        <div
+        class="menu-item menu-accordion"
+        routerLinkActive="here show"
+        data-kt-menu-trigger="click"
+      >
+        <span class="menu-link">
+          <span class="menu-bullet">
+            <span class="bullet bullet-dot"></span>
+          </span>
+          <span class="menu-title" data-link="/crafted/pages/profile"
+            >Tax</span
           >
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Tax</span>
-          </a>
+          <span class="menu-arrow"></span>
+        </span>
+        <div
+          class="menu-sub menu-sub-accordion"
+          routerLinkActive="menu-active-bg"
+        >
+          <div class="menu-item">
+            <a
+              class="menu-link without-sub"
+              routerLinkActive="active"
+              routerLink="{{appRoute.taxClass.TAX_CLASS_LIST}}"
+            >
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Tax Classes</span>
+            </a>
+          </div>
+          <div class="menu-item">
+            <a
+              class="menu-link without-sub"
+              routerLinkActive="active"
+              routerLink="/crafted/pages/profile/projects"
+            >
+              <span class="menu-bullet">
+                <span class="bullet bullet-dot"></span>
+              </span>
+              <span class="menu-title">Tax Rules</span>
+            </a>
+          </div>
         </div>
+      </div>
       </div>
     </div>
   </div>

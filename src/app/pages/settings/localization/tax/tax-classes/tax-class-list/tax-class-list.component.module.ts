@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TaxComponent } from './tax-list.component';
+import { TaxClassComponent } from './tax-class-list.component';
 import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
-  declarations: [TaxComponent],
+  declarations: [TaxClassComponent],
   imports: [
     CommonModule,
     DataTablesModule,
     RouterModule.forChild([
       {
-        path: 'tax',
-        component: TaxComponent,
+        path: 'tax-classes',
+        component: TaxClassComponent,
       },
     ]),
   ],
 })
-export class TaxModule {}
+export class TaxClassModule {}

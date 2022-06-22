@@ -32,11 +32,10 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <div class="table-responsive">
+          <div class="table-responsive" *ngIf="displayTable">
             <table
               datatable
               [dtOptions]="dtOptions"
-              [dtTrigger]="dtTrigger"
               class="table table-center table-striped mb-0 datatable table-borderless"
             >
               <thead class="thead">

@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.card-body{
+.card-body {
   padding: 2rem;
 }
 
@@ -147,4 +147,30 @@ table.table th {
 
 .col-12 {
   margin: 20px 0;
+}
+
+.dataTables_filter label,
+.dataTables_length label {
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.dataTables_filter label input,
+.dataTables_length label select {
+  font-size: 1.1rem;
+}
+
+.dataTables_info, .dataTables_paginate, .paging_full_numbers {
+  margin-top: 20px;
+}
+
+.dataTables_paginate{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-responsive{
+  overflow-x: hidden;
 }
