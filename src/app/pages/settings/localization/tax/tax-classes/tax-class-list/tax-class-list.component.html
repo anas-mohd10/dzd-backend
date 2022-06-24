@@ -41,7 +41,7 @@
                   <th class="text-dark fs-4 col-md-2">Sl No.</th>
                   <th class="text-dark fs-4 col-md-2">Tax Class</th>
                   <th class="text-dark fs-4 col-md-2">Description</th>
-                  <th class="text-dark fs-4 col-md-2">Featured</th>
+                  <!-- <th class="text-dark fs-4 col-md-2">Featured</th> -->
                   <th class="text-dark fs-4 col-md-2">Status</th>
                   <th class="text-dark fs-4 col-md-2">Action</th>
                 </tr>
@@ -57,14 +57,14 @@
                     <td>
                       <h2 class="table-avatar fs-5">{{ taxClass?.description }}</h2>
                     </td>
-                    <td>
+                    <!-- <td>
                       <ng-container *ngIf="taxClass?.isFeatured == true">
                         <h2 class="table-avatar fs-5">Yes</h2>
                       </ng-container>
                       <ng-container *ngIf="taxClass?.isFeatured == false">
                         <h2 class="table-avatar fs-5">No</h2>
                       </ng-container>
-                    </td>
+                    </td> -->
                     <td>
                       <ng-container *ngIf="taxClass?.isActive == true">
                         <h2 class="table-avatar fs-5">Active</h2>
