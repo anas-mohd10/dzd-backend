@@ -56,10 +56,9 @@
                 </div>
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3 fw-bold">Featured Product ???</label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isFeatured">
-                      <option value="No" selected>No</option>
-                      <option value="Yes">Yes</option>
+                    <label class="fs-5 mb-3 fw-bold">Tax Rule</label>
+                    <select [(ngModel)]="selected" (ngModelChange)="onOptionsSelected()" class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="rules">
+                      <option *ngFor="let name of ruleNames" [ngValue]="name">{{name}}</option>
                     </select>
                   </div>
                 </div>

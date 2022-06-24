@@ -108,6 +108,11 @@ export const Routing: Routes = [
       import('./settings/localization/tax/tax-rules/add-tax-rules/add-tax-rules.component.module').then((m) => m.AddTaxClassModule)
   },
   {
+    path: 'app',
+    loadChildren: () =>
+      import('./settings/localization/tax/tax-rules/update-tax-rules/update-tax-rules.component.module').then((m) => m.UpdateTaxClassModule)
+  },
+  {
     path: '',
     redirectTo: '/app/dashboard',
     pathMatch: 'full',

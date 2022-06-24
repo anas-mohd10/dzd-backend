@@ -5,6 +5,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { ToastrService } from 'ngx-toastr';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
+import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
 
 @Component({
   selector: 'app-add-tax-class',
@@ -16,16 +17,20 @@ export class AddTaxClassComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
-
-  validationMessages = {
-    name: [{ type: 'required', message: 'Brand name is required' }],
-  };
-
   isSubmitted = false;
   params: any;
   fileData: File;
   status: boolean;
   formData: any = {};
+  taxRuleNames: any;
+  ruleNames: any = [];
+  selected: any;
+  filtered: any;
+
+  validationMessages = {
+    name: [{ type: 'required', message: 'Brand name is required' }],
+  };
+  ruleNameFlag: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,6 +49,8 @@ export class AddTaxClassComponent implements OnInit {
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.params = this.route.snapshot;
     this.managePage();
+    this.getTaxRules();
+    
   }
 
   managePage() {
@@ -66,6 +73,21 @@ export class AddTaxClassComponent implements OnInit {
       isActive: ['Active', Validators.required],
       isFeatured: ['No', Validators.required],
     });
+  }
+
+  getTaxRules() {
+    this.taxClassesService.getTaxRulesName().subscribe((res: any) => {
+      this.taxRuleNames = res?.result;
+      for (let i = 0; i < res?.result.length; i++) {
+        this.ruleNames.push(res?.result[i]['name']);
+      }
+    });
+  }
+
+  onOptionsSelected() {
+    this.filtered = this.taxRuleNames.filter(
+      (t: any) => t.name == this.selected
+    );
   }
 
   onSubmit() {
@@ -96,18 +118,20 @@ export class AddTaxClassComponent implements OnInit {
     // this.formData["isFeatured"] = this.taxClassForm.value?.featured
 
     for (const data of Object.keys(this.taxClassForm.value)) {
-      if(this.taxClassForm.value[data] != '' || null){
-        this.formData[data] = this.taxClassForm.value[data]
-      } 
+      if (this.taxClassForm.value[data] != '' || null) {
+        this.formData[data] = this.taxClassForm.value[data];
+      }
     }
 
-    this.taxClassesService.addTaxClasses(this.formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Tax Class Added Successfully');
-        this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
-      }
-    });
+    this.taxClassesService
+      .addTaxClasses(this.formData)
+      .subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something Went Wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Tax Class Added Successfully');
+          this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
+        }
+      });
   }
 }

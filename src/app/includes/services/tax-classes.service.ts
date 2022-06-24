@@ -26,6 +26,11 @@ taxClassesEndpoints = taxClassesEndpoints;
     return this.http.get(`${url}`);
   }
 
+  getTaxRulesName(){
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.get_tax_rules_name);
+    return this.http.get(`${url}`);
+  }
+
   updateTaxClasses(slug: any, data: any){
     const url = this.commonService.getFullUrl(this.taxClassesEndpoints.update_tax_classes + "?slug=" + slug);
     return this.http.put(`${url}`, data);

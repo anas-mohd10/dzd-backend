@@ -13,7 +13,7 @@ export class AsideMenuComponent implements OnInit {
   appRoute = appRoutes;
   constructor(private http: HttpClient) {}
 
-  rootUrl = "https://ccadmin.previewbay.com/api/v1/w/admin/auth";
+  rootUrl = "https://localhost:3000/api/v1/w/admin/auth";
 
   ngOnInit(): void {}
 
