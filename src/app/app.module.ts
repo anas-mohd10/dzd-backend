@@ -18,6 +18,9 @@ import { FakeAPIService } from './_fake/fake-api.service';
 // #fake-end#
 
 import { ToastrModule } from 'ngx-toastr';
+import { ShippingListComponent } from './pages/sales/shipping/shipping-list/shipping-list.component';
+import { UpdateShippingComponent } from './pages/sales/shipping/update-shipping/update-shipping.component';
+import { AddShippingComponent } from './pages/sales/shipping/add-shipping/add-shipping.component';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -28,7 +31,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ShippingListComponent, UpdateShippingComponent, AddShippingComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
