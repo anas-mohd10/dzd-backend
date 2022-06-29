@@ -55,12 +55,13 @@
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
-                    formControlName="featured"
+                    formControlName="products"
                   >
-                    <option value="" selected>Product</option>
+                    <!-- <option value="">Product</option>
                     <option value="">Product</option>
-                    <option value="" selected>Product</option>
-                    <option value="">Product</option>
+                    <option value="" selected>Product</option> -->
+                    <option selected value="select" disabled>-- Select a product --</option>
+                    <option *ngFor="let product of products" value="{{product?.name}}">{{product?.name}}</option>
                   </select>
                 </div>
               </div>

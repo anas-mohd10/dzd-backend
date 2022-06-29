@@ -12,15 +12,11 @@ import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { NgSelect2Module } from 'ng-select2';
+import { ToastrModule } from 'ngx-toastr';
 
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
 // #fake-end#
-
-import { ToastrModule } from 'ngx-toastr';
-import { ShippingListComponent } from './pages/sales/shipping/shipping-list/shipping-list.component';
-import { UpdateShippingComponent } from './pages/sales/shipping/update-shipping/update-shipping.component';
-import { AddShippingComponent } from './pages/sales/shipping/add-shipping/add-shipping.component';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -31,7 +27,7 @@ function appInitializer(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, ShippingListComponent, UpdateShippingComponent, AddShippingComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

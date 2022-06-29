@@ -29,8 +29,8 @@
               <div class="col-12"><h5 class="form-title fs-4"><span>Brand Details</span></h5></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" [value]="brandData?.name"/>
+                  <label class="fs-5 mb-3 fw-bold">Name</label>
+                  <input type="text" class="form-control fs-5" formControlName="name"/>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -43,8 +43,8 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
                   </select>
                 </div>
               </div>
@@ -52,8 +52,8 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured Product ???</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isFeatured">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
                   </select>
                 </div>
               </div>

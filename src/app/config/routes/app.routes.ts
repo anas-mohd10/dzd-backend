@@ -9,6 +9,7 @@ const collectionRoute = '/collection'
 const offerRoute = '/offer'
 const taxClassRoute = '/tax-classes'
 const taxRulesRoute = "/tax-rules"
+const shippingClassRoute = "/shipping"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -49,5 +50,8 @@ export const appRoutes = {
     ADD_TAX_RULES: `${app}${taxRulesRoute}/add`,
     TAX_RULES_LIST: `${app}${taxRulesRoute}`,
     UPDATE_TAX_RULES: `${app}${taxRulesRoute}/update`
+  },
+  shipping: {
+    SHIPPING_LIST: `${app}${shippingClassRoute}`
   }
 };

@@ -16,13 +16,14 @@ export class UpdateBrandComponent implements OnInit {
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes;
-
   isSubmitted = false;
   params: any;
   fileData: File;
   status: boolean;
   brand: any;
   brandData: any;
+  active: boolean = false
+  featured: boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,6 +78,9 @@ export class UpdateBrandComponent implements OnInit {
           this.brandData = res?.result[0];
           break;
       }
+      this.brandForm.get("name")?.setValue(this.brandData.name)
+      this.brandForm.get("isActive")?.setValue(this.brandData.isActive)
+      this.brandForm.get("isFeatured")?.setValue(this.brandData.isFeatured)
     });
   }
 

@@ -19,7 +19,7 @@
           color="primary"
           routerLink="{{ appRoute.brand.ADD_BRAND }}"
         >
-          <i class="bi bi-file-earmark-plus fs-2"></i> Add Brand
+          Add Brand
         </button>
       </div>
     </div>
@@ -45,7 +45,7 @@
                   <th class="text-dark fs-4 col-md-2">Featured</th>
                   <th class="text-dark fs-4 col-md-2">Status</th>
                   <th class="text-dark fs-4 col-md-2">Action</th>
-                </tr> 
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let brand of brandData; let i = index">
@@ -81,7 +81,7 @@
                   <td>
                     <a
                       routerLink="{{ appRoute.brand.UPDATE_BRAND }}"
-                      [queryParams]="{brand: brand?.slug}"
+                      [queryParams]="{ brand: brand?.slug }"
                       class="fs-5 cursor-pointer text-darker"
                       ><i class="bi bi-pen"></i> Edit
                     </a>

@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { AttributeService } from '../../../../includes/services/attribute.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
+import { DataTableDirective } from 'angular-datatables';
 
 @Component({
   selector: 'app-attribute-list',
@@ -12,14 +11,17 @@ import { CategoryService } from 'src/app/includes/services/category.service';
   styleUrls: ['./attribute-list.component.scss'],
 })
 export class AttributeComponent implements OnInit {
+  @ViewChild(DataTableDirective, { static: true })
+  public dtElement: DataTableDirective;
+  public dtOptions: DataTables.Settings = {};
   appRoute = appRoutes;
   category: any;
   attributeData: any;
   attributeLength: any;
   categoryId: any;
+  displayTable: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private CategoryService: CategoryService,
     private AttributeService: AttributeService
@@ -28,6 +30,12 @@ export class AttributeComponent implements OnInit {
   ngOnInit(): void {
     this.category = this.route.snapshot.queryParams.category || '';
     this.getCategoryDetails();
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 5,
+      processing: true,
+    };
   }
 
   getCategoryDetails() {
@@ -41,7 +49,7 @@ export class AttributeComponent implements OnInit {
         this.AttributeService.getCategoryById(this.categoryId).subscribe(
           (res: any) => {
             this.attributeData = res?.result
-            console.log(this.attributeData)
+            this.displayTable = true;
           }
         );
       }

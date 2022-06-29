@@ -21,7 +21,7 @@ export class OfferService {
   }
 
   getOfferById(id: any){
-    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_by_id + "?" + "id=" + id);
+    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_by_id + "?" + "slug=" + id);
     return this.http.get(`${url}`);
   }
 

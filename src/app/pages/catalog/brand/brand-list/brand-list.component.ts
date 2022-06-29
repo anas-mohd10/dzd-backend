@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { DataTableDirective } from 'angular-datatables';
-// import { Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-brand',
@@ -31,6 +31,7 @@ export class BrandComponent implements OnInit {
     };
   }
 
+  
   getBrand() {
     this.brandService.getBrand().subscribe((res: any) => {
       switch (res?.errorCode) {

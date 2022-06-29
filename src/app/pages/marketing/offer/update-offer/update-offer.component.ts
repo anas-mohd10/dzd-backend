@@ -19,6 +19,9 @@ export class UpdateOfferComponent implements OnInit {
   fileData: File;
   isSubmitted: boolean;
   offer: any;
+  offerData: any;
+  fromDate: any
+  lastDate: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,6 +35,7 @@ export class UpdateOfferComponent implements OnInit {
     this.offer = this.route.snapshot.queryParams.offer || '';
     this.initForm();
     this.managePage();
+    this.getOffer()
   }
 
   initForm() {
@@ -40,8 +44,8 @@ export class UpdateOfferComponent implements OnInit {
       description: ['',],
       fromDate: ['',],
       lastDate: ['',],
-      featured: ['',],
-      status: ['',],
+      isFeatured: ['',],
+      isActive: ['',],
     });
   }
 
@@ -72,9 +76,27 @@ export class UpdateOfferComponent implements OnInit {
     }
   }
 
+  getOffer(){
+    this.offerService.getOfferById(this.offer).subscribe((res: any) => {
+      if(res.errorCode == 0){
+        this.offerData = res?.result[0]
+
+        this.fromDate = new Date(this.offerData.fromDate).toISOString().split('T')[0]
+        this.lastDate = new Date(this.offerData.lastDate).toISOString().split('T')[0]
+
+        this.offerForm.get('name')?.setValue(this.offerData.name)
+        this.offerForm.get('description')?.setValue(this.offerData.description)
+        this.offerForm.get('isActive')?.setValue(this.offerData.isActive)
+        this.offerForm.get('isFeatured')?.setValue(this.offerData.isFeatured)
+        this.offerForm.get('fromDate')?.setValue(this.fromDate)
+        this.offerForm.get('lastDate')?.setValue(this.lastDate)
+      }
+    })
+  }
+
   addBrand() {}
+  
   updateBrand() {
-    console.log("Update offer")
     if (!this.offerForm.valid) {
       return;
     }
@@ -87,14 +109,15 @@ export class UpdateOfferComponent implements OnInit {
         formData.append(data, this.offerForm.value[data])
       } 
     }
-
     this.offerService.updateOffer(this.offer, formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Brand Updated Successfully');
-        this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+        this.toastr.success('Offer Updated Successfully');
+        this.router.navigate([this.appRoute.offer.OFFER_LIST
+        ]);
       }
     });
   }
 }
+

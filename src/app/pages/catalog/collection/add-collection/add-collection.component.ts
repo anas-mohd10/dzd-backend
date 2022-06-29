@@ -102,6 +102,9 @@ export class AddCollectionComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.products = res?.result;
+          for(let i=0; i<this.products.length; i++){
+            this.collectionForm.get('products')?.setValue(this.products[i].name)
+          }
           break;
       }
     });
@@ -135,14 +138,14 @@ export class AddCollectionComponent implements OnInit {
       formData.append(data, this.collectionForm.value[data]);
     }
     console.log(this.collectionForm);
-    // this.collectionService.addCollection(formData).subscribe((res: any) => {
-    //   if (res.errorCode != 0) {
-    //     this.toastr.error('Something Went Wrong');
-    //   } else if (res.errorCode == 0) {
-    //     this.toastr.success('Collection Added Successfully');
-    //     this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-    //   }
-    // });
+    this.collectionService.addCollection(formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Collection Added Successfully');
+        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+      }
+    });
   }
 
   updateBrand() {}

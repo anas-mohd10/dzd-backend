@@ -115,19 +115,17 @@
     </div>
   </div>
   <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div
-      class="menu-item menu-accordion"
-      routerLinkActive="here show"
-      data-kt-menu-trigger="click"
-    >
-      <span class="menu-link">
+    <div class="menu-item">
+      <a
+        class="menu-link without-sub"
+        routerLinkActive="active"
+        routerLink="{{ appRoute.shipping.SHIPPING_LIST }}"
+      >
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
         </span>
-        <span class="menu-title" data-link="/crafted/pages/profile"
-          >Shipping</span
-        >
-      </span>
+        <span class="menu-title">Shipping</span>
+      </a>
     </div>
   </div>
 </div>
