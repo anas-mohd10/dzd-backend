@@ -22,7 +22,7 @@ taxClassesEndpoints = taxClassesEndpoints;
   }
 
   getTaxClassesBySlug(slug: any){
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.get_tax_classes_by_slug + "?slug=" + slug);
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.get_tax_classes_by_slug + "/" + slug);
     return this.http.get(`${url}`);
   }
 

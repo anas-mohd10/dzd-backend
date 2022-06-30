@@ -55,11 +55,14 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Description</label>
-                  <input
+                  <textarea
                     type="text"
-                    class="form-control fs-5"
+                    class="form-control fs-5 description-textarea"
                     formControlName="description"
-                  />
+                    cols="30"
+                    rows="10"
+                    maxlength="40"
+                  ></textarea>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -70,21 +73,28 @@
                     aria-label=".form-select-lg"
                     formControlName="isActive"
                   >
-                    <option value="Active" selected>Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="true" selected>True</option>
+                    <option value="false">False</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Featured Product ???</label>
+                  <label class="fs-5 mb-3 fw-bold">Tax Rule</label>
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
-                    formControlName="isFeatured"
+                    formControlName="rules"
                   >
-                    <option value="No" selected>No</option>
-                    <option value="Yes">Yes</option>
+                    <option selected value="select" disabled>
+                      -- Select a tax rule --
+                    </option>
+                    <option
+                      *ngFor="let taxRule of taxRuleNames"
+                      value="{{ taxRule?.name }}"
+                    >
+                      {{ taxRule?.name }}
+                    </option>
                   </select>
                 </div>
               </div>

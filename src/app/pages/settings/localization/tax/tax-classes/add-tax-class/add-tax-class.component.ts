@@ -26,11 +26,14 @@ export class AddTaxClassComponent implements OnInit {
   ruleNames: any = [];
   selected: any;
   filtered: any;
+  ruleNameFlag: boolean;
+  ruleFlag: boolean = false;
 
   validationMessages = {
-    name: [{ type: 'required', message: 'Brand name is required' }],
+    name: [{ type: 'required', message: 'Tax class name is required' }],
+    rules: [{ type: 'required', message: 'Tax rule required' }],
   };
-  ruleNameFlag: boolean;
+  ruleId: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,7 +53,6 @@ export class AddTaxClassComponent implements OnInit {
     this.params = this.route.snapshot;
     this.managePage();
     this.getTaxRules();
-    
   }
 
   managePage() {
@@ -69,24 +71,21 @@ export class AddTaxClassComponent implements OnInit {
   initForm() {
     this.taxClassForm = this.formBuilder.group({
       name: ['', Validators.required],
+      ruleId: ['', Validators.required],
       description: [''],
-      isActive: ['Active', Validators.required],
-      isFeatured: ['No', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 
   getTaxRules() {
-    this.taxClassesService.getTaxRulesName().subscribe((res: any) => {
-      this.taxRuleNames = res?.result;
-      for (let i = 0; i < res?.result.length; i++) {
-        this.ruleNames.push(res?.result[i]['name']);
-      }
-    });
-  }
-
-  onOptionsSelected() {
-    this.filtered = this.taxRuleNames.filter(
-      (t: any) => t.name == this.selected
+    this.taxClassesService.getTaxRulesName().subscribe(
+      (res: any) => {
+        this.taxRuleNames = res?.result;
+        for (let i = 0; i < this.taxRuleNames.length; i++) {
+          this.taxClassForm.get('rules')?.setValue(this.taxRuleNames[i].name);
+        }
+      },
+      (error) => console.log(error)
     );
   }
 
@@ -107,22 +106,19 @@ export class AddTaxClassComponent implements OnInit {
     if (!this.taxClassForm.valid) {
       return;
     }
-    // this.formData.append('name', this.taxClassForm.value?.name);
-    // this.formData.append('name', this.taxClassForm.value?.description);
-    // this.formData.append('isActive', this.taxClassForm.value?.status);
-    // this.formData.append('isFeatured', this.taxClassForm.value?.featured);
-
-    // this.formData["name"] = this.taxClassForm.value?.name
-    // this.formData["description"] = this.taxClassForm.value?.ndescriptioname
-    // this.formData["isActive"] = this.taxClassForm.value?.status
-    // this.formData["isFeatured"] = this.taxClassForm.value?.featured
-
     for (const data of Object.keys(this.taxClassForm.value)) {
       if (this.taxClassForm.value[data] != '' || null) {
         this.formData[data] = this.taxClassForm.value[data];
       }
+      if (data == 'ruleId') {
+        for (let i = 0; i < this.taxRuleNames.length; i++) {
+          if (this.taxRuleNames[i].name == this.taxClassForm.value[data]) {
+            this.ruleId = this.taxRuleNames[i]._id;
+            this.formData[data] = this.ruleId;
+          }
+        }
+      }
     }
-
     this.taxClassesService
       .addTaxClasses(this.formData)
       .subscribe((res: any) => {

@@ -1,6 +1,18 @@
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
 
+.description-textarea{
+  resize: none;
+}
+
+.description-col{
+  overflow: hidden;
+}
+
+.btn-submit{
+  width: 200px;
+}
+
 .table {
   color: #333;
   max-width: 100%;

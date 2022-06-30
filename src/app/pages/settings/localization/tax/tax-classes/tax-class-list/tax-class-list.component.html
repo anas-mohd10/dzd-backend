@@ -17,8 +17,9 @@
         <button
           class="btn btn-primary cursor-pointer fs-5"
           color="primary"
-          routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">
-          <i class="bi bi-file-earmark-plus fs-2"></i> Add Tax Class
+          routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}"
+        >
+          Add Tax Class
         </button>
       </div>
     </div>
@@ -48,42 +49,36 @@
               </thead>
               <tbody>
                 <tr *ngFor="let taxClass of taxClassData; let i = index">
-                    <td>
-                      <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
-                    </td>
-                    <td>
-                      <h2 class="table-avatar fs-5">{{ taxClass?.name }}</h2>
-                    </td>
-                    <td>
-                      <h2 class="table-avatar fs-5">{{ taxClass?.description }}</h2>
-                    </td>
-                    <td>
-                      <h2 class="table-avatar fs-5">{{ taxClass?.rules }}</h2>
-                    </td>
-                    <!-- <td>
-                      <ng-container *ngIf="taxClass?.isFeatured == true">
-                        <h2 class="table-avatar fs-5">Yes</h2>
-                      </ng-container>
-                      <ng-container *ngIf="taxClass?.isFeatured == false">
-                        <h2 class="table-avatar fs-5">No</h2>
-                      </ng-container>
-                    </td> -->
-                    <td>
-                      <ng-container *ngIf="taxClass?.isActive == true">
-                        <h2 class="table-avatar fs-5">Active</h2>
-                      </ng-container>
-                      <ng-container *ngIf="taxClass?.isActive == false">
-                        <h2 class="table-avatar fs-5">Inactive</h2>
-                      </ng-container>
-                    </td>
-                    <td>
-                      <a
-                        routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}"
-                        [queryParams]="{taxClass: taxClass?.slug}"
-                        class="fs-5 cursor-pointer text-darker"
-                        ><i class="bi bi-pen"></i> Edit
-                      </a>
-                    </td>
+                  <td class="col-md-2">
+                    <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                  </td>
+                  <td class="col-md-2">
+                    <h2 class="table-avatar fs-5">{{ taxClass?.name }}</h2>
+                  </td>
+                  <td class="description-col">
+                    <h2 class="table-avatar fs-5">
+                      {{ taxClass?.description }}
+                    </h2>
+                  </td>
+                  <td class="col-md-2">
+                    <h2 class="table-avatar fs-5">{{ taxClass?.ruleId?.name }}</h2>
+                  </td>
+                  <td class="col-md-2">
+                    <ng-container *ngIf="taxClass?.isActive == true">
+                      <h2 class="table-avatar fs-5">Active</h2>
+                    </ng-container>
+                    <ng-container *ngIf="taxClass?.isActive == false">
+                      <h2 class="table-avatar fs-5">Inactive</h2>
+                    </ng-container>
+                  </td>
+                  <td class="col-md-2">
+                    <a
+                      routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}"
+                      [queryParams]="{ taxClass: taxClass?.slug }"
+                      class="fs-5 cursor-pointer text-darker"
+                      ><i class="bi bi-pen"></i> Edit
+                    </a>
+                  </td>
                 </tr>
               </tbody>
             </table>

@@ -5,13 +5,13 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { ToastrService } from 'ngx-toastr';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
+import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
 
 @Component({
   selector: 'app-update-tax-class',
   templateUrl: './update-tax-class.component.html',
   styleUrls: ['./update-tax-class.component.scss'],
 })
-
 export class UpdateTaxClassComponent implements OnInit {
   taxClassForm: FormGroup;
   task = PageTasks.UPDATE;
@@ -25,12 +25,15 @@ export class UpdateTaxClassComponent implements OnInit {
   formData: any = {};
   taxClass: any;
   taxClassData: any;
+  taxRuleNames: any;
+  taxRule: any;
+  ruleId: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private taxClassService: TaxClassesService,
+    private taxClassesService: TaxClassesService,
     private toastr: ToastrService
   ) {}
 
@@ -41,9 +44,11 @@ export class UpdateTaxClassComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.taxClass = this.route.snapshot.queryParams.taxClass || ''
+    this.taxClass = this.route.snapshot.queryParams.taxClass || '';
     this.params = this.route.snapshot;
     this.managePage();
+    this.getTaxClass();
+    this.getTaxRules();
   }
 
   managePage() {
@@ -64,7 +69,19 @@ export class UpdateTaxClassComponent implements OnInit {
       name: [''],
       description: [''],
       isActive: [''],
-      isFeatured: [''],
+      rules: [''],
+    });
+  }
+
+  getTaxRules() {
+    this.taxClassesService.getTaxRulesName().subscribe((res: any) => {
+      switch (res?.errorCode) {
+        case 0:
+          this.taxRuleNames = res?.result;
+          for (let i = 0; i < this.taxRuleNames.length; i++) {
+            this.taxClassForm.get('rules')?.setValue(this.taxRuleNames[i].name);
+          }
+      }
     });
   }
 
@@ -77,16 +94,22 @@ export class UpdateTaxClassComponent implements OnInit {
     }
   }
 
-  getTaxClass(){
-    this.taxClassService.getTaxClasses().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.taxClassData = res?.result;
-          break;
-      }
-      // this.dtTrigger.next()
-      // this.displayTable = true;
-    });
+  getTaxClass() {
+    this.taxClassesService
+      .getTaxClassesBySlug(this.taxClass)
+      .subscribe((res: any) => {
+        switch (res?.errorCode) {
+          case 0:
+            this.taxClassData = res?.result[0];
+            break;
+        }
+        this.taxClassForm.get('name')?.setValue(this.taxClassData.name);
+        this.taxClassForm
+          .get('description')
+          ?.setValue(this.taxClassData.description);
+        this.taxClassForm.get('rules')?.setValue(this.taxClassData.rules);
+        this.taxClassForm.get('isActive')?.setValue(this.taxClassData.isActive);
+      });
   }
 
   //Update exsisting tax classes
@@ -96,19 +119,29 @@ export class UpdateTaxClassComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.taxClassForm.value)) {
-      if(this.taxClassForm.value[data] != '' || null){
-        this.formData[data] = this.taxClassForm.value[data]
-      } 
+      if (this.taxClassForm.value[data] != '' || null) {
+        this.formData[data] = this.taxClassForm.value[data];
+      }
+      if (data == 'rules') {
+        for (let i = 0; i < this.taxRuleNames.length; i++) {
+          if (this.taxRuleNames[i].name == this.taxClassForm.value[data]) {
+            this.ruleId = this.taxRuleNames[i]._id;
+            this.formData[data] = this.ruleId;
+          }
+        }
+      }
     }
 
-    this.taxClassService.updateTaxClasses(this.taxClass, this.formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Tax Class Updated Successfully');
-        this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
-      }
-    });
+    this.taxClassesService
+      .updateTaxClasses(this.taxClass, this.formData)
+      .subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something Went Wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Tax Class Updated Successfully');
+          this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
+        }
+      });
   }
 
   //Add tax classes

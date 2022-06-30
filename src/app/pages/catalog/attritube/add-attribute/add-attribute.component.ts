@@ -17,16 +17,6 @@ export class AddAttributeComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
-
-  validationMessages = {
-    name: [
-      {
-        type: 'required',
-        message: 'Category name is required',
-      },
-    ],
-  };
-
   isSubmitted = false;
   params: any;
   fileData: File;
@@ -38,6 +28,16 @@ export class AddAttributeComponent implements OnInit {
   status: boolean;
   filtered: string;
   isFiltered: any;
+  valueArray: any = [];
+
+  validationMessages = {
+    name: [
+      {
+        type: 'required',
+        message: 'Category name is required',
+      },
+    ],
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,8 +59,8 @@ export class AddAttributeComponent implements OnInit {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
       values: ['', Validators.required],
-      filtered: ['No', Validators.required],
-      status: ['Active', Validators.required],
+      filtered: ['false', Validators.required],
+      status: ['true', Validators.required],
     });
   }
 
@@ -85,6 +85,21 @@ export class AddAttributeComponent implements OnInit {
 
   handleCheckBox(event?: any) {}
 
+  tagInput() {
+    if (this.attributeForm.get('values')?.value != '' || null) {
+      this.valueArray.push(this.attributeForm.get('values')?.value);
+      this.attributeForm.get('values')?.setValue('');
+    }
+  }
+
+  tagRemove(value: any) {
+    for (let i = 0; i < this.valueArray.length; i++) {
+      if (this.valueArray[i] == value) {
+        this.valueArray.pop(value);
+      }
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -100,36 +115,26 @@ export class AddAttributeComponent implements OnInit {
     if (!this.attributeForm.valid) {
       return;
     }
-    this.attributeValues = this.attributeForm.get('values')?.value;
-    this.attributeValues = this.attributeValues.split(',');
     this.filtered = this.attributeForm.get('filtered')?.value;
 
-    if (this.attributeForm.get('status')?.value == 'Active') {
-      this.status = true;
-    } else if (this.attributeForm.get('status')?.value == 'Inactive') {
-      this.status = false;
-    }
-
-    if (this.filtered == "Yes") {
-      this.isFiltered = true;
-    } else if (this.filtered == "No") {
-      this.isFiltered = false;
-    }
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
-      value: this.attributeValues,
-      categoryId: this.categoryId,
-      isFiltered: this.isFiltered,
-      isActive: this.status,
+      value: this.valueArray,
+      isFiltered: this.attributeForm.get('filtered')?.value,
+      isActive: this.attributeForm.get('status')?.value,
     };
-    this.AttributeService.addAttribute(this.attributeData).subscribe((res: any) => {
-      if(res.errorCode != 0){
-        this.toastr.error('Something went wrong');
-      }else if(res?.errorCode == 0){
-        this.toastr.success('Attribute added successfully');
-        this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {queryParams: {"category": this.category}});
+    this.AttributeService.addAttribute(this.attributeData).subscribe(
+      (res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something went wrong');
+        } else if (res?.errorCode == 0) {
+          this.toastr.success('Attribute added successfully');
+          this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {
+            queryParams: { category: this.category },
+          });
+        }
       }
-    });
+    );
   }
 
   getCategoryDetails() {

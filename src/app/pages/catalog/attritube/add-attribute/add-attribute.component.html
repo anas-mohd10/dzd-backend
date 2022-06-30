@@ -14,11 +14,17 @@
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: category }">Attributes</a
+            <a
+              routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
+              [queryParams]="{ category: category }"
+              >Attributes</a
             >
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }">
+            <a
+              routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
+              [queryParams]="{ category: category }"
+            >
               {{ editMode ? "Update Attribute" : "Add Attribute" }}
             </a>
           </li>
@@ -48,24 +54,29 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Values <span class="badge badge-secondary">Eg: Small,Medium,Large</span></label>
+                  <label class="fs-5 mb-3 fw-bold"> Values </label>
                   <input
-                    type="text"
-                    class="form-control fs-5"
+                    class="form-control fs-5 mb-10"
                     formControlName="values"
+                    (keyup.Enter)="tagInput()"
                   />
+                  <div class="tag-inputs col-12 col-sm-6">
+                    <ng-container *ngFor="let value of valueArray">
+                      <span class="tag-input">{{ value }} <i class="bi bi-x fs-1 text-white" (click)="tagRemove(value)"></i></span>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Status</label>
+                  <label class="fs-5 mb-3 fw-bold">Active</label>
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
                     formControlName="status"
                   >
-                    <option value="Active" selected>Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="true" selected>True</option>
+                    <option value="false">False</option>
                   </select>
                 </div>
               </div>
@@ -77,13 +88,13 @@
                     aria-label=".form-select-lg"
                     formControlName="filtered"
                   >
-                    <option value="No" selected>No</option>
-                    <option value="Yes">Yes</option>
+                    <option value="false">False</option>
+                    <option value="true">True</option>
                   </select>
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">
+                <button type="submit" class="btn btn-primary btn-submit fs-4">
                   Submit
                 </button>
               </div>

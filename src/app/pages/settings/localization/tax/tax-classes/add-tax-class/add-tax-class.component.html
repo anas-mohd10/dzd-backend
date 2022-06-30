@@ -24,6 +24,11 @@
     </div>
     <!-- /Page Header -->
     <div class="row mt-10">
+      <!-- <ng-container *ngIf="!ruleFlag">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </ng-container> -->
       <div class="col-sm-12 fs-5">
         <div class="card">
           <div class="card-body">
@@ -49,16 +54,18 @@
                   <div class="form-group">
                     <label class="fs-5 mb-3 fw-bold">Status</label>
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
-                      <option value="Active" selected>Active</option>
-                      <option value="Inactive">Inactive</option>
+                      <option value="true" selected>True</option>
+                      <option value="false">False</option>
                     </select>
                   </div>
                 </div>
+                
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3 fw-bold">Tax Rule</label>
-                    <select [(ngModel)]="selected" (ngModelChange)="onOptionsSelected()" class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="rules">
-                      <option *ngFor="let name of ruleNames" [ngValue]="name">{{name}}</option>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="ruleId">
+                      <option selected value="select" disabled>-- Select a tax rule --</option>
+                      <option *ngFor="let taxRule of taxRuleNames" value="{{taxRule?.name}}">{{taxRule?.name}}</option>
                     </select>
                   </div>
                 </div>

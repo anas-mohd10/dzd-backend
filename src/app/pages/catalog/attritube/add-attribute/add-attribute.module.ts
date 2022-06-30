@@ -5,6 +5,7 @@ import { AddAttributeComponent } from './add-attribute.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AddAttributeComponent],
@@ -12,6 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    FormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
