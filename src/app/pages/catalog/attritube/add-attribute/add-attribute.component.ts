@@ -58,9 +58,9 @@ export class AddAttributeComponent implements OnInit {
   initForm() {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
-      values: ['', Validators.required],
-      filtered: ['false', Validators.required],
-      status: ['true', Validators.required],
+      values: [],
+      filtered: ['check', Validators.required],
+      status: ['check', Validators.required],
     });
   }
 
@@ -86,7 +86,7 @@ export class AddAttributeComponent implements OnInit {
   handleCheckBox(event?: any) {}
 
   tagInput() {
-    if (this.attributeForm.get('values')?.value != '' || null) {
+    if ((this.attributeForm.get('values')?.value != ' ' || '') || (this.attributeForm.get('values')?.value == null )) {
       this.valueArray.push(this.attributeForm.get('values')?.value);
       this.attributeForm.get('values')?.setValue('');
     }
@@ -98,6 +98,13 @@ export class AddAttributeComponent implements OnInit {
         this.valueArray.pop(value);
       }
     }
+  }
+
+  getCategoryDetails() {
+    this.CategoryService.getCategoryBySlug(this.category).subscribe((res) => {
+      this.categoryData = res;
+      this.categoryId = this.categoryData.result[0]._id;
+    });
   }
 
   onSubmit() {
@@ -115,13 +122,12 @@ export class AddAttributeComponent implements OnInit {
     if (!this.attributeForm.valid) {
       return;
     }
-    this.filtered = this.attributeForm.get('filtered')?.value;
-
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
       value: this.valueArray,
       isFiltered: this.attributeForm.get('filtered')?.value,
       isActive: this.attributeForm.get('status')?.value,
+      categoryId: this.categoryId
     };
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {
@@ -135,12 +141,5 @@ export class AddAttributeComponent implements OnInit {
         }
       }
     );
-  }
-
-  getCategoryDetails() {
-    this.CategoryService.getCategoryBySlug(this.category).subscribe((res) => {
-      this.categoryData = res;
-      this.categoryId = this.categoryData.result[0]._id;
-    });
   }
 }

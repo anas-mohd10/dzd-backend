@@ -26,6 +26,7 @@ export const appRoutes = {
   attribute: {
     ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,
     ATTRIBUTE_LIST: `${app}${attributeRoute}`,
+    UPDATE_ATTRIBUTE: `${app}${attributeRoute}/update`
   },
   product: {
     ADD_PRODUCT: `${app}${productRoute}/add`,

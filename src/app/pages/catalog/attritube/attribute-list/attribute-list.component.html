@@ -60,13 +60,15 @@
                     <h2 class="table-avatar fs-5">{{ attribute?.name }}</h2>
                   </td>
                   <td>
-                    <ng-container *ngFor="let value of attribute?.value">
-                      <div class="row">
-                        <div class="col">
-                          <h2 class="attribute-value fs-5">{{ value }}</h2>
+                    <div class="attribute-col">
+                      <ng-container *ngFor="let value of attribute?.value">
+                        <div class="row">
+                          <div class="col">
+                            <h2 class="attribute-value fs-5">{{ value }}</h2>
+                          </div>
                         </div>
-                      </div>
-                    </ng-container>
+                      </ng-container>
+                    </div>
                   </td>
                   <td>
                     <ng-container *ngIf="attribute?.isActive == true">
@@ -77,7 +79,10 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker"
+                    <a
+                      class="fs-5 cursor-pointer text-darker"
+                      routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
+                      [queryParams]="{ category: category, attribute: attribute?.slug }"
                       ><i class="bi bi-pen fs-4"></i> Edit
                     </a>
                   </td>

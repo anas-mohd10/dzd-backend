@@ -1,25 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { UpdateAttributeComponent } from './update-attribute.component';
+import { DataTablesModule } from 'angular-datatables';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
-describe('UpdateAttributeComponent', () => {
-  let component: UpdateAttributeComponent;
-  let fixture: ComponentFixture<UpdateAttributeComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ UpdateAttributeComponent ]
-    })
-    .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateAttributeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+@NgModule({
+  declarations: [UpdateAttributeComponent],
+  imports: [
+    CommonModule,
+    DataTablesModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      progressAnimation: 'decreasing',
+      preventDuplicates: true,
+      progressBar: true,
+    }),
+    RouterModule.forChild([
+      {
+        path: 'attribute/update',
+        component: UpdateAttributeComponent,
+      },
+    ]),
+  ],
+})
+export class UpdateAttributeModule {}

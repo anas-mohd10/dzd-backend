@@ -58,11 +58,17 @@
                   <input
                     class="form-control fs-5 mb-10"
                     formControlName="values"
-                    (keyup.Enter)="tagInput()"
+                    (keyup.Arrowright)="tagInput()"
                   />
                   <div class="tag-inputs col-12 col-sm-6">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="tag-input">{{ value }} <i class="bi bi-x fs-1 text-white" (click)="tagRemove(value)"></i></span>
+                      <span class="tag-input"
+                        >{{ value }}
+                        <i
+                          class="bi bi-x fs-1 text-white"
+                          (click)="tagRemove(value)"
+                        ></i
+                      ></span>
                     </ng-container>
                   </div>
                 </div>
@@ -75,6 +81,9 @@
                     aria-label=".form-select-lg"
                     formControlName="status"
                   >
+                    <option value="check" disabled>
+                      -- Select An Option --
+                    </option>
                     <option value="true" selected>True</option>
                     <option value="false">False</option>
                   </select>
@@ -88,6 +97,9 @@
                     aria-label=".form-select-lg"
                     formControlName="filtered"
                   >
+                    <option value="check" disabled>
+                      -- Select An Option --
+                    </option>
                     <option value="false">False</option>
                     <option value="true">True</option>
                   </select>

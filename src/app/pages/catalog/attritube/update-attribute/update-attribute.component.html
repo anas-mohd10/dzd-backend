@@ -1,1 +1,120 @@
-<p>update-attribute works!</p>
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title fs-2">
+            {{ editMode ? "Update Attribute" : "Add Attribute" }}
+          </h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-5">
+              <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item fs-5">
+              <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+            </li>
+            <li class="breadcrumb-item fs-5">
+              <a
+                routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
+                [queryParams]="{ category: category }"
+                >Attributes</a
+              >
+            </li>
+            <li class="breadcrumb-item active fs-5">
+              <a
+                routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE}}"
+                [queryParams]="{ category: category, attribute: attribute }"
+              >
+                {{ editMode ? "Update Attribute" : "Add Attribute" }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row mt-10">
+      <div class="col-sm-12 fs-5">
+        <div class="card">
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="attributeForm">
+              <div class="row">
+                <div class="col-12">
+                  <h5 class="form-title fs-4"><span>Attributes Details</span></h5>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold"> Name</label>
+                    <input
+                      type="text"
+                      class="form-control fs-5"
+                      formControlName="name"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold"> Values </label>
+                    <input
+                      class="form-control fs-5 mb-10"
+                      formControlName="values"
+                      (keyup.Arrowright)="tagInput()"
+                    />
+                    <div class="tag-inputs col-12 col-sm-6">
+                      <div *ngFor="let value of valueArray" >
+                        <span class="tag-input"
+                          >{{ value }}
+                          <i
+                            class="bi bi-x fs-1 text-white"
+                            (click)="tagRemove(value)"
+                          ></i
+                        ></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Active</label>
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg"
+                      formControlName="status"
+                    >
+                      <option value="check" disabled>
+                        -- Select An Option --
+                      </option>
+                      <option value="true" selected>True</option>
+                      <option value="false">False</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold">Filtered Product ???</label>
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg"
+                      formControlName="filtered"
+                    >
+                      <option value="check" disabled>
+                        -- Select An Option --
+                      </option>
+                      <option value="false">False</option>
+                      <option value="true">True</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary btn-submit fs-4">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

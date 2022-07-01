@@ -8,20 +8,25 @@ import { attributeEndpoints } from 'src/app/config/endpoints/attribute.endpoints
 })
 export class AttributeService {
   attributeEndpoints = attributeEndpoints;
-
   constructor(private http: HttpClient, private commonService: CommonService) {}
 
   addAttribute(data: any) {
-    const url = this.commonService.getFullUrl(
-      this.attributeEndpoints.add_attribute
-    );
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.add_attribute);
     return this.http.post(`${url}`, data);
   }
 
   getCategoryById(id: string) {
-    const url = this.commonService.getFullUrl(
-      this.attributeEndpoints.get_attribute_by_category + '/' + id
-    );
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.get_attribute_by_category + '/' + id);
     return this.http.get(`${url}`);
+  }
+
+  getAttributeBuSlug(slug: any, category: any) {
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.get_attribute_by_slug + '?slug=' + slug + "&category=" + category);
+    return this.http.get(`${url}`);
+  }
+
+  updateAttribute(slug: any, category: any, data: any) {
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.update_attribute + '?slug=' + slug + "&category=" + category);
+    return this.http.put(`${url}`, data);
   }
 }

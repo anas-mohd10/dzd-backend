@@ -48,12 +48,11 @@ export class AttributeComponent implements OnInit {
         }
         this.AttributeService.getCategoryById(this.categoryId).subscribe(
           (res: any) => {
-            this.attributeData = res?.result
+            this.attributeData = res?.result;
             this.displayTable = true;
           }
         );
       }
     );
   }
-
 }
