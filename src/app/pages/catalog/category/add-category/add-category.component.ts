@@ -10,12 +10,12 @@ import { CategoryService } from '../../../../includes/services/category.service'
   templateUrl: './add-category.component.html',
   styleUrls: ['./add-category.component.scss'],
 })
-
 export class AddCategoryComponent implements OnInit {
   categoryForm: FormGroup;
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
+  categoryArray: any = []
 
   validationMessages = {
     name: [
@@ -30,6 +30,7 @@ export class AddCategoryComponent implements OnInit {
   params: any;
   fileData: File;
   isChecked = false;
+  categoryData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,13 +63,14 @@ export class AddCategoryComponent implements OnInit {
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.params = this.route.snapshot;
     this.managePage();
+    this.getCategory();
   }
 
   initForm() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       rootCategory: ['', Validators.required],
-      parentId: ['-- Select Parent Category --', Validators.required]
+      parentId: ['', Validators.required],
     });
   }
 
@@ -92,6 +94,27 @@ export class AddCategoryComponent implements OnInit {
     } else {
       this.addBrand();
     }
+  }
+
+  getCategory() {
+    this.CategoryService.getCategory().subscribe((res: any) => {
+      this.categoryData = res?.result
+      for (let i = 0; i < res?.result.length; i++) {
+        if(res?.result[i].parentId && !res?.result[i].rootId){
+          this.categoryArray.push(res?.result[i].parentId.name + " > "+ res?.result[i].name)
+        }
+        if(!res?.result[i].parentId && res?.result[i].rootId){
+          this.categoryArray.push(res?.result[i].rootId.name +  " > " +res?.result[i].name)
+        }
+        if(res?.result[i].parentId && res?.result[i].rootId){
+          this.categoryArray.push(res?.result[i].rootId.name + " > " + res?.result[i].parentId.name + " > " + res?.result[i].name)
+        }
+        if(!res?.result[i].parentId && !res?.result[i].rootId){
+          this.categoryArray.push(res?.result[i].name)
+        }
+      }
+      this.categoryForm.get("parentId")?.setValue(this.categoryArray)
+    });
   }
 
   //Update exsisting brand
