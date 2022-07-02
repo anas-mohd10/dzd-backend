@@ -98,6 +98,7 @@ export class AddCategoryComponent implements OnInit {
 
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
+
       this.categoryData = res?.result
       for (let i = 0; i < res?.result.length; i++) {
         if(res?.result[i].parentId && !res?.result[i].rootId){
@@ -122,13 +123,22 @@ export class AddCategoryComponent implements OnInit {
 
   //Add brand
   addBrand() {
-    //   if (!this.categoryForm.valid) {
-    //     return;
-    //   }
-    //   const formData = new FormData();
-    //   if (this.fileData != null && this.fileData != undefined) {
-    //     formData.append("file", this.fileData);
-    //   }
+    if(this.categoryForm.get("rootCategory")?.value == true){
+      this.categoryForm.get("parentId")?.setValue('')
+    }
+
+    const splitCategory = this.categoryForm.get("parentId")?.value.split(' > ')
+    for(let i=0; i<splitCategory.length; i++){
+
+    }
+    if (!this.categoryForm.valid) {
+      return;
+    }
+    const formData = new FormData();
+    if (this.fileData != null && this.fileData != undefined) {
+        formData.append("file", this.fileData);
+    }
+
     //   for (const data of Object.keys(this.brandForm.value)) {
     //     formData.append(data, this.brandForm.value[data]);
     //   }

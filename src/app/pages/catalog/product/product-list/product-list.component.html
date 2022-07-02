@@ -30,12 +30,11 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <div class="table-responsive">
+          <div class="table-responsive" *ngIf="displayTable">
             <table
               datatable
               [dtOptions]="dtOptions"
-              [dtTrigger]="dtTrigger"
-              class="table table-center table-bordered table-striped mb-0 datatable"
+              class="table table-center table-borderless table-striped mb-0 datatable"
             >
               <thead class="thead">
                 <tr>
@@ -52,12 +51,18 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- <tr *ngFor="let product of productData; let i = index">
+                <tr *ngFor="let product of productData; let i = index">
                   <td>{{ i + 1 }}</td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.sku }}</h2>
+                  </td>
                   <td>
                     <h2 class="table-avatar fs-5">{{ product?.name }}</h2>
                   </td>
-                  <ng-container *ngIf="product?.rootId">
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.productType }}</h2>
+                  </td>
+                  <!-- <ng-container *ngIf="product?.rootId">
                     <td>
                       <h2 class="table-avatar fs-5">{{ product?.rootId.name }}</h2>
                     </td>
@@ -76,17 +81,26 @@
                     <td>
                       <h2 class="table-avatar fs-5">-</h2>
                     </td>
-                  </ng-container>
+                  </ng-container> -->
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.categories }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.price }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
+                  </td>
                   <td>
                     <img
                       class="product-logo"
-                      src="{{product?.logo}}"
+                      src="../../../../../assets/media/products/15.png"
                       alt="product Logo"
                     />
                   </td>
-                  <td>
+                  <!-- <td>
                     <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{product: product?.slug}" class="fs-5 cursor-pointer text-darker">Attributes</a>
-                  </td>
+                  </td> -->
                   <td>
                     <ng-container *ngIf="product?.isActive == true">
                       <h2 class="table-avatar fs-5">Active</h2>
@@ -95,7 +109,7 @@
                   <td>
                     <a class="fs-5 cursor-pointer text-darker"> Edit </a>
                   </td>
-                </tr> -->
+                </tr>
               </tbody>
             </table>
           </div>

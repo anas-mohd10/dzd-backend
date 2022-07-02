@@ -13,15 +13,22 @@ export class ProductComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
+  // public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes;
   productData: any;
+  displayTable: boolean;
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.getProduct();
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 5,
+      processing: true,
+    };
   }
 
   getProduct() {
@@ -29,9 +36,11 @@ export class ProductComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.productData = res?.result;
+          console.log(this.productData)
           break;
       }
-      this.dtTrigger.next();
+      // this.dtTrigger.next();
+      this.displayTable = true;
     });
   }
 }
