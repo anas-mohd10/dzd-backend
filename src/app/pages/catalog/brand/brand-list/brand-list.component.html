@@ -58,8 +58,8 @@
                   <td>
                     <img
                       class="brand-logo"
-                      src="../../../../../assets/media/stock/600x600/img-22.jpg"
-                      alt="Brand Logo"
+                      src="http://localhost:3000/{{brand?.file}}"
+                      alt="brand"
                     />
                   </td>
                   <td>
@@ -72,10 +72,10 @@
                   </td>
                   <td>
                     <ng-container *ngIf="brand?.isActive == true">
-                      <h2 class="table-avatar fs-5">Active</h2>
+                      <h2 class="table-avatar text-success h-20 fs-5">Active</h2>
                     </ng-container>
                     <ng-container *ngIf="brand?.isActive == false">
-                      <h2 class="table-avatar fs-5">Inactive</h2>
+                      <h2 class="table-avatar text-danger fs-5">Inactive</h2>
                     </ng-container>
                   </td>
                   <td>

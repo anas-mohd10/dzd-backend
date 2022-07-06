@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ToastrService } from 'ngx-toastr';
+import { ProductService } from 'src/app/includes/services/product.service';
 
 @Component({
   selector: 'app-update-collection',
@@ -21,9 +22,12 @@ export class UpdateCollectionComponent implements OnInit {
   collectionData: any;
   collection: any;
   collectionName: any;
+  products: any;
+  valueArray: any = [];
 
   constructor(
     private collectionService: CollectionService,
+    private productService: ProductService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -33,6 +37,7 @@ export class UpdateCollectionComponent implements OnInit {
   ngOnInit(): void {
     this.collection = this.route.snapshot.queryParams.collection || '';
     this.getCollection();
+    this.getProduct()
     this.managePage()
     this.initForm()
   }
@@ -41,8 +46,8 @@ export class UpdateCollectionComponent implements OnInit {
     this.collectionForm = this.formBuilder.group({
       name: [ '', Validators.required],
       products: ['', Validators.required],
-      featured: ['No', Validators.required],
-      status: ['Active', Validators.required],
+      isFeatured: ['false', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 
@@ -59,16 +64,36 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
+  getProduct() {
+    this.productService.getProduct().subscribe((res: any) => {
+      switch (res?.errorCode) {
+        case 0:
+          this.products = res?.result;
+          for(let i=0; i<this.products.length; i++){
+            this.collectionForm.get('products')?.setValue(this.products[i].name)
+          }
+          break;
+      }
+    });
+  }
+
   getCollection() {
-    console.log(this.collection)
     this.collectionService.getCollectionBySlug(this.collection).subscribe((res:any)=>{
       switch(res?.errorCode){
         case 0:
+          console.log(res?.result[0])
           this.collectionData = res?.result[0]
-          this.collectionName = this.collectionData?.name
+          this.collectionForm.get("name")?.setValue(this.collectionData?.name)
+          this.collectionForm.get("isFeatured")?.setValue(this.collectionData?.isFeatured)
+          this.collectionForm.get("isActive")?.setValue(this.collectionData?.isActive)
+          this.valueArray = this.collectionData?.products
           break
       }
     })
+  }
+
+  tagRemove(value: any){
+
   }
 
   onSubmit(){}

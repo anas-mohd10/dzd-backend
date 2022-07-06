@@ -180,7 +180,7 @@ export const Routing: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(Routing)],
+  imports: [RouterModule.forRoot(Routing, {useHash: true, relativeLinkResolution: 'legacy'})],
   exports: [RouterModule],
 })
 export class RoutingModule {}

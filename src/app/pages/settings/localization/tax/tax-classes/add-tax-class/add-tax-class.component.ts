@@ -110,14 +110,6 @@ export class AddTaxClassComponent implements OnInit {
       if (this.taxClassForm.value[data] != '' || null) {
         this.formData[data] = this.taxClassForm.value[data];
       }
-      if (data == 'ruleId') {
-        for (let i = 0; i < this.taxRuleNames.length; i++) {
-          if (this.taxRuleNames[i].name == this.taxClassForm.value[data]) {
-            this.ruleId = this.taxRuleNames[i]._id;
-            this.formData[data] = this.ruleId;
-          }
-        }
-      }
     }
     this.taxClassesService
       .addTaxClasses(this.formData)

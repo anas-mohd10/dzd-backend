@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { NgSelect2Module } from 'ng-select2';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [AddCollectionComponent],
@@ -17,6 +18,7 @@ import { NgSelect2Module } from 'ng-select2';
     ToastrModule,
     NgSelect2Module,
     FormsModule,
+    NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

@@ -17,7 +17,6 @@ export class AddBrandComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
 
-
   validationMessages = {
     name: [
       {
@@ -62,8 +61,8 @@ export class AddBrandComponent implements OnInit {
     this.brandForm = this.formBuilder.group({
       name: ['', Validators.required],
       file: ['', Validators.required],
-      status: ['Active', Validators.required],
-      featured: ['No', Validators.required],
+      isActive: ['false', Validators.required],
+      isFeatured: ['false', Validators.required],
     });
   }
 
@@ -103,9 +102,11 @@ export class AddBrandComponent implements OnInit {
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
     }
-    formData.append('name', this.brandForm.value?.name);
-    formData.append('isActive', this.brandForm.value?.status);
-    formData.append('isFeatured', this.brandForm.value?.featured)
+
+    for (const data of Object.keys(this.brandForm.value)) {
+      formData.append(data, this.brandForm.value[data]);
+    }
+
     this.BrandService.addBrand(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');

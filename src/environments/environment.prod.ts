@@ -4,8 +4,10 @@
 
 export const environment = {
   production: true,
-  apiUrl: 'https://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'https://localhost:3000/api/v1/w/',
+  // apiUrl: 'https://ccapi.previewbay.com/api/v1/w/admin/auth',
+  // baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   
@@ -19,8 +21,8 @@ export const environment = {
   appPreviewDocsUrl: 'https://preview.keenthemes.com/metronic8/angular/docs',
   appPreviewChangelogUrl: 'https://preview.keenthemes.com/metronic8/angular/docs/changelog',
   appDemos: {
-    'demo1': {
-      'title': 'Demo 1',
+    'Commerce Castle': {
+      'title': 'Commerce Castle',
       'description': 'Default Dashboard',
       'published': true,
       'thumbnail': './assets/media/demos/demo1.png'

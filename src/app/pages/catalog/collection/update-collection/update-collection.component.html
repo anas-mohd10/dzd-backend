@@ -58,21 +58,39 @@
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
                     formControlName="products"
-                  ></select>
+                  >
+                    <option
+                      *ngFor="let product of products"
+                      value="{{ product?._id }}"
+                    >
+                      {{ product?.name }}
+                    </option>
+                  </select>
+                  <ng-container>
+                    <div class="tag-inputs col-12 col-sm-6">
+                      <div *ngFor="let value of valueArray" >
+                        <span class="tag-input"
+                          >{{ value?.name }}
+                          <i
+                            class="bi bi-x fs-1 text-white"
+                            (click)="tagRemove(value)"
+                          ></i
+                        ></span>
+                      </div>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"
-                    >Featured Collection ???</label
-                  >
+                  <label class="fs-5 mb-3 fw-bold">Featured Collection ?</label>
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
-                    formControlName="featured"
+                    formControlName="isFeatured"
                   >
-                    <option value="No" selected>No</option>
-                    <option value="Yes">Yes</option>
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
                   </select>
                 </div>
               </div>
@@ -82,10 +100,10 @@
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
-                    formControlName="status"
+                    formControlName="isActive"
                   >
-                    <option value="Active" selected>Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="true" selected>Active</option>
+                    <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>

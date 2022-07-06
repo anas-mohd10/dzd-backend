@@ -30,10 +30,12 @@ export class AddProductComponent implements OnInit {
   filtered: any;
   categoryData: any;
   taxClassData: any;
+  valueArray: any = []
 
   validationMessages = {
     name: [{ type: 'required', message: 'Product name is required' }],
   };
+  productData: any;
 
 
   constructor(
@@ -71,17 +73,15 @@ export class AddProductComponent implements OnInit {
     this.getBrandDetail();
     this.getCategoryDetail()
     this.getTaxClassDetail()
+    this.getProducts()
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
+      productType: ['Configurable', Validators.required],
       name: ['', Validators.required],
-      productType: ['configurable', Validators.required],
       sku: ['', Validators.required],
       hsn: ['', Validators.required],
-      category: ['example', Validators.required],
-      brand: ['example', Validators.required],
-      taxClass: ['example', Validators.required],
       mrpPrice: ['', Validators.required],
       offerprice: ['', Validators.required],
       stock: ['', Validators.required],
@@ -89,8 +89,15 @@ export class AddProductComponent implements OnInit {
       stockwarning: ['', Validators.required],
       productdescription: ['', Validators.required],
       featuredescription: ['', Validators.required],
+      category: ['example', Validators.required],
+      brand: ['example', Validators.required],
       additionalbutton: ['', Validators.required],
       buttonredireturl: ['', Validators.required],
+      featured: ['', Validators.required],
+      returnable: ['', Validators.required],
+
+
+      taxClass: ['example', Validators.required],
       returndays: ['', Validators.required],
       weight: ['', Validators.required],
       position: ['', Validators.required],
@@ -98,6 +105,8 @@ export class AddProductComponent implements OnInit {
       featuredDescription: ['', Validators.required],
       shippingMethod: ['', Validators.required],
       codCharge: ['', Validators.required],
+      values: ['', Validators.required],
+      relatedProducts: ['example', Validators.required]
     });
   }
 
@@ -107,6 +116,21 @@ export class AddProductComponent implements OnInit {
       this.isSingle = true;
     } else if (this.productType.value == 'configurable') {
       this.isSingle = false;
+    }
+  }
+
+  tagInput(){
+    if ((this.productForm.get('values')?.value != ' ' || '') || (this.productForm.get('values')?.value == null )) {
+      this.valueArray.push(this.productForm.get('values')?.value);
+      this.productForm.get('values')?.setValue('');
+    }
+  }
+
+  tagRemove(value: any){
+    for (let i = 0; i < this.valueArray.length; i++) {
+      if (this.valueArray[i] == value) {
+        this.valueArray.pop(value);
+      }
     }
   }
 
@@ -138,6 +162,13 @@ export class AddProductComponent implements OnInit {
   getTaxClassDetail() {
     this.taxClassService.getTaxClasses().subscribe((res: any) => {
       this.taxClassData = res?.result;
+    });
+  }
+
+  getProducts() {
+    this.productService.getProduct().subscribe((res: any) => {
+      console.log(res?.result)
+      this.productData = res?.result;
     });
   }
  

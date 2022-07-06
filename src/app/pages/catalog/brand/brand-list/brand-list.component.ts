@@ -13,7 +13,6 @@ export class BrandComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  // public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes;
   brandData: any;
@@ -31,7 +30,6 @@ export class BrandComponent implements OnInit {
     };
   }
 
-  
   getBrand() {
     this.brandService.getBrand().subscribe((res: any) => {
       switch (res?.errorCode) {
@@ -39,7 +37,6 @@ export class BrandComponent implements OnInit {
           this.brandData = res?.result;
           break;
       }
-      // this.dtTrigger.next()
       this.displayTable = true;
     });
   }

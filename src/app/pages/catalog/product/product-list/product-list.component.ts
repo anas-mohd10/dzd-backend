@@ -36,7 +36,6 @@ export class ProductComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.productData = res?.result;
-          console.log(this.productData)
           break;
       }
       // this.dtTrigger.next();

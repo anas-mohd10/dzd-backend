@@ -14,7 +14,7 @@ export class OfferListComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  // public dtTrigger: Subject<any> = new Subject();
+  
   appRoute = appRoutes;
   offerData: any;
   activeFilter: boolean = false;

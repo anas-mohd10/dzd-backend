@@ -41,15 +41,28 @@
                     class="form-control fs-5"
                     formControlName="name"
                   />
+                  <span
+                    class="text-danger fs-6 fw-bold"
+                    *ngIf="
+                      (cf.name.touched || isSubmitted) &&
+                      cf.name.errors?.required
+                    "
+                    >Name is required</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Image </label>
-                  <input type="file" class="form-control fs-5" />
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    formControlName="file"
+                    (change)="handleInputChange($event)"
+                  />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <!-- <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Products</label>
                   <select
@@ -57,26 +70,28 @@
                     aria-label=".form-select-lg"
                     formControlName="products"
                   >
-                    <!-- <option value="">Product</option>
-                    <option value="">Product</option>
-                    <option value="" selected>Product</option> -->
-                    <option selected value="select" disabled>-- Select a product --</option>
-                    <option *ngFor="let product of products" value="{{product?.name}}">{{product?.name}}</option>
+                    <option selected value="select" disabled>
+                      -- Select a product --
+                    </option>
+                    <option
+                      *ngFor="let product of products"
+                      value="{{ product?._id }}"
+                    >
+                      {{ product?.name }}
+                    </option>
                   </select>
                 </div>
-              </div>
+              </div> -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"
-                    >Featured Collection ???</label
-                  >
+                  <label class="fs-5 mb-3 fw-bold">Featured Collection ?</label>
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
-                    formControlName="featured"
+                    formControlName="isFeatured"
                   >
-                    <option value="No" selected>No</option>
-                    <option value="Yes">Yes</option>
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
                   </select>
                 </div>
               </div>
@@ -86,10 +101,10 @@
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
-                    formControlName="status"
+                    formControlName="isActive"
                   >
-                    <option value="Active" selected>Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="false" selected>Inactive</option>
+                    <option value="true">Active</option>
                   </select>
                 </div>
               </div>

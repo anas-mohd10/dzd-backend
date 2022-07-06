@@ -38,8 +38,8 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Product Type</label>
                   <select  class="form-select" formControlName="productType" (change)="handleProductType()">
-                    <option value="single">Single</option>
-                    <option value="configurable">Configurable</option>
+                    <option value="Single">Single</option>
+                    <option value="Configurable">Configurable</option>
                   </select>
                 </div>
               </div>
@@ -151,7 +151,7 @@
                     <label class="fs-5 mb-3 fw-bold">Category</label>
                     <select class="form-select" formControlName="category">
                       <option value="example" disabled>-- Select a Category --</option>
-                      <option *ngFor="let category of categoryData" value="{{category?.name}}">{{category?.name}}</option>
+                      <option *ngFor="let category of categoryData" value="{{category?._id}}">{{category?.name}}</option>
                     </select>
                   </div>
                 </div>
@@ -163,7 +163,7 @@
                   <label class="fs-5 mb-3 fw-bold">Brand</label>
                   <select name="brand" formControlName="brand" class="form-select">
                     <option value="example" disabled>-- Select a Brand --</option>
-                    <option *ngFor="let brand of brandData" value="{{brand?.name}}">{{brand?.name}}</option>
+                    <option *ngFor="let brand of brandData" value="{{brand?._id}}">{{brand?.name}}</option>
                   </select>
                 </div>
               </div>
@@ -187,21 +187,18 @@
               <!-- Featured Product -->
               <div class="col-12 col-sm-6">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="featured" id="defaultCheck1"/>
-                  <label class="form-check-label" for="defaultCheck1">Featured Product ???</label>
+                  <input class="form-check-input" type="checkbox" value="featured" id="featuredCheck" formControlName="featured"/>
+                  <label class="form-check-label" for="featuredCheck">Featured Product ?</label>
                 </div>
               </div>
 
+              <div class="col-12 col-sm-6"></div>
+
               <!-- Returnable Product -->
               <div class="col-12 col-sm-6">
-                <label class="fs-5 mb-3 fw-bold">Returnable Product ???</label>
-                <div class="form-check mb-5">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="returnYes"/>
-                  <label class="form-check-label" for="returnYes"> Yes </label>
-                </div>
-                <div class="form-check mb-5">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="returnNo" checked/>
-                  <label class="form-check-label" for="returnNo"> No </label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="returnable" id="returnableCheck" formControlName="returnable"/>
+                  <label class="form-check-label" for="returnableCheck">Returnable Product ?</label>
                 </div>
               </div>
 
@@ -233,7 +230,7 @@
                   </label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
-                    <input type="text" class="form-control" formControlName="mrpPrice"/>
+                    <input type="text" class="form-control" formControlName="shippingCost"/>
                     <span class="input-group-text">.00</span>
                   </div>
                 </div>
@@ -256,7 +253,7 @@
                   <label class="fs-5 mb-3 fw-bold">Tax Class</label>
                   <select class="form-select" formControlName="taxClass">
                     <option value="example" disabled>-- Select a Tax Class --</option>
-                    <option *ngFor="let taxClass of taxClassData" value="{{taxClass?.name}}">{{taxClass?.name}}</option>
+                    <option *ngFor="let taxClass of taxClassData" value="{{taxClass?._id}}">{{taxClass?.name}}</option>
                   </select>
                 </div>
               </div>
@@ -266,8 +263,8 @@
               <!-- COD Available -->
               <div class="col-12 col-sm-6">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="cod" id="cod"/>
-                  <label class="form-check-label">COD Available ???</label>
+                  <input class="form-check-input" type="checkbox" value="cod" id="cod" formControlName="cod"/>
+                  <label class="form-check-label">COD Available ?</label>
                 </div>
               </div>
 
@@ -290,25 +287,33 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Search Keywordss</label>
-                  <select class="form-select" aria-label="search keywords">
-                    <option selected>-- Select Search Keywords --</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  <input
+                    class="form-control fs-5 mb-10"
+                    formControlName="values"
+                    (keyup.Arrowright)="tagInput()"
+                  />
+                  <div class="tag-inputs col-12 col-sm-6">
+                    <ng-container *ngFor="let value of valueArray">
+                      <span class="tag-input"
+                        >{{ value }}
+                        <i
+                          class="bi bi-x fs-1 text-white"
+                          (click)="tagRemove(value)"
+                        ></i
+                      ></span>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
 
               <!-- Related Products -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Related Productss</label>
-                  <select class="form-select" aria-label="related keywords">
-                    <option selected>-- Select Related Products --</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
+                  <label class="fs-5 mb-3 fw-bold">Related Products</label>
+                    <select class="form-select" aria-label="related keywords" formControlName="relatedProducts">
+                      <option value="example" disabled>-- Select Related Products --</option>
+                      <option *ngFor="let product of productData" value="{{product?.name}}">{{product?.name}}</option>
+                    </select>
                 </div>
               </div>
 
@@ -333,7 +338,6 @@
               </div>
             </div>
           </form>
-        </div>
       </div>
     </div>
   </div>

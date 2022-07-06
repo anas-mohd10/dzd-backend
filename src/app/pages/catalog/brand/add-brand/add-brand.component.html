@@ -36,31 +36,31 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Name</label>
                   <input type="text" class="form-control fs-5" formControlName="name"/>
-                  <span class="text-danger" *ngIf="(bf.name.touched || isSubmitted) && bf.name.errors?.required">Name is required</span>
+                  <span class="text-danger fs-6 fw-bold" *ngIf="(bf.name.touched || isSubmitted) && bf.name.errors?.required">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Logo</label>
                   <input type="file" class="form-control fs-5" formControlName="file" (change)="handleInputChange($event)"/>
-                  <span class="text-danger fs-5 fw-bold" *ngIf="(bf.file.touched || isSubmitted) && bf.file.errors?.required">Brand Logo is required</span>
+                  <span class="text-danger fs-6 fw-bold" *ngIf="(bf.file.touched || isSubmitted) && bf.file.errors?.required">Brand logo is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="status">
-                    <option value="Active" selected>Active</option>
-                    <option value="Inactive">Inactive</option>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
+                    <option value="false" selected>Inactive</option>
+                    <option value="true">Active</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Featured Product ???</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="featured">
-                    <option value="No" selected>No</option>
-                    <option value="Yes">Yes</option>
+                  <label class="fs-5 mb-3 fw-bold">Featured Brand ?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isFeatured">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
                   </select>
                 </div>
               </div>

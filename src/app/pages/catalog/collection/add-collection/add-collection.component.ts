@@ -6,8 +6,6 @@ import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
-// import { Options } from 'select2';
-// import { Select2OptionData } from 'ng-select2';
 
 @Component({
   selector: 'app-add-collection',
@@ -17,7 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 export class AddCollectionComponent implements OnInit {
   collectionForm: FormGroup;
   task = PageTasks.ADD;
-  // public options: Options;
   productValue: any;
   editMode = false;
   fileData: any;
@@ -29,7 +26,8 @@ export class AddCollectionComponent implements OnInit {
   selected: any;
   filtered: any;
   productData: any;
-  products: Array<any>;
+  products: any = [];
+  productFlag: boolean = false;
 
   constructor(
     private collectionService: CollectionService,
@@ -37,8 +35,7 @@ export class AddCollectionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService  ) {}
 
   get value(): string[] {
     return this.productValue;
@@ -51,21 +48,15 @@ export class AddCollectionComponent implements OnInit {
     this.managePage();
     this.initForm();
     this.getCollection();
-    this.getProduct();
-    // this.options = {
-    //   width: '500',
-    //   multiple: true,
-    //   tags: true,
-    // };
-    // this.productValue = [""];
+    this.getProduct()
   }
 
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
       products: ['', Validators.required],
-      featured: ['No', Validators.required],
-      status: ['Active', Validators.required],
+      isFeatured: ['false', Validators.required],
+      isActive: ['false', Validators.required],
     });
   }
 
@@ -98,10 +89,11 @@ export class AddCollectionComponent implements OnInit {
   }
 
   getProduct() {
-    this.productService.getProductNames().subscribe((res: any) => {
+    this.productService.getProduct().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
           this.products = res?.result;
+          this.productFlag = true
           for(let i=0; i<this.products.length; i++){
             this.collectionForm.get('products')?.setValue(this.products[i].name)
           }
@@ -113,19 +105,20 @@ export class AddCollectionComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
-      this.updateBrand();
+      this.updateCollection();
     } else {
-      this.addBrand();
+      this.addCollection();
     }
   }
 
-  // onOptionsSelected() {
-  //   this.filtered = this.collectionData.filter(
-  //     (t: { value: any }) => t.value == this.selected
-  //   );
-  // }
+  handleInputChange(fileInput: any){
+    const file = fileInput.dataTransfer
+      ? fileInput.dataTransfer.files[0]
+      : fileInput.target.files[0];
+    this.fileData = <File>fileInput.target.files[0];
+  }
 
-  addBrand() {
+  addCollection() {
     if (!this.collectionForm.valid) {
       return;
     }
@@ -134,10 +127,11 @@ export class AddCollectionComponent implements OnInit {
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
     }
+
     for (const data of Object.keys(this.collectionForm.value)) {
       formData.append(data, this.collectionForm.value[data]);
     }
-    console.log(this.collectionForm);
+
     this.collectionService.addCollection(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
@@ -148,5 +142,10 @@ export class AddCollectionComponent implements OnInit {
     });
   }
 
-  updateBrand() {}
+  updateCollection() {}
+
+  onItemSelect(value: any){}
+
+  onSelectAll(value: any){}
 }
+

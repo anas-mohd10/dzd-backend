@@ -55,14 +55,11 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Description</label>
-                  <textarea
+                  <input
                     type="text"
                     class="form-control fs-5 description-textarea"
                     formControlName="description"
-                    cols="30"
-                    rows="10"
-                    maxlength="40"
-                  ></textarea>
+                  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -73,8 +70,8 @@
                     aria-label=".form-select-lg"
                     formControlName="isActive"
                   >
-                    <option value="true" selected>True</option>
-                    <option value="false">False</option>
+                    <option value="true" selected>Active</option>
+                    <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>

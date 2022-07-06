@@ -20,6 +20,7 @@ export class UpdateTaxRulesComponent implements OnInit {
   status: boolean;
   formData: any = {};
   taxRules: any;
+  taxRuleData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,7 @@ export class UpdateTaxRulesComponent implements OnInit {
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.taxRules = this.route.snapshot.queryParams.taxRules || ''
     this.managePage();
+    this.getTaxRules()
   }
 
   initForm() {
@@ -62,6 +64,16 @@ export class UpdateTaxRulesComponent implements OnInit {
     }
   }
 
+  getTaxRules(){
+    this.taxRulesService.getTaxRulesBySlug(this.taxRules).subscribe((res: any) => {
+       this.taxRuleData = res?.result[0]
+       this.taxRulesForm.get("name")?.setValue(this.taxRuleData?.name)
+       this.taxRulesForm.get("type")?.setValue(this.taxRuleData?.type)
+       this.taxRulesForm.get("rate")?.setValue(this.taxRuleData?.rate)
+       this.taxRulesForm.get("isActive")?.setValue(this.taxRuleData?.isActive)
+    })
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -76,15 +88,6 @@ export class UpdateTaxRulesComponent implements OnInit {
     if (!this.taxRulesForm.valid) {
       return;
     }
-    // this.formData.append('name', this.taxRulesForm.value?.name);
-    // this.formData.append('name', this.taxRulesForm.value?.description);
-    // this.formData.append('isActive', this.taxRulesForm.value?.status);
-    // this.formData.append('isFeatured', this.taxRulesForm.value?.featured);
-
-    // this.formData["name"] = this.taxRulesForm.value?.name
-    // this.formData["description"] = this.taxRulesForm.value?.ndescriptioname
-    // this.formData["isActive"] = this.taxRulesForm.value?.status
-    // this.formData["isFeatured"] = this.taxRulesForm.value?.featured
 
     for (const data of Object.keys(this.taxRulesForm.value)) {
       if (this.taxRulesForm.value[data] != '' || null) {

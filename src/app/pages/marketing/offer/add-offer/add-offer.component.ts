@@ -39,8 +39,8 @@ export class AddOfferComponent implements OnInit {
       description: ['', Validators.required],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
-      featured: ['No', Validators.required],
-      status: ['Active', Validators.required],
+      featured: ['false', Validators.required],
+      status: ['true', Validators.required],
     });
   }
 
