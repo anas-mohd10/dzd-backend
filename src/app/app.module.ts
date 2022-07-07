@@ -16,6 +16,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
@@ -34,7 +35,7 @@ function appInitializer(authService: AuthService) {
     TranslateModule.forRoot(),
     HttpClientModule,
     ClipboardModule,
-    NgSelect2Module,
+    NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot(),
 
     // #fake-start#

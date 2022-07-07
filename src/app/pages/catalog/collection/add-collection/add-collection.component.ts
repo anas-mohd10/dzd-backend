@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-add-collection',
@@ -28,6 +29,9 @@ export class AddCollectionComponent implements OnInit {
   productData: any;
   products: any = [];
   productFlag: boolean = false;
+  productArray: any = [];
+  valueArray: any = [];
+  productNames: any = [];
 
   constructor(
     private collectionService: CollectionService,
@@ -35,7 +39,8 @@ export class AddCollectionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService  ) {}
+    private toastr: ToastrService
+  ) {}
 
   get value(): string[] {
     return this.productValue;
@@ -48,13 +53,14 @@ export class AddCollectionComponent implements OnInit {
     this.managePage();
     this.initForm();
     this.getCollection();
-    this.getProduct()
+    this.getProduct();
   }
 
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
-      products: ['', Validators.required],
+      file: ['', Validators.required],
+      products: [],
       isFeatured: ['false', Validators.required],
       isActive: ['false', Validators.required],
     });
@@ -93,13 +99,44 @@ export class AddCollectionComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.products = res?.result;
-          this.productFlag = true
-          for(let i=0; i<this.products.length; i++){
-            this.collectionForm.get('products')?.setValue(this.products[i].name)
-          }
+          this.productArray = this.products;
+          this.productFlag = true;
           break;
       }
     });
+  }
+
+  tagInput() {
+    if(!this.valueArray.includes(this.collectionForm.get("products")?.value)){
+      this.valueArray.push(this.collectionForm.get("products")?.value)
+      this.getProductNames(this.collectionForm.get("products")?.value)
+    }else{
+      this.toastr.info('Product Already Added');
+    }
+    this.collectionForm.get("products")?.setValue('')
+  }
+
+  getProductNames(value: any){
+    for(let i=0; i<this.productArray.length; i++){
+      if(this.productArray[i]._id == value){
+        this.productNames.push(this.productArray[i].name)
+      }
+    }
+  }
+
+  tagRemove(value: any) {
+    if(this.productNames.includes(value)){
+      this.productNames.pop(value)
+      this.getProductId(value)
+    }
+  }
+
+  getProductId(value: any){
+    for(let i=0; i<this.productArray.length; i++){
+      if(this.productArray[i].name == value){
+        this.valueArray.pop(this.productArray[i]._id)
+      }
+    }
   }
 
   onSubmit() {
@@ -111,7 +148,7 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any){
+  handleInputChange(fileInput: any) {
     const file = fileInput.dataTransfer
       ? fileInput.dataTransfer.files[0]
       : fileInput.target.files[0];
@@ -129,8 +166,12 @@ export class AddCollectionComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.collectionForm.value)) {
-      formData.append(data, this.collectionForm.value[data]);
+      if (data != 'products') {
+        formData.append(data, this.collectionForm.value[data]);
+      }
     }
+
+    formData.append("products", this.valueArray);
 
     this.collectionService.addCollection(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
@@ -143,9 +184,4 @@ export class AddCollectionComponent implements OnInit {
   }
 
   updateCollection() {}
-
-  onItemSelect(value: any){}
-
-  onSelectAll(value: any){}
 }
-

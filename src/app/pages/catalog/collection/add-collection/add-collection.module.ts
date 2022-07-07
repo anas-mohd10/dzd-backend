@@ -16,7 +16,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     DataTablesModule,
     ReactiveFormsModule,
     ToastrModule,
-    NgSelect2Module,
     FormsModule,
     NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({

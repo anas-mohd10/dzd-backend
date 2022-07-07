@@ -72,10 +72,10 @@
                   </td>
                   <td>
                     <ng-container *ngIf="brand?.isActive == true">
-                      <h2 class="table-avatar text-success h-20 fs-5">Active</h2>
+                      <div class="active-text-view"><h2 class="table-avatar text-white fw-b fs-5">active</h2></div>
                     </ng-container>
                     <ng-container *ngIf="brand?.isActive == false">
-                      <h2 class="table-avatar text-danger fs-5">Inactive</h2>
+                      <div class="inactive-text-view"><h2 class="table-avatar text-white fw-b fs-5">inactive</h2></div>
                     </ng-container>
                   </td>
                   <td>

@@ -13,7 +13,6 @@ export class CollectionListComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  // public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes;
   collectionData: any
@@ -38,7 +37,6 @@ export class CollectionListComponent implements OnInit {
           this.collectionData = res?.result
           break
       }
-      // this.dtTrigger.next();
       this.displayTable = true;
     })
   }

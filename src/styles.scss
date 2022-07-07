@@ -1,5 +1,45 @@
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+.tag-inputs{
+  height: auto;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.tag-input{
+  // width: 120px;
+  margin: 0 10px 10px 0 ;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: #117d54;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.2rem;
+}
+
+.active-text-view{
+  height: 25px;
+  width: 60px;
+  background: #12aa4f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.inactive-text-view{
+  height: 25px;
+  width: 60px;
+  background: #ba1523;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
 
 .description-textarea{
   resize: none;

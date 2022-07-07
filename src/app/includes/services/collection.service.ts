@@ -22,7 +22,13 @@ export class CollectionService {
   }
 
   getCollectionBySlug(slug: any){
-    const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_by_slug + "?" + "slug=" + slug);
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);
+  }
+
+  updateCollection(slug: any, data: any){
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "?slug=" + slug);
+    console.log(url)
+    return this.http.put(`${url}`, data);
   }
 }

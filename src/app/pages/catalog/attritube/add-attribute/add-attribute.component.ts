@@ -59,8 +59,8 @@ export class AddAttributeComponent implements OnInit {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
       values: [],
-      filtered: ['check', Validators.required],
-      status: ['check', Validators.required],
+      isFiltered: ['check', Validators.required],
+      isActive: ['check', Validators.required],
     });
   }
 
@@ -86,7 +86,7 @@ export class AddAttributeComponent implements OnInit {
   handleCheckBox(event?: any) {}
 
   tagInput() {
-    if ((this.attributeForm.get('values')?.value != ' ' || '') || (this.attributeForm.get('values')?.value == null )) {
+    if ((this.attributeForm.get('values')?.value != ' ' || '') || (this.attributeForm.get('values')?.value != null )) {
       this.valueArray.push(this.attributeForm.get('values')?.value);
       this.attributeForm.get('values')?.setValue('');
     }

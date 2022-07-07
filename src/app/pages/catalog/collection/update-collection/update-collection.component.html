@@ -58,7 +58,11 @@
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
                     formControlName="products"
+                    (change)="tagInput()"
                   >
+                    <option value="example" disabled>
+                      -- Select a product --
+                    </option>
                     <option
                       *ngFor="let product of products"
                       value="{{ product?._id }}"
@@ -67,13 +71,13 @@
                     </option>
                   </select>
                   <ng-container>
-                    <div class="tag-inputs col-12 col-sm-6">
-                      <div *ngFor="let value of valueArray" >
+                    <div class="tag-inputs col-12">
+                      <div *ngFor="let name of productNames">
                         <span class="tag-input"
-                          >{{ value?.name }}
+                          >{{ name }}
                           <i
                             class="bi bi-x fs-1 text-white"
-                            (click)="tagRemove(value)"
+                            (click)="tagRemove(name)"
                           ></i
                         ></span>
                       </div>

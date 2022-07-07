@@ -57,7 +57,7 @@
                   <td>
                     <img
                       class="collection-logo"
-                      src="{{collection?.file}}"
+                      src="http://localhost:3000/{{collection?.file}}"
                       alt="collection"
                     />
                   </td>
@@ -71,10 +71,10 @@
                   </td>
                   <td>
                     <ng-container *ngIf="collection?.isActive == true">
-                      <h2 class="table-avatar text-success fs-5">Active</h2>
+                      <div class="active-text-view"><h2 class="table-avatar text-white fw-b fs-5">active</h2></div>
                     </ng-container>
                     <ng-container *ngIf="collection?.isActive == false">
-                      <h2 class="table-avatar text-danger fs-5">Inactive</h2>
+                      <div class="inactive-text-view"><h2 class="table-avatar text-white fw-b fs-5">inactive</h2></div>
                     </ng-container>
                   </td>
                   <td>

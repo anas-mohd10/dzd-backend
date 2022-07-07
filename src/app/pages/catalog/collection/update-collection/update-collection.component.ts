@@ -18,12 +18,16 @@ export class UpdateCollectionComponent implements OnInit {
 
   editMode = false;
   fileData: any;
-  appRoute = appRoutes
+  appRoute = appRoutes;
   collectionData: any;
   collection: any;
   collectionName: any;
   products: any;
   valueArray: any = [];
+  productArray: any = [];
+  productNames: any = [];
+  productValues: any = [];
+  isSubmitted: boolean;
 
   constructor(
     private collectionService: CollectionService,
@@ -37,15 +41,15 @@ export class UpdateCollectionComponent implements OnInit {
   ngOnInit(): void {
     this.collection = this.route.snapshot.queryParams.collection || '';
     this.getCollection();
-    this.getProduct()
-    this.managePage()
-    this.initForm()
+    this.getProduct();
+    this.managePage();
+    this.initForm();
   }
 
   initForm() {
     this.collectionForm = this.formBuilder.group({
-      name: [ '', Validators.required],
-      products: ['', Validators.required],
+      name: ['', Validators.required],
+      products: [],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
     });
@@ -69,8 +73,11 @@ export class UpdateCollectionComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.products = res?.result;
-          for(let i=0; i<this.products.length; i++){
-            this.collectionForm.get('products')?.setValue(this.products[i].name)
+          this.productArray = this.products;
+          for (let i = 0; i < this.products.length; i++) {
+            this.collectionForm
+              .get('products')
+              ?.setValue(this.products[i].name);
           }
           break;
       }
@@ -78,23 +85,101 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   getCollection() {
-    this.collectionService.getCollectionBySlug(this.collection).subscribe((res:any)=>{
-      switch(res?.errorCode){
-        case 0:
-          console.log(res?.result[0])
-          this.collectionData = res?.result[0]
-          this.collectionForm.get("name")?.setValue(this.collectionData?.name)
-          this.collectionForm.get("isFeatured")?.setValue(this.collectionData?.isFeatured)
-          this.collectionForm.get("isActive")?.setValue(this.collectionData?.isActive)
-          this.valueArray = this.collectionData?.products
-          break
+    this.collectionService
+      .getCollectionBySlug(this.collection)
+      .subscribe((res: any) => {
+        switch (res?.errorCode) {
+          case 0:
+            this.collectionData = res?.result[0];
+            this.collectionForm
+              .get('name')
+              ?.setValue(this.collectionData?.name);
+            this.collectionForm
+              .get('isFeatured')
+              ?.setValue(this.collectionData?.isFeatured);
+            this.collectionForm
+              .get('isActive')
+              ?.setValue(this.collectionData?.isActive);
+            this.productValues = this.collectionData?.products;
+            for (let i = 0; i < this.productValues.length; i++) {
+              this.productNames.push(this.productValues[i].name);
+              this.valueArray.push(this.productValues[i]._id);
+            }
+            break;
+        }
+      });
+  }
+
+  tagInput() {
+    if (!this.valueArray.includes(this.collectionForm.get('products')?.value)) {
+      this.valueArray.push(this.collectionForm.get('products')?.value);
+      this.getProductNames(this.collectionForm.get('products')?.value);
+    }
+    this.collectionForm.get('products')?.setValue('');
+  }
+
+  getProductNames(value: any) {
+    for (let i = 0; i < this.productArray.length; i++) {
+      if (this.productArray[i]._id == value) {
+        this.productNames.push(this.productArray[i].name);
       }
-    })
+    }
   }
 
-  tagRemove(value: any){
-
+  tagRemove(value: any) {
+    if(this.productNames.includes(value)){
+      this.productNames.pop(value)
+      this.getProductId(value)
+    }
   }
 
-  onSubmit(){}
+  getProductId(value: any){
+    for(let i=0; i<this.productArray.length; i++){
+      if(this.productArray[i].name == value){
+        this.valueArray.pop(this.productArray[i]._id)
+      }
+    }
+  }
+
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.editMode) {
+      this.updateCollection();
+    } else {
+      this.addCollection();
+    }
+  }
+
+  addCollection(){}
+
+
+  updateCollection(){
+    if (!this.collectionForm.valid) {
+      return;
+    }
+
+    const formData = new FormData();
+    if (this.fileData != null && this.fileData != undefined) {
+      formData.append('file', this.fileData);
+    }
+
+    for (const data of Object.keys(this.collectionForm.value)) {
+      if (data != 'products') {
+        formData.append(data, this.collectionForm.value[data]);
+      }
+    }
+
+    console.log(this.valueArray)
+
+    formData.append("products", this.valueArray);
+
+    this.collectionService.updateCollection(this.collection, formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Collection Added Successfully');
+        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+      }
+    });
+  }
 }

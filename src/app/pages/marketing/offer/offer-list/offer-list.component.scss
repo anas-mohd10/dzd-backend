@@ -1,8 +1,9 @@
 .offer-image{
     height: 60px;
     width: 60px;
+    object-fit: contain;
     border-radius: 5px;
-    background-size: cover;
+    
 }
 
 .active-filter-container{

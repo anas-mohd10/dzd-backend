@@ -62,26 +62,31 @@
                   />
                 </div>
               </div>
-              <!-- <div class="col-12 col-sm-6">
+              <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Products</label>
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
                     formControlName="products"
+                    (change)="tagInput()"
                   >
-                    <option selected value="select" disabled>
+                    <option value="example" disabled>
                       -- Select a product --
                     </option>
-                    <option
-                      *ngFor="let product of products"
-                      value="{{ product?._id }}"
-                    >
-                      {{ product?.name }}
+                    <option *ngFor="let product of productArray" value="{{product?._id}}">
+                        {{ product?.name }}
                     </option>
                   </select>
                 </div>
-              </div> -->
+                <div class="tag-inputs col-12">
+                  <ng-container *ngFor="let name of productNames">
+                    <span class="tag-input">{{ name }}
+                      <i class="bi bi-x fs-1 text-white" (click)="tagRemove(name)"></i>
+                    </span>
+                  </ng-container>
+                </div>
+              </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured Collection ?</label>
