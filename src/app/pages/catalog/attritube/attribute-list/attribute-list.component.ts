@@ -14,6 +14,7 @@ export class AttributeComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
+  
   appRoute = appRoutes;
   category: any;
   attributeData: any;
@@ -49,6 +50,7 @@ export class AttributeComponent implements OnInit {
         this.AttributeService.getCategoryById(this.categoryId).subscribe(
           (res: any) => {
             this.attributeData = res?.result;
+            console.log(this.attributeData)
             this.displayTable = true;
           }
         );

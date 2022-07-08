@@ -60,7 +60,37 @@
                     <h2 class="table-avatar fs-5">{{ attribute?.name }}</h2>
                   </td>
                   <td>
-                    <div class="attribute-col">
+                    <div
+                      class="attribute-col"
+                      *ngIf="attribute?.valueType == 'text'"
+                    >
+                      <ng-container *ngFor="let value of attribute?.value">
+                        <div class="row">
+                          <div class="col">
+                            <h2 class="attribute-value fs-5">{{ value }}</h2>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div
+                      class="attribute-col"
+                      *ngIf="attribute?.valueType == 'color'"
+                    >
+                      <ng-container *ngFor="let value of attribute?.value">
+                        <div class="row">
+                          <div class="col">
+                            <div
+                              class="color-div"
+                              [ngStyle]="{ backgroundColor: value }"
+                            ></div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div
+                      class="attribute-col"
+                      *ngIf="attribute?.valueType == 'image'"
+                    >
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
@@ -72,17 +102,28 @@
                   </td>
                   <td>
                     <ng-container *ngIf="attribute?.isActive == true">
-                      <h2 class="table-avatar fs-5">Active</h2>
+                      <div class="active-text-view">
+                        <h2 class="table-avatar text-white fw-b fs-5">
+                          active
+                        </h2>
+                      </div>
                     </ng-container>
                     <ng-container *ngIf="attribute?.isActive == false">
-                      <h2 class="table-avatar fs-5">Inactive</h2>
+                      <div class="inactive-text-view">
+                        <h2 class="table-avatar text-white fw-b fs-5">
+                          inactive
+                        </h2>
+                      </div>
                     </ng-container>
                   </td>
                   <td>
                     <a
                       class="fs-5 cursor-pointer text-darker"
                       routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
-                      [queryParams]="{ category: category, attribute: attribute?.slug }"
+                      [queryParams]="{
+                        category: category,
+                        attribute: attribute?.slug
+                      }"
                       ><i class="bi bi-pen fs-4"></i> Edit
                     </a>
                   </td>

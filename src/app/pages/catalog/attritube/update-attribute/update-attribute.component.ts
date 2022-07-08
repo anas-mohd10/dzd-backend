@@ -30,6 +30,15 @@ export class UpdateAttributeComponent implements OnInit {
   isFiltered: any;
   valueArray: any = [];
   attribute: any;
+  textArray: any = [];
+  colorArray: any = [];
+  imageArray: any = [];
+  valueType: any;
+  textFlag: boolean = false;
+  colorFlag: boolean = false;
+  imageFlag: boolean = false;
+  values: any;
+  type: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,10 +61,12 @@ export class UpdateAttributeComponent implements OnInit {
   initForm() {
     this.attributeForm = this.formBuilder.group({
       name: [''],
+      valueType: [''],
       values: [],
+      colorValue: [],
       filtered: [''],
       status: [''],
-      tags: ['']
+      tags: [''],
     });
   }
 
@@ -90,23 +101,60 @@ export class UpdateAttributeComponent implements OnInit {
         this.attributeForm.get('name')?.setValue(res?.result[0].name);
         this.attributeForm.get('status')?.setValue(res?.result[0].isActive);
         this.attributeForm.get('filtered')?.setValue(res?.result[0].isFiltered);
-        this.valueArray = res?.result[0].value;
+        this.attributeForm.get('valueType')?.setValue(res?.result[0].valueType);
+        this.type = res?.result[0].valueType
+        console.log(this.type)
+        this.textArray = res?.result[0].value;
       }
     );
   }
 
   tagInput() {
-    if (this.attributeForm.get('values')?.value != ' ' || '' || this.attributeForm.get('values')?.value == null) {
-      this.valueArray.push(this.attributeForm.get('values')?.value);
+    if (
+      this.attributeForm.get('values')?.value != ' ' ||
+      '' ||
+      this.attributeForm.get('values')?.value == null
+    ) {
+      this.textArray.push(this.attributeForm.get('values')?.value);
       this.attributeForm.get('values')?.setValue('');
     }
   }
 
   tagRemove(value: any) {
-    for (let i = 0; i < this.valueArray.length; i++) {
-      if (this.valueArray[i] == value) {
-        this.valueArray.pop(value);
-      }
+    console.log('Value --> ', value);
+    const index = this.textArray.indexOf(value);
+    console.log('Index --> ', index);
+    if (index > -1) {
+      this.textArray.splice(index, 1);
+    }
+    console.log('Array --> ', this.textArray);
+  }
+
+  changeValueType() {
+    this.valueType = this.attributeForm.get('valueType')?.value;
+    if (this.valueType == 'text') {
+      this.textFlag = true;
+      this.colorFlag = false;
+      this.imageFlag = false;
+    } else if (this.valueType == 'color') {
+      this.textFlag = false;
+      this.colorFlag = true;
+      this.imageFlag = false;
+    } else if (this.valueType == 'image') {
+      this.textFlag = false;
+      this.colorFlag = false;
+      this.imageFlag = true;
+    }
+  }
+
+  getColorCode() {
+    this.colorArray.push(this.attributeForm.get('colorValue')?.value);
+  }
+
+  colorRemove(color: any) {
+    const index = this.colorArray.indexOf(color);
+    if (index > -1) {
+      this.colorArray.splice(index, 1);
     }
   }
 
@@ -121,28 +169,41 @@ export class UpdateAttributeComponent implements OnInit {
 
   updateBrand() {
     if (!this.attributeForm.valid) {
-      console.log('Form not valid')
+      console.log('Form not valid');
       return;
     }
+
+    if (this.valueType == 'color') {
+      this.values = this.colorArray;
+    } else if (this.valueType == 'text') {
+      this.values = this.textArray;
+    } else if (this.valueType == 'image') {
+      this.values = this.imageArray;
+    }
+
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
-      value: this.valueArray,
+      valueType: this.attributeForm.get('valueType')?.value,
+      value: this.values,
       isFiltered: this.attributeForm.get('filtered')?.value,
       isActive: this.attributeForm.get('status')?.value,
-      categoryId: this.categoryId
+      categoryId: this.categoryId,
     };
-    this.AttributeService.updateAttribute(this.attribute, this.categoryId, this.attributeData).subscribe(
-      (res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res?.errorCode == 0) {
-          this.toastr.success('Attribute updated successfully');
-          this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {
-            queryParams: { category: this.category },
-          });
-        }
+
+    this.AttributeService.updateAttribute(
+      this.attribute,
+      this.categoryId,
+      this.attributeData
+    ).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res?.errorCode == 0) {
+        this.toastr.success('Attribute updated successfully');
+        this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {
+          queryParams: { category: this.category },
+        });
       }
-    );
+    });
   }
 
   addBrand() {}

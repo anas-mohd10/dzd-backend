@@ -54,25 +54,93 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Values </label>
-                  <input
-                    class="form-control fs-5 mb-10"
-                    formControlName="values"
-                    (keyup.Arrowright)="tagInput()"
-                  />
-                  <div class="tag-inputs col-12 col-sm-6">
-                    <ng-container *ngFor="let value of valueArray">
-                      <span class="tag-input"
-                        >{{ value }}
+                  <label class="fs-5 mb-3 fw-bold">Value Type</label>
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="valueType"
+                    (change)="changeValueType()"
+                  >
+                    <option value="check" disabled>
+                      -- Select An Option --
+                    </option>
+                    <option value="text" selected>Text</option>
+                    <option value="image">Image</option>
+                    <option value="color">Color Picker</option>
+                  </select>
+                </div>
+              </div>
+              <ng-container *ngIf="textFlag">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold"> Text Value </label>
+                    <input
+                      class="form-control fs-5 mb-10"
+                      formControlName="values"
+                      (keyup.Arrowright)="tagInput()"
+                    />
+                    <div class="tag-inputs col-12 col-sm-6">
+                      <ng-container *ngFor="let value of textArray">
+                        <span class="tag-input"
+                          >{{ value }}
+                          <i
+                            class="bi bi-x fs-1 text-white"
+                            (click)="tagRemove(value)"
+                          ></i
+                        ></span>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="colorFlag">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold"> Color Value </label>
+                    <input
+                      type="color"
+                      class="form-control color-picker fs-5 mb-10"
+                      formControlName="colorValue"
+                      (keyup.Arrowright)="tagInput()"
+                      (change)="getColorCode()"
+                    />
+                  </div>
+                  <div class="tag-inputs col-12">
+                    <ng-container *ngFor="let color of colorArray">
+                      <div
+                        class="color-div"
+                        [ngStyle]="{ backgroundColor: color }"
+                      >
                         <i
-                          class="bi bi-x fs-1 text-white"
-                          (click)="tagRemove(value)"
-                        ></i
-                      ></span>
+                          class="bi bi-x fs-1 text-dark close-btn"
+                          (click)="colorRemove(color)"
+                        ></i>
+                      </div>
                     </ng-container>
                   </div>
                 </div>
-              </div>
+              </ng-container>
+              <ng-container *ngIf="imageFlag">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3 fw-bold"> Image Value </label>
+                    <input
+                      type="file"
+                      class="form-control fs-5 mb-10"
+                      (change)="handleInputChange($event)"
+                      formControlName="imageValue"
+                      id="attributeImage"
+                    />
+                  </div>
+                  <div class="tag-inputs col-12">
+                    <ng-container *ngFor="let image of imageArray">
+                      <div class="preview-image">
+                        <img src="{{ image.url }}" alt="preview" />
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Active</label>
@@ -81,25 +149,19 @@
                     aria-label=".form-select-lg"
                     formControlName="isActive"
                   >
-                    <option value="check" disabled>
-                      -- Select An Option --
-                    </option>
-                    <option value="true" selected>Active</option>
+                    <option value="true">Active</option>
                     <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Filtered Product ???</label>
+                  <label class="fs-5 mb-3 fw-bold">Filtered Attribute ?</label>
                   <select
                     class="form-select form-select-lg mb-3"
                     aria-label=".form-select-lg"
                     formControlName="isFiltered"
                   >
-                    <option value="check" disabled>
-                      -- Select An Option --
-                    </option>
                     <option value="false">False</option>
                     <option value="true">True</option>
                   </select>
@@ -117,3 +179,5 @@
     </div>
   </div>
 </div>
+<!-- <script>
+</script> -->

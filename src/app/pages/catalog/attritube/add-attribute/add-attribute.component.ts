@@ -28,7 +28,16 @@ export class AddAttributeComponent implements OnInit {
   status: boolean;
   filtered: string;
   isFiltered: any;
-  valueArray: any = [];
+  textArray: any = [];
+  colorArray: any = [];
+  imageArray: any = [];
+  valueType: any;
+  textFlag: boolean = false;
+  colorFlag: boolean = false;
+  imageFlag: boolean = false;
+  values: any;
+  images: any = [];
+  imagesArray: any = [];
 
   validationMessages = {
     name: [
@@ -58,9 +67,12 @@ export class AddAttributeComponent implements OnInit {
   initForm() {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
+      valueType: ['check', Validators.required],
       values: [],
-      isFiltered: ['check', Validators.required],
-      isActive: ['check', Validators.required],
+      colorValue: [],
+      imageValue: [],
+      isFiltered: ['false', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 
@@ -81,22 +93,47 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
-  handleInputChange(event: any) {}
+  handleInputChange(fileInput: any) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      const imageName = fileInput.target.files[0].name;
+      var filesAmount = fileInput.target.files.length;
+      for (let i = 0; i < filesAmount; i++) {
+        var reader = new FileReader();
+        this.fileData = <File>fileInput.target.files[i];
+        reader.onload = (event: any) => {
+          this.imageArray.push({
+            name: imageName,
+            url: event.target.result,
+          });
+          this.imagesArray.push(fileInput.target.files[i]);
+          this.images.push(event.target.result);
+          this.attributeForm.patchValue({
+            attributeImage: this.images,
+          });
+        };
+        reader.readAsDataURL(fileInput.target.files[i]);
+      }
+    }
+    this.attributeForm.get('imageValue')?.setValue('');
+  }
 
   handleCheckBox(event?: any) {}
 
   tagInput() {
-    if ((this.attributeForm.get('values')?.value != ' ' || '') || (this.attributeForm.get('values')?.value != null )) {
-      this.valueArray.push(this.attributeForm.get('values')?.value);
+    if (
+      this.attributeForm.get('values')?.value != ' ' ||
+      '' ||
+      this.attributeForm.get('values')?.value != null
+    ) {
+      this.textArray.push(this.attributeForm.get('values')?.value);
       this.attributeForm.get('values')?.setValue('');
     }
   }
 
   tagRemove(value: any) {
-    for (let i = 0; i < this.valueArray.length; i++) {
-      if (this.valueArray[i] == value) {
-        this.valueArray.pop(value);
-      }
+    const index = this.textArray.indexOf(value);
+    if (index > -1) {
+      this.textArray.splice(index, 1);
     }
   }
 
@@ -105,6 +142,34 @@ export class AddAttributeComponent implements OnInit {
       this.categoryData = res;
       this.categoryId = this.categoryData.result[0]._id;
     });
+  }
+
+  changeValueType() {
+    this.valueType = this.attributeForm.get('valueType')?.value;
+    if (this.valueType == 'text') {
+      this.textFlag = true;
+      this.colorFlag = false;
+      this.imageFlag = false;
+    } else if (this.valueType == 'color') {
+      this.textFlag = false;
+      this.colorFlag = true;
+      this.imageFlag = false;
+    } else if (this.valueType == 'image') {
+      this.textFlag = false;
+      this.colorFlag = false;
+      this.imageFlag = true;
+    }
+  }
+
+  getColorCode() {
+    this.colorArray.push(this.attributeForm.get('colorValue')?.value);
+  }
+
+  colorRemove(color: any) {
+    const index = this.colorArray.indexOf(color);
+    if (index > -1) {
+      this.colorArray.splice(index, 1);
+    }
   }
 
   onSubmit() {
@@ -120,17 +185,34 @@ export class AddAttributeComponent implements OnInit {
 
   addBrand() {
     if (!this.attributeForm.valid) {
+      this.toastr.warning('Some error occurred');
       return;
     }
+
+    if (this.valueType == 'color') {
+      this.values = this.colorArray;
+    } else if (this.valueType == 'text') {
+      this.values = this.textArray;
+    } else if (this.valueType == 'image') {
+      this.values = this.imagesArray;
+    }
+
+    console.log(this.imagesArray)
+
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
-      value: this.valueArray,
-      isFiltered: this.attributeForm.get('filtered')?.value,
-      isActive: this.attributeForm.get('status')?.value,
-      categoryId: this.categoryId
+      valueType: this.valueType,
+      value: this.values,
+      isFiltered: this.attributeForm.get('isFiltered')?.value,
+      isActive: this.attributeForm.get('isActive')?.value,
+      categoryId: this.categoryId,
     };
+
+    console.log(this.attributeData);
+
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {
+        console.log('API Response --> ', res?.result);
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res?.errorCode == 0) {
