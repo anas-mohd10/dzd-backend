@@ -60,7 +60,9 @@
                     <h2 class="table-avatar fs-5">{{ product?.name }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ product?.productType }}</h2>
+                    <h2 class="table-avatar fs-5">
+                      {{ product?.productType }}
+                    </h2>
                   </td>
                   <!-- <ng-container *ngIf="product?.rootId">
                     <td>
@@ -107,7 +109,13 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker"> Edit </a>
+                    <a
+                      routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
+                      [queryParams]="{ product: product?.slug }"
+                      class="fs-5 cursor-pointer text-darker"
+                    >
+                      Edit
+                    </a>
                   </td>
                 </tr>
               </tbody>

@@ -26,8 +26,8 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
-  getProductById(id: any) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.get_product_by_id + '/' + id);
+  getProductBySlug(slug: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_product_by_slug + '?slug=' + slug);
     return this.http.get(`${url}`);
   }
 

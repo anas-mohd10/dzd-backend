@@ -95,8 +95,8 @@ export class AddProductComponent implements OnInit {
       buttonredireturl: ['', Validators.required],
       featured: ['', Validators.required],
       returnable: ['', Validators.required],
-
-
+      cod: ['', Validators.required],
+      shippingCost: ['', Validators.required],
       taxClass: ['example', Validators.required],
       returndays: ['', Validators.required],
       weight: ['', Validators.required],

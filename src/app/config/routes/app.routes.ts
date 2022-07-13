@@ -31,6 +31,7 @@ export const appRoutes = {
   product: {
     ADD_PRODUCT: `${app}${productRoute}/add`,
     PRODUCT_LIST: `${app}${productRoute}`,
+    UPDATE_PRODUCT: `${app}${productRoute}/update`
   },
   collection: {
     ADD_COLLECTION: `${app}${collectionRoute}/add`,

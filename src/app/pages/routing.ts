@@ -80,6 +80,13 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
+      import('./catalog/product/update-product/update-product.module').then(
+        (m) => m.UpdateProductModule
+      ),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
       import(
         './catalog/collection/collection-list/collection-list.module'
       ).then((m) => m.CollectionModule),
