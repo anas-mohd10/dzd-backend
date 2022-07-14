@@ -208,6 +208,8 @@ export class AddAttributeComponent implements OnInit {
       categoryId: this.categoryId,
     };
 
+    console.log("Attribute Data :: " + this.attributeData)
+
     console.log(this.attributeData);
 
     this.AttributeService.addAttribute(this.attributeData).subscribe(

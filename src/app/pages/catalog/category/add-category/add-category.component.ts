@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -15,7 +15,7 @@ export class AddCategoryComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
-  categoryArray: any = []
+  categoryArray: any = [];
 
   validationMessages = {
     name: [
@@ -36,7 +36,8 @@ export class AddCategoryComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private toastr: ToastrService
   ) {}
 
   get bf() {
@@ -70,7 +71,9 @@ export class AddCategoryComponent implements OnInit {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       rootCategory: ['', Validators.required],
-      parentId: ['', Validators.required],
+      isActive: ['true', Validators.required],
+      isFeatured: ['false', Validators.required],
+      parentId: [''],
     });
   }
 
@@ -92,29 +95,38 @@ export class AddCategoryComponent implements OnInit {
     if (this.editMode) {
       this.updateBrand();
     } else {
-      this.addBrand();
+      this.addCategory();
     }
   }
 
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
-
-      this.categoryData = res?.result
+      this.categoryData = res?.result;
       for (let i = 0; i < res?.result.length; i++) {
-        if(res?.result[i].parentId && !res?.result[i].rootId){
-          this.categoryArray.push(res?.result[i].parentId.name + " > "+ res?.result[i].name)
+        if (res?.result[i].parentId && !res?.result[i].rootId) {
+          this.categoryArray.push(
+            res?.result[i].parentId.name + ' > ' + res?.result[i].name
+          );
         }
-        if(!res?.result[i].parentId && res?.result[i].rootId){
-          this.categoryArray.push(res?.result[i].rootId.name +  " > " +res?.result[i].name)
+        if (!res?.result[i].parentId && res?.result[i].rootId) {
+          this.categoryArray.push(
+            res?.result[i].rootId.name + ' > ' + res?.result[i].name
+          );
         }
-        if(res?.result[i].parentId && res?.result[i].rootId){
-          this.categoryArray.push(res?.result[i].rootId.name + " > " + res?.result[i].parentId.name + " > " + res?.result[i].name)
+        if (res?.result[i].parentId && res?.result[i].rootId) {
+          this.categoryArray.push(
+            res?.result[i].rootId.name +
+              ' > ' +
+              res?.result[i].parentId.name +
+              ' > ' +
+              res?.result[i].name
+          );
         }
-        if(!res?.result[i].parentId && !res?.result[i].rootId){
-          this.categoryArray.push(res?.result[i].name)
+        if (!res?.result[i].parentId && !res?.result[i].rootId) {
+          this.categoryArray.push(res?.result[i].name);
         }
       }
-      this.categoryForm.get("parentId")?.setValue(this.categoryArray)
+      this.categoryForm.get('parentId')?.setValue(this.categoryArray);
     });
   }
 
@@ -122,29 +134,31 @@ export class AddCategoryComponent implements OnInit {
   updateBrand() {}
 
   //Add brand
-  addBrand() {
-    if(this.categoryForm.get("rootCategory")?.value == true){
-      this.categoryForm.get("parentId")?.setValue('')
+  addCategory() {
+    if (this.categoryForm.get('rootCategory')?.value == true) {
+      this.categoryForm.get('parentId')?.setValue('');
     }
 
-    const splitCategory = this.categoryForm.get("parentId")?.value.split(' > ')
-    for(let i=0; i<splitCategory.length; i++){
-
-    }
+    const splitCategory = this.categoryForm.get('parentId')?.value.split(' > ');
+    for (let i = 0; i < splitCategory.length; i++) {}
     if (!this.categoryForm.valid) {
       return;
     }
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
-        formData.append("file", this.fileData);
+      formData.append('file', this.fileData);
     }
 
-    //   for (const data of Object.keys(this.brandForm.value)) {
-    //     formData.append(data, this.brandForm.value[data]);
-    //   }
-    //   this.CategoryService.addBrand(formData).subscribe((res: any) => {
-    //     console.log(res)
-    //     this.router.navigate([this.appRoute.brand.BRAND_LIST]);
-    //   });
+    for (const data of Object.keys(this.categoryForm.value)) {
+      formData.append(data, this.categoryForm.value[data]);
+    }
+    this.CategoryService.addCategory(formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Category Added Successfully');
+        this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
+      }
+    });
   }
 }

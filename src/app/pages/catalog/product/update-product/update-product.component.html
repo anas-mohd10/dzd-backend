@@ -20,14 +20,6 @@
           </li>
         </ul>
       </div>
-        <button
-        *ngIf="!isConfigurable"
-        class="btn btn-primary cursor-pointer"
-        color="primary"
-        routerLink="{{ appRoute.product.ADD_PRODUCT }}"
-      >
-        Add Variant Product
-      </button>
     </div>
   </div>
   <!-- Page Header -->
@@ -42,7 +34,6 @@
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Product Details</span></h5>
               </div>
-
               <!-- Product Type -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
@@ -52,6 +43,7 @@
                     formControlName="productType"
                     (change)="handleProductType()"
                   >
+                    <option value="Check">-- Select a Product Type --</option>
                     <option value="Single">Single</option>
                     <option value="Configurable">Configurable</option>
                   </select>

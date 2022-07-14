@@ -25,7 +25,6 @@ export class UpdateProductComponent implements OnInit {
   isChecked = false;
   productType: any;
   isSingle: boolean = false;
-  isConfigurable: boolean = false;
   brandData: any;
   selected: any;
   filtered: any;
@@ -34,6 +33,7 @@ export class UpdateProductComponent implements OnInit {
   valueArray: any = []
   productData: any;
   slug: any;
+  productDetail: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,7 +77,7 @@ export class UpdateProductComponent implements OnInit {
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      productType: ['Configurable'],
+      productType: [''],
       name: [''],
       sku: [''],
       hsn: [''],
@@ -88,15 +88,15 @@ export class UpdateProductComponent implements OnInit {
       stockwarning: [''],
       productdescription: [''],
       featuredescription: [''],
-      category: ['example'],
-      brand: ['example'],
+      category: [''],
+      brand: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
       featured: [''],
       returnable: [''],
       cod: [''],
       shippingCost: [''],
-      taxClass: ['example'],
+      taxClass: [''],
       returndays: [''],
       weight: [''],
       position: [''],
@@ -105,15 +105,15 @@ export class UpdateProductComponent implements OnInit {
       shippingMethod: [''],
       codCharge: [''],
       values: [''],
-      relatedProducts: ['example']
+      relatedProducts: ['']
     });
   }
 
   handleProductType() {
-    this.productType = this.productForm.get('productType');
-    if (this.productType.value == 'single') {
+    this.productType = this.productForm.get('productType')?.value;
+    if (this.productType == 'Single') {
       this.isSingle = true;
-    } else if (this.productType.value == 'configurable') {
+    } else if (this.productType == 'Configurable') {
       this.isSingle = false;
     }
   }
@@ -172,15 +172,10 @@ export class UpdateProductComponent implements OnInit {
 
   getProductBySlug(){
     this.productService.getProductBySlug(this.slug).subscribe((res: any) => {
-      this.productData = res?.result[0]
-      if(this.productData.productType == "Single"){
-        this.isConfigurable = false
-      }else if (this.productData.productType == "Configurable"){
-        this.isConfigurable = true
-      }
+      this.productDetail = res?.result[0]
     })
   }
- 
+
   onOptionsSelected() {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected

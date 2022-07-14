@@ -46,6 +46,7 @@
                   <th class="text-dark fw-bolder fs-4">Price</th>
                   <th class="text-dark fw-bolder fs-4">Stock</th>
                   <th class="text-dark fw-bolder fs-4">Image</th>
+                  <th class="text-dark fw-bolder fs-4">Variants</th>
                   <th class="text-dark fw-bolder fs-4">Status</th>
                   <th class="text-dark fw-bolder fs-4">Action</th>
                 </tr>
@@ -61,29 +62,18 @@
                   </td>
                   <td>
                     <h2 class="table-avatar fs-5">
-                      {{ product?.productType }}
+                      <ng-container *ngIf="product?.isSingle == true">
+                          <h2 class="table-avatar fw-b fs-5">
+                            Single
+                          </h2>
+                      </ng-container>
+                      <ng-container *ngIf="product?.isSingle == false">
+                          <h2 class="table-avatar fw-b fs-5">
+                            Configurable
+                          </h2>
+                      </ng-container>
                     </h2>
                   </td>
-                  <!-- <ng-container *ngIf="product?.rootId">
-                    <td>
-                      <h2 class="table-avatar fs-5">{{ product?.rootId.name }}</h2>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="product?.parentId">
-                    <td>
-                      <h2 class="table-avatar fs-5">{{ product?.parentId.name }}</h2>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="!product?.rootId">
-                    <td>
-                      <h2 class="table-avatar fs-5">-</h2>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="!product?.parentId">
-                    <td>
-                      <h2 class="table-avatar fs-5">-</h2>
-                    </td>
-                  </ng-container> -->
                   <td>
                     <h2 class="table-avatar fs-5">{{ product?.categories }}</h2>
                   </td>
@@ -96,16 +86,36 @@
                   <td>
                     <img
                       class="product-logo"
-                      src="../../../../../assets/media/products/15.png"
-                      alt="product Logo"
+                      src="http://localhost:3000/{{product?.file}}"
+                      alt="product"
                     />
                   </td>
-                  <!-- <td>
-                    <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{product: product?.slug}" class="fs-5 cursor-pointer text-darker">Attributes</a>
-                  </td> -->
+                  <td>
+                    <ng-container *ngIf="product?.isSingle == false">
+                      <a
+                        routerLink="{{
+                          appRoute.variantProduct.VARIANT_PRODUCT_LIST
+                        }}"
+                        [queryParams]="{ product: product?.slug }"
+                        class="fs-5 cursor-pointer text-darker"
+                        ><i class="bi bi-grid-3x3-gap fs-1"></i
+                      ></a>
+                    </ng-container>
+                  </td>
                   <td>
                     <ng-container *ngIf="product?.isActive == true">
-                      <h2 class="table-avatar fs-5">Active</h2>
+                      <div class="active-text-view">
+                        <h2 class="table-avatar text-white fw-b fs-5">
+                          active
+                        </h2>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="product?.isActive == false">
+                      <div class="inactive-text-view">
+                        <h2 class="table-avatar text-white fw-b fs-5">
+                          inactive
+                        </h2>
+                      </div>
                     </ng-container>
                   </td>
                   <td>

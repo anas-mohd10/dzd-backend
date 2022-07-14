@@ -38,6 +38,7 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Product Type</label>
                   <select  class="form-select" formControlName="productType" (change)="handleProductType()">
+                    <option value="Check">-- Select a Product Type --</option>
                     <option value="Single">Single</option>
                     <option value="Configurable">Configurable</option>
                   </select>
@@ -110,7 +111,7 @@
               <ng-container *ngIf="isSingle">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3 fw-bold">MOQ</label>
+                    <label class="fs-5 mb-3 fw-bold">Minimum Order Quantity</label>
                     <input type="text" class="form-control fs-5" formControlName="moq"/>
                   </div>
                 </div>

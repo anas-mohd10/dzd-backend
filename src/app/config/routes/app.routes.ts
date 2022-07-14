@@ -3,6 +3,7 @@ const dashboardRoute = '/dashboard';
 const catalogRoute = '/catalog';
 const brandRoute = '/brand';
 const productRoute = '/product';
+const variantProductRoute = '/variant-product'
 const categoryRoute = '/category';
 const attributeRoute = '/attribute';
 const collectionRoute = '/collection'
@@ -32,6 +33,11 @@ export const appRoutes = {
     ADD_PRODUCT: `${app}${productRoute}/add`,
     PRODUCT_LIST: `${app}${productRoute}`,
     UPDATE_PRODUCT: `${app}${productRoute}/update`
+  },
+  variantProduct: {
+    ADD_VARIANT_PRODUCT: `${app}${variantProductRoute}/add`,
+    VARIANT_PRODUCT_LIST: `${app}${variantProductRoute}`,
+    UPDATE_VARIANT_PRODUCT: `${app}${variantProductRoute}/update`
   },
   collection: {
     ADD_COLLECTION: `${app}${collectionRoute}/add`,

@@ -7,7 +7,7 @@ import { ProductService } from '../../../../includes/services/product.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -31,11 +31,11 @@ export class AddProductComponent implements OnInit {
   categoryData: any;
   taxClassData: any;
   valueArray: any = []
+  productData: any;
 
   validationMessages = {
     name: [{ type: 'required', message: 'Product name is required' }],
   };
-  productData: any;
 
 
   constructor(
@@ -45,7 +45,8 @@ export class AddProductComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private categoryService: CategoryService,
-    private taxClassService: TaxClassesService
+    private taxClassService: TaxClassesService,
+    private toastr: ToastrService
   ) {}
 
   get pf() {
@@ -78,7 +79,7 @@ export class AddProductComponent implements OnInit {
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      productType: ['Configurable', Validators.required],
+      productType: ['Check', Validators.required],
       name: ['', Validators.required],
       sku: ['', Validators.required],
       hsn: ['', Validators.required],
@@ -111,10 +112,10 @@ export class AddProductComponent implements OnInit {
   }
 
   handleProductType() {
-    this.productType = this.productForm.get('productType');
-    if (this.productType.value == 'single') {
+    this.productType = this.productForm.get('productType')?.value;
+    if (this.productType == 'Single') {
       this.isSingle = true;
-    } else if (this.productType.value == 'configurable') {
+    } else if (this.productType == 'Configurable') {
       this.isSingle = false;
     }
   }
@@ -167,7 +168,6 @@ export class AddProductComponent implements OnInit {
 
   getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
-      console.log(res?.result)
       this.productData = res?.result;
     });
   }
@@ -191,5 +191,27 @@ export class AddProductComponent implements OnInit {
 
   addProduct() {
     console.log(this.productForm.value)
+    if (!this.productForm.valid) {
+      console.log("Validation error")
+      return;
+    }
+
+    const formData = new FormData();
+    if (this.fileData != null && this.fileData != undefined) {
+      formData.append('file', this.fileData);
+    }
+
+    for (const data of Object.keys(this.productForm.value)) {
+      formData.append(data, this.productForm.value[data]);
+    }
+
+    this.productService.addProduct(formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Brand Added Successfully');
+        this.router.navigate([this.appRoute.brand.BRAND_LIST]);
+      }
+    })
   }
 }

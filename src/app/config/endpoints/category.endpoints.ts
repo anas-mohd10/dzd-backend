@@ -1,5 +1,5 @@
 export const categoryEndpoints = {
-    add_category: '/upload-category',
+    add_category: '/category-upload',
     get_category: '/categoeries',
     get_active_categories: '/active-categories',
     get_category_by_id: '/category',

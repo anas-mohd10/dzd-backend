@@ -88,6 +88,27 @@ export const Routing: Routes = [
     path: 'app',
     loadChildren: () =>
       import(
+        './catalog/variant-product/variant-product-list/variant-product-list.module'
+      ).then((m) => m.VariantProductModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import(
+        './catalog/variant-product/add-variant-product/add-variant-product.module'
+      ).then((m) => m.AddVariantProductModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import(
+        './catalog/variant-product/update-variant-product/update-variant-product.module'
+      ).then((m) => m.UpdateVariantProductModule),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
+      import(
         './catalog/collection/collection-list/collection-list.module'
       ).then((m) => m.CollectionModule),
   },
@@ -187,7 +208,12 @@ export const Routing: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(Routing, {useHash: true, relativeLinkResolution: 'legacy'})],
+  imports: [
+    RouterModule.forRoot(Routing, {
+      useHash: true,
+      relativeLinkResolution: 'legacy',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class RoutingModule {}
