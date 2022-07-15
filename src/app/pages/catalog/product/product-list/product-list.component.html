@@ -42,7 +42,6 @@
                   <th class="text-dark fw-bolder fs-4">SKU</th>
                   <th class="text-dark fw-bolder fs-4">Product</th>
                   <th class="text-dark fw-bolder fs-4">Type</th>
-                  <th class="text-dark fw-bolder fs-4">Category</th>
                   <th class="text-dark fw-bolder fs-4">Price</th>
                   <th class="text-dark fw-bolder fs-4">Stock</th>
                   <th class="text-dark fw-bolder fs-4">Image</th>
@@ -75,10 +74,7 @@
                     </h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ product?.categories }}</h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar fs-5">{{ product?.price }}</h2>
+                    <h2 class="table-avatar fs-5">{{ product?.mrpPrice }}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
@@ -98,23 +94,22 @@
                         }}"
                         [queryParams]="{ product: product?.slug }"
                         class="fs-5 cursor-pointer text-darker"
-                        ><i class="bi bi-grid-3x3-gap fs-1"></i
-                      ></a>
+                        >View</a>
                     </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="product?.isActive == true">
                       <div class="active-text-view">
-                        <h2 class="table-avatar text-white fw-b fs-5">
+                        <span class="active-text">
                           active
-                        </h2>
+                        </span>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="product?.isActive == false">
                       <div class="inactive-text-view">
-                        <h2 class="table-avatar text-white fw-b fs-5">
+                        <span class="inactive-text">
                           inactive
-                        </h2>
+                        </span>
                       </div>
                     </ng-container>
                   </td>

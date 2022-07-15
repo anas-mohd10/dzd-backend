@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
 import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -13,13 +12,15 @@ export class ProductComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  // public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes;
   productData: any;
   displayTable: boolean;
+  categoryData: any;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private ProductService: ProductService,
+  ) {}
 
   ngOnInit(): void {
     this.getProduct();
@@ -32,13 +33,12 @@ export class ProductComponent implements OnInit {
   }
 
   getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
+    this.ProductService.getProduct().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
           this.productData = res?.result;
           break;
       }
-      // this.dtTrigger.next();
       this.displayTable = true;
     });
   }

@@ -5,40 +5,57 @@
 .tag-inputs{
   height: auto;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto;
 }
 
 .tag-input{
-  // width: 120px;
   margin: 0 10px 10px 0 ;
   padding: 5px 10px;
   border-radius: 5px;
-  background: #117d54;
-  color: #ffffff;
+  background: rgba(17, 126, 84, 0.3);
+  color: #016736;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.bi-x{
+  color: #016736;
+  font-size: 1.5rem;
 }
 
 .active-text-view{
   height: 25px;
-  width: 60px;
-  background: #12aa4f;
+  width: 80px;
+  background: rgba(18, 170, 79, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
 }
 
+.active-text{
+  color: #055224;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .inactive-text-view{
   height: 25px;
-  width: 60px;
-  background: #ba1523;
+  width: 80px;
+  background: rgba(186, 21, 35, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
+}
+
+.inactive-text{
+  color: #5a0404;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .description-textarea{

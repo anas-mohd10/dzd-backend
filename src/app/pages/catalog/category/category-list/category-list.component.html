@@ -19,7 +19,7 @@
           color="primary"
           routerLink="{{ appRoute.category.ADD_CATEGORY }}"
         >
-         Add Category
+          Add Category
         </button>
       </div>
     </div>
@@ -80,10 +80,10 @@
                   </ng-container>
                   <td>
                     <img
-                    class="category-logo"
-                    src="http://localhost:3000/{{category?.file}}"
-                    alt="category"
-                  />
+                      class="category-logo"
+                      src="http://localhost:3000/{{ category?.file }}"
+                      alt="category"
+                    />
                   </td>
                   <td>
                     <a
@@ -95,10 +95,14 @@
                   </td>
                   <td>
                     <ng-container *ngIf="category?.isActive == true">
-                      <div class="active-text-view"><h2 class="table-avatar text-white fw-b fs-5">active</h2></div>
+                      <div class="active-text-view">
+                        <span class="active-text"> active </span>
+                      </div>
                     </ng-container>
                     <ng-container *ngIf="category?.isActive == false">
-                      <div class="inactive-text-view"><h2 class="table-avatar text-white fw-b fs-5">inactive</h2></div>
+                      <div class="inactive-text-view">
+                        <span class="inactive-text"> inactive </span>
+                      </div>
                     </ng-container>
                   </td>
                   <td>

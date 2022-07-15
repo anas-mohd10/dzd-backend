@@ -21,16 +21,13 @@ export class BrandComponent implements OnInit {
   constructor(private brandService: BrandService) {}
 
   ngOnInit(): void {
-    this.getBrand();
     this.dtOptions = {
       pagingType: 'simple_numbers',
       lengthMenu: [5, 10, 15],
       pageLength: 5,
       processing: true,
     };
-  }
 
-  getBrand() {
     this.brandService.getBrand().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:

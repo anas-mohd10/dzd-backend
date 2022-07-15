@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -13,7 +19,6 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
 })
-
 export class AddProductComponent implements OnInit {
   productForm: FormGroup;
   task = PageTasks.ADD;
@@ -30,13 +35,14 @@ export class AddProductComponent implements OnInit {
   filtered: any;
   categoryData: any;
   taxClassData: any;
-  valueArray: any = []
+  valueArray: any = [];
   productData: any;
+  categoryNames: any = [];
+  categoryArray: any = [];
 
   validationMessages = {
     name: [{ type: 'required', message: 'Product name is required' }],
   };
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,7 +60,9 @@ export class AddProductComponent implements OnInit {
   }
 
   handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer? fileInput.dataTransfer.files[0]: fileInput.target.files[0];
+    const file = fileInput.dataTransfer
+      ? fileInput.dataTransfer.files[0]
+      : fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
   }
 
@@ -72,62 +80,92 @@ export class AddProductComponent implements OnInit {
     this.params = this.route.snapshot;
     this.managePage();
     this.getBrandDetail();
-    this.getCategoryDetail()
-    this.getTaxClassDetail()
-    this.getProducts()
+    this.getCategoryDetail();
+    this.getTaxClassDetail();
+    this.getProducts();
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      productType: ['Check', Validators.required],
-      name: ['', Validators.required],
-      sku: ['', Validators.required],
-      hsn: ['', Validators.required],
-      mrpPrice: ['', Validators.required],
-      offerprice: ['', Validators.required],
-      stock: ['', Validators.required],
-      moq: ['', Validators.required],
-      stockwarning: ['', Validators.required],
-      productdescription: ['', Validators.required],
-      featuredescription: ['', Validators.required],
-      category: ['example', Validators.required],
-      brand: ['example', Validators.required],
-      additionalbutton: ['', Validators.required],
-      buttonredireturl: ['', Validators.required],
-      featured: ['', Validators.required],
-      returnable: ['', Validators.required],
-      cod: ['', Validators.required],
-      shippingCost: ['', Validators.required],
-      taxClass: ['example', Validators.required],
-      returndays: ['', Validators.required],
-      weight: ['', Validators.required],
-      position: ['', Validators.required],
-      productDescription: ['', Validators.required],
-      featuredDescription: ['', Validators.required],
-      shippingMethod: ['', Validators.required],
-      codCharge: ['', Validators.required],
-      values: ['', Validators.required],
-      relatedProducts: ['example', Validators.required]
+      isSingle: [''],
+      name: [''],
+      sku: [''],
+      hsn: [''],
+      mrpPrice: [''],
+      offerprice: ['',],
+      stock: [''],
+      moq: [''],
+      stockWarning: ['',],
+      description: ['',],
+      features: ['',],
+      categories: [], //Array with category id's
+      brandId: ['',],
+      additionalbutton: ['',],
+      buttonredireturl: ['',],
+      isFeatured: ['',],
+      returnable: ['',],
+      returnDays: ['',],
+      shippingMethod: ['',],
+      shippingCost: ['',],
+      weight: ['',],
+      taxClassId: ['',],
+      cod: ['',],
+      codCharge: ['',],
+      searchKeywords: [], //Array with user entered search keywords
+      relatedProducts: ['',],
+      position: ['',],
     });
   }
 
   handleProductType() {
-    this.productType = this.productForm.get('productType')?.value;
-    if (this.productType == 'Single') {
+    this.productType = this.productForm.get('isSingle')?.value;
+    console.log(this.productType)
+    if (this.productType == 'true') {
       this.isSingle = true;
-    } else if (this.productType == 'Configurable') {
+    } else if (this.productType == 'false') {
       this.isSingle = false;
     }
   }
 
-  tagInput(){
-    if ((this.productForm.get('values')?.value != ' ' || '') || (this.productForm.get('values')?.value == null )) {
-      this.valueArray.push(this.productForm.get('values')?.value);
-      this.productForm.get('values')?.setValue('');
+  tagCategoryInput() {
+    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
+      this.categoryArray.push(this.productForm.get('categories')?.value);
+      console.log(this.categoryArray)
+      for(let i=0; i<this.categoryData.length; i++){
+        if(this.productForm.get('categories')?.value == this.categoryData[i]._id){
+          this.categoryNames.push(this.categoryData[i].name)
+        }
+      }
+    }else{
+      this.toastr.info('Category Already Added');
+    }
+    this.productForm.get('categories')?.setValue('');
+  }
+
+  tagCategoryRemove(category: any) {
+    const index = this.categoryNames.indexOf(category);
+    if (index > -1) {
+      this.categoryNames.splice(index, 1);
+    }
+    for (let i = 0; i < this.categoryData.length; i++) {
+      if (this.categoryData[i].name == category) {
+        this.categoryArray.pop(this.categoryData[i]._id);
+      }
     }
   }
 
-  tagRemove(value: any){
+  tagInput() {
+    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || this.productForm.get('searchKeywords')?.value == null) {
+      this.valueArray.push(this.productForm.get('searchKeywords')?.value);
+      this.productForm.get('searchKeywords')?.setValue('');
+    }
+  }
+
+  tagRemove(value: any) {
+    const index = this.valueArray.indexOf(value);
+    if (index > -1) {
+      this.valueArray.splice(index, 1);
+    }
     for (let i = 0; i < this.valueArray.length; i++) {
       if (this.valueArray[i] == value) {
         this.valueArray.pop(value);
@@ -171,7 +209,7 @@ export class AddProductComponent implements OnInit {
       this.productData = res?.result;
     });
   }
- 
+
   onOptionsSelected() {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
@@ -190,9 +228,7 @@ export class AddProductComponent implements OnInit {
   updateProduct() {}
 
   addProduct() {
-    console.log(this.productForm.value)
     if (!this.productForm.valid) {
-      console.log("Validation error")
       return;
     }
 
@@ -202,16 +238,22 @@ export class AddProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      formData.append(data, this.productForm.value[data]);
+      if(data != "values"  || "categories"){
+        formData.append(data, this.productForm.value[data]);
+      }
     }
+   
+    formData.append("searchKeywords", this.valueArray)
+    formData.append("categories", this.categoryArray)
 
     this.productService.addProduct(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Brand Added Successfully');
-        this.router.navigate([this.appRoute.brand.BRAND_LIST]);
+        this.toastr.success('Product Added Successfully');
+        this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+        this.ngOnInit();
       }
-    })
+    });
   }
 }

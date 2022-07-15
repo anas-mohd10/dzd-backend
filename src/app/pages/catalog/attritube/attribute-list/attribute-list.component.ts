@@ -21,6 +21,7 @@ export class AttributeComponent implements OnInit {
   attributeLength: any;
   categoryId: any;
   displayTable: boolean = false;
+  categoryName: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,7 +31,6 @@ export class AttributeComponent implements OnInit {
 
   ngOnInit(): void {
     this.category = this.route.snapshot.queryParams.category || '';
-    this.getCategoryDetails();
     this.dtOptions = {
       pagingType: 'simple_numbers',
       lengthMenu: [5, 10, 15],
@@ -44,13 +44,14 @@ export class AttributeComponent implements OnInit {
       (res: any) => {
         switch (res?.errorCode) {
           case 0:
+            console.log(res?.result[0])
+            this.categoryName = res?.result[0].name
             this.categoryId = res?.result[0]._id;
             break;
         }
         this.AttributeService.getCategoryById(this.categoryId).subscribe(
           (res: any) => {
             this.attributeData = res?.result;
-            console.log(this.attributeData)
             this.displayTable = true;
           }
         );

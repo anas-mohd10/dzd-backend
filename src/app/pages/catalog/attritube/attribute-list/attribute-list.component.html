@@ -11,7 +11,7 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories - {{categoryName}}</a>
           </li>
           <li class="breadcrumb-item active fs-5">
             <a
@@ -103,16 +103,16 @@
                   <td>
                     <ng-container *ngIf="attribute?.isActive == true">
                       <div class="active-text-view">
-                        <h2 class="table-avatar text-white fw-b fs-5">
+                        <span class="active-text">
                           active
-                        </h2>
+                        </span>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="attribute?.isActive == false">
                       <div class="inactive-text-view">
-                        <h2 class="table-avatar text-white fw-b fs-5">
+                        <span class="inactive-text">
                           inactive
-                        </h2>
+                        </span>
                       </div>
                     </ng-container>
                   </td>

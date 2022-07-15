@@ -1,1 +1,69 @@
-<p>variant-product-list works!</p>
+<div class="product-page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Vartiant Products</h1>
+    </div>
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}"
+              >Products - {{ parentProduct.name }}</a
+            >
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a
+              routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
+              [queryParams]="{ product: productSlug }"
+              >Vartiant Products</a
+            >
+          </li>
+        </ul>
+        <button
+          class="btn btn-primary cursor-pointer"
+          color="primary"
+          routerLink="{{ appRoute.variantProduct.ADD_VARIANT_PRODUCT }}"
+          [queryParams]="{ product: productSlug }"
+        >
+          Add Variant
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive" *ngIf="displayTable">
+            <table
+              datatable
+              [dtOptions]="dtOptions"
+              class="table table-center table-borderless table-striped mb-0 datatable"
+            >
+              <thead class="thead">
+                <tr>
+                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
+                  <th class="text-dark fw-bolder fs-4">SKU</th>
+                  <th class="text-dark fw-bolder fs-4">Product</th>
+                  <th class="text-dark fw-bolder fs-4">Category</th>
+                  <th class="text-dark fw-bolder fs-4">Price</th>
+                  <th class="text-dark fw-bolder fs-4">Stock</th>
+                  <th class="text-dark fw-bolder fs-4">Image</th>
+                  <th class="text-dark fw-bolder fs-4">Variants</th>
+                  <th class="text-dark fw-bolder fs-4">Status</th>
+                  <th class="text-dark fw-bolder fs-4">Action</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
