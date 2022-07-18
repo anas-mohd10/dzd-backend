@@ -130,7 +130,6 @@ export class AddProductComponent implements OnInit {
   tagCategoryInput() {
     if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
       this.categoryArray.push(this.productForm.get('categories')?.value);
-      console.log(this.categoryArray)
       for(let i=0; i<this.categoryData.length; i++){
         if(this.productForm.get('categories')?.value == this.categoryData[i]._id){
           this.categoryNames.push(this.categoryData[i].name)

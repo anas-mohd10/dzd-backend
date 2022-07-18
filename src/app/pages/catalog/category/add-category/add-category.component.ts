@@ -31,6 +31,9 @@ export class AddCategoryComponent implements OnInit {
   fileData: File;
   isChecked = false;
   categoryData: any;
+  splitCategory: any;
+  rootCategory: any = '';
+  parentCategory: any = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,10 +55,10 @@ export class AddCategoryComponent implements OnInit {
   }
 
   handleCheckBox() {
-    if (this.isChecked == false) {
-      this.isChecked = true;
-    } else if (this.isChecked == true) {
+    if (this.categoryForm.get('rootId')?.value == 'false') {
       this.isChecked = false;
+    } else if (this.categoryForm.get('rootId')?.value == 'true') {
+      this.isChecked = true;
     }
   }
 
@@ -70,7 +73,7 @@ export class AddCategoryComponent implements OnInit {
   initForm() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
-      rootCategory: ['', Validators.required],
+      rootId: ['check', Validators.required],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       parentId: [''],
@@ -114,13 +117,19 @@ export class AddCategoryComponent implements OnInit {
           );
         }
         if (res?.result[i].parentId && res?.result[i].rootId) {
-          this.categoryArray.push(
-            res?.result[i].rootId.name +
-              ' > ' +
-              res?.result[i].parentId.name +
-              ' > ' +
-              res?.result[i].name
-          );
+          if (res?.result[i].parentId._id != res?.result[i].rootId._id) {
+            this.categoryArray.push(
+              res?.result[i].rootId.name +
+                ' > ' +
+                res?.result[i].parentId.name +
+                ' > ' +
+                res?.result[i].name
+            );
+          } else if (res?.result[i].parentId._id == res?.result[i].rootId._id) {
+            this.categoryArray.push(
+              res?.result[i].rootId.name + ' > ' + res?.result[i].name
+            );
+          }
         }
         if (!res?.result[i].parentId && !res?.result[i].rootId) {
           this.categoryArray.push(res?.result[i].name);
@@ -130,29 +139,66 @@ export class AddCategoryComponent implements OnInit {
     });
   }
 
-  //Update exsisting brand
+  //Update exsisting category
   updateBrand() {}
 
-  //Add brand
+  //Add Category
   addCategory() {
-    if (this.categoryForm.get('rootCategory')?.value == true) {
+    const formData = new FormData();
+    if (this.categoryForm.get('rootId')?.value == 'true') {
       this.categoryForm.get('parentId')?.setValue('');
+      this.rootCategory = '';
+      this.parentCategory = '';
+      formData.append('isRoot', 'true');
     }
 
-    const splitCategory = this.categoryForm.get('parentId')?.value.split(' > ');
-    for (let i = 0; i < splitCategory.length; i++) {}
+    if (this.categoryForm.get('parentId')?.value.includes('>')) {
+      this.splitCategory = this.categoryForm
+        .get('parentId')
+        ?.value.split(' > ');
+        for (let i = 0; i < this.categoryData.length; i++) {
+          if (this.splitCategory[0] == this.categoryData[i].name) {
+            this.rootCategory = this.categoryData[i]._id;
+          }
+          if (this.splitCategory[this.splitCategory.length - 1] == this.categoryData[i].name) {
+            this.parentCategory = this.categoryData[i]._id;
+          }
+      }
+    } else {
+      this.splitCategory = this.categoryForm.get('parentId')?.value;
+      console.log(this.splitCategory)
+      for (let i = 0; i < this.categoryData.length; i++) {
+        if (this.categoryData[i].name == this.splitCategory[0]) {
+          this.rootCategory = this.categoryData[i]._id;
+          this.parentCategory = this.categoryData[i]._id;
+        }
+      }
+      for (let i = 0; i < this.splitCategory.length; i++) {}
+    }
+
     if (!this.categoryForm.valid) {
+      console.error('Validation error');
       return;
     }
-    const formData = new FormData();
+
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
     }
 
     for (const data of Object.keys(this.categoryForm.value)) {
-      formData.append(data, this.categoryForm.value[data]);
+      if (data != 'rootId' || 'parentId') {
+        formData.append(data, this.categoryForm.value[data]);
+      }
     }
+
+    console.log(this.rootCategory)
+    console.log(this.parentCategory)
+
+    formData.append('rootId', this.rootCategory);
+    formData.append('parentId', this.parentCategory);
+
     this.CategoryService.addCategory(formData).subscribe((res: any) => {
+      console.log(res);
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

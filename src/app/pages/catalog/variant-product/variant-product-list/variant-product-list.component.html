@@ -12,13 +12,13 @@
           </li>
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.product.PRODUCT_LIST }}"
-              >Products - {{ parentProduct.name }}</a
+              >Products</a
             >
           </li>
           <li class="breadcrumb-item active fs-5">
             <a
               routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
-              [queryParams]="{ product: productSlug }"
+              [queryParams]="{ product: slug }"
               >Vartiant Products</a
             >
           </li>
@@ -27,7 +27,7 @@
           class="btn btn-primary cursor-pointer"
           color="primary"
           routerLink="{{ appRoute.variantProduct.ADD_VARIANT_PRODUCT }}"
-          [queryParams]="{ product: productSlug }"
+          [queryParams]="{ product: slug }"
         >
           Add Variant
         </button>
@@ -50,16 +50,66 @@
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
                   <th class="text-dark fw-bolder fs-4">SKU</th>
                   <th class="text-dark fw-bolder fs-4">Product</th>
-                  <th class="text-dark fw-bolder fs-4">Category</th>
+                  <th class="text-dark fw-bolder fs-4">Parent</th>
                   <th class="text-dark fw-bolder fs-4">Price</th>
                   <th class="text-dark fw-bolder fs-4">Stock</th>
                   <th class="text-dark fw-bolder fs-4">Image</th>
-                  <th class="text-dark fw-bolder fs-4">Variants</th>
                   <th class="text-dark fw-bolder fs-4">Status</th>
                   <th class="text-dark fw-bolder fs-4">Action</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr *ngFor="let product of productData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.sku }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.name }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ parentProductName }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.mrpPrice }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
+                  </td>
+                  <td>
+                    <img
+                      class="product-logo"
+                      src="http://localhost:3000/{{product?.file}}"
+                      alt="product"
+                    />
+                  </td>
+                  <td>
+                    <ng-container *ngIf="product?.isActive == true">
+                      <div class="active-text-view">
+                        <span class="active-text">
+                          active
+                        </span>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="product?.isActive == false">
+                      <div class="inactive-text-view">
+                        <span class="inactive-text">
+                          inactive
+                        </span>
+                      </div>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <a
+                      routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
+                      [queryParams]="{ product: product?.slug }"
+                      class="fs-5 cursor-pointer text-darker"
+                    >
+                      Edit
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

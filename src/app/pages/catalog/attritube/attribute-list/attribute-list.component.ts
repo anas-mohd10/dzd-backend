@@ -14,7 +14,7 @@ export class AttributeComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  
+
   appRoute = appRoutes;
   category: any;
   attributeData: any;
@@ -37,24 +37,24 @@ export class AttributeComponent implements OnInit {
       pageLength: 5,
       processing: true,
     };
+    this.getDetails();
   }
 
-  getCategoryDetails() {
+  getDetails() {
     this.CategoryService.getCategoryBySlug(this.category).subscribe(
       (res: any) => {
         switch (res?.errorCode) {
           case 0:
-            console.log(res?.result[0])
-            this.categoryName = res?.result[0].name
+            this.categoryName = res?.result[0].name;
             this.categoryId = res?.result[0]._id;
+            this.AttributeService.getCategoryById(this.categoryId).subscribe(
+              (res: any) => {
+                this.attributeData = res?.result;
+                this.displayTable = true;
+              }
+            );
             break;
         }
-        this.AttributeService.getCategoryById(this.categoryId).subscribe(
-          (res: any) => {
-            this.attributeData = res?.result;
-            this.displayTable = true;
-          }
-        );
       }
     );
   }

@@ -47,6 +47,7 @@ export class AddAttributeComponent implements OnInit {
       },
     ],
   };
+  imageValues: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,6 +96,7 @@ export class AddAttributeComponent implements OnInit {
 
   handleInputChange(fileInput: any) {
     if (fileInput.target.files && fileInput.target.files[0]) {
+      this.fileData = <File>fileInput.target.files[0];
       const imageName = fileInput.target.files[0].name;
       var filesAmount = fileInput.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
@@ -106,7 +108,7 @@ export class AddAttributeComponent implements OnInit {
             url: event.target.result,
           });
           this.imagesArray.push(fileInput.target.files[i]);
-          this.images.push(event.target.result);
+          this.images.push(this.fileData);
           this.attributeForm.patchValue({
             attributeImage: this.images,
           });
@@ -194,10 +196,8 @@ export class AddAttributeComponent implements OnInit {
     } else if (this.valueType == 'text') {
       this.values = this.textArray;
     } else if (this.valueType == 'image') {
-      this.values = this.imagesArray;
+      this.values = this.images;
     }
-
-    console.log(this.imagesArray)
 
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
@@ -208,13 +208,10 @@ export class AddAttributeComponent implements OnInit {
       categoryId: this.categoryId,
     };
 
-    console.log("Attribute Data :: " + this.attributeData)
-
     console.log(this.attributeData);
 
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {
-        console.log('API Response --> ', res?.result);
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res?.errorCode == 0) {

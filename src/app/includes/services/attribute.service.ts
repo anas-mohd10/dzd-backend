@@ -16,7 +16,7 @@ export class AttributeService {
   }
 
   getCategoryById(id: string) {
-    const url = this.commonService.getFullUrl(this.attributeEndpoints.get_attribute_by_category + '/' + id);
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.get_attribute_by_category + '?id=' + id);
     return this.http.get(`${url}`);
   }
 
