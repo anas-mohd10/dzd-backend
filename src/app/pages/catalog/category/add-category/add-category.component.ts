@@ -105,6 +105,7 @@ export class AddCategoryComponent implements OnInit {
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
+      console.log(this.categoryData)
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parentId && !res?.result[i].rootId) {
           this.categoryArray.push(

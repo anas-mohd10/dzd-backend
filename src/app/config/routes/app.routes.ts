@@ -23,6 +23,7 @@ export const appRoutes = {
   category: {
     ADD_CATEGORY: `${app}${categoryRoute}/add`,
     CATEGORY_LIST: `${app}${categoryRoute}`,
+    UPDATE_CATEGORY: `${app}${categoryRoute}/update`
   },
   attribute: {
     ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,

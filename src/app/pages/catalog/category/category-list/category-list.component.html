@@ -106,7 +106,10 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker"
+                    <a
+                      class="fs-5 cursor-pointer text-darker"
+                      routerLink="{{ appRoute.category.UPDATE_CATEGORY }}"
+                      [queryParams]="{ category: category?.slug }"
                       ><i class="bi bi-pen fs-4"></i> Edit
                     </a>
                   </td>

@@ -27,4 +27,4 @@ import { ToastrModule } from 'ngx-toastr';
     ]),
   ],
 })
-export class UpdateCollectionModule {}
+export class UpdateCategoryModule {}

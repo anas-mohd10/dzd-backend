@@ -45,6 +45,13 @@ export const Routing: Routes = [
   {
     path: 'app',
     loadChildren: () =>
+      import('./catalog/category/update-category/update-category.module').then(
+        (m) => m.UpdateCategoryModule
+      ),
+  },
+  {
+    path: 'app',
+    loadChildren: () =>
       import('./catalog/attritube/add-attribute/add-attribute.module').then(
         (m) => m.AddAttributeModule
       ),
