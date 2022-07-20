@@ -1,1 +1,495 @@
-<p>update-variant-product works!</p>
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fs-2">
+          {{ editMode ? "Update Product" : "Add Product" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a
+              routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
+              [queryParams]="{ product: slug }"
+              >Vartiant Products</a
+            >
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a
+              routerLink="{{ appRoute.variantProduct.UPDATE_VARIANT_PRODUCT}}"
+              [queryParams]="{ product: slug }"
+              >{{
+                editMode ? "Update Variant Product" : "Add Variant Product"
+              }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Page Header -->
+
+  <!-- Page Content -->
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-5">
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Product Details</span></h5>
+              </div>
+
+              <!-- Name -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Name</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+
+              <!-- Store Keeping Unit -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Store Keeping Unit</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="sku"
+                  />
+                </div>
+              </div>
+
+              <!-- HSN Number -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">HSN No.</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="hsn"
+                  />
+                </div>
+              </div>
+
+              <!-- MRP Price -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Price (MRP)</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="mrpPrice"
+                    />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Offer Price -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Offer Price</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="offerprice"
+                    />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stock -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Stock</label>
+                  <input
+                    type="number"
+                    class="form-control fs-5"
+                    formControlName="stock"
+                  />
+                </div>
+              </div>
+
+              <!-- MOQ -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold"
+                    >Minimum Order Quantity</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="moq"
+                  />
+                </div>
+              </div>
+
+              <!-- Stock Warning -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Stock Warning</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="stockWarning"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6" *ngIf="isSingle"></div>
+
+              <!-- Description -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Description</label>
+                  <textarea
+                    class="form-control fs-5"
+                    formControlName="description"
+                    style="resize: none"
+                    id="productdescription"
+                    rows="3"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Features -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Features</label>
+                  <textarea
+                    class="form-control fs-5"
+                    formControlName="features"
+                    style="resize: none"
+                    id="featureddescription"
+                    rows="3"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- Category -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Category</label>
+                  <select
+                    class="form-select"
+                    formControlName="categories"
+                    (change)="tagCategoryInput()"
+                  >
+                    <option value="example" disabled>
+                      -- Select a Category --
+                    </option>
+                    <option
+                      *ngFor="let category of categoryData"
+                      value="{{ category?._id }}"
+                    >
+                      {{ category?.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="tag-inputs col-12">
+                  <ng-container *ngFor="let category of categoryNames">
+                    <span class="tag-input"
+                      >{{ category }}
+                      <i
+                        class="bi bi-x"
+                        (click)="tagCategoryRemove(category)"
+                      ></i>
+                    </span>
+                  </ng-container>
+                </div>
+              </div>
+
+              <!-- Brand -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Brand</label>
+                  <select
+                    name="brand"
+                    formControlName="brandId"
+                    class="form-select"
+                  >
+                    <option value="example" disabled>
+                      -- Select a Brand --
+                    </option>
+                    <option
+                      *ngFor="let brand of brandData"
+                      value="{{ brand?._id }}"
+                    >
+                      {{ brand?.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Additional Button Text -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold"
+                    >Additional Button Text</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="additionalbutton"
+                  />
+                </div>
+              </div>
+
+              <!-- Button Redirect Url -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Button Redirect URL</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="buttonredireturl"
+                  />
+                </div>
+              </div>
+
+              <!-- Featured Product -->
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="featured"
+                    id="featuredCheck"
+                    formControlName="isFeatured"
+                  />
+                  <label class="form-check-label" for="featuredCheck"
+                    >Featured Product ?</label
+                  >
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6"></div>
+
+              <!-- Returnable Product -->
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="returnable"
+                    id="returnableCheck"
+                    formControlName="returnable"
+                  />
+                  <label class="form-check-label" for="returnableCheck"
+                    >Returnable Product ?</label
+                  >
+                </div>
+              </div>
+
+              <!-- Return Days -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Return Days</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="returnDays"
+                  />
+                </div>
+              </div>
+
+              <!-- Shipping Method -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Shipping Method</label>
+                  <select class="form-select" formControlName="shippingMethod">
+                    <option value="paid">Paid Shipping</option>
+                    <option value="unpaid">Unpaid Shipping</option>
+                    <option value="thirdparty">
+                      External Shipping Service
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Shipping Cost -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold"
+                    >Shipping Cost
+                    <span class="badge bg-secondary text-dark"
+                      >For Paid Shipping Only</span
+                    >
+                  </label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="shippingCost"
+                    />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weight -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Weight</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">gms</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="weight"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tax Class -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Tax Class</label>
+                  <select class="form-select" formControlName="taxClassId">
+                    <option value="example" disabled>
+                      -- Select a Tax Class --
+                    </option>
+                    <option
+                      *ngFor="let taxClass of taxClassData"
+                      value="{{ taxClass?._id }}"
+                    >
+                      {{ taxClass?.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6" *ngIf="isSingle"></div>
+
+              <!-- COD Available -->
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="cod"
+                    id="cod"
+                    formControlName="cod"
+                  />
+                  <label class="form-check-label">COD Available ?</label>
+                </div>
+              </div>
+
+              <!-- COD Charge -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">
+                    COD Charge
+                    <span class="badge bg-secondary text-dark"
+                      >If COD available</span
+                    >
+                  </label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="codCharge"
+                    />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search Keywords -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Search Keywords</label>
+                  <input
+                    class="form-control fs-5 mb-10"
+                    formControlName="searchKeywords"
+                    (keyup.Arrowright)="tagInput()"
+                  />
+                  <div class="tag-inputs col-12 col-sm-6">
+                    <ng-container *ngFor="let value of valueArray">
+                      <span class="tag-input"
+                        >{{ value }}
+                        <i class="bi bi-x" (click)="tagRemove(value)"></i
+                      ></span>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Related Products -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Related Products</label>
+                  <select
+                    class="form-select"
+                    aria-label="related keywords"
+                    formControlName="relatedProducts"
+                  >
+                    <option value="example" disabled>
+                      -- Select Related Products --
+                    </option>
+                    <option
+                      *ngFor="let product of productData"
+                      value="{{ product?.name }}"
+                    >
+                      {{ product?.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Postion -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Position</label>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="position"
+                  />
+                </div>
+              </div>
+
+              <!-- Product Image -->
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 fw-bold">Product Image</label>
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    (change)="handleInputChange($event)"
+                  />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary fs-5">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Page Content -->
+  </div>
+</div>

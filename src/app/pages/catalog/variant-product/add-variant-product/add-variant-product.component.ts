@@ -43,6 +43,7 @@ export class AddVariantProductComponent implements OnInit {
   categoryArray: any = [];
   slug: any;
   parentProductId: any;
+  parentProductName: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -213,6 +214,7 @@ export class AddVariantProductComponent implements OnInit {
 
   getProductBySlug(){
     this.productService.getProductBySlug(this.slug).subscribe((res: any)=>{
+      this.parentProductName = res?.result[0]?.name
       this.parentProductId = res?.result[0]._id
     })
   }

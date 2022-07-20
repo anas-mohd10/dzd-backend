@@ -38,4 +38,11 @@ export class CategoryService {
     );
     return this.http.get(`${url}`);
   }
+
+  updateCategory(id: any, data: any) {
+    const url = this.commonService.getFullUrl(
+      this.categoryEndpoints.update_category + '/' + id
+    );
+    return this.http.put(`${url}`, data);
+  }
 }

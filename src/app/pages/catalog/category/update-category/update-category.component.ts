@@ -112,21 +112,14 @@ export class UpdateCategoryComponent implements OnInit {
     this.CategoryService.getCategoryBySlug(this.category).subscribe(
       (res: any) => {
         this.categoryValues = res?.result[0];
+        this.uploadedImg = this.categoryValues?.file;
         this.categoryForm.get('name')?.setValue(this.categoryValues.name);
         this.categoryForm.get('rootId')?.setValue(this.categoryValues.isRoot);
-        this.categoryForm
-          .get('isActive')
-          ?.setValue(this.categoryValues.isActive);
-        this.categoryForm
-          .get('isFeatured')
-          ?.setValue(this.categoryValues.isFeatured);
-        this.parentIdValue =
-          this.categoryValues.rootId.name +
-          '>>' +
-          this.categoryValues.parentId.name +
-          '>>' +
-          this.categoryValues.name;
-          console.log(this.parentIdValue)
+        this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
+        this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
+        this.parentIdValue = this.categoryValues.rootId.name + ' > ' +
+          this.categoryValues.parentId.name + ' > ' + this.categoryValues.name;
+        console.log(this.parentIdValue)
         this.categoryForm.get('parentId')?.setValue(this.parentIdValue);
       }
     );
@@ -135,7 +128,6 @@ export class UpdateCategoryComponent implements OnInit {
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
-      this.uploadedImg = this.categoryData?.file
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parentId && !res?.result[i].rootId) {
           this.categoryArray.push(
@@ -171,10 +163,7 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   //Update exsisting category
-  updateBrand() {}
-
-  //Add Category
-  addCategory() {
+  updateBrand() {
     const formData = new FormData();
     if (this.categoryForm.get('rootId')?.value == 'true') {
       this.categoryForm.get('parentId')?.setValue('');
@@ -184,9 +173,7 @@ export class UpdateCategoryComponent implements OnInit {
     }
 
     if (this.categoryForm.get('parentId')?.value.includes('>')) {
-      this.splitCategory = this.categoryForm
-        .get('parentId')
-        ?.value.split(' > ');
+      this.splitCategory = this.categoryForm.get('parentId')?.value.split(' > ');
       for (let i = 0; i < this.categoryData.length; i++) {
         if (this.splitCategory[0] == this.categoryData[i].name) {
           this.rootCategory = this.categoryData[i]._id;
@@ -200,7 +187,6 @@ export class UpdateCategoryComponent implements OnInit {
       }
     } else {
       this.splitCategory = this.categoryForm.get('parentId')?.value;
-      console.log(this.splitCategory);
       for (let i = 0; i < this.categoryData.length; i++) {
         if (this.categoryData[i].name == this.splitCategory) {
           this.rootCategory = this.categoryData[i]._id;
@@ -217,8 +203,8 @@ export class UpdateCategoryComponent implements OnInit {
 
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
-    }else{
-      formData.append('file', this.uploadedImg)
+    } else {
+      formData.append('file', this.uploadedImg);
     }
 
     for (const data of Object.keys(this.categoryForm.value)) {
@@ -230,13 +216,18 @@ export class UpdateCategoryComponent implements OnInit {
     formData.append('rootId', this.rootCategory);
     formData.append('parentId', this.parentCategory);
 
-    this.CategoryService.addCategory(formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Category Added Successfully');
-        this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
+    this.CategoryService.updateCategory(this.category, formData).subscribe(
+      (res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something Went Wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Category Added Successfully');
+          this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
+        }
       }
-    });
+    );
   }
+
+  //Add Category
+  addCategory() {}
 }

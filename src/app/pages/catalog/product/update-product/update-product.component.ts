@@ -218,6 +218,7 @@ export class UpdateProductComponent implements OnInit {
       .getProductBySlug(this.productSlug)
       .subscribe((res: any) => {
         this.productData = res?.result[0];
+        console.log(this.productData);
         this.isLoaded = true;
         this.productType = this.productData.isSingle;
         if (this.productType == true) {
@@ -265,6 +266,11 @@ export class UpdateProductComponent implements OnInit {
         for(let brand of this.brandData){
           if(this.productData.brandId == brand._id){
             this.productForm.get('brandId')?.setValue(brand._id);
+          }
+        }
+        for(let tax of this.taxClassData){
+          if(this.productData.taxClassId == tax._id){
+            this.productForm.get('taxClassId')?.setValue(tax._id);
           }
         }
       });
