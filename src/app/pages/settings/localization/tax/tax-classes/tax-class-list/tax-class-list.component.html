@@ -65,10 +65,18 @@
                   </td>
                   <td class="col-md-2">
                     <ng-container *ngIf="taxClass?.isActive == true">
-                      <h2 class="table-avatar text-success fs-5">Active</h2>
+                      <div class="active-text-view">
+                        <span class="active-text">
+                          active
+                        </span>
+                      </div>
                     </ng-container>
                     <ng-container *ngIf="taxClass?.isActive == false">
-                      <h2 class="table-avatar text-danger fs-5">Inactive</h2>
+                      <div class="inactive-text-view">
+                        <span class="inactive-text">
+                          inactive
+                        </span>
+                      </div>
                     </ng-container>
                   </td>
                   <td class="col-md-2">

@@ -48,7 +48,18 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Image </label>
-                  <input type="file" class="form-control fs-5" />
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    (change)="handleInputChange($event)"
+                  />
+                </div>
+                <div class="preview-img">
+                  <img
+                    class="update-preview-img"
+                    src="http://localhost:3000/{{ collectionData.file }}"
+                    alt="preiew-img"
+                  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -70,18 +81,13 @@
                       {{ product?.name }}
                     </option>
                   </select>
-                  <ng-container>
-                    <div class="tag-inputs col-12">
-                      <div *ngFor="let name of productNames">
-                        <span class="tag-input"
-                          >{{ name }}
-                          <i
-                            class="bi bi-x fs-1 text-white"
-                            (click)="tagRemove(name)"
-                          ></i
-                        ></span>
-                      </div>
-                    </div>
+                </div>
+                <div class="tag-inputs col-12">
+                  <ng-container *ngFor="let name of productNames">
+                    <span class="tag-input"
+                      >{{ name }}
+                      <i class="bi bi-x fs-1" (click)="tagRemove(name)"></i>
+                    </span>
                   </ng-container>
                 </div>
               </div>

@@ -35,4 +35,9 @@ export class ProductService {
     const url = this.commonService.getFullUrl(this.productEndpoints.get_product_names);
     return this.http.get(`${url}`);
   }
+
+  updateProduct(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.update_product + "/" + slug);
+    return this.http.put(`${url}`, data);
+  }
 }

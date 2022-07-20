@@ -43,6 +43,7 @@ export class AddProductComponent implements OnInit {
   validationMessages = {
     name: [{ type: 'required', message: 'Product name is required' }],
   };
+  productsData: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -205,7 +206,7 @@ export class AddProductComponent implements OnInit {
 
   getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
-      this.productData = res?.result;
+      this.productsData = res?.result;
     });
   }
 

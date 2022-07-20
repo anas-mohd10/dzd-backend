@@ -1,19 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.scss'],
 })
-
 export class UpdateProductComponent implements OnInit {
   productForm: FormGroup;
   task = PageTasks.UPDATE;
@@ -30,10 +35,18 @@ export class UpdateProductComponent implements OnInit {
   filtered: any;
   categoryData: any;
   taxClassData: any;
-  valueArray: any = []
+  valueArray: any = [];
   productData: any;
-  slug: any;
-  productDetail: any;
+  categoryNames: any = [];
+  categoryArray: any = [];
+
+  validationMessages = {
+    name: [{ type: 'required', message: 'Product name is required' }],
+  };
+  productSlug: any;
+  productsData: any;
+  isLoaded: boolean = false;
+  uploadedImg: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +55,8 @@ export class UpdateProductComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private categoryService: CategoryService,
-    private taxClassService: TaxClassesService
+    private taxClassService: TaxClassesService,
+    private toastr: ToastrService
   ) {}
 
   get pf() {
@@ -50,7 +64,9 @@ export class UpdateProductComponent implements OnInit {
   }
 
   handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer? fileInput.dataTransfer.files[0]: fileInput.target.files[0];
+    const file = fileInput.dataTransfer
+      ? fileInput.dataTransfer.files[0]
+      : fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
   }
 
@@ -65,19 +81,18 @@ export class UpdateProductComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.slug = this.route.snapshot.queryParams.product || ''
-    this.params = this.route.snapshot;
+    this.productSlug = this.route.snapshot.queryParams.product || '';
     this.managePage();
     this.getBrandDetail();
-    this.getCategoryDetail()
-    this.getTaxClassDetail()
-    this.getProducts()
-    this.getProductBySlug()
+    this.getCategoryDetail();
+    this.getTaxClassDetail();
+    this.getProducts();
+    this.getProductBySlug();
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      productType: [''],
+      isSingle: [''],
       name: [''],
       sku: [''],
       hsn: [''],
@@ -85,47 +100,75 @@ export class UpdateProductComponent implements OnInit {
       offerprice: [''],
       stock: [''],
       moq: [''],
-      stockwarning: [''],
-      productdescription: [''],
-      featuredescription: [''],
-      category: [''],
-      brand: [''],
+      stockWarning: [''],
+      description: [''],
+      features: [''],
+      categories: [], //Array with category id's
+      brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
-      featured: [''],
+      isFeatured: [''],
       returnable: [''],
-      cod: [''],
-      shippingCost: [''],
-      taxClass: [''],
-      returndays: [''],
-      weight: [''],
-      position: [''],
-      productDescription: [''],
-      featuredDescription: [''],
+      returnDays: [''],
       shippingMethod: [''],
+      shippingCost: [''],
+      weight: [''],
+      taxClassId: [''],
+      cod: [''],
       codCharge: [''],
-      values: [''],
-      relatedProducts: ['']
+      searchKeywords: [], //Array with user entered search keywords
+      relatedProducts: [''],
+      position: [''],
     });
   }
 
   handleProductType() {
-    this.productType = this.productForm.get('productType')?.value;
-    if (this.productType == 'Single') {
+    this.productType = this.productForm.get('isSingle')?.value;
+    if (this.productType == 'true') {
       this.isSingle = true;
-    } else if (this.productType == 'Configurable') {
+    } else if (this.productType == 'false') {
       this.isSingle = false;
     }
   }
 
-  tagInput(){
-    if ((this.productForm.get('values')?.value != ' ' || '') || (this.productForm.get('values')?.value == null )) {
-      this.valueArray.push(this.productForm.get('values')?.value);
-      this.productForm.get('values')?.setValue('');
+  tagCategoryInput() {
+    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
+      this.categoryArray.push(this.productForm.get('categories')?.value);
+      for (let i = 0; i < this.categoryData.length; i++) {
+        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
+          this.categoryNames.push(this.categoryData[i].name);
+        }
+      }
+    } else {
+      this.toastr.info('Category Already Added');
+    }
+    this.productForm.get('categories')?.setValue('');
+  }
+
+  tagCategoryRemove(category: any) {
+    const index = this.categoryNames.indexOf(category);
+    if (index > -1) {
+      this.categoryNames.splice(index, 1);
+    }
+    for (let i = 0; i < this.categoryData.length; i++) {
+      if (this.categoryData[i].name == category) {
+        this.categoryArray.pop(this.categoryData[i]._id);
+      }
     }
   }
 
-  tagRemove(value: any){
+  tagInput() {
+    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || this.productForm.get('searchKeywords')?.value == null) {
+      this.valueArray.push(this.productForm.get('searchKeywords')?.value);
+      this.productForm.get('searchKeywords')?.setValue('');
+    }
+  }
+
+  tagRemove(value: any) {
+    const index = this.valueArray.indexOf(value);
+    if (index > -1) {
+      this.valueArray.splice(index, 1);
+    }
     for (let i = 0; i < this.valueArray.length; i++) {
       if (this.valueArray[i] == value) {
         this.valueArray.pop(value);
@@ -166,14 +209,65 @@ export class UpdateProductComponent implements OnInit {
 
   getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
-      this.productData = res?.result;
+      this.productsData = res?.result;
     });
   }
 
-  getProductBySlug(){
-    this.productService.getProductBySlug(this.slug).subscribe((res: any) => {
-      this.productDetail = res?.result[0]
-    })
+  getProductBySlug() {
+    this.productService
+      .getProductBySlug(this.productSlug)
+      .subscribe((res: any) => {
+        this.productData = res?.result[0];
+        this.isLoaded = true;
+        this.productType = this.productData.isSingle;
+        if (this.productType == true) {
+          this.isSingle = true;
+        } else if (this.productType == false) {
+          this.isSingle = false;
+        }
+        this.uploadedImg = this.productData?.file
+        this.productForm.get('isSingle')?.setValue(this.productType);
+        this.productForm.get('name')?.setValue(this.productData.name);
+        this.productForm.get('sku')?.setValue(this.productData.sku);
+        this.productForm.get('hsn')?.setValue(this.productData.hsn);
+        this.productForm.get('mrpPrice')?.setValue(this.productData.mrpPrice);
+        this.productForm.get('offerprice')?.setValue(this.productData.offerprice);
+        this.productForm.get('stock')?.setValue(this.productData.stock);
+        this.productForm.get('moq')?.setValue(this.productData.moq);
+        this.productForm.get('additionalbutton')?.setValue(this.productData.additionalbutton);
+        this.productForm.get('buttonredireturl')?.setValue(this.productData.buttonredireturl);
+        this.productForm.get('isFeatured')?.setValue(this.productData.isFeatured);
+        this.productForm.get('returnable')?.setValue(this.productData.returnable);
+        this.productForm.get('returnDays')?.setValue(this.productData.returnDays);
+        this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);
+        this.productForm.get('weight')?.setValue(this.productData.weight);
+        this.productForm.get('cod')?.setValue(this.productData.cod);
+        this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
+        this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);
+        this.productForm.get('position')?.setValue(this.productData.position);
+        this.productForm.get('cod')?.setValue(this.productData.cod);
+        this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
+        this.productForm.get('stockWarning')?.setValue(this.productData.stockWarning);
+        this.productForm.get('description')?.setValue(this.productData.description);
+        this.productForm.get('features')?.setValue(this.productData.features);
+        this.productForm.get('relatedProducts')?.setValue(this.productData.relatedProducts);
+        for (let category of this.productData.categories) {
+          this.categoryArray.push(category)
+          for (let i = 0; i < this.categoryData.length; i++) {
+            if (category == this.categoryData[i]._id) {
+              this.categoryNames.push(this.categoryData[i].name);
+            }
+          }
+        }
+        for(let search of this.productData.searchKeywords){
+          this.valueArray.push(search)
+        }
+        for(let brand of this.brandData){
+          if(this.productData.brandId == brand._id){
+            this.productForm.get('brandId')?.setValue(brand._id);
+          }
+        }
+      });
   }
 
   onOptionsSelected() {
@@ -191,9 +285,40 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  updateProduct() {}
+  addProduct() {}
 
-  addProduct() {
-    console.log(this.productForm.value)
+  updateProduct() {
+    if (!this.productForm.valid) {
+      return;
+    }
+
+    const formData = new FormData();
+    if (this.fileData != null && this.fileData != undefined) {
+      formData.append('file', this.fileData);
+    }else{
+      formData.append('file', this.uploadedImg)
+    }
+
+    for (const data of Object.keys(this.productForm.value)) {
+      if (data != 'values' || 'categories') {
+        formData.append(data, this.productForm.value[data]);
+      }
+    }
+
+    console.log(this.valueArray)
+    console.log(this.categoryArray);
+    
+    formData.append('searchKeywords', this.valueArray);
+    formData.append('categories', this.categoryArray);
+
+    this.productService.updateProduct(this.productSlug, formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Product Added Successfully');
+        this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+        this.ngOnInit();
+      }
+    });
   }
 }

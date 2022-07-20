@@ -42,7 +42,6 @@
                   />
                 </div>
               </div>
-              <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Root Category</label>
@@ -92,13 +91,6 @@
                 </div>
               </ng-container>
               <div class="col-12 col-sm-6">
-                <div class="preview-img">
-                  <img
-                    class="update-preview-img"
-                    src="http://localhost:3000/{{ categoryValues.file }}"
-                    alt="preiew-img"
-                  />
-                </div>
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Logo</label>
                   <input
@@ -107,8 +99,14 @@
                     (change)="handleInputChange($event)"
                   />
                 </div>
+                <div class="preview-img">
+                  <img
+                    class="update-preview-img"
+                    src="http://localhost:3000/{{ categoryValues.file }}"
+                    alt="preiew-img"
+                  />
+                </div>
               </div>
-              <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>

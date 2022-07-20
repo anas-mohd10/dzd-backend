@@ -28,6 +28,7 @@ export class UpdateCollectionComponent implements OnInit {
   productNames: any = [];
   productValues: any = [];
   isSubmitted: boolean;
+  uploadedImg: any;
 
   constructor(
     private collectionService: CollectionService,
@@ -85,25 +86,17 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   getCollection() {
-    this.collectionService
-      .getCollectionBySlug(this.collection)
-      .subscribe((res: any) => {
+    this.collectionService.getCollectionBySlug(this.collection).subscribe((res: any) => {
         switch (res?.errorCode) {
           case 0:
             this.collectionData = res?.result[0];
-            this.collectionForm
-              .get('name')
-              ?.setValue(this.collectionData?.name);
-            this.collectionForm
-              .get('isFeatured')
-              ?.setValue(this.collectionData?.isFeatured);
-            this.collectionForm
-              .get('isActive')
-              ?.setValue(this.collectionData?.isActive);
-            this.productValues = this.collectionData?.products;
-            for (let i = 0; i < this.productValues.length; i++) {
-              this.productNames.push(this.productValues[i].name);
-              this.valueArray.push(this.productValues[i]._id);
+            this.uploadedImg = this.collectionData?.file
+            this.collectionForm.get('name')?.setValue(this.collectionData?.name);
+            this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
+            this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
+            for (let product of this.collectionData?.products) {
+              this.valueArray.push(product._id)
+              this.productNames.push(product.name)
             }
             break;
         }
@@ -114,6 +107,8 @@ export class UpdateCollectionComponent implements OnInit {
     if (!this.valueArray.includes(this.collectionForm.get('products')?.value)) {
       this.valueArray.push(this.collectionForm.get('products')?.value);
       this.getProductNames(this.collectionForm.get('products')?.value);
+    }else{
+      this.toastr.info('Product Already Added');
     }
     this.collectionForm.get('products')?.setValue('');
   }
@@ -124,6 +119,13 @@ export class UpdateCollectionComponent implements OnInit {
         this.productNames.push(this.productArray[i].name);
       }
     }
+  }
+
+  handleInputChange(fileInput: any) {
+    const file = fileInput.dataTransfer
+      ? fileInput.dataTransfer.files[0]
+      : fileInput.target.files[0];
+    this.fileData = <File>fileInput.target.files[0];
   }
 
   tagRemove(value: any) {
@@ -161,6 +163,8 @@ export class UpdateCollectionComponent implements OnInit {
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
+    }else{
+      formData.append('file', this.uploadedImg)
     }
 
     for (const data of Object.keys(this.collectionForm.value)) {
@@ -169,11 +173,10 @@ export class UpdateCollectionComponent implements OnInit {
       }
     }
 
-    console.log(this.valueArray)
-
     formData.append("products", this.valueArray);
 
     this.collectionService.updateCollection(this.collection, formData).subscribe((res: any) => {
+      console.log(res)
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

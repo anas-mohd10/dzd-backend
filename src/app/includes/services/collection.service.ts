@@ -27,8 +27,7 @@ export class CollectionService {
   }
 
   updateCollection(slug: any, data: any){
-    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "?slug=" + slug);
-    console.log(url)
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "/" + slug);
     return this.http.put(`${url}`, data);
   }
 }

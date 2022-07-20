@@ -38,6 +38,7 @@ export class UpdateCategoryComponent implements OnInit {
   categoryValues: any;
   previewImg: any;
   parentIdValue: string;
+  uploadedImg: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -134,6 +135,7 @@ export class UpdateCategoryComponent implements OnInit {
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
+      this.uploadedImg = this.categoryData?.file
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parentId && !res?.result[i].rootId) {
           this.categoryArray.push(
@@ -215,6 +217,8 @@ export class UpdateCategoryComponent implements OnInit {
 
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
+    }else{
+      formData.append('file', this.uploadedImg)
     }
 
     for (const data of Object.keys(this.categoryForm.value)) {
@@ -227,7 +231,6 @@ export class UpdateCategoryComponent implements OnInit {
     formData.append('parentId', this.parentCategory);
 
     this.CategoryService.addCategory(formData).subscribe((res: any) => {
-      console.log(res);
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {
