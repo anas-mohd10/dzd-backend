@@ -16,7 +16,7 @@
           <li class="breadcrumb-item active fs-5">
             <a
               routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
-              [queryParams]="{ product: slug }"
+              [queryParams]="{ product: variantProductValues?.parentId?.slug }"
               >Vartiant Products</a
             >
           </li>
@@ -447,7 +447,7 @@
                       -- Select Related Products --
                     </option>
                     <option
-                      *ngFor="let product of productData"
+                      *ngFor="let product of productsData"
                       value="{{ product?.name }}"
                     >
                       {{ product?.name }}
@@ -476,6 +476,13 @@
                     type="file"
                     class="form-control fs-5"
                     (change)="handleInputChange($event)"
+                  />
+                </div>
+                <div class="preview-img">
+                  <img
+                    class="update-preview-img"
+                    src="http://localhost:3000/{{ variantProductValues.file }}"
+                    alt="preiew-img"
                   />
                 </div>
               </div>

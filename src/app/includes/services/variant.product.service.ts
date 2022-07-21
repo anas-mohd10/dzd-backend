@@ -40,4 +40,9 @@ export class VariantProductService {
     const url = this.commonService.getFullUrl(this.variantProductEndpoints.get_product_names);
     return this.http.get(`${url}`);
   }
+
+  updateVariantProduct(id: any, data: any) {
+    const url = this.commonService.getFullUrl(this.variantProductEndpoints.update_product + "/" + id);
+    return this.http.put(`${url}`, data);
+  }
 }

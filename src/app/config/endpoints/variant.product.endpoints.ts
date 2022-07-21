@@ -6,6 +6,6 @@ export const variantProductEndpoints = {
     get_product_by_parent: '/variant-parent-product',
     get_active_products: '/active-variant-products',
     update_product_status: '/update-variant-product/:id',
-    update_product: '/update-variant-product/:id',
+    update_product: '/update-variant-product',
     delete_product: '/delete-variant-product/:id'
 }

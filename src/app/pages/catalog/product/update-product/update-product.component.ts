@@ -218,7 +218,6 @@ export class UpdateProductComponent implements OnInit {
       .getProductBySlug(this.productSlug)
       .subscribe((res: any) => {
         this.productData = res?.result[0];
-        console.log(this.productData);
         this.isLoaded = true;
         this.productType = this.productData.isSingle;
         if (this.productType == true) {
