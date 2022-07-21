@@ -36,21 +36,21 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Name</label>
                   <input type="text" class="form-control fs-5" formControlName="name"/>
-                  <span class="text-danger fs-6 fw-bold" *ngIf="(bf.name.touched || isSubmitted) && bf.name.errors?.required">Name is required</span>
+                  <span class="text-danger error-msg fs-6" *ngIf="(bf.name.touched || isSubmitted) && bf.name.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a name</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Logo</label>
                   <input type="file" class="form-control fs-5" formControlName="file" (change)="handleInputChange($event)"/>
-                  <span class="text-danger fs-6 fw-bold" *ngIf="(bf.file.touched || isSubmitted) && bf.file.errors?.required">Brand logo is required</span>
+                  <span class="text-danger fs-6" *ngIf="(bf.file.touched || isSubmitted) && bf.file.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a image</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
-                    <option value="false" selected>Inactive</option>
+                    <option value="false">Inactive</option>
                     <option value="true">Active</option>
                   </select>
                 </div>

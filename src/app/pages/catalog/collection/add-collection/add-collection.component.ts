@@ -62,7 +62,7 @@ export class AddCollectionComponent implements OnInit {
       file: ['', Validators.required],
       products: [],
       isFeatured: ['false', Validators.required],
-      isActive: ['false', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 

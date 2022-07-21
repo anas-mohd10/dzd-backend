@@ -21,6 +21,24 @@
   font-weight: bold;
 }
 
+.text-danger{
+  padding: 0 5px;
+  color: rgb(235, 19, 58) !important;
+  // background: rgba(163, 32, 32, 0.2);
+  border-radius: 5px;
+}
+
+.text-danger i{
+  color: rgb(235, 19, 58) !important;
+}
+
+label{
+  color: #646464;
+  font-size: 1rem;
+  // letter-spacing: 3px;
+  // text-transform: uppercase;
+}
+
 .bi-x{
   color: #016736;
   font-size: 1.5rem;

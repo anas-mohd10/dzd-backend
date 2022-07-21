@@ -42,24 +42,34 @@
                     formControlName="name"
                   />
                   <span
-                    class="text-danger fs-6 fw-bold"
+                    class="text-danger error-msg fs-6"
                     *ngIf="
                       (cf.name.touched || isSubmitted) &&
                       cf.name.errors?.required
                     "
-                    >Name is required</span
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a name</span
                   >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Image </label>
+                  <label class="fs-5 mb-3 fw-bold"> Logo </label>
                   <input
                     type="file"
                     class="form-control fs-5"
                     formControlName="file"
                     (change)="handleInputChange($event)"
                   />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (cf.file.touched || isSubmitted) &&
+                      cf.file.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a image</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -74,14 +84,18 @@
                     <option value="example" disabled>
                       -- Select a product --
                     </option>
-                    <option *ngFor="let product of productArray" value="{{product?._id}}">
-                        {{ product?.name }}
+                    <option
+                      *ngFor="let product of productArray"
+                      value="{{ product?._id }}"
+                    >
+                      {{ product?.name }}
                     </option>
                   </select>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let name of productNames">
-                    <span class="tag-input">{{ name }}
+                    <span class="tag-input"
+                      >{{ name }}
                       <i class="bi bi-x fs-1" (click)="tagRemove(name)"></i>
                     </span>
                   </ng-container>

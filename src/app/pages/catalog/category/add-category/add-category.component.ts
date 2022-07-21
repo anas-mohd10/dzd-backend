@@ -17,15 +17,6 @@ export class AddCategoryComponent implements OnInit {
   appRoute = appRoutes;
   categoryArray: any = [];
 
-  validationMessages = {
-    name: [
-      {
-        type: 'required',
-        message: 'Category name is required',
-      },
-    ],
-  };
-
   isSubmitted = false;
   params: any;
   fileData: File;
@@ -73,10 +64,11 @@ export class AddCategoryComponent implements OnInit {
   initForm() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
-      rootId: ['check', Validators.required],
+      file: ['', Validators.required],
+      rootId: ['', Validators.required],
+      parentId: ['', Validators.required],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
-      parentId: [''],
     });
   }
 

@@ -40,6 +40,15 @@
                     class="form-control fs-5"
                     formControlName="name"
                   />
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (bf.name.touched || isSubmitted) &&
+                      bf.name.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a name</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -51,16 +60,27 @@
                     formControlName="rootId"
                     (change)="handleCheckBox()"
                   >
-                    <option value="check">-- Select an option --</option>
+                    <option value="check" disabled>
+                      -- Select an option --
+                    </option>
                     <option value="false">No</option>
                     <option value="true">Yes</option>
                   </select>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (bf.rootId.touched || isSubmitted) &&
+                      bf.rootId.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether this is root category or not</span
+                  >
                 </div>
               </div>
               <ng-container *ngIf="isChecked == false">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3 fw-bold">Parent Id</label>
+                    <label class="fs-5 mb-3 fw-bold">Parent Category</label>
                     <select
                       class="form-select"
                       aria-label="-- select --"
@@ -73,6 +93,14 @@
                         {{ category }}
                       </option>
                     </select>
+                    <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (bf.parentId.touched || isSubmitted) &&
+                      bf.parentId.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please provide a category</span
+                  >
                   </div>
                 </div>
               </ng-container>
@@ -99,8 +127,18 @@
                   <input
                     type="file"
                     class="form-control fs-5"
+                    formControlName="file"
                     (change)="handleInputChange($event)"
                   />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (bf.file.touched || isSubmitted) &&
+                      bf.file.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a image</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">

@@ -35,35 +35,35 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
                   <input type="text" class="form-control fs-5" formControlName="name"/>
-                  <span class="text-danger fs-6" *ngIf="(of.name.touched || isSubmitted) && of.name.errors?.required">Name is required</span>
+                  <span class="text-danger fs-6" *ngIf="(of.name.touched || isSubmitted) && of.name.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a name</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Image</label>
                   <input type="file" class="form-control fs-5" formControlName="file" (change)="handleInputChange($event)"/>
-                  <span class="text-danger fs-6" *ngIf="(of.file.touched || isSubmitted) && of.file.errors?.required">Offer image is required</span>
+                  <span class="text-danger fs-6" *ngIf="(of.file.touched || isSubmitted) && of.file.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a image </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Description</label>
                   <input type="text" class="form-control fs-5" formControlName="description"/>
-                  <span class="text-danger fs-6" *ngIf="(of.description.touched || isSubmitted) && of.description.errors?.required">Description is required</span>
+                  <span class="text-danger mt-10 fs-6" *ngIf="(of.description.touched || isSubmitted) && of.description.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a description</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">From Date</label>
                   <input type="date" class="form-control fs-5" formControlName="fromDate"/>
-                  <span class="text-danger fs-6" *ngIf="(of.fromDate.touched || isSubmitted) && of.fromDate.errors?.required">From date is required</span>
+                  <span class="text-danger fs-6" *ngIf="(of.fromDate.touched || isSubmitted) && of.fromDate.errors?.required"> <i class="bi bi-exclamation-triangle-fill"></i> Please provide a from date</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Last Date</label>
                   <input type="date" class="form-control fs-5" formControlName="lastDate"/>
-                  <span class="text-danger fs-6" *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required">Last date is required</span>
+                  <span class="text-danger fs-6" *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a last date</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
