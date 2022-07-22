@@ -35,21 +35,57 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name"/>
-                  <span class="text-danger error-msg fs-6" *ngIf="(bf.name.touched || isSubmitted) && bf.name.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a name</span>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="name"
+                  />
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (bf.name.touched || isSubmitted) &&
+                      bf.name.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a name</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Logo</label>
-                  <input type="file" class="form-control fs-5" formControlName="file" (change)="handleInputChange($event)"/>
-                  <span class="text-danger fs-6" *ngIf="(bf.file.touched || isSubmitted) && bf.file.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a image</span>
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    formControlName="file"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                  />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (bf.file.touched || isSubmitted) &&
+                      bf.file.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a image</span
+                  >
+                  <span class="uploads uploaded">
+                    <img
+                      class="preview-image"
+                      id="preview"
+                    />
+                  </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="isActive"
+                  >
                     <option value="false">Inactive</option>
                     <option value="true">Active</option>
                   </select>
@@ -58,14 +94,20 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured Brand ?</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isFeatured">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="isFeatured"
+                  >
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">Submit</button>
+                <button type="submit" class="btn btn-primary fs-4">
+                  Submit
+                </button>
               </div>
             </div>
           </form>

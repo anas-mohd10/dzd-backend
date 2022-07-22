@@ -94,13 +94,14 @@
                       </option>
                     </select>
                     <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
-                      (bf.parentId.touched || isSubmitted) &&
-                      bf.parentId.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please provide a category</span
-                  >
+                      class="text-danger error-msg fs-6"
+                      *ngIf="
+                        (bf.parentId.touched || isSubmitted) &&
+                        bf.parentId.errors?.required
+                      "
+                      ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                      provide a category</span
+                    >
                   </div>
                 </div>
               </ng-container>
@@ -129,6 +130,7 @@
                     class="form-control fs-5"
                     formControlName="file"
                     (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
                   />
                   <span
                     class="text-danger fs-6"
@@ -139,6 +141,9 @@
                     ><i class="bi bi-exclamation-triangle-fill"></i> Please
                     provide a image</span
                   >
+                  <span class="uploads uploaded">
+                    <img class="preview-image" id="preview" />
+                  </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">

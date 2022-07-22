@@ -3,7 +3,9 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-2">{{ editMode ? "Update Offer" : "Add Offer" }}</h3>
+        <h3 class="page-title fs-2">
+          {{ editMode ? "Update Offer" : "Add Offer" }}
+        </h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -34,42 +36,112 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name"/>
-                  <span class="text-danger fs-6" *ngIf="(of.name.touched || isSubmitted) && of.name.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a name</span>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="name"
+                  />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (of.name.touched || isSubmitted) &&
+                      of.name.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a name</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Image</label>
-                  <input type="file" class="form-control fs-5" formControlName="file" (change)="handleInputChange($event)"/>
-                  <span class="text-danger fs-6" *ngIf="(of.file.touched || isSubmitted) && of.file.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a image </span>
+                  <input
+                    type="file"
+                    class="form-control fs-5"
+                    formControlName="file"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                  />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (of.file.touched || isSubmitted) &&
+                      of.file.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a image
+                  </span>
+                  <span class="uploads uploaded">
+                    <img class="preview-image" id="preview" />
+                  </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Description</label>
-                  <input type="text" class="form-control fs-5" formControlName="description"/>
-                  <span class="text-danger mt-10 fs-6" *ngIf="(of.description.touched || isSubmitted) && of.description.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a description</span>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="description"
+                  />
+                  <span
+                    class="text-danger mt-10 fs-6"
+                    *ngIf="
+                      (of.description.touched || isSubmitted) &&
+                      of.description.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a description</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">From Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="fromDate"/>
-                  <span class="text-danger fs-6" *ngIf="(of.fromDate.touched || isSubmitted) && of.fromDate.errors?.required"> <i class="bi bi-exclamation-triangle-fill"></i> Please provide a from date</span>
+                  <input
+                    type="date"
+                    class="form-control fs-5"
+                    formControlName="fromDate"
+                  />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (of.fromDate.touched || isSubmitted) &&
+                      of.fromDate.errors?.required
+                    "
+                  >
+                    <i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a from date</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Last Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="lastDate"/>
-                  <span class="text-danger fs-6" *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required"><i class="bi bi-exclamation-triangle-fill"></i> Please provide a last date</span>
+                  <input
+                    type="date"
+                    class="form-control fs-5"
+                    formControlName="lastDate"
+                  />
+                  <span
+                    class="text-danger fs-6"
+                    *ngIf="
+                      (of.lastDate.touched || isSubmitted) &&
+                      of.lastDate.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide a last date</span
+                  >
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="featured">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="featured"
+                  >
                     <option value="true" selected>Yes</option>
                     <option value="false">No</option>
                   </select>
@@ -78,14 +150,20 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="status">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="status"
+                  >
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">Submit</button>
+                <button type="submit" class="btn btn-primary fs-4">
+                  Submit
+                </button>
               </div>
             </div>
           </form>

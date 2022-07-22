@@ -44,6 +44,12 @@ export class AddVariantProductComponent implements OnInit {
   slug: any;
   parentProductId: any;
   parentProductName: any;
+  returnValue: any;
+  isReturn: boolean = false;
+  isShipping: boolean = false;
+  isCod: boolean = false;
+  method: any;
+  cod: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -76,6 +82,35 @@ export class AddVariantProductComponent implements OnInit {
     }
   }
 
+  checkReturnable() {
+    this.returnValue = this.productForm.get('returnable')?.value;
+    if (this.returnValue == true) {
+      this.isReturn = true;
+    }
+    if (this.returnValue == false) {
+      this.isReturn = false;
+    }
+  }
+
+  checkShippingMethod() {
+    this.method = this.productForm.get('shippingMethod')?.value;
+    if (this.method == 'paid') {
+      this.isShipping = true;
+    }
+    if (this.method == 'unpaid' || this.method == 'external') {
+      this.isShipping = false;
+    }
+  }
+
+  checkCod() {
+    this.cod = this.productForm.get('cod')?.value;
+    if (this.cod == true) {
+      this.isCod = true;
+    }
+    if (this.cod == false) {
+      this.isCod = false;
+    }
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -86,43 +121,46 @@ export class AddVariantProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
-    this.getProductBySlug()
+    this.getProductBySlug();
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      name: [''],
-      sku: [''],
-      hsn: [''],
-      mrpPrice: [''],
-      offerprice: ['',],
-      stock: [''],
-      moq: [''],
-      stockWarning: ['',],
-      description: ['',],
-      features: ['',],
+      name: ['', Validators.required],
+      sku: ['', Validators.required],
+      hsn: ['', Validators.required],
+      mrpPrice: ['', Validators.required],
+      offerPrice: [''],
+      stock: ['', Validators.required],
+      moq: ['', Validators.required],
+      stockWarning: [''],
+      description: [''],
+      features: [''],
       categories: [], //Array with category id's
-      brandId: ['',],
-      additionalbutton: ['',],
-      buttonredireturl: ['',],
-      isFeatured: ['',],
-      returnable: ['',],
-      returnDays: ['',],
-      shippingMethod: ['',],
-      shippingCost: ['',],
-      weight: ['',],
-      taxClassId: ['',],
-      cod: ['',],
-      codCharge: ['',],
+      brandId: ['', Validators.required],
+      additionalbutton: [''],
+      buttonredireturl: [''],
+      isFeatured: [''],
+      isActive: [''],
+      returnable: [''],
+      returnDays: [''],
+      shippingMethod: ['', Validators.required],
+      shippingCost: [''],
+      weight: ['', Validators.required],
+      unit: ['', Validators.required],
+      taxClassId: ['', Validators.required],
+      cod: [''],
+      codCharge: [''],
       searchKeywords: [], //Array with user entered search keywords
-      relatedProducts: ['',],
-      position: ['',],
+      relatedProducts: [''],
+      position: ['', Validators.required],
+      file: ['', Validators.required],
     });
   }
 
   handleProductType() {
     this.productType = this.productForm.get('isSingle')?.value;
-    console.log(this.productType)
+    console.log(this.productType);
     if (this.productType == 'true') {
       this.isSingle = true;
     } else if (this.productType == 'false') {
@@ -131,14 +169,18 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   tagCategoryInput() {
-    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
+    if (
+      !this.categoryArray.includes(this.productForm.get('categories')?.value)
+    ) {
       this.categoryArray.push(this.productForm.get('categories')?.value);
-      for(let i=0; i<this.categoryData.length; i++){
-        if(this.productForm.get('categories')?.value == this.categoryData[i]._id){
-          this.categoryNames.push(this.categoryData[i].name)
+      for (let i = 0; i < this.categoryData.length; i++) {
+        if (
+          this.productForm.get('categories')?.value == this.categoryData[i]._id
+        ) {
+          this.categoryNames.push(this.categoryData[i].name);
         }
       }
-    }else{
+    } else {
       this.toastr.info('Category Already Added');
     }
     this.productForm.get('categories')?.setValue('');
@@ -157,7 +199,11 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   tagInput() {
-    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || this.productForm.get('searchKeywords')?.value == null) {
+    if (
+      this.productForm.get('searchKeywords')?.value != ' ' ||
+      '' ||
+      this.productForm.get('searchKeywords')?.value == null
+    ) {
       this.valueArray.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
@@ -212,11 +258,11 @@ export class AddVariantProductComponent implements OnInit {
     });
   }
 
-  getProductBySlug(){
-    this.productService.getProductBySlug(this.slug).subscribe((res: any)=>{
-      this.parentProductName = res?.result[0]?.name
-      this.parentProductId = res?.result[0]._id
-    })
+  getProductBySlug() {
+    this.productService.getProductBySlug(this.slug).subscribe((res: any) => {
+      this.parentProductName = res?.result[0]?.name;
+      this.parentProductId = res?.result[0]._id;
+    });
   }
 
   onOptionsSelected() {
@@ -247,23 +293,28 @@ export class AddVariantProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if(data != "values"  || "categories"){
+      if (data != 'values' || 'categories') {
         formData.append(data, this.productForm.value[data]);
       }
     }
-   
-    formData.append("searchKeywords", this.valueArray)
-    formData.append("categories", this.categoryArray)
-    formData.append("parentId", this.parentProductId)
 
-    this.variantProductService.addVariantProduct(formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Product Added Successfully');
-        this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-        this.ngOnInit();
-      }
-    });
+    formData.append('searchKeywords', this.valueArray);
+    formData.append('categories', this.categoryArray);
+    formData.append('parentId', this.parentProductId);
+
+    this.variantProductService
+      .addVariantProduct(formData)
+      .subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something Went Wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Product Added Successfully');
+          this.router.navigate(
+            [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
+            { queryParams: { product: this.slug } }
+          );
+          this.ngOnInit();
+        }
+      });
   }
 }

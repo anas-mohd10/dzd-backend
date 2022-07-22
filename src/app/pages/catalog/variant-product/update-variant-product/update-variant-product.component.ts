@@ -46,6 +46,12 @@ export class UpdateVariantProductComponent implements OnInit {
   parentValues: any;
   uploadedImg: any;
   productsData: any;
+  returnValue: any;
+  isReturn: boolean = false;
+  isShipping: boolean = false;
+  isCod: boolean = false;
+  method: any;
+  cod: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,6 +84,36 @@ export class UpdateVariantProductComponent implements OnInit {
     }
   }
 
+  checkReturnable() {
+    this.returnValue = this.productForm.get('returnable')?.value;
+    if (this.returnValue == true) {
+      this.isReturn = true;
+    }
+    if (this.returnValue == false) {
+      this.isReturn = false;
+    }
+  }
+
+  checkShippingMethod() {
+    this.method = this.productForm.get('shippingMethod')?.value;
+    if (this.method == 'paid') {
+      this.isShipping = true;
+    }
+    if (this.method == 'unpaid' || this.method == 'external') {
+      this.isShipping = false;
+    }
+  }
+
+  checkCod() {
+    this.cod = this.productForm.get('cod')?.value;
+    if (this.cod == true) {
+      this.isCod = true;
+    }
+    if (this.cod == false) {
+      this.isCod = false;
+    }
+  }
+
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
@@ -96,7 +132,7 @@ export class UpdateVariantProductComponent implements OnInit {
       sku: [''],
       hsn: [''],
       mrpPrice: [''],
-      offerprice: [''],
+      offerPrice: [''],
       stock: [''],
       moq: [''],
       stockWarning: [''],
@@ -107,6 +143,7 @@ export class UpdateVariantProductComponent implements OnInit {
       additionalbutton: [''],
       buttonredireturl: [''],
       isFeatured: [''],
+      isActive: [''],
       returnable: [''],
       returnDays: [''],
       shippingMethod: [''],
@@ -118,6 +155,7 @@ export class UpdateVariantProductComponent implements OnInit {
       searchKeywords: [], //Array with user entered search keywords
       relatedProducts: [''],
       position: [''],
+      file: [''],
     });
   }
 
@@ -234,8 +272,8 @@ export class UpdateVariantProductComponent implements OnInit {
           .get('mrpPrice')
           ?.setValue(this.variantProductValues.mrpPrice);
         this.productForm
-          .get('offerprice')
-          ?.setValue(this.variantProductValues.offerprice);
+          .get('offerPrice')
+          ?.setValue(this.variantProductValues.offerPrice);
         this.productForm
           .get('stock')
           ?.setValue(this.variantProductValues.stock);
@@ -249,6 +287,9 @@ export class UpdateVariantProductComponent implements OnInit {
         this.productForm
           .get('isFeatured')
           ?.setValue(this.variantProductValues.isFeatured);
+        this.productForm
+          .get('isActive')
+          ?.setValue(this.variantProductValues.isActive);
         this.productForm
           .get('returnable')
           ?.setValue(this.variantProductValues.returnable);
@@ -266,8 +307,8 @@ export class UpdateVariantProductComponent implements OnInit {
           .get('codCharge')
           ?.setValue(this.variantProductValues.codCharge);
         this.productForm
-          .get('shippingMethod')
-          ?.setValue(this.variantProductValues.shippingMethod);
+          .get('shippingCost')
+          ?.setValue(this.variantProductValues.shippingCost);
         this.productForm
           .get('position')
           ?.setValue(this.variantProductValues.position);
@@ -300,6 +341,29 @@ export class UpdateVariantProductComponent implements OnInit {
         for (let search of this.variantProductValues.searchKeywords) {
           this.valueArray.push(search);
         }
+        this.returnValue = this.variantProductValues.returnable;
+        if (this.returnValue == true) {
+          this.isReturn = true;
+        }
+        if (this.returnValue == false) {
+          this.isReturn = false;
+        }
+
+        this.method = this.variantProductValues.shippingMethod;
+        if (this.method == 'paid') {
+          this.isShipping = true;
+        }
+        if (this.method == 'unpaid' || this.method == 'external') {
+          this.isShipping = false;
+        }
+
+        this.cod = this.variantProductValues.cod;
+        if (this.cod == true) {
+          this.isCod = true;
+        }
+        if (this.cod == false) {
+          this.isCod = false;
+        }
       });
   }
 
@@ -326,6 +390,8 @@ export class UpdateVariantProductComponent implements OnInit {
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
+    } else {
+      formData.append('file', this.uploadedImg);
     }
 
     for (const data of Object.keys(this.productForm.value)) {
@@ -347,7 +413,9 @@ export class UpdateVariantProductComponent implements OnInit {
           this.toastr.success('Product Added Successfully');
           this.router.navigate(
             [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
-            { queryParams: { product: this.variantProductValues.parentId.slug } }
+            {
+              queryParams: { product: this.variantProductValues.parentId.slug },
+            }
           );
           this.ngOnInit();
         }

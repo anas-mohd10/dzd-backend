@@ -374,7 +374,8 @@
                       (pf.isFeatured.touched || isSubmitted) &&
                       pf.isFeatured.errors?.required
                     "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm whether product is featured or not</span
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether product is featured or not</span
                   >
                 </div>
               </div>
@@ -402,7 +403,8 @@
                       (pf.returnable.touched || isSubmitted) &&
                       pf.returnable.errors?.required
                     "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm whether product is returnable or not</span
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether product is returnable or not</span
                   >
                 </div>
               </div>
@@ -434,6 +436,15 @@
                     <option value="unpaid">Unpaid Shipping</option>
                     <option value="external">External Shipping Service</option>
                   </select>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.shippingMethod.touched || isSubmitted) &&
+                      pf.shippingMethod.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the shipping method</span
+                  >
                 </div>
               </div>
 
@@ -467,6 +478,15 @@
                     <option value="number">Number of</option>
                     <option value="pack">Pack of</option>
                   </select>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.unit.touched || isSubmitted) &&
+                      pf.unit.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the unit</span
+                  >
                 </div>
               </div>
 
@@ -479,6 +499,15 @@
                     class="form-control"
                     formControlName="weight"
                   />
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.weight.touched || isSubmitted) &&
+                      pf.weight.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the weight</span
+                  >
                 </div>
               </div>
 
@@ -497,6 +526,15 @@
                       {{ taxClass?.name }}
                     </option>
                   </select>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.taxClassId.touched || isSubmitted) &&
+                      pf.taxClassId.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the tax class</span
+                  >
                 </div>
               </div>
 
@@ -515,6 +553,14 @@
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.cod.touched || isSubmitted) && pf.cod.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether cod is available or not</span
+                  >
                 </div>
               </div>
 
@@ -541,13 +587,22 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3">Search Keywords</label>
                   <input
-                    class="form-control fs-5 mb-10"
+                    class="form-control fs-5"
                     formControlName="searchKeywords"
                     (keyup.Arrowright)="tagInput()"
                   />
-                  <div class="tag-inputs col-12 col-sm-6">
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.searchKeywords.touched || isSubmitted) &&
+                      pf.searchKeywords.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide search keywords</span
+                  >
+                  <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="tag-input"
+                      <span class="mb-10 tag-input"
                         >{{ value }}
                         <i class="bi bi-x" (click)="tagRemove(value)"></i
                       ></span>
@@ -575,6 +630,15 @@
                       {{ product?.name }}
                     </option>
                   </select>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.searchKeywords.touched || isSubmitted) &&
+                      pf.searchKeywords.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the related products</span
+                  >
                 </div>
               </div>
 
@@ -587,6 +651,15 @@
                     class="form-control fs-5"
                     formControlName="position"
                   />
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.position.touched || isSubmitted) &&
+                      pf.position.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the position</span
+                  >
                 </div>
               </div>
 
@@ -597,8 +670,22 @@
                   <input
                     type="file"
                     class="form-control fs-5"
+                    formControlName="file"
                     (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
                   />
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.file.touched || isSubmitted) &&
+                      pf.file.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
+                    provide the image</span
+                  >
+                  <span class="uploads uploaded">
+                    <img class="preview-image" id="preview" />
+                  </span>
                 </div>
               </div>
 

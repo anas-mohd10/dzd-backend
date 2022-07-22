@@ -2,14 +2,14 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-.tag-inputs{
+.tag-inputs {
   height: auto;
   display: grid;
   grid-template-columns: auto auto auto;
 }
 
-.tag-input{
-  margin: 0 10px 10px 0 ;
+.tag-input {
+  margin: 0 10px 10px 0;
   padding: 5px 10px;
   border-radius: 5px;
   background: rgba(17, 126, 84, 0.3);
@@ -21,30 +21,40 @@
   font-weight: bold;
 }
 
-.text-danger{
+.text-danger {
   padding: 0 5px;
   color: rgb(235, 19, 58) !important;
   // background: rgba(163, 32, 32, 0.2);
   border-radius: 5px;
 }
 
-.text-danger i{
+.text-danger i {
   color: rgb(235, 19, 58) !important;
 }
 
-label{
+label {
   color: #646464;
   font-size: 1rem;
   // letter-spacing: 3px;
   // text-transform: uppercase;
 }
 
-.bi-x{
+.form-check-label {
+  margin: 0 0 0 10px;
+}
+
+img#preview {
+  margin: 20px 0 0 0;
+  height: 200px;
+  width: auto;
+}
+
+.bi-x {
   color: #016736;
   font-size: 1.5rem;
 }
 
-.active-text-view{
+.active-text-view {
   height: 25px;
   width: 80px;
   background: rgba(18, 170, 79, 0.4);
@@ -54,13 +64,13 @@ label{
   border-radius: 5px;
 }
 
-.active-text{
+.active-text {
   color: #055224;
   font-size: 1.2rem;
   font-weight: bold;
 }
 
-.inactive-text-view{
+.inactive-text-view {
   height: 25px;
   width: 80px;
   background: rgba(186, 21, 35, 0.4);
@@ -70,34 +80,33 @@ label{
   border-radius: 5px;
 }
 
-.inactive-text{
+.inactive-text {
   color: #5a0404;
   font-size: 1.2rem;
   font-weight: bold;
 }
 
-.description-textarea{
+.description-textarea {
   resize: none;
 }
 
-.description-col{
+.description-col {
   overflow: hidden;
 }
 
-.btn-submit{
+.btn-submit {
   width: 200px;
 }
 
-.preview-img{
+.preview-img {
   height: 120px;
   width: 100%;
   margin: 20px 0 0 0;
 }
 
-.update-preview-img{
+.update-preview-img {
   height: 100%;
   border-radius: 10px;
-  // width: 100%;
   object-fit: contain;
 }
 
@@ -261,16 +270,18 @@ table.table th {
   font-size: 1.1rem;
 }
 
-.dataTables_info, .dataTables_paginate, .paging_full_numbers {
+.dataTables_info,
+.dataTables_paginate,
+.paging_full_numbers {
   margin-top: 20px;
 }
 
-.dataTables_paginate{
+.dataTables_paginate {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.table-responsive{
+.table-responsive {
   overflow-x: hidden;
 }

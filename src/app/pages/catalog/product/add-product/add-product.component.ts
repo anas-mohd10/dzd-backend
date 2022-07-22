@@ -42,12 +42,14 @@ export class AddProductComponent implements OnInit {
   productsData: any;
   returnValue: any;
   isReturn: boolean = false;
+  isShipping: boolean = false;
+  isCod: boolean = false;
+  method: any;
+  cod: any;
 
   validationMessages = {
     name: [{ type: 'required', message: 'Product name is required' }],
   };
-  isShipping: boolean = false;
-  isCod: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -88,6 +90,9 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
+    // this.checkShippingMethod();
+    // this.checkCod();
+    // this.checkReturnable();
   }
 
   initForm() {
@@ -96,14 +101,14 @@ export class AddProductComponent implements OnInit {
       name: ['', Validators.required],
       sku: ['', Validators.required],
       hsn: ['', Validators.required],
-      mrpPrice: ['', Validators.required],
+      mrpPrice: [''],
       offerprice: [''],
-      stock: ['', Validators.required],
-      moq: ['', Validators.required],
-      stockWarning: ['', ,],
+      stock: [''],
+      moq: [''],
+      stockWarning: [''],
       description: [''],
       features: [''],
-      categories: [Validators.required], //Array with category id's
+      categories: [], //Array with category id's
       brandId: ['', Validators.required],
       additionalbutton: [''],
       buttonredireturl: [''],
@@ -115,17 +120,17 @@ export class AddProductComponent implements OnInit {
       weight: ['', Validators.required],
       unit: ['', Validators.required],
       taxClassId: ['', Validators.required],
-      cod: [''],
+      cod: ['', Validators.required],
       codCharge: [''],
       searchKeywords: [], //Array with user entered search keywords
       relatedProducts: [''],
-      position: [''],
+      position: ['', Validators.required],
+      file: ['', Validators.required],
     });
   }
 
   handleProductType() {
     this.productType = this.productForm.get('isSingle')?.value;
-    console.log(this.productType);
     if (this.productType == 'true') {
       this.isSingle = true;
     } else if (this.productType == 'false') {
@@ -144,21 +149,21 @@ export class AddProductComponent implements OnInit {
   }
 
   checkShippingMethod() {
-    const method = this.productForm.get('shippingMethod')?.value;
-    if (method == 'paid') {
+    this.method = this.productForm.get('shippingMethod')?.value;
+    if (this.method == 'paid') {
       this.isShipping = true;
     }
-    if (method == 'unpaid' || method == 'external') {
+    if (this.method == 'unpaid' || this.method == 'external') {
       this.isShipping = false;
     }
   }
 
   checkCod() {
-    const cod = this.productForm.get('cod')?.value;
-    if (cod == 'true') {
+    this.cod = this.productForm.get('cod')?.value;
+    if (this.cod == 'true') {
       this.isCod = true;
     }
-    if (cod == 'false') {
+    if (this.cod == 'false') {
       this.isCod = false;
     }
   }

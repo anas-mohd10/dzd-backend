@@ -22,7 +22,7 @@
           </li>
           <li class="breadcrumb-item active fs-5">
             <a
-              routerLink="{{ appRoute.variantProduct.UPDATE_VARIANT_PRODUCT}}"
+              routerLink="{{ appRoute.variantProduct.UPDATE_VARIANT_PRODUCT }}"
               [queryParams]="{ product: slug }"
               >{{
                 editMode ? "Update Variant Product" : "Add Variant Product"
@@ -107,7 +107,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      formControlName="offerprice"
+                      formControlName="offerPrice"
                     />
                     <span class="input-group-text">.00</span>
                   </div>
@@ -263,52 +263,6 @@
                 </div>
               </div>
 
-              <!-- Featured Product -->
-              <div class="col-12 col-sm-6">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="featured"
-                    id="featuredCheck"
-                    formControlName="isFeatured"
-                  />
-                  <label class="form-check-label" for="featuredCheck"
-                    >Featured Product ?</label
-                  >
-                </div>
-              </div>
-
-              <div class="col-12 col-sm-6"></div>
-
-              <!-- Returnable Product -->
-              <div class="col-12 col-sm-6">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="returnable"
-                    id="returnableCheck"
-                    formControlName="returnable"
-                  />
-                  <label class="form-check-label" for="returnableCheck"
-                    >Returnable Product ?</label
-                  >
-                </div>
-              </div>
-
-              <!-- Return Days -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Return Days</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="returnDays"
-                  />
-                </div>
-              </div>
-
               <!-- Shipping Method -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
@@ -328,9 +282,6 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"
                     >Shipping Cost
-                    <span class="badge bg-secondary text-dark"
-                      >For Paid Shipping Only</span
-                    >
                   </label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
@@ -377,43 +328,6 @@
                 </div>
               </div>
 
-              <div class="col-12 col-sm-6" *ngIf="isSingle"></div>
-
-              <!-- COD Available -->
-              <div class="col-12 col-sm-6">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="cod"
-                    id="cod"
-                    formControlName="cod"
-                  />
-                  <label class="form-check-label">COD Available ?</label>
-                </div>
-              </div>
-
-              <!-- COD Charge -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">
-                    COD Charge
-                    <span class="badge bg-secondary text-dark"
-                      >If COD available</span
-                    >
-                  </label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">Rs.</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="codCharge"
-                    />
-                    <span class="input-group-text">.00</span>
-                  </div>
-                </div>
-              </div>
-
               <!-- Search Keywords -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
@@ -423,7 +337,7 @@
                     formControlName="searchKeywords"
                     (keyup.Arrowright)="tagInput()"
                   />
-                  <div class="tag-inputs col-12 col-sm-6">
+                  <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
                       <span class="tag-input"
                         >{{ value }}
@@ -486,6 +400,128 @@
                   />
                 </div>
               </div>
+
+              <!-- Featured Product -->
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="featured"
+                    id="featuredCheck"
+                    formControlName="isFeatured"
+                  />
+                  <label class="form-check-label" for="isFeatured"
+                    >Featured Product ?</label
+                  >
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.isFeatured.touched || isSubmitted) &&
+                      pf.isFeatured.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether product is featured or not</span
+                  >
+                </div>
+              </div>
+
+              <!-- Featured Product -->
+              <div class="col-12 col-sm-6">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="featured"
+                    id="featuredCheck"
+                    formControlName="isActive"
+                  />
+                  <label class="form-check-label" for="isActive"
+                    >Active Product ?</label
+                  >
+                </div>
+              </div>
+
+              <!-- COD Available -->
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="cod"
+                    id="cod"
+                    formControlName="cod"
+                    (change)="checkCod()"
+                  />
+                  <label class="form-check-label">COD Available ?</label>
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.cod.touched || isSubmitted) && pf.cod.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether cod is available or not</span
+                  >
+                </div>
+              </div>
+
+              <!-- COD Charge -->
+              <ng-container *ngIf="isCod">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3"> COD Charge </label>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text">Rs.</span>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="codCharge"
+                      />
+                      <span class="input-group-text">.00</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- Returnable Product -->
+              <div class="col-12">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="returnable"
+                    id="returnableCheck"
+                    formControlName="returnable"
+                    (change)="checkReturnable()"
+                  />
+                  <label class="form-check-label ml-10" for="returnable"
+                    >Returnable Product ?</label
+                  >
+                  <span
+                    class="text-danger error-msg fs-6"
+                    *ngIf="
+                      (pf.returnable.touched || isSubmitted) &&
+                      pf.returnable.errors?.required
+                    "
+                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
+                    whether product is returnable or not</span
+                  >
+                </div>
+              </div>
+
+              <!-- Return Days -->
+              <ng-container *ngIf="isReturn">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3">Return Days</label>
+                    <input
+                      type="text"
+                      class="form-control fs-5"
+                      formControlName="returnDays"
+                    />
+                  </div>
+                </div>
+              </ng-container>
 
               <div class="col-12">
                 <button type="submit" class="btn btn-primary fs-5">

@@ -30,6 +30,8 @@ export class AddBrandComponent implements OnInit {
   params: any;
   fileData: File;
   status: boolean;
+  imageArray: any;
+  previewURL: any;
 
   constructor(
     private formBuilder: FormBuilder,

@@ -60,6 +60,7 @@
                     class="form-control fs-5"
                     formControlName="file"
                     (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
                   />
                   <span
                     class="text-danger fs-6"
@@ -70,6 +71,9 @@
                     ><i class="bi bi-exclamation-triangle-fill"></i> Please
                     provide a image</span
                   >
+                  <span class="uploads uploaded">
+                    <img class="preview-image" id="preview" />
+                  </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
