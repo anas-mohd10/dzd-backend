@@ -3,7 +3,9 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-2">{{ editMode ? "Update Offer" : "Add Offer" }}</h3>
+        <h3 class="page-title fs-2">
+          {{ editMode ? "Update Offer" : "Add Offer" }}
+        </h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -12,7 +14,10 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer}">
+            <a
+              routerLink="{{ appRoute.offer.UPDATE_OFFER }}"
+              [queryParams]="{ offer: offer }"
+            >
               {{ editMode ? "Update Offer" : "Add Offer" }}
             </a>
           </li>
@@ -34,44 +39,51 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name"/>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Image</label>
-                  <input type="file" class="form-control fs-5" (change)="handleInputChange($event)"/>
-                </div>
-                <div class="preview-img">
-                  <img
-                    class="update-preview-img"
-                    src="http://localhost:3000/{{ offerData.file }}"
-                    alt="preiew-img"
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="name"
                   />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Description</label>
-                  <input type="text" class="form-control fs-5" formControlName="description"/>
+                  <input
+                    type="text"
+                    class="form-control fs-5"
+                    formControlName="description"
+                  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">From Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="fromDate"/>
+                  <input
+                    type="date"
+                    class="form-control fs-5"
+                    formControlName="fromDate"
+                  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Last Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="lastDate"/>
+                  <input
+                    type="date"
+                    class="form-control fs-5"
+                    formControlName="lastDate"
+                  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isFeatured">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="isFeatured"
+                  >
                     <option value="true" selected>Yes</option>
                     <option value="false">No</option>
                   </select>
@@ -80,14 +92,48 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg"
+                    formControlName="isActive"
+                  >
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-6">Offer Image</label>
+                  <div class="preview-img">
+                    <img
+                      class="preview-image"
+                      id="preview"
+                      src="http://localhost:3000/{{ offerData.file }}"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="upload-btn"
+                    onclick="document.getElementById('getFile').click()"
+                  >
+                    Upload File
+                  </button>
+                  <input
+                    class="form-control fs-6"
+                    type="file"
+                    id="getFile"
+                    style="display: none"
+                    formControlName="file"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                  />
+                </div>
+              </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">Submit</button>
+                <button type="submit" class="btn btn-primary fs-4">
+                  Submit
+                </button>
               </div>
             </div>
           </form>

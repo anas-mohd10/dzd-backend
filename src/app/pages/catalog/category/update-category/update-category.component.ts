@@ -60,9 +60,10 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   handleCheckBox() {
-    if (this.categoryForm.get('rootId')?.value == 'false') {
+    console.log(this.categoryForm.get('isRoot')?.value);
+    if (this.categoryForm.get('isRoot')?.value == 'false') {
       this.isChecked = false;
-    } else if (this.categoryForm.get('rootId')?.value == 'true') {
+    } else if (this.categoryForm.get('isRoot')?.value == 'true') {
       this.isChecked = true;
     }
   }
@@ -79,7 +80,7 @@ export class UpdateCategoryComponent implements OnInit {
   initForm() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
-      rootId: ['check', Validators.required],
+      isRoot: ['check', Validators.required],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       parentId: [''],
@@ -112,15 +113,27 @@ export class UpdateCategoryComponent implements OnInit {
     this.CategoryService.getCategoryBySlug(this.category).subscribe(
       (res: any) => {
         this.categoryValues = res?.result[0];
+        console.log(this.categoryValues);
         this.uploadedImg = this.categoryValues?.file;
         this.categoryForm.get('name')?.setValue(this.categoryValues.name);
-        this.categoryForm.get('rootId')?.setValue(this.categoryValues.isRoot);
-        this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
-        this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
-        this.parentIdValue = this.categoryValues.rootId.name + ' > ' +
-          this.categoryValues.parentId.name + ' > ' + this.categoryValues.name;
-        console.log(this.parentIdValue)
-        this.categoryForm.get('parentId')?.setValue(this.parentIdValue);
+        this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
+        this.categoryForm
+          .get('isActive')
+          ?.setValue(this.categoryValues.isActive);
+        this.categoryForm
+          .get('isFeatured')
+          ?.setValue(this.categoryValues.isFeatured);
+        if (this.categoryValues.isRoot == true) {
+          this.isChecked = true;
+        } else {
+          this.parentIdValue =
+            this.categoryValues.rootId.name +
+            ' > ' +
+            this.categoryValues.parentId.name +
+            ' > ' +
+            this.categoryValues.name;
+          this.categoryForm.get('parentId')?.setValue(this.parentIdValue);
+        }
       }
     );
   }
@@ -173,7 +186,9 @@ export class UpdateCategoryComponent implements OnInit {
     }
 
     if (this.categoryForm.get('parentId')?.value.includes('>')) {
-      this.splitCategory = this.categoryForm.get('parentId')?.value.split(' > ');
+      this.splitCategory = this.categoryForm
+        .get('parentId')
+        ?.value.split(' > ');
       for (let i = 0; i < this.categoryData.length; i++) {
         if (this.splitCategory[0] == this.categoryData[i].name) {
           this.rootCategory = this.categoryData[i]._id;
@@ -212,6 +227,9 @@ export class UpdateCategoryComponent implements OnInit {
         formData.append(data, this.categoryForm.value[data]);
       }
     }
+
+    console.log(this.rootCategory);
+    
 
     formData.append('rootId', this.rootCategory);
     formData.append('parentId', this.parentCategory);

@@ -32,6 +32,7 @@ export class AddBrandComponent implements OnInit {
   status: boolean;
   imageArray: any;
   previewURL: any;
+  uploadedImg: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,6 +51,10 @@ export class AddBrandComponent implements OnInit {
       ? fileInput.dataTransfer.files[0]
       : fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
+    console.log(fileInput.target.files[0]);
+    this.uploadedImg = true;
+    // (document.getElementById('preview') as HTMLImageElement).src =
+    //   window.URL.createObjectURL(fileInput.target.files[0]);
   }
 
   ngOnInit(): void {

@@ -423,4 +423,6 @@ export class UpdateVariantProductComponent implements OnInit {
   }
 
   addProduct() {}
+
+  btnClick() {}
 }

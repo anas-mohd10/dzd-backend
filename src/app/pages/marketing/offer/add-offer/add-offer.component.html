@@ -35,113 +35,62 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger fs-6"
-                    *ngIf="
+                  <label class="fs-5 mb-3">Name</label>
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                    'is-invalid':
+                    (of.name.touched || isSubmitted) &&
+                    of.name.errors?.required
+                  }" />
+                  <span class="text-danger fs-6" *ngIf="
                       (of.name.touched || isSubmitted) &&
                       of.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Image</label>
-                  <input
-                    type="file"
-                    class="form-control fs-5"
-                    formControlName="file"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
-                  <span
-                    class="text-danger fs-6"
-                    *ngIf="
-                      (of.file.touched || isSubmitted) &&
-                      of.file.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a image
-                  </span>
-                  <span class="uploads uploaded">
-                    <img class="preview-image" id="preview" />
-                  </span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Description</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="description"
-                  />
-                  <span
-                    class="text-danger mt-10 fs-6"
-                    *ngIf="
+                  <label class="fs-5 mb-3">Description</label>
+                  <input type="text" class="form-control fs-5" formControlName="description" [ngClass]="{
+                    'is-invalid':
+                    (of.description.touched || isSubmitted) &&
+                    of.description.errors?.required
+                  }" />
+                  <span class="text-danger mt-10 fs-6" *ngIf="
                       (of.description.touched || isSubmitted) &&
                       of.description.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a description</span
-                  >
+                    ">Description is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">From Date</label>
-                  <input
-                    type="date"
-                    class="form-control fs-5"
-                    formControlName="fromDate"
-                  />
-                  <span
-                    class="text-danger fs-6"
-                    *ngIf="
+                  <label class="fs-5 mb-3">From Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="fromDate" [ngClass]="{
+                      'is-invalid':
+                        (of.fromDate.touched || isSubmitted) &&
+                        of.fromDate.errors?.required
+                    }" />
+                  <span class="text-danger fs-6" *ngIf="
                       (of.fromDate.touched || isSubmitted) &&
                       of.fromDate.errors?.required
-                    "
-                  >
-                    <i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a from date</span
-                  >
+                    ">
+                    From date is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Last Date</label>
-                  <input
-                    type="date"
-                    class="form-control fs-5"
-                    formControlName="lastDate"
-                  />
-                  <span
-                    class="text-danger fs-6"
-                    *ngIf="
-                      (of.lastDate.touched || isSubmitted) &&
-                      of.lastDate.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a last date</span
-                  >
+                  <label class="fs-5 mb-3">Last Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="lastDate"
+                    [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
+                  <span class="text-danger fs-6"
+                    *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required">Last date is
+                    required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Featured</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="featured"
-                  >
+                  <label class="fs-5 mb-3">Featured</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="featured">
                     <option value="true" selected>Yes</option>
                     <option value="false">No</option>
                   </select>
@@ -149,15 +98,30 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="status"
-                  >
+                  <label class="fs-5 mb-3">Status</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="status">
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-6">Offer Image</label>
+                  <div class="preview-img">
+                    <img class="preview-image" id="preview" />
+                  </div>
+                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()">
+                    Upload File
+                  </button>
+                  <input class="form-control fs-6" type="file" id="getFile" style="display: none;"
+                    formControlName="file" (change)="handleInputChange($event)" [ngClass]="{ 'is-invalid': (of.file.touched || isSubmitted) &&
+                    of.file.errors?.required}"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (of.file.touched || isSubmitted) &&
+                      of.file.errors?.required
+                    ">Offer image is required</span>
                 </div>
               </div>
               <div class="col-12">

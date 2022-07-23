@@ -40,7 +40,7 @@
     <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+          <form [formGroup]="productForm">
             <div class="row">
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Product Details</span></h5>
@@ -280,9 +280,7 @@
               <!-- Shipping Cost -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"
-                    >Shipping Cost
-                  </label>
+                  <label class="fs-5 mb-3 fw-bold">Shipping Cost </label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
                     <input
@@ -383,26 +381,37 @@
               </div>
 
               <!-- Product Image -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Product Image</label>
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5 fw-bold">Product Image</label>
+                  <div class="preview-img">
+                    <img
+                      class="preview-image"
+                      id="preview"
+                      src="http://localhost:3000/{{
+                        variantProductValues.file
+                      }}"
+                    />
+                  </div>
+                  <button type="button"
+                    class="upload-btn" (click)="btnClick()"
+                  >
+                    Upload File
+                  </button>
                   <input
-                    type="file"
                     class="form-control fs-5"
+                    type="file"
+                    id="getFile"
+                    style="display: none"
+                    formControlName="file"
                     (change)="handleInputChange($event)"
-                  />
-                </div>
-                <div class="preview-img">
-                  <img
-                    class="update-preview-img"
-                    src="http://localhost:3000/{{ variantProductValues.file }}"
-                    alt="preiew-img"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
                   />
                 </div>
               </div>
 
               <!-- Featured Product -->
-              <div class="col-12 col-sm-6">
+              <div class="col-12">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -427,7 +436,7 @@
               </div>
 
               <!-- Featured Product -->
-              <div class="col-12 col-sm-6">
+              <div class="col-12">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -524,7 +533,7 @@
               </ng-container>
 
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-5">
+                <button class="btn btn-primary fs-5">
                   Submit
                 </button>
               </div>

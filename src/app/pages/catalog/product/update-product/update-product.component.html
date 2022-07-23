@@ -664,22 +664,32 @@
               </div>
 
               <!-- Product Image -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Product Image</label>
-                  <input
-                    type="file"
-                    class="form-control fs-5"
-                    formControlName="file"
-                    (change)="handleInputChange($event)"
-                  />
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5">Product Image</label>
                   <div class="preview-img">
                     <img
-                      class="update-preview-img"
+                      class="preview-image"
+                      id="preview"
                       src="http://localhost:3000/{{ productData.file }}"
-                      alt="preiew-img"
                     />
                   </div>
+                  <button
+                    type="button"
+                    class="upload-btn"
+                    onclick="document.getElementById('getFile').click()"
+                  >
+                    Upload File
+                  </button>
+                  <input
+                    class="form-control fs-5"
+                    type="file"
+                    id="getFile"
+                    style="display: none"
+                    formControlName="file"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                  />
                 </div>
               </div>
 

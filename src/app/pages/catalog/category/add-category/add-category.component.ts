@@ -97,7 +97,6 @@ export class AddCategoryComponent implements OnInit {
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
-      console.log(this.categoryData)
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parentId && !res?.result[i].rootId) {
           this.categoryArray.push(
@@ -159,7 +158,6 @@ export class AddCategoryComponent implements OnInit {
       }
     } else {
       this.splitCategory = this.categoryForm.get('parentId')?.value;
-      console.log(this.splitCategory)
       for (let i = 0; i < this.categoryData.length; i++) {
         if (this.categoryData[i].name == this.splitCategory[0]) {
           this.rootCategory = this.categoryData[i]._id;
@@ -183,15 +181,11 @@ export class AddCategoryComponent implements OnInit {
         formData.append(data, this.categoryForm.value[data]);
       }
     }
-
-    console.log(this.rootCategory)
-    console.log(this.parentCategory)
-
+    
     formData.append('rootId', this.rootCategory);
     formData.append('parentId', this.parentCategory);
 
     this.CategoryService.addCategory(formData).subscribe((res: any) => {
-      console.log(res);
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

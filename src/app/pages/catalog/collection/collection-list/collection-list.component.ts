@@ -25,7 +25,7 @@ export class CollectionListComponent implements OnInit {
     this.dtOptions = {
       pagingType: 'simple_numbers',
       lengthMenu: [5, 10, 15],
-      pageLength: 5,
+      pageLength: 10,
       processing: true,
     };
   }

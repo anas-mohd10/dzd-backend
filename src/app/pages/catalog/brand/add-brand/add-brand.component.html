@@ -3,20 +3,20 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-1 fw-bolder">
+        <h3 class="page-title fw-bolder fs-2">
           {{ editMode ? "Update Brand" : "Add Brand" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.brand.ADD_BRAND }}">{{
               editMode ? "Update Brand" : "Add Brand"
-            }}</a>
+              }}</a>
           </li>
         </ul>
       </div>
@@ -24,7 +24,7 @@
   </div>
   <!-- /Page Header -->
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
@@ -34,58 +34,23 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <label class="fs-6 mb-3"> Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                      'is-invalid':
                       (bf.name.touched || isSubmitted) &&
                       bf.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (bf.name.touched || isSubmitted) &&
+                      bf.name.errors?.required
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Logo</label>
-                  <input
-                    type="file"
-                    class="form-control fs-5"
-                    formControlName="file"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
-                  <span
-                    class="text-danger fs-6"
-                    *ngIf="
-                      (bf.file.touched || isSubmitted) &&
-                      bf.file.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a image</span
-                  >
-                  <span class="uploads uploaded">
-                    <img
-                      class="preview-image"
-                      id="preview"
-                    />
-                  </span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <label class="fs-6 mb-3">Status</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="false">Inactive</option>
                     <option value="true">Active</option>
                   </select>
@@ -93,15 +58,32 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Featured Brand ?</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isFeatured"
-                  >
+                  <label class="fs-6 mb-3">Featured Brand ?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFeatured">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6"></div>
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-6">Offer Image</label>
+                  <div class="preview-img">
+                    <img class="preview-image" id="preview" />
+                  </div>
+                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()">
+                    Upload File
+                  </button>
+                  <input class="form-control fs-6" type="file" id="getFile" style="display: none;" formControlName="file"
+                    (change)="handleInputChange($event)" [ngClass]="{ 'is-invalid': (bf.file.touched || isSubmitted) &&
+                    bf.file.errors?.required}"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (bf.file.touched || isSubmitted) &&
+                      bf.file.errors?.required
+                    ">Brand image is required</span>
                 </div>
               </div>
               <div class="col-12">

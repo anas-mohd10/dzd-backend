@@ -35,7 +35,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.scss",
-              "node_modules/select2/dist/css/select2.min.css"
+              "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

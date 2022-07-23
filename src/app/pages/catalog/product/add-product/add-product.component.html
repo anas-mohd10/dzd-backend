@@ -664,12 +664,24 @@
               </div>
 
               <!-- Product Image -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Product Image</label>
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5">Product Image</label>
+                  <div class="preview-img">
+                    <img class="preview-image" id="preview" />
+                  </div>
+                  <button
+                    type="button"
+                    class="upload-btn"
+                    onclick="document.getElementById('getFile').click()"
+                  >
+                    Upload File
+                  </button>
                   <input
-                    type="file"
                     class="form-control fs-5"
+                    type="file"
+                    id="getFile"
+                    style="display: none"
                     formControlName="file"
                     (change)="handleInputChange($event)"
                     onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
@@ -681,19 +693,13 @@
                       pf.file.errors?.required
                     "
                     ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the image</span
+                    provide an image</span
                   >
-                  <span class="uploads uploaded">
-                    <img class="preview-image" id="preview" />
-                  </span>
                 </div>
               </div>
-
-              <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-5">
-                  Submit
-                </button>
-              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary fs-5">Submit</button>
             </div>
           </form>
         </div>

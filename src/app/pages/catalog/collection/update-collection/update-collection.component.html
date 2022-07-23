@@ -47,23 +47,6 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Image </label>
-                  <input
-                    type="file"
-                    class="form-control fs-5"
-                    (change)="handleInputChange($event)"
-                  />
-                </div>
-                <div class="preview-img">
-                  <img
-                    class="update-preview-img"
-                    src="http://localhost:3000/{{ collectionData.file }}"
-                    alt="preiew-img"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Products</label>
                   <select
                     class="form-select form-select-lg mb-3"
@@ -115,6 +98,34 @@
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5 fw-bold">Collection Image</label>
+                  <div class="preview-img">
+                    <img
+                      class="preview-image"
+                      id="preview"
+                      src="http://localhost:3000/{{ collectionData.file }}"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    class="upload-btn"
+                    onclick="document.getElementById('getFile').click()"
+                  >
+                    Upload File
+                  </button>
+                  <input
+                    class="form-control fs-5"
+                    type="file"
+                    id="getFile"
+                    style="display: none"
+                    formControlName="file"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                  />
                 </div>
               </div>
               <div class="col-12">
