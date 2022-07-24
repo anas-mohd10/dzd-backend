@@ -16,7 +16,7 @@
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">{{
               editMode ? "Update Tax Class" : "Add Tax Class"
-            }}</a>
+              }}</a>
           </li>
         </ul>
       </div>
@@ -40,49 +40,36 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                      'is-invalid':
                       (tf.name.touched || isSubmitted) &&
                       tf.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (tf.name.touched || isSubmitted) &&
+                      tf.name.errors?.required
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Description</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="description"
-                  />
-                  <span
-                  class="text-danger error-msg fs-6"
-                  *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="description" [ngClass]="{
+                      'is-invalid':
+                      (tf.name.touched || isSubmitted) &&
+                      tf.name.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                     (tf.name.touched || isSubmitted) &&
                     tf.name.errors?.required
-                  "
-                  ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                  provide a description</span
-                >
+                  ">Description is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
@@ -92,18 +79,11 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Tax Rule</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="ruleId"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="ruleId">
                     <option selected value="select" disabled>
                       -- Select a tax rule --
                     </option>
-                    <option
-                      *ngFor="let taxRule of taxRuleNames"
-                      value="{{ taxRule?._id }}"
-                    >
+                    <option *ngFor="let taxRule of taxRuleNames" value="{{ taxRule?._id }}">
                       {{ taxRule?.name }}
                     </option>
                   </select>

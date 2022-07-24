@@ -16,7 +16,7 @@
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.category.ADD_CATEGORY }}">{{
               editMode ? "Update Category" : "Add Category"
-            }}</a>
+              }}</a>
           </li>
         </ul>
       </div>
@@ -35,73 +35,55 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                      'is-invalid':
                       (bf.name.touched || isSubmitted) &&
                       bf.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (bf.name.touched || isSubmitted) &&
+                      bf.name.errors?.required
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Root Category</label>
-                  <select
-                    class="form-select"
-                    aria-label="-- select --"
-                    formControlName="rootId"
-                    (change)="handleCheckBox()"
-                  >
+                  <select class="form-select" aria-label="-- select --" formControlName="rootId"
+                    (change)="handleCheckBox()" [ngClass]="{
+                      'is-invalid':
+                      (bf.rootId.touched || isSubmitted) &&
+                      bf.rootId.errors?.required
+                    }">
                     <option value="check" disabled>
                       -- Select an option --
                     </option>
                     <option value="false">No</option>
                     <option value="true">Yes</option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (bf.rootId.touched || isSubmitted) &&
                       bf.rootId.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Confirm
-                    whether this is root category or not</span
-                  >
+                    ">Root category is required</span>
                 </div>
               </div>
               <ng-container *ngIf="isChecked == false">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3">Parent Category</label>
-                    <select
-                      class="form-select"
-                      aria-label="-- select --"
-                      formControlName="parentId"
-                    >
-                      <option
-                        *ngFor="let category of categoryArray"
-                        value="{{ category }}"
-                      >
+                    <select class="form-select" aria-label="-- select --" formControlName="parentId" [ngClass]="{
+                      'is-invalid':
+                      (bf.parentId.touched || isSubmitted) &&
+                      bf.parentId.errors?.required
+                    }">
+                      <option *ngFor="let category of categoryArray" value="{{ category }}">
                         {{ category }}
                       </option>
                     </select>
-                    <span
-                      class="text-danger error-msg fs-6"
-                      *ngIf="
+                    <span class="text-danger error-msg fs-6" *ngIf="
                         (bf.parentId.touched || isSubmitted) &&
                         bf.parentId.errors?.required
-                      "
-                      ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                      provide a category</span
-                    >
+                      ">Parent category is required</span>
                   </div>
                 </div>
               </ng-container>
@@ -109,11 +91,7 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3">Parent Category</label>
-                    <select
-                      class="form-select"
-                      aria-label="-- select --"
-                      disabled
-                    >
+                    <select class="form-select" aria-label="-- select --" disabled>
                       <option selected>-- Select Parent Category --</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
@@ -125,11 +103,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="false" selected>Inactive</option>
                     <option value="true">Active</option>
                   </select>
@@ -138,11 +113,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Featured Brand ?</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isFeatured"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFeatured">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
@@ -155,31 +127,16 @@
                   <div class="preview-img">
                     <img class="preview-image" id="preview" />
                   </div>
-                  <button
-                    type="button"
-                    class="upload-btn"
-                    onclick="document.getElementById('getFile').click()"
-                  >
+                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()">
                     Upload File
                   </button>
-                  <input
-                    class="form-control fs-5"
-                    type="file"
-                    id="getFile"
-                    style="display: none"
-                    formControlName="file"
+                  <input class="form-control fs-5" type="file" id="getFile" style="display: none" formControlName="file"
                     (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (bf.file.touched || isSubmitted) &&
                       bf.file.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide an image</span
-                  >
+                    ">Image is required</span>
                 </div>
               </div>
               <div class="col-12">

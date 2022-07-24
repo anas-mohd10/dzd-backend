@@ -11,14 +11,12 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}"
-              >Collections</a
-            >
+            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
           </li>
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.collection.ADD_COLLECTION }}">{{
               editMode ? "Update Collection" : "Add Collection"
-            }}</a>
+              }}</a>
           </li>
         </ul>
       </div>
@@ -36,46 +34,41 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                      'is-invalid':
                       (cf.name.touched || isSubmitted) &&
                       cf.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (cf.name.touched || isSubmitted) &&
+                      cf.name.errors?.required
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Products</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="products"
-                    (change)="tagInput()"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="products" (change)="tagInput()" [ngClass]="{
+                      'is-invalid':
+                      (cf.name.touched || isSubmitted) &&
+                      cf.name.errors?.required
+                    }">
                     <option value="example" disabled>
                       -- Select a product --
                     </option>
-                    <option
-                      *ngFor="let product of productArray"
-                      value="{{ product?._id }}"
-                    >
+                    <option *ngFor="let product of productArray" value="{{ product?._id }}">
                       {{ product?.name }}
                     </option>
                   </select>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                    (cf.products.touched || isSubmitted) &&
+                    cf.products.errors?.required
+                  ">Products are required</span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let name of productNames">
-                    <span class="tag-input"
-                      >{{ name }}
+                    <span class="tag-input">{{ name }}
                       <i class="bi bi-x fs-1" (click)="tagRemove(name)"></i>
                     </span>
                   </ng-container>
@@ -84,11 +77,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured Collection ?</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isFeatured"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFeatured">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
@@ -97,11 +87,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="false" selected>Inactive</option>
                     <option value="true">Active</option>
                   </select>
@@ -113,31 +100,16 @@
                   <div class="preview-img">
                     <img class="preview-image" id="preview" />
                   </div>
-                  <button
-                    type="button"
-                    class="upload-btn"
-                    onclick="document.getElementById('getFile').click()"
-                  >
+                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()" >
                     Upload File
                   </button>
-                  <input
-                    class="form-control fs-5"
-                    type="file"
-                    id="getFile"
-                    style="display: none"
-                    formControlName="file"
+                  <input class="form-control fs-5" type="file" id="getFile" style="display: none" formControlName="file"
                     (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
-                  <span
-                  class="text-danger error-msg fs-6"
-                  *ngIf="
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                     (cf.file.touched || isSubmitted) &&
                     cf.file.errors?.required
-                  "
-                  ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                  provide an image</span
-                >
+                  ">Image is required</span>
                 </div>
               </div>
               <div class="col-12">

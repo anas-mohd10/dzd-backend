@@ -16,7 +16,7 @@
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.taxRules.ADD_TAX_RULES }}">{{
               editMode ? "Update Tax Rules" : "Add Tax Rules"
-            }}</a>
+              }}</a>
           </li>
         </ul>
       </div>
@@ -35,30 +35,21 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                      'is-invalid':
                       (tf.name.touched || isSubmitted) &&
                       tf.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (tf.name.touched || isSubmitted) &&
+                      tf.name.errors?.required
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Type</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="type"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type">
                     <option value="Normal" selected>Normal</option>
                     <option value="Combine">Combine</option>
                   </select>
@@ -69,31 +60,23 @@
                   <label class="fs-5 mb-3 fw-bold"> Rate</label>
                   <div class="input-group">
                     <span class="input-group-text">%</span>
-                    <input
-                      type="text"
-                      class="form-control fs-5"
-                      formControlName="rate"
-                    />
-                  </div>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                    <input type="text" class="form-control fs-5" formControlName="rate" [ngClass]="{
+                      'is-invalid':
                       (tf.rate.touched || isSubmitted) &&
                       tf.rate.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a tax rate</span
-                  >
+                    }" />
+                  </div>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (tf.rate.touched || isSubmitted) &&
+                      tf.rate.errors?.required
+                    ">Tax rate is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="Active" selected>Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>

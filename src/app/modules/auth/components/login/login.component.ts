@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { UserModel } from '../../models/user.model';
-import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {appRoutes, authRoute} from '../../../../config/routes';
+import {AuthService} from '../../../../includes/services/auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastService} from '../../../../includes/services/toast.service';
+import { localstorageVariables } from 'src/app/config/localStorageVariable';
+import { WebStorage } from '../../web.storage';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   returnUrl: string;
   isLoading$: Observable<boolean>;
 
+  authRoute = authRoute;
+  appRoute = appRoutes;
+  public Toggledata = true;
+  public CustomControler: any;
+  public subscription: Subscription;
+
+
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
@@ -34,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.authService.isLoading$;
     // Redirect to home if already logged in
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/app/dashboard']);
+      this.router.navigate([this.appRoute.DASHBOARD]);
     }
   }
 
@@ -42,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.initForm();
     // Get return url from route parameters or default to '/'
     this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'.toString()] || '/app/dashboard';
+      this.route.snapshot.queryParams['returnUrl'.toString()] || this.appRoute.DASHBOARD;
   }
 
   // Convenience getter for easy access to form fields
