@@ -1,12 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {appRoutes, authRoute} from '../../../../config/routes';
-import {AuthService} from '../../../../includes/services/auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {ToastService} from '../../../../includes/services/toast.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { appRoutes, authRoute } from '../../../../config/routes';
+import { AuthService } from '../../../../includes/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from '../../../../includes/services/toast.service';
 import { localstorageVariables } from 'src/app/config/localStorageVariable';
-import { WebStorage } from '../../web.storage';
+// import { WebStorage } from '../../web.storage';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -14,89 +15,75 @@ import { WebStorage } from '../../web.storage';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  // KeenThemes mock, change it to:
-  defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo',
-  };
   loginForm: FormGroup;
   hasError: boolean;
   returnUrl: string;
-  isLoading$: Observable<boolean>;
-
+  // isLoading$: Observable<boolean>;
+  isSubmitted: boolean = false
   authRoute = authRoute;
   appRoute = appRoutes;
+  userData: {};
+  failedUser: boolean = false;
   public Toggledata = true;
   public CustomControler: any;
   public subscription: Subscription;
+  errorMessage: any;
+  redirectUrl: any;
 
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
+
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
-    this.isLoading$ = this.authService.isLoading$;
+    // this.isLoading$ = this.authService.isLoading$;
     // Redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate([this.appRoute.DASHBOARD]);
-    }
+    // if (this.authService.currentUserValue) {
+    //   this.router.navigate([this.appRoute.DASHBOARD]);
+    // }
   }
 
   ngOnInit(): void {
     this.initForm();
-    // Get return url from route parameters or default to '/'
-    this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'.toString()] || this.appRoute.DASHBOARD;
-  }
-
-  // Convenience getter for easy access to form fields
-  get f() {
-    return this.loginForm.controls;
+    this.redirectUrl = this.route.snapshot.queryParams?.redirectUrl || this.appRoute.DASHBOARD;
   }
 
   initForm() {
-    this.loginForm = this.fb.group({
-      email: [
-        this.defaultAuth.email,
-        Validators.compose([
-          Validators.required,
-          Validators.email,
-          Validators.minLength(3),
-          Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
-        ]),
-      ],
-      password: [
-        this.defaultAuth.password,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100),
-        ]),
-      ],
+    this.loginForm = this.formBuilder.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
-  submit() {
-    this.hasError = false;
-    const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user: UserModel | undefined) => {
-        if (user) {
-          this.router.navigate([this.returnUrl]);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(loginSubscr);
+  get af() {
+    return this.loginForm.controls;
   }
 
-  ngOnDestroy() {
-    this.unsubscribe.forEach((sb) => sb.unsubscribe());
+  submit() {
+    this.isSubmitted = true;
+    this.userData = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    }
+    this.authService.login(this.userData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error(res?.Message || 'Invalid username or password');
+      } else {
+        this.authService.saveUserData(res?.result)
+        localStorage.setItem(localstorageVariables.access_token, res?.result?.token);
+        localStorage.setItem(localstorageVariables.is_logged_in, 'true');
+        localStorage.setItem(localstorageVariables.pData, JSON.stringify(res?.Data?.permissions))
+        this.router.navigate([this.redirectUrl]);
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
   }
 }

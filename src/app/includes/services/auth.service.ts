@@ -13,8 +13,8 @@ export class AuthService {
 
     authEndpoints = authEndpoints;
     authRoute = authRoute;
-  isLoading$: any;
-  currentUserValue: any;
+    isLoading$: any;
+    currentUserValue: any;
 
     constructor(
         private http: HttpClient,
@@ -33,9 +33,9 @@ export class AuthService {
         this.router.navigate([this.authRoute.LOGIN]);
     }
 
-
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem(localstorageVariables.userData))
+        const userJSON = localStorage.getItem(localstorageVariables.userData)
+        return this.currentUserValue = userJSON !== null ? JSON.parse(userJSON) : ''
     }
 
     saveUserData(data: any) {

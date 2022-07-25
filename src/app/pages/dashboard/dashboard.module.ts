@@ -10,7 +10,7 @@ import { WidgetsModule } from '../../_metronic/partials';
     CommonModule,
     RouterModule.forChild([
       {
-        path: 'dashboard',
+        path: '',
         component: DashboardComponent,
       },
     ]),

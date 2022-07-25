@@ -1,17 +1,14 @@
-<ng-container *ngIf="user$ | async as _user">
+<ng-container>
   <div class="menu-item px-3">
     <div class="menu-content d-flex align-items-center px-3">
-      <div class="symbol symbol-50px me-5">
-        <img alt="Logo" [src]="_user.pic" />
-      </div>
       <div class="d-flex flex-column">
-        <div class="fw-bolder d-flex align-items-center fs-5">{{ _user.firstname }} {{ _user.lastname }}</div>
-        <div class="fw-bold text-muted fs-7">{{ _user.email }}</div>
+        <div class="d-flex align-items-center fs-5">{{userData.username}}</div>
+        <div class="text-muted fs-6">{{userData.email}}</div>
       </div>
     </div>
   </div>
   <div class="separator my-2"></div>
-  <div class="menu-item px-5">
-    <a (click)="logout()" class="menu-link px-5 cursor-pointer"> Sign Out </a>
+  <div class="menu-item">
+    <a (click)="logout()" class="menu-link cursor-pointer fs-6"> Log out </a>
   </div>
 </ng-container>

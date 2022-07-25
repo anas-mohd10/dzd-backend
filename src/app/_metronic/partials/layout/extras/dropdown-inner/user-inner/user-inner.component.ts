@@ -1,6 +1,8 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { AuthService, UserType } from '../../../../../../modules/auth';
+import { authRoute } from 'src/app/config/routes/auth.routes';
+import { AuthService } from 'src/app/includes/services/auth.service';
 
 @Component({
   selector: 'app-user-inner',
@@ -10,21 +12,21 @@ export class UserInnerComponent implements OnInit, OnDestroy {
   @HostBinding('class')
   class = `menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px`;
   @HostBinding('attr.data-kt-menu') dataKtMenu = 'true';
-
-  user$: Observable<UserType>;
   private unsubscribe: Subscription[] = [];
+  userData: any;
+  authRoute = authRoute;
 
   constructor(
-    private auth: AuthService,
-  ) {}
+    public router: Router, private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.user$ = this.auth.currentUserSubject.asObservable();
+    this.userData = this.authService.getCurrentUser();
   }
 
   logout() {
-    this.auth.logout();
-    document.location.reload();
+    localStorage.removeItem('LoginData');
+    this.authService.logout()
   }
 
   ngOnDestroy() {
