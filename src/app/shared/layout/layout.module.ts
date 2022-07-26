@@ -22,8 +22,9 @@ import { AsideMenuComponent } from './components/aside/aside-menu/aside-menu.com
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { PageTitleComponent } from './components/header/page-title/page-title.component';
 import { HeaderMenuComponent } from './components/header/header-menu/header-menu.component';
-import { DrawersModule, DropdownMenusModule, ModalsModule, EngagesModule} from '../partials';
-import {EngagesComponent} from "../partials/layout/engages/engages.component";
+import { DrawersModule, DropdownMenusModule, ModalsModule, EngagesModule } from '../partials';
+import { EngagesComponent } from "../partials/layout/engages/engages.component";
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 const routes: Routes = [
   {
@@ -61,8 +62,23 @@ const routes: Routes = [
     EngagesModule,
     DropdownMenusModule,
     NgbTooltipModule,
+    NgHttpLoaderModule.forRoot(),
     TranslateModule,
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+    LayoutComponent,
+    AsideComponent,
+    HeaderComponent,
+    ContentComponent,
+    FooterComponent,
+    ScriptsInitComponent,
+    ToolbarComponent,
+    AsideMenuComponent,
+    TopbarComponent,
+    PageTitleComponent,
+    HeaderMenuComponent,
+    EngagesComponent,
+  ],
 })
-export class LayoutModule {}
+export class LayoutModule { }

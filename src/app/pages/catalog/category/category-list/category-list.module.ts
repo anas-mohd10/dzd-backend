@@ -12,7 +12,7 @@ import { DataTablesModule } from 'angular-datatables';
     DataTablesModule,
     RouterModule.forChild([
       {
-        path: 'category',
+        path: '',
         component: CategoryComponent,
       },
     ]),

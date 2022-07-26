@@ -11,7 +11,7 @@ import { DataTablesModule } from 'angular-datatables';
     DataTablesModule,
     RouterModule.forChild([
       {
-        path: 'brand',
+        path: '',
         component: BrandComponent,
       },
     ]),

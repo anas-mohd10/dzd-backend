@@ -63,7 +63,7 @@ export class UpdateVariantProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get pf() {
     return this.productForm.controls;
@@ -384,9 +384,12 @@ export class UpdateVariantProductComponent implements OnInit {
 
   updateProduct() {
     if (!this.productForm.valid) {
+      console.log("Error");
       return;
     }
 
+    console.log("Clicked");
+  
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
@@ -422,7 +425,5 @@ export class UpdateVariantProductComponent implements OnInit {
       });
   }
 
-  addProduct() {}
-
-  btnClick() {}
+  addProduct() { }
 }

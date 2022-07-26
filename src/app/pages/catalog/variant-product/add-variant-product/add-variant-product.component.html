@@ -13,21 +13,10 @@
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product</a>
           </li>
-          <li class="breadcrumb-item fs-5">
-            <a
-              routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
-              [queryParams]="{ product: slug }"
-              >Variant Products</a
-            >
-          </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.variantProduct.ADD_VARIANT_PRODUCT }}"
-              [queryParams]="{ product: slug }"
-              >{{
-                editMode ? "Update Variant Product" : "Add Variant Product"
-              }}</a
-            >
+            <a routerLink="{{ appRoute.product.ADD_PRODUCT}}">
+              {{ editMode ? "Update Variant Product" : "Add Variant Product"
+              }}</a>
           </li>
         </ul>
       </div>
@@ -50,20 +39,15 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                    'is-invalid':
+                    (pf.name.touched || isSubmitted) &&
+                    pf.name.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.name.touched || isSubmitted) &&
                       pf.name.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a name</span
-                  >
+                    ">Name is required</span>
                 </div>
               </div>
 
@@ -71,19 +55,13 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Store Keeping Unit</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="sku"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="sku" [ngClass]="{
+                    'is-invalid':
+                    (pf.sku.touched || isSubmitted) && pf.sku.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.sku.touched || isSubmitted) && pf.sku.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the SKU</span
-                  >
+                    ">SKU is required</span>
                 </div>
               </div>
 
@@ -91,19 +69,13 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">HSN No.</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="hsn"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="hsn" [ngClass]="{
+                    'is-invalid':
+                    (pf.hsn.touched || isSubmitted) && pf.hsn.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.hsn.touched || isSubmitted) && pf.hsn.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the HSN</span
-                  >
+                    ">HSN is required</span>
                 </div>
               </div>
 
@@ -113,22 +85,17 @@
                   <label class="fs-5 mb-3">Price (MRP)</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="mrpPrice"
-                    />
-                    <span class="input-group-text">.00</span>
-                  </div>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                    <input type="text" class="form-control" formControlName="mrpPrice" [ngClass]="{
+                      'is-invalid':
                       (pf.mrpPrice.touched || isSubmitted) &&
                       pf.mrpPrice.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the MRP</span
-                  >
+                    }" />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (pf.mrpPrice.touched || isSubmitted) &&
+                      pf.mrpPrice.errors?.required
+                    ">MRP is required</span>
                 </div>
               </div>
 
@@ -138,11 +105,7 @@
                   <label class="fs-5 mb-3">Offer Price</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
-                    <input
-                      type="text"
-                      class="form-control"
-                      formControlName="offerPrice"
-                    />
+                    <input type="text" class="form-control" formControlName="offerPrice" />
                     <span class="input-group-text">.00</span>
                   </div>
                 </div>
@@ -152,20 +115,15 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Stock</label>
-                  <input
-                    type="number"
-                    class="form-control fs-5"
-                    formControlName="stock"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="number" class="form-control fs-5" formControlName="stock" [ngClass]="{
+                    'is-invalid':
+                    (pf.stock.touched || isSubmitted) &&
+                    pf.stock.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.stock.touched || isSubmitted) &&
                       pf.stock.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the stock</span
-                  >
+                    ">Stock is required</span>
                 </div>
               </div>
 
@@ -173,19 +131,13 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Minimum Order Quantity</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="moq"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="moq" [ngClass]="{
+                    'is-invalid':
+                    (pf.moq.touched || isSubmitted) && pf.moq.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.moq.touched || isSubmitted) && pf.moq.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the MOQ</span
-                  >
+                    ">MOQ is required</span>
                 </div>
               </div>
 
@@ -193,11 +145,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Stock Warning</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="stockWarning"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="stockWarning" />
                 </div>
               </div>
 
@@ -205,27 +153,18 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Description</label>
-                  <textarea
-                    class="form-control fs-5"
-                    formControlName="description"
-                    style="resize: none"
-                    id="productdescription"
-                    rows="3"
-                  ></textarea>
+                  <textarea class="form-control fs-5" formControlName="description" style="resize: none"
+                    id="productdescription" rows="3"></textarea>
                 </div>
               </div>
+
 
               <!-- Features -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Features</label>
-                  <textarea
-                    class="form-control fs-5"
-                    formControlName="features"
-                    style="resize: none"
-                    id="featureddescription"
-                    rows="3"
-                  ></textarea>
+                  <textarea class="form-control fs-5" formControlName="features" style="resize: none"
+                    id="featureddescription" rows="3"></textarea>
                 </div>
               </div>
 
@@ -233,39 +172,27 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Category</label>
-                  <select
-                    class="form-select"
-                    formControlName="categories"
-                    (change)="tagCategoryInput()"
-                  >
+                  <select class="form-select" formControlName="categories" (change)="tagCategoryInput()" [ngClass]="{
+                    'is-invalid':
+                    (pf.categories.touched || isSubmitted) &&
+                    pf.categories.errors?.required
+                  }">
                     <option value="example" disabled>
                       -- Select a Category --
                     </option>
-                    <option
-                      *ngFor="let category of categoryData"
-                      value="{{ category?._id }}"
-                    >
+                    <option *ngFor="let category of categoryData" value="{{ category?._id }}">
                       {{ category?.name }}
                     </option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.categories.touched || isSubmitted) &&
                       pf.categories.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the categories</span
-                  >
+                    ">ategories is required</span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input"
-                      >{{ category }}
-                      <i
-                        class="bi bi-x"
-                        (click)="tagCategoryRemove(category)"
-                      ></i>
+                    <span class="tag-input">{{ category }}
+                      <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -275,30 +202,22 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Brand</label>
-                  <select
-                    name="brand"
-                    formControlName="brandId"
-                    class="form-select"
-                  >
+                  <select name="brand" formControlName="brandId" class="form-select" [ngClass]="{
+                    'is-invalid':
+                    (pf.brandId.touched || isSubmitted) &&
+                    pf.brandId.errors?.required
+                  }">
                     <option value="example" disabled>
                       -- Select a Brand --
                     </option>
-                    <option
-                      *ngFor="let brand of brandData"
-                      value="{{ brand?._id }}"
-                    >
+                    <option *ngFor="let brand of brandData" value="{{ brand?._id }}">
                       {{ brand?.name }}
                     </option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.brandId.touched || isSubmitted) &&
                       pf.brandId.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the brand</span
-                  >
+                    ">Brand is required</span>
                 </div>
               </div>
 
@@ -306,11 +225,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Additional Button Text</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="additionalbutton"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="additionalbutton" />
                 </div>
               </div>
 
@@ -318,11 +233,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Button Redirect URL</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="buttonredireturl"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="buttonredireturl" />
                 </div>
               </div>
 
@@ -330,24 +241,20 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Shipping Method</label>
-                  <select
-                    class="form-select"
-                    formControlName="shippingMethod"
-                    (change)="checkShippingMethod()"
-                  >
+                  <select class="form-select" formControlName="shippingMethod" (change)="checkShippingMethod()"
+                    [ngClass]="{
+                    'is-invalid':
+                    (pf.shippingMethod.touched || isSubmitted) &&
+                    pf.shippingMethod.errors?.required
+                  }">
                     <option value="paid">Paid Shipping</option>
                     <option value="unpaid">Unpaid Shipping</option>
                     <option value="external">External Shipping Service</option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.shippingMethod.touched || isSubmitted) &&
                       pf.shippingMethod.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the shipping method</span
-                  >
+                    ">Shipping method is required</span>
                 </div>
               </div>
 
@@ -358,11 +265,7 @@
                     <label class="fs-5 mb-3">Shipping Cost </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="shippingCost"
-                      />
+                      <input type="text" class="form-control" formControlName="shippingCost" />
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
@@ -372,7 +275,11 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Unit</label>
-                  <select class="form-select" formControlName="unit">
+                  <select class="form-select" formControlName="unit" [ngClass]="{
+                    'is-invalid':
+                    (pf.unit.touched || isSubmitted) &&
+                    pf.unit.errors?.required
+                  }">
                     <option value="Check" disabled>
                       -- Select an option --
                     </option>
@@ -381,15 +288,10 @@
                     <option value="number">Number of</option>
                     <option value="pack">Pack of</option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.unit.touched || isSubmitted) &&
                       pf.unit.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the unit</span
-                  >
+                    ">Unit is required</span>
                 </div>
               </div>
 
@@ -397,20 +299,15 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Weight</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="weight"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control" formControlName="weight" [ngClass]="{
+                    'is-invalid':
+                    (pf.weight.touched || isSubmitted) &&
+                    pf.weight.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.weight.touched || isSubmitted) &&
                       pf.weight.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the weight</span
-                  >
+                    ">Weight is required</span>
                 </div>
               </div>
 
@@ -418,26 +315,22 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Tax Class</label>
-                  <select class="form-select" formControlName="taxClassId">
+                  <select class="form-select" formControlName="taxClassId" [ngClass]="{
+                    'is-invalid':
+                    (pf.taxClassId.touched || isSubmitted) &&
+                    pf.taxClassId.errors?.required
+                  }">
                     <option value="example" disabled>
                       -- Select a Tax Class --
                     </option>
-                    <option
-                      *ngFor="let taxClass of taxClassData"
-                      value="{{ taxClass?._id }}"
-                    >
+                    <option *ngFor="let taxClass of taxClassData" value="{{ taxClass?._id }}">
                       {{ taxClass?.name }}
                     </option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.taxClassId.touched || isSubmitted) &&
                       pf.taxClassId.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the tax class</span
-                  >
+                    ">Tax class is required</span>
                 </div>
               </div>
 
@@ -445,26 +338,15 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Search Keywords</label>
-                  <input
-                    class="form-control fs-5"
-                    formControlName="searchKeywords"
-                    (keyup.Arrowright)="tagInput()"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input class="form-control fs-5" formControlName="searchKeywords" (keyup.Arrowright)="tagInput()" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.searchKeywords.touched || isSubmitted) &&
                       pf.searchKeywords.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide search keywords</span
-                  >
+                    ">Search keywords is required</span>
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="mb-10 tag-input"
-                        >{{ value }}
-                        <i class="bi bi-x" (click)="tagRemove(value)"></i
-                      ></span>
+                      <span class="mb-10 tag-input">{{ value }}
+                        <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
                     </ng-container>
                   </div>
                 </div>
@@ -474,30 +356,18 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Related Products</label>
-                  <select
-                    class="form-select"
-                    aria-label="related keywords"
-                    formControlName="relatedProducts"
-                  >
+                  <select class="form-select" aria-label="related keywords" formControlName="relatedProducts">
                     <option value="example" disabled>
                       -- Select Related Products --
                     </option>
-                    <option
-                      *ngFor="let product of productData"
-                      value="{{ product?.name }}"
-                    >
+                    <option *ngFor="let product of productData" value="{{ product?.name }}">
                       {{ product?.name }}
                     </option>
                   </select>
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.searchKeywords.touched || isSubmitted) &&
                       pf.searchKeywords.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the related products</span
-                  >
+                    ">Related products is required</span>
                 </div>
               </div>
 
@@ -505,101 +375,80 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Position</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="position"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="position" [ngClass]="{
+                    'is-invalid':
+                    (pf.position.touched || isSubmitted) &&
+                    pf.position.errors?.required
+                  }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
                       (pf.position.touched || isSubmitted) &&
                       pf.position.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide the position</span
-                  >
-                </div>
-              </div>
-
-              <!-- Product Image -->
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
-                  <label class="fs-5 fw-bold">Product Image</label>
-                  <div class="preview-img">
-                    <img class="preview-image" id="preview" />
-                  </div>
-                  <button
-                    class="upload-btn"
-                    onclick="document.getElementById('getFile').click()"
-                  >
-                    Upload File
-                  </button>
-                  <input
-                    class="form-control fs-5"
-                    type="file"
-                    id="getFile"
-                    style="display: none"
-                    formControlName="file"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
-                  <span
-                    class="text-danger error-msg fs-6"
-                    *ngIf="
-                      (pf.file.touched || isSubmitted) &&
-                      pf.file.errors?.required
-                    "
-                    ><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide an image</span
-                  >
+                    ">Position is required</span>
                 </div>
               </div>
 
               <!-- Featured Product -->
               <div class="col-12 col-sm-6">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="featured"
-                    id="featuredCheck"
-                    formControlName="isFeatured"
-                  />
-                  <label class="form-check-label" for="isFeatured"
-                    >Featured Product ?</label
-                  >
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Featured Product ?</label>
+                  <select class="form-select" formControlName="isFeatured" [ngClass]="{
+                    'is-invalid':
+                    (pf.isFeatured.touched || isSubmitted) &&
+                    pf.isFeatured.errors?.required
+                  }">
+                    <option value="Check" disabled>
+                      -- Select an option --
+                    </option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (pf.isFeatured.touched || isSubmitted) &&
+                      pf.isFeatured.errors?.required
+                    ">Featured is required</span>
                 </div>
               </div>
 
               <!-- Featured Product -->
               <div class="col-12 col-sm-6">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="featured"
-                    id="featuredCheck"
-                    formControlName="isActive"
-                  />
-                  <label class="form-check-label" for="isActive"
-                    >Active Product ?</label
-                  >
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Active Product ?</label>
+                  <select class="form-select" formControlName="isActive" [ngClass]="{
+                    'is-invalid':
+                    (pf.isActive.touched || isSubmitted) &&
+                    pf.isActive.errors?.required
+                  }">
+                    <option value="Check" disabled>
+                      -- Select an option --
+                    </option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (pf.isActive.touched || isSubmitted) &&
+                      pf.isActive.errors?.required
+                    ">Active is required</span>
                 </div>
               </div>
 
-              <!-- COD Available -->
-              <div class="col-12">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="cod"
-                    id="cod"
-                    formControlName="cod"
-                    (change)="checkCod()"
-                  />
-                  <label class="form-check-label">COD Available ?</label>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">COD Available ?</label>
+                  <select class="form-select" formControlName="cod" (change)="checkCod()" [ngClass]="{
+                    'is-invalid':
+                    (pf.cod.touched || isSubmitted) &&
+                    pf.cod.errors?.required
+                  }">
+                    <option value="Check" disabled>
+                      -- Select an option --
+                    </option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (pf.cod.touched || isSubmitted) &&
+                      pf.cod.errors?.required
+                    ">COD is required</span>
                 </div>
               </div>
 
@@ -610,11 +459,7 @@
                     <label class="fs-5 mb-3"> COD Charge </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="codCharge"
-                      />
+                      <input type="text" class="form-control" formControlName="codCharge" />
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
@@ -622,19 +467,24 @@
               </ng-container>
 
               <!-- Returnable Product -->
-              <div class="col-12">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value="returnable"
-                    id="returnableCheck"
-                    formControlName="returnable"
-                    (change)="checkReturnable()"
-                  />
-                  <label class="form-check-label ml-10" for="returnable"
-                    >Returnable Product ?</label
-                  >
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Returnable Product ?</label>
+                  <select class="form-select" formControlName="returnable" (change)="checkReturnable()" [ngClass]="{
+                    'is-invalid':
+                    (pf.returnable.touched || isSubmitted) &&
+                    pf.returnable.errors?.required
+                  }">
+                    <option value="Check" disabled>
+                      -- Select an option --
+                    </option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (pf.returnable.touched || isSubmitted) &&
+                      pf.returnable.errors?.required
+                    ">Returnable is required</span>
                 </div>
               </div>
 
@@ -643,14 +493,33 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3">Return Days</label>
-                    <input
-                      type="text"
-                      class="form-control fs-5"
-                      formControlName="returnDays"
-                    />
+                    <input type="text" class="form-control fs-5" formControlName="returnDays" />
                   </div>
                 </div>
               </ng-container>
+
+              <!-- Product Image -->
+              <div class="col-sm-6">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5 fw-bold">Product Image</label>
+                  <img class="preview-image" id="preview" />
+                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()">
+                    Upload File
+                  </button>
+                  <input class="form-control fs-5" type="file" id="getFile" style="display: none" formControlName="file"
+                    (change)="handleInputChange($event)" [ngClass]="{
+                                    'is-invalid':
+                                    (pf.file.touched || isSubmitted) &&
+                                    pf.file.errors?.required
+                                  }"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                                    (pf.file.touched || isSubmitted) &&
+                                    pf.file.errors?.required
+                                  ">Image is required</span>
+                </div>
+              </div>
+
 
               <div class="col-12">
                 <button type="submit" class="btn btn-primary fs-5">

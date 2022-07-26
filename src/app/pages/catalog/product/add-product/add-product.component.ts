@@ -60,7 +60,7 @@ export class AddProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get pf() {
     return this.productForm.controls;
@@ -102,7 +102,7 @@ export class AddProductComponent implements OnInit {
       sku: ['', Validators.required],
       hsn: ['', Validators.required],
       mrpPrice: [''],
-      offerprice: [''],
+      offerPrice: [''],
       stock: [''],
       moq: [''],
       stockWarning: [''],
@@ -112,7 +112,8 @@ export class AddProductComponent implements OnInit {
       brandId: ['', Validators.required],
       additionalbutton: [''],
       buttonredireturl: [''],
-      isFeatured: ['', Validators.required],
+      isActive: ['true', Validators.required],
+      isFeatured: ['false', Validators.required],
       returnable: ['', Validators.required],
       returnDays: [''],
       shippingMethod: ['', Validators.required],
@@ -273,12 +274,14 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  updateProduct() {}
+  updateProduct() { }
 
   addProduct() {
     if (!this.productForm.valid) {
       return;
     }
+
+    console.log(this.productForm.value);
 
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
@@ -286,13 +289,14 @@ export class AddProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'values' || 'categories') {
+      if (data != 'searchKeywords' || 'categories') {
+        console.log(this.productForm.value[data])
         formData.append(data, this.productForm.value[data]);
       }
     }
 
-    formData.append('searchKeywords', this.valueArray);
-    formData.append('categories', this.categoryArray);
+    formData.append('categories', JSON.stringify(this.categoryArray))
+    formData.append('searchKeywords', JSON.stringify(this.valueArray))
 
     this.productService.addProduct(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {

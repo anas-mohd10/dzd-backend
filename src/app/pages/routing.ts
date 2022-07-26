@@ -1,44 +1,53 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { AuthenticationGuard } from '../core/auth/authentication.guard';
 
 export const Routing: Routes = [
-  //Dashboard
   {
     path: 'app',
     children: [
       {
         path: 'dashboard',
         loadChildren: () => import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'brand',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./catalog/brand/brand-list/brand-list.module').then((m) => m.BrandModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./catalog/brand/add-brand/add-brand.module').then((m) => m.AddBrandModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'category',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./catalog/category/add-category/add-category.module').then((m) => m.AddCategoryModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./catalog/category/update-category/update-category.module').then((m) => m.UpdateCategoryModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
       },
     ]
-  },
-
-  //Brand
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/brand/brand-list/brand-list.module').then((m) => m.BrandModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/brand/add-brand/add-brand.module').then((m) => m.AddBrandModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
-  },
-
-  //Category
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/category/add-category/add-category.module').then((m) => m.AddCategoryModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/category/update-category/update-category.module').then((m) => m.UpdateCategoryModule),
   },
 
   //Atrribute

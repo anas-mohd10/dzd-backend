@@ -20,7 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     RouterModule.forChild([
       {
-        path: 'brand/update',
+        path: '',
         component: UpdateBrandComponent,
       },
     ]),

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LayoutModule } from './shared/layout';
+LayoutModule
 
 export const routes: Routes = [
   {
@@ -15,7 +17,7 @@ export const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./_metronic/layout/layout.module').then((m) => m.LayoutModule),
+      import('./shared/layout/layout.module').then((m) => m.LayoutModule),
   },
   { path: '**', redirectTo: 'error/404' },
 ];

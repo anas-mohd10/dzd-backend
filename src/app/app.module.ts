@@ -15,6 +15,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './core/auth/authentication.guard';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HttpInterceptor } from './includes/interceptor/http.interceptor';
+import { RouterModule } from '@angular/router';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 // #fake-end#
 
 @NgModule({
@@ -29,7 +31,12 @@ import { HttpInterceptor } from './includes/interceptor/http.interceptor';
     ToastrModule.forRoot(),
     AppRoutingModule,
     InlineSVGModule.forRoot(),
-    NgbModule,
+    NgHttpLoaderModule.forRoot(),
+    NgbModule
+  ],
+  exports: [
+    RouterModule,
+    NgHttpLoaderModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },

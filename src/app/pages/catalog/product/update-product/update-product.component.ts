@@ -35,14 +35,14 @@ export class UpdateProductComponent implements OnInit {
   filtered: any;
   categoryData: any;
   taxClassData: any;
-  valueArray: any = [];
+  valueArray: any;
   productData: any;
   categoryNames: any = [];
-  categoryArray: any = [];
+  categoryArray: any;
   productSlug: any;
   productsData: any;
   isLoaded: boolean = false;
-  uploadedImg: any;
+  uploadedImg: any = '';
   isReturn: boolean = false;
   isShipping: boolean = false;
   isCod: boolean = false;
@@ -63,7 +63,7 @@ export class UpdateProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get pf() {
     return this.productForm.controls;
@@ -105,10 +105,10 @@ export class UpdateProductComponent implements OnInit {
       name: [''],
       sku: [''],
       hsn: [''],
-      mrpPrice: [''],
-      offerprice: [''],
-      stock: [''],
-      moq: [''],
+      mrpPrice: ['0'],
+      offerPrice: ['0'],
+      stock: ['0'],
+      moq: ['0'],
       stockWarning: [''],
       description: [''],
       features: [''],
@@ -117,6 +117,7 @@ export class UpdateProductComponent implements OnInit {
       additionalbutton: [''],
       buttonredireturl: [''],
       isFeatured: [''],
+      isActive: [''],
       returnable: [''],
       returnDays: [''],
       shippingMethod: [''],
@@ -263,110 +264,83 @@ export class UpdateProductComponent implements OnInit {
   }
 
   getProductBySlug() {
-    this.productService
-      .getProductBySlug(this.productSlug)
-      .subscribe((res: any) => {
-        this.productData = res?.result[0];
-        console.log(this.productData);
-        this.isLoaded = true;
-        this.productType = this.productData.isSingle;
-        if (this.productType == true) {
-          this.isSingle = true;
-        } else if (this.productType == false) {
-          this.isSingle = false;
-        }
-        this.uploadedImg = this.productData?.file;
-        this.productForm.get('isSingle')?.setValue(this.productType);
-        this.productForm.get('name')?.setValue(this.productData.name);
-        this.productForm.get('sku')?.setValue(this.productData.sku);
-        this.productForm.get('hsn')?.setValue(this.productData.hsn);
-        this.productForm.get('mrpPrice')?.setValue(this.productData.mrpPrice);
-        this.productForm
-          .get('offerprice')
-          ?.setValue(this.productData.offerprice);
-        this.productForm.get('stock')?.setValue(this.productData.stock);
-        this.productForm.get('moq')?.setValue(this.productData.moq);
-        this.productForm
-          .get('additionalbutton')
-          ?.setValue(this.productData.additionalbutton);
-        this.productForm
-          .get('buttonredireturl')
-          ?.setValue(this.productData.buttonredireturl);
-        this.productForm
-          .get('isFeatured')
-          ?.setValue(this.productData.isFeatured);
-        this.productForm
-          .get('returnable')
-          ?.setValue(this.productData.returnable);
-        this.productForm
-          .get('returnDays')
-          ?.setValue(this.productData.returnDays);
-        this.productForm
-          .get('shippingMethod')
-          ?.setValue(this.productData.shippingMethod);
-        this.productForm.get('unit')?.setValue(this.productData.unit);
-        this.productForm.get('weight')?.setValue(this.productData.weight);
-        this.productForm.get('cod')?.setValue(this.productData.cod);
-        this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
-        this.productForm
-          .get('shippingCost')
-          ?.setValue(this.productData.shippingCost);
-        this.productForm.get('position')?.setValue(this.productData.position);
-        this.productForm.get('cod')?.setValue(this.productData.cod);
-        this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
-        this.productForm
-          .get('stockWarning')
-          ?.setValue(this.productData.stockWarning);
-        this.productForm
-          .get('description')
-          ?.setValue(this.productData.description);
-        this.productForm.get('features')?.setValue(this.productData.features);
-        this.productForm
-          .get('relatedProducts')
-          ?.setValue(this.productData.relatedProducts);
-        for (let category of this.productData.categories) {
-          this.categoryArray.push(category);
-          for (let i = 0; i < this.categoryData.length; i++) {
-            if (category == this.categoryData[i]._id) {
-              this.categoryNames.push(this.categoryData[i].name);
-            }
+    this.productService.getProductBySlug(this.productSlug).subscribe((res: any) => {
+      this.productData = res?.result[0];
+      this.isLoaded = true;
+      this.productType = this.productData.isSingle;
+      if (this.productType == true) {
+        this.isSingle = true;
+      } else if (this.productType == false) {
+        this.isSingle = false;
+      }
+      this.uploadedImg = this.productData?.file;
+      this.productForm.get('isSingle')?.setValue(this.productType);
+      this.productForm.get('name')?.setValue(this.productData.name);
+      this.productForm.get('sku')?.setValue(this.productData.sku);
+      this.productForm.get('hsn')?.setValue(this.productData.hsn);
+      this.productForm.get('mrpPrice')?.setValue(this.productData.mrpPrice);
+      this.productForm.get('offerPrice')?.setValue(this.productData.offerPrice);
+      this.productForm.get('stock')?.setValue(this.productData.stock);
+      this.productForm.get('moq')?.setValue(this.productData.moq);
+      this.productForm.get('additionalbutton')?.setValue(this.productData.additionalbutton);
+      this.productForm.get('buttonredireturl')?.setValue(this.productData.buttonredireturl);
+      this.productForm.get('isFeatured')?.setValue(this.productData.isFeatured);
+      this.productForm.get('returnable')?.setValue(this.productData.returnable);
+      this.productForm.get('returnDays')?.setValue(this.productData.returnDays);
+      this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);
+      this.productForm.get('unit')?.setValue(this.productData.unit);
+      this.productForm.get('weight')?.setValue(this.productData.weight);
+      this.productForm.get('cod')?.setValue(this.productData.cod);
+      this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
+      this.productForm.get('shippingCost')?.setValue(this.productData.shippingCost);
+      this.productForm.get('position')?.setValue(this.productData.position);
+      this.productForm.get('cod')?.setValue(this.productData.cod);
+      this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
+      this.productForm.get('stockWarning')?.setValue(this.productData.stockWarning);
+      this.productForm.get('description')?.setValue(this.productData.description);
+      this.productForm.get('features')?.setValue(this.productData.features);
+      this.productForm.get('relatedProducts')?.setValue(this.productData.relatedProducts);
+      for (let category of this.productData.categories) {
+        this.categoryArray = this.productData.categories
+        for (let i = 0; i < this.categoryData.length; i++) {
+          if (category == this.categoryData[i]._id) {
+            this.categoryNames.push(this.categoryData[i].name);
           }
         }
-        for (let search of this.productData.searchKeywords) {
-          this.valueArray.push(search);
+      }
+      this.valueArray = this.productData.searchKeywords
+      for (let brand of this.brandData) {
+        if (this.productData.brandId == brand._id) {
+          this.productForm.get('brandId')?.setValue(brand._id);
         }
-        for (let brand of this.brandData) {
-          if (this.productData.brandId == brand._id) {
-            this.productForm.get('brandId')?.setValue(brand._id);
-          }
+      }
+      for (let tax of this.taxClassData) {
+        if (this.productData.taxClassId == tax._id) {
+          this.productForm.get('taxClassId')?.setValue(tax._id);
         }
-        for (let tax of this.taxClassData) {
-          if (this.productData.taxClassId == tax._id) {
-            this.productForm.get('taxClassId')?.setValue(tax._id);
-          }
-        }
-        this.cod = this.productData.cod;
-        if (this.cod == true) {
-          this.isCod = true;
-        }
-        if (this.cod == false) {
-          this.isCod = false;
-        }
-        this.method = this.productData.shippingMethod;
-        if (this.method == 'paid') {
-          this.isShipping = true;
-        }
-        if (this.method == 'unpaid' || this.method == 'external') {
-          this.isShipping = false;
-        }
-        this.returnValue = this.productData.returnable;
-        if (this.returnValue == true) {
-          this.isReturn = true;
-        }
-        if (this.returnValue == false) {
-          this.isReturn = false;
-        }
-      });
+      }
+      this.cod = this.productData.cod;
+      if (this.cod == true) {
+        this.isCod = true;
+      }
+      if (this.cod == false) {
+        this.isCod = false;
+      }
+      this.method = this.productData.shippingMethod;
+      if (this.method == 'paid') {
+        this.isShipping = true;
+      }
+      if (this.method == 'unpaid' || this.method == 'external') {
+        this.isShipping = false;
+      }
+      this.returnValue = this.productData.returnable;
+      if (this.returnValue == true) {
+        this.isReturn = true;
+      }
+      if (this.returnValue == false) {
+        this.isReturn = false;
+      }
+    });
   }
 
   onOptionsSelected() {
@@ -384,10 +358,11 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  addProduct() {}
+  addProduct() { }
 
   updateProduct() {
     if (!this.productForm.valid) {
+      console.log('Err')
       return;
     }
 
@@ -399,13 +374,16 @@ export class UpdateProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'values' || 'categories') {
+      if (data != 'searchKeywords' || 'categories') {
         formData.append(data, this.productForm.value[data]);
       }
     }
 
-    formData.append('searchKeywords', this.valueArray);
-    formData.append('categories', this.categoryArray);
+    console.log(this.productForm.get('offerPrice')?.value);
+
+
+    formData.append('categories', JSON.stringify(this.categoryArray))
+    formData.append('searchKeywords', JSON.stringify(this.valueArray))
 
     this.productService
       .updateProduct(this.productSlug, formData)
@@ -415,7 +393,6 @@ export class UpdateProductComponent implements OnInit {
         } else if (res.errorCode == 0) {
           this.toastr.success('Product Added Successfully');
           this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-          this.ngOnInit();
         }
       });
   }

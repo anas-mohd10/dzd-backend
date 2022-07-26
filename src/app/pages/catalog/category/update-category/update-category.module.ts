@@ -21,7 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     RouterModule.forChild([
       {
-        path: 'category/update',
+        path: '',
         component: UpdateCategoryComponent,
       },
     ]),

@@ -14,11 +14,7 @@
             <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
           </li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer"
-          color="primary"
-          routerLink="{{ appRoute.product.ADD_PRODUCT }}"
-        >
+        <button class="btn btn-primary cursor-pointer" color="primary" routerLink="{{ appRoute.product.ADD_PRODUCT }}">
           Add Product
         </button>
       </div>
@@ -31,11 +27,8 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive" *ngIf="displayTable">
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              class="table table-center table-borderless table-striped mb-0 datatable"
-            >
+            <table datatable [dtOptions]="dtOptions"
+              class="table table-center table-borderless table-striped mb-0 datatable">
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
@@ -43,6 +36,7 @@
                   <th class="text-dark fw-bolder fs-4">Product</th>
                   <th class="text-dark fw-bolder fs-4">Type</th>
                   <th class="text-dark fw-bolder fs-4">Price</th>
+                  <th class="text-dark fw-bolder fs-4">Offer Price</th>
                   <th class="text-dark fw-bolder fs-4">Stock</th>
                   <th class="text-dark fw-bolder fs-4">Image</th>
                   <th class="text-dark fw-bolder fs-4">Variants</th>
@@ -62,39 +56,40 @@
                   <td>
                     <h2 class="table-avatar fs-5">
                       <ng-container *ngIf="product?.isSingle == true">
-                          <h2 class="table-avatar fw-b fs-5">
-                            Single
-                          </h2>
+                        <h2 class="table-avatar fw-b fs-5">
+                          Single
+                        </h2>
                       </ng-container>
                       <ng-container *ngIf="product?.isSingle == false">
-                          <h2 class="table-avatar fw-b fs-5">
-                            Configurable
-                          </h2>
+                        <h2 class="table-avatar fw-b fs-5">
+                          Configurable
+                        </h2>
                       </ng-container>
                     </h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ product?.mrpPrice }}</h2>
+                    <ng-container *ngIf="product?.isSingle == true">
+                      <h2 class="table-avatar fs-5">{{ product?.mrpPrice }}</h2>
+                    </ng-container>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
+                    <ng-container *ngIf="product?.isSingle == true">
+                      <h2 class="table-avatar fs-5">{{ product?.offerPrice }}</h2>
+                    </ng-container>
                   </td>
                   <td>
-                    <img
-                      class="product-logo"
-                      src="http://localhost:3000/{{product?.file}}"
-                      alt="product"
-                    />
+                    <ng-container *ngIf="product?.isSingle == true">
+                      <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <img class="product-logo" src="http://localhost:3000/{{product?.file}}" alt="product" />
                   </td>
                   <td>
                     <ng-container *ngIf="product?.isSingle == false">
-                      <a
-                        routerLink="{{
+                      <a routerLink="{{
                           appRoute.variantProduct.VARIANT_PRODUCT_LIST
-                        }}"
-                        [queryParams]="{ product: product?.slug }"
-                        class="fs-5 cursor-pointer text-darker"
-                        >View</a>
+                        }}" [queryParams]="{ product: product?.slug }" class="fs-5 cursor-pointer text-darker">View</a>
                     </ng-container>
                   </td>
                   <td>
@@ -114,11 +109,8 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a
-                      routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
-                      [queryParams]="{ product: product?.slug }"
-                      class="fs-5 cursor-pointer text-darker"
-                    >
+                    <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: product?.slug }"
+                      class="fs-5 cursor-pointer text-darker">
                       Edit
                     </a>
                   </td>

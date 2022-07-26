@@ -61,7 +61,7 @@ export class AddVariantProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get pf() {
     return this.productForm.controls;
@@ -140,16 +140,16 @@ export class AddVariantProductComponent implements OnInit {
       brandId: ['', Validators.required],
       additionalbutton: [''],
       buttonredireturl: [''],
-      isFeatured: [''],
-      isActive: [''],
-      returnable: [''],
+      isActive: ['true', Validators.required],
+      isFeatured: ['false', Validators.required],
+      returnable: ['', Validators.required],
       returnDays: [''],
       shippingMethod: ['', Validators.required],
       shippingCost: [''],
       weight: ['', Validators.required],
       unit: ['', Validators.required],
       taxClassId: ['', Validators.required],
-      cod: [''],
+      cod: ['', Validators.required],
       codCharge: [''],
       searchKeywords: [], //Array with user entered search keywords
       relatedProducts: [''],
@@ -160,7 +160,6 @@ export class AddVariantProductComponent implements OnInit {
 
   handleProductType() {
     this.productType = this.productForm.get('isSingle')?.value;
-    console.log(this.productType);
     if (this.productType == 'true') {
       this.isSingle = true;
     } else if (this.productType == 'false') {
@@ -280,7 +279,7 @@ export class AddVariantProductComponent implements OnInit {
     }
   }
 
-  updateProduct() {}
+  updateProduct() { }
 
   addProduct() {
     if (!this.productForm.valid) {
