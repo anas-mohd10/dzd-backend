@@ -11,7 +11,7 @@ import { DataTablesModule } from 'angular-datatables';
     DataTablesModule,
     RouterModule.forChild([
       {
-        path: 'tax-rules',
+        path: '',
         component: TaxRulesComponent,
       },
     ]),

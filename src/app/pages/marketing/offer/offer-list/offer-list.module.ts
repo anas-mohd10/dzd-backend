@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     RouterModule.forChild([
       {
-        path: 'offer',
+        path: '',
         component: OfferListComponent,
       },
     ]),

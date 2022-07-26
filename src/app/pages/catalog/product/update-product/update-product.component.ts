@@ -285,6 +285,7 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('additionalbutton')?.setValue(this.productData.additionalbutton);
       this.productForm.get('buttonredireturl')?.setValue(this.productData.buttonredireturl);
       this.productForm.get('isFeatured')?.setValue(this.productData.isFeatured);
+      this.productForm.get('isActive')?.setValue(this.productData.isActive);
       this.productForm.get('returnable')?.setValue(this.productData.returnable);
       this.productForm.get('returnDays')?.setValue(this.productData.returnDays);
       this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);

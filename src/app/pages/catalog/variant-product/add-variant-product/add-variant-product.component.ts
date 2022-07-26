@@ -297,8 +297,8 @@ export class AddVariantProductComponent implements OnInit {
       }
     }
 
-    formData.append('searchKeywords', this.valueArray);
-    formData.append('categories', this.categoryArray);
+    formData.append('categories', JSON.stringify(this.categoryArray))
+    formData.append('searchKeywords', JSON.stringify(this.valueArray))
     formData.append('parentId', this.parentProductId);
 
     this.variantProductService

@@ -22,7 +22,7 @@ import { FormsModule } from '@angular/forms';
     }),
     RouterModule.forChild([
       {
-        path: 'attribute/update',
+        path: '',
         component: UpdateAttributeComponent,
       },
     ]),

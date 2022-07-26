@@ -20,7 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     RouterModule.forChild([
       {
-        path: 'attribute',
+        path: '',
         component: AttributeComponent,
       },
     ]),

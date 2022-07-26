@@ -47,111 +47,143 @@ export const Routing: Routes = [
         ],
         canActivate: [AuthenticationGuard]
       },
+      {
+        path: 'attribute',
+        children: [
+          {
+            path: 'add',
+            loadChildren: () => import('./catalog/attritube/add-attribute/add-attribute.module').then((m) => m.AddAttributeModule),
+          },
+          {
+            path: '',
+            loadChildren: () => import('./catalog/attritube/attribute-list/attribute-list.module').then((m) => m.AttributeModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./catalog/attritube/update-attribute/update-attribute.module').then((m) => m.UpdateAttributeModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'collection',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'product',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./catalog/product/product-list/product-list.module').then((m) => m.ProductModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./catalog/product/add-product/add-product.module').then((m) => m.AddProductModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./catalog/product/update-product/update-product.module').then((m) => m.UpdateProductModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'variant-product',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./catalog/variant-product/variant-product-list/variant-product-list.module').then((m) => m.VariantProductModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./catalog/variant-product/add-variant-product/add-variant-product.module').then((m) => m.AddVariantProductModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./catalog/variant-product/update-variant-product/update-variant-product.module').then((m) => m.UpdateVariantProductModule),
+          }
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'offer',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./marketing/offer/offer-list/offer-list.module').then((m) => m.OfferModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./marketing/offer/add-offer/add-offer.module').then((m) => m.AddOfferModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'tax-classes',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./settings/localization/tax/tax-classes/tax-class-list/tax-class-list.component.module').then((m) => m.TaxClassModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./settings/localization/tax/tax-classes/add-tax-class/add-tax-class.component.module').then((m) => m.AddTaxClassModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./settings/localization/tax/tax-classes/update-tax-class/update-tax-class.component.module').then((m) => m.UpdateTaxClassModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'tax-rules',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./settings/localization/tax/tax-rules/tax-rules-list/tax-rules-list.component.module').then((m) => m.TaxRulesModule),
+          },
+          {
+            path: 'add',
+            loadChildren: () => import('./settings/localization/tax/tax-rules/add-tax-rules/add-tax-rules.component.module').then((m) => m.AddTaxClassModule),
+          },
+          {
+            path: 'update',
+            loadChildren: () => import('./settings/localization/tax/tax-rules/update-tax-rules/update-tax-rules.component.module').then((m) => m.UpdateTaxClassModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'shipping',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./sales/shipping/shipping-list/shipping-list.module').then((m) => m.ShippingModule),
+          },
+        ],
+        canActivate: [AuthenticationGuard]
+      }
     ]
-  },
-
-  //Atrribute
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/attritube/add-attribute/add-attribute.module').then((m) => m.AddAttributeModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/attritube/attribute-list/attribute-list.module').then((m) => m.AttributeModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/attritube/update-attribute/update-attribute.module').then((m) => m.UpdateAttributeModule),
-  },
-
-  //Product
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/product/product-list/product-list.module').then((m) => m.ProductModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/product/add-product/add-product.module').then((m) => m.AddProductModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/product/update-product/update-product.module').then((m) => m.UpdateProductModule),
-  },
-
-  //Variant product
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/variant-product/variant-product-list/variant-product-list.module').then((m) => m.VariantProductModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/variant-product/add-variant-product/add-variant-product.module').then((m) => m.AddVariantProductModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/variant-product/update-variant-product/update-variant-product.module').then((m) => m.UpdateVariantProductModule),
-  },
-
-  //Collection
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
-  },
-
-  //Offer
-  {
-    path: 'app',
-    loadChildren: () => import('./marketing/offer/offer-list/offer-list.module').then((m) => m.OfferModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./marketing/offer/add-offer/add-offer.module').then((m) => m.AddOfferModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
-  },
-
-  //Tax class
-  {
-    path: 'app',
-    loadChildren: () => import('./settings/localization/tax/tax-classes/tax-class-list/tax-class-list.component.module').then((m) => m.TaxClassModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./settings/localization/tax/tax-classes/add-tax-class/add-tax-class.component.module').then((m) => m.AddTaxClassModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./settings/localization/tax/tax-classes/update-tax-class/update-tax-class.component.module').then((m) => m.UpdateTaxClassModule),
-  },
-
-  //Tax rule
-  {
-    path: 'app',
-    loadChildren: () => import('./settings/localization/tax/tax-rules/tax-rules-list/tax-rules-list.component.module').then((m) => m.TaxRulesModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./settings/localization/tax/tax-rules/add-tax-rules/add-tax-rules.component.module').then((m) => m.AddTaxClassModule),
-  },
-  {
-    path: 'app',
-    loadChildren: () => import('./settings/localization/tax/tax-rules/update-tax-rules/update-tax-rules.component.module').then((m) => m.UpdateTaxClassModule),
-  },
-
-  //Shipping
-  {
-    path: 'app',
-    loadChildren: () => import('./sales/shipping/shipping-list/shipping-list.module').then((m) => m.ShippingModule),
   },
   {
     path: '',

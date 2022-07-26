@@ -20,7 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     }),
     RouterModule.forChild([
       {
-        path: 'variant-product/update',
+        path: '',
         component: UpdateVariantProductComponent,
       },
     ]),

@@ -13,7 +13,7 @@ import { DataTablesModule } from 'angular-datatables';
     ReactiveFormsModule,
     RouterModule.forChild([
       {
-        path: 'offer/update',
+        path: '',
         component: UpdateOfferComponent,
       },
     ]),

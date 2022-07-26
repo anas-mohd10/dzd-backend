@@ -26,7 +26,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     }),
     RouterModule.forChild([
       {
-        path: 'collection/add',
+        path: '',
         component: AddCollectionComponent,
       },
     ]),

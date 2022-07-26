@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoggedInGuard } from './core/auth/logged.in.guard';
 import { LayoutModule } from './shared/layout';
 LayoutModule
 
@@ -8,6 +9,7 @@ export const routes: Routes = [
     path: 'auth',
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
+    // canActivate: [LoggedInGuard]
   },
   {
     path: 'error',
@@ -26,4 +28,4 @@ export const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

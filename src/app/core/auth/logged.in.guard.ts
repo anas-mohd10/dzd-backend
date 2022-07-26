@@ -18,5 +18,6 @@ export class LoggedInGuard implements CanLoad {
       return false;
     }
     return true
+
   }
 }
