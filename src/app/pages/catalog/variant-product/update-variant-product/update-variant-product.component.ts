@@ -138,21 +138,21 @@ export class UpdateVariantProductComponent implements OnInit {
       stockWarning: [''],
       description: [''],
       features: [''],
-      categories: [], //Array with category id's
+      categories: [],
       brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
       isFeatured: [''],
       isActive: [''],
       returnable: [''],
-      returnDays: [''],
+      returnDays: ['0'],
       shippingMethod: [''],
-      shippingCost: [''],
+      shippingCost: ['0'],
       weight: [''],
       taxClassId: [''],
       cod: [''],
-      codCharge: [''],
-      searchKeywords: [], //Array with user entered search keywords
+      codCharge: ['0'],
+      searchKeywords: [],
       relatedProducts: [''],
       position: [''],
       file: [''],
@@ -161,7 +161,6 @@ export class UpdateVariantProductComponent implements OnInit {
 
   handleProductType() {
     this.productType = this.productForm.get('isSingle')?.value;
-    console.log(this.productType);
     if (this.productType == 'true') {
       this.isSingle = true;
     } else if (this.productType == 'false') {
@@ -170,14 +169,10 @@ export class UpdateVariantProductComponent implements OnInit {
   }
 
   tagCategoryInput() {
-    if (
-      !this.categoryArray.includes(this.productForm.get('categories')?.value)
-    ) {
+    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
       this.categoryArray.push(this.productForm.get('categories')?.value);
       for (let i = 0; i < this.categoryData.length; i++) {
-        if (
-          this.productForm.get('categories')?.value == this.categoryData[i]._id
-        ) {
+        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
           this.categoryNames.push(this.categoryData[i].name);
         }
       }
@@ -200,11 +195,7 @@ export class UpdateVariantProductComponent implements OnInit {
   }
 
   tagInput() {
-    if (
-      this.productForm.get('searchKeywords')?.value != ' ' ||
-      '' ||
-      this.productForm.get('searchKeywords')?.value == null
-    ) {
+    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || this.productForm.get('searchKeywords')?.value == null) {
       this.valueArray.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
@@ -268,79 +259,36 @@ export class UpdateVariantProductComponent implements OnInit {
         this.productForm.get('name')?.setValue(this.variantProductValues.name);
         this.productForm.get('sku')?.setValue(this.variantProductValues.sku);
         this.productForm.get('hsn')?.setValue(this.variantProductValues.hsn);
-        this.productForm
-          .get('mrpPrice')
-          ?.setValue(this.variantProductValues.mrpPrice);
-        this.productForm
-          .get('offerPrice')
-          ?.setValue(this.variantProductValues.offerPrice);
-        this.productForm
-          .get('stock')
-          ?.setValue(this.variantProductValues.stock);
+        this.productForm.get('mrpPrice')?.setValue(this.variantProductValues.mrpPrice);
+        this.productForm.get('offerPrice')?.setValue(this.variantProductValues.offerPrice);
+        this.productForm.get('stock')?.setValue(this.variantProductValues.stock);
         this.productForm.get('moq')?.setValue(this.variantProductValues.moq);
-        this.productForm
-          .get('additionalbutton')
-          ?.setValue(this.variantProductValues.additionalbutton);
-        this.productForm
-          .get('buttonredireturl')
-          ?.setValue(this.variantProductValues.buttonredireturl);
-        this.productForm
-          .get('isFeatured')
-          ?.setValue(this.variantProductValues.isFeatured);
-        this.productForm
-          .get('isActive')
-          ?.setValue(this.variantProductValues.isActive);
-        this.productForm
-          .get('returnable')
-          ?.setValue(this.variantProductValues.returnable);
-        this.productForm
-          .get('returnDays')
-          ?.setValue(this.variantProductValues.returnDays);
-        this.productForm
-          .get('shippingMethod')
-          ?.setValue(this.variantProductValues.shippingMethod);
-        this.productForm
-          .get('weight')
-          ?.setValue(this.variantProductValues.weight);
+        this.productForm.get('additionalbutton')?.setValue(this.variantProductValues.additionalbutton);
+        this.productForm.get('buttonredireturl')?.setValue(this.variantProductValues.buttonredireturl);
+        this.productForm.get('isFeatured')?.setValue(this.variantProductValues.isFeatured);
+        this.productForm.get('isActive')?.setValue(this.variantProductValues.isActive);
+        this.productForm.get('returnable')?.setValue(this.variantProductValues.returnable);
+        this.productForm.get('returnDays')?.setValue(this.variantProductValues.returnDays);
+        this.productForm.get('shippingMethod')?.setValue(this.variantProductValues.shippingMethod);
+        this.productForm.get('weight')?.setValue(this.variantProductValues.weight);
         this.productForm.get('cod')?.setValue(this.variantProductValues.cod);
-        this.productForm
-          .get('codCharge')
-          ?.setValue(this.variantProductValues.codCharge);
-        this.productForm
-          .get('shippingCost')
-          ?.setValue(this.variantProductValues.shippingCost);
-        this.productForm
-          .get('position')
-          ?.setValue(this.variantProductValues.position);
+        this.productForm.get('codCharge')?.setValue(this.variantProductValues.codCharge);
+        this.productForm.get('shippingCost')?.setValue(this.variantProductValues.shippingCost);
+        this.productForm.get('position')?.setValue(this.variantProductValues.position);
         this.productForm.get('cod')?.setValue(this.variantProductValues.cod);
-        this.productForm
-          .get('codCharge')
-          ?.setValue(this.variantProductValues.codCharge);
-        this.productForm
-          .get('stockWarning')
-          ?.setValue(this.variantProductValues.stockWarning);
-        this.productForm
-          .get('description')
-          ?.setValue(this.variantProductValues.description);
-        this.productForm
-          .get('features')
-          ?.setValue(this.variantProductValues.features);
-        this.productForm
-          .get('relatedProducts')
-          ?.setValue(this.variantProductValues.relatedProducts);
-        this.productForm
-          .get('brandId')
-          ?.setValue(this.variantProductValues.brandId._id);
-        this.productForm
-          .get('taxClassId')
-          ?.setValue(this.variantProductValues.taxClassId._id);
+        this.productForm.get('codCharge')?.setValue(this.variantProductValues.codCharge);
+        this.productForm.get('stockWarning')?.setValue(this.variantProductValues.stockWarning);
+        this.productForm.get('description')?.setValue(this.variantProductValues.description);
+        this.productForm.get('features')?.setValue(this.variantProductValues.features);
+        this.productForm.get('relatedProducts')?.setValue(this.variantProductValues.relatedProducts);
+        this.productForm.get('brandId')?.setValue(this.variantProductValues.brandId._id);
+        this.productForm.get('taxClassId')?.setValue(this.variantProductValues.taxClassId._id);
+        this.cod = this.variantProductValues.cod;
         for (let category of this.variantProductValues.categories) {
           this.categoryArray.push(category._id);
           this.categoryNames.push(category.name);
         }
-        for (let search of this.variantProductValues.searchKeywords) {
-          this.valueArray.push(search);
-        }
+        this.valueArray = this.variantProductValues.searchKeywords
         this.returnValue = this.variantProductValues.returnable;
         if (this.returnValue == true) {
           this.isReturn = true;
@@ -356,8 +304,6 @@ export class UpdateVariantProductComponent implements OnInit {
         if (this.method == 'unpaid' || this.method == 'external') {
           this.isShipping = false;
         }
-
-        this.cod = this.variantProductValues.cod;
         if (this.cod == true) {
           this.isCod = true;
         }
@@ -384,12 +330,9 @@ export class UpdateVariantProductComponent implements OnInit {
 
   updateProduct() {
     if (!this.productForm.valid) {
-      console.log("Error");
       return;
     }
 
-    console.log("Clicked");
-  
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
@@ -398,32 +341,28 @@ export class UpdateVariantProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'values' || 'categories') {
+      if (data != 'searchKeywords' || 'categories') {
         formData.append(data, this.productForm.value[data]);
       }
     }
 
-    formData.append('searchKeywords', this.valueArray);
-    formData.append('categories', this.categoryArray);
+    formData.append('categories', JSON.stringify(this.categoryArray))
+    formData.append('searchKeywords', JSON.stringify(this.valueArray))
     formData.append('parentId', this.variantProductValues.parentId._id);
 
-    this.variantProductService
-      .updateVariantProduct(this.slug, formData)
-      .subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Product Added Successfully');
-          this.router.navigate(
-            [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
-            {
-              queryParams: { product: this.variantProductValues.parentId.slug },
-            }
-          );
-          this.ngOnInit();
-        }
-      });
+    this.variantProductService.updateVariantProduct(this.slug, formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Product Added Successfully');
+        this.router.navigate(
+          [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
+          {
+            queryParams: { product: this.variantProductValues.parentId.slug },
+          }
+        );
+      }
+    });
   }
-
   addProduct() { }
 }

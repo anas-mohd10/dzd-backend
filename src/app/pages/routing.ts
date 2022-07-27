@@ -182,6 +182,16 @@ export const Routing: Routes = [
           },
         ],
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'admin-users',
+        loadChildren: () => import('./users/admin/admin.module').then((m) => m.AdminModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'roles',
+        loadChildren: () => import('./roles/roles.module').then((m) => m.RolesModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

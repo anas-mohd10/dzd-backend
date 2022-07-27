@@ -14,10 +14,10 @@ export class LoggedInGuard implements CanLoad {
   }
   canLoad(route: Route, segments: UrlSegment[]): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (localStorage.getItem(localstorageVariables.is_logged_in)) {
+      console.log(localStorage.getItem(localstorageVariables.is_logged_in));
       this.router.navigate([appRoutes.DASHBOARD]);
       return false;
     }
     return true
-
   }
 }

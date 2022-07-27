@@ -8,3 +8,5 @@ export * from './tax-classes.endpoints'
 export * from './tax-rules.endpoints'
 export * from './variant.product.endpoints'
 export * from './auth.endpoints';
+export * from './roles.endpoints'
+export * from './permissions.endpoints'

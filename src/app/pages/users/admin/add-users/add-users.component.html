@@ -1,0 +1,24 @@
+<div class="content container-fluid">
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fw-bolder fs-2">
+          {{ editMode ? "Update Admin Users" : "Add Admin Users" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.admin.ADMIN_USERS }}">Admin Users</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.roles.ADD_ROLES }}">
+              {{ editMode ? "Update Admin Users" : "Add Admin Users"}}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

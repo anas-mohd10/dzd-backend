@@ -11,7 +11,8 @@ const offerRoute = '/offer'
 const taxClassRoute = '/tax-classes'
 const taxRulesRoute = "/tax-rules"
 const shippingClassRoute = "/shipping"
-const adminUsersRoute = "/admin"
+const adminUsersRoute = "/admin-users"
+const rolesRoute = "/roles"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -65,6 +66,13 @@ export const appRoutes = {
     SHIPPING_LIST: `${app}${shippingClassRoute}`
   },
   admin:{
-    ADMIN_USERS: `${app}${adminUsersRoute}/admin-users`
+    ADMIN_USERS: `${app}${adminUsersRoute}`,
+    ADD_ADMIN_USERS: `${app}${adminUsersRoute}/add`,
+    UPDATE_ADMIN_USERS: `${app}${adminUsersRoute}/update`
+  },
+  roles: {
+    ROLES_LIST: `${app}${rolesRoute}`,
+    ADD_ROLES: `${app}${rolesRoute}/add`,
+    UPDATE_ROLES: `${app}${rolesRoute}/update`,
   }
 };

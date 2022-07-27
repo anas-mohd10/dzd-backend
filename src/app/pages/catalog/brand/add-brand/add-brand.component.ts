@@ -40,7 +40,7 @@ export class AddBrandComponent implements OnInit {
     private router: Router,
     private BrandService: BrandService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get bf() {
     return this.brandForm.controls;
@@ -53,8 +53,6 @@ export class AddBrandComponent implements OnInit {
     this.fileData = <File>fileInput.target.files[0];
     console.log(fileInput.target.files[0]);
     this.uploadedImg = true;
-    // (document.getElementById('preview') as HTMLImageElement).src =
-    //   window.URL.createObjectURL(fileInput.target.files[0]);
   }
 
   ngOnInit(): void {
@@ -95,10 +93,10 @@ export class AddBrandComponent implements OnInit {
     }
   }
 
-  handleCheckBox() {}
+  handleCheckBox() { }
 
   //Update exsisting brand
-  updateBrand() {}
+  updateBrand() { }
 
   //Add brand
   addBrand() {

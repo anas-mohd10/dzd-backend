@@ -84,10 +84,10 @@ export class AddVariantProductComponent implements OnInit {
 
   checkReturnable() {
     this.returnValue = this.productForm.get('returnable')?.value;
-    if (this.returnValue == true) {
+    if (this.returnValue == 'true') {
       this.isReturn = true;
     }
-    if (this.returnValue == false) {
+    if (this.returnValue == 'false') {
       this.isReturn = false;
     }
   }
@@ -104,10 +104,10 @@ export class AddVariantProductComponent implements OnInit {
 
   checkCod() {
     this.cod = this.productForm.get('cod')?.value;
-    if (this.cod == true) {
+    if (this.cod == 'true') {
       this.isCod = true;
     }
-    if (this.cod == false) {
+    if (this.cod == 'false') {
       this.isCod = false;
     }
   }
@@ -136,7 +136,7 @@ export class AddVariantProductComponent implements OnInit {
       stockWarning: [''],
       description: [''],
       features: [''],
-      categories: [], //Array with category id's
+      categories: [],
       brandId: ['', Validators.required],
       additionalbutton: [''],
       buttonredireturl: [''],
@@ -151,7 +151,7 @@ export class AddVariantProductComponent implements OnInit {
       taxClassId: ['', Validators.required],
       cod: ['', Validators.required],
       codCharge: [''],
-      searchKeywords: [], //Array with user entered search keywords
+      searchKeywords: [],
       relatedProducts: [''],
       position: ['', Validators.required],
       file: ['', Validators.required],
