@@ -72,8 +72,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       password: this.loginForm.value.password
     }
     this.authService.login(this.userData).subscribe((res: any) => {
+      console.log(res);
       if (res.errorCode != 0) {
-        this.toastr.error(res?.Message || 'Invalid username or password');
+        this.toastr.error(res?.message || 'Invalid username or password');
       } else {
         this.authService.saveUserData(res?.result)
         localStorage.setItem(localstorageVariables.access_token, res?.result?.token);

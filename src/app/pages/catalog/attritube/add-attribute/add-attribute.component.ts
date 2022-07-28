@@ -56,7 +56,7 @@ export class AddAttributeComponent implements OnInit {
     private router: Router,
     private AttributeService: AttributeService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -109,6 +109,7 @@ export class AddAttributeComponent implements OnInit {
           });
           this.imagesArray.push(fileInput.target.files[i]);
           this.images.push(this.fileData);
+          console.log(this.images);
           this.attributeForm.patchValue({
             attributeImage: this.images,
           });
@@ -119,7 +120,7 @@ export class AddAttributeComponent implements OnInit {
     this.attributeForm.get('imageValue')?.setValue('');
   }
 
-  handleCheckBox(event?: any) {}
+  handleCheckBox(event?: any) { }
 
   tagInput() {
     if (
@@ -183,7 +184,7 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
-  updateBrand() {}
+  updateBrand() { }
 
   addBrand() {
     if (!this.attributeForm.valid) {
@@ -196,19 +197,20 @@ export class AddAttributeComponent implements OnInit {
     } else if (this.valueType == 'text') {
       this.values = this.textArray;
     } else if (this.valueType == 'image') {
-      this.values = this.images;
+      this.values = [];
     }
 
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
       valueType: this.valueType,
       value: this.values,
+      file: JSON.stringify(this.images),
       isFiltered: this.attributeForm.get('isFiltered')?.value,
       isActive: this.attributeForm.get('isActive')?.value,
       categoryId: this.categoryId,
     };
 
-    console.log(this.attributeData);
+    console.log(this.images);
 
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {

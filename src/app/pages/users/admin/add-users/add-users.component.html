@@ -13,11 +13,168 @@
             <a routerLink="{{ appRoute.admin.ADMIN_USERS }}">Admin Users</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.roles.ADD_ROLES }}">
+            <a routerLink="{{ appRoute.admin.ADD_ADMIN_USERS }}">
               {{ editMode ? "Update Admin Users" : "Add Admin Users"}}
             </a>
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-6">
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="adminForm">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Admin user details</span></h5>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3"> First name</label>
+                  <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
+                      'is-invalid':
+                      (af.firstname.touched || isSubmitted) &&
+                      af.firstname.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.firstname.touched || isSubmitted) &&
+                      af.firstname.errors?.required
+                  ">First name is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3"> Last name</label>
+                  <input type="text" class="form-control fs-6" formControlName="lastname" [ngClass]="{
+                      'is-invalid':
+                      (af.lastname.touched || isSubmitted) &&
+                      af.lastname.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.lastname.touched || isSubmitted) &&
+                      af.lastname.errors?.required
+                  ">Last name is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3"> Email</label>
+                  <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                      'is-invalid':
+                      (af.email.touched || isSubmitted) &&
+                      af.email.errors?.required
+                    }" (change)="checkEmail()"/>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.email.touched || isSubmitted) &&
+                      af.email.errors?.required
+                  ">Email is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3"> Mobile No.</label>
+                  <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                      'is-invalid':
+                      (af.mobile.touched || isSubmitted) &&
+                      af.mobile.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.mobile.touched || isSubmitted) &&
+                      af.mobile.errors?.required
+                  ">Mobile is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3"> Username</label>
+                  <input type="text" class="form-control fs-6" formControlName="username" [ngClass]="{
+                      'is-invalid':
+                      (af.username.touched || isSubmitted) &&
+                      af.username.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.username.touched || isSubmitted) &&
+                      af.username.errors?.required
+                  ">Username is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Role</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="roleId"
+                    [ngClass]="{
+                    'is-invalid':
+                    (af.roleId.touched || isSubmitted) &&
+                    af.roleId.errors?.required
+                  }">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let role of rolesData" value="{{ role?._id }}">
+                      {{ role?.name }}
+                    </option>
+                  </select>
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                  (af.roleId.touched || isSubmitted) &&
+                  af.roleId.errors?.required
+              ">Role is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Password</label>
+                  <input type="password" class="form-control fs-6" formControlName="firstPwd" [ngClass]="{
+                      'is-invalid':
+                      (af.firstPwd.touched || isSubmitted) &&
+                      af.firstPwd.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.firstPwd.touched || isSubmitted) &&
+                      af.firstPwd.errors?.required
+                  ">Password is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Confirm password</label>
+                  <input type="password" class="form-control fs-6" formControlName="password" [ngClass]="{
+                      'is-invalid':
+                      (af.password.touched || isSubmitted) &&
+                      af.password.errors?.required
+                    }" />
+                  <span class="text-danger error-msg fs-6" *ngIf="
+                      (af.password.touched || isSubmitted) &&
+                      af.password.errors?.required
+                  ">Confirm password is required
+                  </span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Status</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="false">Inactive</option>
+                    <option value="true">Active</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary fs-4">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

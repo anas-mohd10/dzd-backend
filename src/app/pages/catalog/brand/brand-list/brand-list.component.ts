@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { DataTableDirective } from 'angular-datatables';
@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
   templateUrl: './brand-list.component.html',
   styleUrls: ['./brand-list.component.scss'],
 })
-export class BrandComponent implements OnInit {
+export class BrandComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
@@ -19,7 +19,7 @@ export class BrandComponent implements OnInit {
   brandData: any;
   displayTable: boolean = false;
 
-  constructor(private brandService: BrandService) {}
+  constructor(private brandService: BrandService) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -34,9 +34,13 @@ export class BrandComponent implements OnInit {
         case 0:
           this.brandData = res?.result;
           this.displayTable = true;
-          // this.dtTrigger.next();
+          this.dtTrigger.next();
           break;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

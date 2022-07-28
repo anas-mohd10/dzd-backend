@@ -17,11 +17,13 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HttpInterceptor } from './includes/interceptor/http.interceptor';
 import { RouterModule } from '@angular/router';
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { DataTablesModule } from 'angular-datatables';
 // #fake-end#
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    DataTablesModule,
     BrowserModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot(),

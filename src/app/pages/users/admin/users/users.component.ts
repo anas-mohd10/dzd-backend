@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { appRoutes } from "../../../../config/routes/app.routes"
@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
@@ -38,6 +38,11 @@ export class UsersComponent implements OnInit {
     this.adminService.getAdminUsers().subscribe((res: any) => {
       this.adminUsersData = res?.result
       this.displayTable = true
+      this.dtTrigger.next();
     })
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

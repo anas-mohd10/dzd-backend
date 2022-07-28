@@ -15,7 +15,23 @@ export class AdminUsersService {
     return this.http.get(`${url}`)
   }
 
-  addAdminUsers() { }
+  getAdminUser(slug: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_user + "?slug=" + slug);
+    return this.http.get(`${url}`)
+  }
 
-  updateAdminUsers() { }
+  getAdminUserByMail(email: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_count + "?email=" + email);
+    return this.http.get(`${url}`)
+  }
+
+  addAdminUsers(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.register_admin);
+    return this.http.post(`${url}`, data)
+  }
+
+  updateAdminUser(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin + "?id=" + slug);
+    return this.http.put(`${url}`, data)
+  }
 }
