@@ -65,7 +65,7 @@ export class AddBrandComponent implements OnInit {
   initForm() {
     this.brandForm = this.formBuilder.group({
       name: ['', Validators.required],
-      file: ['', Validators.required],
+      file: [''],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
     });

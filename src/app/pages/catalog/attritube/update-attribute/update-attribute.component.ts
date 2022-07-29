@@ -47,7 +47,7 @@ export class UpdateAttributeComponent implements OnInit {
     private router: Router,
     private AttributeService: AttributeService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
@@ -64,8 +64,8 @@ export class UpdateAttributeComponent implements OnInit {
       valueType: [''],
       values: [],
       colorValue: [],
-      filtered: [''],
-      status: [''],
+      isFiltered: [''],
+      isActive: [''],
       tags: [''],
     });
   }
@@ -87,6 +87,8 @@ export class UpdateAttributeComponent implements OnInit {
     }
   }
 
+  handleInputChange(fileInput: any) { }
+
   getCategoryDetails() {
     this.CategoryService.getCategoryBySlug(this.category).subscribe((res) => {
       this.categoryData = res;
@@ -96,38 +98,44 @@ export class UpdateAttributeComponent implements OnInit {
   }
 
   getAttributeDetails(attribute: any, category: any) {
-    this.AttributeService.getAttributeBuSlug(attribute, category).subscribe(
-      (res: any) => {
-        this.attributeForm.get('name')?.setValue(res?.result[0].name);
-        this.attributeForm.get('status')?.setValue(res?.result[0].isActive);
-        this.attributeForm.get('filtered')?.setValue(res?.result[0].isFiltered);
-        this.attributeForm.get('valueType')?.setValue(res?.result[0].valueType);
-        this.type = res?.result[0].valueType
-        console.log(this.type)
+    this.AttributeService.getAttributeBuSlug(attribute, category).subscribe((res: any) => {
+      this.attributeForm.get('name')?.setValue(res?.result[0].name);
+      this.attributeForm.get('isActive')?.setValue(res?.result[0].isActive);
+      this.attributeForm.get('isFiltered')?.setValue(res?.result[0].isFiltered);
+      this.attributeForm.get('valueType')?.setValue(res?.result[0].valueType);
+      this.valueType = res?.result[0].valueType
+      if (this.valueType == 'text') {
+        this.textFlag = true;
+        this.colorFlag = false;
+        this.imageFlag = false;
+        this.textArray = res?.result[0].value;
+      } else if (this.valueType == 'color') {
+        this.textFlag = false;
+        this.colorFlag = true;
+        this.imageFlag = false;
+        this.colorArray = res?.result[0].value;
+      } else if (this.valueType == 'image') {
+        this.textFlag = false;
+        this.colorFlag = false;
+        this.imageFlag = true;
         this.textArray = res?.result[0].value;
       }
+    }
     );
   }
 
   tagInput() {
-    if (
-      this.attributeForm.get('values')?.value != ' ' ||
-      '' ||
-      this.attributeForm.get('values')?.value == null
-    ) {
+    if (this.attributeForm.get('values')?.value != ' ' || '' || null) {
       this.textArray.push(this.attributeForm.get('values')?.value);
       this.attributeForm.get('values')?.setValue('');
     }
   }
 
   tagRemove(value: any) {
-    console.log('Value --> ', value);
     const index = this.textArray.indexOf(value);
-    console.log('Index --> ', index);
     if (index > -1) {
       this.textArray.splice(index, 1);
     }
-    console.log('Array --> ', this.textArray);
   }
 
   changeValueType() {
@@ -169,7 +177,6 @@ export class UpdateAttributeComponent implements OnInit {
 
   updateBrand() {
     if (!this.attributeForm.valid) {
-      console.log('Form not valid');
       return;
     }
 
@@ -178,15 +185,16 @@ export class UpdateAttributeComponent implements OnInit {
     } else if (this.valueType == 'text') {
       this.values = this.textArray;
     } else if (this.valueType == 'image') {
-      this.values = this.imageArray;
+      this.values = [];
     }
 
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
       valueType: this.attributeForm.get('valueType')?.value,
       value: this.values,
-      isFiltered: this.attributeForm.get('filtered')?.value,
-      isActive: this.attributeForm.get('status')?.value,
+      file: '',
+      isFiltered: this.attributeForm.get('isActive')?.value,
+      isActive: this.attributeForm.get('isActive')?.value,
       categoryId: this.categoryId,
     };
 
@@ -206,5 +214,5 @@ export class UpdateAttributeComponent implements OnInit {
     });
   }
 
-  addBrand() {}
+  addBrand() { }
 }

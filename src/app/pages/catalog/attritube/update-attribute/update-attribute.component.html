@@ -14,17 +14,12 @@
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a
-              routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
-              [queryParams]="{ category: category }"
-              >Attributes</a
-            >
+            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
+              [queryParams]="{ category: category }">Attributes</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
-              [queryParams]="{ category: category, attribute: attribute }"
-            >
+            <a routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
+              [queryParams]="{ category: category, attribute: attribute }">
               {{ editMode ? "Update Attribute" : "Add Attribute" }}
             </a>
           </li>
@@ -44,23 +39,16 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
+                  <label class="fs-5 mb-3"> Name</label>
+                  <input type="text" class="form-control fs-5" formControlName="name" />
                 </div>
               </div>
+              <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Value Type</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="valueType"
-                    (change)="changeValueType()"
-                  >
+                  <label class="fs-5 mb-3">Value Type</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="valueType" (change)="changeValueType()">
                     <option value="check" disabled>
                       -- Select An Option --
                     </option>
@@ -70,90 +58,67 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Text Value </label>
-                  <input
-                    class="form-control fs-5 mb-10"
-                    formControlName="values"
-                    (keyup.Arrowright)="tagInput()"
-                  />
-                  <div class="tag-inputs col-12 col-sm-6">
-                    <ng-container *ngFor="let value of textArray">
-                      <span class="tag-input"
-                        >{{ value }}
-                        <i
-                          class="bi bi-x fs-1 text-white"
-                          (click)="tagRemove(value)"
-                        ></i
-                      ></span>
+              <ng-container *ngIf="textFlag">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3"> Text Value </label>
+                    <input class="form-control fs-5 mb-10" formControlName="values" (keyup.Arrowright)="tagInput()" />
+                    <div class="tag-inputs col-12">
+                      <ng-container *ngFor="let value of textArray">
+                        <span class="tag-input bg-primary">{{ value }}
+                          <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="colorFlag">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3"> Color Value </label>
+                    <input type="color" class="form-control color-picker fs-5 mb-10" formControlName="colorValue"
+                      (keyup.Arrowright)="tagInput()" (change)="getColorCode()" />
+                  </div>
+                  <div class="color-inputs col-12">
+                    <ng-container *ngFor="let color of colorArray">
+                      <div class="color-div" [ngStyle]="{ backgroundColor: color }">
+                        <i class="bi bi-x fs-1 text-dark close-btn" (click)="colorRemove(color)"></i>
+                      </div>
                     </ng-container>
                   </div>
                 </div>
-              </div>
+              </ng-container>
+              <ng-container *ngIf="imageFlag">
+                <div class="col-12 col-sm-6">
+                  <div class="form-group">
+                    <label class="fs-5 mb-3"> Image Value </label>
+                    <input type="file" class="form-control fs-5 mb-10" (change)="handleInputChange($event)"
+                      formControlName="imageValue" id="attributeImage" accept='image/*' />
+                  </div>
+                  <div class="tag-inputs col-12">
+                    <ng-container *ngFor="let image of imageArray">
+                      <div class="preview-image">
+                        <img src="{{ image.url }}" alt="preview" id="preview" />
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Color Value </label>
-                  <input
-                    type="color"
-                    class="form-control color-picker fs-5 mb-10"
-                    formControlName="colorValue"
-                    (keyup.Arrowright)="tagInput()"
-                    (change)="getColorCode()"
-                  />
-                </div>
-                <div class="tag-inputs col-12">
-                  <ng-container *ngFor="let color of colorArray">
-                    <div
-                      class="color-div"
-                      [ngStyle]="{ backgroundColor: color }"
-                    >
-                      <i
-                        class="bi bi-x fs-1 text-dark close-btn"
-                        (click)="colorRemove(color)"
-                      ></i>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold"> Image Value </label>
-                  <input
-                    type="file"
-                    class="form-control fs-5 mb-10"
-                    formControlName="values"
-                    (keyup.Arrowright)="tagInput()"
-                  />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Active</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="status"
-                  >
-                    <option value="check" disabled>
-                      -- Select An Option --
-                    </option>
-                    <option value="true" selected>True</option>
-                    <option value="false">False</option>
+                  <label class="fs-5 mb-3">Active</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 fw-bold">Filtered Product ???</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="filtered"
-                  >
-                    <option value="check" disabled>
-                      -- Select An Option --
-                    </option>
+                  <label class="fs-5 mb-3">Filtered Attribute ?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFiltered">
                     <option value="false">False</option>
                     <option value="true">True</option>
                   </select>
@@ -171,3 +136,5 @@
     </div>
   </div>
 </div>
+<!-- <script>
+</script> -->

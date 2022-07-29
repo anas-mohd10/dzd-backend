@@ -7,19 +7,15 @@ LayoutModule
 export const routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () =>
-      import('./modules/auth/auth.module').then((m) => m.AuthModule),
-    // canActivate: [LoggedInGuard]
+    loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'error',
-    loadChildren: () =>
-      import('./modules/errors/errors.module').then((m) => m.ErrorsModule),
+    loadChildren: () => import('./modules/errors/errors.module').then((m) => m.ErrorsModule),
   },
   {
     path: '',
-    loadChildren: () =>
-      import('./shared/layout/layout.module').then((m) => m.LayoutModule),
+    loadChildren: () => import('./shared/layout/layout.module').then((m) => m.LayoutModule),
   },
   { path: '**', redirectTo: 'error/404' },
 ];

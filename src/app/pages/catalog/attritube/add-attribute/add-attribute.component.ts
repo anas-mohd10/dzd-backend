@@ -94,40 +94,38 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
+  // handleInputChange(fileInput: any) {
+  //   if (fileInput.target.files && fileInput.target.files[0]) {
+  //     this.fileData = <File>fileInput.target.files[0];
+  //     const imageName = fileInput.target.files[0].name;
+  //     var filesAmount = fileInput.target.files.length;
+  //     for (let i = 0; i < filesAmount; i++) {
+  //       var reader = new FileReader();
+  //       this.fileData = <File>fileInput.target.files[i];
+  //       reader.onload = (event: any) => {
+  //         this.imageArray.push({
+  //           name: imageName,
+  //           url: event.target.result,
+  //         });
+  //         this.imagesArray.push(fileInput.target.files[i]);
+  //         this.images.push(this.fileData);
+  //         this.attributeForm.patchValue({
+  //           attributeImage: this.images,
+  //         });
+  //       };
+  //       reader.readAsDataURL(fileInput.target.files[i]);
+  //     }
+  //   }
+  //   this.attributeForm.get('imageValue')?.setValue('');
+  // }
+
   handleInputChange(fileInput: any) {
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      this.fileData = <File>fileInput.target.files[0];
-      const imageName = fileInput.target.files[0].name;
-      var filesAmount = fileInput.target.files.length;
-      for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        this.fileData = <File>fileInput.target.files[i];
-        reader.onload = (event: any) => {
-          this.imageArray.push({
-            name: imageName,
-            url: event.target.result,
-          });
-          this.imagesArray.push(fileInput.target.files[i]);
-          this.images.push(this.fileData);
-          console.log(this.images);
-          this.attributeForm.patchValue({
-            attributeImage: this.images,
-          });
-        };
-        reader.readAsDataURL(fileInput.target.files[i]);
-      }
-    }
-    this.attributeForm.get('imageValue')?.setValue('');
   }
 
   handleCheckBox(event?: any) { }
 
   tagInput() {
-    if (
-      this.attributeForm.get('values')?.value != ' ' ||
-      '' ||
-      this.attributeForm.get('values')?.value != null
-    ) {
+    if (this.attributeForm.get('values')?.value != ' ' || '' || null) {
       this.textArray.push(this.attributeForm.get('values')?.value);
       this.attributeForm.get('values')?.setValue('');
     }
@@ -199,7 +197,7 @@ export class AddAttributeComponent implements OnInit {
     } else if (this.valueType == 'image') {
       this.values = [];
     }
-
+    
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
       valueType: this.valueType,
@@ -209,8 +207,6 @@ export class AddAttributeComponent implements OnInit {
       isActive: this.attributeForm.get('isActive')?.value,
       categoryId: this.categoryId,
     };
-
-    console.log(this.images);
 
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {

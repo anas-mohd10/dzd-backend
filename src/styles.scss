@@ -2,6 +2,7 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+//Tag inputs
 .tag-inputs {
   height: auto;
   display: grid;
@@ -12,61 +13,49 @@
   margin: 0 10px 10px 0;
   padding: 5px 10px;
   border-radius: 5px;
-  background: rgba(17, 126, 84, 0.3);
-  color: #016736;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 1.1rem;
-  font-weight: bold;
 }
 
+.bi-x {
+  color: #ffffff;
+  font-size: 1.8rem;
+}
+
+//Validation text
 .text-danger {
   padding: 0 5px;
   color: rgb(235, 19, 58) !important;
-  // background: rgba(163, 32, 32, 0.2);
   border-radius: 5px;
 }
 
-.text-danger i {
-  color: rgb(235, 19, 58) !important;
-}
-
+//Form label
 label {
   color: #646464;
   font-size: 1rem;
-  // letter-spacing: 3px;
-  // text-transform: uppercase;
 }
 
 .form-check-label {
   margin: 0 0 0 10px;
 }
 
+.uploads{
+  height: 200px;
+  width: 200px
+}
+
 #preview {
   margin: 10px 0 10px 0;
   border-radius: 10px;
-  height: 200px;
+  height: 100%;
   width: 100%;
-  box-shadow: none !important;
-  border: none !important;
   object-fit: cover;
 }
 
-.upload-btn {
-  width: 100%;
-  height: 50px;
-  background: #E4E6EF;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-}
-
-.bi-x {
-  color: #016736;
-  font-size: 1.5rem;
-}
-
+//Active text in datatable
 .active-text-view {
   height: 25px;
   width: 80px;
@@ -132,36 +121,43 @@ label {
   margin: 20px 0 0 0;
 }
 
-.table > :not(:first-child) {
+.table> :not(:first-child) {
   border-top: transparent;
 }
-.table > :not(caption) > * > * {
+
+.table> :not(caption)>*>* {
   box-shadow: unset;
   padding: 0.75rem;
 }
+
 .table thead th {
   vertical-align: bottom;
 }
-.table-striped > tbody > tr:nth-of-type(2n + 1) {
+
+.table-striped>tbody>tr:nth-of-type(2n + 1) {
   background-color: #f8f9fa;
 }
-.table.no-border > tbody > tr > td,
-.table > tbody > tr > th,
-.table.no-border > tfoot > tr > td,
-.table.no-border > tfoot > tr > th,
-.table.no-border > thead > tr > td,
-.table.no-border > thead > tr > th {
+
+.table.no-border>tbody>tr>td,
+.table>tbody>tr>th,
+.table.no-border>tfoot>tr>td,
+.table.no-border>tfoot>tr>th,
+.table.no-border>thead>tr>td,
+.table.no-border>thead>tr>th {
   border-top: 0;
   padding: 10px 8px;
 }
+
 .table-nowrap td,
 .table-nowrap th {
   white-space: nowrap;
 }
+
 .table.dataTable {
   border-collapse: collapse !important;
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
+
 table.table td h2 {
   display: inline-block;
   font-size: inherit;
@@ -170,6 +166,7 @@ table.table td h2 {
   padding: 0;
   vertical-align: middle;
 }
+
 table.table td h2.table-avatar {
   height: 100%;
   align-items: center;
@@ -181,6 +178,7 @@ table.table td h2.table-avatar {
   vertical-align: middle;
   white-space: nowrap;
 }
+
 table.table td h2 a {
   color: #333;
 }
@@ -191,6 +189,7 @@ table.table td h2 span {
   font-size: 12px;
   margin-top: 3px;
 }
+
 .table thead tr th {
   font-weight: 600;
 }
@@ -203,35 +202,44 @@ table.table td h2 span {
 .table-striped thead tr {
   border-color: transparent;
 }
+
 .table-striped tbody tr {
   border-color: transparent;
 }
+
 .table-striped tbody tr:nth-of-type(even) {
   height: 100px !important;
   background-color: rgba(255, 255, 255, 0.3);
 }
+
 .table-striped tbody tr:nth-of-type(odd) {
   height: 100px !important;
   background-color: rgba(235, 235, 235, 0.4);
 }
+
 .table-bordered {
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
+
 .table-bordered th,
 .table-bordered td {
   border-color: rgba(0, 0, 0, 0.05);
 }
-.card-table .card-body .table > thead > tr > th {
+
+.card-table .card-body .table>thead>tr>th {
   border-top: 0;
 }
+
 .card-table .card-body .table tr td:first-child,
 .card-table .card-body .table tr th:first-child {
   padding-left: 1.5rem;
 }
+
 .card-table .card-body .table tr td:last-child,
 .card-table .card-body .table tr th:last-child {
   padding-right: 1.5rem;
 }
+
 .card-table .table td,
 .card-table .table th {
   padding: 1rem 0.75rem;
@@ -243,13 +251,16 @@ table.table td h2 span {
   background-color: #f8f9fa;
   border-color: #eff2f7;
 }
-.table > :not(:first-child) {
+
+.table> :not(:first-child) {
   border: 0;
 }
+
 table.table td,
 table.table th {
   border-color: #dee2e6;
 }
+
 .table-bordered td,
 .table-bordered th {
   border: 1px solid #dee2e6;

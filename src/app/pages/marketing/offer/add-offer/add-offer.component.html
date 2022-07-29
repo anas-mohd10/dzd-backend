@@ -105,23 +105,16 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
-                  <label class="fs-6">Offer Image</label>
-                  <div class="preview-img">
-                    <img class="preview-image" id="preview" />
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Offer Image</label>
+                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                    required>
+                  <div class="uploads uploaded">
+                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview">
                   </div>
-                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()">
-                    Upload File
-                  </button>
-                  <input class="form-control fs-6" type="file" id="getFile" style="display: none;"
-                    formControlName="file" (change)="handleInputChange($event)" [ngClass]="{ 'is-invalid': (of.file.touched || isSubmitted) &&
-                    of.file.errors?.required}"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (of.file.touched || isSubmitted) &&
-                      of.file.errors?.required
-                    ">Offer image is required</span>
                 </div>
               </div>
               <div class="col-12">

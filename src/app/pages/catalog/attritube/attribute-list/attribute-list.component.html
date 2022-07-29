@@ -49,6 +49,7 @@
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
                   <th class="text-dark fw-bolder fs-4">Attribute</th>
                   <th class="text-dark fw-bolder fs-4">Values</th>
+                  <th class="text-dark fw-bolder fs-4">Filtered</th>
                   <th class="text-dark fw-bolder fs-4">Status</th>
                   <th class="text-dark fw-bolder fs-4">Action</th>
                 </tr>
@@ -67,7 +68,7 @@
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
-                            <h2 class="attribute-value fs-5">{{ value }}</h2>
+                            <h2 class="attribute-value border border-primary text-primary fs-5">{{ value }}</h2>
                           </div>
                         </div>
                       </ng-container>
@@ -99,6 +100,22 @@
                         </div>
                       </ng-container>
                     </div>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="attribute?.isFiltered == true">
+                      <div class="text-view">
+                        <span>
+                          Yes
+                        </span>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="attribute?.isFiltered == false">
+                      <div class="text-view">
+                        <span>
+                          No
+                        </span>
+                      </div>
+                    </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="attribute?.isActive == true">

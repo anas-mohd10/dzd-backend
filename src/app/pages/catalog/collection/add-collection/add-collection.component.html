@@ -51,8 +51,8 @@
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="products" (change)="tagInput()" [ngClass]="{
                       'is-invalid':
-                      (cf.name.touched || isSubmitted) &&
-                      cf.name.errors?.required
+                      (cf.products.touched || isSubmitted) &&
+                      cf.products.errors?.required
                     }">
                     <option value="example" disabled>
                       -- Select a product --
@@ -68,8 +68,8 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let name of productNames">
-                    <span class="tag-input">{{ name }}
-                      <i class="bi bi-x fs-1" (click)="tagRemove(name)"></i>
+                    <span class="tag-input bg-primary">{{ name }}
+                      <i class="bi bi-x" (click)="tagRemove(name)"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -94,22 +94,16 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
-                  <label class="fs-5 fw-bold">collection Image</label>
-                  <div class="preview-img">
-                    <img class="preview-image" id="preview" />
-                  </div>
-                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()" >
-                    Upload File
-                  </button>
-                  <input class="form-control fs-5" type="file" id="getFile" style="display: none" formControlName="file"
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Collection Image</label>
+                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
                     (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                    (cf.file.touched || isSubmitted) &&
-                    cf.file.errors?.required
-                  ">Image is required</span>
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                    required>
+                  <div class="uploads uploaded">
+                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview">
+                  </div>
                 </div>
               </div>
               <div class="col-12">
