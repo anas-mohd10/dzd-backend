@@ -25,7 +25,7 @@ export class AddOfferComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private offerService: OfferService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -35,12 +35,12 @@ export class AddOfferComponent implements OnInit {
   initForm() {
     this.offerForm = this.formBuilder.group({
       name: ['', Validators.required],
-      file: ['', Validators.required],
+      file: [''],
       description: ['', Validators.required],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
-      featured: ['false', Validators.required],
-      status: ['true', Validators.required],
+      isFeatured: ['false', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 
@@ -79,6 +79,7 @@ export class AddOfferComponent implements OnInit {
 
   addBrand() {
     if (!this.offerForm.valid) {
+      console.error("Validation error")
       return;
     }
     const formData = new FormData();
@@ -89,20 +90,14 @@ export class AddOfferComponent implements OnInit {
     formData.append('name', this.offerForm.value?.name);
     formData.append('description', this.offerForm.value?.description);
     if (this.offerForm.value?.fromDate) {
-      formData.append(
-        'fromDate',
-        new Date(this.offerForm.value?.fromDate).toDateString()
-      );
+      formData.append('fromDate', new Date(this.offerForm.value?.fromDate).toDateString());
     }
 
     if (this.offerForm.value?.lastDate) {
-      formData.append(
-        'lastDate',
-        new Date(this.offerForm.value?.lastDate).toDateString()
-      );
+      formData.append('lastDate', new Date(this.offerForm.value?.lastDate).toDateString());
     }
-    formData.append('isActive', this.offerForm.value?.status);
-    formData.append('isFeatured', this.offerForm.value?.featured);
+    formData.append('isActive', this.offerForm.value?.isActive);
+    formData.append('isFeatured', this.offerForm.value?.isFeatured);
     this.offerService.addOffer(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
@@ -113,5 +108,5 @@ export class AddOfferComponent implements OnInit {
     });
   }
 
-  updateBrand() {}
+  updateBrand() { }
 }

@@ -2,7 +2,7 @@
   <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bold fs-1">Tax Class</h1>
+      <h1 class="fw-bold fs-1 tax-label">Tax Class</h1>
     </div>
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
@@ -42,7 +42,6 @@
                   <th class="text-dark fs-4 col-md-2">Sl No.</th>
                   <th class="text-dark fs-4 col-md-2">Tax Class</th>
                   <th class="text-dark fs-4 col-md-2">Description</th>
-                  <th class="text-dark fs-4 col-md-2">Tax Rules</th>
                   <th class="text-dark fs-4 col-md-2">Status</th>
                   <th class="text-dark fs-4 col-md-2">Action</th>
                 </tr>
@@ -59,9 +58,6 @@
                     <h2 class="table-avatar fs-5">
                       {{ taxClass?.description }}
                     </h2>
-                  </td>
-                  <td class="col-md-2">
-                    <h2 class="table-avatar fs-5">{{ taxClass?.ruleId?.name }}</h2>
                   </td>
                   <td class="col-md-2">
                     <ng-container *ngIf="taxClass?.isActive == true">

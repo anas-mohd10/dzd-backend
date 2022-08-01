@@ -8,13 +8,11 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
-
 @NgModule({
   declarations: [
     UsersComponent,
     AddUsersComponent,
     UpdateUsersComponent,
-
   ],
   imports: [
     CommonModule,

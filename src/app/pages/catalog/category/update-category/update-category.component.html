@@ -14,11 +14,8 @@
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.category.UPDATE_CATEGORY }}"
-              [queryParams]="{ category: category }"
-              >{{ editMode ? "Update Category" : "Add Category" }}</a
-            >
+            <a routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category }">{{ editMode ?
+              "Update Category" : "Add Category" }}</a>
           </li>
         </ul>
       </div>
@@ -37,22 +34,14 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="name" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Root Category</label>
-                  <select
-                    class="form-select"
-                    aria-label="-- select --"
-                    formControlName="isRoot"
-                    (change)="handleCheckBox()"
-                  >
+                  <select class="form-select" aria-label="-- select --" formControlName="isRoot"
+                    (change)="handleCheckBox()">
                     <option value="check">-- Select an option --</option>
                     <option value="false">No</option>
                     <option value="true">Yes</option>
@@ -63,15 +52,8 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3">Parent Category</label>
-                    <select
-                      class="form-select"
-                      aria-label="-- select --"
-                      formControlName="parentId"
-                    >
-                      <option
-                        *ngFor="let category of categoryArray"
-                        value="{{ category }}"
-                      >
+                    <select class="form-select" aria-label="-- select --" formControlName="parentId">
+                      <option *ngFor="let category of categoryArray" value="{{ category }}">
                         {{ category }}
                       </option>
                     </select>
@@ -82,11 +64,7 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3">Parent Category</label>
-                    <select
-                      class="form-select"
-                      aria-label="-- select --"
-                      disabled
-                    >
+                    <select class="form-select" aria-label="-- select --" disabled>
                       <option selected>-- Select Parent Category --</option>
                     </select>
                   </div>
@@ -95,11 +73,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="false" selected>Inactive</option>
                     <option value="true">Active</option>
                   </select>
@@ -108,43 +83,25 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Featured Brand ?</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isFeatured"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFeatured">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6"></div>
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
                   <label class="fs-5 mb-3">Category Image</label>
-                  <div class="preview-img">
-                    <img
-                      class="preview-image"
-                      id="preview"
-                      src="http://localhost:3000/{{ categoryValues.file }}"
-                    />
-                  </div>
-                  <button
-                  type="button"
-                    class="upload-btn"
-                    onclick="document.getElementById('getFile').click()"
-                  >
-                    Upload File
-                  </button>
-                  <input
-                    class="form-control fs-5"
-                    type="file"
-                    id="getFile"
-                    style="display: none"
-                    formControlName="file"
+                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
                     (change)="handleInputChange($event)"
                     onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
+                    required>
+                  <div class="uploads uploaded">
+                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview"
+                      src="http://localhost:3000/{{ categoryValues.file }}">
+                  </div>
                 </div>
               </div>
               <div class="col-12">

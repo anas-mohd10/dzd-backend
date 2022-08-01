@@ -14,11 +14,8 @@
             <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}"
-              [queryParams]="{ taxClass: taxClass }"
-              >{{ editMode ? "Update Tax Class" : "Add Tax Class" }}</a
-            >
+            <a routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}" [queryParams]="{ taxClass: taxClass }">{{ editMode
+              ? "Update Tax Class" : "Add Tax Class" }}</a>
           </li>
         </ul>
       </div>
@@ -37,39 +34,24 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
-                  <span
-                    class="text-danger"
-                    *ngIf="
+                  <input type="text" class="form-control fs-5" formControlName="name" />
+                  <span class="text-danger" *ngIf="
                       (tf.name.touched || isSubmitted) &&
                       tf.name.errors?.required
-                    "
-                    >Name is required</span
-                  >
+                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold"> Description</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5 description-textarea"
-                    formControlName="description"
-                  />
+                  <input type="text" class="form-control fs-5 description-textarea" formControlName="description" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
@@ -78,21 +60,21 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Tax Rule</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="rules"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="rules">
                     <option selected value="select" disabled>
                       -- Select a tax rule --
                     </option>
-                    <option
-                      *ngFor="let taxRule of taxRuleNames"
-                      value="{{ taxRule?.name }}"
-                    >
+                    <option *ngFor="let taxRule of taxRuleNames" value="{{ taxRule?.name }}">
                       {{ taxRule?.name }}
                     </option>
                   </select>
+                </div>
+                <div class="tag-inputs col-12">
+                  <ng-container *ngFor="let name of rulesName">
+                    <span class="tag-input bg-primary">{{ name }}
+                      <i class="bi bi-x" (click)="tagRemove(name)"></i>
+                    </span>
+                  </ng-container>
                 </div>
               </div>
               <div class="col-12">

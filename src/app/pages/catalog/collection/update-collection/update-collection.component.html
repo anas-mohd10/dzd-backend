@@ -11,16 +11,11 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}"
-              >Collections</a
-            >
+            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-              [queryParams]="{ collection: collection }"
-              >{{ editMode ? "Update Collection" : "Add Collection" }}</a
-            >
+            <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}" [queryParams]="{ collection: collection }">{{
+              editMode ? "Update Collection" : "Add Collection" }}</a>
           </li>
         </ul>
       </div>
@@ -38,37 +33,25 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="name" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Products</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="products"
-                    (change)="tagInput()"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="products" (change)="tagInput()">
                     <option value="example" disabled>
                       -- Select a product --
                     </option>
-                    <option
-                      *ngFor="let product of products"
-                      value="{{ product?._id }}"
-                    >
+                    <option *ngFor="let product of products" value="{{ product?._id }}">
                       {{ product?.name }}
                     </option>
                   </select>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let name of productNames">
-                    <span class="tag-input"
-                      >{{ name }}
+                    <span class="tag-input bg-primary text-white">{{ name }}
                       <i class="bi bi-x fs-1" (click)="tagRemove(name)"></i>
                     </span>
                   </ng-container>
@@ -77,11 +60,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured Collection ?</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isFeatured"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFeatured">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
@@ -90,42 +70,24 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
-                  <label class="fs-5 fw-bold">Collection Image</label>
-                  <div class="preview-img">
-                    <img
-                      class="preview-image"
-                      id="preview"
-                      src="http://localhost:3000/{{ collectionData.file }}"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    class="upload-btn"
-                    onclick="document.getElementById('getFile').click()"
-                  >
-                    Upload File
-                  </button>
-                  <input
-                    class="form-control fs-5"
-                    type="file"
-                    id="getFile"
-                    style="display: none"
-                    formControlName="file"
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Collection Image</label>
+                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
                     (change)="handleInputChange($event)"
                     onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
+                    required>
+                  <div class="uploads uploaded">
+                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview"
+                      src="http://localhost:3000/{{ collectionData.file }}">
+                  </div>
                 </div>
               </div>
               <div class="col-12">

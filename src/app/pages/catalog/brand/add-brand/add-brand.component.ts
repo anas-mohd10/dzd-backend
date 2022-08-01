@@ -51,7 +51,7 @@ export class AddBrandComponent implements OnInit {
       ? fileInput.dataTransfer.files[0]
       : fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
-    console.log(fileInput.target.files[0]);
+    console.log(this.fileData)
     this.uploadedImg = true;
   }
 

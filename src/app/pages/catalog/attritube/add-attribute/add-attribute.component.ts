@@ -39,6 +39,7 @@ export class AddAttributeComponent implements OnInit {
   images: any = [];
   imagesArray: any = [];
 
+
   validationMessages = {
     name: [
       {
@@ -120,6 +121,11 @@ export class AddAttributeComponent implements OnInit {
   // }
 
   handleInputChange(fileInput: any) {
+    let files = fileInput.target.files
+    for (let i = 0; i < files.length; i++) {
+      let filedata = <File>files[i];
+      this.imagesArray.push(filedata)
+    }
   }
 
   handleCheckBox(event?: any) { }
@@ -197,16 +203,20 @@ export class AddAttributeComponent implements OnInit {
     } else if (this.valueType == 'image') {
       this.values = [];
     }
+
+    console.log(this.imageArray);
     
+
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
       valueType: this.valueType,
       value: this.values,
-      file: JSON.stringify(this.images),
       isFiltered: this.attributeForm.get('isFiltered')?.value,
       isActive: this.attributeForm.get('isActive')?.value,
       categoryId: this.categoryId,
     };
+
+    // console.log(this.attributeForm.get("imageValue")?.value);
 
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {

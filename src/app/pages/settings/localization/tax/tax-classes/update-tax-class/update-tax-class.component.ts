@@ -28,6 +28,8 @@ export class UpdateTaxClassComponent implements OnInit {
   taxRuleNames: any;
   taxRule: any;
   ruleId: any;
+  rulesArray: any;
+  rulesName: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,7 +37,7 @@ export class UpdateTaxClassComponent implements OnInit {
     private router: Router,
     private taxClassesService: TaxClassesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get tf() {
     return this.taxClassForm.controls;
@@ -85,6 +87,38 @@ export class UpdateTaxClassComponent implements OnInit {
     });
   }
 
+  tagRule() {
+    let rule = this.taxClassForm.get("rule")?.value
+    if (!this.rulesArray.includes(rule)) {
+      this.rulesArray.push(rule)
+      for (let i = 0; i < this.taxRuleNames.length; i++) {
+        if (this.taxRuleNames[i]._id == rule) {
+          this.rulesName.push(this.taxRuleNames[i].name)
+        }
+      }
+    } else {
+      this.toastr.info("Tax rule already added")
+    }
+    this.taxClassForm.get("rule")?.setValue('')
+  }
+
+  tagRemove(name: any) {
+    let index = this.rulesName.indexOf(name)
+    if (index > -1) {
+      this.rulesName.splice(index, 1);
+    }
+    for (let i = 0; i < this.taxRuleNames.length; i++) {
+      if (this.taxRuleNames[i].name == name) {
+        let idIndex = this.rulesArray.indexOf(this.taxRuleNames[i]._id)
+        if (idIndex > -1) {
+          this.rulesArray.splice(idIndex, 1);
+        }
+      }
+    }
+  }
+
+  
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -104,10 +138,8 @@ export class UpdateTaxClassComponent implements OnInit {
             break;
         }
         this.taxClassForm.get('name')?.setValue(this.taxClassData.name);
-        this.taxClassForm
-          .get('description')
-          ?.setValue(this.taxClassData.description);
-        this.taxClassForm.get('rules')?.setValue(this.taxClassData.rules);
+        this.taxClassForm.get('description')?.setValue(this.taxClassData.description);
+        // this.taxClassForm.get('rules')?.setValue(this.taxClassData.rules);
         this.taxClassForm.get('isActive')?.setValue(this.taxClassData.isActive);
       });
   }
@@ -145,5 +177,5 @@ export class UpdateTaxClassComponent implements OnInit {
   }
 
   //Add tax classes
-  addBrand() {}
+  addBrand() { }
 }

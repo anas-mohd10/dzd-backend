@@ -24,11 +24,6 @@
   </div>
   <!-- /Page Header -->
   <div class="row mt-10">
-    <!-- <ng-container *ngIf="!ruleFlag">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </ng-container> -->
     <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
@@ -54,15 +49,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Description</label>
-                  <input type="text" class="form-control fs-5" formControlName="description" [ngClass]="{
-                      'is-invalid':
-                      (tf.name.touched || isSubmitted) &&
-                      tf.name.errors?.required
-                    }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                    (tf.name.touched || isSubmitted) &&
-                    tf.name.errors?.required
-                  ">Description is required</span>
+                  <input type="text" class="form-control fs-5" formControlName="description"  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -75,11 +62,11 @@
                   </select>
                 </div>
               </div>
-
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Tax Rule</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="ruleId">
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" (change)="tagRule()"
+                    formControlName="rule">
                     <option selected value="select" disabled>
                       -- Select a tax rule --
                     </option>
@@ -87,6 +74,13 @@
                       {{ taxRule?.name }}
                     </option>
                   </select>
+                </div>
+                <div class="tag-inputs col-12">
+                  <ng-container *ngFor="let name of rulesName">
+                    <span class="tag-input bg-primary">{{ name }}
+                      <i class="bi bi-x" (click)="tagRemove(name)"></i>
+                    </span>
+                  </ng-container>
                 </div>
               </div>
               <div class="col-12">

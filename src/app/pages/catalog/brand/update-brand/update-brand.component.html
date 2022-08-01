@@ -14,11 +14,8 @@
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.brand.UPDATE_BRAND }}"
-              [queryParams]="{ brand: brand }"
-              >{{ editMode ? "Update Brand" : "Add Brand" }}</a
-            >
+            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand }">
+              {{ editMode ? "Update Brand" : "Add Brand" }}</a>
           </li>
         </ul>
       </div>
@@ -38,21 +35,14 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Name</label>
-                  <input
-                    type="text"
-                    class="form-control fs-5"
-                    formControlName="name"
-                  />
+                  <input type="text" class="form-control fs-5" formControlName="name" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Status</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isActive"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isActive">
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
                   </select>
@@ -61,43 +51,25 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 fw-bold">Featured Brand ?</label>
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg"
-                    formControlName="isFeatured"
-                  >
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isFeatured">
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6"></div>
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
-                  <label class="fs-5 fw-bold">Brand Image</label>
-                  <div class="preview-img">
-                    <img
-                      class="preview-image"
-                      id="preview"
-                      src="http://localhost:3000/{{ brandData.file }}"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    class="upload-btn"
-                    onclick="document.getElementById('getFile').click()"
-                  >
-                    Upload File
-                  </button>
-                  <input
-                    class="form-control fs-5"
-                    type="file"
-                    id="getFile"
-                    style="display: none"
-                    formControlName="file"
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Brand Image</label>
+                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
                     (change)="handleInputChange($event)"
                     onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                  />
+                    required>
+                  <div class="uploads uploaded">
+                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview"
+                      src="http://localhost:3000/{{ brandData.file }}">
+                  </div>
                 </div>
               </div>
               <div class="col-12">
