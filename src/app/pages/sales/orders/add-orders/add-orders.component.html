@@ -1,1 +1,24 @@
-<p>add-orders works!</p>
+<div class="brand-page-container">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Orders" : "Add Orders" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">{{
+                     editMode ? "Update Orders" : "Add Orders"
+                     }}</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>

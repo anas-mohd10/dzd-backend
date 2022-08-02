@@ -204,9 +204,6 @@ export class AddAttributeComponent implements OnInit {
       this.values = [];
     }
 
-    console.log(this.imageArray);
-    
-
     this.attributeData = {
       name: this.attributeForm.get('name')?.value,
       valueType: this.valueType,

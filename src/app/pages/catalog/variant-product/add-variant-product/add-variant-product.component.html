@@ -11,10 +11,14 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product</a>
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}" [queryParams]="{product: slug}">Variant
+              Products</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.product.ADD_PRODUCT}}">
+            <a routerLink="{{ appRoute.variantProduct.ADD_VARIANT_PRODUCT}}" [queryParams]="{product: slug}">
               {{ editMode ? "Update Variant Product" : "Add Variant Product"
               }}</a>
           </li>
@@ -191,7 +195,7 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input">{{ category }}
+                    <span class="tag-input bg-primary text-white">{{ category }}
                       <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                     </span>
                   </ng-container>
@@ -298,7 +302,7 @@
               <!-- Weight -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Weight</label>
+                  <label class="fs-5 mb-3">Unit Value</label>
                   <input type="text" class="form-control" formControlName="weight" [ngClass]="{
                     'is-invalid':
                     (pf.weight.touched || isSubmitted) &&
@@ -345,7 +349,7 @@
                     ">Search keywords is required</span>
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="mb-10 tag-input">{{ value }}
+                      <span class="mb-10 tag-input bg-primary text-white">{{ value }}
                         <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
                     </ng-container>
                   </div>
@@ -356,11 +360,11 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Related Products</label>
-                  <select class="form-select" aria-label="related keywords" formControlName="relatedProducts">
+                  <select class="form-select" formControlName="relatedProducts" (change)="tagProductAdd()">
                     <option value="example" disabled>
                       -- Select Related Products --
                     </option>
-                    <option *ngFor="let product of productData" value="{{ product?.name }}">
+                    <option *ngFor="let product of productData" value="{{ product?._id }}">
                       {{ product?.name }}
                     </option>
                   </select>
@@ -368,6 +372,12 @@
                       (pf.searchKeywords.touched || isSubmitted) &&
                       pf.searchKeywords.errors?.required
                     ">Related products is required</span>
+                  <div class="tag-inputs col-12">
+                    <ng-container *ngFor="let value of relProductNames">
+                      <span class="mb-10 tag-input bg-primary text-white">{{ value }}
+                        <i class="bi bi-x" (click)="tagProductRemove(value)"></i></span>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
 
@@ -506,12 +516,9 @@
                     (change)="handleInputChange($event)"
                     onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
                     required>
-                  <div class="uploads uploaded">
-                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview">
-                  </div>
                 </div>
+                <img id="preview">
               </div>
-
 
               <div class="col-12">
                 <button type="submit" class="btn btn-primary fs-5">

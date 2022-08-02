@@ -52,6 +52,9 @@ export class UpdateVariantProductComponent implements OnInit {
   isCod: boolean = false;
   method: any;
   cod: any;
+  relProductNames: any = [];
+  relProductIds: any = [];
+  pSlug: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -67,6 +70,53 @@ export class UpdateVariantProductComponent implements OnInit {
 
   get pf() {
     return this.productForm.controls;
+  }
+
+  ngOnInit(): void {
+    this.initForm();
+    this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
+    this.slug = this.route.snapshot.queryParams.variant || '';
+    this.pSlug = this.route.snapshot.queryParams.product || '';
+    this.managePage();
+    this.getBrandDetail();
+    this.getCategoryDetail();
+    this.getTaxClassDetail();
+    this.getProducts();
+    this.getVariantProductBySlug();
+  }
+
+  initForm() {
+    this.productForm = this.formBuilder.group({
+      name: [''],
+      sku: [''],
+      hsn: [''],
+      mrpPrice: [''],
+      offerPrice: [''],
+      stock: [''],
+      moq: [''],
+      stockWarning: [''],
+      description: [''],
+      features: [''],
+      categories: [],
+      brandId: [''],
+      additionalbutton: [''],
+      buttonredireturl: [''],
+      isFeatured: [''],
+      isActive: [''],
+      returnable: [''],
+      returnDays: ['0'],
+      shippingMethod: [''],
+      shippingCost: ['0'],
+      unit: [''],
+      weight: [''],
+      taxClassId: [''],
+      cod: [''],
+      codCharge: ['0'],
+      searchKeywords: [],
+      relatedProducts: [''],
+      position: [''],
+      file: [''],
+    });
   }
 
   handleInputChange(fileInput: any) {
@@ -112,51 +162,6 @@ export class UpdateVariantProductComponent implements OnInit {
     if (this.cod == false) {
       this.isCod = false;
     }
-  }
-
-  ngOnInit(): void {
-    this.initForm();
-    this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.slug = this.route.snapshot.queryParams.product || '';
-    this.managePage();
-    this.getBrandDetail();
-    this.getCategoryDetail();
-    this.getTaxClassDetail();
-    this.getProducts();
-    this.getVariantProductBySlug();
-  }
-
-  initForm() {
-    this.productForm = this.formBuilder.group({
-      name: [''],
-      sku: [''],
-      hsn: [''],
-      mrpPrice: [''],
-      offerPrice: [''],
-      stock: [''],
-      moq: [''],
-      stockWarning: [''],
-      description: [''],
-      features: [''],
-      categories: [],
-      brandId: [''],
-      additionalbutton: [''],
-      buttonredireturl: [''],
-      isFeatured: [''],
-      isActive: [''],
-      returnable: [''],
-      returnDays: ['0'],
-      shippingMethod: [''],
-      shippingCost: ['0'],
-      weight: [''],
-      taxClassId: [''],
-      cod: [''],
-      codCharge: ['0'],
-      searchKeywords: [],
-      relatedProducts: [''],
-      position: [''],
-      file: [''],
-    });
   }
 
   handleProductType() {
@@ -251,66 +256,99 @@ export class UpdateVariantProductComponent implements OnInit {
   }
 
   getVariantProductBySlug() {
-    this.variantProductService
-      .getVariantProductBySlug(this.slug)
-      .subscribe((res: any) => {
-        this.variantProductValues = res?.result[0];
-        this.uploadedImg = this.variantProductValues?.file;
-        this.productForm.get('name')?.setValue(this.variantProductValues.name);
-        this.productForm.get('sku')?.setValue(this.variantProductValues.sku);
-        this.productForm.get('hsn')?.setValue(this.variantProductValues.hsn);
-        this.productForm.get('mrpPrice')?.setValue(this.variantProductValues.mrpPrice);
-        this.productForm.get('offerPrice')?.setValue(this.variantProductValues.offerPrice);
-        this.productForm.get('stock')?.setValue(this.variantProductValues.stock);
-        this.productForm.get('moq')?.setValue(this.variantProductValues.moq);
-        this.productForm.get('additionalbutton')?.setValue(this.variantProductValues.additionalbutton);
-        this.productForm.get('buttonredireturl')?.setValue(this.variantProductValues.buttonredireturl);
-        this.productForm.get('isFeatured')?.setValue(this.variantProductValues.isFeatured);
-        this.productForm.get('isActive')?.setValue(this.variantProductValues.isActive);
-        this.productForm.get('returnable')?.setValue(this.variantProductValues.returnable);
-        this.productForm.get('returnDays')?.setValue(this.variantProductValues.returnDays);
-        this.productForm.get('shippingMethod')?.setValue(this.variantProductValues.shippingMethod);
-        this.productForm.get('weight')?.setValue(this.variantProductValues.weight);
-        this.productForm.get('cod')?.setValue(this.variantProductValues.cod);
-        this.productForm.get('codCharge')?.setValue(this.variantProductValues.codCharge);
-        this.productForm.get('shippingCost')?.setValue(this.variantProductValues.shippingCost);
-        this.productForm.get('position')?.setValue(this.variantProductValues.position);
-        this.productForm.get('cod')?.setValue(this.variantProductValues.cod);
-        this.productForm.get('codCharge')?.setValue(this.variantProductValues.codCharge);
-        this.productForm.get('stockWarning')?.setValue(this.variantProductValues.stockWarning);
-        this.productForm.get('description')?.setValue(this.variantProductValues.description);
-        this.productForm.get('features')?.setValue(this.variantProductValues.features);
-        this.productForm.get('relatedProducts')?.setValue(this.variantProductValues.relatedProducts);
-        this.productForm.get('brandId')?.setValue(this.variantProductValues.brandId._id);
-        this.productForm.get('taxClassId')?.setValue(this.variantProductValues.taxClassId._id);
-        this.cod = this.variantProductValues.cod;
-        for (let category of this.variantProductValues.categories) {
-          this.categoryArray.push(category._id);
-          this.categoryNames.push(category.name);
-        }
-        this.valueArray = this.variantProductValues.searchKeywords
-        this.returnValue = this.variantProductValues.returnable;
-        if (this.returnValue == true) {
-          this.isReturn = true;
-        }
-        if (this.returnValue == false) {
-          this.isReturn = false;
-        }
+    this.variantProductService.getVariantProductBySlug(this.slug).subscribe((res: any) => {
+      this.variantProductValues = res?.result[0];
+      console.log(this.variantProductValues);
+      this.uploadedImg = this.variantProductValues?.file;
+      this.productForm.get('name')?.setValue(this.variantProductValues.name);
+      this.productForm.get('sku')?.setValue(this.variantProductValues.sku);
+      this.productForm.get('hsn')?.setValue(this.variantProductValues.hsn);
+      this.productForm.get('mrpPrice')?.setValue(this.variantProductValues.mrpPrice);
+      this.productForm.get('offerPrice')?.setValue(this.variantProductValues.offerPrice);
+      this.productForm.get('stock')?.setValue(this.variantProductValues.stock);
+      this.productForm.get('moq')?.setValue(this.variantProductValues.moq);
+      this.productForm.get('additionalbutton')?.setValue(this.variantProductValues.additionalbutton);
+      this.productForm.get('buttonredireturl')?.setValue(this.variantProductValues.buttonredireturl);
+      this.productForm.get('isFeatured')?.setValue(this.variantProductValues.isFeatured);
+      this.productForm.get('isActive')?.setValue(this.variantProductValues.isActive);
+      this.productForm.get('returnable')?.setValue(this.variantProductValues.returnable);
+      this.productForm.get('returnDays')?.setValue(this.variantProductValues.returnDays);
+      this.productForm.get('shippingMethod')?.setValue(this.variantProductValues.shippingMethod);
+      this.productForm.get('weight')?.setValue(this.variantProductValues.weight);
+      this.productForm.get('cod')?.setValue(this.variantProductValues.cod);
+      this.productForm.get('codCharge')?.setValue(this.variantProductValues.codCharge);
+      this.productForm.get('shippingCost')?.setValue(this.variantProductValues.shippingCost);
+      this.productForm.get('position')?.setValue(this.variantProductValues.position);
+      this.productForm.get('cod')?.setValue(this.variantProductValues.cod);
+      this.productForm.get('codCharge')?.setValue(this.variantProductValues.codCharge);
+      this.productForm.get('stockWarning')?.setValue(this.variantProductValues.stockWarning);
+      this.productForm.get('description')?.setValue(this.variantProductValues.description);
+      this.productForm.get('features')?.setValue(this.variantProductValues.features);
+      this.productForm.get('relatedProducts')?.setValue(this.variantProductValues.relatedProducts);
+      this.productForm.get('brandId')?.setValue(this.variantProductValues.brandId._id);
+      this.productForm.get('taxClassId')?.setValue(this.variantProductValues.taxClassId._id);
+      this.cod = this.variantProductValues.cod;
 
-        this.method = this.variantProductValues.shippingMethod;
-        if (this.method == 'paid') {
-          this.isShipping = true;
+      for (let i = 0; i < this.variantProductValues.categories.length; i++) {
+        this.categoryArray.push(this.variantProductValues.categories[i]._id)
+        this.categoryNames.push(this.variantProductValues.categories[i].name);
+      }
+
+      for (let i = 0; i < this.variantProductValues.relatedProducts.length; i++) {
+        this.relProductIds.push(this.variantProductValues.relatedProducts[i]._id)
+        this.relProductNames.push(this.variantProductValues.relatedProducts[i].name)
+      }
+
+      this.valueArray = this.variantProductValues.searchKeywords
+
+      this.returnValue = this.variantProductValues.returnable;
+      if (this.returnValue == true) {
+        this.isReturn = true;
+      }
+      if (this.returnValue == false) {
+        this.isReturn = false;
+      }
+
+      this.method = this.variantProductValues.shippingMethod;
+      if (this.method == 'paid') {
+        this.isShipping = true;
+      }
+      if (this.method == 'unpaid' || this.method == 'external') {
+        this.isShipping = false;
+      }
+      if (this.cod == true) {
+        this.isCod = true;
+      }
+      if (this.cod == false) {
+        this.isCod = false;
+      }
+    });
+  }
+
+  tagProductAdd() {
+    let rProduct = this.productForm.get("relatedProducts")?.value
+    if (!this.relProductIds.includes(rProduct)) {
+      this.relProductIds.push(rProduct)
+      for (let i = 0; i < this.productsData.length; i++) {
+        if (this.productsData[i]._id == rProduct) {
+          this.relProductNames.push(this.productsData[i].name)
         }
-        if (this.method == 'unpaid' || this.method == 'external') {
-          this.isShipping = false;
-        }
-        if (this.cod == true) {
-          this.isCod = true;
-        }
-        if (this.cod == false) {
-          this.isCod = false;
-        }
-      });
+      }
+      this.productForm.get("relatedProducts")?.setValue('')
+    }
+  }
+
+  tagProductRemove(_val: any) {
+    let nIndex = this.relProductNames.indexOf(_val)
+    if (nIndex > -1) {
+      this.relProductNames.splice(nIndex, 1)
+    }
+    for (let i = 0; i < this.productsData.length; i++) {
+      if (this.productsData[i].name == _val) {
+        let iIndex = this.relProductIds.indexOf(this.productsData[i]._id)
+        this.relProductIds.splice(iIndex, 1)
+      }
+    }
   }
 
   onOptionsSelected() {
@@ -318,6 +356,8 @@ export class UpdateVariantProductComponent implements OnInit {
       (t: { value: any }) => t.value == this.selected
     );
   }
+
+
 
   onSubmit() {
     this.isSubmitted = true;

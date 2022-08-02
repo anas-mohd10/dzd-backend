@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { appRoutes } from 'src/app/config/routes';
 
 @Component({
   selector: 'app-add-orders',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-orders.component.scss']
 })
 export class AddOrdersComponent implements OnInit {
-
+  editMode = false;
+  appRoute = appRoutes
   constructor() { }
 
   ngOnInit(): void {

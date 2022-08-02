@@ -193,7 +193,7 @@ export class UpdateAttributeComponent implements OnInit {
       valueType: this.attributeForm.get('valueType')?.value,
       value: this.values,
       file: '',
-      isFiltered: this.attributeForm.get('isActive')?.value,
+      isFiltered: this.attributeForm.get('isFiltered')?.value,
       isActive: this.attributeForm.get('isActive')?.value,
       categoryId: this.categoryId,
     };

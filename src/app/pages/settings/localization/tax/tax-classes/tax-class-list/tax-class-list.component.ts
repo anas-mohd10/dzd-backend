@@ -35,9 +35,7 @@ export class TaxClassComponent implements OnInit {
     this.taxClassService.getTaxClasses().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.taxClassData = res?.result;
-          console.log(this.taxClassData);
-          
+          this.taxClassData = res?.result;          
           break;
       }
       // this.dtTrigger.next()

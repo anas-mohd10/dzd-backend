@@ -14,11 +14,7 @@
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer fs-5"
-          color="primary"
-          routerLink="{{ appRoute.brand.ADD_BRAND }}"
-        >
+        <button class="btn btn-primary cursor-pointer fs-5" color="primary" routerLink="{{ appRoute.brand.ADD_BRAND }}">
           Add Brand
         </button>
       </div>
@@ -32,11 +28,8 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive" *ngIf="displayTable">
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              class="datatable table table-borderless table-center table-striped mb-0"
-            >
+            <table datatable [dtOptions]="dtOptions"
+              class="datatable table table-borderless table-center table-striped mb-0">
               <thead class="thead mt-100">
                 <tr>
                   <th class="text-dark fs-4 col-md-2">Sl No.</th>
@@ -56,11 +49,7 @@
                     <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
                   </td>
                   <td>
-                    <img
-                      class="brand-logo"
-                      src="http://localhost:3000/{{ brand?.file }}"
-                      alt="brand"
-                    />
+                    <img class="brand-logo" src="http://localhost:3000/{{ brand?.file }}" alt="brand" />
                   </td>
                   <td>
                     <ng-container *ngIf="brand?.isFeatured == true">
@@ -83,11 +72,8 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a
-                      routerLink="{{ appRoute.brand.UPDATE_BRAND }}"
-                      [queryParams]="{ brand: brand?.slug }"
-                      class="fs-5 cursor-pointer text-darker"
-                      ><i class="bi bi-pen"></i> Edit
+                    <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
+                      class="fs-5 cursor-pointer text-darker"><i class="bi bi-pen"></i> Edit
                     </a>
                   </td>
                 </tr>

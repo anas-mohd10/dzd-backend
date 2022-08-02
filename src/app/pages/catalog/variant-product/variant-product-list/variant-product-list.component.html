@@ -11,24 +11,15 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}"
-              >Products</a
-            >
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
-              [queryParams]="{ product: slug }"
-              >Vartiant Products</a
-            >
+            <a routerLink="{{ appRoute.variantProduct.VARIANT_PRODUCT_LIST }}"
+              [queryParams]="{ product: slug }">Vartiant Products</a>
           </li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer"
-          color="primary"
-          routerLink="{{ appRoute.variantProduct.ADD_VARIANT_PRODUCT }}"
-          [queryParams]="{ product: slug }"
-        >
+        <button class="btn btn-primary cursor-pointer" color="primary"
+          routerLink="{{ appRoute.variantProduct.ADD_VARIANT_PRODUCT }}" [queryParams]="{ product: slug }">
           Add Variant
         </button>
       </div>
@@ -40,11 +31,8 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive" *ngIf="displayTable">
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              class="table table-center table-borderless table-striped mb-0 datatable"
-            >
+            <table datatable [dtOptions]="dtOptions"
+              class="table table-center table-borderless table-striped mb-0 datatable">
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
@@ -81,11 +69,7 @@
                     <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
                   </td>
                   <td>
-                    <img
-                      class="product-logo"
-                      src="http://localhost:3000/{{ product?.file }}"
-                      alt="product"
-                    />
+                    <img class="product-logo" src="http://localhost:3000/{{ product?.file }}" alt="product" />
                   </td>
                   <td>
                     <ng-container *ngIf="product?.isActive == true">
@@ -100,11 +84,8 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a
-                      routerLink="{{appRoute.variantProduct.UPDATE_VARIANT_PRODUCT}}"
-                      [queryParams]="{ product: product?.slug }"
-                      class="fs-5 cursor-pointer text-darker"
-                    >
+                    <a routerLink="{{appRoute.variantProduct.UPDATE_VARIANT_PRODUCT}}"
+                      [queryParams]="{ product: slug,variant: product?.slug }" class="fs-5 cursor-pointer text-darker">
                       Edit
                     </a>
                   </td>

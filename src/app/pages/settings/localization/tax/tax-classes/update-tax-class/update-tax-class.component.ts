@@ -14,22 +14,16 @@ import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
 })
 export class UpdateTaxClassComponent implements OnInit {
   taxClassForm: FormGroup;
-  task = PageTasks.UPDATE;
+  task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
-
   isSubmitted = false;
-  params: any;
-  fileData: File;
-  status: boolean;
-  formData: any = {};
-  taxClass: any;
-  taxClassData: any;
   taxRuleNames: any;
-  taxRule: any;
-  ruleId: any;
-  rulesArray: any;
-  rulesName: any;
+  rulesArray: any = [];
+  rulesName: any = [];
+  taxClassRate: any = 0
+  taxClassData: any;
+  taxClass: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,7 +41,6 @@ export class UpdateTaxClassComponent implements OnInit {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.taxClass = this.route.snapshot.queryParams.taxClass || '';
-    this.params = this.route.snapshot;
     this.managePage();
     this.getTaxClass();
     this.getTaxRules();
@@ -71,7 +64,7 @@ export class UpdateTaxClassComponent implements OnInit {
       name: [''],
       description: [''],
       isActive: [''],
-      rules: [''],
+      rule: [''],
     });
   }
 
@@ -94,6 +87,7 @@ export class UpdateTaxClassComponent implements OnInit {
       for (let i = 0; i < this.taxRuleNames.length; i++) {
         if (this.taxRuleNames[i]._id == rule) {
           this.rulesName.push(this.taxRuleNames[i].name)
+          this.taxClassRate = this.taxClassRate + this.taxRuleNames[i].rate
         }
       }
     } else {
@@ -113,11 +107,10 @@ export class UpdateTaxClassComponent implements OnInit {
         if (idIndex > -1) {
           this.rulesArray.splice(idIndex, 1);
         }
+        this.taxClassRate = this.taxClassRate - this.taxRuleNames[i].rate
       }
     }
   }
-
-  
 
   onSubmit() {
     this.isSubmitted = true;
@@ -129,53 +122,44 @@ export class UpdateTaxClassComponent implements OnInit {
   }
 
   getTaxClass() {
-    this.taxClassesService
-      .getTaxClassesBySlug(this.taxClass)
-      .subscribe((res: any) => {
-        switch (res?.errorCode) {
-          case 0:
-            this.taxClassData = res?.result[0];
-            break;
-        }
-        this.taxClassForm.get('name')?.setValue(this.taxClassData.name);
-        this.taxClassForm.get('description')?.setValue(this.taxClassData.description);
-        // this.taxClassForm.get('rules')?.setValue(this.taxClassData.rules);
-        this.taxClassForm.get('isActive')?.setValue(this.taxClassData.isActive);
-      });
+    this.taxClassesService.getTaxClassesBySlug(this.taxClass).subscribe((res: any) => {
+      switch (res?.errorCode) {
+        case 0:
+          this.taxClassData = res?.result[0];
+          break;
+      }
+      this.taxClassForm.get('name')?.setValue(this.taxClassData.name);
+      this.taxClassForm.get('description')?.setValue(this.taxClassData.description);
+      this.taxClassForm.get('rule')?.setValue('');
+      for (let i = 0; i < this.taxClassData.rule.length; i++) {
+        this.rulesArray.push(this.taxClassData.rule[i]._id)
+        this.rulesName.push(this.taxClassData.rule[i].name)
+      }
+      this.taxClassForm.get('isActive')?.setValue(this.taxClassData.isActive);
+      this.taxClassRate = this.taxClassData.rate
+    });
   }
 
-  //Update exsisting tax classes
   updateBrand() {
     if (!this.taxClassForm.valid) {
       return;
     }
-
-    for (const data of Object.keys(this.taxClassForm.value)) {
-      if (this.taxClassForm.value[data] != '' || null) {
-        this.formData[data] = this.taxClassForm.value[data];
-      }
-      if (data == 'rules') {
-        for (let i = 0; i < this.taxRuleNames.length; i++) {
-          if (this.taxRuleNames[i].name == this.taxClassForm.value[data]) {
-            this.ruleId = this.taxRuleNames[i]._id;
-            this.formData[data] = this.ruleId;
-          }
-        }
-      }
+    let data = {
+      name: this.taxClassForm.get("name")?.value,
+      description: this.taxClassForm.get("description")?.value,
+      isActive: this.taxClassForm.get("isActive")?.value,
+      rule: JSON.stringify(this.rulesArray),
+      rate: this.taxClassRate
     }
-
-    this.taxClassesService
-      .updateTaxClasses(this.taxClass, this.formData)
-      .subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Tax Class Updated Successfully');
-          this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
-        }
-      });
+    this.taxClassesService.updateTaxClasses(this.taxClass, data).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Tax Class Updated Successfully');
+        this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
+      }
+    });
   }
 
-  //Add tax classes
   addBrand() { }
 }

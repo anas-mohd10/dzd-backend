@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { DataTableDirective } from 'angular-datatables';
@@ -18,6 +18,7 @@ export class BrandComponent implements OnDestroy, OnInit {
   appRoute = appRoutes;
   brandData: any;
   displayTable: boolean = false;
+  filtersLoaded: Promise<boolean>;
 
   constructor(private brandService: BrandService) { }
 
@@ -35,6 +36,7 @@ export class BrandComponent implements OnDestroy, OnInit {
           this.brandData = res?.result;
           this.displayTable = true;
           this.dtTrigger.next();
+          this.filtersLoaded = Promise.resolve(true);
           break;
       }
     });

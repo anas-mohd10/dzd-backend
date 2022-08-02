@@ -38,21 +38,19 @@ export class UpdateProductComponent implements OnInit {
   valueArray: any;
   productData: any;
   categoryNames: any = [];
-  categoryArray: any;
+  categoryArray: any = [];
   productSlug: any;
   productsData: any;
-  isLoaded: boolean = false;
   uploadedImg: any = '';
   isReturn: boolean = false;
   isShipping: boolean = false;
   isCod: boolean = false;
   method: any;
   cod: any;
-
-  validationMessages = {
-    name: [{ type: 'required', message: 'Product name is required' }],
-  };
+  relProductNames: any = [];
+  relProductIds: any = [];
   returnValue: any;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -112,7 +110,7 @@ export class UpdateProductComponent implements OnInit {
       stockWarning: [''],
       description: [''],
       features: [''],
-      categories: [], //Array with category id's
+      categories: [],
       brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
@@ -127,7 +125,7 @@ export class UpdateProductComponent implements OnInit {
       taxClassId: [''],
       cod: [''],
       codCharge: [''],
-      searchKeywords: [], //Array with user entered search keywords
+      searchKeywords: [],
       relatedProducts: [''],
       position: [''],
       file: [''],
@@ -174,14 +172,10 @@ export class UpdateProductComponent implements OnInit {
   }
 
   tagCategoryInput() {
-    if (
-      !this.categoryArray.includes(this.productForm.get('categories')?.value)
-    ) {
+    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
       this.categoryArray.push(this.productForm.get('categories')?.value);
       for (let i = 0; i < this.categoryData.length; i++) {
-        if (
-          this.productForm.get('categories')?.value == this.categoryData[i]._id
-        ) {
+        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
           this.categoryNames.push(this.categoryData[i].name);
         }
       }
@@ -204,11 +198,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   tagInput() {
-    if (
-      this.productForm.get('searchKeywords')?.value != ' ' ||
-      '' ||
-      this.productForm.get('searchKeywords')?.value == null
-    ) {
+    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
       this.valueArray.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
@@ -266,7 +256,7 @@ export class UpdateProductComponent implements OnInit {
   getProductBySlug() {
     this.productService.getProductBySlug(this.productSlug).subscribe((res: any) => {
       this.productData = res?.result[0];
-      this.isLoaded = true;
+      console.log(this.productData);
       this.productType = this.productData.isSingle;
       if (this.productType == true) {
         this.isSingle = true;
@@ -300,15 +290,18 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('stockWarning')?.setValue(this.productData.stockWarning);
       this.productForm.get('description')?.setValue(this.productData.description);
       this.productForm.get('features')?.setValue(this.productData.features);
-      this.productForm.get('relatedProducts')?.setValue(this.productData.relatedProducts);
-      for (let category of this.productData.categories) {
-        this.categoryArray = this.productData.categories
-        for (let i = 0; i < this.categoryData.length; i++) {
-          if (category == this.categoryData[i]._id) {
-            this.categoryNames.push(this.categoryData[i].name);
-          }
-        }
+
+
+      for (let i = 0; i < this.productData.categories.length; i++) {
+        this.categoryArray.push(this.productData.categories[i]._id)
+        this.categoryNames.push(this.productData.categories[i].name);
       }
+
+      for (let i = 0; i < this.productData.relatedProducts.length; i++) {
+        this.relProductIds.push(this.productData.relatedProducts[i]._id)
+        this.relProductNames.push(this.productData.relatedProducts[i].name)
+      }
+
       this.valueArray = this.productData.searchKeywords
       for (let brand of this.brandData) {
         if (this.productData.brandId == brand._id) {
@@ -344,6 +337,32 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
+  tagProductAdd() {
+    let rProduct = this.productForm.get("relatedProducts")?.value
+    if (!this.relProductIds.includes(rProduct)) {
+      this.relProductIds.push(rProduct)
+      for (let i = 0; i < this.productsData.length; i++) {
+        if (this.productsData[i]._id == rProduct) {
+          this.relProductNames.push(this.productsData[i].name)
+        }
+      }
+      this.productForm.get("relatedProducts")?.setValue('')
+    }
+  }
+
+  tagProductRemove(_val: any) {
+    let nIndex = this.relProductNames.indexOf(_val)
+    if (nIndex > -1) {
+      this.relProductNames.splice(nIndex, 1)
+    }
+    for (let i = 0; i < this.productsData.length; i++) {
+      if (this.productsData[i].name == _val) {
+        let iIndex = this.relProductIds.indexOf(this.productsData[i]._id)
+        this.relProductIds.splice(iIndex, 1)
+      }
+    }
+  }
+
   onOptionsSelected() {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
@@ -363,7 +382,6 @@ export class UpdateProductComponent implements OnInit {
 
   updateProduct() {
     if (!this.productForm.valid) {
-      console.log('Err')
       return;
     }
 
@@ -375,14 +393,12 @@ export class UpdateProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'searchKeywords' || 'categories') {
+      if (data != 'searchKeywords' || 'categories' || 'relatedProducts') {
         formData.append(data, this.productForm.value[data]);
       }
     }
 
-    console.log(this.productForm.get('offerPrice')?.value);
-
-
+    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
     formData.append('categories', JSON.stringify(this.categoryArray))
     formData.append('searchKeywords', JSON.stringify(this.valueArray))
 

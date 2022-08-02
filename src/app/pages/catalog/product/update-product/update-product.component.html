@@ -11,11 +11,11 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product</a>
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
           </li>
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{ product: productSlug }">
-              {{ editMode ? "Update Variant Product" : "Add Variant Product"
+              {{ editMode ? "Update Product" : "Add Product"
               }}</a>
           </li>
         </ul>
@@ -196,7 +196,7 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input">{{ category }}
+                    <span class="tag-input text-white bg-primary">{{ category }}
                       <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                     </span>
                   </ng-container>
@@ -350,7 +350,7 @@
                     ">Search keywords is required</span>
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="mb-10 tag-input">{{ value }}
+                      <span class="mb-10 tag-input text-white bg-primary">{{ value }}
                         <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
                     </ng-container>
                   </div>
@@ -361,7 +361,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Related Products</label>
-                  <select class="form-select" aria-label="related keywords" formControlName="relatedProducts">
+                  <select class="form-select" formControlName="relatedProducts" (change)="tagProductAdd()">
                     <option value="example" disabled>
                       -- Select Related Products --
                     </option>
@@ -373,6 +373,12 @@
                       (pf.searchKeywords.touched || isSubmitted) &&
                       pf.searchKeywords.errors?.required
                     ">Related products is required</span>
+                  <div class="tag-inputs col-12">
+                    <ng-container *ngFor="let value of relProductNames">
+                      <span class="mb-10 tag-input bg-primary text-white">{{ value }}
+                        <i class="bi bi-x" (click)="tagProductRemove(value)"></i></span>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
 
@@ -492,21 +498,15 @@
               </ng-container>
 
               <!-- Product Image -->
-              <div class="col-sm-6">
-                <div class="form-group col-sm-6">
-                  <label class="fs-5 fw-bold">Product Image</label>
-                  <img class="preview-image" id="preview" src="http://localhost:3000/{{uploadedImg}}" />
-                  <button type="button" class="upload-btn" onclick="document.getElementById('getFile').click()">
-                    Upload File
-                  </button>
-                  <input class="form-control fs-5" type="file" id="getFile" style="display: none" formControlName="file"
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Product Image</label>
+                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
                     (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                                    (pf.file.touched || isSubmitted) &&
-                                    pf.file.errors?.required
-                                  ">Image is required</span>
+                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                    required>
                 </div>
+                <img id="preview" src="http://localhost:3000/{{productData?.file}}">
               </div>
 
 

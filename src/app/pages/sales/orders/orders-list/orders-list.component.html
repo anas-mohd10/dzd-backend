@@ -1,1 +1,58 @@
-<p>orders-list works!</p>
+<div class="brand-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Orders</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+               routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
+               Add Orders
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <div class="top-form-container">
+      <form action="" (ngSubmit)="onSubmit()">
+         <div class="row">
+            <div class="col-12 col-sm-2">
+               <div class="form-group">
+                  <label class="fs-5 mb-3">Payment Method</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                     formControlName="valueType">
+                     <option value="check" disabled>
+                        -- Select An Option --
+                     </option>
+                     <option value="all" selected>All</option>
+                     <option value="cod">Accepted</option>
+                     <option value="online">Pending</option>
+                  </select>
+               </div>
+            </div>
+            <div class="col-12 col-sm-2">
+               <div class="form-group">
+                  <label class="fs-5 mb-3">Status</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                     formControlName="valueType">
+                     <option value="check" disabled>
+                        -- Select An Option --
+                     </option>
+                     <option value="all" selected>All</option>
+                     <option value="cod">COD</option>
+                     <option value="online">Online payment</option>
+                  </select>
+               </div>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>

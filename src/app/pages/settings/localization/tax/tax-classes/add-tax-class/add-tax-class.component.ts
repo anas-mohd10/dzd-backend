@@ -18,25 +18,10 @@ export class AddTaxClassComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  params: any;
-  fileData: File;
-  status: boolean;
-  formData: any = {};
   taxRuleNames: any;
-  ruleNames: any = [];
-  selected: any;
-  filtered: any;
-  ruleNameFlag: boolean;
-  ruleFlag: boolean = false;
-  ruleId: any;
   rulesArray: any = [];
   rulesName: any = [];
-
-  validationMessages = {
-    name: [{ type: 'required', message: 'Tax class name is required' }],
-    rules: [{ type: 'required', message: 'Tax rule required' }],
-  };
-
+  taxClassRate: any = 0
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,7 +38,6 @@ export class AddTaxClassComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.params = this.route.snapshot;
     this.managePage();
     this.getTaxRules();
   }
@@ -99,6 +83,7 @@ export class AddTaxClassComponent implements OnInit {
       for (let i = 0; i < this.taxRuleNames.length; i++) {
         if (this.taxRuleNames[i]._id == rule) {
           this.rulesName.push(this.taxRuleNames[i].name)
+          this.taxClassRate = this.taxClassRate + this.taxRuleNames[i].rate
         }
       }
     } else {
@@ -118,6 +103,7 @@ export class AddTaxClassComponent implements OnInit {
         if (idIndex > -1) {
           this.rulesArray.splice(idIndex, 1);
         }
+        this.taxClassRate = this.taxClassRate - this.taxRuleNames[i].rate
       }
     }
   }
@@ -141,7 +127,8 @@ export class AddTaxClassComponent implements OnInit {
       name: this.taxClassForm.get("name")?.value,
       description: this.taxClassForm.get("description")?.value,
       isActive: this.taxClassForm.get("isActive")?.value,
-      rule: JSON.stringify(this.rulesArray)
+      rule: JSON.stringify(this.rulesArray),
+      rate: this.taxClassRate
     }
     this.taxClassesService.addTaxClasses(data).subscribe((res: any) => {
       if (res.errorCode != 0) {

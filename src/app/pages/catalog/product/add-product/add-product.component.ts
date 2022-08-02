@@ -46,10 +46,8 @@ export class AddProductComponent implements OnInit {
   isCod: boolean = false;
   method: any;
   cod: any;
-
-  validationMessages = {
-    name: [{ type: 'required', message: 'Product name is required' }],
-  };
+  relProductNames: any = [];
+  relProductIds: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,17 +88,14 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
-    // this.checkShippingMethod();
-    // this.checkCod();
-    // this.checkReturnable();
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      isSingle: ['false', Validators.required],
-      name: ['', Validators.required],
-      sku: ['', Validators.required],
-      hsn: ['', Validators.required],
+      isSingle: ['false'],
+      name: [''],
+      sku: [''],
+      hsn: [''],
       mrpPrice: [''],
       offerPrice: [''],
       stock: [''],
@@ -108,25 +103,25 @@ export class AddProductComponent implements OnInit {
       stockWarning: [''],
       description: [''],
       features: [''],
-      categories: [], //Array with category id's
-      brandId: ['', Validators.required],
+      categories: [],
+      brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
-      isActive: ['true', Validators.required],
-      isFeatured: ['false', Validators.required],
-      returnable: ['', Validators.required],
+      isActive: ['true'],
+      isFeatured: ['false'],
+      returnable: [''],
       returnDays: [''],
-      shippingMethod: ['', Validators.required],
+      shippingMethod: [''],
       shippingCost: [''],
-      weight: ['', Validators.required],
-      unit: ['', Validators.required],
-      taxClassId: ['', Validators.required],
-      cod: ['', Validators.required],
+      weight: [''],
+      unit: [''],
+      taxClassId: [''],
+      cod: [''],
       codCharge: [''],
-      searchKeywords: [], //Array with user entered search keywords
-      relatedProducts: [''],
-      position: ['', Validators.required],
-      file: ['', Validators.required],
+      searchKeywords: [],
+      relatedProducts: [],
+      position: [''],
+      file: [''],
     });
   }
 
@@ -170,14 +165,10 @@ export class AddProductComponent implements OnInit {
   }
 
   tagCategoryInput() {
-    if (
-      !this.categoryArray.includes(this.productForm.get('categories')?.value)
-    ) {
+    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
       this.categoryArray.push(this.productForm.get('categories')?.value);
       for (let i = 0; i < this.categoryData.length; i++) {
-        if (
-          this.productForm.get('categories')?.value == this.categoryData[i]._id
-        ) {
+        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
           this.categoryNames.push(this.categoryData[i].name);
         }
       }
@@ -200,11 +191,7 @@ export class AddProductComponent implements OnInit {
   }
 
   tagInput() {
-    if (
-      this.productForm.get('searchKeywords')?.value != ' ' ||
-      '' ||
-      this.productForm.get('searchKeywords')?.value == null
-    ) {
+    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
       this.valueArray.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
@@ -259,6 +246,32 @@ export class AddProductComponent implements OnInit {
     });
   }
 
+  tagProductAdd() {
+    let rProduct = this.productForm.get("relatedProducts")?.value
+    if (!this.relProductIds.includes(rProduct)) {
+      this.relProductIds.push(rProduct)
+      for (let i = 0; i < this.productsData.length; i++) {
+        if (this.productsData[i]._id == rProduct) {
+          this.relProductNames.push(this.productsData[i].name)
+        }
+      }
+      this.productForm.get("relatedProducts")?.setValue('')
+    }
+  }
+
+  tagProductRemove(_val: any) {
+    let nIndex = this.relProductNames.indexOf(_val)
+    if (nIndex > -1) {
+      this.relProductNames.splice(nIndex, 1)
+    }
+    for (let i = 0; i < this.productsData.length; i++) {
+      if (this.productsData[i].name == _val) {
+        let iIndex = this.relProductIds.indexOf(this.productsData[i]._id)
+        this.relProductIds.splice(iIndex, 1)
+      }
+    }
+  }
+
   onOptionsSelected() {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
@@ -278,10 +291,9 @@ export class AddProductComponent implements OnInit {
 
   addProduct() {
     if (!this.productForm.valid) {
+      console.error("Validation");
       return;
     }
-
-    console.log(this.productForm.value);
 
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
@@ -289,12 +301,12 @@ export class AddProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'searchKeywords' || 'categories') {
-        console.log(this.productForm.value[data])
+      if (data != 'searchKeywords' || 'categories' || 'relatedProducts') {
         formData.append(data, this.productForm.value[data]);
       }
     }
 
+    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
     formData.append('categories', JSON.stringify(this.categoryArray))
     formData.append('searchKeywords', JSON.stringify(this.valueArray))
 

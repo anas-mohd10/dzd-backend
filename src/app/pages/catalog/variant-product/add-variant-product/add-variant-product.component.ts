@@ -50,6 +50,8 @@ export class AddVariantProductComponent implements OnInit {
   isCod: boolean = false;
   method: any;
   cod: any;
+  relProductNames: any = [];
+  relProductIds: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,6 +67,52 @@ export class AddVariantProductComponent implements OnInit {
 
   get pf() {
     return this.productForm.controls;
+  }
+
+  ngOnInit(): void {
+    this.initForm();
+    this.task = this.route.snapshot.params.task || PageTasks.ADD;
+    this.slug = this.route.snapshot.queryParams.product || '';
+    this.managePage();
+    this.getBrandDetail();
+    this.getCategoryDetail();
+    this.getTaxClassDetail();
+    this.getProducts();
+    this.getProductBySlug();
+  }
+
+  initForm() {
+    this.productForm = this.formBuilder.group({
+      name: [''],
+      sku: [''],
+      hsn: [''],
+      mrpPrice: [''],
+      offerPrice: [''],
+      stock: [''],
+      moq: [''],
+      stockWarning: [''],
+      description: [''],
+      features: [''],
+      categories: [],
+      brandId: [''],
+      additionalbutton: [''],
+      buttonredireturl: [''],
+      isActive: ['true'],
+      isFeatured: ['false'],
+      returnable: [''],
+      returnDays: [''],
+      shippingMethod: [''],
+      shippingCost: [''],
+      weight: [''],
+      unit: [''],
+      taxClassId: [''],
+      cod: [''],
+      codCharge: [''],
+      searchKeywords: [],
+      relatedProducts: [''],
+      position: [''],
+      file: [''],
+    });
   }
 
   handleInputChange(fileInput: any) {
@@ -112,52 +160,6 @@ export class AddVariantProductComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-    this.initForm();
-    this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.slug = this.route.snapshot.queryParams.product || '';
-    this.managePage();
-    this.getBrandDetail();
-    this.getCategoryDetail();
-    this.getTaxClassDetail();
-    this.getProducts();
-    this.getProductBySlug();
-  }
-
-  initForm() {
-    this.productForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      sku: ['', Validators.required],
-      hsn: ['', Validators.required],
-      mrpPrice: ['', Validators.required],
-      offerPrice: [''],
-      stock: ['', Validators.required],
-      moq: ['', Validators.required],
-      stockWarning: [''],
-      description: [''],
-      features: [''],
-      categories: [],
-      brandId: ['', Validators.required],
-      additionalbutton: [''],
-      buttonredireturl: [''],
-      isActive: ['true', Validators.required],
-      isFeatured: ['false', Validators.required],
-      returnable: ['', Validators.required],
-      returnDays: [''],
-      shippingMethod: ['', Validators.required],
-      shippingCost: [''],
-      weight: ['', Validators.required],
-      unit: ['', Validators.required],
-      taxClassId: ['', Validators.required],
-      cod: ['', Validators.required],
-      codCharge: [''],
-      searchKeywords: [],
-      relatedProducts: [''],
-      position: ['', Validators.required],
-      file: ['', Validators.required],
-    });
-  }
-
   handleProductType() {
     this.productType = this.productForm.get('isSingle')?.value;
     if (this.productType == 'true') {
@@ -168,14 +170,10 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   tagCategoryInput() {
-    if (
-      !this.categoryArray.includes(this.productForm.get('categories')?.value)
-    ) {
+    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
       this.categoryArray.push(this.productForm.get('categories')?.value);
       for (let i = 0; i < this.categoryData.length; i++) {
-        if (
-          this.productForm.get('categories')?.value == this.categoryData[i]._id
-        ) {
+        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
           this.categoryNames.push(this.categoryData[i].name);
         }
       }
@@ -198,11 +196,7 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   tagInput() {
-    if (
-      this.productForm.get('searchKeywords')?.value != ' ' ||
-      '' ||
-      this.productForm.get('searchKeywords')?.value == null
-    ) {
+    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
       this.valueArray.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
@@ -264,6 +258,32 @@ export class AddVariantProductComponent implements OnInit {
     });
   }
 
+  tagProductAdd() {
+    let rProduct = this.productForm.get("relatedProducts")?.value
+    if (!this.relProductIds.includes(rProduct)) {
+      this.relProductIds.push(rProduct)
+      for (let i = 0; i < this.productData.length; i++) {
+        if (this.productData[i]._id == rProduct) {
+          this.relProductNames.push(this.productData[i].name)
+        }
+      }
+      this.productForm.get("relatedProducts")?.setValue('')
+    }
+  }
+
+  tagProductRemove(_val: any) {
+    let nIndex = this.relProductNames.indexOf(_val)
+    if (nIndex > -1) {
+      this.relProductNames.splice(nIndex, 1)
+    }
+    for (let i = 0; i < this.productData.length; i++) {
+      if (this.productData[i].name == _val) {
+        let iIndex = this.relProductIds.indexOf(this.productData[i]._id)
+        this.relProductIds.splice(iIndex, 1)
+      }
+    }
+  }
+
   onOptionsSelected() {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
@@ -292,28 +312,27 @@ export class AddVariantProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'values' || 'categories') {
+      if (data != 'values' || 'categories' || 'relatedProducts') {
         formData.append(data, this.productForm.value[data]);
       }
     }
 
+    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
     formData.append('categories', JSON.stringify(this.categoryArray))
     formData.append('searchKeywords', JSON.stringify(this.valueArray))
     formData.append('parentId', this.parentProductId);
 
-    this.variantProductService
-      .addVariantProduct(formData)
-      .subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Product Added Successfully');
-          this.router.navigate(
-            [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
-            { queryParams: { product: this.slug } }
-          );
-          this.ngOnInit();
-        }
-      });
+    this.variantProductService.addVariantProduct(formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Product Added Successfully');
+        this.router.navigate(
+          [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
+          { queryParams: { product: this.slug } }
+        );
+        this.ngOnInit();
+      }
+    });
   }
 }

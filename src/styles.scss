@@ -42,24 +42,22 @@ label {
   margin: 0 0 0 10px;
 }
 
-.uploads{
-  height: 200px;
-  width: 200px
-}
-
 #preview {
   margin: 10px 0 10px 0;
   border-radius: 10px;
-  height: 100%;
-  width: 100%;
+  height: 250px;
+  width: 250px;
   object-fit: cover;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 //Active text in datatable
 .active-text-view {
   height: 25px;
   width: 80px;
-  background: rgba(18, 170, 79, 0.4);
+  background: #3f8e5f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,15 +65,14 @@ label {
 }
 
 .active-text {
-  color: #055224;
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.1rem;
 }
 
 .inactive-text-view {
   height: 25px;
   width: 80px;
-  background: rgba(186, 21, 35, 0.4);
+  background: #c64a54;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,9 +80,8 @@ label {
 }
 
 .inactive-text {
-  color: #5a0404;
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: #ffffff;
+  font-size: 1.1rem;
 }
 
 .description-textarea {
