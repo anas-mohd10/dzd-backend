@@ -202,7 +202,7 @@ export const Routing: Routes = [
   },
   {
     path: '',
-    redirectTo: '/app/dashboard',
+    redirectTo: '/auth/login',
     pathMatch: 'full',
   },
   {

@@ -6,8 +6,6 @@ import {environment} from '../../../../../../environments/environment';
   templateUrl: './purchase-toolbar.component.html',
 })
 export class PurchaseToolbarComponent implements OnInit {
-  appPurchaseUrl: string = environment.appPurchaseUrl;
-
   constructor() {
   }
 
