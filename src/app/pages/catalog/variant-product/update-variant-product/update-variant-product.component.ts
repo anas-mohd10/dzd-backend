@@ -381,11 +381,12 @@ export class UpdateVariantProductComponent implements OnInit {
     }
 
     for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'searchKeywords' || 'categories') {
+      if (data != 'searchKeywords' || 'categories' || 'relatedProducts') {
         formData.append(data, this.productForm.value[data]);
       }
     }
 
+    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
     formData.append('categories', JSON.stringify(this.categoryArray))
     formData.append('searchKeywords', JSON.stringify(this.valueArray))
     formData.append('parentId', this.variantProductValues.parentId._id);

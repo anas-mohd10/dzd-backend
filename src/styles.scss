@@ -43,6 +43,10 @@ label {
 }
 
 #preview {
+  background: url('./assets/media/svg/files/upload.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   margin: 10px 0 10px 0;
   border-radius: 10px;
   height: 250px;

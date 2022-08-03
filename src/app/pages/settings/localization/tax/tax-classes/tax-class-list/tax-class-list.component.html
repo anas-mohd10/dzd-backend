@@ -1,4 +1,4 @@
- <div class="taxClass-page-container">
+<div class="taxClass-page-container">
   <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
@@ -14,11 +14,8 @@
             <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
           </li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer fs-5"
-          color="primary"
-          routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}"
-        >
+        <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+          routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">
           Add Tax Class
         </button>
       </div>
@@ -31,12 +28,10 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
+          <div style="display: none"> {{taxClassData.length}}</div>
           <div class="table-responsive" *ngIf="displayTable">
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              class="table table-borderless table-center table-striped mb-0 datatable"
-            >
+            <table datatable [dtOptions]="dtOptions"
+              class="table table-borderless table-center table-striped mb-0 datatable">
               <thead class="thead">
                 <tr>
                   <th class="text-dark fs-4 col-md-2">Sl No.</th>
@@ -76,11 +71,9 @@
                     </ng-container>
                   </td>
                   <td class="col-md-2">
-                    <a
-                      routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}"
-                      [queryParams]="{ taxClass: taxClass?.slug }"
-                      class="fs-5 cursor-pointer text-darker"
-                      ><i class="bi bi-pen"></i> Edit
+                    <a routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}"
+                      [queryParams]="{ taxClass: taxClass?.slug }" class="fs-5 cursor-pointer text-darker"><i
+                        class="bi bi-pen"></i> Edit
                     </a>
                   </td>
                 </tr>

@@ -34,6 +34,7 @@ export class BrandComponent implements OnDestroy, OnInit {
       switch (res?.errorCode) {
         case 0:
           this.brandData = res?.result;
+          console.log("Data :: " + this.brandData);
           this.displayTable = true;
           this.dtTrigger.next();
           this.filtersLoaded = Promise.resolve(true);

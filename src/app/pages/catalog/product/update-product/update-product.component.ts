@@ -339,6 +339,8 @@ export class UpdateProductComponent implements OnInit {
 
   tagProductAdd() {
     let rProduct = this.productForm.get("relatedProducts")?.value
+    console.log(rProduct);
+
     if (!this.relProductIds.includes(rProduct)) {
       this.relProductIds.push(rProduct)
       for (let i = 0; i < this.productsData.length; i++) {

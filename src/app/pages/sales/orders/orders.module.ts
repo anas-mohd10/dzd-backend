@@ -5,6 +5,8 @@ import { OrdersListComponent } from './orders-list/orders-list.component';
 import { AddOrdersComponent } from './add-orders/add-orders.component';
 import { UpdateOrdersComponent } from './update-orders/update-orders.component';
 import { ToastrModule } from 'ngx-toastr';
+import { WidgetsModule } from '../../../shared/partials';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
   declarations: [
@@ -15,12 +17,14 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     CommonModule,
     OrdersRoutingModule,
+    DataTablesModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
       preventDuplicates: true,
       progressBar: true,
     }),
+    WidgetsModule,
   ]
 })
 export class OrdersModule { }

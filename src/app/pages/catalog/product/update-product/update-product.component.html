@@ -29,6 +29,7 @@
     <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
+          <!-- <div style="display: none"> {{productData.length}}</div> -->
           <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
             <div class="row">
               <div class="col-12">
@@ -365,7 +366,7 @@
                     <option value="example" disabled>
                       -- Select Related Products --
                     </option>
-                    <option *ngFor="let product of productsData" value="{{ product?.name }}">
+                    <option *ngFor="let product of productsData" value="{{ product?._id }}">
                       {{ product?.name }}
                     </option>
                   </select>

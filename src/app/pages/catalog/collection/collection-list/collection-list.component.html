@@ -11,16 +11,11 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}"
-              >Collections</a
-            >
+            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
           </li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer"
-          color="primary"
-          routerLink="{{ appRoute.collection.ADD_COLLECTION }}"
-        >
+        <button class="btn btn-primary cursor-pointer" color="primary"
+          routerLink="{{ appRoute.collection.ADD_COLLECTION }}">
           Add Collection
         </button>
       </div>
@@ -32,12 +27,10 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
+          <div style="display: none"> {{collectionData.length}}</div>
           <div class="table-responsive" *ngIf="displayTable">
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              class="table table-center table-striped mb-0 datatable table-borderless"
-            >
+            <table datatable [dtOptions]="dtOptions"
+              class="table table-center table-striped mb-0 datatable table-borderless">
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-4 col-md-2">Sl No.</th>
@@ -55,11 +48,7 @@
                     <h2 class="table-avatar fs-5">{{ collection?.name }}</h2>
                   </td>
                   <td>
-                    <img
-                      class="collection-logo"
-                      src="http://localhost:3000/{{collection?.file}}"
-                      alt="collection"
-                    />
+                    <img class="collection-logo" src="http://localhost:3000/{{collection?.file}}" alt="collection" />
                   </td>
                   <td>
                     <ng-container *ngIf="collection?.isFeatured == true">
@@ -87,11 +76,9 @@
                   </td>
                   <td>
                     <ng-container>
-                      <a
-                        routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-                        [queryParams]="{ collection: collection?.slug }"
-                        class="fs-5 cursor-pointer text-darker"
-                        ><i class="bi bi-pen"></i> Edit
+                      <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+                        [queryParams]="{ collection: collection?.slug }" class="fs-5 cursor-pointer text-darker"><i
+                          class="bi bi-pen"></i> Edit
                       </a>
                     </ng-container>
                   </td>

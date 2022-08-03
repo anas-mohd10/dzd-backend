@@ -34,6 +34,7 @@
     <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
+          <div style="display: none"> {{variantProductValues.length}}</div>
           <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
             <div class="row">
               <div class="col-12">
@@ -379,7 +380,7 @@
                     onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
                     required>
                 </div>
-                <img id="preview">
+                <img id="preview" src="http://localhost:3000/{{variantProductValues?.file}}">
               </div>
 
               <div class="col-12">
