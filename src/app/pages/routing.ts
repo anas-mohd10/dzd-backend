@@ -197,6 +197,11 @@ export const Routing: Routes = [
         path: 'orders',
         loadChildren: () => import('./sales/orders/orders.module').then((m) => m.OrdersModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'customers',
+        loadChildren: () => import('./users/customers/customers.module').then((m) => m.CustomersModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

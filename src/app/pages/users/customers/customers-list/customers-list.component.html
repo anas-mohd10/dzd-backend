@@ -1,0 +1,93 @@
+<div class="brand-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Customers</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}">Customers</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+               routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
+               Add Customers
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-lg-3">
+         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
+            class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
+            title="{{customersCount ? customersCount : 0}}" description="Total Active Customers">
+         </app-stats-widget5>
+      </div>
+      <div class="col-sm-12">
+         <div class="card card-table">
+            <div class="card-body">
+               <div style="display: none"> {{customersData.length}}</div>
+               <div class="table-responsive" *ngIf="displayTable">
+                  <table datatable [dtOptions]="dtOptions"
+                     class="datatable table table-borderless table-center table-striped mb-0">
+                     <thead class="thead mt-100">
+                        <tr>
+                           <th class="text-dark fs-4 col-md-2">Sl No.</th>
+                           <th class="text-dark fs-4 col-md-2">Name</th>
+                           <th class="text-dark fs-4 col-md-2">Email</th>
+                           <th class="text-dark fs-4 col-md-2">Contact No.</th>
+                           <th class="text-dark fs-4 col-md-2">Wallet Balance</th>
+                           <th class="text-dark fs-4 col-md-2">Status</th>
+                           <th class="text-dark fs-4 col-md-2">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngFor="let customer of customersData; let i = index">
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{customer.firstname}}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ customer.email }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ customer.mobile }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ customer.walletBalance }}</h2>
+                           </td>
+                           <td>
+                              <ng-container *ngIf="customer?.isActive == true">
+                                 <div class="active-text-view">
+                                    <span class="active-text"> active </span>
+                                 </div>
+                              </ng-container>
+                              <ng-container *ngIf="customer?.isActive == false">
+                                 <div class="inactive-text-view">
+                                    <span class="inactive-text"> inactive </span>
+                                 </div>
+                              </ng-container>
+                           </td>
+                           <td>
+                              <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}"
+                                 [queryParams]="{ customer: customer?.slug }"
+                                 class="fs-5 cursor-pointer text-darker">
+                                 <i class="bi bi-pen"></i>
+                                 Edit
+                              </a>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

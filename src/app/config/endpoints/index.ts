@@ -10,3 +10,4 @@ export * from './variant.product.endpoints'
 export * from './auth.endpoints';
 export * from './roles.endpoints'
 export * from './permissions.endpoints'
+export * from './customer.endpoints'

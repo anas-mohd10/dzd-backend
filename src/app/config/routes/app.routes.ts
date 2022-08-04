@@ -14,6 +14,7 @@ const shippingClassRoute = "/shipping"
 const adminUsersRoute = "/admin-users"
 const rolesRoute = "/roles"
 const orderRoute = "/orders"
+const customerRoute = "/customers"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -53,12 +54,12 @@ export const appRoutes = {
     OFFER_LIST: `${app}${offerRoute}`,
     UPDATE_OFFER: `${app}${offerRoute}/update`
   },
-  taxClass:{
+  taxClass: {
     ADD_TAX_CLASS: `${app}${taxClassRoute}/add`,
     TAX_CLASS_LIST: `${app}${taxClassRoute}`,
     UPDATE_TAX_CLASS: `${app}${taxClassRoute}/update`
   },
-  taxRules:{
+  taxRules: {
     ADD_TAX_RULES: `${app}${taxRulesRoute}/add`,
     TAX_RULES_LIST: `${app}${taxRulesRoute}`,
     UPDATE_TAX_RULES: `${app}${taxRulesRoute}/update`
@@ -66,7 +67,7 @@ export const appRoutes = {
   shipping: {
     SHIPPING_LIST: `${app}${shippingClassRoute}`
   },
-  admin:{
+  admin: {
     ADMIN_USERS: `${app}${adminUsersRoute}`,
     ADD_ADMIN_USERS: `${app}${adminUsersRoute}/add`,
     UPDATE_ADMIN_USERS: `${app}${adminUsersRoute}/update`
@@ -80,5 +81,10 @@ export const appRoutes = {
     ORDERS_LIST: `${app}${orderRoute}`,
     ADD_ORDER_LIST: `${app}${orderRoute}/add`,
     UPDATE_ORDER_LIST: `${app}${orderRoute}/update`
+  },
+  customers: {
+    CUSTOMERS_LIST: `${app}${customerRoute}`,
+    ADD_CUSTOMERS_LIST: `${app}${customerRoute}/add`,
+    UPDATE_CUSTOMERS_LIST: `${app}${customerRoute}/update`,
   }
 };

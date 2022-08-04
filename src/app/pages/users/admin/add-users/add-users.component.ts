@@ -98,10 +98,8 @@ export class AddUsersComponent implements OnInit {
     if (!this.adminForm.valid) {
       return;
     }
-
     let pwd = this.adminForm.get("firstPwd")?.value
     let conPwd = this.adminForm.get("password")?.value
-
     if (this.uniqueEmail == true) {
       if (pwd == conPwd) {
         this.adminService.addAdminUsers(this.adminForm.value).subscribe((res: any) => {
