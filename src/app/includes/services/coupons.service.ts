@@ -1,0 +1,38 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CommonService } from './common.service';
+import { couponsEndpoints } from 'src/app/config/endpoints';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CouponsService {
+  couponsEndpoints = couponsEndpoints
+
+  constructor(private http: HttpClient, private commonService: CommonService) { }
+
+  addCoupon(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.add_coupon);
+    return this.http.post(`${url}`, data);
+  }
+
+  getCoupons() {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon);
+    return this.http.get(`${url}`);
+  }
+
+  getActiveCoupons() {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_active_coupons);
+    return this.http.get(`${url}`);
+  }
+
+  getCouponBySlug(slug: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_by_slug + "?slug=" + slug);
+    return this.http.get(`${url}`);
+   }
+
+  updateCoupon(slug: any, data: any) { 
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.update_coupon + "?slug=" + slug);
+    return this.http.put(`${url}`, data);
+  }
+}

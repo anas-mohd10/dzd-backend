@@ -15,6 +15,7 @@ const adminUsersRoute = "/admin-users"
 const rolesRoute = "/roles"
 const orderRoute = "/orders"
 const customerRoute = "/customers"
+const couponRoute = '/coupons'
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -86,5 +87,10 @@ export const appRoutes = {
     CUSTOMERS_LIST: `${app}${customerRoute}`,
     ADD_CUSTOMERS_LIST: `${app}${customerRoute}/add`,
     UPDATE_CUSTOMERS_LIST: `${app}${customerRoute}/update`,
+  },
+  coupons: {
+    COUPONS_LIST: `${app}${couponRoute}`,
+    ADD_COUPONS_LIST: `${app}${couponRoute}/add`,
+    UPDATE_COUPONS_LIST: `${app}${couponRoute}/update`,
   }
 };

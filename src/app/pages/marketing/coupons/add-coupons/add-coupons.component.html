@@ -1,0 +1,24 @@
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Customers" : "Add Customers" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
+                     {{ editMode ? "Update Customers" : "Add Customers"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>

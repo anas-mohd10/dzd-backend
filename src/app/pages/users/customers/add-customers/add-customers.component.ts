@@ -39,7 +39,7 @@ export class AddCustomersComponent implements OnInit {
       mobile: ['', Validators.required],
       walletBalance: ['', Validators.required],
       isActive: ['true', Validators.required],
-      addressType: ['', Validators.required],
+      isHome: ['', Validators.required],
       firstline: ['', Validators.required],
       secondline: [''],
       area: [''],
@@ -102,7 +102,7 @@ export class AddCustomersComponent implements OnInit {
       lastname: this.customersForm.get("lastname")?.value,
       email: this.customersForm.get("email")?.value,
       mobile: this.customersForm.get("mobile")?.value,
-      addressType: this.customersForm.get("addressType")?.value,
+      isHome: this.customersForm.get("isHome")?.value,
       address: [{
         firstline: this.customersForm.get("firstline")?.value,
         secondline: this.customersForm.get("secondline")?.value,

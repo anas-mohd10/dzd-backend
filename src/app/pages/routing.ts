@@ -202,6 +202,11 @@ export const Routing: Routes = [
         path: 'customers',
         loadChildren: () => import('./users/customers/customers.module').then((m) => m.CustomersModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'coupons',
+        loadChildren: () => import('./marketing/coupons/coupons.module').then((m) => m.CouponsModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

@@ -7,6 +7,7 @@ import { UpdateOrdersComponent } from './update-orders/update-orders.component';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from '../../../shared/partials';
 import { DataTablesModule } from 'angular-datatables';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,8 @@ import { DataTablesModule } from 'angular-datatables';
   imports: [
     CommonModule,
     OrdersRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     DataTablesModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

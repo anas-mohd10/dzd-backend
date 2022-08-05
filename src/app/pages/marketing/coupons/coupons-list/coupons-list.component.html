@@ -1,0 +1,96 @@
+<div class="coupon-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Coupons</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+               routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
+               Add Coupons
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="card card-table">
+            <div class="card-body">
+               <div style="display: none"> {{couponsData.length}}</div>
+               <div class="table-responsive" *ngIf="displayTable">
+                  <table datatable [dtOptions]="dtOptions"
+                     class="table table-borderless table-center table-striped mb-0 datatable" cellspacing="0"
+                     width="100%">
+                     <thead class="thead">
+                        <tr>
+                           <th class="text-dark fw-bolder fs-4">Sl No.</th>
+                           <th class="text-dark fw-bolder fs-4">Coupons</th>
+                           <th class="text-dark fw-bolder fs-4">Code</th>
+                           <th class="text-dark fw-bolder fs-4">Discount</th>
+                           <th class="text-dark fw-bolder fs-4">Image</th>
+                           <th class="text-dark fw-bolder fs-4">Valid From</th>
+                           <th class="text-dark fw-bolder fs-4">Valid To</th>
+                           <th class="text-dark fw-bolder fs-4">Status</th>
+                           <th class="text-dark fw-bolder fs-4">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngFor="let coupon of couponsData; let i = index">
+                           <td>
+                              <h2 class="table-avatar">{{ i + 1 }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ coupon?.name }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ coupon?.description }}</h2>
+                           </td>
+                           <td>
+                              <img class="coupon-image" src="http://localhost:3000/{{coupon?.file}}" alt="coupon" />
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ coupon?.fromDate }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ coupon?.lastDate }}</h2>
+                           </td>
+                           <td>
+                              <ng-container *ngIf="coupon?.isFeatured == true">
+                                 <h2 class="table-avatar avatar-item fs-5">Yes</h2>
+                              </ng-container>
+                              <ng-container *ngIf="coupon?.isFeatured == false">
+                                 <h2 class="table-avatar avatar-item fs-5">No</h2>
+                              </ng-container>
+                           </td>
+                           <td>
+                              <ng-container *ngIf="coupon?.isActive == true">
+                                 <div class="active-text-view"><span class="active-text">active</span></div>
+                              </ng-container>
+                              <ng-container *ngIf="coupon?.isActive == false">
+                                 <div class="inactive-text-view"><span class="inactive-text">inactive</span></div>
+                              </ng-container>
+                           </td>
+                           <td>
+                              <a class="fs-5 h-100 cursor-pointer table-avatar text-darker"
+                                 routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}"
+                                 [queryParams]="{ coupon: coupon?.slug }">
+                                 <i class="bi bi-pen"></i> Edit
+                              </a>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,4 +1,4 @@
-<div class="brand-page-container">
+<div class="content container-fluid">
    <div class="page-header">
       <div class="row align-items-center">
          <div class="col">
@@ -10,14 +10,95 @@
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
                <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
+                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Orders</a>
                </li>
                <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">{{
-                     editMode ? "Update Orders" : "Add Orders"
-                     }}</a>
+                  <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
+                     {{ editMode ? "Update Orders" : "Add Orders"}}
+                  </a>
                </li>
             </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-10">
+      <div class="col-sm-12 fs-6">
+         <div class="card">
+            <div class="card-body">
+               <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
+                  <div class="row">
+                     <div class="col-12">
+                        <h5 class="form-title fs-4"><span>Orders details</span></h5>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Customer</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="customer"
+                              [ngClass]="{ 'is-invalid': (of.customer.touched || isSubmitted) && of.customer.errors?.required}">
+                              <option value="disabled" disabled>-- Select an option --</option>
+                              <option *ngFor="let cust of activeCustomersData" value="{{[cust?._id, cust?.slug]}}">
+                                 {{cust?.firstname}}
+                              </option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf=" (of.customer.touched || isSubmitted) && of.customer.errors?.required ">
+                              Customer is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Customer Address</label>
+                           <input type="text" formControlName="address" class="form-control fs-6">
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Payment method</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="paymentMethod"
+                              [ngClass]="{ 'is-invalid': (of.lng.touched || isSubmitted) && of.lng.errors?.required}">
+                              <option value="disabled" disabled>-- Select an option --</option>
+                              <option value="CASH">Cash</option>
+                              <option value="SPLIT">Split</option>
+                              <option value="CARD">Card</option>
+                              <option value="UNPAID">Unpaid</option>
+                              <option value="ONLINE">Online</option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf=" (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required ">
+                              Payment method is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Coupons</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="coupon"
+                              [ngClass]="{ 'is-invalid': (of.coupon.touched || isSubmitted) && of.coupon.errors?.required}">
+                              <option value="disabled" disabled>-- Select an option --</option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf=" (of.coupon.touched || isSubmitted) && of.coupon.errors?.required ">
+                              Coupon method is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">GST No.</label>
+                           <input type="text" formControlName="gst" class="form-control fs-6">
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <h5 class="form-title fs-4"><span>Products details</span></h5>
+                     </div>
+                     
+                  </div>
+               </form>
+            </div>
          </div>
       </div>
    </div>

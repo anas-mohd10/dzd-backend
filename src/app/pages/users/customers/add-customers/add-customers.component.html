@@ -127,16 +127,16 @@
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="isHome" [ngClass]="{
                                  'is-invalid':
-                                 (cf.addressType.touched || isSubmitted) &&
-                                 cf.addressType.errors?.required
+                                 (cf.isHome.touched || isSubmitted) &&
+                                 cf.isHome.errors?.required
                                }">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Home</option>
                               <option value="false">Office</option>
                            </select>
                            <span class="text-danger error-msg fs-6" *ngIf="
-                           (cf.addressType.touched || isSubmitted) &&
-                           cf.addressType.errors?.required
+                           (cf.isHome.touched || isSubmitted) &&
+                           cf.isHome.errors?.required
                        ">Address type is required
                            </span>
                         </div>

@@ -11,3 +11,5 @@ export * from './auth.endpoints';
 export * from './roles.endpoints'
 export * from './permissions.endpoints'
 export * from './customer.endpoints'
+export * from './order.endpoints'
+export * from './coupons.endpoints'
