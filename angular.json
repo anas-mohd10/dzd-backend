@@ -39,8 +39,7 @@
             "styles": [
               "src/styles.scss",
               "node_modules/datatables.net-dt/css/jquery.dataTables.css",
-              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
-              "~@ng-select/ng-select/themes/default.theme.css"
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

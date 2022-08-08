@@ -16,6 +16,9 @@ const rolesRoute = "/roles"
 const orderRoute = "/orders"
 const customerRoute = "/customers"
 const couponRoute = '/coupons'
+const contactRoute = '/contacts'
+const socialMediaRoute = "/social-media"
+const invoiceSettingRoute = "/invoice-settings"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -92,5 +95,20 @@ export const appRoutes = {
     COUPONS_LIST: `${app}${couponRoute}`,
     ADD_COUPONS_LIST: `${app}${couponRoute}/add`,
     UPDATE_COUPONS_LIST: `${app}${couponRoute}/update`,
+  },
+  contacts: {
+    CONTACTS_LIST: `${app}${contactRoute}`,
+    ADD_CONTACTS_LIST: `${app}${contactRoute}/add`,
+    UPDATE_CONTACTS_LIST: `${app}${contactRoute}/update`
+  },
+  socialMedia: {
+    SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}`,
+    ADD_SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}/add`,
+    UPDATE_SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}/update`
+  },
+  invoiceSettings: {
+    INVOICE_SETTINGS_LIST: `${app}${invoiceSettingRoute}`,
+    ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
+    UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   }
 };

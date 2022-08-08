@@ -1,0 +1,32 @@
+<div class="contact-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Contacts</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.contacts.CONTACTS_LIST}}">Contacts</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+               routerLink="{{ appRoute.contacts.ADD_CONTACTS_LIST }}">
+               Add Contacts
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="contact-container">
+      <ng-container *ngFor="let contact of contactsData">
+         <div class="col-xl-4">
+            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
+               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="341"
+               description="Total Orders"></app-stats-widget5>
+         </div>
+      </ng-container>
+   </div>
+</div>

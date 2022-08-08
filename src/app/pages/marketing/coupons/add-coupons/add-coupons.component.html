@@ -3,21 +3,239 @@
       <div class="row align-items-center">
          <div class="col">
             <h3 class="page-title fw-bolder fs-2">
-               {{ editMode ? "Update Customers" : "Add Customers" }}
+               {{ editMode ? "Update Coupons" : "Add Coupons" }}
             </h3>
             <ul class="breadcrumb">
                <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
                <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
+                  <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
                </li>
                <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
-                     {{ editMode ? "Update Customers" : "Add Customers"}}
+                  <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
+                     {{ editMode ? "Update Coupons" : "Add Coupons"}}
                   </a>
                </li>
             </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-10">
+      <div class="col-sm-12 fs-5">
+         <div class="card">
+            <div class="card-body">
+               <form (ngSubmit)="onSubmit()" [formGroup]="couponForm">
+                  <div class="row">
+                     <div style="display: none;">{{categoriesData.length}}</div>
+                     <div class="col-12">
+                        <h5 class="form-title fs-4"><span>Coupon Details</span></h5>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Title</label>
+                           <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
+                            'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
+                           <span class="text-danger fs-6"
+                              *ngIf=" (cf.title.touched || isSubmitted) && cf.title.errors?.required">Coupon title is
+                              required</span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Code</label>
+                           <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
+                            'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
+                           <span class="text-danger fs-6"
+                              *ngIf=" (cf.code.touched || isSubmitted) && cf.code.errors?.required">Coupon code is
+                              required</span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Type</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="type" [ngClass]="{
+                                 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="%">%</option>
+                              <option value="flat">Flat</option>
+                           </select>
+                           <span class="text-danger fs-6"
+                              *ngIf=" (cf.type.touched || isSubmitted) && cf.type.errors?.required">Coupon type is
+                              required</span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Value</label>
+                           <input type="text" class="form-control fs-5" formControlName="value" [ngClass]="{
+                            'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
+                           <span class="text-danger fs-6"
+                              *ngIf=" (cf.value.touched || isSubmitted) && cf.value.errors?.required">Coupon value is
+                              required</span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">From Date</label>
+                           <input type="date" class="form-control fs-5" formControlName="fromDate"
+                              [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
+                           <span class="text-danger fs-6"
+                              *ngIf="(cf.fromDate.touched || isSubmitted) && cf.fromDate.errors?.required">
+                              Coupon from date is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Last Date</label>
+                           <input type="date" class="form-control fs-5" formControlName="lastDate"
+                              [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
+                           <span class="text-danger fs-6"
+                              *ngIf="(cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required">
+                              Coupon last date is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Discount Value</label>
+                           <div class="input-group mb-3">
+                              <span class="input-group-text">Rs.</span>
+                              <input type="text" class="form-control" formControlName="maxDiscount" />
+                              <span class="input-group-text">.00</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Minimum Purchase</label>
+                           <div class="input-group mb-3">
+                              <span class="input-group-text">Rs.</span>
+                              <input type="text" class="form-control" formControlName="minPurchase" />
+                              <span class="input-group-text">.00</span>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Category</label>
+                           <select class="form-select" formControlName="categories" (change)="tagCategoryInput()"
+                              [ngClass]="{'is-invalid':  (cf.categories.touched || isSubmitted) && cf.categories.errors?.required}">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option *ngFor="let category of categoriesData" value="{{ category?._id }}">
+                                 {{ category?.name }}
+                              </option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf="(cf.categories.touched || isSubmitted) && cf.categories.errors?.required">Categories
+                              is required</span>
+                        </div>
+                        <div class="tag-inputs col-12">
+                           <ng-container *ngFor="let category of categoryNames">
+                              <span class="tag-input bg-primary text-white">{{ category }}
+                                 <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
+                              </span>
+                           </ng-container>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Products</label>
+                           <select class="form-select" formControlName="products" (change)="tagProductInput()"
+                              [ngClass]="{'is-invalid':  (cf.products.touched || isSubmitted) && cf.products.errors?.required}">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option *ngFor="let product of productsData" value="{{ product?._id }}">
+                                 {{ product?.name }}
+                              </option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf="(cf.products.touched || isSubmitted) && cf.products.errors?.required">
+                              Products is required
+                           </span>
+                        </div>
+                        <div class="tag-inputs col-12">
+                           <ng-container *ngFor="let product of productNames">
+                              <span class="tag-input bg-primary text-white">{{ product }}
+                                 <i class="bi bi-x" (click)="tagProductRemove(product)"></i>
+                              </span>
+                           </ng-container>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Collection</label>
+                           <select class="form-select" formControlName="products" (change)="tagCollectionInput()"
+                              [ngClass]="{'is-invalid':  (cf.collections.touched || isSubmitted) && cf.collections.errors?.required}">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option *ngFor="let collection of collectionsData" value="{{ collection?._id }}">
+                                 {{ collection?.name }}
+                              </option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf="(cf.collections.touched || isSubmitted) && cf.collections.errors?.required">
+                              Collections is required
+                           </span>
+                        </div>
+                        <div class="tag-inputs col-12">
+                           <ng-container *ngFor="let collection of collectionNames">
+                              <span class="tag-input bg-primary text-white">{{ collection }}
+                                 <i class="bi bi-x" (click)="tagCollectionRemove(collection)"></i>
+                              </span>
+                           </ng-container>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Multiple use per user?</label>
+                           <select class="form-select" formControlName="isMultiple" [ngClass]="{
+                            'is-invalid':(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required}">
+                              <option value="" disabled>
+                                 -- Select an option --
+                              </option>
+                              <option value="true">Yes</option>
+                              <option value="false">No</option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf="(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required">
+                              Active is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Active Product ?</label>
+                           <select class="form-select" formControlName="isActive" [ngClass]="{
+                            'is-invalid':(cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required}">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="true">Yes</option>
+                              <option value="false">No</option>
+                           </select>
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf=" (cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required">
+                              Active is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">Image</label>
+                           <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                              (change)="handleInputChange($event)"
+                              onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
+                              required>
+                        </div>
+                        <img id="preview">
+                     </div>
+                     <div class="col-12">
+                        <button type="submit" class="btn btn-primary fs-5">
+                           Submit
+                        </button>
+                     </div>
+                  </div>
+               </form>
+            </div>
          </div>
       </div>
    </div>

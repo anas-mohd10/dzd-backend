@@ -288,7 +288,7 @@
       </span>
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/overview">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.contacts.CONTACTS_LIST }}">
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -296,7 +296,17 @@
           </a>
         </div>
         <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
+          <a class="menu-link without-sub" routerLinkActive="active"
+            routerLink="{{ appRoute.invoiceSettings.INVOICE_SETTINGS_LIST }}">
+            <span class="menu-bullet">
+              <span class="bullet bullet-dot"></span>
+            </span>
+            <span class="menu-title">Invoice Settings</span>
+          </a>
+        </div>
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active"
+            routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST }}">
             <span class="menu-bullet">
               <span class="bullet bullet-dot"></span>
             </span>
@@ -338,14 +348,6 @@
               <span class="bullet bullet-dot"></span>
             </span>
             <span class="menu-title">Location</span>
-          </a>
-        </div>
-        <div class="menu-item">
-          <a class="menu-link without-sub" routerLinkActive="active" routerLink="/crafted/pages/profile/projects">
-            <span class="menu-bullet">
-              <span class="bullet bullet-dot"></span>
-            </span>
-            <span class="menu-title">Shipping</span>
           </a>
         </div>
         <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">

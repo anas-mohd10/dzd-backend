@@ -207,6 +207,16 @@ export const Routing: Routes = [
         path: 'coupons',
         loadChildren: () => import('./marketing/coupons/coupons.module').then((m) => m.CouponsModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'contacts',
+        loadChildren: () => import('./settings/general/contact/contact.module').then((m) => m.ContactModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'social-media',
+        loadChildren: () => import('./settings/general/social.media/social.media.module').then((m) => m.SocialMediaModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },
