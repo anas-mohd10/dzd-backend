@@ -217,6 +217,10 @@ export const Routing: Routes = [
         path: 'social-media',
         loadChildren: () => import('./settings/general/social.media/social.media.module').then((m) => m.SocialMediaModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'invoice-settings',
+        loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) =>m. InvoiceSettingsModule)
       }
     ]
   },

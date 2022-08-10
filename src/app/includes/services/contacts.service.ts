@@ -11,6 +11,11 @@ export class ContactsService {
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
+  addContact(data: any) {
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.add_contact);
+    return this.http.post(`${url}`, data);
+  }
+
   getContacts() {
     const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contact);
     return this.http.get(`${url}`);

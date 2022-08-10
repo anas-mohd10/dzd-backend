@@ -110,5 +110,6 @@ export const appRoutes = {
     INVOICE_SETTINGS_LIST: `${app}${invoiceSettingRoute}`,
     ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
-  }
+  },
+  
 };

@@ -13,19 +13,29 @@
                   <a routerLink="{{ appRoute.contacts.CONTACTS_LIST}}">Contacts</a>
                </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+            <button class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary" style="width: 200px"
                routerLink="{{ appRoute.contacts.ADD_CONTACTS_LIST }}">
                Add Contacts
             </button>
          </div>
       </div>
    </div>
-   <div class="contact-container">
+   <div class="contact-container" style="margin-top: 60px;">
+      <div style="display: none"> {{contactsData.length}}</div>
       <ng-container *ngFor="let contact of contactsData">
-         <div class="col-xl-4">
-            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
-               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="341"
-               description="Total Orders"></app-stats-widget5>
+         <div class="col-xl-4 contact-card">
+            <div class="contact-name fs-3 fw-bold">{{contact?.name}}</div>
+            <div class="contact-email fs-4">{{contact?.email}}</div>
+            <div class="contact-mobile fs-4">{{contact?.mobile}}</div>
+            <br>
+            <div class="contact-address-area">{{contact?.address[0]?.firstline}}, {{contact?.address[0]?.area}}</div>
+            <div class="contact-address-city">{{contact?.address[0]?.city}}, {{contact?.address[0]?.state}}</div>
+            <div class="contact-pincode">{{contact?.address[0]?.pincode}}</div>
+            <br>
+            <div class="edit-btn fs-5">
+               <a routerLink="{{ appRoute.contacts.UPDATE_CONTACTS_LIST }}" [queryParams]="{slug: contact?.slug}">Edit
+                  info</a>
+            </div>
          </div>
       </ng-container>
    </div>
