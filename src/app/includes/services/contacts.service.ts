@@ -20,4 +20,14 @@ export class ContactsService {
     const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contact);
     return this.http.get(`${url}`);
   }
+
+  getContactBySlug(slug: any) {
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contact_by_slug + "?slug=" + slug);
+    return this.http.get(`${url}`);
+  }
+
+  updateContact(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.update_contact + "?slug=" + slug);
+    return this.http.put(`${url}`, data);
+  }
 }

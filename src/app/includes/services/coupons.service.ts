@@ -18,6 +18,7 @@ export class CouponsService {
 
   getCoupons() {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon);
+    console.log(url);
     return this.http.get(`${url}`);
   }
 
@@ -29,9 +30,9 @@ export class CouponsService {
   getCouponBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);
-   }
+  }
 
-  updateCoupon(slug: any, data: any) { 
+  updateCoupon(slug: any, data: any) {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.update_coupon + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }

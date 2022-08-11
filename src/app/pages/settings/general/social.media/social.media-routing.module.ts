@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddSocialMediaComponent } from './add-social-media/add-social-media.component';
+import { AddSocialNediaComponent } from './add-social-nedia/add-social-nedia.component';
 import { SocialMediaListComponent } from './social-media-list/social-media-list.component';
-import { UpdateSocialMediaComponent } from './update-social-media/update-social-media.component';
+import { UpdateSocialNediaComponent } from './update-social-nedia/update-social-nedia.component';
 
 const routes: Routes = [
   { path: '', component: SocialMediaListComponent },
-  { path: 'add', component: AddSocialMediaComponent },
-  { path: 'update', component: UpdateSocialMediaComponent }
+  { path: 'add', component: AddSocialNediaComponent },
+  { path: 'update', component: UpdateSocialNediaComponent }
 ];
 
 @NgModule({

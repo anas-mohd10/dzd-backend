@@ -47,7 +47,6 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-
   managePage() {
     switch (this.task) {
       case PageTasks.ADD:

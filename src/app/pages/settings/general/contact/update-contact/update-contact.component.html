@@ -1,1 +1,204 @@
-<p>update-contact works!</p>
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Contacts" : "Add Contacts" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.contacts.CONTACTS_LIST }}">Contacts</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.contacts.ADD_CONTACTS_LIST}}">
+                     {{ editMode ? "Update Contacts" : "Add Contacts"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-sm-12 fs-6">
+      <div class="card">
+         <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="contactsForm">
+               <div class="row">
+                  <div class="col-12">
+                     <h5 class="form-title fs-4"><span>Contact details</span></h5>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Name</label>
+                        <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                           'is-invalid':
+                           (ctf.name.touched || isSubmitted) &&
+                           ctf.name.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.name.touched || isSubmitted) &&
+                           ctf.name.errors?.required
+                       ">Name is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Email</label>
+                        <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                           'is-invalid':
+                           (ctf.email.touched || isSubmitted) &&
+                           ctf.email.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.email.touched || isSubmitted) &&
+                           ctf.email.errors?.required
+                       ">Email is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Mobile No.</label>
+                        <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                           'is-invalid':
+                           (ctf.mobile.touched || isSubmitted) &&
+                           ctf.mobile.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.mobile.touched || isSubmitted) &&
+                           ctf.mobile.errors?.required
+                       ">Mobile is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3">Status</label>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           formControlName="isActive">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="true">Active</option>
+                           <option value="false">Inactive</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <h5 class="form-title fs-4"><span>Address details</span></h5>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Address line 1</label>
+                        <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
+                           'is-invalid':
+                           (ctf.firstline.touched || isSubmitted) &&
+                           ctf.firstline.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.firstline.touched || isSubmitted) &&
+                           ctf.firstline.errors?.required
+                       ">Address line 1 is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Address line 2</label>
+                        <input type="text" class="form-control fs-6" formControlName="secondline" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Area</label>
+                        <input type="text" class="form-control fs-6" formControlName="area" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> City</label>
+                        <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
+                           'is-invalid':
+                           (ctf.city.touched || isSubmitted) &&
+                           ctf.city.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.city.touched || isSubmitted) &&
+                           ctf.city.errors?.required
+                       ">City is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Pincode</label>
+                        <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                           'is-invalid':
+                           (ctf.pincode.touched || isSubmitted) &&
+                           ctf.pincode.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.pincode.touched || isSubmitted) &&
+                           ctf.pincode.errors?.required
+                       ">Pincode is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Latitude</label>
+                        <input type="text" class="form-control fs-6" formControlName="lat" [ngClass]="{
+                           'is-invalid':
+                           (ctf.lat.touched || isSubmitted) &&
+                           ctf.lat.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.lat.touched || isSubmitted) &&
+                           ctf.lat.errors?.required
+                       ">Latitude is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3"> Longitude</label>
+                        <input type="text" class="form-control fs-6" formControlName="lng" [ngClass]="{
+                           'is-invalid':
+                           (ctf.lng.touched || isSubmitted) &&
+                           ctf.lng.errors?.required
+                         }" />
+                        <span class="text-danger error-msg fs-6" *ngIf="
+                           (ctf.lng.touched || isSubmitted) &&
+                           ctf.lng.errors?.required
+                       ">Longitude is required
+                        </span>
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3">State</label>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           formControlName="state">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="Kerala">Kerala</option>
+                           <option value="Karnataka">Karnataka</option>
+                           <option value="Tamilnadu">Tamilnadu</option>
+                           <option value="Goa">Goa</option>
+                           <option value="Maharastra">Maharastra</option>
+                           <option value="Gujarat">Gujarat</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                        Submit
+                     </button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>

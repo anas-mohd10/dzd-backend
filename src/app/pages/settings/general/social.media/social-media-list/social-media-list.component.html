@@ -1,1 +1,31 @@
-<p>social-media-list works!</p>
+<div class="coupon-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Social media links</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary" style="width: 200px"
+               routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
+               Add links
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-10">
+      <div class="col-sm-12 fs-5">
+         <div class="card">
+            <div class="card-body">
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

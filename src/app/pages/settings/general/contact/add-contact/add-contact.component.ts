@@ -73,6 +73,7 @@ export class AddContactComponent implements OnInit {
       this.addContact();
     }
   }
+
   addContact() {
     if (!this.contactsForm.valid) {
       this.toastr.error('Something wrong occured');
@@ -104,6 +105,7 @@ export class AddContactComponent implements OnInit {
       }
     })
   }
+  
   updateContact() {
   }
 }

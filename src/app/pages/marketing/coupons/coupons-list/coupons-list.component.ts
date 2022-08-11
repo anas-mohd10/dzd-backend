@@ -40,7 +40,18 @@ export class CouponsListComponent implements OnInit {
 
   getCoupons() {
     this.couponService.getCoupons().subscribe((res: any) => {
+      console.log(res?.result);
       this.couponsData = res?.result
+      for (let i = 0; i < this.couponsData.length; i++) {
+        this.couponsData[i].fromDate = new Date(
+          this.couponsData[i].fromDate
+        ).toDateString();
+      }
+      for (let i = 0; i < this.couponsData.length; i++) {
+        this.couponsData[i].lastDate = new Date(
+          this.couponsData[i].lastDate
+        ).toDateString();
+      }
       this.dtTrigger.next();
       this.displayTable = true;
     })

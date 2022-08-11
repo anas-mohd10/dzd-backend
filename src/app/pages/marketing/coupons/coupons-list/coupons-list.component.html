@@ -13,7 +13,7 @@
                   <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
                </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+            <button class="btn btn-primary cursor-pointer btn-sm fs-5" color="primary" style="width: 200px;"
                routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
                Add Coupons
             </button>
@@ -34,6 +34,7 @@
                            <th class="text-dark fw-bolder fs-4">Sl No.</th>
                            <th class="text-dark fw-bolder fs-4">Coupons</th>
                            <th class="text-dark fw-bolder fs-4">Code</th>
+                           <th class="text-dark fw-bolder fs-4">Type</th>
                            <th class="text-dark fw-bolder fs-4">Discount</th>
                            <th class="text-dark fw-bolder fs-4">Image</th>
                            <th class="text-dark fw-bolder fs-4">Valid From</th>
@@ -48,27 +49,25 @@
                               <h2 class="table-avatar">{{ i + 1 }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ coupon?.name }}</h2>
+                              <h2 class="table-avatar fs-5">{{ coupon?.title }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ coupon?.description }}</h2>
+                              <h2 class="table-avatar fs-5">{{ coupon?.code }}</h2>
                            </td>
                            <td>
-                              <img class="coupon-image" src="http://localhost:3000/{{coupon?.file}}" alt="coupon" />
+                              <h2 class="table-avatar fs-5">{{ coupon?.type }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar fs-5">{{ coupon?.value }}</h2>
+                           </td>
+                           <td>
+                              <img class="coupon-logo" src="http://localhost:3000/{{coupon?.file}}" alt="coupon" />
                            </td>
                            <td>
                               <h2 class="table-avatar fs-5">{{ coupon?.fromDate }}</h2>
                            </td>
                            <td>
                               <h2 class="table-avatar fs-5">{{ coupon?.lastDate }}</h2>
-                           </td>
-                           <td>
-                              <ng-container *ngIf="coupon?.isFeatured == true">
-                                 <h2 class="table-avatar avatar-item fs-5">Yes</h2>
-                              </ng-container>
-                              <ng-container *ngIf="coupon?.isFeatured == false">
-                                 <h2 class="table-avatar avatar-item fs-5">No</h2>
-                              </ng-container>
                            </td>
                            <td>
                               <ng-container *ngIf="coupon?.isActive == true">

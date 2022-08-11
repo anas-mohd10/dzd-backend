@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateSocialMediaComponent } from './update-social-media.component';
+import { AddSocialNediaComponent } from './add-social-nedia.component';
 
-describe('UpdateSocialMediaComponent', () => {
-  let component: UpdateSocialMediaComponent;
-  let fixture: ComponentFixture<UpdateSocialMediaComponent>;
+describe('AddSocialNediaComponent', () => {
+  let component: AddSocialNediaComponent;
+  let fixture: ComponentFixture<AddSocialNediaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UpdateSocialMediaComponent ]
+      declarations: [ AddSocialNediaComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateSocialMediaComponent);
+    fixture = TestBed.createComponent(AddSocialNediaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

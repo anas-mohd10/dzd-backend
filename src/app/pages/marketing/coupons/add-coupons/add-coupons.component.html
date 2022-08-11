@@ -166,7 +166,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3">Collection</label>
-                           <select class="form-select" formControlName="products" (change)="tagCollectionInput()"
+                           <select class="form-select" formControlName="collections" (change)="tagCollectionInput()"
                               [ngClass]="{'is-invalid':  (cf.collections.touched || isSubmitted) && cf.collections.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
                               <option *ngFor="let collection of collectionsData" value="{{ collection?._id }}">
@@ -229,7 +229,7 @@
                         <img id="preview">
                      </div>
                      <div class="col-12">
-                        <button type="submit" class="btn btn-primary fs-5">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px;">
                            Submit
                         </button>
                      </div>

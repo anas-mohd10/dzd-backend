@@ -63,7 +63,7 @@ export class AddCouponsComponent implements OnInit {
       minPurchase: [''],
       categories: [Validators.required],
       products: [Validators.required],
-      collections: [Validators.required],
+      collections: [[''], Validators.required],
       isMultiple: ['false', Validators.required],
       isActive: ['true', Validators.required],
     });
@@ -173,7 +173,18 @@ export class AddCouponsComponent implements OnInit {
     this.couponForm.get('collections')?.setValue('');
   }
 
-  tagCollectionRemove(collection: any) { }
+
+  tagCollectionRemove(collection: any) {
+    const index = this.collectionNames.indexOf(collection);
+    if (index > -1) {
+      this.collectionNames.splice(index, 1); 
+    }
+    for (let i = 0; i < this.collectionsData.length; i++) {
+      if (this.collectionsData[i].name == collection) {
+        this.collectionsId.pop(this.collectionsData[i]._id);
+      }
+    }
+  }
 
   handleInputChange(fileInput: any) {
     const file = fileInput.dataTransfer
@@ -202,29 +213,24 @@ export class AddCouponsComponent implements OnInit {
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
     }
-    formData.append('title', this.couponForm.value?.title);
-    formData.append('code', this.couponForm.value?.code);
-    formData.append('type', this.couponForm.value?.type);
-    formData.append('value', this.couponForm.value?.value);
-    formData.append('fromDate', new Date(this.couponForm.value?.fromDate).toDateString());
-    formData.append('lastDate', new Date(this.couponForm.value?.lastDate).toDateString());
-    formData.append('maxDiscount', this.couponForm.value?.maxDiscount);
-    formData.append('minPurchase', this.couponForm.value?.minPurchase);
-    formData.append('categories', this.categoriesId);
-    formData.append('products', this.productsId);
-    formData.append('collections', this.collectionsId);
-    formData.append('isMultiple', this.couponForm.value?.isMultiple);
-    formData.append('isActive', this.couponForm.value?.isActive);
 
-    console.log("Form data values :: " + formData);
+    for (const data of Object.keys(this.couponForm.value)) {
+      if (data != 'collections' || 'categories' || 'products') {
+        formData.append(data, this.couponForm.value[data]);
+      }
+    }
 
-    // this.couponsService.addCoupon(formData).subscribe((res: any) => {
-    //   if (res.errorCode != 0) {
-    //     this.toastr.error('Something went wrong');
-    //   } else if (res.errorCode == 0) {
-    //     this.toastr.success('Coupons added successfully');
-    //     this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
-    //   }
-    // })
+    formData.append('categories', JSON.stringify(this.categoriesId));
+    formData.append('products', JSON.stringify(this.productsId));
+    formData.append('collections', JSON.stringify(this.collectionsId));
+
+    this.couponsService.addCoupon(formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Coupons added successfully');
+        this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
+      }
+    })
   }
 }
