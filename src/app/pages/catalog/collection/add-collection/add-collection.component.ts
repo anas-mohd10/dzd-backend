@@ -40,7 +40,7 @@ export class AddCollectionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get value(): string[] {
     return this.productValue;
@@ -107,33 +107,33 @@ export class AddCollectionComponent implements OnInit {
   }
 
   tagInput() {
-    if(!this.valueArray.includes(this.collectionForm.get("products")?.value)){
+    if (!this.valueArray.includes(this.collectionForm.get("products")?.value)) {
       this.valueArray.push(this.collectionForm.get("products")?.value)
       this.getProductNames(this.collectionForm.get("products")?.value)
-    }else{
+    } else {
       this.toastr.info('Product Already Added');
     }
     this.collectionForm.get("products")?.setValue('')
   }
 
-  getProductNames(value: any){
-    for(let i=0; i<this.productArray.length; i++){
-      if(this.productArray[i]._id == value){
+  getProductNames(value: any) {
+    for (let i = 0; i < this.productArray.length; i++) {
+      if (this.productArray[i]._id == value) {
         this.productNames.push(this.productArray[i].name)
       }
     }
   }
 
   tagRemove(value: any) {
-    if(this.productNames.includes(value)){
+    if (this.productNames.includes(value)) {
       this.productNames.pop(value)
       this.getProductId(value)
     }
   }
 
-  getProductId(value: any){
-    for(let i=0; i<this.productArray.length; i++){
-      if(this.productArray[i].name == value){
+  getProductId(value: any) {
+    for (let i = 0; i < this.productArray.length; i++) {
+      if (this.productArray[i].name == value) {
         this.valueArray.pop(this.productArray[i]._id)
       }
     }
@@ -157,6 +157,7 @@ export class AddCollectionComponent implements OnInit {
 
   addCollection() {
     if (!this.collectionForm.valid) {
+      console.error("error");
       return;
     }
 
@@ -183,5 +184,5 @@ export class AddCollectionComponent implements OnInit {
     });
   }
 
-  updateCollection() {}
+  updateCollection() { }
 }
