@@ -104,7 +104,7 @@ export const appRoutes = {
   socialMedia: {
     SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}`,
     ADD_SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}/add`,
-    UPDATE_SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}/update`
+    UPDATE_SOCIAL_MEDIA_LIST: `${app}${socialMediaRoute}/manage`
   },
   invoiceSettings: {
     INVOICE_SETTINGS_LIST: `${app}${invoiceSettingRoute}`,

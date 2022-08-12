@@ -13,17 +13,64 @@
                   <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
                </li>
             </ul>
-            <button class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary" style="width: 200px"
-               routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
+            <button *ngIf="!isData" class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary"
+               style="width: 200px" routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
                Add links
             </button>
          </div>
+
+
       </div>
    </div>
    <div class="row mt-10">
       <div class="col-sm-12 fs-5">
          <div class="card">
+            <div style="display: none;">{{socialMediaData.length}}</div>
             <div class="card-body">
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">Facebook</span>
+                  <span class="card-url">{{socialMediaData ? socialMediaData?.facebook : " - "}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+               </div>
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">Instagram</span>
+                  <span  class="card-url">{{socialMediaData?.instagram ? socialMediaData?.instagram : " - "}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+               </div>
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">Whatsapp</span>
+                  <span class="card-url">{{socialMediaData?.whatsapp ? socialMediaData?.whatsapp : " - "}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+
+               </div>
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">Twitter</span>
+                  <span class="card-url">{{socialMediaData?.twitter ? socialMediaData?.twitter : " - "}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+               </div>
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">Behance</span>
+                  <span class="card-url">{{socialMediaData?.behance ? socialMediaData?.behance : " -"}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+
+               </div>
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">YouTube</span>
+                  <span class="card-url">{{socialMediaData?.youtube ? socialMediaData?.youtube : " - "}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+               </div>
+               <div class="social-card-item">
+                  <span class="card-title fs-5 fw-bold">LinkedIn</span>
+                  <span class="card-url">{{socialMediaData?.linkedin ? socialMediaData?.linkedin : " - "}} <span
+                        class="card-edit-link"><a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
+                           [queryParams]="{item: socialMediaData?.slug}">Edit link</a></span></span>
+               </div>
             </div>
          </div>
       </div>

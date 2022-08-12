@@ -1,0 +1,19 @@
+.social-card-item {
+   height: 80px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   background: #ffffff;
+   box-shadow: 0 0px 35px rgba(0, 0, 0, 0.1);
+   border-radius: 10px;
+   margin: 10px 0;
+   padding: 0 20px;
+}
+
+.card-url {
+   height: 100%;
+   width: 80%;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
