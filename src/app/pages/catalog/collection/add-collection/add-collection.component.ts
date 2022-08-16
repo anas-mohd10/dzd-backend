@@ -59,7 +59,7 @@ export class AddCollectionComponent implements OnInit {
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
-      file: ['', Validators.required],
+      file: [''],
       products: [Validators.required],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
@@ -156,6 +156,8 @@ export class AddCollectionComponent implements OnInit {
   }
 
   addCollection() {
+
+    console.log(this.collectionForm.value);
     if (!this.collectionForm.valid) {
       console.error("error");
       return;

@@ -19,7 +19,7 @@ export class CategoryComponent implements OnInit {
   categoryData: any;
   displayTable: boolean;
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService) { }
 
 
   ngOnInit(): void {
@@ -36,7 +36,8 @@ export class CategoryComponent implements OnInit {
     this.categoryService.getCategory().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.categoryData = res?.result;
+          this.categoryData = res?.result;3
+          // this.categoryData[3]?.rootId.name + " > " + this.categoryData[3]?.parentId.parentId.name + " >  " + this.categoryData[3]?.parentId.name;
           break;
       }
       // this.dtTrigger.next();

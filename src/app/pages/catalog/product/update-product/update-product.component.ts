@@ -14,11 +14,14 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
+import { AttributeService } from 'src/app/includes/services/attribute.service';
+
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.scss'],
 })
+
 export class UpdateProductComponent implements OnInit {
   productForm: FormGroup;
   task = PageTasks.UPDATE;
@@ -51,7 +54,6 @@ export class UpdateProductComponent implements OnInit {
   relProductIds: any = [];
   returnValue: any;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -60,6 +62,7 @@ export class UpdateProductComponent implements OnInit {
     private brandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
+    private attributeService: AttributeService,
     private toastr: ToastrService
   ) { }
 
@@ -182,7 +185,7 @@ export class UpdateProductComponent implements OnInit {
     } else {
       this.toastr.info('Category Already Added');
     }
-    this.productForm.get('categories')?.setValue('');
+    // this.productForm.get('categories')?.setValue('');
   }
 
   tagCategoryRemove(category: any) {
@@ -309,7 +312,7 @@ export class UpdateProductComponent implements OnInit {
         }
       }
       for (let tax of this.taxClassData) {
-        if (this.productData.taxClassId == tax._id) {
+        if (this.productData.taxClassId._id == tax._id) {
           this.productForm.get('taxClassId')?.setValue(tax._id);
         }
       }

@@ -9,7 +9,7 @@ export const Routing: Routes = [
       {
         path: 'dashboard',
         loadChildren: () => import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'brand',
@@ -27,7 +27,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'category',
@@ -45,7 +45,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./catalog/category/update-category/update-category.module').then((m) => m.UpdateCategoryModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'attribute',
@@ -63,7 +63,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./catalog/attritube/update-attribute/update-attribute.module').then((m) => m.UpdateAttributeModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'collection',
@@ -81,7 +81,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'product',
@@ -99,7 +99,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./catalog/product/update-product/update-product.module').then((m) => m.UpdateProductModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'variant-product',
@@ -117,7 +117,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./catalog/variant-product/update-variant-product/update-variant-product.module').then((m) => m.UpdateVariantProductModule),
           }
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'offer',
@@ -135,7 +135,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'tax-classes',
@@ -153,7 +153,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./settings/localization/tax/tax-classes/update-tax-class/update-tax-class.component.module').then((m) => m.UpdateTaxClassModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'tax-rules',
@@ -171,7 +171,7 @@ export const Routing: Routes = [
             loadChildren: () => import('./settings/localization/tax/tax-rules/update-tax-rules/update-tax-rules.component.module').then((m) => m.UpdateTaxClassModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'shipping',
@@ -181,42 +181,42 @@ export const Routing: Routes = [
             loadChildren: () => import('./sales/shipping/shipping-list/shipping-list.module').then((m) => m.ShippingModule),
           },
         ],
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'admin-users',
         loadChildren: () => import('./users/admin/admin.module').then((m) => m.AdminModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'roles',
         loadChildren: () => import('./roles/roles.module').then((m) => m.RolesModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'orders',
         loadChildren: () => import('./sales/orders/orders.module').then((m) => m.OrdersModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'customers',
         loadChildren: () => import('./users/customers/customers.module').then((m) => m.CustomersModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'coupons',
         loadChildren: () => import('./marketing/coupons/coupons.module').then((m) => m.CouponsModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'contacts',
         loadChildren: () => import('./settings/general/contact/contact.module').then((m) => m.ContactModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'social-media',
         loadChildren: () => import('./settings/general/social.media/social.media.module').then((m) => m.SocialMediaModule),
-        // canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard]
       },
       {
         path: 'invoice-settings',
