@@ -34,7 +34,7 @@
                         <div class="form-group">
                            <label class="fs-6 mb-3">Customer</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="customer"
+                              formControlName="customer" (change)="getAddress()"
                               [ngClass]="{ 'is-invalid': (of.customer.touched || isSubmitted) && of.customer.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
                               <option *ngFor="let cust of activeCustomersData" value="{{[cust?._id, cust?.slug]}}">
@@ -58,7 +58,7 @@
                            <label class="fs-6 mb-3">Payment method</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="paymentMethod"
-                              [ngClass]="{ 'is-invalid': (of.lng.touched || isSubmitted) && of.lng.errors?.required}">
+                              [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
                               <option value="CASH">Cash</option>
                               <option value="SPLIT">Split</option>
@@ -79,6 +79,9 @@
                               formControlName="coupon"
                               [ngClass]="{ 'is-invalid': (of.coupon.touched || isSubmitted) && of.coupon.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
+                              <option *ngFor="let coupon of activeCoupons" value="{{coupon?._id}}">
+                                 {{coupon?.title}}
+                              </option>
                            </select>
                            <span class="text-danger error-msg fs-6"
                               *ngIf=" (of.coupon.touched || isSubmitted) && of.coupon.errors?.required ">
@@ -92,10 +95,46 @@
                            <input type="text" formControlName="gst" class="form-control fs-6">
                         </div>
                      </div>
-                     <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Products details</span></h5>
+                     <div class="product-add-container" formArrayName="products">
+                        <div class="col-12 d-flex align-items-center justify-content-between">
+                           <h5 class="form-title fs-4"><span>Products details</span></h5>
+                           <button type="button" (click)="addQuantity()" class="btn btn-secondary"
+                              style="width: 200px">Add
+                              Product</button>
+                        </div>
+                        <div class="col-12" *ngFor="let product of products().controls; let i=index" [formGroupName]="i"
+                           style="margin-top: 40px">
+                           <div class="col-12 col-sm-6">
+                              <div class="form-group">
+                                 <label class="fs-6 mb-3">Product</label>
+                                 <select class="form-select form-select-lg" aria-label=".form-select-lg"
+                                    formControlName="product">
+                                    <option value="disabled" disabled>-- Select an option --</option>
+                                    <option *ngFor="let prod of activeProducts" value="{{prod?._id}}">
+                                       {{prod?.name}}
+                                    </option>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="col-12 col-sm-6">
+                              <label class="fs-6 mb-3">Quantity</label>
+                              <div class="form-group d-flex align-items-center">
+                                 <input type="text" class="form-control fs-6" id="quantity" formControlName="quantity">
+                              </div>
+                           </div>
+                           <div class="col-12">
+                              <button type="button" (click)="removeQuantity(i)" class="btn btn-danger"
+                                 style="width: 200px">Remove
+                              </button>
+                           </div>
+                           <hr style="height: 1px; width: 100%; background: #aaaaaa">
+                        </div>
                      </div>
-                     
+                     <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                           Submit
+                        </button>
+                     </div>
                   </div>
                </form>
             </div>
