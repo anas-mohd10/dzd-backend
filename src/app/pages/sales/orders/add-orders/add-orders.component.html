@@ -10,10 +10,10 @@
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
                <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Orders</a>
+                  <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
                </li>
                <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
+                  <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST}}">
                      {{ editMode ? "Update Orders" : "Add Orders"}}
                   </a>
                </li>
@@ -30,8 +30,8 @@
                      <div class="col-12">
                         <h5 class="form-title fs-4"><span>Orders details</span></h5>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
+                     <div class="col-12">
+                        <div class="form-group col-sm-6">
                            <label class="fs-6 mb-3">Customer</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="customer" (change)="getAddress()"
@@ -47,11 +47,128 @@
                            </span>
                         </div>
                      </div>
+                     <div class="col-12">
+                        <h5 class="form-title fs-4"><span>Address details</span></h5>
+                     </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Customer Address</label>
-                           <input type="text" formControlName="address" class="form-control fs-6">
+                           <label class="fs-6 mb-3"> Address line 1</label>
+                           <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
+                                 'is-invalid':
+                                 (of.firstline.touched || isSubmitted) &&
+                                 of.firstline.errors?.required
+                               }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                                 (of.firstline.touched || isSubmitted) &&
+                                 of.firstline.errors?.required
+                             ">Address line 1 is required
+                           </span>
                         </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Address line 2</label>
+                           <input type="text" class="form-control fs-6" formControlName="secondline" />
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Area</label>
+                           <input type="text" class="form-control fs-6" formControlName="area" />
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> City</label>
+                           <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
+                                 'is-invalid':
+                                 (of.city.touched || isSubmitted) &&
+                                 of.city.errors?.required
+                               }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                                 (of.city.touched || isSubmitted) &&
+                                 of.city.errors?.required
+                             ">City is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Landmark</label>
+                           <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
+                                 'is-invalid':
+                                 (of.landmark.touched || isSubmitted) &&
+                                 of.landmark.errors?.required
+                               }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                                 (of.landmark.touched || isSubmitted) &&
+                                 of.landmark.errors?.required
+                             ">Landmark is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Pincode</label>
+                           <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                                 'is-invalid':
+                                 (of.pincode.touched || isSubmitted) &&
+                                 of.pincode.errors?.required
+                               }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                                 (of.pincode.touched || isSubmitted) &&
+                                 of.pincode.errors?.required
+                             ">Pincode is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Latitude</label>
+                           <input type="text" class="form-control fs-6" formControlName="lat" [ngClass]="{
+                                 'is-invalid':
+                                 (of.lat.touched || isSubmitted) &&
+                                 of.lat.errors?.required
+                               }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                                 (of.lat.touched || isSubmitted) &&
+                                 of.lat.errors?.required
+                             ">Latitude is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Longitude</label>
+                           <input type="text" class="form-control fs-6" formControlName="lng" [ngClass]="{
+                                 'is-invalid':
+                                 (of.lng.touched || isSubmitted) &&
+                                 of.lng.errors?.required
+                               }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                                 (of.lng.touched || isSubmitted) &&
+                                 of.lng.errors?.required
+                             ">Longitude is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">State</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="state">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="Kerala">Kerala</option>
+                              <option value="Karnataka">Karnataka</option>
+                              <option value="Tamilnadu">Tamilnadu</option>
+                              <option value="Goa">Goa</option>
+                              <option value="Maharastra">Maharastra</option>
+                              <option value="Gujarat">Gujarat</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <h5 class="form-title fs-4"><span>Other details</span></h5>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
@@ -108,7 +225,7 @@
                               <div class="form-group">
                                  <label class="fs-6 mb-3">Product</label>
                                  <select class="form-select form-select-lg" aria-label=".form-select-lg"
-                                    formControlName="product">
+                                    formControlName="productId">
                                     <option value="disabled" disabled>-- Select an option --</option>
                                     <option *ngFor="let prod of activeProducts" value="{{prod?._id}}">
                                        {{prod?.name}}

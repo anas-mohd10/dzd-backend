@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { OrdersService } from 'src/app/includes/services/orders.service';
 
 @Component({
   selector: 'app-orders-list',
@@ -15,10 +16,14 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes
-  totalOrders: Number = 0
   displayTable: boolean = false;
+  ordersData: any;
+  orderCount: any
+  totalRevenue: Number = 0
 
-  constructor() { }
+  constructor(
+    private ordersService: OrdersService
+  ) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -30,7 +35,16 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     this.getOrders()
   }
 
-  getOrders() { }
+  getOrders() {
+    this.ordersService.getOrders().subscribe((res: any) => {
+      this.ordersData = res?.result
+      this.orderCount = this.ordersData.length
+      for (let order of this.ordersData) {
+        order.orderDate = new Date(order.orderDate).toDateString()
+        this.totalRevenue += order.total
+      }
+    })
+  }
 
   onSubmit() { }
 

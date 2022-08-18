@@ -31,11 +31,13 @@ export class OrdersService {
 
   getOrdersByNumber(number: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_orderno + "?number=" + number);
+    console.log(url);
+
     return this.http.get(`${url}`)
   }
 
   updateOrder(number: any, data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_orderno + "?number=" + number);
+    const url = this.commonService.getFullUrl(this.orderEndpoints.update_order + "?number=" + number);
     return this.http.put(`${url}`, data)
   }
 }

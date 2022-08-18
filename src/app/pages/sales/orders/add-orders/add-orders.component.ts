@@ -49,8 +49,16 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm = this.formBuilder.group({
       paymentMethod: ['', Validators.required],
       customer: ['', Validators.required],
-      address: ['', Validators.required],
-      gst: ['', Validators.required],
+      firstline: ['', Validators.required],
+      secondline: [''],
+      area: [''],
+      city: ['', Validators.required],
+      pincode: ['', Validators.required],
+      state: ['', Validators.required],
+      gst: [''],
+      landmark: ['', Validators.required],
+      lat: [''],
+      lng: [''],
       coupon: ['', Validators.required],
       products: this.formBuilder.array([]),
     });
@@ -95,11 +103,15 @@ export class AddOrdersComponent implements OnInit {
     let data = this.orderForm.get("customer")?.value
     let slug = data.split(',')[1]
     this.customerService.getCustomerBySlug(slug).subscribe((res: any) => {
-      this.custAddress = res?.result[0].address[0].firstline + ", " +
-        res?.result[0].address[0].secondline + ", " +
-        res?.result[0].address[0].city + ", " +
-        res.result[0].address[0].pincode
-      this.orderForm.get("address")?.setValue(this.custAddress)
+      this.orderForm.get("firstline")?.setValue(res?.result[0].address[0].firstline)
+      this.orderForm.get("secondline")?.setValue(res?.result[0].address[0].secondline)
+      this.orderForm.get("city")?.setValue(res?.result[0].address[0].city)
+      this.orderForm.get("area")?.setValue(res?.result[0].address[0].area)
+      this.orderForm.get("pincode")?.setValue(res?.result[0].address[0].pincode)
+      this.orderForm.get("lat")?.setValue(res?.result[0].address[0].lat)
+      this.orderForm.get("lng")?.setValue(res?.result[0].address[0].lng)
+      this.orderForm.get("state")?.setValue(res?.result[0].address[0].state)
+      this.orderForm.get("landmark")?.setValue(res?.result[0].address[0].landmark)
     })
   }
 
@@ -109,7 +121,7 @@ export class AddOrdersComponent implements OnInit {
 
   newProduct(): FormGroup {
     return this.formBuilder.group({
-      product: '',
+      productId: '',
       quantity: '',
     })
   }
@@ -135,18 +147,44 @@ export class AddOrdersComponent implements OnInit {
 
   addOrder() {
     if (!this.orderForm.valid) {
-      this.toastr.error('Something wrong occured');
+      this.toastr.error('Kindly fill required fields', '', {
+        progressBar: true,
+        easing: 'ease-in'
+      });
       return;
     }
 
     let data = this.orderForm.value
-    data.customer = data.customer.split(",")[0]
+    let payload = {
+      customerId: data.customer.split(",")[0],
+      address: {
+        firstline: data.firstline,
+        secondline: data.secondline,
+        area: data.area,
+        city: data.city,
+        pincode: data.pincode,
+        state: data.state,
+        lat: data.lat,
+        lng: data.lng,
+        landmark: data.landmark,
+      },
+      couponId: data.coupon,
+      product: data.products,
+      gst: data.gst,
+      paymentMethod: data.paymentMethod
+    }
 
-    this.orderService.addOrder(data).subscribe((res: any) => {
+    this.orderService.addOrder(payload).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error('Something went wrong', '', {
+          progressBar: true,
+          easing: 'ease-in'
+        });
       } else if (res.errorCode == 0) {
-        this.toastr.success('Order placed successfully');
+        this.toastr.success('Order placed successfully', '', {
+          progressBar: true,
+          easing: 'ease-in'
+        });
         this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
       }
     })
