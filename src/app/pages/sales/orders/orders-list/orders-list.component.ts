@@ -3,6 +3,9 @@ import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { OrdersService } from 'src/app/includes/services/orders.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-orders-list',
@@ -18,11 +21,16 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   appRoute = appRoutes
   displayTable: boolean = false;
   ordersData: any;
-  orderCount: any
+  orderCount: Number = 0
   totalRevenue: Number = 0
+  orderForm: FormGroup;
 
   constructor(
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit(): void {
@@ -33,12 +41,22 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       processing: true,
     };
     this.getOrders()
+    this.initForm()
+  }
+
+  initForm() {
+    this.orderForm = this.formBuilder.group({
+      fromDate: [''],
+      toDate: [''],
+      paymentMethod: [''],
+      paymentStatus: [''],
+    });
   }
 
   getOrders() {
     this.ordersService.getOrders().subscribe((res: any) => {
       this.ordersData = res?.result
-      this.orderCount = this.ordersData.length
+      this.orderCount += this.ordersData.length
       for (let order of this.ordersData) {
         order.orderDate = new Date(order.orderDate).toDateString()
         this.totalRevenue += order.total

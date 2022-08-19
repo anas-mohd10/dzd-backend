@@ -28,11 +28,11 @@
                <form (ngSubmit)="onSubmit()" [formGroup]="customersForm">
                   <div class="row">
                      <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Customers details</span></h5>
+                        <h5 class="form-title fs-4"><span>Customers Details</span></h5>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> First name</label>
+                           <label class="fs-6 mb-3"> First Name</label>
                            <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
                               'is-invalid':
                               (cf.firstname.touched || isSubmitted) &&
@@ -47,7 +47,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Last name</label>
+                           <label class="fs-6 mb-3"> Last Name</label>
                            <input type="text" class="form-control fs-6" formControlName="lastname" [ngClass]="{
                               'is-invalid':
                               (cf.lastname.touched || isSubmitted) &&
@@ -91,7 +91,7 @@
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
-                        <label class="fs-6 mb-3">Wallet balance</label>
+                        <label class="fs-6 mb-3">Wallet Balance</label>
                         <div class="input-group mb-3">
                            <span class="input-group-text">Rs</span>
                            <input type="text" class="form-control" formControlName="walletBalance" [ngClass]="{
@@ -119,11 +119,11 @@
                         </div>
                      </div>
                      <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Address details</span></h5>
+                        <h5 class="form-title fs-4"><span>Address Details</span></h5>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Address type</label>
+                           <label class="fs-6 mb-3">Address Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="isHome" [ngClass]="{
                                  'is-invalid':
@@ -143,7 +143,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Address line 1</label>
+                           <label class="fs-6 mb-3"> Address Line 1</label>
                            <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
                               'is-invalid':
                               (cf.firstline.touched || isSubmitted) &&
@@ -158,7 +158,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Address line 2</label>
+                           <label class="fs-6 mb-3"> Address Line 2</label>
                            <input type="text" class="form-control fs-6" formControlName="secondline" />
                         </div>
                      </div>
@@ -259,8 +259,12 @@
                         </div>
                      </div>
                      <div class="col-12">
-                        <button type="submit" class="btn btn-primary fs-4">
-                           Submit
+                        <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
+                           class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                           Add
                         </button>
                      </div>
                   </div>

@@ -1,6 +1,15 @@
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
 
+.required::after {
+  content: "*";
+  position: relative;
+  font-size: inherit;
+  color: #f1416c;
+  padding-left: .25rem;
+  font-weight: 700;
+}
+
 //Tag inputs
 .tag-inputs {
   height: auto;
@@ -33,27 +42,47 @@
 
 //Form label
 label {
-  color: #646464;
+  color: #3f4254;
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .form-check-label {
   margin: 0 0 0 10px;
 }
 
-#preview {
-  background: url('./assets/media/svg/files/upload.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin: 10px 0 10px 0;
-  border-radius: 10px;
+.uploads {
   height: 250px;
   width: 250px;
+  border-radius: 10px;
+  margin: 10px 0 10px 0;
+}
+
+.image-upload {
+  height: 100px;
+  width: 100%;
+  position: relative;
+}
+
+.image-upload-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  // background: #ffffff;
+  pointer-events: none;
+  border: 1px dashed #009ef7;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  background: #eaf7ff;
+}
+
+#previewImage {
   object-fit: cover;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+  height: 100%;
+  width: 100%;
 }
 
 //Active text in datatable

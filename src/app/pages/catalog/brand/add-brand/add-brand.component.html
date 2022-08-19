@@ -30,20 +30,18 @@
           <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
             <div class="row">
               <div class="col-12">
-                <h5 class="form-title fs-4"><span>Brand Details</span></h5>
+                <h3 class="form-title"><span>Brand Details</span></h3>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3"> Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                  <label class="required fs-6 mb-3">Brand Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" placeholder="Brand name"
+                    [ngClass]="{
                       'is-invalid':
                       (bf.name.touched || isSubmitted) &&
                       bf.name.errors?.required
                     }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (bf.name.touched || isSubmitted) &&
-                      bf.name.errors?.required
-                    ">Name is required</span>
+                  <div class="fs-7 mt-3">A brand name is required and recommended to be unique.</div>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -58,7 +56,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Featured Brand ?</label>
+                  <label class="fs-6 mb-3">Featured Brand</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
                     <option value="false" selected>No</option>
@@ -68,20 +66,36 @@
               </div>
               <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
+                <div class="col-12">
+                  <h3 class="form-title"><span>Media</span></h3>
+                </div>
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Brand Image</label>
-                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                    required>
+                  <div class="image-upload">
+                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                      (change)="handleInputChange($event)"
+                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                      style="height: 100px;" required>
+                    <div class="image-upload-div">
+                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                          srcset=""></div>
+                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                          up to 1
+                          file</span></div>
+                    </div>
+                  </div>
                   <div class="uploads uploaded">
-                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview">
+                    <img id="previewImage" src="../../../../../assets/media/svg/files/upload.svg">
                   </div>
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">
-                  Submit
+                <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                  Add
                 </button>
               </div>
             </div>

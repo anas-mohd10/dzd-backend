@@ -5,3 +5,39 @@
 .top-form-container {
    margin: 0 0 30px 0;
 }
+
+.placed{
+   height: 30px;
+   padding: 10px 30px;
+   background: rgba(15, 93, 160, 0.3);
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(15, 93, 160);
+   font-weight: 700;
+}
+
+.accepted{
+   height: 30px;
+   padding: 10px 30px;
+   background: rgba(15, 160, 66, 0.3);
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(10, 120, 48);
+   font-weight: 700;
+}
+
+.cancelled{
+   height: 30px;
+   padding: 10px 30px;
+   background: rgba(160, 15, 15, 0.3);
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(160, 15, 15);
+   font-weight: 700;
+}

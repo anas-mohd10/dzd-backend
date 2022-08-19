@@ -13,8 +13,8 @@
                   <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
                </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
-               routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
+            <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+               routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}" style="width: 200px">
                Add Orders
             </button>
          </div>
@@ -42,24 +42,25 @@
             </app-stats-widget5>
          </div>
       </div>
-      <form action="" (ngSubmit)="onSubmit()">
+      <form action="" (ngSubmit)="onSubmit()" [formGroup]="orderForm">
          <div class="row align-items-end">
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">From</label>
                <div class="form-group">
-                  <input type="date" class="form-control" name="" id="">
+                  <input type="date" class="form-control" formControlName="fromDate" id="">
                </div>
             </div>
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">To</label>
                <div class="form-group">
-                  <input type="date" class="form-control" name="" id="">
+                  <input type="date" class="form-control" formControlName="toDate" id="">
                </div>
             </div>
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">Payment</label>
                <div class="form-group">
-                  <select class="form-select form-select-lg" aria-label=".form-select-lg" formControlName="valueType">
+                  <select class="form-select form-select-lg" aria-label=".form-select-lg"
+                     formControlName="paymentMethod">
                      <option value="check" disabled>
                         -- Select An Option --
                      </option>
@@ -72,7 +73,8 @@
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">Status</label>
                <div class="form-group">
-                  <select class="form-select form-select-lg" aria-label=".form-select-lg" formControlName="valueType">
+                  <select class="form-select form-select-lg" aria-label=".form-select-lg"
+                     formControlName="paymentStatus">
                      <option value="check" disabled>
                         -- Select An Option --
                      </option>
@@ -88,7 +90,7 @@
                </div>
             </div>
             <div class="col-12 col-sm-2">
-               <button type="submit" class="btn btn-primary btn-submit fs-5">
+               <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
                   Apply
                </button>
             </div>
@@ -102,7 +104,7 @@
                <div style="display: none"> {{ordersData.length}}</div>
                <div class="table-responsive">
                   <table datatable [dtOptions]="dtOptions"
-                     class="datatable table table-borderless table-center table-striped mb-0">
+                     class="datatable table table-borderless table-center table-row-dashed mb-0">
                      <thead class="thead mt-100">
                         <tr class="fs-7 text-uppercase">
                            <th class="text-gray-400 col-md-2">Sl No.</th>
@@ -128,13 +130,14 @@
                               <h2 class="table-avatar">{{ order?.orderDate }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar">{{ order?.orderStatus }}</h2>
+                              <h2 class="table-avatar"><span class="{{(order?.orderStatus).toLowerCase()}}">{{
+                                    order?.orderStatus }}</span></h2>
                            </td>
                            <td>
                               <h2 class="table-avatar">{{ order?.customerId.firstname }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar">Smart store</h2>
+                              <h2 class="table-avatar">-</h2>
                            </td>
                            <td>
                               <h2 class="table-avatar">{{order?.total}}</h2>

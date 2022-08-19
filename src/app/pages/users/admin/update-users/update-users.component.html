@@ -28,11 +28,11 @@
           <form (ngSubmit)="onSubmit()" [formGroup]="adminForm">
             <div class="row">
               <div class="col-12">
-                <h5 class="form-title fs-4"><span>Admin user details</span></h5>
+                <h5 class="form-title fs-4"><span>Admin User Details</span></h5>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3"> First name</label>
+                  <label class="fs-6 mb-3"> First Name</label>
                   <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
                       'is-invalid':
                       (af.firstname.touched || isSubmitted) &&
@@ -47,7 +47,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3"> Last name</label>
+                  <label class="fs-6 mb-3"> Last Name</label>
                   <input type="text" class="form-control fs-6" formControlName="lastname" [ngClass]="{
                       'is-invalid':
                       (af.lastname.touched || isSubmitted) &&
@@ -146,7 +146,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Confirm password</label>
+                  <label class="fs-6 mb-3">Confirm Password</label>
                   <input type="password" class="form-control fs-6" formControlName="password" [ngClass]="{
                       'is-invalid':
                       (af.password.touched || isSubmitted) &&
@@ -171,8 +171,12 @@
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">
-                  Submit
+                <a routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary btn-sm fs-6 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                  Update
                 </button>
               </div>
             </div>

@@ -1,3 +1,4 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +21,8 @@ export class UpdateOrdersComponent implements OnInit {
   task = PageTasks.UPDATE
   editMode = false;
   totalProductCost: number;
-
+  orderNo: any;
+  isSubmitted: boolean;
   constructor(
     private orderService: OrdersService,
     private route: ActivatedRoute,
@@ -62,7 +64,39 @@ export class UpdateOrdersComponent implements OnInit {
       this.orderData = res?.result[0]
       this.productCount = this.orderData.product.length
       this.orderData.orderDate = new Date(this.orderData.orderDate).toDateString()
+      this.orderForm.get("orderStatus")?.setValue(this.orderData?.orderStatus)
+      this.orderForm.get("trackingURL")?.setValue(this.orderData?.trackingURL)
+      this.orderForm.get("orderNote")?.setValue(this.orderData?.orderNote)
     })
   }
 
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.editMode) {
+      this.updateProduct();
+    } else {
+      this.addProduct();
+    }
+  }
+  addProduct() {
+  }
+
+  updateProduct() {
+    console.log("Button clicked");
+    console.log(this.orderForm.value);
+    this.orderService.updateOrder(this.orderNumber, this.orderForm.value).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong', '', {
+          progressBar: true,
+          easing: 'ease-in'
+        });
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Order updated successfully', '', {
+          progressBar: true,
+          easing: 'ease-in'
+        });
+        this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+      }
+    })
+  }
 }

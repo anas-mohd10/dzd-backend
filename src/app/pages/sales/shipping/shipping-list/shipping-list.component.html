@@ -1,35 +1,33 @@
 <div class="offer-page-container">
-    <!-- Page Header -->
-    <div class="page-header">
-      <div class="page-title"><h1 class="fw-bolder">Carriers</h1></div>
-      <div class="row align-items-center">
-        <div class="col d-flex flex-row justify-content-between">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item fs-5">
-              <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active fs-5">
-              <a routerLink="{{ appRoute.shipping.SHIPPING_LIST }}">Carriers</a>
-            </li>
-          </ul>
-          <button
-            class="btn btn-primary cursor-pointer fs-5"
-            color="primary"
-            routerLink=""
-          >
-            Add Carrriers
-          </button>
-        </div>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Carriers</h1>
+    </div>
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.shipping.SHIPPING_LIST }}">Carriers</a>
+          </li>
+        </ul>
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="" style="width: 200px">
+          Add Carrriers
+        </button>
       </div>
     </div>
-    <!-- Page Header -->
-  
-    <!-- Table Start -->
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="card card-table">
-          <div class="card-body">
-            <!-- <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
+  </div>
+  <!-- Page Header -->
+
+  <!-- Table Start -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <!-- <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
               <div class="active-filter-container col-sm-3">
                 <label class="fs-5 mb-3 fw-bold">Active Offers</label>
                 <select
@@ -43,33 +41,27 @@
                 </select>
               </div>
             </form> -->
-            <div class="table-responsive" *ngIf="displayTable">
-              <table
-                datatable
-                [dtOptions]="dtOptions"
-                class="table table-borderless table-center table-striped mb-0 datatable"
-                cellspacing="0"
-                width="100%"
-              >
-                <thead class="thead">
-                  <tr>
-                    <th class="text-dark fw-bolder fs-4">Sl No.</th>
-                    <th class="text-dark fw-bolder fs-4">Name</th>
-                    <th class="text-dark fw-bolder fs-4">Secret Key</th>
-                    <th class="text-dark fw-bolder fs-4">Tracking URL</th>
-                    <th class="text-dark fw-bolder fs-4">Status</th>
-                    <th class="text-dark fw-bolder fs-4">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
+          <div class="table-responsive" *ngIf="displayTable">
+            <table datatable [dtOptions]="dtOptions"
+              class="datatable table table-borderless table-center table-row-dashed mb-0">
+              <thead class="thead mt-100">
+                <tr class="fs-7 text-uppercase">
+                  <th class="text-gray-400">Sl No.</th>
+                  <th class="text-gray-400">Name</th>
+                  <th class="text-gray-400">Secret Key</th>
+                  <th class="text-gray-400">Tracking URL</th>
+                  <th class="text-gray-400">Status</th>
+                  <th class="text-gray-400">Action</th>
+                </tr>
+              </thead>
+              <tbody>
 
-                </tbody>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
-    <!-- Table Start -->
   </div>
-  
+  <!-- Table Start -->
+</div>

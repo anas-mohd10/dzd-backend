@@ -3,9 +3,9 @@
    <div class="page-header">
       <div class="row align-items-center">
          <div class="col">
-            <h3 class="page-title fs-2">
+            <h5 class="page-title fs-2">
                {{ editMode ? "Update Order" : "Add Order" }}
-            </h3>
+            </h5>
             <ul class="breadcrumb">
                <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -27,7 +27,7 @@
          <div class="card card-flush py-4 flex-row-fluid">
             <div class="card-header">
                <div class="card-title">
-                  <h3>Order Details ({{orderNumber}})</h3>
+                  <h5>Order Details ({{orderData.orderNo}})</h5>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -51,7 +51,7 @@
                                  Date Added
                               </div>
                            </td>
-                           <td class="fw-bolder text-end">{{orderData.orderDate}}, {{orderData.orderTime}}</td>
+                           <td class="fw-bolder text-end">{{orderData?.orderDate}}, {{orderData?.orderTime}}</td>
                         </tr>
                         <tr>
                            <td class="text-muted">
@@ -91,11 +91,10 @@
                                           d="M20 18C20 19.1 19.1 20 18 20C16.9 20 16 19.1 16 18C16 16.9 16.9 16 18 16C19.1 16 20 16.9 20 18ZM15 4C15 3.4 14.6 3 14 3H3C2.4 3 2 3.4 2 4V13C2 13.6 2.4 14 3 14H15V4ZM6 16C4.9 16 4 16.9 4 18C4 19.1 4.9 20 6 20C7.1 20 8 19.1 8 18C8 16.9 7.1 16 6 16Z"
                                           fill="black" />
                                     </svg>
-                                 </span>
-                                 Shipping Method
+                                 </span>Payment Status
                               </div>
                            </td>
-                           <td class="fw-bolder text-end">{{orderData?.shippingMethod}}</td>
+                           <td class="fw-bolder text-end">{{orderData?.paymentStatus}}</td>
                         </tr>
                      </tbody>
                   </table>
@@ -105,7 +104,7 @@
          <div class="card card-flush py-4 flex-row-fluid">
             <div class="card-header">
                <div class="card-title">
-                  <h3>Customer Details</h3>
+                  <h5>Customer Details</h5>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -182,7 +181,7 @@
          <div class="card card-flush py-4 flex-row-fluid">
             <div class="card-header">
                <div class="card-title">
-                  <h3>Other Details</h3>
+                  <h5>Other Details</h5>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -264,7 +263,7 @@
             <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
                <div class="card-header">
                   <div class="card-title">
-                     <h3>Customer Address</h3>
+                     <h5>Customer Address</h5>
                   </div>
                </div>
                <div class="card-body pt-0">
@@ -282,7 +281,7 @@
             <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
                <div class="card-header">
                   <div class="card-title">
-                     <h3>Shipping Address</h3>
+                     <h5>Shipping Address</h5>
                   </div>
                </div>
                <div class="card-body pt-0">
@@ -303,7 +302,7 @@
          <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
             <div class="card-header">
                <div class="card-title">
-                  <h3>Order ( {{orderData?.orderNo}} )</h3>
+                  <h5>Order ( {{orderData?.orderNo}} )</h5>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -355,6 +354,55 @@
                         </tr>
                      </tbody>
                   </table>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row mt-10">
+         <div class="col-sm-12 fs-6">
+            <div class="card">
+               <div class="card-body">
+                  <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
+                     <div class="row">
+                        <div class="col-12">
+                           <h5 class="form-title fs-4"><span>Orders details</span></h5>
+                        </div>
+                        <div class="col-12">
+                           <div class="form-group col-sm-6">
+                              <label class="fs-6 mb-3">Tracking URL</label>
+                              <input type="text" class="form-control fs-6" formControlName="trackingURL" />
+                           </div>
+                        </div>
+                        <div class="col-12">
+                           <div class="form-group col-sm-6">
+                              <label class="fs-6 mb-3">Order Note</label>
+                              <textarea class="form-control fs-6" formControlName="orderNote" style="resize: none"
+                                 id="orderNote" rows="5"></textarea>
+                           </div>
+                        </div>
+                        <div class="col-12">
+                           <div class="form-group col-sm-6">
+                              <label class="fs-6 mb-3">Order Status</label>
+                              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                                 formControlName="orderStatus">
+                                 <option value="disabled" disabled>-- Select an option --</option>
+                                 <option value="PLACED">Placed</option>
+                                 <option value="ACCEPTED">Accepted</option>
+                                 <option value="CANCELLED">Cancelled</option>
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-12">
+                           <a routerLink="{{ appRoute.orders.ORDERS_LIST}}"
+                              class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                              Cancel
+                           </a>
+                           <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                              Update
+                           </button>
+                        </div>
+                     </div>
+                  </form>
                </div>
             </div>
          </div>
