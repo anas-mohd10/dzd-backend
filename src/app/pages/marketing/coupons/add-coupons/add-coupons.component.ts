@@ -47,7 +47,7 @@ export class AddCouponsComponent implements OnInit {
     this.managePage();
     this.getProducts()
     this.getCategories()
-    this.getCollections
+    this.getCollections()
   }
 
   initForm() {
@@ -63,7 +63,7 @@ export class AddCouponsComponent implements OnInit {
       minPurchase: [''],
       categories: [Validators.required],
       products: [Validators.required],
-      collections: [[''], Validators.required],
+      collections: [ Validators.required],
       isMultiple: ['false', Validators.required],
       isActive: ['true', Validators.required],
     });

@@ -52,10 +52,13 @@ label {
 }
 
 .uploads {
-  height: 250px;
-  width: 250px;
+  height: 180px;
+  width: 180px;
   border-radius: 10px;
   margin: 10px 0 10px 0;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .image-upload {
@@ -70,7 +73,6 @@ label {
   left: 0;
   height: 100%;
   width: 100%;
-  // background: #ffffff;
   pointer-events: none;
   border: 1px dashed #009ef7;
   border-radius: 10px;
@@ -78,6 +80,7 @@ label {
   align-items: center;
   background: #eaf7ff;
 }
+
 
 #previewImage {
   object-fit: cover;

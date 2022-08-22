@@ -30,11 +30,11 @@
                   <div class="row">
                      <div style="display: none;">{{categoriesData.length}}</div>
                      <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Coupon Details</span></h5>
+                        <h3 class="form-title"><span>Coupon Details</span></h3>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Title</label>
+                           <label class="fs-5 mb-3 form-title required">Title</label>
                            <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
                            <span class="text-danger fs-6"
@@ -44,7 +44,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Code</label>
+                           <label class="fs-5 mb-3 form-title required">Code</label>
                            <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
                            <span class="text-danger fs-6"
@@ -54,7 +54,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Type</label>
+                           <label class="fs-5 mb-3 form-title required">Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="type" [ngClass]="{
                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
@@ -69,9 +69,10 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Value</label>
+                           <label class="fs-5 mb-3 form-title required">Value</label>
                            <input type="text" class="form-control fs-5" formControlName="value" [ngClass]="{
-                            'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}"  (change)="checkPercentage()"/>
+                            'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}"
+                              (change)="checkPercentage()" />
                            <span class="text-danger fs-6"
                               *ngIf=" (cf.value.touched || isSubmitted) && cf.value.errors?.required">Coupon value is
                               required</span>
@@ -79,7 +80,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">From Date</label>
+                           <label class="fs-5 mb-3 form-title required">From Date</label>
                            <input type="date" class="form-control fs-5" formControlName="fromDate"
                               [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
                            <span class="text-danger fs-6"
@@ -90,7 +91,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Last Date</label>
+                           <label class="fs-5 mb-3 form-title required">Last Date</label>
                            <input type="date" class="form-control fs-5" formControlName="lastDate"
                               [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
                            <span class="text-danger fs-6"
@@ -121,7 +122,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Category</label>
+                           <label class="fs-5 mb-3 form-title required">Category</label>
                            <select class="form-select" formControlName="categories" (change)="tagCategoryInput()"
                               [ngClass]="{'is-invalid':  (cf.categories.touched || isSubmitted) && cf.categories.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -143,7 +144,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Products</label>
+                           <label class="fs-5 mb-3 form-title required">Products</label>
                            <select class="form-select" formControlName="products" (change)="tagProductInput()"
                               [ngClass]="{'is-invalid':  (cf.products.touched || isSubmitted) && cf.products.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -166,7 +167,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Collection</label>
+                           <label class="fs-5 mb-3 form-title required">Collection</label>
                            <select class="form-select" formControlName="collections" (change)="tagCollectionInput()"
                               [ngClass]="{'is-invalid':  (cf.collections.touched || isSubmitted) && cf.collections.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -189,7 +190,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Multiple use per user?</label>
+                           <label class="fs-5 mb-3 form-title required">Multiple use per user</label>
                            <select class="form-select" formControlName="isMultiple" [ngClass]="{
                             'is-invalid':(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required}">
                               <option value="" disabled>
@@ -206,12 +207,12 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Active Product ?</label>
+                           <label class="fs-5 mb-3 form-title required">Status</label>
                            <select class="form-select" formControlName="isActive" [ngClass]="{
                             'is-invalid':(cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Yes</option>
-                              <option value="false">No</option>
+                              <option value="true">Active</option>
+                              <option value="false">Inactive</option>
                            </select>
                            <span class="text-danger error-msg fs-6"
                               *ngIf=" (cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required">
@@ -219,15 +220,32 @@
                            </span>
                         </div>
                      </div>
+                     <div class="col-12 col-sm-6"></div>
                      <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Image</label>
-                           <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                              (change)="handleInputChange($event)"
-                              onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                              required>
+                        <div class="col-12">
+                           <h3 class="form-title required"><span>Media</span></h3>
                         </div>
-                        <img id="preview" src="http://localhost:3000/{{couponData?.file}}">
+                        <div class="form-group">
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                 (change)="handleInputChange($event)"
+                                 onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                                 style="height: 100px;" required>
+                              <div class="image-upload-div">
+                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
+                                       alt="" srcset=""></div>
+                                 <div class="right-text d-flex flex-column"><span
+                                       class="right-text-title fs-4 fw-bolder">Click to
+                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
+                                       style="font-weight: 500">Upload
+                                       up to 1
+                                       file</span></div>
+                              </div>
+                           </div>
+                           <div class="uploads uploaded">
+                              <img id="previewImage" src="http://localhost:3000/{{couponData?.file}}">
+                           </div>
+                        </div>
                      </div>
                      <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px;">

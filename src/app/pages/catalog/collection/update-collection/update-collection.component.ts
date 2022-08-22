@@ -37,14 +37,14 @@ export class UpdateCollectionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    this.managePage();
+    this.initForm();
     this.collection = this.route.snapshot.queryParams.collection || '';
     this.getCollection();
     this.getProduct();
-    this.managePage();
-    this.initForm();
   }
 
   initForm() {
@@ -87,27 +87,27 @@ export class UpdateCollectionComponent implements OnInit {
 
   getCollection() {
     this.collectionService.getCollectionBySlug(this.collection).subscribe((res: any) => {
-        switch (res?.errorCode) {
-          case 0:
-            this.collectionData = res?.result[0];
-            this.uploadedImg = this.collectionData?.file
-            this.collectionForm.get('name')?.setValue(this.collectionData?.name);
-            this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
-            this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
-            for (let product of this.collectionData?.products) {
-              this.valueArray.push(product._id)
-              this.productNames.push(product.name)
-            }
-            break;
-        }
-      });
+      switch (res?.errorCode) {
+        case 0:
+          this.collectionData = res?.result[0];
+          this.uploadedImg = this.collectionData?.file
+          this.collectionForm.get('name')?.setValue(this.collectionData?.name);
+          this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
+          this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
+          for (let product of this.collectionData?.products) {
+            this.valueArray.push(product._id)
+            this.productNames.push(product.name)
+          }
+          break;
+      }
+    });
   }
 
   tagInput() {
     if (!this.valueArray.includes(this.collectionForm.get('products')?.value)) {
       this.valueArray.push(this.collectionForm.get('products')?.value);
       this.getProductNames(this.collectionForm.get('products')?.value);
-    }else{
+    } else {
       this.toastr.info('Product Already Added');
     }
     this.collectionForm.get('products')?.setValue('');
@@ -129,15 +129,15 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   tagRemove(value: any) {
-    if(this.productNames.includes(value)){
+    if (this.productNames.includes(value)) {
       this.productNames.pop(value)
       this.getProductId(value)
     }
   }
 
-  getProductId(value: any){
-    for(let i=0; i<this.productArray.length; i++){
-      if(this.productArray[i].name == value){
+  getProductId(value: any) {
+    for (let i = 0; i < this.productArray.length; i++) {
+      if (this.productArray[i].name == value) {
         this.valueArray.pop(this.productArray[i]._id)
       }
     }
@@ -152,10 +152,10 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
-  addCollection(){}
+  addCollection() { }
 
 
-  updateCollection(){
+  updateCollection() {
     if (!this.collectionForm.valid) {
       return;
     }
@@ -163,7 +163,7 @@ export class UpdateCollectionComponent implements OnInit {
     const formData = new FormData();
     if (this.fileData != null && this.fileData != undefined) {
       formData.append('file', this.fileData);
-    }else{
+    } else {
       formData.append('file', this.uploadedImg)
     }
 

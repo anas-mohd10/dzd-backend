@@ -58,20 +58,20 @@ export class UpdateCouponsComponent implements OnInit {
 
   initForm() {
     this.couponForm = this.formBuilder.group({
-      title: [''],
-      code: [''],
-      type: [''],
-      value: [''],
-      fromDate: [''],
-      lastDate: [''],
+      title: ['', Validators.required],
+      code: ['', Validators.required],
+      type: ['', Validators.required],
+      value: ['', Validators.required],
+      fromDate: ['', Validators.required],
+      lastDate: ['', Validators.required],
       file: [''],
       maxDiscount: [''],
       minPurchase: [''],
-      categories: [],
-      products: [],
-      collections: [['']],
-      isMultiple: ['false'],
-      isActive: ['true'],
+      categories: [Validators.required],
+      products: [Validators.required],
+      collections: [ Validators.required],
+      isMultiple: ['false', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 

@@ -22,38 +22,38 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-5">
+      <div class="col-sm-12 fs-6">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="couponForm">
                   <div class="row">
                      <div style="display: none;">{{categoriesData.length}}</div>
                      <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Coupon Details</span></h5>
+                        <h3 class="form-title"><span>Coupon Details</span></h3>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Title</label>
-                           <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
+                           <label class="fs-6 mb-3 form-title required">Title</label>
+                           <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
-                           <span class="text-danger fs-6"
+                           <span class="text-danger fs-7"
                               *ngIf=" (cf.title.touched || isSubmitted) && cf.title.errors?.required">Coupon title is
                               required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Code</label>
-                           <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
+                           <label class="fs-6 mb-3 form-title required">Code</label>
+                           <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
-                           <span class="text-danger fs-6"
+                           <span class="text-danger fs-7"
                               *ngIf=" (cf.code.touched || isSubmitted) && cf.code.errors?.required">Coupon code is
                               required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Type</label>
+                           <label class="fs-6 mb-3 form-title required">Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="type" [ngClass]="{
                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
@@ -61,27 +61,27 @@
                               <option value="%">%</option>
                               <option value="flat">Flat</option>
                            </select>
-                           <span class="text-danger fs-6"
+                           <span class="text-danger fs-7"
                               *ngIf=" (cf.type.touched || isSubmitted) && cf.type.errors?.required">Coupon type is
                               required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Value</label>
-                           <input type="text" class="form-control fs-5" formControlName="value" [ngClass]="{
+                           <label class="fs-6 mb-3 form-title required">Value</label>
+                           <input type="text" class="form-control fs-6" formControlName="value" [ngClass]="{
                             'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
-                           <span class="text-danger fs-6"
+                           <span class="text-danger fs-7"
                               *ngIf=" (cf.value.touched || isSubmitted) && cf.value.errors?.required">Coupon value is
                               required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">From Date</label>
-                           <input type="date" class="form-control fs-5" formControlName="fromDate"
+                           <label class="fs-6 mb-3 form-title required">From Date</label>
+                           <input type="date" class="form-control fs-6" formControlName="fromDate"
                               [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
-                           <span class="text-danger fs-6"
+                           <span class="text-danger fs-7"
                               *ngIf="(cf.fromDate.touched || isSubmitted) && cf.fromDate.errors?.required">
                               Coupon from date is required
                            </span>
@@ -89,10 +89,10 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Last Date</label>
-                           <input type="date" class="form-control fs-5" formControlName="lastDate"
+                           <label class="fs-6 mb-3 form-title required">Last Date</label>
+                           <input type="date" class="form-control fs-6" formControlName="lastDate"
                               [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
-                           <span class="text-danger fs-6"
+                           <span class="text-danger fs-7"
                               *ngIf="(cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required">
                               Coupon last date is required
                            </span>
@@ -100,7 +100,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Discount Value</label>
+                           <label class="fs-6 mb-3">Discount Value</label>
                            <div class="input-group mb-3">
                               <span class="input-group-text">Rs.</span>
                               <input type="text" class="form-control" formControlName="maxDiscount" />
@@ -110,7 +110,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Minimum Purchase</label>
+                           <label class="fs-6 mb-3">Minimum Purchase</label>
                            <div class="input-group mb-3">
                               <span class="input-group-text">Rs.</span>
                               <input type="text" class="form-control" formControlName="minPurchase" />
@@ -120,7 +120,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Category</label>
+                           <label class="fs-6 mb-3 form-title required">Category</label>
                            <select class="form-select" formControlName="categories" (change)="tagCategoryInput()"
                               [ngClass]="{'is-invalid':  (cf.categories.touched || isSubmitted) && cf.categories.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -128,13 +128,13 @@
                                  {{ category?.name }}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf="(cf.categories.touched || isSubmitted) && cf.categories.errors?.required">Categories
                               is required</span>
                         </div>
                         <div class="tag-inputs col-12">
                            <ng-container *ngFor="let category of categoryNames">
-                              <span class="tag-input bg-primary text-white">{{ category }}
+                              <span class="tag-input bg-primary text-white fs-6 ">{{ category }}
                                  <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                               </span>
                            </ng-container>
@@ -142,7 +142,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Products</label>
+                           <label class="fs-6 mb-3 form-title required">Products</label>
                            <select class="form-select" formControlName="products" (change)="tagProductInput()"
                               [ngClass]="{'is-invalid':  (cf.products.touched || isSubmitted) && cf.products.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -150,14 +150,14 @@
                                  {{ product?.name }}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf="(cf.products.touched || isSubmitted) && cf.products.errors?.required">
                               Products is required
                            </span>
                         </div>
                         <div class="tag-inputs col-12">
                            <ng-container *ngFor="let product of productNames">
-                              <span class="tag-input bg-primary text-white">{{ product }}
+                              <span class="tag-input bg-primary text-white fs-6">{{ product }}
                                  <i class="bi bi-x" (click)="tagProductRemove(product)"></i>
                               </span>
                            </ng-container>
@@ -165,7 +165,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Collection</label>
+                           <label class="fs-6 mb-3 form-title required">Collection</label>
                            <select class="form-select" formControlName="collections" (change)="tagCollectionInput()"
                               [ngClass]="{'is-invalid':  (cf.collections.touched || isSubmitted) && cf.collections.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -173,14 +173,14 @@
                                  {{ collection?.name }}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf="(cf.collections.touched || isSubmitted) && cf.collections.errors?.required">
                               Collections is required
                            </span>
                         </div>
                         <div class="tag-inputs col-12">
                            <ng-container *ngFor="let collection of collectionNames">
-                              <span class="tag-input bg-primary text-white">{{ collection }}
+                              <span class="tag-input bg-primary text-white fs-6">{{ collection }}
                                  <i class="bi bi-x" (click)="tagCollectionRemove(collection)"></i>
                               </span>
                            </ng-container>
@@ -188,7 +188,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Multiple use per user?</label>
+                           <label class="fs-6 mb-3 form-title required">Multiple use per user</label>
                            <select class="form-select" formControlName="isMultiple" [ngClass]="{
                             'is-invalid':(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required}">
                               <option value="" disabled>
@@ -197,40 +197,61 @@
                               <option value="true">Yes</option>
                               <option value="false">No</option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf="(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required">
-                              Active is required
+                              Multiple user option is required
                            </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Active Product ?</label>
+                           <label class="fs-6 mb-3 form-title required">Status</label>
                            <select class="form-select" formControlName="isActive" [ngClass]="{
                             'is-invalid':(cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Yes</option>
-                              <option value="false">No</option>
+                              <option value="true">Active</option>
+                              <option value="false">Inactive</option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf=" (cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required">
-                              Active is required
+                              Status is required
                            </span>
                         </div>
                      </div>
+                     <div class="col-12 col-sm-6"></div>
                      <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Image</label>
-                           <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                              (change)="handleInputChange($event)"
-                              onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                              required>
+                        <div class="col-12">
+                           <h3 class="form-title required"><span>Media</span></h3>
                         </div>
-                        <img id="preview">
+                        <div class="form-group">
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                 (change)="handleInputChange($event)"
+                                 onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                                 style="height: 100px;" required>
+                              <div class="image-upload-div">
+                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
+                                       alt="" srcset=""></div>
+                                 <div class="right-text d-flex flex-column"><span
+                                       class="right-text-title fs-4 fw-bolder">Click to
+                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
+                                       style="font-weight: 500">Upload
+                                       up to 1
+                                       file</span></div>
+                              </div>
+                           </div>
+                           <div class="uploads uploaded">
+                              <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
+                           </div>
+                        </div>
                      </div>
                      <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px;">
-                           Submit
+                        <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}"
+                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                           Add
                         </button>
                      </div>
                   </div>

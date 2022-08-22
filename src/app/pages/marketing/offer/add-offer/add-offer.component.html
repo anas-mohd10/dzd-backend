@@ -6,13 +6,13 @@
           {{ editMode ? "Update Offer" : "Add Offer" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.offer.ADD_OFFER }}">
               {{ editMode ? "Update Offer" : "Add Offer" }}
             </a>
@@ -22,18 +22,18 @@
     </div>
   </div>
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
             <div class="row">
               <div class="col-12">
-                <h5 class="form-title fs-4"><span>Offer Details</span></h5>
+                <h3 class="form-title"><span>Offer Details</span></h3>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                  <label class="fs-6 mb-3 form-title required">Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
                     'is-invalid':
                     (of.name.touched || isSubmitted) &&
                     of.name.errors?.required
@@ -46,8 +46,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Description</label>
-                  <input type="text" class="form-control fs-5" formControlName="description" [ngClass]="{
+                  <label class="fs-6 mb-3 form-title required">Description</label>
+                  <input type="text" class="form-control fs-6" formControlName="description" [ngClass]="{
                     'is-invalid':
                     (of.description.touched || isSubmitted) &&
                     of.description.errors?.required
@@ -60,8 +60,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">From Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="fromDate" [ngClass]="{
+                  <label class="fs-6 mb-3 form-title required">From Date</label>
+                  <input type="date" class="form-control fs-6" formControlName="fromDate" [ngClass]="{
                       'is-invalid':
                         (of.fromDate.touched || isSubmitted) &&
                         of.fromDate.errors?.required
@@ -75,8 +75,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Last Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="lastDate"
+                  <label class="fs-6 mb-3 form-title required">Last Date</label>
+                  <input type="date" class="form-control fs-6" formControlName="lastDate"
                     [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
                   <span class="text-danger fs-6"
                     *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required">Last date is
@@ -85,7 +85,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Featured</label>
+                  <label class="fs-6 mb-3 form-title required">Featured</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
                     <option value="true" selected>Yes</option>
@@ -95,7 +95,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Status</label>
+                  <label class="fs-6 mb-3 form-title required">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="true" selected>Active</option>
@@ -104,20 +104,36 @@
                 </div>
               </div>
               <div class="col-12 col-sm-6">
+                <div class="col-12">
+                  <h3 class="form-title required"><span>Media</span></h3>
+                </div>
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Offer Image</label>
-                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                    required>
+                  <div class="image-upload">
+                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                      (change)="handleInputChange($event)"
+                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                      style="height: 100px;" required>
+                    <div class="image-upload-div">
+                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                          srcset=""></div>
+                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                          up to 1
+                          file</span></div>
+                    </div>
+                  </div>
                   <div class="uploads uploaded">
-                    <img class="plus" style="background-color:#f6f6f6; border: none !important;" id="preview">
+                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
                   </div>
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-5 btn-sm" style="width: 200px;">
-                  Submit
+                <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                  Add
                 </button>
               </div>
             </div>
