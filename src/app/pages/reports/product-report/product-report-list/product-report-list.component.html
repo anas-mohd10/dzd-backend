@@ -1,0 +1,58 @@
+<div class="coupon-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Product Report</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.reports.PRODUCT_REPORT }}">Product Report</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <form action="" (ngSubmit)="onSubmit()" [formGroup]="productReportForm">
+      <div class="row align-items-end">
+         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+            <label class="col-sm-2 col-form-label">From</label>
+            <div class="form-group">
+               <input type="date" class="form-control fs-7" formControlName="fromDate" id="">
+            </div>
+         </div>
+         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+            <label class="col-sm-2 col-form-label">To</label>
+            <div class="form-group">
+               <input type="date" class="form-control fs-7" formControlName="toDate" id="" (change)="checkToDate()">
+            </div>
+         </div>
+         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+            <label class="col-sm-2 col-form-label">Products</label>
+            <div class="form-group">
+               <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
+                  formControlName="orderStatus">
+                  <option value="check" disabled>
+                     -- Select An Option --
+                  </option>
+                  
+               </select>
+            </div>
+         </div>
+         <div class="col-12 col-sm-2">
+            <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"
+               style="width: 200px; margin-right: 20px;">
+               Reset
+            </a>
+         </div>
+         <div class="col-12 col-sm-2">
+            <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
+               Apply
+            </button>
+         </div>
+      </div>
+   </form>
+</div>

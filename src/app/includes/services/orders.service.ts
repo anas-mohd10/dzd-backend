@@ -21,18 +21,38 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
-  getOrder(slug: any) {
+  getOrderByPayment(method: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment + "?payment=" + method);
+    return this.http.get(`${url}`)
+  }
+
+  getOrderByStatus(status: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_status + "?status=" + status);
+    return this.http.get(`${url}`)
+  }
+
+  getOrderByDate(status: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order + "?status=" + status);
+    return this.http.get(`${url}`)
+  }
+
+  getOrderByPaymentAndStatus(method: any, status: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment_and_order + "?status=" + status + "&payment=" + method);
+    return this.http.get(`${url}`)
+  }
+
+  getOrderByDateAndStatus(ldate: any, gdate: any, status: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_status_date + "?s=" + status + "&ld=" + ldate + "&ud=" + gdate);
+    return this.http.get(`${url}`)
   }
 
   getOrdersByStatus(status: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_status + "?status=" + status);
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment_and_order + "?status=" + status);
     return this.http.get(`${url}`)
   }
 
   getOrdersByNumber(number: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_orderno + "?number=" + number);
-    console.log(url);
-
     return this.http.get(`${url}`)
   }
 

@@ -19,6 +19,7 @@ const couponRoute = '/coupons'
 const contactRoute = '/contacts'
 const socialMediaRoute = "/social-media"
 const invoiceSettingRoute = "/invoice-settings"
+const productReportRoute = "/product-report"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -111,5 +112,7 @@ export const appRoutes = {
     ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   },
-  
+  reports: {
+    PRODUCT_REPORT: `${app}${productReportRoute}`
+  }
 };

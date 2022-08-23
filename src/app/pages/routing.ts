@@ -220,7 +220,13 @@ export const Routing: Routes = [
       },
       {
         path: 'invoice-settings',
-        loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) =>m. InvoiceSettingsModule)
+        loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'product-report',
+        loadChildren: () => import('./reports/product-report/product-report.module').then((m) => m.ProductReportModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },
