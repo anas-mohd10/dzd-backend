@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes/app.routes';
+import { ProductReportService } from 'src/app/includes/services/product.report.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 
 @Component({
@@ -18,20 +19,52 @@ export class ProductReportListComponent implements OnInit {
 
   productReportForm: FormGroup
   appRoute = appRoutes
+  productsData: any;
+  productsReportsData: any;
+
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private formBuilder: FormBuilder,
+    private productReportService: ProductReportService
   ) { }
 
   ngOnInit(): void {
+    this.initForm()
+    this.getProducts()
+    this.getProductReports()
   }
 
-  getProducts(){
-    
+  initForm() {
+    this.productReportForm = this.formBuilder.group({
+      fromDate: [''],
+      toDate: [''],
+      product: [''],
+    });
+  }
+  
+  getProducts() {
+    this.productService.getProduct().subscribe((res: any) => {
+      this.productsData = res?.result
+    })
+  }
+
+  getProductReports() {
+    this.productReportService.getProductReport().subscribe((res: any) => {
+      this.productsReportsData = res?.result
+      for (let data of this.productsReportsData) {
+        data.orders.orderDate = new Date(data.orders.orderDate).toDateString()
+        for (let product of data?.orders?.product) {
+          console.log(product);
+        }
+      }
+    })
   }
 
   checkToDate() { }
 
-  reloadPage() { }
+  reloadPage() {
+    window.location.reload()
+  }
 
   onSubmit() { }
 

@@ -20,6 +20,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
 import { LayoutModule } from './shared/layout';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CsvService } from './includes/services/csv.service';
 // #fake-end#
 
 @NgModule({
@@ -48,7 +49,8 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
-    AuthenticationGuard
+    AuthenticationGuard,
+    CsvService
   ],
   bootstrap: [AppComponent],
 })

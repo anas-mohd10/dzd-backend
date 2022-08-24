@@ -227,6 +227,16 @@ export const Routing: Routes = [
         path: 'product-report',
         loadChildren: () => import('./reports/product-report/product-report.module').then((m) => m.ProductReportModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'customer-report',
+        loadChildren: () => import('./reports/customer-report/customer-report.module').then((m) => m.CustomerReportModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'order-report',
+        loadChildren: () => import('./reports/order-report/order-report.module').then((m) => m.OrderReportModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

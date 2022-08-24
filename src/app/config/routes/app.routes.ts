@@ -20,6 +20,8 @@ const contactRoute = '/contacts'
 const socialMediaRoute = "/social-media"
 const invoiceSettingRoute = "/invoice-settings"
 const productReportRoute = "/product-report"
+const customerReportRoute = "/customer-report"
+const orderReportRoute = "/order-report"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -113,6 +115,8 @@ export const appRoutes = {
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   },
   reports: {
-    PRODUCT_REPORT: `${app}${productReportRoute}`
+    PRODUCT_REPORT: `${app}${productReportRoute}`,
+    CUSTOMER_REPORT: `${app}${customerReportRoute}`,
+    ORDER_REPORT: `${app}${orderReportRoute}`,
   }
 };

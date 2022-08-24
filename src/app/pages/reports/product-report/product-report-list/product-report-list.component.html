@@ -33,12 +33,11 @@
          <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
             <label class="col-sm-2 col-form-label">Products</label>
             <div class="form-group">
-               <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                  formControlName="orderStatus">
+               <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="product">
                   <option value="check" disabled>
                      -- Select An Option --
                   </option>
-                  
+                  <option *ngFor="let product of productsData" value="{{product?.slug}}">{{product?.name}}</option>
                </select>
             </div>
          </div>
@@ -55,4 +54,36 @@
          </div>
       </div>
    </form>
-</div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="card card-table">
+            <div class="card-body">
+               <div style="display: none"> {{productsReportsData.length}}</div>
+               <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions"
+                     class="datatable table table-borderless table-center table-row-dashed mb-0">
+                     <thead class="thead mt-100">
+                        <tr class="fs-7 text-uppercase">
+                           <!-- <th class="text-gray-400 col-md-2">Sl No.</th> -->
+                           <th class="text-gray-400 col-md-2">Order No.</th>
+                           <th class="text-gray-400 col-md-2">Order Date</th>
+                           <th class="text-gray-400 col-md-2">Product Name</th>
+                           <th class="text-gray-400 col-md-2">Quantity</th>
+                           <th class="text-gray-400 col-md-2">Product Cost</th>
+                           <th class="text-gray-400 col-md-2">Customer</th>
+                           <th class="text-gray-400 col-md-2">Payment Method</th>
+                           <th class="text-gray-400 col-md-2">Total</th>
+                        </tr>
+                     </thead>
+                     <tbody *ngFor="let data of productsReportsData; let i = index">
+                        <tr *ngFor="let product of data.orders.product">
+                           
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div> 

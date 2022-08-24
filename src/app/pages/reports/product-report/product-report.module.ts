@@ -6,6 +6,7 @@ import { ProductReportListComponent } from './product-report-list/product-report
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { WidgetsModule } from 'src/app/shared/partials';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
       preventDuplicates: true,
       progressBar: true,
     }),
+    WidgetsModule,
   ]
 })
 export class ProductReportModule { }
