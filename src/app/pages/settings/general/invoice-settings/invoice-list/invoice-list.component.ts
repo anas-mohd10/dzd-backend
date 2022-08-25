@@ -63,6 +63,7 @@ export class InvoiceListComponent implements OnInit {
   getInvoice() {
     this.invoiceSettingsService.getInvoiceSettings().subscribe((res: any) => {
       this.invoiceSettingsData = res?.result
+      console.log(this.invoiceSettingsData);
       let isDataLem = this.invoiceSettingsData.length
       if (this.invoiceSettingsData.length > 0) {
         this.currentData = {

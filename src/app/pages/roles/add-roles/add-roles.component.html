@@ -27,18 +27,19 @@
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="roleForm">
             <div class="row">
+              <div style="display: none;">{{permissionsData.length}}</div>
               <div class="col-12">
-                <h5 class="form-title fs-4"><span>Role Details</span></h5>
+                <h3 class="form-title"><span>Role Details</span></h3>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3"> Name</label>
+                  <label class="fs-6 mb-3 form-title required"> Name</label>
                   <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
                       'is-invalid':
                       (rf.name.touched || isSubmitted) &&
                       rf.name.errors?.required
                     }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-7" *ngIf="
                       (rf.name.touched || isSubmitted) &&
                       rf.name.errors?.required
                   ">Name is required
@@ -48,18 +49,18 @@
               <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Description</label>
-                  <textarea class="form-control fs-5" formControlName="description" style="resize: none"
+                  <label class="fs-6 mb-3">Description</label>
+                  <textarea class="form-control fs-6" formControlName="description" style="resize: none"
                     rows="5"></textarea>
                 </div>
               </div>
               <div class="col-12 col-sm-6"></div>
 
               <div class="col-12">
-                <label class="fs-5 mb-3">Select Permissions</label>
+                <label class="fs-6 mb-3 form-title required">Select Permissions</label>
                 <div class="form-group mt-10">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="selected" id="selectAllCheck"
+                    <input class="form-check-input form-title fs-6" type="checkbox" value="selected" id="selectAllCheck"
                       (change)="checkAllPermission($event)" formControlName="selectall">
                     <label class="form-check-label" for="selectAllCheck">
                       Select All / Deselect All
@@ -69,10 +70,10 @@
                 <div class="permissions-input">
                   <div class="form-group mt-10" *ngFor="let permission of permissionsData">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" id="{{permission.name}}"
+                      <input class="form-check-input form-title fs-6" type="checkbox" id="{{permission.name}}"
                         value="{{permission._id}}" (change)="checkPermission(permission._id, $event)"
                         formControlName="permission">
-                      <span class="text-danger error-msg fs-6"
+                      <span class="text-danger error-msg fs-7"
                         *ngIf="(rf.permission.touched || isSubmitted) && rf.permission.errors?.required">
                         Permission is required
                       </span>
@@ -82,8 +83,12 @@
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-4">
-                  Submit
+                <a routerLink="{{ appRoute.roles.ROLES_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                  Add
                 </button>
               </div>
             </div>

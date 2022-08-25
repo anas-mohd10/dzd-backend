@@ -18,7 +18,6 @@ export class CouponsService {
 
   getCoupons() {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon);
-    console.log(url);
     return this.http.get(`${url}`);
   }
 

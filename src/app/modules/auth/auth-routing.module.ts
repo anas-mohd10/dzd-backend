@@ -21,7 +21,7 @@ const routes: Routes = [
         path: 'login',
         component: LoginComponent,
         data: { returnUrl: window.location.pathname },
-        // canActivate: [LoggedInGuard]
+        canActivate: [LoggedInGuard]
       },
       {
         path: 'registration',
