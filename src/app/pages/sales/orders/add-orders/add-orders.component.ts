@@ -147,10 +147,7 @@ export class AddOrdersComponent implements OnInit {
 
   addOrder() {
     if (!this.orderForm.valid) {
-      this.toastr.error('Kindly fill required fields', '', {
-        progressBar: true,
-        easing: 'ease-in'
-      });
+      this.toastr.error('Kindly fill required fields');
       return;
     }
 
@@ -173,20 +170,17 @@ export class AddOrdersComponent implements OnInit {
       gst: data.gst,
       paymentMethod: data.paymentMethod
     }
-
-    this.orderService.addOrder(payload).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong', '', {
-          progressBar: true,
-          easing: 'ease-in'
-        });
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Order placed successfully', '', {
-          progressBar: true,
-          easing: 'ease-in'
-        });
-        this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
-      }
-    })
+    if (data.products.length != 0) {
+      this.orderService.addOrder(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something went wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Order placed successfully');
+          this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+        }
+      })
+    } else {
+      this.toastr.error('Add atleast one product to place the order', 'Add product');
+    }
   }
 }

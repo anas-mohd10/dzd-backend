@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-tax-rules',
@@ -13,13 +14,13 @@ export class TaxRulesComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  // public dtTrigger: Subject<any> = new Subject();
+  public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes;
   taxRulesData: any;
   displayTable: boolean;
 
-  constructor(private taxRulesService: TaxRulesService) {}
+  constructor(private taxRulesService: TaxRulesService) { }
 
   ngOnInit(): void {
     this.getTaxRules()
@@ -33,12 +34,8 @@ export class TaxRulesComponent implements OnInit {
 
   getTaxRules() {
     this.taxRulesService.getTaxRules().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.taxRulesData = res?.result;
-          break;
-      }
-      // this.dtTrigger.next()
+      this.taxRulesData = res?.result;
+      this.dtTrigger.next()
       this.displayTable = true;
     });
   }

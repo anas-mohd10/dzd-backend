@@ -6,14 +6,14 @@
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.contacts.CONTACTS_LIST}}">Contacts</a>
                </li>
             </ul>
-            <button class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary" style="width: 200px"
+            <button class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary" style="width: 200px"
                routerLink="{{ appRoute.contacts.ADD_CONTACTS_LIST }}">
                Add Contacts
             </button>
@@ -24,15 +24,14 @@
       <div style="display: none"> {{contactsData.length}}</div>
       <ng-container *ngFor="let contact of contactsData">
          <div class="col-xl-4 contact-card">
-            <div class="contact-name fs-3 fw-bold">{{contact?.name}}</div>
-            <div class="contact-email fs-4">{{contact?.email}}</div>
-            <div class="contact-mobile fs-4">{{contact?.mobile}}</div>
-            <br>
+            <div class="contact-name fs-5 fw-bold">{{contact?.name}}</div>
+            <div class="contact-email fs-6">{{contact?.email}} | {{contact?.mobile}}</div>
+            <!-- <br> -->
             <div class="contact-address-area">{{contact?.address[0]?.firstline}}, {{contact?.address[0]?.area}}</div>
             <div class="contact-address-city">{{contact?.address[0]?.city}}, {{contact?.address[0]?.state}}</div>
             <div class="contact-pincode">{{contact?.address[0]?.pincode}}</div>
             <br>
-            <div class="edit-btn fs-5">
+            <div class="edit-btn fs-6">
                <a routerLink="{{ appRoute.contacts.UPDATE_CONTACTS_LIST }}" [queryParams]="{slug: contact?.slug}">Edit
                   info</a>
             </div>

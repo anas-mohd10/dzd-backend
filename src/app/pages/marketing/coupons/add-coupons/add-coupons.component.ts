@@ -61,9 +61,9 @@ export class AddCouponsComponent implements OnInit {
       file: [''],
       maxDiscount: [''],
       minPurchase: [''],
-      categories: [Validators.required],
-      products: [Validators.required],
-      collections: [ Validators.required],
+      categories: [[], Validators.required],
+      products: [[], Validators.required],
+      collections: [[], Validators.required],
       isMultiple: ['false', Validators.required],
       isActive: ['true', Validators.required],
     });
@@ -116,7 +116,7 @@ export class AddCouponsComponent implements OnInit {
     } else {
       this.toastr.info('Category Already Added');
     }
-    this.couponForm.get('categories')?.setValue('');
+    // this.couponForm.get('categories')?.setValue('');
   }
 
   tagCategoryRemove(category: any) {
@@ -143,7 +143,7 @@ export class AddCouponsComponent implements OnInit {
     } else {
       this.toastr.info("Product already added");
     }
-    this.couponForm.get('products')?.setValue('');
+    // this.couponForm.get('products')?.setValue('');
   }
 
   tagProductRemove(product: any) {
@@ -170,14 +170,14 @@ export class AddCouponsComponent implements OnInit {
     } else {
       this.toastr.info("Collection already added");
     }
-    this.couponForm.get('collections')?.setValue('');
+    // this.couponForm.get('collections')?.setValue('');
   }
 
 
   tagCollectionRemove(collection: any) {
     const index = this.collectionNames.indexOf(collection);
     if (index > -1) {
-      this.collectionNames.splice(index, 1); 
+      this.collectionNames.splice(index, 1);
     }
     for (let i = 0; i < this.collectionsData.length; i++) {
       if (this.collectionsData[i].name == collection) {

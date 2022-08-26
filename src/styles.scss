@@ -1,6 +1,10 @@
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
 
+.toast-container {
+  font-size: 13px;
+}
+
 .required::after {
   content: "*";
   position: relative;

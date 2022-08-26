@@ -32,7 +32,7 @@
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3">Customer</label>
+                           <label class="fs-6 mb-3 form-title required">Customer</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="customer" (change)="getAddress()"
                               [ngClass]="{ 'is-invalid': (of.customer.touched || isSubmitted) && of.customer.errors?.required}">
@@ -41,7 +41,7 @@
                                  {{cust?.firstname}}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf=" (of.customer.touched || isSubmitted) && of.customer.errors?.required ">
                               Customer is required
                            </span>
@@ -52,13 +52,13 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Address Line 1</label>
+                           <label class="fs-6 mb-3 form-title required"> Address Line 1</label>
                            <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
                                  'is-invalid':
                                  (of.firstline.touched || isSubmitted) &&
                                  of.firstline.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="
+                           <span class="text-danger error-msg fs-7" *ngIf="
                                  (of.firstline.touched || isSubmitted) &&
                                  of.firstline.errors?.required
                              ">Address line 1 is required
@@ -79,13 +79,13 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> City</label>
+                           <label class="fs-6 mb-3 form-title required"> City</label>
                            <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
                                  'is-invalid':
                                  (of.city.touched || isSubmitted) &&
                                  of.city.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="
+                           <span class="text-danger error-msg fs-7" *ngIf="
                                  (of.city.touched || isSubmitted) &&
                                  of.city.errors?.required
                              ">City is required
@@ -94,13 +94,13 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Landmark</label>
+                           <label class="fs-6 mb-3 form-title required"> Landmark</label>
                            <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
                                  'is-invalid':
                                  (of.landmark.touched || isSubmitted) &&
                                  of.landmark.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="
+                           <span class="text-danger error-msg fs-7" *ngIf="
                                  (of.landmark.touched || isSubmitted) &&
                                  of.landmark.errors?.required
                              ">Landmark is required
@@ -109,13 +109,13 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Pincode</label>
+                           <label class="fs-6 mb-3 form-title required"> Pincode</label>
                            <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
                                  'is-invalid':
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="
+                           <span class="text-danger error-msg fs-7" *ngIf="
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
                              ">Pincode is required
@@ -124,38 +124,20 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Latitude</label>
-                           <input type="text" class="form-control fs-6" formControlName="lat" [ngClass]="{
-                                 'is-invalid':
-                                 (of.lat.touched || isSubmitted) &&
-                                 of.lat.errors?.required
-                               }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="
-                                 (of.lat.touched || isSubmitted) &&
-                                 of.lat.errors?.required
-                             ">Latitude is required
-                           </span>
+                           <label class="fs-6 mb-3 form-title"> Latitude</label>
+                           <input type="text" class="form-control fs-6" formControlName="lat" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Longitude</label>
-                           <input type="text" class="form-control fs-6" formControlName="lng" [ngClass]="{
-                                 'is-invalid':
-                                 (of.lng.touched || isSubmitted) &&
-                                 of.lng.errors?.required
-                               }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="
-                                 (of.lng.touched || isSubmitted) &&
-                                 of.lng.errors?.required
-                             ">Longitude is required
-                           </span>
+                           <label class="fs-6 mb-3 form-title"> Longitude</label>
+                           <input type="text" class="form-control fs-6" formControlName="lng" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">State</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <label class="fs-6 mb-3 form-title required">State</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="state">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="Kerala">Kerala</option>
@@ -172,8 +154,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Payment Method</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <label class="fs-6 mb-3 form-title required">Payment Method</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="paymentMethod"
                               [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
@@ -183,7 +165,7 @@
                               <option value="UNPAID">Unpaid</option>
                               <option value="ONLINE">Online</option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf=" (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required ">
                               Payment method is required
                            </span>
@@ -191,8 +173,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Coupon</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <label class="fs-6 mb-3 form-title required">Coupon</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="coupon"
                               [ngClass]="{ 'is-invalid': (of.coupon.touched || isSubmitted) && of.coupon.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
@@ -200,7 +182,7 @@
                                  {{coupon?.title}}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-6"
+                           <span class="text-danger error-msg fs-7"
                               *ngIf=" (of.coupon.touched || isSubmitted) && of.coupon.errors?.required ">
                               Coupon method is required
                            </span>
@@ -214,17 +196,28 @@
                      </div>
                      <div class="product-add-container" formArrayName="products">
                         <div class="col-12 d-flex align-items-center justify-content-between">
-                           <h5 class="form-title fs-4"><span>Products Details</span></h5>
-                           <button type="button" (click)="addQuantity()" class="btn btn-info"
-                              style="width: 200px">Add
-                              Product</button>
+                           <h5 class="form-title fs-4">
+                              <span>Products Details</span>
+                           </h5>
+                           <button 
+                              type="button"
+                              (click)="addQuantity()"
+                              class="btn btn-dark text-white"
+                              style="width: 200px">
+                              Add Product
+                           </button>
                         </div>
-                        <div class="col-12" *ngFor="let product of products().controls; let i=index" [formGroupName]="i"
+                        <div
+                           class="col-12"
+                           *ngFor="let product of products().controls; let i=index"
+                           [formGroupName]="i"
                            style="margin-top: 40px">
                            <div class="col-12 col-sm-6">
                               <div class="form-group">
-                                 <label class="fs-6 mb-3">Product</label>
-                                 <select class="form-select form-select-lg" aria-label=".form-select-lg"
+                                 <label class="fs-6 mb-3 form-title required">Product</label>
+                                 <select
+                                    class="form-select form-select-lg fs-6"
+                                    aria-label=".form-select-lg"
                                     formControlName="productId">
                                     <option value="disabled" disabled>-- Select an option --</option>
                                     <option *ngFor="let prod of activeProducts" value="{{prod?._id}}">
@@ -234,7 +227,7 @@
                               </div>
                            </div>
                            <div class="col-12 col-sm-6">
-                              <label class="fs-6 mb-3">Quantity</label>
+                              <label class="fs-6 mb-3 form-title required">Quantity</label>
                               <div class="form-group d-flex align-items-center">
                                  <input type="text" class="form-control fs-6" id="quantity" formControlName="quantity">
                               </div>
@@ -248,7 +241,8 @@
                         </div>
                      </div>
                      <div class="col-12">
-                        <a routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                        <a routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary btn-sm fs-6 text-dark"
+                           style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">

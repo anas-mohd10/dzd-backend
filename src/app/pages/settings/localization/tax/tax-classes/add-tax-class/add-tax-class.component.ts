@@ -58,7 +58,7 @@ export class AddTaxClassComponent implements OnInit {
   initForm() {
     this.taxClassForm = this.formBuilder.group({
       name: ['', Validators.required],
-      rule: [Validators.required],
+      rule: [[], Validators.required],
       description: [''],
       isActive: ['true', Validators.required],
     });
@@ -89,7 +89,6 @@ export class AddTaxClassComponent implements OnInit {
     } else {
       this.toastr.info("Tax rule already added")
     }
-    this.taxClassForm.get("rule")?.setValue('')
   }
 
   tagRemove(name: any) {

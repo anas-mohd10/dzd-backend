@@ -38,7 +38,7 @@
                     (of.name.touched || isSubmitted) &&
                     of.name.errors?.required
                   }" />
-                  <span class="text-danger fs-6" *ngIf="
+                  <span class="text-danger fs-7" *ngIf="
                       (of.name.touched || isSubmitted) &&
                       of.name.errors?.required
                     ">Name is required</span>
@@ -52,7 +52,7 @@
                     (of.description.touched || isSubmitted) &&
                     of.description.errors?.required
                   }" />
-                  <span class="text-danger mt-10 fs-6" *ngIf="
+                  <span class="text-danger mt-10 fs-7" *ngIf="
                       (of.description.touched || isSubmitted) &&
                       of.description.errors?.required
                     ">Description is required</span>
@@ -66,7 +66,7 @@
                         (of.fromDate.touched || isSubmitted) &&
                         of.fromDate.errors?.required
                     }" />
-                  <span class="text-danger fs-6" *ngIf="
+                  <span class="text-danger fs-7" *ngIf="
                       (of.fromDate.touched || isSubmitted) &&
                       of.fromDate.errors?.required
                     ">
@@ -78,7 +78,7 @@
                   <label class="fs-6 mb-3 form-title required">Last Date</label>
                   <input type="date" class="form-control fs-6" formControlName="lastDate"
                     [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
-                  <span class="text-danger fs-6"
+                  <span class="text-danger fs-7"
                     *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required">Last date is
                     required</span>
                 </div>
