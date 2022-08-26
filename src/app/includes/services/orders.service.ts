@@ -60,4 +60,10 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.update_order + "?number=" + number);
     return this.http.put(`${url}`, data)
   }
+
+  //report
+  getOrderReport() {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_report);
+    return this.http.get(`${url}`)
+  }
 }

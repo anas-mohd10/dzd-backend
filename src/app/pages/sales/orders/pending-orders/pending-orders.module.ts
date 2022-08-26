@@ -1,23 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OrdersRoutingModule } from './orders-routing.module';
-import { OrdersListComponent } from './orders-list/orders-list.component';
-import { AddOrdersComponent } from './add-orders/add-orders.component';
-import { UpdateOrdersComponent } from './update-orders/update-orders.component';
-import { ToastrModule } from 'ngx-toastr';
-import { WidgetsModule } from '../../../shared/partials';
+
+import { PendingOrdersRoutingModule } from './pending-orders-routing.module';
+import { PendingOrdersListComponent } from './pending-orders-list/pending-orders-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { WidgetsModule } from 'src/app/shared/partials';
+
 
 @NgModule({
   declarations: [
-    OrdersListComponent,
-    AddOrdersComponent,
-    UpdateOrdersComponent
+    PendingOrdersListComponent
   ],
   imports: [
     CommonModule,
-    OrdersRoutingModule,
+    PendingOrdersRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
@@ -30,4 +28,4 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     WidgetsModule,
   ]
 })
-export class OrdersModule { }
+export class PendingOrdersModule { }

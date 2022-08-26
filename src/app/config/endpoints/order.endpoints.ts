@@ -9,5 +9,7 @@ export const orderEndpoints = {
    get_active_order: '/order/get-order/active',
    update_order: '/order/update-order',
    get_order_by_status_date: '/order/status-date',
-   get_order_by_date: '/order'
+   get_order_by_date: '/order',
+   //report
+   get_order_report: '/order-report'
 };

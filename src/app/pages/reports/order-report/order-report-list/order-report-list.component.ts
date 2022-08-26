@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { CsvService } from 'src/app/includes/services/csv.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
-import { OrderReportService } from 'src/app/includes/services/order.report.service';
+import { OrdersService } from 'src/app/includes/services/orders.service';
+
 
 @Component({
   selector: 'app-order-report-list',
@@ -25,11 +26,11 @@ export class OrderReportListComponent implements OnDestroy, OnInit {
   headers: any[] = ['OrderNumber', 'OrderStatus', 'OrderDate', 'PaymentMethod', 'Customer', 'Total', 'Tax', 'ShippingCost', 'TotalItems']
   name: String = "order_report" + Date.now()
 
-  
+
   constructor(
     private customersService: CustomersService,
     private formBuilder: FormBuilder,
-    private orderReportService: OrderReportService,
+    private ordersService: OrdersService,
     private csvService: CsvService
   ) { }
 
@@ -68,7 +69,7 @@ export class OrderReportListComponent implements OnDestroy, OnInit {
   }
 
   getOrderReportsData() {
-    this.orderReportService.getOrderReport().subscribe((res: any) => {
+    this.ordersService.getOrderReport().subscribe((res: any) => {
       this.ordersReportsData = res?.result
     })
   }

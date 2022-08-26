@@ -263,36 +263,26 @@
             <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
                <div class="card-header">
                   <div class="card-title">
-                     <h5>Customer Address</h5>
+                     <h3>Customer address</h3>
                   </div>
                </div>
                <div class="card-body pt-0">
-                  {{orderData?.customerId?.address[0]?.firstline}}
-                  <br />
-                  {{orderData?.customerId?.address[0]?.secondline}}
-                  <br />
-                  {{orderData?.customerId?.address[0]?.area}}, {{orderData?.customerId?.address[0]?.landmark}}
-                  <br />
-                  {{orderData?.customerId?.address[0]?.city}}, {{orderData?.customerId?.address[0]?.state}}
-                  <br />
+                  {{orderData?.customerId?.address[0]?.firstline}},
+                  {{orderData?.customerId?.address[0]?.secondline}},
+                  {{orderData?.customerId?.address[0]?.area}}, {{orderData?.customerId?.address[0]?.landmark}},
+                  {{orderData?.customerId?.address[0]?.city}}, {{orderData?.customerId?.address[0]?.state}},
                   {{orderData?.customerId?.address[0]?.pincode}}
                </div>
-            </div>
-            <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
                <div class="card-header">
                   <div class="card-title">
-                     <h5>Shipping Address</h5>
+                     <h3>Shipping address</h3>
                   </div>
                </div>
                <div class="card-body pt-0">
-                  {{orderData?.address?.firstline}}
-                  <br />
-                  {{orderData?.address?.secondline}}
-                  <br />
-                  {{orderData?.address?.area}}, {{orderData?.address?.landmark}}
-                  <br />
-                  {{orderData?.address?.city}}, {{orderData?.address?.state}}
-                  <br />
+                  {{orderData?.address?.firstline}},
+                  {{orderData?.address?.secondline}},
+                  {{orderData?.address?.area}}, {{orderData?.address?.landmark}},
+                  {{orderData?.address?.city}}, {{orderData?.address?.state}},
                   {{orderData?.address?.pincode}}
                </div>
             </div>
@@ -302,7 +292,7 @@
          <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
             <div class="card-header">
                <div class="card-title">
-                  <h5>Order ( {{orderData?.orderNo}} )</h5>
+                  <h3>Product details</h3>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -365,30 +355,34 @@
                   <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
                      <div class="row">
                         <div class="col-12">
-                           <h5 class="form-title fs-4"><span>Orders details</span></h5>
+                           <h3 class="form-title"><span>Orders details</span></h3>
                         </div>
                         <div class="col-12">
                            <div class="form-group col-sm-6">
-                              <label class="fs-6 mb-3">Tracking URL</label>
+                              <label class="fs-6 mb-3 form-title">Tracking URL</label>
                               <input type="text" class="form-control fs-6" formControlName="trackingURL" />
                            </div>
                         </div>
                         <div class="col-12">
                            <div class="form-group col-sm-6">
-                              <label class="fs-6 mb-3">Order Note</label>
+                              <label class="fs-6 mb-3 form-title">Order Note</label>
                               <textarea class="form-control fs-6" formControlName="orderNote" style="resize: none"
                                  id="orderNote" rows="5"></textarea>
                            </div>
                         </div>
                         <div class="col-12">
                            <div class="form-group col-sm-6">
-                              <label class="fs-6 mb-3">Order Status</label>
-                              <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              <label class="fs-6 mb-3 form-title">Order Status</label>
+                              <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                                  formControlName="orderStatus">
                                  <option value="disabled" disabled>-- Select an option --</option>
-                                 <option value="PLACED">Placed</option>
-                                 <option value="ACCEPTED">Accepted</option>
-                                 <option value="CANCELLED">Cancelled</option>
+                                 <option value="ACCEPTED" class="fs-7">Accepted</option>
+                                 <option value="PENDING" class="fs-7">Pending</option>
+                                 <option value="PLACED" selected class="fs-7">Placed</option>
+                                 <option value="PACKED" class="fs-7">Packed</option>
+                                 <option value="SHIPPED" class="fs-7">Shipped</option>
+                                 <option value="DELIVERED" class="fs-7">Delivered</option>
+                                 <option value="CANCELLED" class="fs-7">Cancelled</option>
                               </select>
                            </div>
                         </div>

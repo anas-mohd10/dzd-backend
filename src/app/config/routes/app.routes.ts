@@ -13,7 +13,7 @@ const taxRulesRoute = "/tax-rules"
 const shippingClassRoute = "/shipping"
 const adminUsersRoute = "/admin-users"
 const rolesRoute = "/roles"
-const orderRoute = "/orders"
+const orderRoute = "/placed-orders"
 const customerRoute = "/customers"
 const couponRoute = '/coupons'
 const contactRoute = '/contacts'
@@ -22,6 +22,7 @@ const invoiceSettingRoute = "/invoice-settings"
 const productReportRoute = "/product-report"
 const customerReportRoute = "/customer-report"
 const orderReportRoute = "/order-report"
+const pendingOrderReportRoute = "/pending-orders"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -87,7 +88,8 @@ export const appRoutes = {
   orders: {
     ORDERS_LIST: `${app}${orderRoute}`,
     ADD_ORDER_LIST: `${app}${orderRoute}/add`,
-    UPDATE_ORDER_LIST: `${app}${orderRoute}/update`
+    UPDATE_ORDER_LIST: `${app}${orderRoute}/update`,
+    PENDING_ORDERS_LIST: `${app}${pendingOrderReportRoute}`
   },
   customers: {
     CUSTOMERS_LIST: `${app}${customerRoute}`,
