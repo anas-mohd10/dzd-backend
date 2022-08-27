@@ -17,4 +17,4 @@ import { DataTablesModule } from 'angular-datatables';
     ]),
   ],
 })
-export class CollectionModule {}
+export class CollectionModule { }

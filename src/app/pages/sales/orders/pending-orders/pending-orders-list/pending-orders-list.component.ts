@@ -35,6 +35,23 @@ export class PendingOrdersListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 10,
+      processing: true,
+    };
+    this.initForm()
+    this.getPendingOrders()
+  }
+
+  initForm() {
+    this.orderForm = this.formBuilder.group({
+      fromDate: [''],
+      toDate: [''],
+      paymentMethod: [''],
+      orderStatus: [''],
+    });
   }
 
   checkToDate() {
@@ -42,9 +59,7 @@ export class PendingOrdersListComponent implements OnInit {
     let toDate = this.orderForm.get("toDate")?.value
     if (toDate < fromDate) {
       this.isDateValid = false
-      this.toastr.error("Kindly enter a valid To date", '', {
-        progressBar: true,
-      })
+      this.toastr.error("Kindly enter a valid To date")
     } else {
       this.isDateValid = true
     }
@@ -54,6 +69,20 @@ export class PendingOrdersListComponent implements OnInit {
     window.location.reload()
   }
 
+  getPendingOrders() {
+    this.ordersService.getPendingOrders().subscribe((res: any) => {
+      this.ordersData = res?.result
+    })
+  }
+
   onSubmit() { }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
 
 }

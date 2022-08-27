@@ -6,38 +6,114 @@
    margin: 0 0 30px 0;
 }
 
+.order-status {
+   width: 160px;
+}
+
 .placed {
    height: 30px;
    padding: 10px 30px;
-   background: rgba(15, 93, 160, 0.3);
+   background: rgb(15, 93, 160);
    border-radius: 5px;
    display: flex;
    align-items: center;
    justify-content: center;
-   color: rgb(15, 93, 160);
-   font-weight: 700;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
 }
 
 .accepted {
    height: 30px;
    padding: 10px 30px;
-   background: rgba(15, 160, 66, 0.3);
+   background: rgb(25, 181, 80);
    border-radius: 5px;
    display: flex;
    align-items: center;
    justify-content: center;
-   color: rgb(10, 120, 48);
-   font-weight: 700;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
 }
 
 .cancelled {
    height: 30px;
    padding: 10px 30px;
-   background: rgba(160, 15, 15, 0.3);
+   background: #9d0208;
    border-radius: 5px;
    display: flex;
    align-items: center;
    justify-content: center;
-   color: rgb(160, 15, 15);
-   font-weight: 700;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.packed {
+   height: 30px;
+   padding: 10px 30px;
+   background: #dc2f02;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.failed {
+   height: 30px;
+   padding: 10px 30px;
+   background: #d00000;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.shipped {
+   height: 30px;
+   padding: 10px 30px;
+   background: #370617;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.delivered {
+   height: 30px;
+   padding: 10px 30px;
+   background: #faa307;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(0, 0, 0);
+   font-weight: 500;
+}
+
+.partial {
+   height: 30px;
+   padding: 10px 30px;
+   background: #f48c06;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.refunded {
+   height: 30px;
+   padding: 10px 30px;
+   background: #03071e;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
 }

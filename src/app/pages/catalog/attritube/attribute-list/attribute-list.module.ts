@@ -26,4 +26,4 @@ import { ToastrModule } from 'ngx-toastr';
     ]),
   ],
 })
-export class AttributeModule {}
+export class AttributeModule { }

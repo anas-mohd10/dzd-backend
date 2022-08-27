@@ -89,7 +89,8 @@ export const appRoutes = {
     ORDERS_LIST: `${app}${orderRoute}`,
     ADD_ORDER_LIST: `${app}${orderRoute}/add`,
     UPDATE_ORDER_LIST: `${app}${orderRoute}/update`,
-    PENDING_ORDERS_LIST: `${app}${pendingOrderReportRoute}`
+    PENDING_ORDERS_LIST: `${app}${pendingOrderReportRoute}`,
+    UPDATE_PENDING_ORDER: `${app}${pendingOrderReportRoute}/update`
   },
   customers: {
     CUSTOMERS_LIST: `${app}${customerRoute}`,

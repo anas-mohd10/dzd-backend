@@ -19,4 +19,4 @@ import { DataTablesModule } from 'angular-datatables';
     // WidgetsModule,
   ],
 })
-export class CategoryModule {}
+export class CategoryModule { }

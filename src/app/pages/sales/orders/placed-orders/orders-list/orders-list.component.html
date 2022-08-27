@@ -59,11 +59,11 @@
                <label class="col-sm-2 col-form-label">Payment</label>
                <div class="form-group">
                   <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="paymentMethod">
-                     <option value="check" disabled>
+                     formControlName="paymentMethod" (change)="sortByPayment()">
+                     <option value="" selected disabled>
                         -- Select An Option --
                      </option>
-                     <option value="COD" class="fs-7">COD</option>
+                     <option value="CARD" class="fs-7">Card</option>
                      <option value="ONLINE" class="fs-7">Online</option>
                      <option value="CASH" class="fs-7">Cash</option>
                      <option value="UNPAID" class="fs-7">Unpaid</option>
@@ -75,17 +75,19 @@
                <label class="col-sm-2 col-form-label">Status</label>
                <div class="form-group">
                   <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="orderStatus">
-                     <option value="check" disabled>
+                     formControlName="orderStatus" (change)="sortByStatus()">
+                     <option value="" selected disabled>
                         -- Select An Option --
                      </option>
                      <option value="ACCEPTED" class="fs-7">Accepted</option>
-                     <option value="PENDING" class="fs-7">Pending</option>
                      <option value="PLACED" selected class="fs-7">Placed</option>
                      <option value="PACKED" class="fs-7">Packed</option>
                      <option value="SHIPPED" class="fs-7">Shipped</option>
                      <option value="DELIVERED" class="fs-7">Delivered</option>
                      <option value="CANCELLED" class="fs-7">Cancelled</option>
+                     <option value="FAILED" class="fs-7">Failed</option>
+                     <option value="REFUNDED" class="fs-7">Refunded</option>
+                     <option value="PARTIAL REFUNDED" class=" fs-7">Partial Refunded</option>
                   </select>
                </div>
             </div>
@@ -107,7 +109,7 @@
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-               <div style="display: none"> {{ordersData.length}}</div>
+               <div style="display: none"> {{filteredData.length}}</div>
                <div class="table-responsive">
                   <table datatable [dtOptions]="dtOptions"
                      class="datatable table table-borderless table-center table-row-dashed mb-0">
@@ -125,7 +127,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr *ngFor="let order of ordersData; let i = index">
+                        <tr *ngFor="let order of filteredData; let i = index">
                            <td>
                               <h2 class="table-avatar">{{ i + 1 }}</h2>
                            </td>
@@ -136,8 +138,9 @@
                               <h2 class="table-avatar">{{ order?.orderDate }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar"><span class="{{(order?.orderStatus).toLowerCase()}}">{{
-                                    order?.orderStatus }}</span></h2>
+                              <h2 class="table-avatar"><span
+                                    class="order-status {{(order?.orderStatus).toLowerCase()}}">{{
+                                    order?.orderStatus.toLowerCase() }}</span></h2>
                            </td>
                            <td>
                               <h2 class="table-avatar">{{ order?.customerId.firstname }}</h2>

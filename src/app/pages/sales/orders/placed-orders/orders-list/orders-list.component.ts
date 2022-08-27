@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
-import { DataTableDirective } from 'angular-datatables';
+import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-orders-list',
@@ -25,6 +26,13 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   totalRevenue: Number = 0
   orderForm: FormGroup;
   isDateValid: Boolean = true;
+  status: any;
+  filteredData: any;
+
+  //Local variables for temporary storing
+  localData: any = []
+  localStatus: any
+  localMethod: any
 
   constructor(
     private ordersService: OrdersService,
@@ -41,16 +49,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       pageLength: 10,
       processing: true,
     };
-
-    this.ordersService.getOrders().subscribe((res: any) => {
-      this.ordersData = res?.result
-      this.orderCount += this.ordersData.length
-      for (let order of this.ordersData) {
-        order.orderDate = new Date(order.orderDate).toDateString()
-        this.totalRevenue += order.total
-      }
-      this.dtTrigger.next();
-    })
+    this.getOrders()
     this.initForm()
   }
 
@@ -66,6 +65,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   getOrders() {
     this.ordersService.getOrders().subscribe((res: any) => {
       this.ordersData = res?.result
+      this.filteredData = res?.result
       this.orderCount += this.ordersData.length
       for (let order of this.ordersData) {
         order.orderDate = new Date(order.orderDate).toDateString()
@@ -80,9 +80,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     let toDate = this.orderForm.get("toDate")?.value
     if (toDate < fromDate) {
       this.isDateValid = false
-      this.toastr.error("Kindly enter a valid To date", '', {
-        progressBar: true,
-      })
+      this.toastr.error("Kindly enter a valid To date")
     } else {
       this.isDateValid = true
     }
@@ -92,57 +90,29 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     window.location.reload()
   }
 
-  onSubmit() {
-    if (this.isDateValid) {
-      let fromDate = this.orderForm.get("fromDate")?.value
-      let toDate = this.orderForm.get("toDate")?.value
-      let paymentMethod = this.orderForm.get("paymentMethod")?.value
-      let orderStatus = this.orderForm.get("orderStatus")?.value
-      if (paymentMethod && orderStatus == "" || toDate == "" || fromDate == "") {
-        this.getOrdersByPayment(paymentMethod);
-      }
-      if (orderStatus && paymentMethod == "" || toDate == "" || fromDate == "") {
-        this.getOrdersByStatus(orderStatus)
-      }
-      if (paymentMethod && orderStatus && toDate == "" || fromDate == "") {
-        this.getOrdersByPaymentAndStatus(paymentMethod, orderStatus)
-      }
-      if (orderStatus && toDate && fromDate && paymentMethod == "") {
-        this.getOrdersByStatusAndDate(toDate, fromDate, orderStatus)
-      }
-    } else {
-      this.toastr.error("Kindly enter a valid To date", '', {
-        progressBar: true,
-      })
+  onSubmit() { }
+
+  //Sorting methods
+  sortByStatus() {
+    const status = this.orderForm.get("orderStatus")?.value
+    this.ordersService.getOrderByStatus(status).subscribe((res: any) => {
+      this.filteredData = res?.result
+      this.dtTrigger.toPromise();
+      this.dtTrigger.next();
+    })
+  }
+
+  sortByPayment() {
+    if (this.localData.length == 0 && this.localMethod != this.orderForm.get("paymentMethod")?.value) {
+      this.filteredData = this.ordersData.filter(
+        (_data: any) => { return _data.paymentMethod == this.orderForm.get("paymentMethod")?.value }
+      )
+    } else if (this.localStatus) {
+      this.filteredData = this.localData.filter(
+        (_data: any) => { return _data.paymentMethod == this.orderForm.get("paymentMethod")?.value }
+      )
     }
   }
-
-  getOrdersByPayment(method: any) {
-    this.ordersService.getOrderByPayment(method).subscribe((res: any) => {
-      this.ordersData = res?.result
-    })
-  }
-
-  getOrdersByStatus(status: any) {
-    this.ordersService.getOrderByStatus(status).subscribe((res: any) => {
-      this.ordersData = res?.result
-    })
-  }
-
-  getOrdersByPaymentAndStatus(method: any, status: any) {
-    this.ordersService.getOrderByPaymentAndStatus(method, status).subscribe((res: any) => {
-      this.ordersData = res?.result
-      console.log(this.ordersData);
-    })
-  }
-
-  getOrdersByStatusAndDate(ldate: any, gadate: any, status: any) {
-    this.ordersService.getOrderByDateAndStatus(ldate, gadate, status).subscribe((res: any) => {
-      this.ordersData = res?.result
-      console.log(this.ordersData);
-    })
-  }
-
 
   ngAfterViewInit(): void {
     this.dtTrigger.next();

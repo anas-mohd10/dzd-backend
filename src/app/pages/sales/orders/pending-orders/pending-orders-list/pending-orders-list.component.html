@@ -13,10 +13,10 @@
                   <a routerLink="{{ appRoute.orders.PENDING_ORDERS_LIST }}">Pending Orders</a>
                </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+            <!-- <button class="btn btn-primary cursor-pointer fs-6" color="primary"
                routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}" style="width: 200px">
                Add Orders
-            </button>
+            </button> -->
          </div>
       </div>
    </div>
@@ -64,5 +64,68 @@
             </div>
          </div>
       </form>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="card card-table">
+            <div class="card-body">
+               <div style="display: none"> {{ordersData.length}}</div>
+               <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions"
+                     class="datatable table table-borderless table-center table-row-dashed mb-0">
+                     <thead class="thead mt-100">
+                        <tr class="fs-7 text-uppercase">
+                           <th class="text-gray-400 col-md-2">Sl No.</th>
+                           <th class="text-gray-400 col-md-2">Order No.</th>
+                           <th class="text-gray-400 col-md-2">Order Date</th>
+                           <th class="text-gray-400 col-md-2">Order Status</th>
+                           <th class="text-gray-400 col-md-2">Customer</th>
+                           <th class="text-gray-400 col-md-2">Vendor</th>
+                           <th class="text-gray-400 col-md-2">Grand Total</th>
+                           <th class="text-gray-400 col-md-2">Payment Method</th>
+                           <th class="text-gray-400 col-md-2">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngFor="let order of ordersData; let i = index">
+                           <td>
+                              <h2 class="table-avatar">{{ i + 1 }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ order?.orderNo }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ order?.orderDate }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar"><span class="{{(order?.orderStatus).toLowerCase()}}">{{
+                                    order?.orderStatus.toLowerCase() }}</span></h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ order?.customerId.firstname }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">-</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{order?.total}}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ order?.paymentMethod }}</h2>
+                           </td>
+                           <td>
+                              <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
+                                 routerLink="{{ appRoute.orders.UPDATE_PENDING_ORDER }}"
+                                 [queryParams]="{ order: order?.orderNo }">
+                                 <i class="bi bi-pen"></i> Edit
+                              </a>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
    </div>
 </div>

@@ -17,4 +17,4 @@ import { DataTablesModule } from 'angular-datatables';
     ]),
   ],
 })
-export class BrandModule {}
+export class BrandModule { }

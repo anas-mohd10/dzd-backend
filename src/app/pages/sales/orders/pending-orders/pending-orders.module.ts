@@ -7,11 +7,13 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
+import { UpdatePendingOrdersComponent } from './update-pending-orders/update-pending-orders.component';
 
 
 @NgModule({
   declarations: [
-    PendingOrdersListComponent
+    PendingOrdersListComponent,
+    UpdatePendingOrdersComponent
   ],
   imports: [
     CommonModule,
