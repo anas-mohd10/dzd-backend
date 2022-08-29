@@ -173,19 +173,14 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Coupon</label>
+                           <label class="fs-6 mb-3 form-title">Coupon</label>
                            <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                              formControlName="coupon"
-                              [ngClass]="{ 'is-invalid': (of.coupon.touched || isSubmitted) && of.coupon.errors?.required}">
+                              formControlName="coupon">
                               <option value="disabled" disabled>-- Select an option --</option>
                               <option *ngFor="let coupon of activeCoupons" value="{{coupon?._id}}">
                                  {{coupon?.title}}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf=" (of.coupon.touched || isSubmitted) && of.coupon.errors?.required ">
-                              Coupon method is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -199,25 +194,17 @@
                            <h5 class="form-title fs-4">
                               <span>Products Details</span>
                            </h5>
-                           <button 
-                              type="button"
-                              (click)="addQuantity()"
-                              class="btn btn-dark text-white"
+                           <button type="button" (click)="addQuantity()" class="btn btn-dark text-white"
                               style="width: 200px">
                               Add Product
                            </button>
                         </div>
-                        <div
-                           class="col-12"
-                           *ngFor="let product of products().controls; let i=index"
-                           [formGroupName]="i"
+                        <div class="col-12" *ngFor="let product of products().controls; let i=index" [formGroupName]="i"
                            style="margin-top: 40px">
                            <div class="col-12 col-sm-6">
                               <div class="form-group">
                                  <label class="fs-6 mb-3 form-title required">Product</label>
-                                 <select
-                                    class="form-select form-select-lg fs-6"
-                                    aria-label=".form-select-lg"
+                                 <select class="form-select form-select-lg fs-6" aria-label=".form-select-lg"
                                     formControlName="productId">
                                     <option value="disabled" disabled>-- Select an option --</option>
                                     <option *ngFor="let prod of activeProducts" value="{{prod?._id}}">

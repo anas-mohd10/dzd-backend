@@ -59,7 +59,7 @@ export class AddOrdersComponent implements OnInit {
       landmark: ['', Validators.required],
       lat: [''],
       lng: [''],
-      coupon: ['', Validators.required],
+      coupon: [''],
       products: this.formBuilder.array([]),
     });
   }

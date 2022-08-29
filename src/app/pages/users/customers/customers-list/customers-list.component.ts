@@ -39,8 +39,6 @@ export class CustomersListComponent implements OnDestroy, OnInit {
   getCustomersCount() {
     this.customersService.getCustomersCoumt().subscribe((res: any) => {
       this.customersCount = res?.result
-      console.log(this.customersCount);
-
     })
   }
 

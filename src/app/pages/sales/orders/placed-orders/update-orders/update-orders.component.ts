@@ -23,6 +23,7 @@ export class UpdateOrdersComponent implements OnInit {
   totalProductCost: number;
   orderNo: any;
   isSubmitted: boolean;
+  price: any = 0
   constructor(
     private orderService: OrdersService,
     private route: ActivatedRoute,

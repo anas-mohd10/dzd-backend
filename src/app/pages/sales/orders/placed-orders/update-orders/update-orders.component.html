@@ -323,23 +323,53 @@
                            </td>
                            <td class="text-end">{{product?.productId?.sku}}</td>
                            <td class="text-end">{{product?.quantity}}</td>
-                           <td class="text-end">{{product?.productId?.mrpPrice}}</td>
-                           <td class="text-end">{{product?.quantity * product?.productId?.mrpPrice}}</td>
+                           <ng-container *ngIf="product?.offerPrice == 0">
+                              <td class="text-end">
+                                 {{product?.productId?.mrpPrice}}
+                              </td>
+                           </ng-container>
+                           <ng-container *ngIf="product?.offerPrice != 0">
+                              <td class="text-end">
+                                 {{product?.productId?.offerPrice}}
+                              </td>
+                           </ng-container>
+                           <ng-container *ngIf="product?.offerPrice == 0">
+                              <td class="text-end">
+                                 {{product?.quantity * product?.productId?.mrpPrice}}
+                              </td>
+                           </ng-container>
+                           <ng-container *ngIf="product?.offerPrice != 0">
+                              <td class="text-end">
+                                 {{product?.quantity * product?.productId?.offerPrice}}
+                              </td>
+                           </ng-container>
+                        </tr>
+                        <tr>
+                           <td colspan="4" class="fs-4 fw-bolder text-dark text-end">Total</td>
+                           <td class="text-end">{{orderData?.priceAfterTax}}</td>
+                        </tr>
+                        <tr>
+                           <td colspan="4" class="text-end fs-5 text-dark fw-bolder">Items</td>
+                           <td class="text-end fs-5 text-dark fw-bolder">Amount</td>
                         </tr>
                         <tr>
                            <td colspan="4" class="text-end">Subtotal</td>
-                           <td class="text-end">{{orderData?.subtotal}}</td>
+                           <td class="text-end">{{orderData?.priceBeforeTax}}</td>
                         </tr>
                         <tr>
-                           <td colspan="4" class="text-end">Tax ({{orderData?.tax}}%)</td>
-                           <td class="text-end">{{orderData?.subtotal * (orderData?.tax / 100)}}</td>
+                           <td colspan="4" class="text-end">Tax</td>
+                           <td class="text-end">{{orderData?.tax}}</td>
                         </tr>
                         <tr>
                            <td colspan="4" class="text-end">Shipping Cost</td>
                            <td class="text-end">{{orderData?.shippingCost}}</td>
                         </tr>
-                        <tr *ngFor="let product of orderData?.product">
-                           <td colspan="4" class="fs-3 text-dark text-end">Grand Total</td>
+                        <tr>
+                           <td colspan="4" class="text-end">Discount</td>
+                           <td class="text-end">{{orderData?.discount}}</td>
+                        </tr>
+                        <tr>
+                           <td colspan="4" class="fs-3 text-dark fw-bolder text-end">Grand Total</td>
                            <td class="text-end">{{orderData?.total}}</td>
                         </tr>
                      </tbody>

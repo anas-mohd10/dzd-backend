@@ -90,29 +90,14 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     window.location.reload()
   }
 
-  onSubmit() { }
-
-  //Sorting methods
-  sortByStatus() {
-    const status = this.orderForm.get("orderStatus")?.value
-    this.ordersService.getOrderByStatus(status).subscribe((res: any) => {
-      this.filteredData = res?.result
-      this.dtTrigger.toPromise();
-      this.dtTrigger.next();
-    })
+  onSubmit() {
+    let status = this.orderForm.get("orderStatus")?.value
+    let method = this.orderForm.get("paymentMethod")?.value
+    let lDate = new Date(this.orderForm.get("toDate")?.value).toISOString
+    let uDate = new Date(this.orderForm.get("fromDate")?.value).toISOString
   }
 
-  sortByPayment() {
-    if (this.localData.length == 0 && this.localMethod != this.orderForm.get("paymentMethod")?.value) {
-      this.filteredData = this.ordersData.filter(
-        (_data: any) => { return _data.paymentMethod == this.orderForm.get("paymentMethod")?.value }
-      )
-    } else if (this.localStatus) {
-      this.filteredData = this.localData.filter(
-        (_data: any) => { return _data.paymentMethod == this.orderForm.get("paymentMethod")?.value }
-      )
-    }
-  }
+
 
   ngAfterViewInit(): void {
     this.dtTrigger.next();
