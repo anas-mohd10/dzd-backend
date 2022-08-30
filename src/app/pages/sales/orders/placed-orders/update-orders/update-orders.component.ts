@@ -74,28 +74,21 @@ export class UpdateOrdersComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
-      this.updateProduct();
+      this.updateOrder();
     } else {
-      this.addProduct();
+      this.addOrder();
     }
   }
-  addProduct() {
+
+  addOrder() {
   }
 
-  updateProduct() {
-    console.log("Button clicked");
-    console.log(this.orderForm.value);
+  updateOrder() {
     this.orderService.updateOrder(this.orderNumber, this.orderForm.value).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong', '', {
-          progressBar: true,
-          easing: 'ease-in'
-        });
+        this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Order updated successfully', '', {
-          progressBar: true,
-          easing: 'ease-in'
-        });
+        this.toastr.success('Order updated successfully');
         this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
       }
     })

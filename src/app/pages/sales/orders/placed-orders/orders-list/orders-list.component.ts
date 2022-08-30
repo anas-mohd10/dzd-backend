@@ -6,7 +6,6 @@ import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-orders-list',
@@ -91,10 +90,10 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   }
 
   onSubmit() {
-    let status = this.orderForm.get("orderStatus")?.value
-    let method = this.orderForm.get("paymentMethod")?.value
-    let lDate = new Date(this.orderForm.get("toDate")?.value).toISOString
-    let uDate = new Date(this.orderForm.get("fromDate")?.value).toISOString
+    // let status = this.orderForm.get("orderStatus")?.value
+    // let method = this.orderForm.get("paymentMethod")?.value
+    // let lDate = new Date(this.orderForm.get("toDate")?.value).toISOString
+    // let uDate = new Date(this.orderForm.get("fromDate")?.value).toISOString
   }
 
 

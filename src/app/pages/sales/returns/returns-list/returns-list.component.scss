@@ -1,0 +1,35 @@
+.initiated {
+   height: 30px;
+   padding: 10px 30px;
+   background: rgb(15, 93, 160);
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.refunded{
+   height: 30px;
+   padding: 10px 30px;
+   background: rgb(185, 104, 23);
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.replaced{
+   height: 30px;
+   padding: 10px 30px;
+   background: rgb(185, 47, 23);
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}

@@ -23,6 +23,7 @@ const productReportRoute = "/product-report"
 const customerReportRoute = "/customer-report"
 const orderReportRoute = "/order-report"
 const pendingOrderReportRoute = "/pending-orders"
+const returnRoute = "/return-lists"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -121,5 +122,9 @@ export const appRoutes = {
     PRODUCT_REPORT: `${app}${productReportRoute}`,
     CUSTOMER_REPORT: `${app}${customerReportRoute}`,
     ORDER_REPORT: `${app}${orderReportRoute}`,
+  },
+  returns: {
+    RETURN_LIST: `${app}${returnRoute}`,
+    UPDATE_RETURN: `${app}${returnRoute}/update`
   }
 };

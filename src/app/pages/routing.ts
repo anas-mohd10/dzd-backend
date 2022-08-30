@@ -242,6 +242,11 @@ export const Routing: Routes = [
         path: 'order-report',
         loadChildren: () => import('./reports/order-report/order-report.module').then((m) => m.OrderReportModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'return-lists',
+        loadChildren: () => import('./sales/returns/returns.module').then((m) => m.ReturnsModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },
