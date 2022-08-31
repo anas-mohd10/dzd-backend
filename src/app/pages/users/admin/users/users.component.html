@@ -40,13 +40,13 @@
                                    <tbody>
                                         <tr *ngFor="let user of adminUsersData; let i = index">
                                              <td>
-                                                  <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                                                  <h2 class="table-avatar fs-6">{{ i + 1 }}</h2>
                                              </td>
                                              <td>
-                                                  <h2 class="table-avatar fs-5">{{user.username}}</h2>
+                                                  <h2 class="table-avatar fs-6">{{user.username}}</h2>
                                              </td>
                                              <td>
-                                                  <h2 class="table-avatar fs-5">{{ user.email }}</h2>
+                                                  <h2 class="table-avatar fs-6">{{ user.email }}</h2>
                                              </td>
                                              <td>
                                                   <ng-container *ngIf="user?.isActive == true">
@@ -63,7 +63,7 @@
                                              <td>
                                                   <a routerLink="{{ appRoute.admin.UPDATE_ADMIN_USERS }}"
                                                        [queryParams]="{ admin: user?.slug }"
-                                                       class="fs-5 cursor-pointer text-gray-400er">
+                                                       class="fs-6 cursor-pointer text-gray-400er">
                                                        <i class="bi bi-pen"></i>
                                                        Edit
                                                   </a>

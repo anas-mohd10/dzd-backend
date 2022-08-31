@@ -247,6 +247,16 @@ export const Routing: Routes = [
         path: 'return-lists',
         loadChildren: () => import('./sales/returns/returns.module').then((m) => m.ReturnsModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'banners',
+        loadChildren: () => import('./design/banners/banners.module').then((m) => m.BannersModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'layouts',
+        loadChildren: () => import('./design/layouts/layouts.module').then((m) => m.LayoutsModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

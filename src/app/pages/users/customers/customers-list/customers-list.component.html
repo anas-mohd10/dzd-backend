@@ -48,19 +48,19 @@
                      <tbody>
                         <tr *ngFor="let customer of customersData; let i = index">
                            <td>
-                              <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                              <h2 class="table-avatar fs-6">{{ i + 1 }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{customer.firstname}}</h2>
+                              <h2 class="table-avatar fs-6">{{customer.firstname}}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ customer.email }}</h2>
+                              <h2 class="table-avatar fs-6">{{ customer.email }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ customer.mobile }}</h2>
+                              <h2 class="table-avatar fs-6">{{ customer.mobile }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ customer.walletBalance }}</h2>
+                              <h2 class="table-avatar fs-6">{{ customer.walletBalance }}</h2>
                            </td>
                            <td>
                               <ng-container *ngIf="customer?.isActive == true">
@@ -77,7 +77,7 @@
                            <td>
                               <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}"
                                  [queryParams]="{ customer: customer?.slug }"
-                                 class="fs-5 cursor-pointer text-darker">
+                                 class="fs-6 cursor-pointer text-darker">
                                  <i class="bi bi-pen"></i>
                                  Edit
                               </a>

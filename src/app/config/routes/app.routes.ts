@@ -24,6 +24,8 @@ const customerReportRoute = "/customer-report"
 const orderReportRoute = "/order-report"
 const pendingOrderReportRoute = "/pending-orders"
 const returnRoute = "/return-lists"
+const bannerRoute = "/banners"
+const layoutRoute = "/layouts"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -126,5 +128,15 @@ export const appRoutes = {
   returns: {
     RETURN_LIST: `${app}${returnRoute}`,
     UPDATE_RETURN: `${app}${returnRoute}/update`
+  },
+  banner: {
+    BANNER_LIST: `${app}${bannerRoute}`,
+    ADD_BANNER: `${app}${bannerRoute}/add`,
+    UPDATE_BANNER: `${app}${bannerRoute}/update`
+  },
+  layout: {
+    LAYOUT_LIST: `${app}${layoutRoute}`,
+    ADD_LAYOUT: `${app}${layoutRoute}/add`,
+    UPDATE_LAYOUT: `${app}${layoutRoute}/update`
   }
 };
