@@ -1,33 +1,15 @@
-<div
-  class="d-flex align-items-center"
-  [ngClass]="toolbarButtonMarginClass"
-  id="kt_header_user_menu_toggle"
->
-  <div
-    class="cursor-pointer symbol"
-    [ngClass]="toolbarUserAvatarHeightClass"
-    data-kt-menu-trigger="click"
-    data-kt-menu-attach="parent"
-    data-kt-menu-placement="bottom-end"
-    data-kt-menu-flip="bottom"
-  >
-    <img src="./assets/media/avatars/300-1.jpg" alt="metronic" />
+<div class="d-flex align-items-center" [ngClass]="toolbarButtonMarginClass" id="kt_header_user_menu_toggle">
+  <div class="cursor-pointer symbol" [ngClass]="toolbarUserAvatarHeightClass" data-kt-menu-trigger="click"
+    data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
+    <img src="./assets/media/avatars/300-1.jpg" alt="avatar" />
   </div>
   <app-user-inner></app-user-inner>
 </div>
 <ng-container *ngIf="headerLeft === 'menu'">
-  <div
-    class="d-flex align-items-center d-lg-none ms-2 me-n3"
-    title="Show header menu"
-  >
-    <div
-      class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
-      id="kt_header_menu_mobile_toggle"
-    >
-      <span
-        [inlineSVG]="'./assets/media/icons/duotune/text/txt001.svg'"
-        class="svg-icon svg-icon-1"
-      ></span>
+  <div class="d-flex align-items-center d-lg-none ms-2 me-n3" title="Show header menu">
+    <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
+      id="kt_header_menu_mobile_toggle">
+      <span [inlineSVG]="'./assets/media/icons/duotune/text/txt001.svg'" class="svg-icon svg-icon-1"></span>
     </div>
   </div>
 </ng-container>
