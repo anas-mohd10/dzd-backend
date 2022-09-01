@@ -13,7 +13,6 @@ export class BannerService {
 
   addBaner(data: any) {
     const url = this.commonService.getFullUrl(this.bannerEndpoints.add_banner);
-    console.log(url);
     return this.http.post(`${url}`, data);
   }
 
@@ -22,8 +21,13 @@ export class BannerService {
     return this.http.get(`${url}`);
   }
 
-  getBAnner(slug: any) {
-    const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banners + "?slug=" + slug);
+  getBanner(slug: any) {
+    const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banner + "?slug=" + slug);
     return this.http.get(`${url}`);
+  }
+
+  updateBanner(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.bannerEndpoints.update_banner + "?slug=" + slug);
+    return this.http.put(`${url}`, data);
   }
 }

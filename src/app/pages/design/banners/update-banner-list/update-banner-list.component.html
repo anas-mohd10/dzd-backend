@@ -1,1 +1,187 @@
-<p>update-banner-list works!</p>
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Banners" : "Add Banners" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.banner.BANNER_LIST}}">Banners</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.banner.UPDATE_BANNER }}" [queryParams]="{banner: slug}">
+                     {{ editMode ? "Update Banners" : "Add Banners"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-10">
+      <div class="col-sm-12 fs-6">
+         <div class="card">
+            <div class="card-body">
+               <form (ngSubmit)="onSubmit()" [formGroup]="bannerForm" enctype="multipart/form-data">
+                  <div class="row">
+                     <div class="col-12">
+                        <h3 class="form-title"><span>Banner Details</span></h3>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Title</label>
+                           <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
+                              'is-invalid':
+                              (hf.title.touched || isSubmitted) &&
+                              hf.title.errors?.required
+                            }" />
+                           <span class="text-danger error-msg fs-6" *ngIf="(hf.title.touched || isSubmitted) &&
+                              hf.title.errors?.required">
+                              Title is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Position</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="position" [ngClass]="{
+                              'is-invalid':
+                              (hf.position.touched || isSubmitted) &&
+                              hf.position.errors?.required
+                            }">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="TOP" selected>Top</option>
+                              <option value="MIDDLE">Middle</option>
+                              <option value="BOTTOM">Bottom</option>
+                           </select>
+                           <span class="text-danger error-msg fs-6" *ngIf="
+                              (hf.position.touched || isSubmitted) &&
+                              hf.position.errors?.required
+                          ">Position is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Valid From</label>
+                           <input type="date" class="form-control fs-6" formControlName="validFrom"
+                              [ngClass]="{'is-invalid': (hf.validFrom.touched || isSubmitted) &&  hf.validFrom.errors?.required}" />
+                           <span class="text-danger fs-7"
+                              *ngIf="(hf.validFrom.touched || isSubmitted) && hf.validFrom.errors?.required">
+                              From date is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Valid To</label>
+                           <input type="date" class="form-control fs-6" formControlName="validTo"
+                              [ngClass]="{ 'is-invalid': (hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required }" />
+                           <span class="text-danger fs-7"
+                              *ngIf="(hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required">
+                              Last date is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Redirection URL</label>
+                           <input type="text" class="form-control fs-6" formControlName="redirectURL" />
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Status</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="isActive">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="true">Active</option>
+                              <option value="false">Inactive</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Product</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="product">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option *ngFor="let product of productsData" value="{{product?._id}}">{{product?.name}}
+                              </option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <h3 class="form-title"><span>Media Upload</span></h3>
+                     </div>
+                     <div class="col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Banner</label>
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="multi-files" accept="image/*"
+                                 (change)="handleInputChange($event)"
+                                 onchange="document.getElementById('bannerFile').src = window.URL.createObjectURL(this.files[0])"
+                                 style="height: 100px;" required>
+                              <label class="fs-7 text-disabled">Please upload an banner with 1366px * 300px</label>
+                              <div class="image-upload-div">
+                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
+                                       alt="" srcset=""></div>
+                                 <div class="right-text d-flex flex-column"><span
+                                       class="right-text-title fs-4 fw-bolder">Click to
+                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
+                                       style="font-weight: 500">Upload
+                                       up to 1
+                                       file</span></div>
+                              </div>
+                           </div>
+                           <div class="uploads uploaded" style="margin-top: 50px;">
+                              <img id="bannerFile" src="http://localhost:3000/{{ bannerData?.bFile }}">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Mobile Banner</label>
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="multi-files" accept="image/*"
+                                 (change)="handleInputChange($event)"
+                                 onchange="document.getElementById('mobileBannerFile').src = window.URL.createObjectURL(this.files[0])"
+                                 style="height: 100px;" required>
+                              <label class="fs-7 text-disabled">Please upload a Mobile banner with 375px * 174px</label>
+                              <div class="image-upload-div">
+                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
+                                       alt="" srcset=""></div>
+                                 <div class="right-text d-flex flex-column">
+                                    <span class="right-text-title fs-4 fw-bolder">
+                                       Click to upload</span>
+                                    <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                                       Upload up to 1
+                                       file</span>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="uploads uploaded" style="margin-top: 50px;">
+                              <img id="bannerFile" src="http://localhost:3000/{{ bannerData?.mbFile }}">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12" style="margin-top: 50px;">
+                        <a routerLink="{{ appRoute.banner.BANNER_LIST }}"
+                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                           Add
+                        </button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

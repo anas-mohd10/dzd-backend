@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
+import { BannerService } from 'src/app/includes/services/banner.service';
 
 @Component({
   selector: 'app-banner-list',
@@ -15,9 +16,32 @@ export class BannerListComponent implements OnInit {
   public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes;
-  constructor() { }
+  bannersData: any
+  displayTable: boolean;
+
+  constructor(
+    private bannerService: BannerService
+  ) { }
 
   ngOnInit(): void {
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 10,
+      processing: true,
+    }
+    this.getBanners()
+  }
+
+  getBanners() {
+    this.bannerService.getBanners().subscribe((res: any) => {
+      this.bannersData = res?.result
+      for (let banner of this.bannersData) {
+        banner.validFrom = new Date(banner.validFrom).toDateString()
+        banner.validTo = new Date(banner.validTo).toDateString()
+      }
+      this.displayTable = true;
+    })
   }
 
 }

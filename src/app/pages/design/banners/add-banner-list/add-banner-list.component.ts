@@ -69,10 +69,17 @@ export class AddBannerListComponent implements OnInit {
     }
   }
 
+  getProduct() {
+    this.productService.getProduct().subscribe((res: any) => {
+      this.productsData = res?.result
+    })
+  }
+
   handleInputChange(event: any) {
     if (event.target.files.length > 0) {
-      console.log(event.target.files);
-      this.images = event.target.files
+      for (let i = 0; i < event.target.files.length; i++) {
+        this.images.push(event.target.files[i])
+      }
     }
   }
 
@@ -80,29 +87,25 @@ export class AddBannerListComponent implements OnInit {
     if (!this.bannerForm.valid) {
       return;
     }
-    console.log(this.images);
     const formData = new FormData();
     if (this.images != null && this.images != undefined) {
       for (let img of this.images) {
         formData.append('file', img);
       }
+      formData.append('file', this.images)
     }
     for (const data of Object.keys(this.bannerForm.value)) {
       formData.append(data, this.bannerForm.value[data]);
     }
+  
+    
     this.bannerService.addBaner(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Banner Added Successfully');
+        this.toastr.success('Banner added successfully');
         this.router.navigate([this.appRoute.banner.BANNER_LIST]);
       }
-    })
-  }
-
-  getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
-      this.productsData = res?.result
     })
   }
 }
