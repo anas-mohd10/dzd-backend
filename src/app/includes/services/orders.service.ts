@@ -61,6 +61,11 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
+  getOrderCount() {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_count);
+    return this.http.get(`${url}`)
+  }
+
   updateOrder(number: any, data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.update_order + "?number=" + number);
     return this.http.put(`${url}`, data)

@@ -1,1 +1,88 @@
-<p>update-social-nedia works!</p>
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update social media links" : "Add social media links" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST}}">
+                     {{ editMode ? "Update social media links" : "Add social media links"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-12 fs-6 mt-10">
+      <div class="card">
+         <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="socialMediaForm">
+               <div class="row">
+                  <div class="col-12">
+                     <h5 class="form-title fs-4"><span>Social Media details</span></h5>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Facebook</label>
+                        <input type="text" class="form-control fs-6" formControlName="facebook" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Instagram</label>
+                        <input type="text" class="form-control fs-6" formControlName="instagram" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">LinkedIn</label>
+                        <input type="text" class="form-control fs-6" formControlName="linkedin" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Twitter</label>
+                        <input type="text" class="form-control fs-6" formControlName="twitter" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Whatsapp</label>
+                        <input type="text" class="form-control fs-6" formControlName="whatsapp" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">YouTube</label>
+                        <input type="text" class="form-control fs-6" formControlName="youtube" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Behance</label>
+                        <input type="text" class="form-control fs-6" formControlName="behance" />
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}"
+                        class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                        Cancel
+                     </a>
+                     <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                        Update
+                     </button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>

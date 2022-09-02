@@ -7,7 +7,7 @@ import { UpdateSocialNediaComponent } from './update-social-nedia/update-social-
 const routes: Routes = [
   { path: '', component: SocialMediaListComponent },
   { path: 'add', component: AddSocialNediaComponent },
-  { path: 'manage', component: UpdateSocialNediaComponent }
+  { path: 'update', component: UpdateSocialNediaComponent }
 ];
 
 @NgModule({

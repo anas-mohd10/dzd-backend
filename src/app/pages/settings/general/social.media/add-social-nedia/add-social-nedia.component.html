@@ -21,13 +21,64 @@
          </div>
       </div>
    </div>
-   <div class="col-sm-12 fs-6">
+   <div class="col-sm-12 fs-6 mt-10">
       <div class="card">
          <div class="card-body">
             <form (ngSubmit)="onSubmit()" [formGroup]="socialMediaForm">
                <div class="row">
                   <div class="col-12">
-                     <h5 class="form-title fs-4"><span>Social media links</span></h5>
+                     <h5 class="form-title fs-4"><span>Social Media details</span></h5>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Facebook</label>
+                        <input type="text" class="form-control fs-6" formControlName="facebook" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Instagram</label>
+                        <input type="text" class="form-control fs-6" formControlName="instagram" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">LinkedIn</label>
+                        <input type="text" class="form-control fs-6" formControlName="linkedin" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Twitter</label>
+                        <input type="text" class="form-control fs-6" formControlName="twitter" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Whatsapp</label>
+                        <input type="text" class="form-control fs-6" formControlName="whatsapp" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">YouTube</label>
+                        <input type="text" class="form-control fs-6" formControlName="youtube" />
+                     </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 form-title">Behance</label>
+                        <input type="text" class="form-control fs-6" formControlName="behance" />
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}"
+                        class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                        Cancel
+                     </a>
+                     <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                        Add
+                     </button>
                   </div>
                </div>
             </form>

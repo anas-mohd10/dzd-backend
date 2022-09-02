@@ -22,7 +22,7 @@
       </div>
    </div>
 
-   <div class="col-sm-12 fs-6">
+   <div class="col-sm-12 fs-6 mt-10">
       <div class="card">
          <div class="card-body">
             <form (ngSubmit)="onSubmit()" [formGroup]="contactsForm">
@@ -192,6 +192,10 @@
                      </div>
                   </div>
                   <div class="col-12">
+                     <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                     style="width: 200px; margin-right: 20px;">
+                     Cancel
+                   </a>
                      <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                         Submit
                      </button>

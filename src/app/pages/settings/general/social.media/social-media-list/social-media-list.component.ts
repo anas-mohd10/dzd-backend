@@ -22,8 +22,8 @@ export class SocialMediaListComponent implements OnInit {
 
   getSocialMedia() {
     this.socialMediaService.getSocialMediaLinks().subscribe((res: any) => {
-      this.socialMediaData = res?.result[0]
-      if (this.socialMediaData) {
+      this.socialMediaData = res?.result
+      if (res?.result.length == 0) {
         this.isData = true
       } else {
         this.isData = false

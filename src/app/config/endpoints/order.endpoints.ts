@@ -11,6 +11,7 @@ export const orderEndpoints = {
    update_order: '/order/update-order',
    get_order_by_status_date: '/order/status-date',
    get_order_by_date: '/order',
+   get_order_count: '/order/get-count',
    //report
    get_order_report: '/order-report'
 };

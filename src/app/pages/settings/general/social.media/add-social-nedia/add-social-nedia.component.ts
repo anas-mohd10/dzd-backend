@@ -77,6 +77,15 @@ export class AddSocialNediaComponent implements OnInit {
     if (!this.socialMediaForm.valid) {
       return;
     }
+
+    this.socialMediaService.addSocialMediaLinks(this.socialMediaForm.value).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Social media added successfully');
+        this.router.navigate([this.appRoute.socialMedia.SOCIAL_MEDIA_LIST]);
+      }
+    })
   }
 
 }
