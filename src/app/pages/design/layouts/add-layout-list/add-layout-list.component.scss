@@ -1,0 +1,40 @@
+.layout-preview {
+   height: 80px;
+   width: 100px;
+   object-fit: cover;
+}
+
+.upload-layout {
+   margin: 40px 0;
+   display: grid;
+   grid-template-columns: auto auto auto;
+   width: 100%;
+}
+
+.layout-card {
+   position: relative;
+   display: flex;
+   justify-content: space-evenly;
+   padding: 20px;
+   border-radius: 10px;
+   background: #f9f9f9;
+   margin: 0 20px 0 0;
+}
+
+.layout-card .close-icon {
+   position: absolute;
+   right: 0;
+   top: 0;
+   height: 30px;
+   width: 30px;
+   background: #f4f4f4;
+   border-radius: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.layout-card .close-icon i {
+   font-size: 1.1rem;
+   color: #ffffff;
+}
