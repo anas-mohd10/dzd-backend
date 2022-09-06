@@ -33,13 +33,10 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">Title</label>
-                           <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
-                              'is-invalid':
-                              (lf.title.touched || isSubmitted) &&
-                              lf.title.errors?.required
-                            }" />
-                           <span class="text-danger error-msg fs-6" *ngIf="(lf.title.touched || isSubmitted) &&
-                           lf.title.errors?.required">
+                           <input type="text" class="form-control fs-6" formControlName="title"
+                              [ngClass]="{'is-invalid': (lf.title.touched || isSubmitted) && lf.title.errors?.required}" />
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf="(lf.title.touched || isSubmitted) && lf.title.errors?.required">
                               Title is required
                            </span>
                         </div>
@@ -69,7 +66,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title">Status</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Active</option>
@@ -81,7 +78,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title">Grid Count</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="gridCount">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="1">1 column</option>
@@ -94,7 +91,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title">Type</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="type">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="slider">Slider</option>
@@ -133,7 +130,7 @@
                                        <div class="image-upload">
                                           <input type="file" class="form-control fs-6" name="multi-files"
                                              accept="image/*" (change)="handleInputChange($event)"
-                                             formControlName="image" required>
+                                             formControlName="file">
                                           <label class="fs-7 text-disabled">Please upload an image of size 546px *
                                              390px</label>
                                        </div>
@@ -143,7 +140,7 @@
                                     <div class="form-group">
                                        <label class="fs-6 mb-3 form-title required">Product</label>
                                        <select class="form-select form-select-lg fs-6" aria-label=".form-select-lg"
-                                          formControlName="productId">
+                                          formControlName="product">
                                           <option value="disabled" disabled>-- Select an option --</option>
                                           <option *ngFor="let prod of productsData" value="{{prod?._id}}">
                                              {{prod?.name}}
@@ -159,10 +156,10 @@
                                  </div>
                               </div>
                               <div class="modal-footer">
-                                 <button type="button" class="btn btn-secondary fs-6"
-                                    style="width: 200px">Close</button>
+                                 <button type="button" class="btn btn-secondary fs-6" style="width: 200px"
+                                    data-bs-dismiss="modal">Close</button>
                                  <button type="button" class="btn btn-primary fs-6" style="width: 200px"
-                                    data-bs-dismiss="modal" (click)="addFile()">Save</button>
+                                    (click)="addFile()">Save</button>
                               </div>
                            </div>
                         </div>
@@ -172,16 +169,16 @@
                         <div *ngFor="let layout of localData; let i=index">
                            <div class="uploaded-layouts">
                               <div class="layout-card">
-                                 <div class="prod-img-layout mt-3">
-                                    <img class="layout-preview" [src]="layout?.file" alt="" srcset="">
-                                 </div>
                                  <div class="prod-details-layout fs-6 fw-bold mt-3">
-                                    <div class="prod url fs-6 fw-bold mt-3">
-                                       Product : {{layout?.product}}
+                                    <div class="prod-img-layout mt-3">
+                                       <img class="layout-preview" [src]="layout?.file" alt="" srcset="">
                                     </div>
                                     <div class="prod-name fs-6 fw-bold mt-3">
-                                       Redirection URL : {{layout?.url}}
+                                       Product : {{layout?.product}}
                                     </div>
+                                 </div>
+                                 <div class="prod-url fs-6 fw-bold mt-3">
+                                    Redirection URL : {{layout?.url}}
                                  </div>
                                  <div class="close-icon bg-dark">
                                     <i class="bi bi-x-lg"></i>

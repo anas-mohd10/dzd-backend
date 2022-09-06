@@ -7,18 +7,26 @@
 .upload-layout {
    margin: 40px 0;
    display: grid;
+   justify-content: start;
    grid-template-columns: auto auto auto;
    width: 100%;
 }
 
 .layout-card {
+   height: 200px;
+   width: 350px;
    position: relative;
    display: flex;
-   justify-content: space-evenly;
+   flex-direction: column;
+   justify-content: start;
    padding: 20px;
    border-radius: 10px;
    background: #f9f9f9;
    margin: 0 20px 0 0;
+}
+
+.prod-details-layout {
+   display: flex;
 }
 
 .layout-card .close-icon {
@@ -37,4 +45,8 @@
 .layout-card .close-icon i {
    font-size: 1.1rem;
    color: #ffffff;
+}
+
+.prod-name {
+   margin: 0 0 0 15px;
 }

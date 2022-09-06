@@ -98,7 +98,6 @@ export class AddBannerListComponent implements OnInit {
       formData.append(data, this.bannerForm.value[data]);
     }
   
-    
     this.bannerService.addBaner(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');

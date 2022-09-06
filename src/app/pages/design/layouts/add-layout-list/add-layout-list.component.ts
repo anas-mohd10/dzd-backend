@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
-import { BannerService } from 'src/app/includes/services/banner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/includes/services/product.service'
+import { LayoutService } from 'src/app/includes/services/layout.service';
 
 @Component({
   selector: 'app-add-layout-list',
@@ -28,7 +28,9 @@ export class AddLayoutListComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private productService: ProductService
+    private productService: ProductService,
+    private layoutService: LayoutService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -39,16 +41,15 @@ export class AddLayoutListComponent implements OnInit {
 
   initForm() {
     this.layoutForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      validFrom: ['', Validators.required],
-      validTo: ['', Validators.required],
+      title: [''],
+      validFrom: [''],
+      validTo: [''],
       isActive: ['true'],
       gridCount: ['1'],
       type: ['slider'],
-      productId: [''],
+      product: [''],
       redirectionURL: [''],
-      image: [''],
-      // files: this.formBuilder.array([]),
+      file: ['']
     });
   }
 
@@ -76,31 +77,36 @@ export class AddLayoutListComponent implements OnInit {
   }
 
   addFile() {
-    let product = this.layoutForm.get("productId")?.value
+    let product = this.layoutForm.get("product")?.value
     let redirectionURL = this.layoutForm.get("redirectionURL")?.value
     let maxVal = this.layoutForm.get("gridCount")?.value
-    if (maxVal > this.localData.length) {
-      this.files.push({
-        productId: product,
-        redirectionURL: redirectionURL
-      })
 
-      for (let prod of this.productsData) {
-        if (prod._id == product) {
-          this.localData.push({
-            product: prod.name,
-            url: redirectionURL,
-            file: this.url
-          })
+    if (product && this.url != '') {
+      if (maxVal > this.localData.length) {
+        this.files.push({
+          product: product,
+          redirectionURL: redirectionURL
+        })
+
+        for (let prod of this.productsData) {
+          if (prod._id == product) {
+            this.localData.push({
+              product: prod.name,
+              url: redirectionURL,
+              file: this.url
+            })
+          }
         }
+        this.layoutForm.get("product")?.setValue('')
+        this.layoutForm.get("redirectionURL")?.setValue('')
+        this.layoutForm.get("file")?.setValue('')
+        this.dataFiles.pop()
+      } else {
+        this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
       }
     } else {
-      this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
+      this.toastr.error(`Kindly fill required fields`);
     }
-    this.layoutForm.get("productId")?.setValue('')
-    this.layoutForm.get("redirectionURL")?.setValue('')
-    this.layoutForm.get("image")?.setValue('')
-    this.dataFiles.pop()
   }
 
   handleInputChange(event: any) {
@@ -130,9 +136,27 @@ export class AddLayoutListComponent implements OnInit {
 
   addLayout() {
     if (!this.layoutForm.valid) {
-      this.toastr.error('Kindly fill required fields');
+      this.toastr.error('Kindly fill required fields...');
       return;
     }
-    console.log(this.layoutForm.value);
+    const formData = new FormData();
+    if (this.images != null && this.images != undefined) {
+      for (let img of this.images) {
+        formData.append('file', img);
+      }
+      formData.append('file', this.images)
+    }
+    for (const data of Object.keys(this.layoutForm.value)) {
+      formData.append(data, this.layoutForm.value[data]);
+    }
+    formData.append("data", JSON.stringify(this.files))
+    this.layoutService.addLayout(formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Layout added successfully');
+        this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
+      }
+    })
   }
 }

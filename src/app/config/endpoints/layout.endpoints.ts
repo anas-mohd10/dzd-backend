@@ -1,7 +1,7 @@
 export const layoutEndpoints = {
-   add_banner: '/banner/create-banner',
-   get_banners: '/banner/get-all-banner',
-   get_banner: '/banner/get-banner',
-   get_active_banner: '/banner/get-active-banner',
-   update_banner: '/banner/update-banner'
+   add_layout: '/layout/create',
+   get_layouts: '/layout-all',
+   get_active_layout: '/layout-active',
+   get_layout: '/layout',
+   update_layout: 'update-layout'
 }
