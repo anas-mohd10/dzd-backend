@@ -1,1 +1,205 @@
-<p>update-layout-list works!</p>
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Layouts" : "Add Layouts" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.layout.LAYOUT_LIST }}">Layouts</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.layout.ADD_LAYOUT}}">
+                     {{ editMode ? "Update Layouts" : "Add Layouts"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-10">
+      <div class="col-sm-12 fs-6">
+         <div class="card">
+            <div class="card-body">
+               <form (ngSubmit)="onSubmit()" [formGroup]="layoutForm" enctype=" multipart/form-data">
+                  <div class="row">
+                     <div class="col-12">
+                        <h3 class="form-title"><span>Layouts Details</span></h3>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Title</label>
+                           <input type="text" class="form-control fs-6" formControlName="title"
+                              [ngClass]="{'is-invalid': (lf.title.touched || isSubmitted) && lf.title.errors?.required}" />
+                           <span class="text-danger error-msg fs-6"
+                              *ngIf="(lf.title.touched || isSubmitted) && lf.title.errors?.required">
+                              Title is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Valid From</label>
+                           <input type="date" class="form-control fs-6" formControlName="validFrom" (change)="checkDate()"
+                              [ngClass]="{'is-invalid': (lf.validFrom.touched || isSubmitted) &&  lf.validFrom.errors?.required}" />
+                           <span class="text-danger fs-7"
+                              *ngIf="(lf.validFrom.touched || isSubmitted) && lf.validFrom.errors?.required">
+                              From date is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title required">Valid To</label>
+                           <input type="date" class="form-control fs-6" formControlName="validTo" (change)="checkDate()"
+                              [ngClass]="{'is-invalid': (lf.validTo.touched || isSubmitted) &&  lf.validTo.errors?.required}" />
+                           <span class="text-danger fs-7"
+                              *ngIf="(lf.validTo.touched || isSubmitted) && lf.validTo.errors?.required">
+                              To date is required
+                           </span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Status</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="isActive">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="true">Active</option>
+                              <option value="false">Inactive</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Grid Count</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="gridCount">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="1">1 column</option>
+                              <option value="2">2 colums</option>
+                              <option value="4">4 column</option>
+                              <option value="6">6 colums</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 form-title">Type</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="type">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="slider">Slider</option>
+                              <option value="list">List</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="col-12">
+                        <h3 class="form-title"><span>Media Files</span></h3>
+                     </div>
+
+                     <!-- Button trigger modal -->
+                     <div class="col-12">
+                        <div class="col-sm-6">
+                           <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#fileModal"
+                              style="width: 200px;">
+                              Upload File
+                           </button>
+                        </div>
+                     </div>
+
+                     <!-- Modal -->
+                     <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                 <div class="col-12">
+                                    <div class="form-group">
+                                       <label class="fs-6 mb-3 form-title required">Media File</label>
+                                       <div class="image-upload">
+                                          <input type="file" class="form-control fs-6" name="multi-files"
+                                             accept="image/*" (change)="handleInputChange($event)"
+                                             formControlName="file">
+                                          <label class="fs-7 text-disabled">Please upload an image of size 546px *
+                                             390px</label>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <div class="form-group">
+                                       <label class="fs-6 mb-3 form-title required">Product</label>
+                                       <select class="form-select form-select-lg fs-6" aria-label=".form-select-lg"
+                                          formControlName="product">
+                                          <option value="disabled" disabled>-- Select an option --</option>
+                                          <option *ngFor="let prod of productsData" value="{{prod?._id}}">
+                                             {{prod?.name}}
+                                          </option>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <div class="form-group">
+                                       <label class="fs-6 mb-3">Redirection URL</label>
+                                       <input type="text" formControlName="redirectionURL" class="form-control fs-6">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-secondary fs-6" style="width: 200px"
+                                    data-bs-dismiss="modal">Close</button>
+                                 <button type="button" class="btn btn-primary fs-6" style="width: 200px"
+                                    (click)="addFile()">Save</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-12 upload-layout">
+                        <div *ngFor="let layout of localData; let i=index">
+                           <div class="uploaded-layouts">
+                              <div class="layout-card">
+                                 <div class="prod-details-layout fs-6 fw-bold mt-3">
+                                    <div class="prod-img-layout mt-3">
+                                       <img class="layout-preview" [src]="layout?.file" alt="" srcset="">
+                                    </div>
+                                    <div class="prod-name fs-6 fw-bold mt-3">
+                                       Product : {{layout?.product}}
+                                    </div>
+                                 </div>
+                                 <div class="prod-url fs-6 fw-bold mt-3">
+                                    Redirection URL : {{layout?.url}}
+                                 </div>
+                                 <div class="close-icon bg-dark">
+                                    <i class="bi bi-x-lg"></i>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <a routerLink="{{ appRoute.layout.LAYOUT_LIST}}" class="btn btn-secondary btn-sm fs-6 text-dark"
+                           style="width: 200px; margin-right: 20px;">
+                           Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                           Submit
+                        </button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

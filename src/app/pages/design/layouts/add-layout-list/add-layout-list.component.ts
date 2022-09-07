@@ -41,7 +41,7 @@ export class AddLayoutListComponent implements OnInit {
 
   initForm() {
     this.layoutForm = this.formBuilder.group({
-      title: [''],
+      title: ['',Validators.required],
       validFrom: [''],
       validTo: [''],
       isActive: ['true'],
@@ -158,5 +158,14 @@ export class AddLayoutListComponent implements OnInit {
         this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
       }
     })
+  }
+
+  checkDate(){
+    let validFrom = this.layoutForm.get("validFrom")?.value
+    let validTo = this.layoutForm.get("validTo")?.value
+    if(validFrom > validTo){
+      this.toastr.error(`Date is not Valid`);
+    }
+
   }
 }
