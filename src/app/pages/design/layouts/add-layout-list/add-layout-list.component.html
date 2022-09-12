@@ -44,7 +44,8 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">Valid From</label>
-                           <input type="date" class="form-control fs-6" formControlName="validFrom" (change)="checkDate()"
+                           <input type="date" class="form-control fs-6" formControlName="validFrom"
+                              (change)="checkDate()"
                               [ngClass]="{'is-invalid': (lf.validFrom.touched || isSubmitted) &&  lf.validFrom.errors?.required}" />
                            <span class="text-danger fs-7"
                               *ngIf="(lf.validFrom.touched || isSubmitted) && lf.validFrom.errors?.required">
@@ -180,7 +181,7 @@
                                  <div class="prod-url fs-6 fw-bold mt-3">
                                     Redirection URL : {{layout?.url}}
                                  </div>
-                                 <div class="close-icon bg-dark">
+                                 <div class="close-icon bg-dark" (click)="removeFile(layout?.id)">
                                     <i class="bi bi-x-lg"></i>
                                  </div>
                               </div>

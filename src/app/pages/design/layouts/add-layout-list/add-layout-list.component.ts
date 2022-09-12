@@ -41,7 +41,7 @@ export class AddLayoutListComponent implements OnInit {
 
   initForm() {
     this.layoutForm = this.formBuilder.group({
-      title: ['',Validators.required],
+      title: ['', Validators.required],
       validFrom: [''],
       validTo: [''],
       isActive: ['true'],
@@ -77,26 +77,33 @@ export class AddLayoutListComponent implements OnInit {
   }
 
   addFile() {
+    //Form fields
     let product = this.layoutForm.get("product")?.value
     let redirectionURL = this.layoutForm.get("redirectionURL")?.value
     let maxVal = this.layoutForm.get("gridCount")?.value
 
     if (product && this.url != '') {
       if (maxVal > this.localData.length) {
+        //Files for db
         this.files.push({
           product: product,
+          id: this.files.length,
           redirectionURL: redirectionURL
         })
 
+        //Localdata for preview purpose
         for (let prod of this.productsData) {
           if (prod._id == product) {
             this.localData.push({
+              id: this.localData.length,
               product: prod.name,
               url: redirectionURL,
               file: this.url
             })
           }
         }
+
+        //Reset values to null
         this.layoutForm.get("product")?.setValue('')
         this.layoutForm.get("redirectionURL")?.setValue('')
         this.layoutForm.get("file")?.setValue('')
@@ -107,6 +114,11 @@ export class AddLayoutListComponent implements OnInit {
     } else {
       this.toastr.error(`Kindly fill required fields`);
     }
+  }
+
+  removeFile(id: any) {
+    this.localData = this.localData.filter((_data: any) => _data.id != id)
+    this.files = this.files.filter((_data: any) => _data.id != id)
   }
 
   handleInputChange(event: any) {
@@ -160,12 +172,13 @@ export class AddLayoutListComponent implements OnInit {
     })
   }
 
-  checkDate(){
+  checkDate() {
     let validFrom = this.layoutForm.get("validFrom")?.value
     let validTo = this.layoutForm.get("validTo")?.value
-    if(validFrom > validTo){
-      this.toastr.error(`Date is not Valid`);
+    if (validTo) {
+      if (validFrom > validTo) {
+        this.toastr.error(`Date is not Valid`);
+      }
     }
-
   }
 }

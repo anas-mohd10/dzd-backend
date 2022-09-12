@@ -82,33 +82,58 @@ export class UpdateLayoutListComponent implements OnInit {
     })
   }
 
-  getLayoutBySlug(){
+  getLayoutBySlug() {
     this.layoutService.getLayoutBySlug(this.slug).subscribe((res: any) => {
-      this.layoutData = res?.result
+      this.layoutData = res?.result[0]
+      console.log(this.layoutData);
+      this.layoutForm.get("title")?.setValue(res?.result[0].title)
+      this.layoutForm.get("validFrom")?.setValue(res?.result[0].validFrom)
+      this.layoutForm.get("validTo")?.setValue(res?.result[0].validTo)
+      this.layoutForm.get("isActive")?.setValue(res?.result[0].isActive)
+      this.layoutForm.get("gridCount")?.setValue(res?.result[0].gridCount)
+      this.layoutForm.get("type")?.setValue(res?.result[0].type)
+      for (let file of res?.result[0].files) {
+        this.localData.push({
+          id: file.id,
+          product: file.product.name,
+          url: file.redirectionURL,
+          file: `http://localhost:3000/${file.file}`
+        })
+      }
+      console.log(this.localData);
     })
   }
 
   addFile() {
+    //Form fields
     let product = this.layoutForm.get("product")?.value
     let redirectionURL = this.layoutForm.get("redirectionURL")?.value
     let maxVal = this.layoutForm.get("gridCount")?.value
 
     if (product && this.url != '') {
       if (maxVal > this.localData.length) {
+        //Files for db
         this.files.push({
           product: product,
+          id: this.files.length,
           redirectionURL: redirectionURL
         })
 
+        //Localdata for preview purpose
         for (let prod of this.productsData) {
           if (prod._id == product) {
             this.localData.push({
+              id: this.localData.length,
               product: prod.name,
               url: redirectionURL,
               file: this.url
             })
           }
         }
+
+        console.log(this.localData);
+
+        //Reset values to null
         this.layoutForm.get("product")?.setValue('')
         this.layoutForm.get("redirectionURL")?.setValue('')
         this.layoutForm.get("file")?.setValue('')
@@ -119,6 +144,11 @@ export class UpdateLayoutListComponent implements OnInit {
     } else {
       this.toastr.error(`Kindly fill required fields`);
     }
+  }
+
+  removeFile(id: any) {
+    this.localData = this.localData.filter((_data: any) => _data.id != id)
+    this.files = this.files.filter((_data: any) => _data.id != id)
   }
 
   handleInputChange(event: any) {
@@ -171,8 +201,5 @@ export class UpdateLayoutListComponent implements OnInit {
     if (validFrom > validTo) {
       this.toastr.error(`Date is not Valid`);
     }
-
   }
-
-
 }

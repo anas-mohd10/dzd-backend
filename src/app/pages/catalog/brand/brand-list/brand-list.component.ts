@@ -18,7 +18,6 @@ export class BrandComponent implements OnDestroy, OnInit {
   appRoute = appRoutes;
   brandData: any;
   displayTable: boolean = false;
-  filtersLoaded: Promise<boolean>;
 
   constructor(private brandService: BrandService) { }
 
@@ -33,11 +32,9 @@ export class BrandComponent implements OnDestroy, OnInit {
     this.brandService.getBrand().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.brandData = res?.result;
-          console.log("Data :: " + this.brandData);
-          this.displayTable = true;
+          this.brandData = res?.result
+          console.log(this.brandData);
           this.dtTrigger.next();
-          this.filtersLoaded = Promise.resolve(true);
           break;
       }
     });
