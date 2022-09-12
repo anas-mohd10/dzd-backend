@@ -257,6 +257,11 @@ export const Routing: Routes = [
         path: 'layouts',
         loadChildren: () => import('./design/layouts/layouts.module').then((m) => m.LayoutsModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'cart',
+        loadChildren: () => import('./sales/cart/cart.module').then((m) => m.CartModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

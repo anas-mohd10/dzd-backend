@@ -14,19 +14,12 @@
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a
-              routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
-              [queryParams]="{ category: category }"
-              >Attributes</a
-            >
+            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
+              [queryParams]="{ category: category }">Attributes</a>
           </li>
         </ul>
-        <button
-          class="btn btn-primary cursor-pointer"
-          color="primary"
-          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}"
-          [queryParams]="{ category: category }"
-        >
+        <button class="btn btn-primary cursor-pointer" color="primary"
+          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }">
           Add Attribute
         </button>
       </div>
@@ -39,11 +32,8 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive" *ngIf="displayTable">
-            <table
-              datatable
-              [dtOptions]="dtOptions"
-              class="datatable table table-borderless table-center table-striped mb-0"
-            >
+            <table datatable [dtOptions]="dtOptions"
+              class="datatable table table-borderless table-center table-striped mb-0">
               <thead class="thead">
                 <tr>
                   <th class="text-dark fw-bolder fs-4">Sl No.</th>
@@ -61,10 +51,7 @@
                     <h2 class="table-avatar fs-5">{{ attribute?.name }}</h2>
                   </td>
                   <td>
-                    <div
-                      class="attribute-col"
-                      *ngIf="attribute?.valueType == 'text'"
-                    >
+                    <div class="attribute-col" *ngIf="attribute?.valueType == 'text'">
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
@@ -73,25 +60,16 @@
                         </div>
                       </ng-container>
                     </div>
-                    <div
-                      class="attribute-col"
-                      *ngIf="attribute?.valueType == 'color'"
-                    >
+                    <div class="attribute-col" *ngIf="attribute?.valueType == 'color'">
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
-                            <div
-                              class="color-div"
-                              [ngStyle]="{ backgroundColor: value }"
-                            ></div>
+                            <div class="color-div" [ngStyle]="{ backgroundColor: value }"></div>
                           </div>
                         </div>
                       </ng-container>
                     </div>
-                    <div
-                      class="attribute-col"
-                      *ngIf="attribute?.valueType == 'image'"
-                    >
+                    <div class="attribute-col" *ngIf="attribute?.valueType == 'image'">
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
@@ -134,14 +112,11 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a
-                      class="fs-5 cursor-pointer text-darker"
-                      routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
+                    <a class="fs-5 cursor-pointer text-darker" routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
                       [queryParams]="{
                         category: category,
                         attribute: attribute?.slug
-                      }"
-                      ><i class="bi bi-pen fs-4"></i> Edit
+                      }"><i class="bi bi-pen fs-4"></i> Edit
                     </a>
                   </td>
                 </tr>

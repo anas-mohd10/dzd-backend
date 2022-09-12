@@ -1,0 +1,94 @@
+<div class="brand-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Cart</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="top-form-container">
+      <div class="row cart-cards">
+         <div class="col-lg-3">
+            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm001.svg"
+               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="5"
+               description="Total Cart Items">
+            </app-stats-widget5>
+         </div>
+         <div class="col-lg-3">
+            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm002.svg"
+               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. 98"
+               description="Ordered Items">
+            </app-stats-widget5>
+         </div>
+         <div class="col-lg-3">
+            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm005.svg"
+               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
+               title="Rs. {{0}}" description="Non Ordered Items">
+            </app-stats-widget5>
+         </div>
+         <div class="col-lg-3">
+            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm006.svg"
+               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
+               title="Rs. {{0}}" description="Deleted Items">
+            </app-stats-widget5>
+         </div>
+      </div>
+      <form action="" (ngSubmit)="onSubmit()" [formGroup]="cartForm">
+         <div class="row align-items-end">
+            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+               <label class="col-sm-2 col-form-label">Customer</label>
+               <div class="form-group">
+                  <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
+                     formControlName="customer">
+                     <option value="" selected disabled>-- Select An Option --</option>
+                  </select>
+               </div>
+            </div>
+            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+               <label class="col-sm-2 col-form-label">Product</label>
+               <div class="form-group">
+                  <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
+                     formControlName="product">
+                     <option value="" selected disabled>-- Select An Option --</option>
+                     <option *ngFor="let product of productsData" value="{{product?.slug}}">{{product?.name}}
+                     </option>
+                  </select>
+               </div>
+            </div>
+            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+               <label class="col-sm-2 col-form-label">Status</label>
+               <div class="form-group">
+                  <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
+                     formControlName="orderStatus">
+                     <option value="" selected disabled>-- Select An Option --</option>
+                     <option value="ORDERED" class="fs-7">Ordered</option>
+                     <option value="NONORDERED" class="fs-7">Non Ordered</option>
+                     <option value="DELETED" class="fs-7">Deleted</option>
+                  </select>
+               </div>
+            </div>
+            <div class="col-12 col-sm-2">
+               <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Reset
+               </a>
+            </div>
+            <div class="col-12 col-sm-2">
+               <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
+                  Apply
+               </button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>

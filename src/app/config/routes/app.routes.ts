@@ -26,6 +26,8 @@ const pendingOrderReportRoute = "/pending-orders"
 const returnRoute = "/return-lists"
 const bannerRoute = "/banners"
 const layoutRoute = "/layouts"
+const cartRoute = "/cart"
+const reviewRoute = "/reviews"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -138,5 +140,12 @@ export const appRoutes = {
     LAYOUT_LIST: `${app}${layoutRoute}`,
     ADD_LAYOUT: `${app}${layoutRoute}/add`,
     UPDATE_LAYOUT: `${app}${layoutRoute}/update`
+  },
+  cart: {
+    CART_LIST: `${app}${cartRoute}`,
+    UPDATE_CART_LIST: `${app}${cartRoute}/update`
+  },
+  review: {
+    REVIEW_LIST: `${app}${reviewRoute}`,
   }
 };

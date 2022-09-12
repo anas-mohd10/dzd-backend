@@ -26,6 +26,11 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
+  getPendingOrdersByNumber(number: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_pending_orders_by_orderNo + "?number=" + number);
+    return this.http.get(`${url}`)
+  }
+
   getOrderByPayment(method: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment + "?payment=" + method);
     return this.http.get(`${url}`)
