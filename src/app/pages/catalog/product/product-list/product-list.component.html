@@ -7,14 +7,15 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer" color="primary" routerLink="{{ appRoute.product.ADD_PRODUCT }}">
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.product.ADD_PRODUCT }}" style="width: 200px">
           Add Product
         </button>
       </div>
@@ -29,40 +30,40 @@
           <div style="display: none"> {{productData.length}}</div>
           <div class="table-responsive" *ngIf="displayTable">
             <table datatable [dtOptions]="dtOptions"
-              class="table table-center table-borderless table-striped mb-0 datatable">
-              <thead class="thead">
-                <tr>
-                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
-                  <th class="text-dark fw-bolder fs-4">SKU</th>
-                  <th class="text-dark fw-bolder fs-4">Product</th>
-                  <th class="text-dark fw-bolder fs-4">Type</th>
-                  <th class="text-dark fw-bolder fs-4">Price</th>
-                  <th class="text-dark fw-bolder fs-4">Offer Price</th>
-                  <th class="text-dark fw-bolder fs-4">Stock</th>
-                  <th class="text-dark fw-bolder fs-4">Image</th>
-                  <th class="text-dark fw-bolder fs-4">Variants</th>
-                  <th class="text-dark fw-bolder fs-4">Status</th>
-                  <th class="text-dark fw-bolder fs-4">Action</th>
+              class="datatable table table-borderless table-center table-row-dashed mb-0">
+              <thead class="thead mt-100">
+                <tr class="fs-7 text-uppercase">
+                  <th class="text-gray-400 col-md-2">Sl No.</th>
+                  <th class="text-gray-400 col-md-2">SKU</th>
+                  <th class="text-gray-400 col-md-2">Product</th>
+                  <th class="text-gray-400 col-md-2">Type</th>
+                  <th class="text-gray-400 col-md-2">Price</th>
+                  <th class="text-gray-400 col-md-2">Offer Price</th>
+                  <th class="text-gray-400 col-md-2">Stock</th>
+                  <th class="text-gray-400 col-md-2">Image</th>
+                  <th class="text-gray-400 col-md-2">Variants</th>
+                  <th class="text-gray-400 col-md-2">Status</th>
+                  <th class="text-gray-400 col-md-2">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let product of productData; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ product?.sku }}</h2>
+                    <h2 class="table-avatar fs-6">{{ product?.sku }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ product?.name }}</h2>
+                    <h2 class="table-avatar fs-6">{{ product?.name }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-5">
+                    <h2 class="table-avatar fs-6">
                       <ng-container *ngIf="product?.isSingle == true">
-                        <h2 class="table-avatar fw-b fs-5">
+                        <h2 class="table-avatar fw-b fs-6">
                           Single
                         </h2>
                       </ng-container>
                       <ng-container *ngIf="product?.isSingle == false">
-                        <h2 class="table-avatar fw-b fs-5">
+                        <h2 class="table-avatar fw-b fs-6">
                           Configurable
                         </h2>
                       </ng-container>
@@ -70,17 +71,17 @@
                   </td>
                   <td>
                     <ng-container *ngIf="product?.isSingle == true">
-                      <h2 class="table-avatar fs-5">{{ product?.mrpPrice }}</h2>
+                      <h2 class="table-avatar fs-6">{{ product?.mrpPrice }}</h2>
                     </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="product?.isSingle == true">
-                      <h2 class="table-avatar fs-5">{{ product?.offerPrice }}</h2>
+                      <h2 class="table-avatar fs-6">{{ product?.offerPrice }}</h2>
                     </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="product?.isSingle == true">
-                      <h2 class="table-avatar fs-5">{{ product?.stock }}</h2>
+                      <h2 class="table-avatar fs-6">{{ product?.stock }}</h2>
                     </ng-container>
                   </td>
                   <td>
@@ -90,7 +91,7 @@
                     <ng-container *ngIf="product?.isSingle == false">
                       <a routerLink="{{
                           appRoute.variantProduct.VARIANT_PRODUCT_LIST
-                        }}" [queryParams]="{ product: product?.slug }" class="fs-5 cursor-pointer text-darker">View</a>
+                        }}" [queryParams]="{ product: product?.slug }" class="fs-6 cursor-pointer text-darker">View</a>
                     </ng-container>
                   </td>
                   <td>
@@ -111,7 +112,7 @@
                   </td>
                   <td>
                     <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: product?.slug }"
-                      class="fs-5 cursor-pointer text-darker">
+                      class="fs-6 cursor-pointer text-darker">
                       Edit
                     </a>
                   </td>

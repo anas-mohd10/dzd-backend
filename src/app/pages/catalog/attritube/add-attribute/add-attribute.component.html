@@ -7,17 +7,17 @@
           {{ editMode ? "Update Attribute" : "Add Attribute" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
               [queryParams]="{ category: category }">Attributes</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }">
               {{ editMode ? "Update Attribute" : "Add Attribute" }}
             </a>
@@ -28,25 +28,30 @@
   </div>
   <!-- /Page Header -->
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="attributeForm" enctype="multipart/form-data">
+          <form [formGroup]="attributeForm" enctype="multipart/form-data">
             <div class="row">
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Attributes Details</span></h5>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3"> Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" />
+                  <label class="fs-6 mb-3 required">Attribute Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                    'is-invalid':
+                    (af.name.touched || isSubmitted) &&
+                    af.name.errors?.required
+                  }" />
+                  <div class="fs-7 mt-3">A attribute name is required and recommended to be unique.</div>
                 </div>
               </div>
               <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Value Type</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                  <label class="fs-6 mb-3 required">Value Type</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                     formControlName="valueType" (change)="changeValueType()">
                     <option value="check" disabled>
                       -- Select An Option --
@@ -57,11 +62,12 @@
                   </select>
                 </div>
               </div>
+              <div class="col-12 col-sm-6"></div>
               <ng-container *ngIf="textFlag">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3"> Text Value </label>
-                    <input class="form-control fs-5 mb-10" formControlName="values" (keyup.Arrowright)="tagInput()" />
+                    <label class="fs-6 mb-3 required">Text </label>
+                    <input class="form-control fs-6 mb-10" formControlName="values" (keyup.ArrowRight)="tagInput()" />
                     <div class="tag-inputs col-12">
                       <ng-container *ngFor="let value of textArray">
                         <span class="tag-input bg-primary">{{ value }}
@@ -70,43 +76,51 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-12 col-sm-6"></div>
               </ng-container>
               <ng-container *ngIf="colorFlag">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3"> Color Value </label>
-                    <input type="color" class="form-control color-picker fs-5 mb-10" formControlName="colorValue"
+                    <label class="fs-6 mb-3 required"> Colors </label>
+                    <input type="color" class="form-control color-picker fs-6 mb-10" formControlName="colorValue"
                       (keyup.Arrowright)="tagInput()" (change)="getColorCode()" />
                   </div>
                   <div class="color-inputs col-12">
                     <ng-container *ngFor="let color of colorArray">
                       <div class="color-div" [ngStyle]="{ backgroundColor: color }">
-                        <i class="bi bi-x fs-1 text-dark close-btn" (click)="colorRemove(color)"></i>
+                        <i class="bi bi-x fs-1 bg-dark text-white close-btn" (click)="colorRemove(color)"></i>
                       </div>
                     </ng-container>
                   </div>
                 </div>
+                <div class="col-12 col-sm-6"></div>
               </ng-container>
               <ng-container *ngIf="imageFlag">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3"> Image Value </label>
-                    <input type="file" class="form-control fs-5 mb-10" (change)="handleInputChange($event)"
-                      formControlName="imageValue" id="attributeImage" accept='image/*' multiple />
-                  </div>
-                  <div class="tag-inputs col-12">
-                    <ng-container *ngFor="let image of imageArray">
+                    <label class="fs-6 mb-3 form-title required">Media File</label>
+                    <div class="image-upload">
+                       <input type="file" class="form-control fs-6" name="multi-files"
+                          accept="image/*" (change)="handleInputChange($event)"
+                          formControlName="file">
+                       <label class="fs-7 text-disabled">Please upload an image of size 546px *
+                          390px</label>
+                    </div>
+                 </div>
+                  <div class="images-inputs col-12">
+                    <ng-container *ngFor="let image of images">
                       <div class="preview-image">
-                        <img src="{{ image.url }}" alt="preview" id="preview" />
+                        <img [src]="image?.url" alt="preview" id="preview" srcset=""/>
                       </div>
                     </ng-container>
                   </div>
                 </div>
+                <div class="col-12 col-sm-6"></div>
               </ng-container>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Active</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                  <label class="fs-6 mb-3">Active</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
@@ -115,7 +129,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Filtered Attribute ?</label>
+                  <label class="fs-6 mb-3">Filtered Attribute ?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFiltered">
                     <option value="false">False</option>
@@ -124,8 +138,12 @@
                 </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary btn-submit fs-4">
-                  Submit
+                <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{category: category}"
+                  class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button (click)="onSubmit()" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                  Add
                 </button>
               </div>
             </div>

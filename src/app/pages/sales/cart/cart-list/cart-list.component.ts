@@ -13,14 +13,14 @@ import { ProductService } from 'src/app/includes/services/product.service';
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.scss']
 })
-export class CartListComponent implements OnInit {
+export class CartListComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
   public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes
-  cartsData: any
+  cartsData: any = []
   cartForm: FormGroup;
   customersData: any;
   productsData: any;
@@ -48,7 +48,7 @@ export class CartListComponent implements OnInit {
   initForm() {
     this.cartForm = this.formBuilder.group({
       product: [''],
-      orderStatus: [''],
+      cartStatus: [''],
       customer: [''],
     });
   }
@@ -72,5 +72,14 @@ export class CartListComponent implements OnInit {
   onSubmit() { }
 
   getCartItems() {
+
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

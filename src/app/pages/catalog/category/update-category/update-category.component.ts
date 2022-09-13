@@ -46,7 +46,7 @@ export class UpdateCategoryComponent implements OnInit {
     private router: Router,
     private CategoryService: CategoryService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get bf() {
     return this.categoryForm.controls;
@@ -110,31 +110,20 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   getCategoryBySlug() {
-    this.CategoryService.getCategoryBySlug(this.category).subscribe(
-      (res: any) => {
-        this.categoryValues = res?.result[0];
-        console.log(this.categoryValues);
-        this.uploadedImg = this.categoryValues?.file;
-        this.categoryForm.get('name')?.setValue(this.categoryValues.name);
-        this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
-        this.categoryForm
-          .get('isActive')
-          ?.setValue(this.categoryValues.isActive);
-        this.categoryForm
-          .get('isFeatured')
-          ?.setValue(this.categoryValues.isFeatured);
-        if (this.categoryValues.isRoot == true) {
-          this.isChecked = true;
-        } else {
-          this.parentIdValue =
-            this.categoryValues.rootId.name +
-            ' > ' +
-            this.categoryValues.parentId.name +
-            ' > ' +
-            this.categoryValues.name;
-          this.categoryForm.get('parentId')?.setValue(this.parentIdValue);
-        }
+    this.CategoryService.getCategoryBySlug(this.category).subscribe((res: any) => {
+      this.categoryValues = res?.result[0];
+      this.uploadedImg = this.categoryValues?.file;
+      this.categoryForm.get('name')?.setValue(this.categoryValues.name);
+      this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
+      this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
+      this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
+      if (this.categoryValues.isRoot == true) {
+        this.isChecked = true;
+      } else {
+        this.parentIdValue = this.categoryValues.rootId.name + ' > ' + this.categoryValues.parentId.name + ' > ' + this.categoryValues.name;
+        this.categoryForm.get('parentId')?.setValue(this.parentIdValue);
       }
+    }
     );
   }
 
@@ -154,13 +143,7 @@ export class UpdateCategoryComponent implements OnInit {
         }
         if (res?.result[i].parentId && res?.result[i].rootId) {
           if (res?.result[i].parentId._id != res?.result[i].rootId._id) {
-            this.categoryArray.push(
-              res?.result[i].rootId.name +
-                ' > ' +
-                res?.result[i].parentId.name +
-                ' > ' +
-                res?.result[i].name
-            );
+            this.categoryArray.push(res?.result[i].rootId.name + ' > ' + res?.result[i].parentId.name + ' > ' + res?.result[i].name);
           } else if (res?.result[i].parentId._id == res?.result[i].rootId._id) {
             this.categoryArray.push(
               res?.result[i].rootId.name + ' > ' + res?.result[i].name
@@ -208,7 +191,7 @@ export class UpdateCategoryComponent implements OnInit {
           this.parentCategory = this.categoryData[i]._id;
         }
       }
-      for (let i = 0; i < this.splitCategory.length; i++) {}
+      for (let i = 0; i < this.splitCategory.length; i++) { }
     }
 
     if (!this.categoryForm.valid) {
@@ -229,7 +212,7 @@ export class UpdateCategoryComponent implements OnInit {
     }
 
     console.log(this.rootCategory);
-    
+
 
     formData.append('rootId', this.rootCategory);
     formData.append('parentId', this.parentCategory);
@@ -247,5 +230,5 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   //Add Category
-  addCategory() {}
+  addCategory() { }
 }

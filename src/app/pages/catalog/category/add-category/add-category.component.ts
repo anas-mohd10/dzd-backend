@@ -62,7 +62,7 @@ export class AddCategoryComponent implements OnInit {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       file: [''],
-      rootId: ['', Validators.required],
+      rootId: ['false', Validators.required],
       parentId: [],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],

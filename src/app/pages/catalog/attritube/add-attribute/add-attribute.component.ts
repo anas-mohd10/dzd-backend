@@ -49,6 +49,7 @@ export class AddAttributeComponent implements OnInit {
     ],
   };
   imageValues: any;
+  url: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -70,6 +71,7 @@ export class AddAttributeComponent implements OnInit {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
       valueType: ['check', Validators.required],
+      file: [''],
       values: [],
       colorValue: [],
       imageValue: [],
@@ -95,36 +97,17 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
-  // handleInputChange(fileInput: any) {
-  //   if (fileInput.target.files && fileInput.target.files[0]) {
-  //     this.fileData = <File>fileInput.target.files[0];
-  //     const imageName = fileInput.target.files[0].name;
-  //     var filesAmount = fileInput.target.files.length;
-  //     for (let i = 0; i < filesAmount; i++) {
-  //       var reader = new FileReader();
-  //       this.fileData = <File>fileInput.target.files[i];
-  //       reader.onload = (event: any) => {
-  //         this.imageArray.push({
-  //           name: imageName,
-  //           url: event.target.result,
-  //         });
-  //         this.imagesArray.push(fileInput.target.files[i]);
-  //         this.images.push(this.fileData);
-  //         this.attributeForm.patchValue({
-  //           attributeImage: this.images,
-  //         });
-  //       };
-  //       reader.readAsDataURL(fileInput.target.files[i]);
-  //     }
-  //   }
-  //   this.attributeForm.get('imageValue')?.setValue('');
-  // }
-
-  handleInputChange(fileInput: any) {
-    let files = fileInput.target.files
-    for (let i = 0; i < files.length; i++) {
-      let filedata = <File>files[i];
-      this.imagesArray.push(filedata)
+  handleInputChange(event: any) {
+    for (let i = 0; i < event.target.files.length; i++) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[i])
+      reader.onload = (e: any) => {
+        this.images.push({
+          url: e.target.result,
+          file: event.target.files[i]
+        })
+      }
+      console.log(this.images);
     }
   }
 
@@ -192,7 +175,6 @@ export class AddAttributeComponent implements OnInit {
 
   addBrand() {
     if (!this.attributeForm.valid) {
-      this.toastr.warning('Some error occurred');
       return;
     }
 
@@ -212,8 +194,6 @@ export class AddAttributeComponent implements OnInit {
       isActive: this.attributeForm.get('isActive')?.value,
       categoryId: this.categoryId,
     };
-
-    // console.log(this.attributeForm.get("imageValue")?.value);
 
     this.AttributeService.addAttribute(this.attributeData).subscribe(
       (res: any) => {

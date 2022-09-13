@@ -90,13 +90,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   }
 
   onSubmit() {
-    // let status = this.orderForm.get("orderStatus")?.value
-    // let method = this.orderForm.get("paymentMethod")?.value
-    // let lDate = new Date(this.orderForm.get("toDate")?.value).toISOString
-    // let uDate = new Date(this.orderForm.get("fromDate")?.value).toISOString
   }
-
-
 
   ngAfterViewInit(): void {
     this.dtTrigger.next();

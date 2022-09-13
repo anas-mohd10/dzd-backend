@@ -7,19 +7,20 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
               [queryParams]="{ category: category }">Attributes</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer" color="primary"
-          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }">
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }"
+          style="width: 200px">
           Add Attribute
         </button>
       </div>
@@ -31,31 +32,32 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
+          <div style="display: none"> {{attributeData.length}}</div>
           <div class="table-responsive" *ngIf="displayTable">
             <table datatable [dtOptions]="dtOptions"
-              class="datatable table table-borderless table-center table-striped mb-0">
+              class="datatable table table-borderless table-center table-row-dashed mb-0">
               <thead class="thead">
-                <tr>
-                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
-                  <th class="text-dark fw-bolder fs-4">Attribute</th>
-                  <th class="text-dark fw-bolder fs-4">Values</th>
-                  <th class="text-dark fw-bolder fs-4">Filtered</th>
-                  <th class="text-dark fw-bolder fs-4">Status</th>
-                  <th class="text-dark fw-bolder fs-4">Action</th>
+                <tr class="fs-7 text-uppercase">
+                  <th class="text-gray-400 col-md-2">Sl No.</th>
+                  <th class="text-gray-400 col-md-2">Attribute</th>
+                  <th class="text-gray-400 col-md-2">Values</th>
+                  <th class="text-gray-400 col-md-2">Filtered</th>
+                  <th class="text-gray-400 col-md-2">Status</th>
+                  <th class="text-gray-400 col-md-2">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let attribute of attributeData; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ attribute?.name }}</h2>
+                    <h2 class="table-avatar fs-6">{{ attribute?.name }}</h2>
                   </td>
                   <td>
                     <div class="attribute-col" *ngIf="attribute?.valueType == 'text'">
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
-                            <h2 class="attribute-value border bg-secondary text-dark fs-5">{{ value }}</h2>
+                            <h2 class="attribute-value border bg-secondary text-dark fs-6">{{ value }}</h2>
                           </div>
                         </div>
                       </ng-container>
@@ -73,7 +75,7 @@
                       <ng-container *ngFor="let value of attribute?.value">
                         <div class="row">
                           <div class="col">
-                            <h2 class="attribute-value fs-5">{{ value }}</h2>
+                            <h2 class="attribute-value fs-6">{{ value }}</h2>
                           </div>
                         </div>
                       </ng-container>
@@ -112,7 +114,7 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker" routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
+                    <a class="fs-6 cursor-pointer text-darker" routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
                       [queryParams]="{
                         category: category,
                         attribute: attribute?.slug

@@ -1,13 +1,17 @@
 .color-picker {
-  height: 50px;
+  height: 80px;
+  width: 200px;
+  // border: none;
+  outline: none;
+  border-radius: 10px;
 }
 
 .color-div {
   position: relative;
-  height: 50px;
-  width: 50px;
+  height: 80px;
+  width: 80px;
   margin: 10px 30px 0 0;
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .close-btn {
@@ -15,13 +19,12 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -10px;
-  right: -10px;
-  height: 25px;
-  width: 25px;
+  top: -15px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
   background: #ffffff;
-  border: 1px solid #eeeeee;
-  border-radius: 50px;
+  border-radius: 10px;
 }
 
 .preview-image-section {
@@ -32,8 +35,8 @@
 .preview-image {
   margin: 10px 0;
   height: 100px;
-  width: 80px;
-  object-fit: contain;
+  width: 100px;
+  object-fit: cover;
 }
 
 .preview-image img {
@@ -43,6 +46,14 @@
 }
 
 .color-inputs {
+  display: grid;
+  grid-auto-flow: column;
+  align-content: center;
+  justify-content: start;
+  align-items: center;
+}
+
+.images-inputs {
   display: grid;
   grid-auto-flow: column;
   align-content: center;

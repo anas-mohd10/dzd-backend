@@ -7,15 +7,15 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer" color="primary"
-          routerLink="{{ appRoute.category.ADD_CATEGORY }}">
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.category.ADD_CATEGORY }}" style="width: 200px">
           Add Category
         </button>
       </div>
@@ -30,48 +30,47 @@
           <div style="display: none"> {{categoryData.length}}</div>
           <div class="table-responsive" *ngIf="displayTable">
             <table datatable [dtOptions]="dtOptions"
-              class="table table-center table-striped mb-0 datatable table-borderless">
-              <thead class="thead">
-                <tr>
-                  <th class="text-dark fw-bolder fs-4">Sl No.</th>
-                  <th class="text-dark fw-bolder fs-4">Category</th>
-                  <th class="text-dark fw-bolder fs-4">Root Category</th>
-                  <th class="text-dark fw-bolder fs-4">Parent Category</th>
-                  <th class="text-dark fw-bolder fs-4"></th>
-                  <th class="text-dark fw-bolder fs-4">Image</th>
-                  <th class="text-dark fw-bolder fs-4">Attributes</th>
-                  <th class="text-dark fw-bolder fs-4">Status</th>
-                  <th class="text-dark fw-bolder fs-4">Action</th>
+              class="datatable table table-borderless table-center table-row-dashed mb-0">
+              <thead class="thead mt-100">
+                <tr class="fs-7 text-uppercase">
+                  <th class="text-gray-400 col-md-2">Sl No.</th>
+                  <th class="text-gray-400 col-md-2">Category</th>
+                  <th class="text-gray-400 col-md-2">Root Category</th>
+                  <th class="text-gray-400 col-md-2">Parent Category</th>
+                  <th class="text-gray-400 col-md-2">Image</th>
+                  <th class="text-gray-400 col-md-2">Attributes</th>
+                  <th class="text-gray-400 col-md-2">Status</th>
+                  <th class="text-gray-400 col-md-2">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let category of categoryData; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <h2 class="table-avatar fs-5">{{ category?.name }}</h2>
+                    <h2 class="table-avatar fs-6">{{ category?.name }}</h2>
                   </td>
                   <ng-container *ngIf="category?.rootId">
                     <td>
-                      <h2 class="table-avatar fs-5">
+                      <h2 class="table-avatar fs-6">
                         {{ category?.rootId.name }} > {{ category?.parentId.name }}
                       </h2>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="category?.parentId">
                     <td>
-                      <h2 class="table-avatar fs-5">
+                      <h2 class="table-avatar fs-6">
                         {{ category?.parentId.name }}
                       </h2>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="!category?.rootId">
                     <td>
-                      <h2 class="table-avatar fs-5">-</h2>
+                      <h2 class="table-avatar fs-6">-</h2>
                     </td>
                   </ng-container>
                   <ng-container *ngIf="!category?.parentId">
                     <td>
-                      <h2 class="table-avatar fs-5">-</h2>
+                      <h2 class="table-avatar fs-6">-</h2>
                     </td>
                   </ng-container>
                   <td>
@@ -79,7 +78,7 @@
                   </td>
                   <td>
                     <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: category?.slug }"
-                      class="fs-5 cursor-pointer text-darker">Attributes</a>
+                      class="fs-6 cursor-pointer text-darker">Attributes</a>
                   </td>
                   <td>
                     <ng-container *ngIf="category?.isActive == true">
@@ -94,7 +93,7 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-5 cursor-pointer text-darker" routerLink="{{ appRoute.category.UPDATE_CATEGORY }}"
+                    <a class="fs-6 cursor-pointer text-darker" routerLink="{{ appRoute.category.UPDATE_CATEGORY }}"
                       [queryParams]="{ category: category?.slug }"><i class="bi bi-pen fs-4"></i> Edit
                     </a>
                   </td>

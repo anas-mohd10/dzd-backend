@@ -69,7 +69,7 @@
                <label class="col-sm-2 col-form-label">Status</label>
                <div class="form-group">
                   <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="orderStatus">
+                     formControlName="cartStatus">
                      <option value="" selected disabled>-- Select An Option --</option>
                      <option value="ORDERED" class="fs-7">Ordered</option>
                      <option value="NONORDERED" class="fs-7">Non Ordered</option>
@@ -90,5 +90,68 @@
             </div>
          </div>
       </form>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="card card-table">
+            <div class="card-body">
+               <div style="display: none"> {{cartsData.length}}</div>
+               <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions"
+                     class="datatable table table-bcartless table-center table-row-dashed mb-0">
+                     <thead class="thead mt-100">
+                        <tr class="fs-7 text-uppercase">
+                           <th class="text-gray-400 col-md-2">Sl No.</th>
+                           <th class="text-gray-400 col-md-2">Order No.</th>
+                           <th class="text-gray-400 col-md-2">Customer</th>
+                           <th class="text-gray-400 col-md-2">Product</th>
+                           <th class="text-gray-400 col-md-2">Quantity</th>
+                           <th class="text-gray-400 col-md-2">Grand Total</th>
+                           <th class="text-gray-400 col-md-2">Carrier</th>
+                           <th class="text-gray-400 col-md-2">Date</th>
+                           <th class="text-gray-400 col-md-2">Purchased Date</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngFor="let cart of cartsData; let i = index">
+                           <td>
+                              <h2 class="table-avatar">{{ i + 1 }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ cart?.cartNo }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ cart?.cartDate }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar"><span class="cart-status {{(cart?.cartStatus).toLowerCase()}}">{{
+                                    cart?.cartStatus.toLowerCase() }}</span></h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ cart?.customerId.firstname }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">-</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{cart?.total}}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ cart?.paymentMethod }}</h2>
+                           </td>
+                           <td>
+                              <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
+                                 routerLink="{{ appRoute.cart.UPDATE_CART_LIST}}"
+                                 [queryParams]="{ cart: cart?.cartNo }">
+                                 <i class="bi bi-pen"></i> Edit
+                              </a>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
    </div>
 </div>
