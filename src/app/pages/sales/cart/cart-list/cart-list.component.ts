@@ -20,7 +20,7 @@ export class CartListComponent implements OnInit, OnDestroy {
   public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes
-  cartsData: any = []
+  cartsData: any
   cartForm: FormGroup;
   customersData: any;
   productsData: any;
@@ -72,7 +72,9 @@ export class CartListComponent implements OnInit, OnDestroy {
   onSubmit() { }
 
   getCartItems() {
-
+    this.cartService.getCarts().subscribe((res: any) => {
+      this.cartsData = res?.result
+    })
   }
 
   ngAfterViewInit(): void {

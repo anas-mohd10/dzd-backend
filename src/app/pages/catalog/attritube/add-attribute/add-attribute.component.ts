@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,6 +7,7 @@ import { appRoutes } from '../../../../config/routes';
 import { AttributeService } from '../../../../includes/services/attribute.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
+import { timers } from 'jquery';
 
 @Component({
   selector: 'app-add-attribute',
@@ -21,9 +23,9 @@ export class AddAttributeComponent implements OnInit {
   params: any;
   fileData: File;
   category: any;
+  slug: any
   attributeValues: any;
   categoryData: any;
-  categoryId: any;
   attributeData: {};
   status: boolean;
   filtered: string;
@@ -31,25 +33,17 @@ export class AddAttributeComponent implements OnInit {
   textArray: any = [];
   colorArray: any = [];
   imageArray: any = [];
-  valueType: any;
+  type: any;
   textFlag: boolean = false;
   colorFlag: boolean = false;
   imageFlag: boolean = false;
-  values: any;
+  values: any = [];
   images: any = [];
   imagesArray: any = [];
-
-
-  validationMessages = {
-    name: [
-      {
-        type: 'required',
-        message: 'Category name is required',
-      },
-    ],
-  };
+  localdata: any = []
   imageValues: any;
   url: any;
+  filedata: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,7 +56,7 @@ export class AddAttributeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.category = this.route.snapshot.queryParams.category || '';
+    this.slug = this.route.snapshot.queryParams.category || '';
     this.getCategoryDetails();
     this.managePage();
   }
@@ -70,7 +64,7 @@ export class AddAttributeComponent implements OnInit {
   initForm() {
     this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
-      valueType: ['check', Validators.required],
+      type: ['check', Validators.required],
       file: [''],
       values: [],
       colorValue: [],
@@ -97,22 +91,31 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
-  handleInputChange(event: any) {
-    for (let i = 0; i < event.target.files.length; i++) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[i])
-      reader.onload = (e: any) => {
-        this.images.push({
-          url: e.target.result,
-          file: event.target.files[i]
-        })
-      }
-      console.log(this.images);
+  getCategoryDetails() {
+    this.CategoryService.getCategoryBySlug(this.slug).subscribe((res) => {
+      this.categoryData = res;
+      this.category = this.categoryData.result[0]._id;
+    });
+  }
+
+  changeValueType() {
+    this.type = this.attributeForm.get('type')?.value;
+    if (this.type == 'text') {
+      this.textFlag = true;
+      this.colorFlag = false;
+      this.imageFlag = false;
+    } else if (this.type == 'color') {
+      this.textFlag = false;
+      this.colorFlag = true;
+      this.imageFlag = false;
+    } else if (this.type == 'image') {
+      this.textFlag = false;
+      this.colorFlag = false;
+      this.imageFlag = true;
     }
   }
 
-  handleCheckBox(event?: any) { }
-
+  //Tag input
   tagInput() {
     if (this.attributeForm.get('values')?.value != ' ' || '' || null) {
       this.textArray.push(this.attributeForm.get('values')?.value);
@@ -127,30 +130,7 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
-  getCategoryDetails() {
-    this.CategoryService.getCategoryBySlug(this.category).subscribe((res) => {
-      this.categoryData = res;
-      this.categoryId = this.categoryData.result[0]._id;
-    });
-  }
-
-  changeValueType() {
-    this.valueType = this.attributeForm.get('valueType')?.value;
-    if (this.valueType == 'text') {
-      this.textFlag = true;
-      this.colorFlag = false;
-      this.imageFlag = false;
-    } else if (this.valueType == 'color') {
-      this.textFlag = false;
-      this.colorFlag = true;
-      this.imageFlag = false;
-    } else if (this.valueType == 'image') {
-      this.textFlag = false;
-      this.colorFlag = false;
-      this.imageFlag = true;
-    }
-  }
-
+  //Color input
   getColorCode() {
     this.colorArray.push(this.attributeForm.get('colorValue')?.value);
   }
@@ -162,50 +142,78 @@ export class AddAttributeComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateBrand();
-    } else {
-      this.addBrand();
+  //Image input
+  handleInputChange(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      this.filedata = event.target.files[0]
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.url = e.target.result
+      }
     }
   }
 
-  updateBrand() { }
+  addFile() {
+    this.localdata.push({
+      id: this.localdata.length,
+      url: this.url,
+      file: this.filedata
+    })
+    this.attributeForm.get("file")?.setValue('')
+  }
 
-  addBrand() {
+  removeFile(id: any) {
+    this.localdata = this.localdata.filter((_data: any) => _data.id != id)
+  }
+
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.editMode) {
+      this.updateAttribute();
+    } else {
+      this.addAttribute();
+    }
+  }
+
+  updateAttribute() { }
+
+  addAttribute() {
     if (!this.attributeForm.valid) {
+      console.log("Validation error");
       return;
     }
-
-    if (this.valueType == 'color') {
+    if (this.type == 'color') {
       this.values = this.colorArray;
-    } else if (this.valueType == 'text') {
+    } else if (this.type == 'text') {
       this.values = this.textArray;
-    } else if (this.valueType == 'image') {
-      this.values = [];
-    }
-
-    this.attributeData = {
-      name: this.attributeForm.get('name')?.value,
-      valueType: this.valueType,
-      value: this.values,
-      isFiltered: this.attributeForm.get('isFiltered')?.value,
-      isActive: this.attributeForm.get('isActive')?.value,
-      categoryId: this.categoryId,
-    };
-
-    this.AttributeService.addAttribute(this.attributeData).subscribe(
-      (res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res?.errorCode == 0) {
-          this.toastr.success('Attribute added successfully');
-          this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {
-            queryParams: { category: this.category },
-          });
-        }
+    } else if (this.type == 'image') {
+      for (let data of this.localdata) {
+        this.images.push(data.file)
       }
-    );
+      this.values = []
+    }
+    const formdata = new FormData
+    if (this.images.length) {
+      for (let img of this.images) {
+        formdata.append('file', img);
+      }
+      formdata.append("files", this.images)
+    }
+    formdata.append("values", JSON.stringify(this.values))
+    for (const data of Object.keys(this.attributeForm.value)) {
+      formdata.append(data, this.attributeForm.value[data]);
+    }
+    formdata.append("category", this.category)
+    this.AttributeService.addAttribute(formdata).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res?.errorCode == 0) {
+        this.toastr.success('Attribute added successfully');
+        this.router.navigate(
+          [this.appRoute.attribute.ATTRIBUTE_LIST],
+          { queryParams: { category: this.slug } });
+      }
+    });
   }
 }

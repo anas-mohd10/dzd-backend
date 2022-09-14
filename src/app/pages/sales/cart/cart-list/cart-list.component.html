@@ -1,157 +1,142 @@
 <div class="brand-page-container">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder">Cart</h1>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Cart</h1>
+    </div>
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
+          </li>
+        </ul>
       </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
-               </li>
-            </ul>
-         </div>
+    </div>
+  </div>
+  <div class="top-form-container">
+    <div class="row cart-cards">
+      <div class="col-lg-3">
+        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm001.svg"
+          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="5"
+          description="Total Cart Items">
+        </app-stats-widget5>
       </div>
-   </div>
-   <div class="top-form-container">
-      <div class="row cart-cards">
-         <div class="col-lg-3">
-            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm001.svg"
-               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="5"
-               description="Total Cart Items">
-            </app-stats-widget5>
-         </div>
-         <div class="col-lg-3">
-            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm002.svg"
-               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. 98"
-               description="Ordered Items">
-            </app-stats-widget5>
-         </div>
-         <div class="col-lg-3">
-            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm005.svg"
-               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
-               title="Rs. {{0}}" description="Non Ordered Items">
-            </app-stats-widget5>
-         </div>
-         <div class="col-lg-3">
-            <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm006.svg"
-               class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
-               title="Rs. {{0}}" description="Deleted Items">
-            </app-stats-widget5>
-         </div>
+      <div class="col-lg-3">
+        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm002.svg"
+          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. 98"
+          description="Ordered Items">
+        </app-stats-widget5>
       </div>
-      <form action="" (ngSubmit)="onSubmit()" [formGroup]="cartForm">
-         <div class="row align-items-end">
-            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-               <label class="col-sm-2 col-form-label">Customer</label>
-               <div class="form-group">
-                  <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="customer">
-                     <option value="" selected disabled>-- Select An Option --</option>
-                  </select>
-               </div>
-            </div>
-            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-               <label class="col-sm-2 col-form-label">Product</label>
-               <div class="form-group">
-                  <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="product">
-                     <option value="" selected disabled>-- Select An Option --</option>
-                     <option *ngFor="let product of productsData" value="{{product?.slug}}">{{product?.name}}
-                     </option>
-                  </select>
-               </div>
-            </div>
-            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-               <label class="col-sm-2 col-form-label">Status</label>
-               <div class="form-group">
-                  <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="cartStatus">
-                     <option value="" selected disabled>-- Select An Option --</option>
-                     <option value="ORDERED" class="fs-7">Ordered</option>
-                     <option value="NONORDERED" class="fs-7">Non Ordered</option>
-                     <option value="DELETED" class="fs-7">Deleted</option>
-                  </select>
-               </div>
-            </div>
-            <div class="col-12 col-sm-2">
-               <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"
-                  style="width: 200px; margin-right: 20px;">
-                  Reset
-               </a>
-            </div>
-            <div class="col-12 col-sm-2">
-               <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
-                  Apply
-               </button>
-            </div>
-         </div>
-      </form>
-   </div>
-   <div class="row">
-      <div class="col-sm-12">
-         <div class="card card-table">
-            <div class="card-body">
-               <div style="display: none"> {{cartsData.length}}</div>
-               <div class="table-responsive">
-                  <table datatable [dtOptions]="dtOptions"
-                     class="datatable table table-bcartless table-center table-row-dashed mb-0">
-                     <thead class="thead mt-100">
-                        <tr class="fs-7 text-uppercase">
-                           <th class="text-gray-400 col-md-2">Sl No.</th>
-                           <th class="text-gray-400 col-md-2">Order No.</th>
-                           <th class="text-gray-400 col-md-2">Customer</th>
-                           <th class="text-gray-400 col-md-2">Product</th>
-                           <th class="text-gray-400 col-md-2">Quantity</th>
-                           <th class="text-gray-400 col-md-2">Grand Total</th>
-                           <th class="text-gray-400 col-md-2">Carrier</th>
-                           <th class="text-gray-400 col-md-2">Date</th>
-                           <th class="text-gray-400 col-md-2">Purchased Date</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr *ngFor="let cart of cartsData; let i = index">
-                           <td>
-                              <h2 class="table-avatar">{{ i + 1 }}</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{ cart?.cartNo }}</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{ cart?.cartDate }}</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar"><span class="cart-status {{(cart?.cartStatus).toLowerCase()}}">{{
-                                    cart?.cartStatus.toLowerCase() }}</span></h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{ cart?.customerId.firstname }}</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">-</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{cart?.total}}</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{ cart?.paymentMethod }}</h2>
-                           </td>
-                           <td>
-                              <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
-                                 routerLink="{{ appRoute.cart.UPDATE_CART_LIST}}"
-                                 [queryParams]="{ cart: cart?.cartNo }">
-                                 <i class="bi bi-pen"></i> Edit
-                              </a>
-                           </td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
-            </div>
-         </div>
+      <div class="col-lg-3">
+        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm005.svg"
+          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{0}}"
+          description="Non Ordered Items">
+        </app-stats-widget5>
       </div>
-   </div>
+      <div class="col-lg-3">
+        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm006.svg"
+          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{0}}"
+          description="Deleted Items">
+        </app-stats-widget5>
+      </div>
+    </div>
+    <form action="" (ngSubmit)="onSubmit()" [formGroup]="cartForm">
+      <div class="row align-items-end">
+        <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+          <label class="col-sm-2 col-form-label">Customer</label>
+          <div class="form-group">
+            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="customer">
+              <option value="" selected disabled>-- Select An Option --</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+          <label class="col-sm-2 col-form-label">Product</label>
+          <div class="form-group">
+            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="product">
+              <option value="" selected disabled>-- Select An Option --</option>
+              <option *ngFor="let product of productsData" value="{{product?.slug}}">{{product?.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+          <label class="col-sm-2 col-form-label">Status</label>
+          <div class="form-group">
+            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="cartStatus">
+              <option value="" selected disabled>-- Select An Option --</option>
+              <option value="ORDERED" class="fs-7">Ordered</option>
+              <option value="NONORDERED" class="fs-7">Non Ordered</option>
+              <option value="DELETED" class="fs-7">Deleted</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-2">
+          <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+            Reset
+          </a>
+        </div>
+        <div class="col-12 col-sm-2">
+          <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
+            Apply
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div style="display: none"> {{cartsData.length}}</div>
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions"
+              class="datatable table table-bcartless table-center table-row-dashed mb-0">
+              <thead class="thead mt-100">
+                <tr class="fs-7 text-uppercase">
+                  <th class="text-gray-400 col-md-2">Sl No.</th>
+                  <th class="text-gray-400 col-md-2">Order No.</th>
+                  <th class="text-gray-400 col-md-2">Customer</th>
+                  <th class="text-gray-400 col-md-2">Product</th>
+                  <th class="text-gray-400 col-md-2">Quantity</th>
+                  <th class="text-gray-400 col-md-2">Grand Total</th>
+                  <th class="text-gray-400 col-md-2">Carrier</th>
+                  <th class="text-gray-400 col-md-2">Date</th>
+                  <th class="text-gray-400 col-md-2">Purchased Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cart of cartsData; let i = index">
+                  <td>
+                    <h2 class="table-avatar">{{ i + 1 }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.order?.orderNo }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.customer?.firstname }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.customer?.firstname }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{cart?.total}}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.date }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.purchasedDate }}</h2>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

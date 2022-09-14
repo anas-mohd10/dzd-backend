@@ -22,7 +22,7 @@ export class AttributeComponent implements OnInit {
   categoryId: any;
   displayTable: boolean = false;
   categoryName: any;
- 
+
   constructor(
     private route: ActivatedRoute,
     private CategoryService: CategoryService,

@@ -90,7 +90,6 @@ export class AddLayoutListComponent implements OnInit {
           id: this.files.length,
           redirectionURL: redirectionURL
         })
-
         //Localdata for preview purpose
         for (let prod of this.productsData) {
           if (prod._id == product) {
@@ -102,7 +101,6 @@ export class AddLayoutListComponent implements OnInit {
             })
           }
         }
-
         //Reset values to null
         this.layoutForm.get("product")?.setValue('')
         this.layoutForm.get("redirectionURL")?.setValue('')

@@ -52,6 +52,42 @@
   color: #ffffff;
 }
 
+.uploaded-attributes {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  margin: 20px 0;
+}
+
+.attribute-card {
+  height: 100px;
+  width: 100px;
+  position: relative;
+  border-radius: 10px;
+  background: #ffffff;
+  margin: 0 20px;
+}
+
+.attribute-card .attribute-image,
+.attribute-card .attribute-image img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.attribute-card .close-icon {
+  position: absolute;
+  right: -15px;
+  top: -15px;
+  height: 30px;
+  width: 30px;
+  background: #f4f4f4;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .toast-container {
   font-size: 14px;
   font-weight: 500;

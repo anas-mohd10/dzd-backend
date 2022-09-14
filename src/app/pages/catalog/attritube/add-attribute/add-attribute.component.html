@@ -52,7 +52,7 @@
                 <div class="form-group">
                   <label class="fs-6 mb-3 required">Value Type</label>
                   <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                    formControlName="valueType" (change)="changeValueType()">
+                    formControlName="type" (change)="changeValueType()">
                     <option value="check" disabled>
                       -- Select An Option --
                     </option>
@@ -96,26 +96,59 @@
                 <div class="col-12 col-sm-6"></div>
               </ng-container>
               <ng-container *ngIf="imageFlag">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-6 mb-3 form-title required">Media File</label>
-                    <div class="image-upload">
-                       <input type="file" class="form-control fs-6" name="multi-files"
-                          accept="image/*" (change)="handleInputChange($event)"
-                          formControlName="file">
-                       <label class="fs-7 text-disabled">Please upload an image of size 546px *
-                          390px</label>
-                    </div>
-                 </div>
-                  <div class="images-inputs col-12">
-                    <ng-container *ngFor="let image of images">
-                      <div class="preview-image">
-                        <img [src]="image?.url" alt="preview" id="preview" srcset=""/>
-                      </div>
-                    </ng-container>
+                <div class="col-12">
+                  <div class="col-sm-6">
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#fileModal"
+                      style="width: 200px; border-radius: 50px;">
+                      Upload File
+                    </button>
                   </div>
                 </div>
-                <div class="col-12 col-sm-6"></div>
+
+                <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="col-12">
+                          <div class="form-group">
+                            <label class="fs-6 mb-3 form-title required">Media File</label>
+                            <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="multi-files" accept="image/*"
+                                (change)="handleInputChange($event)" formControlName="file">
+                              <label class="fs-7 text-disabled">Please upload an image of size 546px *
+                                390px</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 upload-layout">
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary fs-6" style="width: 200px"
+                            data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary fs-6" style="width: 200px"
+                            (click)="addFile()">Save</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="uploaded-attributes">
+                  <div *ngFor="let attribute of localdata; let i=index">
+                    <div class="attribute-card">
+                      <div class="attribute-image fs-6 fw-bold mt-3">
+                        <img class="attribute-preview" [src]="attribute?.url" alt="" srcset="">
+                        <div class="close-icon bg-dark" (click)="removeFile(attribute?.id)">
+                          <i class="bi bi-x-lg text-white"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12 col-sm-6"></div> -->
               </ng-container>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
