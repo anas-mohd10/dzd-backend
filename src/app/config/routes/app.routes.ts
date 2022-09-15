@@ -28,6 +28,7 @@ const bannerRoute = "/banners"
 const layoutRoute = "/layouts"
 const cartRoute = "/cart"
 const reviewRoute = "/reviews"
+const vouchersRoute = "/vouchers"
 
 export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
@@ -147,5 +148,10 @@ export const appRoutes = {
   },
   review: {
     REVIEW_LIST: `${app}${reviewRoute}`,
+  },
+  vouchers: {
+    VOUCHERS_LIST: `${app}${vouchersRoute}`,
+    ADD_VOUCHERS_LIST: `${app}${vouchersRoute}/add`,
+    UPDATE_VOUCHERS_LIST: `${app}${vouchersRoute}/update`
   }
 };
