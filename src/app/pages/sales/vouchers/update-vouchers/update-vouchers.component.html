@@ -49,7 +49,8 @@
                   <label class="fs-6 mb-3 form-title required">Type</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
                     [ngClass]="{
-                                'is-invalid': (vf.type.touched || isSubmitted) && vf.type.errors?.required}">
+                                'is-invalid': (vf.type.touched || isSubmitted) && vf.type.errors?.required}"
+                    (change)="checkValue()">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="%">%</option>
                     <option value="flat">Flat</option>
@@ -60,7 +61,8 @@
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title required">Value</label>
                   <input type="text" class="form-control fs-6" formControlName="value" [ngClass]="{
-                           'is-invalid': (vf.value.touched || isSubmitted) && vf.value.errors?.required}" />
+                           'is-invalid': (vf.value.touched || isSubmitted) && vf.value.errors?.required}"
+                    (change)="checkValue()" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -82,7 +84,7 @@
                   <label class="fs-6 mb-3">Discount Value</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
-                    <input type="text" class="form-control" formControlName="maxDiscount" />
+                    <input type="text" class="form-control" formControlName="maxDiscount" (change)="checkDiscount()" />
                     <span class="input-group-text">.00</span>
                   </div>
                 </div>
@@ -92,7 +94,7 @@
                   <label class="fs-6 mb-3">Minimum Purchase</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
-                    <input type="text" class="form-control" formControlName="minPurchase" />
+                    <input type="text" class="form-control" formControlName="minPurchase" (change)="checkDiscount()" />
                     <span class="input-group-text">.00</span>
                   </div>
                 </div>
@@ -227,12 +229,12 @@
                       onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
                       <i class="bi bi-x-lg text-white"></i>
                     </div>
-                    <img id="previewImage" src="http://localhost:3000/{{voucherData.file}}">
+                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
                   </div>
                 </div>
               </div>
               <div class="col-12">
-                <a routerLink="{{ appRoute.vouchers.VOUCHERS_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
