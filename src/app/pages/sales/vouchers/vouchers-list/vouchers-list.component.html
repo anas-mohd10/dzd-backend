@@ -1,1 +1,94 @@
-<p>vouchers-list works!</p>
+<div class="voucher-page-container">
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Vouchers</h1>
+    </div>
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.vouchers.VOUCHERS_LIST }}">Vouchers</a>
+          </li>
+        </ul>
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary" style="width: 200px;"
+          routerLink="{{ appRoute.vouchers.ADD_VOUCHERS_LIST }}" style="width: 200px">
+          Add Vouchers
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div style="display: none"> {{vouchersData.length}}</div>
+          <div class="table-responsive" *ngIf="displayTable">
+            <table datatable [dtOptions]="dtOptions"
+              class="datatable table table-borderless table-center table-row-dashed mb-0">
+              <thead class="thead">
+                <tr class="fs-7 text-uppercase">
+                  <th class="text-gray-400 col-md-2">Sl No.</th>
+                  <th class="text-gray-400 col-md-2">Coupons</th>
+                  <th class="text-gray-400 col-md-2">Code</th>
+                  <th class="text-gray-400 col-md-2">Type</th>
+                  <th class="text-gray-400 col-md-2">Discount</th>
+                  <th class="text-gray-400 col-md-2">Image</th>
+                  <th class="text-gray-400 col-md-2">Valid From</th>
+                  <th class="text-gray-400 col-md-2">Valid To</th>
+                  <th class="text-gray-400 col-md-2">Status</th>
+                  <th class="text-gray-400 col-md-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let voucher of vouchersData; let i = index">
+                  <td>
+                    <h2 class="table-avatar">{{ i + 1 }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-6">{{ voucher?.title }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-6">{{ voucher?.code }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-6">{{ voucher?.type }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-6">{{ voucher?.value }}</h2>
+                  </td>
+                  <td>
+                    <img class="voucher-logo" src="http://localhost:3000/{{voucher?.file}}" alt="voucher" />
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-6">{{ voucher?.fromDate }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar fs-6">{{ voucher?.lastDate }}</h2>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="voucher?.isActive == true">
+                      <div class="active-text-view"><span class="active-text">active</span></div>
+                    </ng-container>
+                    <ng-container *ngIf="voucher?.isActive == false">
+                      <div class="inactive-text-view"><span class="inactive-text">inactive</span></div>
+                    </ng-container>
+                  </td>
+                  <td>
+                    <a class="fs-6 h-100 cursor-pointer table-avatar text-darker"
+                      routerLink="{{ appRoute.vouchers.UPDATE_VOUCHERS_LIST }}"
+                      [queryParams]="{ voucher: voucher?.slug }">
+                      <i class="bi bi-pen"></i> Edit
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

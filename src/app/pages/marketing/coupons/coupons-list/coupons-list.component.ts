@@ -2,10 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
-import { CategoryService } from 'src/app/includes/services/category.service';
-import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
-import { ProductService } from 'src/app/includes/services/product.service';
 
 @Component({
   selector: 'app-coupons-list',
@@ -22,9 +19,6 @@ export class CouponsListComponent implements OnInit {
   couponsData: any;
   displayTable: boolean;
   constructor(
-    private collectionService: CollectionService,
-    private productService: ProductService,
-    private categoryService: CategoryService,
     private couponService: CouponsService
   ) { }
 
@@ -40,7 +34,6 @@ export class CouponsListComponent implements OnInit {
 
   getCoupons() {
     this.couponService.getCoupons().subscribe((res: any) => {
-      console.log(res?.result);
       this.couponsData = res?.result
       for (let i = 0; i < this.couponsData.length; i++) {
         this.couponsData[i].fromDate = new Date(
