@@ -267,6 +267,11 @@ export const Routing: Routes = [
         path: 'vouchers',
         loadChildren: () => import('./sales/vouchers/vouchers.module').then((m) => m.VouchersModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'reviews',
+        loadChildren: () => import('./sales/reviews/reviews.module').then((m) => m.ReviewsModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },

@@ -1,0 +1,85 @@
+<div class="brand-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Reviews</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.review.REVIEW_LIST }}">Reviews</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="card card-table">
+            <div class="card-body">
+               <div style="display: none"> {{reviewsData.length}}</div>
+               <div class="table-responsive">
+                  <table datatable [dtOptions]="dtOptions"
+                     class="datatable table table-breviewless table-center table-row-dashed mb-0">
+                     <thead class="thead mt-100">
+                        <tr class="fs-7 text-uppercase">
+                           <th class="text-gray-400 col-md-2">Sl No.</th>
+                           <th class="text-gray-400 col-md-2">Order No.</th>
+                           <th class="text-gray-400 col-md-2">Product</th>
+                           <th class="text-gray-400 col-md-2">Rating</th>
+                           <th class="text-gray-400 col-md-2">Review</th>
+                           <th class="text-gray-400 col-md-2">Date</th>
+                           <th class="text-gray-400 col-md-2">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngFor="let review of reviewsData; let i = index">
+                           <td>
+                              <h2 class="table-avatar">{{ i + 1 }}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ review?.order?.orderNo }}</h2>
+                           </td>
+                           <td class="review-product-names">
+                              <ng-container *ngFor="let product of review?.order?.product">
+                                 <h2 class="table-avatar">{{ product?.productId?.name }}</h2>
+                              </ng-container>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ review?.rating }}</h2>
+                              <i class="bi bi-star-fill rating-icon"></i>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{review?.message}}</h2>
+                           </td>
+                           <td>
+                              <h2 class="table-avatar">{{ review?.created }}</h2>
+                           </td>
+                           <td>
+                              <ng-container *ngIf="review?.isActive == true">
+                                 <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                       (change)="reviewAction($event.target, review?.code)" id="flexSwitchCheckDefault"
+                                       checked>
+                                 </div>
+                              </ng-container>
+                              <ng-container *ngIf="review?.isActive == false">
+                                 <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                       (change)="reviewAction($event.target, review?.code)"
+                                       id=" flexSwitchCheckDefault">
+                                 </div>
+                              </ng-container>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
