@@ -104,14 +104,20 @@ export class AddAttributeComponent implements OnInit {
       this.textFlag = true;
       this.colorFlag = false;
       this.imageFlag = false;
+      this.localdata = []
+      this.colorArray = []
     } else if (this.type == 'color') {
       this.textFlag = false;
       this.colorFlag = true;
       this.imageFlag = false;
+      this.localdata = []
+      this.textArray = []
     } else if (this.type == 'image') {
       this.textFlag = false;
       this.colorFlag = false;
       this.imageFlag = true;
+      this.colorArray = []
+      this.textArray = []
     }
   }
 

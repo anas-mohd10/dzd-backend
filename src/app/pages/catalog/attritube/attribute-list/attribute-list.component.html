@@ -53,8 +53,8 @@
                     <h2 class="table-avatar fs-6">{{ attribute?.name }}</h2>
                   </td>
                   <td>
-                    <div class="attribute-col" *ngIf="attribute?.valueType == 'text'">
-                      <ng-container *ngFor="let value of attribute?.value">
+                    <div class="attribute-col" *ngIf="attribute?.type == 'text'">
+                      <ng-container *ngFor="let value of attribute?.values">
                         <div class="row">
                           <div class="col">
                             <h2 class="attribute-value border bg-secondary text-dark fs-6">{{ value }}</h2>
@@ -62,8 +62,8 @@
                         </div>
                       </ng-container>
                     </div>
-                    <div class="attribute-col" *ngIf="attribute?.valueType == 'color'">
-                      <ng-container *ngFor="let value of attribute?.value">
+                    <div class="attribute-col" *ngIf="attribute?.type == 'color'">
+                      <ng-container *ngFor="let value of attribute?.values">
                         <div class="row">
                           <div class="col">
                             <div class="color-div" [ngStyle]="{ backgroundColor: value }"></div>
@@ -71,11 +71,13 @@
                         </div>
                       </ng-container>
                     </div>
-                    <div class="attribute-col" *ngIf="attribute?.valueType == 'image'">
-                      <ng-container *ngFor="let value of attribute?.value">
+                    <div class="attribute-col" *ngIf="attribute?.type == 'image'">
+                      <ng-container *ngFor="let value of attribute?.files">
                         <div class="row">
                           <div class="col">
-                            <h2 class="attribute-value fs-6">{{ value }}</h2>
+                            <h2 class="attribute-value attr-images fs-6">
+                              <img src="http://localhost:3000/{{value}}" alt="" style="height: 60px; width: 60px">
+                            </h2>
                           </div>
                         </div>
                       </ng-container>
@@ -83,42 +85,28 @@
                   </td>
                   <td>
                     <ng-container *ngIf="attribute?.isFiltered == true">
-                      <div class="text-view">
-                        <span>
-                          Yes
-                        </span>
-                      </div>
+                      <div class="text-view">Yes</div>
                     </ng-container>
                     <ng-container *ngIf="attribute?.isFiltered == false">
-                      <div class="text-view">
-                        <span>
-                          No
-                        </span>
-                      </div>
+                      <div class="text-view">No</div>
                     </ng-container>
                   </td>
                   <td>
                     <ng-container *ngIf="attribute?.isActive == true">
                       <div class="active-text-view">
-                        <span class="active-text">
-                          active
-                        </span>
+                        <span class="active-text">active</span>
                       </div>
                     </ng-container>
                     <ng-container *ngIf="attribute?.isActive == false">
                       <div class="inactive-text-view">
-                        <span class="inactive-text">
-                          inactive
-                        </span>
+                        <span class="inactive-text">inactive</span>
                       </div>
                     </ng-container>
                   </td>
                   <td>
                     <a class="fs-6 cursor-pointer text-darker" routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
-                      [queryParams]="{
-                        category: category,
-                        attribute: attribute?.slug
-                      }"><i class="bi bi-pen fs-4"></i> Edit
+                      [queryParams]="{category: category, attribute: attribute?.slug}">
+                      <i class="bi bi-pen fs-4"></i>Edit
                     </a>
                   </td>
                 </tr>

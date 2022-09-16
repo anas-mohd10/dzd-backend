@@ -15,10 +15,10 @@
           </li>
           <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
-              [queryParams]="{ category: category }">Attributes</a>
+              [queryParams]="{ category: slug }">Attributes</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }">
+            <a routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: slug }">
               {{ editMode ? "Update Attribute" : "Add Attribute" }}
             </a>
           </li>

@@ -39,6 +39,9 @@ export class UpdateAttributeComponent implements OnInit {
   imageFlag: boolean = false;
   values: any;
   type: any;
+  localdata: any = []
+  filedata: any;
+  url: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,7 +64,7 @@ export class UpdateAttributeComponent implements OnInit {
   initForm() {
     this.attributeForm = this.formBuilder.group({
       name: [''],
-      valueType: [''],
+      type: [''],
       values: [],
       colorValue: [],
       isFiltered: [''],
@@ -87,7 +90,29 @@ export class UpdateAttributeComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) { }
+  handleInputChange(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      this.filedata = event.target.files[0]
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.url = e.target.result
+      }
+    }
+  }
+
+  addFile() {
+    this.localdata.push({
+      id: this.localdata.length,
+      url: this.url,
+      file: this.filedata
+    })
+    this.attributeForm.get("file")?.setValue('')
+  }
+
+  removeFile(id: any) {
+    this.localdata = this.localdata.filter((_data: any) => _data.id != id)
+  }
 
   getCategoryDetails() {
     this.CategoryService.getCategoryBySlug(this.category).subscribe((res) => {
@@ -102,23 +127,29 @@ export class UpdateAttributeComponent implements OnInit {
       this.attributeForm.get('name')?.setValue(res?.result[0].name);
       this.attributeForm.get('isActive')?.setValue(res?.result[0].isActive);
       this.attributeForm.get('isFiltered')?.setValue(res?.result[0].isFiltered);
-      this.attributeForm.get('valueType')?.setValue(res?.result[0].valueType);
-      this.valueType = res?.result[0].valueType
+      this.attributeForm.get('type')?.setValue(res?.result[0].type);
+      this.valueType = res?.result[0].type
       if (this.valueType == 'text') {
         this.textFlag = true;
         this.colorFlag = false;
         this.imageFlag = false;
-        this.textArray = res?.result[0].value;
+        this.textArray = res?.result[0].values;
       } else if (this.valueType == 'color') {
         this.textFlag = false;
         this.colorFlag = true;
         this.imageFlag = false;
-        this.colorArray = res?.result[0].value;
+        this.colorArray = res?.result[0].values;
       } else if (this.valueType == 'image') {
         this.textFlag = false;
         this.colorFlag = false;
         this.imageFlag = true;
-        this.textArray = res?.result[0].value;
+        for (let file of res?.result[0].files) {
+          this.localdata.push({
+            id: this.localdata.length,
+            url: file,
+            file: ''
+          })
+        }
       }
     }
     );
@@ -139,7 +170,7 @@ export class UpdateAttributeComponent implements OnInit {
   }
 
   changeValueType() {
-    this.valueType = this.attributeForm.get('valueType')?.value;
+    this.valueType = this.attributeForm.get('type')?.value;
     if (this.valueType == 'text') {
       this.textFlag = true;
       this.colorFlag = false;
