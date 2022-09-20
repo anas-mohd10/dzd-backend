@@ -81,4 +81,10 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_report);
     return this.http.get(`${url}`)
   }
+
+  //filter
+  getOrderFilter(slug: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_filter + slug);
+    return this.http.get(`${url}`)
+  }
 }

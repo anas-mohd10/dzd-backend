@@ -20,28 +20,20 @@ export class AddAttributeComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  params: any;
-  fileData: File;
-  category: any;
   slug: any
-  attributeValues: any;
+  category: any;
   categoryData: any;
-  attributeData: {};
   status: boolean;
-  filtered: string;
-  isFiltered: any;
+  type: any;
   textArray: any = [];
   colorArray: any = [];
   imageArray: any = [];
-  type: any;
   textFlag: boolean = false;
   colorFlag: boolean = false;
   imageFlag: boolean = false;
   values: any = [];
   images: any = [];
-  imagesArray: any = [];
   localdata: any = []
-  imageValues: any;
   url: any;
   filedata: any
 
@@ -56,9 +48,9 @@ export class AddAttributeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.managePage();
     this.slug = this.route.snapshot.queryParams.category || '';
     this.getCategoryDetails();
-    this.managePage();
   }
 
   initForm() {

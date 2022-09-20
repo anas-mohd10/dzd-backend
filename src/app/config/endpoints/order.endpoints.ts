@@ -14,5 +14,7 @@ export const orderEndpoints = {
    get_order_by_date: '/order',
    get_order_count: '/order/get-count',
    //report
-   get_order_report: '/order-report'
+   get_order_report: '/order-report',
+   //filter
+   get_order_filter: '/order/filter'
 };

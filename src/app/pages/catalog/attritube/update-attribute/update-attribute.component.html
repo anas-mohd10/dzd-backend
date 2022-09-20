@@ -14,12 +14,11 @@
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
-              [queryParams]="{ category: category }">Attributes</a>
+            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: slug }">Attributes</a>
           </li>
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
-              [queryParams]="{ category: category, attribute: attribute }">
+              [queryParams]="{ category: slug, attribute: attribute }">
               {{ editMode ? "Update Attribute" : "Add Attribute" }}
             </a>
           </li>
@@ -139,10 +138,10 @@
                 </div>
                 <div class="uploaded-attributes">
                   <div *ngFor="let attribute of localdata; let i=index">
-                    <ng-container *ngIf="attribute?.file == '' ">
+                    <ng-container *ngIf="attribute?.url == '' ">
                       <div class="attribute-card">
                         <div class="attribute-image fs-6 fw-bold mt-3">
-                          <img class="attribute-preview" src="http://localhost:3000/{{attribute?.url}}" alt=""
+                          <img class="attribute-preview" src="http://localhost:3000/{{attribute?.file}}" alt=""
                             srcset="">
                           <div class="close-icon bg-dark" (click)="removeFile(attribute?.id)">
                             <i class="bi bi-x-lg text-white"></i>
@@ -150,7 +149,7 @@
                         </div>
                       </div>
                     </ng-container>
-                    <ng-container *ngIf="attribute?.file != '' ">
+                    <ng-container *ngIf="attribute?.url != '' ">
                       <div class="attribute-card">
                         <div class="attribute-image fs-6 fw-bold mt-3">
                           <img class="attribute-preview" [src]="attribute?.url" alt="" srcset="">
@@ -185,7 +184,7 @@
                 </div>
               </div>
               <div class="col-12">
-                <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{category: category}"
+                <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{category: slug}"
                   class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>

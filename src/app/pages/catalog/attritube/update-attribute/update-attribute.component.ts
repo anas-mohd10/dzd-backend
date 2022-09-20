@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { AttributeService } from '../../../../includes/services/attribute.service';
@@ -18,30 +18,23 @@ export class UpdateAttributeComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  params: any;
-  fileData: File;
+  slug: any
   category: any;
-  attributeValues: any;
   categoryData: any;
-  categoryId: any;
-  attributeData: {};
   status: boolean;
-  filtered: string;
-  isFiltered: any;
-  valueArray: any = [];
-  attribute: any;
+  type: any;
   textArray: any = [];
   colorArray: any = [];
   imageArray: any = [];
-  valueType: any;
   textFlag: boolean = false;
   colorFlag: boolean = false;
   imageFlag: boolean = false;
-  values: any;
-  type: any;
+  values: any = [];
+  images: any = [];
   localdata: any = []
-  filedata: any;
   url: any;
+  filedata: any
+  attribute: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,7 +47,7 @@ export class UpdateAttributeComponent implements OnInit {
 
   ngOnInit(): void {
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.category = this.route.snapshot.queryParams.category || '';
+    this.slug = this.route.snapshot.queryParams.category || '';
     this.attribute = this.route.snapshot.queryParams.attribute || '';
     this.initForm();
     this.managePage();
@@ -63,13 +56,14 @@ export class UpdateAttributeComponent implements OnInit {
 
   initForm() {
     this.attributeForm = this.formBuilder.group({
-      name: [''],
-      type: [''],
+      name: ['', Validators.required],
+      type: ['check', Validators.required],
+      file: [''],
       values: [],
       colorValue: [],
-      isFiltered: [''],
-      isActive: [''],
-      tags: [''],
+      imageValue: [],
+      isFiltered: ['false', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 
@@ -115,10 +109,10 @@ export class UpdateAttributeComponent implements OnInit {
   }
 
   getCategoryDetails() {
-    this.CategoryService.getCategoryBySlug(this.category).subscribe((res) => {
+    this.CategoryService.getCategoryBySlug(this.slug).subscribe((res) => {
       this.categoryData = res;
-      this.categoryId = this.categoryData.result[0]._id;
-      return this.getAttributeDetails(this.attribute, this.categoryId);
+      this.category = this.categoryData.result[0]._id;
+      return this.getAttributeDetails(this.attribute, this.category);
     });
   }
 
@@ -128,26 +122,26 @@ export class UpdateAttributeComponent implements OnInit {
       this.attributeForm.get('isActive')?.setValue(res?.result[0].isActive);
       this.attributeForm.get('isFiltered')?.setValue(res?.result[0].isFiltered);
       this.attributeForm.get('type')?.setValue(res?.result[0].type);
-      this.valueType = res?.result[0].type
-      if (this.valueType == 'text') {
+      this.type = res?.result[0].type
+      if (this.type == 'text') {
         this.textFlag = true;
         this.colorFlag = false;
         this.imageFlag = false;
         this.textArray = res?.result[0].values;
-      } else if (this.valueType == 'color') {
+      } else if (this.type == 'color') {
         this.textFlag = false;
         this.colorFlag = true;
         this.imageFlag = false;
         this.colorArray = res?.result[0].values;
-      } else if (this.valueType == 'image') {
+      } else if (this.type == 'image') {
         this.textFlag = false;
         this.colorFlag = false;
         this.imageFlag = true;
         for (let file of res?.result[0].files) {
           this.localdata.push({
             id: this.localdata.length,
-            url: file,
-            file: ''
+            url: '',
+            file: file
           })
         }
       }
@@ -170,16 +164,16 @@ export class UpdateAttributeComponent implements OnInit {
   }
 
   changeValueType() {
-    this.valueType = this.attributeForm.get('type')?.value;
-    if (this.valueType == 'text') {
+    this.type = this.attributeForm.get('type')?.value;
+    if (this.type == 'text') {
       this.textFlag = true;
       this.colorFlag = false;
       this.imageFlag = false;
-    } else if (this.valueType == 'color') {
+    } else if (this.type == 'color') {
       this.textFlag = false;
       this.colorFlag = true;
       this.imageFlag = false;
-    } else if (this.valueType == 'image') {
+    } else if (this.type == 'image') {
       this.textFlag = false;
       this.colorFlag = false;
       this.imageFlag = true;
@@ -208,38 +202,43 @@ export class UpdateAttributeComponent implements OnInit {
 
   updateBrand() {
     if (!this.attributeForm.valid) {
+      console.log("Validation error");
       return;
     }
 
-    if (this.valueType == 'color') {
+    if (this.type == 'color') {
       this.values = this.colorArray;
-    } else if (this.valueType == 'text') {
+    } else if (this.type == 'text') {
       this.values = this.textArray;
-    } else if (this.valueType == 'image') {
-      this.values = [];
+    } else if (this.type == 'image') {
+      for (let data of this.localdata) {
+        this.images.push(data.file)
+      }
     }
-
-    this.attributeData = {
-      name: this.attributeForm.get('name')?.value,
-      valueType: this.attributeForm.get('valueType')?.value,
-      value: this.values,
-      file: '',
-      isFiltered: this.attributeForm.get('isFiltered')?.value,
-      isActive: this.attributeForm.get('isActive')?.value,
-      categoryId: this.categoryId,
-    };
-
-    this.AttributeService.updateAttribute(
-      this.attribute,
-      this.categoryId,
-      this.attributeData
-    ).subscribe((res: any) => {
+    const formdata = new FormData
+    if (this.images.length) {
+      for (let img of this.images) {
+        formdata.append('file', img);
+      }
+      formdata.append("files", JSON.stringify(this.images))
+    } else {
+      for (let img of this.localdata) {
+        formdata.append('file', img.file);
+      }
+      formdata.append("files", this.images)
+    }
+    formdata.append("values", JSON.stringify(this.values))
+    for (const data of Object.keys(this.attributeForm.value)) {
+      formdata.append(data, this.attributeForm.value[data]);
+    }
+    formdata.append("category", this.category)
+    this.AttributeService.updateAttribute(this.attribute, this.category, formdata).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res?.errorCode == 0) {
         this.toastr.success('Attribute updated successfully');
         this.router.navigate([this.appRoute.attribute.ATTRIBUTE_LIST], {
-          queryParams: { category: this.category },
+          queryParams: { category: this.slug },
         });
       }
     });
