@@ -123,7 +123,7 @@ export class UpdateProductComponent implements OnInit {
       returnDays: [''],
       shippingMethod: [''],
       shippingCost: [''],
-      weight: [''],
+      value: [''],
       unit: [''],
       taxClassId: [''],
       cod: [''],
@@ -283,7 +283,7 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('returnDays')?.setValue(this.productData.returnDays);
       this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);
       this.productForm.get('unit')?.setValue(this.productData.unit);
-      this.productForm.get('weight')?.setValue(this.productData.weight);
+      this.productForm.get('value')?.setValue(this.productData.value);
       this.productForm.get('cod')?.setValue(this.productData.cod);
       this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
       this.productForm.get('shippingCost')?.setValue(this.productData.shippingCost);

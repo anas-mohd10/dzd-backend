@@ -182,9 +182,6 @@ export class AddVouchersComponent implements OnInit {
   }
 
   handleInputChange(event: any) {
-    const file = event.dataTransfer
-      ? event.dataTransfer.files[0]
-      : event.target.files[0];
     this.filedata = <File>event.target.files[0];
   }
 

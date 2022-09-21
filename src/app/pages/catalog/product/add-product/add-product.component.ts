@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NgForm,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -25,27 +19,27 @@ export class AddProductComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  params: any;
-  fileData: File;
-  isChecked = false;
-  productType: any;
+
+  filedata: File;
+  type: any;
   isSingle: boolean = false;
+
   brandData: any;
-  selected: any;
-  filtered: any;
   categoryData: any;
   taxClassData: any;
-  valueArray: any = [];
-  productData: any;
-  categoryNames: any = [];
-  categoryArray: any = [];
   productsData: any;
+
+  searchKeyowrds: any = [];
+  categoryNames: any = [];
+  categoryid: any = [];
+
   returnValue: any;
   isReturn: boolean = false;
   isShipping: boolean = false;
   isCod: boolean = false;
   method: any;
   cod: any;
+
   relProductNames: any = [];
   relProductIds: any = [];
 
@@ -64,25 +58,9 @@ export class AddProductComponent implements OnInit {
     return this.productForm.controls;
   }
 
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
-  }
-
-  handleCheckBox() {
-    if (this.isChecked == false) {
-      this.isChecked = true;
-    } else if (this.isChecked == true) {
-      this.isChecked = false;
-    }
-  }
-
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.params = this.route.snapshot;
     this.managePage();
     this.getBrandDetail();
     this.getCategoryDetail();
@@ -93,9 +71,9 @@ export class AddProductComponent implements OnInit {
   initForm() {
     this.productForm = this.formBuilder.group({
       isSingle: ['false'],
-      name: [''],
-      sku: [''],
-      hsn: [''],
+      name: ['', Validators.required],
+      sku: ['', Validators.required],
+      hsn: ['', Validators.required],
       mrpPrice: [''],
       offerPrice: [''],
       stock: [''],
@@ -104,19 +82,19 @@ export class AddProductComponent implements OnInit {
       description: [''],
       features: [''],
       categories: [],
-      brandId: [''],
+      brandId: ['', Validators.required],
       additionalbutton: [''],
       buttonredireturl: [''],
-      isActive: ['true'],
-      isFeatured: ['false'],
-      returnable: [''],
+      isActive: ['true', Validators.required],
+      isFeatured: ['false', Validators.required],
+      returnable: ['', Validators.required],
       returnDays: [''],
-      shippingMethod: [''],
+      shippingMethod: ['', Validators.required],
       shippingCost: [''],
-      weight: [''],
-      unit: [''],
-      taxClassId: [''],
-      cod: [''],
+      value: ['', Validators.required],
+      unit: ['', Validators.required],
+      taxClassId: ['', Validators.required],
+      cod: ['', Validators.required],
       codCharge: [''],
       searchKeywords: [],
       relatedProducts: [],
@@ -125,17 +103,24 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  handleProductType() {
-    this.productType = this.productForm.get('isSingle')?.value;
-    if (this.productType == 'true') {
+  //Check whether the product is single or configurable
+  handleProductType(event: any) {
+    this.type = event.value;
+    if (this.type == 'true') {
       this.isSingle = true;
-    } else if (this.productType == 'false') {
+    } else if (this.type == 'false') {
       this.isSingle = false;
     }
   }
 
-  checkReturnable() {
-    this.returnValue = this.productForm.get('returnable')?.value;
+  //File input
+  handleInputChange(fileInput: any) {
+    this.filedata = <File>fileInput.target.files[0];
+  }
+
+  //Check whether the product is returnable or not
+  checkReturnable(event: any) {
+    this.returnValue = event.value;
     if (this.returnValue == 'true') {
       this.isReturn = true;
     }
@@ -144,8 +129,9 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  checkShippingMethod() {
-    this.method = this.productForm.get('shippingMethod')?.value;
+  //Check the shipping method
+  checkShippingMethod(event: any) {
+    this.method = event.value;
     if (this.method == 'paid') {
       this.isShipping = true;
     }
@@ -154,8 +140,9 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  checkCod() {
-    this.cod = this.productForm.get('cod')?.value;
+  //Check whether cod is available or not
+  checkCod(event: any) {
+    this.cod = event.value;
     if (this.cod == 'true') {
       this.isCod = true;
     }
@@ -164,9 +151,10 @@ export class AddProductComponent implements OnInit {
     }
   }
 
+  //Category tag input
   tagCategoryInput() {
-    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
-      this.categoryArray.push(this.productForm.get('categories')?.value);
+    if (!this.categoryid.includes(this.productForm.get('categories')?.value)) {
+      this.categoryid.push(this.productForm.get('categories')?.value);
       for (let i = 0; i < this.categoryData.length; i++) {
         if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
           this.categoryNames.push(this.categoryData[i].name);
@@ -178,6 +166,7 @@ export class AddProductComponent implements OnInit {
     this.productForm.get('categories')?.setValue('');
   }
 
+  //Category tag remove
   tagCategoryRemove(category: any) {
     const index = this.categoryNames.indexOf(category);
     if (index > -1) {
@@ -185,26 +174,46 @@ export class AddProductComponent implements OnInit {
     }
     for (let i = 0; i < this.categoryData.length; i++) {
       if (this.categoryData[i].name == category) {
-        this.categoryArray.pop(this.categoryData[i]._id);
+        this.categoryid.pop(this.categoryData[i]._id);
       }
     }
   }
 
+  //Search keywords input
   tagInput() {
     if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
-      this.valueArray.push(this.productForm.get('searchKeywords')?.value);
+      this.searchKeyowrds.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
   }
 
+  //Search keywords remove
   tagRemove(value: any) {
-    const index = this.valueArray.indexOf(value);
-    if (index > -1) {
-      this.valueArray.splice(index, 1);
+    this.searchKeyowrds = this.searchKeyowrds.filter((_data: any) => _data != value)
+  }
+
+  //Related products tag
+  tagProductAdd(event: any) {
+    let rProduct = event.value
+    if (!this.relProductIds.includes(rProduct)) {
+      this.relProductIds.push(rProduct)
+      for (let i = 0; i < this.productsData.length; i++) {
+        if (this.productsData[i]._id == rProduct) {
+          this.relProductNames.push(this.productsData[i].name)
+        }
+      }
+    } else {
+      this.toastr.info('Product already added');
     }
-    for (let i = 0; i < this.valueArray.length; i++) {
-      if (this.valueArray[i] == value) {
-        this.valueArray.pop(value);
+    this.productForm.get("relatedProducts")?.setValue('')
+  }
+
+  //Related product remove
+  tagProductRemove(_val: any) {
+    this.relProductNames = this.relProductNames.filter((_data: any) => _data != _val)
+    for (let i = 0; i < this.productsData.length; i++) {
+      if (this.productsData[i].name == _val) {
+        this.relProductIds = this.relProductIds.filter((_data: any) => _data != this.productsData[i]._id)
       }
     }
   }
@@ -246,38 +255,6 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  tagProductAdd() {
-    let rProduct = this.productForm.get("relatedProducts")?.value
-    if (!this.relProductIds.includes(rProduct)) {
-      this.relProductIds.push(rProduct)
-      for (let i = 0; i < this.productsData.length; i++) {
-        if (this.productsData[i]._id == rProduct) {
-          this.relProductNames.push(this.productsData[i].name)
-        }
-      }
-      this.productForm.get("relatedProducts")?.setValue('')
-    }
-  }
-
-  tagProductRemove(_val: any) {
-    let nIndex = this.relProductNames.indexOf(_val)
-    if (nIndex > -1) {
-      this.relProductNames.splice(nIndex, 1)
-    }
-    for (let i = 0; i < this.productsData.length; i++) {
-      if (this.productsData[i].name == _val) {
-        let iIndex = this.relProductIds.indexOf(this.productsData[i]._id)
-        this.relProductIds.splice(iIndex, 1)
-      }
-    }
-  }
-
-  onOptionsSelected() {
-    this.filtered = this.brandData.filter(
-      (t: { value: any }) => t.value == this.selected
-    );
-  }
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -296,8 +273,8 @@ export class AddProductComponent implements OnInit {
     }
 
     const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
+    if (this.filedata != null && this.filedata != undefined) {
+      formData.append('file', this.filedata);
     }
 
     for (const data of Object.keys(this.productForm.value)) {
@@ -307,8 +284,8 @@ export class AddProductComponent implements OnInit {
     }
 
     formData.append('relatedProducts', JSON.stringify(this.relProductIds))
-    formData.append('categories', JSON.stringify(this.categoryArray))
-    formData.append('searchKeywords', JSON.stringify(this.valueArray))
+    formData.append('categories', JSON.stringify(this.categoryid))
+    formData.append('searchKeywords', JSON.stringify(this.searchKeyowrds))
 
     this.productService.addProduct(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {

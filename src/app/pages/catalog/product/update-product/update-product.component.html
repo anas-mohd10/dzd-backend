@@ -23,14 +23,12 @@
     </div>
   </div>
   <!-- Page Header -->
-
   <!-- Page Content -->
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
-          <div style="display: none"> {{productData.length}}</div>
-          <form (ngSubmit)="onSubmit()" [formGroup]="productForm">
+          <form [formGroup]="productForm">
             <div class="row">
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Product Details</span></h5>
@@ -38,9 +36,9 @@
 
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Product Type</label>
+                  <label class="fs-6 mb-3">Product Type</label>
                   <select class="form-select" formControlName="isSingle" (change)="handleProductType()">
-                    
+                    c
                     <option value="true">Single</option>
                     <option value="false">Configurable</option>
                   </select>
@@ -55,34 +53,24 @@
               <!-- Name -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.name.touched || isSubmitted) &&
-                      pf.name.errors?.required
-                    ">Name is required</span>
+                  <label class="fs-6 mb-3 required">Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" />
                 </div>
               </div>
 
               <!-- Store Keeping Unit -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Store Keeping Unit</label>
-                  <input type="text" class="form-control fs-5" formControlName="sku" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.sku.touched || isSubmitted) && pf.sku.errors?.required
-                    ">SKU is required</span>
+                  <label class="fs-6 mb-3 required">Store Keeping Unit</label>
+                  <input type="text" class="form-control fs-6" formControlName="sku"/>
                 </div>
               </div>
 
               <!-- HSN Number -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">HSN No.</label>
-                  <input type="text" class="form-control fs-5" formControlName="hsn" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.hsn.touched || isSubmitted) && pf.hsn.errors?.required
-                    ">HSN is required</span>
+                  <label class="fs-6 mb-3 required">HSN No.</label>
+                  <input type="text" class="form-control fs-6" formControlName="hsn" />
                 </div>
               </div>
 
@@ -90,25 +78,21 @@
               <ng-container *ngIf="isSingle">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Price (MRP)</label>
+                    <label class="fs-6 mb-3 required">Price (MRP)</label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="mrpPrice" />
+                      <input type="text" class="form-control" formControlName="mrpPrice"/>
                       <span class="input-group-text">.00</span>
                     </div>
-                    <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.mrpPrice.touched || isSubmitted) &&
-                      pf.mrpPrice.errors?.required
-                    ">MRP is required</span>
                   </div>
                 </div>
               </ng-container>
 
+              <!-- Offer Price -->
               <ng-container *ngIf="isSingle">
-                <!-- Offer Price -->
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Offer Price</label>
+                    <label class="fs-6 mb-3">Offer Price</label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
                       <input type="text" class="form-control" formControlName="offerPrice" />
@@ -122,12 +106,8 @@
               <ng-container *ngIf="isSingle">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Stock</label>
-                    <input type="number" class="form-control fs-5" formControlName="stock" />
-                    <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.stock.touched || isSubmitted) &&
-                      pf.stock.errors?.required
-                    ">Stock is required</span>
+                    <label class="fs-6 mb-3 required">Stock</label>
+                    <input type="number" class="form-control fs-6" formControlName="stock" />
                   </div>
                 </div>
               </ng-container>
@@ -136,11 +116,8 @@
               <ng-container *ngIf="isSingle">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Minimum Order Quantity</label>
-                    <input type="text" class="form-control fs-5" formControlName="moq" />
-                    <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.moq.touched || isSubmitted) && pf.moq.errors?.required
-                    ">MOQ is required</span>
+                    <label class="fs-6 mb-3 required">Minimum Order Quantity</label>
+                    <input type="text" class="form-control fs-6" formControlName="moq" />
                   </div>
                 </div>
               </ng-container>
@@ -149,8 +126,8 @@
               <ng-container *ngIf="isSingle">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Stock Warning</label>
-                    <input type="text" class="form-control fs-5" formControlName="stockWarning" />
+                    <label class="fs-6 mb-3">Stock Warning</label>
+                    <input type="text" class="form-control fs-6" formControlName="stockWarning" />
                   </div>
                 </div>
               </ng-container>
@@ -158,18 +135,17 @@
               <!-- Description -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Description</label>
-                  <textarea class="form-control fs-5" formControlName="description" style="resize: none"
+                  <label class="fs-6 mb-3">Description</label>
+                  <textarea class="form-control fs-6" formControlName="description" style="resize: none"
                     id="productdescription" rows="3"></textarea>
                 </div>
               </div>
 
-
               <!-- Features -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Features</label>
-                  <textarea class="form-control fs-5" formControlName="features" style="resize: none"
+                  <label class="fs-6 mb-3">Features</label>
+                  <textarea class="form-control fs-6" formControlName="features" style="resize: none"
                     id="featureddescription" rows="3"></textarea>
                 </div>
               </div>
@@ -177,27 +153,16 @@
               <!-- Category -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Category</label>
-                  <select class="form-select" formControlName="categories" (change)="tagCategoryInput()" [ngClass]="{
-                    'is-invalid':
-                    (pf.categories.touched || isSubmitted) &&
-                    pf.categories.errors?.required
-                  }">
-                    <option value="example" disabled>
-                      -- Select a Category --
-                    </option>
-                    <option *ngFor="let category of categoryData" value="{{ category?._id }}">
-                      {{ category?.name }}
+                  <label class="fs-6 mb-3 required">Category</label>
+                  <select class="form-select" formControlName="categories" (change)="tagCategoryInput()">
+                    <option value="example" disabled>-- Select a Category --</option>
+                    <option *ngFor="let category of categoryData" value="{{ category?._id }}">{{ category?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.categories.touched || isSubmitted) &&
-                      pf.categories.errors?.required
-                    ">ategories is required</span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input text-white bg-primary">{{ category }}
+                    <span class="tag-input bg-primary text-white">{{ category }}
                       <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                     </span>
                   </ng-container>
@@ -207,60 +172,39 @@
               <!-- Brand -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Brand</label>
-                  <select name="brand" formControlName="brandId" class="form-select" [ngClass]="{
-                    'is-invalid':
-                    (pf.brandId.touched || isSubmitted) &&
-                    pf.brandId.errors?.required
-                  }">
-                    <option value="example" disabled>
-                      -- Select a Brand --
-                    </option>
-                    <option *ngFor="let brand of brandData" value="{{ brand?._id }}">
-                      {{ brand?.name }}
-                    </option>
+                  <label class="fs-6 mb-3 required">Brand</label>
+                  <select name="brand" formControlName="brandId" class="form-select">
+                    <option value="example" disabled>-- Select a Brand --</option>
+                    <option *ngFor="let brand of brandData" value="{{ brand?._id }}">{{ brand?.name }}</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.brandId.touched || isSubmitted) &&
-                      pf.brandId.errors?.required
-                    ">Brand is required</span>
                 </div>
               </div>
 
               <!-- Additional Button Text -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Additional Button Text</label>
-                  <input type="text" class="form-control fs-5" formControlName="additionalbutton" />
+                  <label class="fs-6 mb-3">Additional Button Text</label>
+                  <input type="text" class="form-control fs-6" formControlName="additionalbutton" />
                 </div>
               </div>
 
               <!-- Button Redirect Url -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Button Redirect URL</label>
-                  <input type="text" class="form-control fs-5" formControlName="buttonredireturl" />
+                  <label class="fs-6 mb-3">Button Redirect URL</label>
+                  <input type="text" class="form-control fs-6" formControlName="buttonredireturl" />
                 </div>
               </div>
 
               <!-- Shipping Method -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Shipping Method</label>
-                  <select class="form-select" formControlName="shippingMethod" (change)="checkShippingMethod()"
-                    [ngClass]="{
-                    'is-invalid':
-                    (pf.shippingMethod.touched || isSubmitted) &&
-                    pf.shippingMethod.errors?.required
-                  }">
+                  <label class="fs-6 mb-3 required">Shipping Method</label>
+                  <select class="form-select" formControlName="shippingMethod" (change)="checkShippingMethod()">
                     <option value="paid">Paid Shipping</option>
                     <option value="unpaid">Unpaid Shipping</option>
                     <option value="external">External Shipping Service</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.shippingMethod.touched || isSubmitted) &&
-                      pf.shippingMethod.errors?.required
-                    ">Shipping method is required</span>
                 </div>
               </div>
 
@@ -268,7 +212,7 @@
               <ng-container *ngIf="isShipping">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Shipping Cost </label>
+                    <label class="fs-6 mb-3">Shipping Cost </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
                       <input type="text" class="form-control" formControlName="shippingCost" />
@@ -280,78 +224,45 @@
 
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Unit</label>
-                  <select class="form-select" formControlName="unit" [ngClass]="{
-                    'is-invalid':
-                    (pf.unit.touched || isSubmitted) &&
-                    pf.unit.errors?.required
-                  }">
-                    <option value="Check" disabled>
-                      -- Select an option --
-                    </option>
+                  <label class="fs-6 mb-3 required">Unit</label>
+                  <select class="form-select" formControlName="unit">
+                    <option value="Check" disabled>-- Select an option --</option>
                     <option value="kg">Kilograms</option>
                     <option value="gms">Grams</option>
                     <option value="number">Number of</option>
                     <option value="pack">Pack of</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.unit.touched || isSubmitted) &&
-                      pf.unit.errors?.required
-                    ">Unit is required</span>
                 </div>
               </div>
 
               <!-- Weight -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Weight</label>
-                  <input type="text" class="form-control" formControlName="weight" [ngClass]="{
-                    'is-invalid':
-                    (pf.weight.touched || isSubmitted) &&
-                    pf.weight.errors?.required
-                  }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.weight.touched || isSubmitted) &&
-                      pf.weight.errors?.required
-                    ">Weight is required</span>
+                  <label class="fs-6 mb-3 required">Value</label>
+                  <input type="text" class="form-control" formControlName="value">
                 </div>
               </div>
 
               <!-- Tax Class -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Tax Class</label>
-                  <select class="form-select" formControlName="taxClassId" [ngClass]="{
-                    'is-invalid':
-                    (pf.taxClassId.touched || isSubmitted) &&
-                    pf.taxClassId.errors?.required
-                  }">
-                    <option value="example" disabled>
-                      -- Select a Tax Class --
-                    </option>
-                    <option *ngFor="let taxClass of taxClassData" value="{{ taxClass?._id }}">
-                      {{ taxClass?.name }}
+                  <label class="fs-6 mb-3 required">Tax Class</label>
+                  <select class="form-select" formControlName="taxClassId">
+                    <option value="example" disabled>-- Select a Tax Class --</option>
+                    <option *ngFor="let taxClass of taxClassData" value="{{ taxClass?._id }}">{{ taxClass?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.taxClassId.touched || isSubmitted) &&
-                      pf.taxClassId.errors?.required
-                    ">Tax class is required</span>
                 </div>
               </div>
 
               <!-- Search Keywords -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Search Keywords</label>
-                  <input class="form-control fs-5" formControlName="searchKeywords" (keyup.Arrowright)="tagInput()" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.searchKeywords.touched || isSubmitted) &&
-                      pf.searchKeywords.errors?.required
-                    ">Search keywords is required</span>
+                  <label class="fs-6 mb-3 required">Search Keywords</label>
+                  <input class="form-control fs-6" formControlName="searchKeywords" (keyup.Arrowright)="tagInput()" />
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="mb-10 tag-input text-white bg-primary">{{ value }}
+                      <span class="mb-10 tag-input bg-primary text-white">{{ value }}
                         <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
                     </ng-container>
                   </div>
@@ -361,22 +272,14 @@
               <!-- Related Products -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Related Products</label>
+                  <label class="fs-6 mb-3 required">Related Products</label>
                   <select class="form-select" formControlName="relatedProducts" (change)="tagProductAdd()">
-                    <option value="example" disabled>
-                      -- Select Related Products --
-                    </option>
-                    <option *ngFor="let product of productsData" value="{{ product?._id }}">
-                      {{ product?.name }}
-                    </option>
+                    <option value="example" disabled>-- Select Related Products --</option>
+                    <option *ngFor="let product of productsData" value="{{ product?._id }}">{{ product?.name }}</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.searchKeywords.touched || isSubmitted) &&
-                      pf.searchKeywords.errors?.required
-                    ">Related products is required</span>
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of relProductNames">
-                      <span class="mb-10 tag-input bg-primary text-white">{{ value }}
+                      <span class="tag-input bg-primary text-white">{{ value }}
                         <i class="bi bi-x" (click)="tagProductRemove(value)"></i></span>
                     </ng-container>
                   </div>
@@ -386,73 +289,45 @@
               <!-- Postion -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Position</label>
-                  <input type="text" class="form-control fs-5" formControlName="position" [ngClass]="{
-                    'is-invalid':
-                    (pf.position.touched || isSubmitted) &&
-                    pf.position.errors?.required
-                  }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.position.touched || isSubmitted) &&
-                      pf.position.errors?.required
-                    ">Position is required</span>
+                  <label class="fs-6 mb-3 required">Position</label>
+                  <input type="text" class="form-control fs-6" formControlName="position" />
                 </div>
               </div>
 
               <!-- Featured Product -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Featured Product ?</label>
-                  <select class="form-select" formControlName="isFeatured" [ngClass]="{
-                    'is-invalid':
-                    (pf.isFeatured.touched || isSubmitted) &&
-                    pf.isFeatured.errors?.required
-                  }">
-                    <option value="Check" disabled>
-                      -- Select an option --
-                    </option>
+                  <label class="fs-6 mb-3 required">Featured Product ?</label>
+                  <select class="form-select" formControlName="isFeatured"
+                    [ngClass]="{'is-invalid': (pf.isFeatured.touched || isSubmitted) && pf.isFeatured.errors?.required}">
+                    <option value="Check" disabled>-- Select an option --</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.isFeatured.touched || isSubmitted) &&
-                      pf.isFeatured.errors?.required
-                    ">Featured is required</span>
                 </div>
               </div>
 
               <!-- Featured Product -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Active Product ?</label>
-                  <select class="form-select" formControlName="isActive">
-                    <option value="Check" disabled>
-                      -- Select an option --
-                    </option>
+                  <label class="fs-6 mb-3 required">Active Product ?</label>
+                  <select class="form-select" formControlName="isActive"
+                    [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
+                    <option value="Check" disabled>-- Select an option --</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.isActive.touched || isSubmitted) &&
-                      pf.isActive.errors?.required
-                    ">Active is required</span>
                 </div>
               </div>
 
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">COD Available ?</label>
+                  <label class="fs-6 mb-3 required">COD Available ?</label>
                   <select class="form-select" formControlName="cod" (change)="checkCod()">
-                    <option value="Check" disabled>
-                      -- Select an option --
-                    </option>
+                    <option value="Check" disabled>-- Select an option --</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.cod.touched || isSubmitted) &&
-                      pf.cod.errors?.required
-                    ">COD is required</span>
                 </div>
               </div>
 
@@ -460,7 +335,7 @@
               <ng-container *ngIf="isCod">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3"> COD Charge </label>
+                    <label class="fs-6 mb-3 required"> COD Charge </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
                       <input type="text" class="form-control" formControlName="codCharge" />
@@ -473,18 +348,12 @@
               <!-- Returnable Product -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Returnable Product ?</label>
+                  <label class="fs-6 mb-3 required">Returnable Product ?</label>
                   <select class="form-select" formControlName="returnable" (change)="checkReturnable()">
-                    <option value="Check" disabled>
-                      -- Select an option --
-                    </option>
+                    <option value="Check" disabled>-- Select an option --</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (pf.returnable.touched || isSubmitted) &&
-                      pf.returnable.errors?.required
-                    ">Returnable is required</span>
                 </div>
               </div>
 
@@ -492,30 +361,47 @@
               <ng-container *ngIf="isReturn">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Return Days</label>
-                    <input type="text" class="form-control fs-5" formControlName="returnDays" />
+                    <label class="fs-6 mb-3 required">Return Days</label>
+                    <input type="text" class="form-control fs-6" formControlName="returnDays" />
                   </div>
                 </div>
               </ng-container>
-
-              <!-- Product Image -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Product Image</label>
-                  <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])"
-                    required>
-                </div>
-                <img id="preview" src="http://localhost:3000/{{productData?.file}}">
-              </div>
-
-
+            </div>
+            <!-- Product Image -->
+            <div class="col-12 col-sm-6">
               <div class="col-12">
-                <button type="submit" class="btn btn-primary fs-5">
-                  Submit
-                </button>
+                <h3 class="form-title required"><span>Media</span></h3>
               </div>
+              <div class="form-group">
+                <div class="image-upload">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="handleInputChange($event)"
+                    onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                    style="height: 100px;" required>
+                  <div class="image-upload-div">
+                    <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                    </div>
+                    <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                        upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                        up to 1
+                        file</span></div>
+                  </div>
+                </div>
+                <div class="uploads uploaded">
+                  <div class="close-icon bg-dark"
+                    onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
+                    <i class="bi bi-x-lg text-white"></i>
+                  </div>
+                  <img id="previewImage" src="{{appRoute.BASE + productData.file}}">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                style="width: 200px; margin-right: 20px;">Cancel</a>
+              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
+                (click)="onSubmit()">Update</button>
             </div>
           </form>
         </div>

@@ -18,6 +18,7 @@ import { HttpInterceptor } from './includes/interceptor/http.interceptor';
 import { RouterModule } from '@angular/router';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
+// import { NgxTextEditorModule } from 'ngx-text-editor';
 import { LayoutModule } from './shared/layout';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvService } from './includes/services/csv.service';
@@ -27,6 +28,7 @@ import { CsvService } from './includes/services/csv.service';
   declarations: [AppComponent],
   imports: [
     DataTablesModule,
+    // NgxTextEditorModule,
     BrowserModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot(),

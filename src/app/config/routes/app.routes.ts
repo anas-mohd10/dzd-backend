@@ -31,6 +31,7 @@ const reviewRoute = "/reviews"
 const vouchersRoute = "/vouchers"
 
 export const appRoutes = {
+  BASE: "http://localhost:3000/",
   DASHBOARD: `${app}${dashboardRoute}`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,

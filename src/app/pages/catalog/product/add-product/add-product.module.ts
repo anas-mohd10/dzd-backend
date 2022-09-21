@@ -5,6 +5,7 @@ import { AddProductComponent } from './add-product.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+// import { NgxTextEditorModule } from 'ngx-text-editor';
 
 @NgModule({
   declarations: [AddProductComponent],
@@ -12,6 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    // NgxTextEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
@@ -26,4 +28,4 @@ import { ToastrModule } from 'ngx-toastr';
     ]),
   ],
 })
-export class AddProductModule {}
+export class AddProductModule { }
