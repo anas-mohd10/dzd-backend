@@ -14,8 +14,7 @@
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
           <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
-              [queryParams]="{ category: slug }">Attributes</a>
+            <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: slug }">Attributes</a>
           </li>
           <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: slug }">
@@ -31,7 +30,7 @@
     <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
-          <form [formGroup]="attributeForm" enctype="multipart/form-data">
+          <form [formGroup]="attributeForm" enctype="multipart/form-data" (keydown.Enter)="$event.preventDefault()">
             <div class="row">
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Attributes Details</span></h5>
@@ -67,7 +66,7 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-6 mb-3 required">Text </label>
-                    <input class="form-control fs-6 mb-10" formControlName="values" (keyup.ArrowRight)="tagInput()" />
+                    <input class="form-control fs-6 mb-10" formControlName="values" (keyup.Enter)="tagInput()" />
                     <div class="tag-inputs col-12">
                       <ng-container *ngFor="let value of textArray">
                         <span class="tag-input bg-primary">{{ value }}

@@ -108,6 +108,8 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     }
     this.ordersService.getOrderFilter(str).subscribe((res: any) => {
       this.ordersData = res?.result
+      console.log(this.ordersData);
+      this.dtTrigger.next();
     })
   }
 

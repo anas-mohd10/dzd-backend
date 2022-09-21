@@ -33,7 +33,6 @@ export class BrandComponent implements OnDestroy, OnInit {
       switch (res?.errorCode) {
         case 0:
           this.brandData = res?.result
-          console.log(this.brandData);
           this.dtTrigger.next();
           break;
       }
