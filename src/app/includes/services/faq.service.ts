@@ -32,7 +32,7 @@ export class FaqService {
   }
 
   updateFaq(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.faqEndpoints.update_faq + "?slug=");
+    const url = this.commonService.getFullUrl(this.faqEndpoints.update_faq + "?slug=" + slug);
     return this.http.put(`${url}`, data)
   }
 }

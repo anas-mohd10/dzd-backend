@@ -1,0 +1,46 @@
+.faq-container {
+  margin: 50px 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.faq-card {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 30px;
+}
+
+.faq-subject {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #868686;
+}
+
+.faq-question {
+  margin: 20px 0 10px 0;
+  font-weight: 600;
+  color: #000000;
+  font-size: 1.2rem;
+}
+
+.faq-answer{
+  font-size: 1.1rem;
+}
+
+.edit-btn{
+  margin: 30px 0 0 0;
+  font-weight: 600;
+}
+
+.faq-container .false{
+  border: 1px solid #9c1313;
+  background: rgba(156, 19, 19, 0.01);
+}
