@@ -29,6 +29,8 @@ const layoutRoute = "/layouts"
 const cartRoute = "/cart"
 const reviewRoute = "/reviews"
 const vouchersRoute = "/vouchers"
+const faqRoute = "/faq"
+const testimonialRoute = "/testimonials"
 
 export const appRoutes = {
   BASE: "http://localhost:3000/",
@@ -154,5 +156,15 @@ export const appRoutes = {
     VOUCHERS_LIST: `${app}${vouchersRoute}`,
     ADD_VOUCHERS_LIST: `${app}${vouchersRoute}/add`,
     UPDATE_VOUCHERS_LIST: `${app}${vouchersRoute}/update`
+  },
+  faq: {
+    FAQ_LIST: `${app}${faqRoute}`,
+    ADD_FAQ: `${app}${faqRoute}/add`,
+    UPDATE_FAQ: `${app}${faqRoute}/update`,
+  },
+  testimonial: {
+    TESTIMONIAL_LIST: `${app}${testimonialRoute}`,
+    ADD_TESTIMONIAL: `${app}${testimonialRoute}/add`,
+    UPDATE_TESTIMONIAL: `${app}${testimonialRoute}/update`
   }
 };

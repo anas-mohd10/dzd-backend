@@ -49,26 +49,26 @@
                   <td>
                     <h2 class="table-avatar fs-6">{{ category?.name }}</h2>
                   </td>
-                  <ng-container *ngIf="category?.rootId">
+                  <ng-container *ngIf="category?.root">
                     <td>
                       <h2 class="table-avatar fs-6">
-                        {{ category?.rootId.name }} > {{ category?.parentId.name }}
+                        {{ category?.root.name }}
                       </h2>
                     </td>
                   </ng-container>
-                  <ng-container *ngIf="category?.parentId">
+                  <ng-container *ngIf="category?.parent">
                     <td>
                       <h2 class="table-avatar fs-6">
-                        {{ category?.parentId.name }}
+                        {{ category?.parent.name }}
                       </h2>
                     </td>
                   </ng-container>
-                  <ng-container *ngIf="!category?.rootId">
+                  <ng-container *ngIf="!category?.root">
                     <td>
                       <h2 class="table-avatar fs-6">-</h2>
                     </td>
                   </ng-container>
-                  <ng-container *ngIf="!category?.parentId">
+                  <ng-container *ngIf="!category?.parent">
                     <td>
                       <h2 class="table-avatar fs-6">-</h2>
                     </td>

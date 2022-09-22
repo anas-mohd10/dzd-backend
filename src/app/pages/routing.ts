@@ -272,6 +272,16 @@ export const Routing: Routes = [
         path: 'reviews',
         loadChildren: () => import('./sales/reviews/reviews.module').then((m) => m.ReviewsModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'faq',
+        loadChildren: () => import('./settings/general/faq/faq.module').then((m) => m.FaqModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'testimonials',
+        loadChildren: () => import('./settings/general/testimonials/testimonials.module').then((m) => m.TestimonialsModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },
