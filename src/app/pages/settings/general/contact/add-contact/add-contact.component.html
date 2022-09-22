@@ -32,47 +32,32 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Name</label>
+                        <label class="fs-6 mb-3 required"> Name</label>
                         <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
                            'is-invalid':
                            (ctf.name.touched || isSubmitted) &&
                            ctf.name.errors?.required
                          }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.name.touched || isSubmitted) &&
-                           ctf.name.errors?.required
-                       ">Name is required
-                        </span>
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Email</label>
+                        <label class="fs-6 mb-3 required"> Email</label>
                         <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
                            'is-invalid':
                            (ctf.email.touched || isSubmitted) &&
                            ctf.email.errors?.required
                          }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.email.touched || isSubmitted) &&
-                           ctf.email.errors?.required
-                       ">Email is required
-                        </span>
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Mobile No.</label>
+                        <label class="fs-6 mb-3 required"> Mobile No.</label>
                         <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
                            'is-invalid':
                            (ctf.mobile.touched || isSubmitted) &&
                            ctf.mobile.errors?.required
                          }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.mobile.touched || isSubmitted) &&
-                           ctf.mobile.errors?.required
-                       ">Mobile is required
-                        </span>
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
@@ -91,17 +76,12 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Address line 1</label>
+                        <label class="fs-6 mb-3 required"> Address line 1</label>
                         <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
                            'is-invalid':
                            (ctf.firstline.touched || isSubmitted) &&
                            ctf.firstline.errors?.required
                          }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.firstline.touched || isSubmitted) &&
-                           ctf.firstline.errors?.required
-                       ">Address line 1 is required
-                        </span>
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
@@ -118,69 +98,45 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> City</label>
+                        <label class="fs-6 mb-3 required"> City</label>
                         <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
                            'is-invalid':
                            (ctf.city.touched || isSubmitted) &&
                            ctf.city.errors?.required
                          }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.city.touched || isSubmitted) &&
-                           ctf.city.errors?.required
-                       ">City is required
-                        </span>
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Pincode</label>
+                        <label class="fs-6 mb-3 required"> Pincode</label>
                         <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
                            'is-invalid':
                            (ctf.pincode.touched || isSubmitted) &&
                            ctf.pincode.errors?.required
                          }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.pincode.touched || isSubmitted) &&
-                           ctf.pincode.errors?.required
-                       ">Pincode is required
-                        </span>
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
                         <label class="fs-6 mb-3"> Latitude</label>
-                        <input type="text" class="form-control fs-6" formControlName="lat" [ngClass]="{
-                           'is-invalid':
-                           (ctf.lat.touched || isSubmitted) &&
-                           ctf.lat.errors?.required
-                         }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.lat.touched || isSubmitted) &&
-                           ctf.lat.errors?.required
-                       ">Latitude is required
-                        </span>
+                        <input type="text" class="form-control fs-6" formControlName="lat" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
                         <label class="fs-6 mb-3"> Longitude</label>
-                        <input type="text" class="form-control fs-6" formControlName="lng" [ngClass]="{
-                           'is-invalid':
-                           (ctf.lng.touched || isSubmitted) &&
-                           ctf.lng.errors?.required
-                         }" />
-                        <span class="text-danger error-msg fs-6" *ngIf="
-                           (ctf.lng.touched || isSubmitted) &&
-                           ctf.lng.errors?.required
-                       ">Longitude is required
-                        </span>
+                        <input type="text" class="form-control fs-6" formControlName="lng" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3">State</label>
+                        <label class="fs-6 mb-3 required">State</label>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                           formControlName="state">
+                           formControlName="state" [ngClass]="{
+                              'is-invalid':
+                              (ctf.state.touched || isSubmitted) &&
+                              ctf.state.errors?.required
+                            }">
                            <option value="" disabled>-- Select an option --</option>
                            <option value="Kerala">Kerala</option>
                            <option value="Karnataka">Karnataka</option>
@@ -192,10 +148,10 @@
                      </div>
                   </div>
                   <div class="col-12">
-                     <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                     style="width: 200px; margin-right: 20px;">
-                     Cancel
-                   </a>
+                     <a routerLink="{{ appRoute.contacts.CONTACTS_LIST}}"
+                        class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                        Cancel
+                     </a>
                      <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                         Submit
                      </button>

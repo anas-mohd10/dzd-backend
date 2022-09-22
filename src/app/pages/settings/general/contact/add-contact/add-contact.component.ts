@@ -42,8 +42,8 @@ export class AddContactComponent implements OnInit {
       area: [''],
       city: ['', Validators.required],
       pincode: ['', Validators.required],
-      lat: ['', Validators.required],
-      lng: ['', Validators.required],
+      lat: [''],
+      lng: [''],
       state: ['', Validators.required],
     });
   }
@@ -105,7 +105,7 @@ export class AddContactComponent implements OnInit {
       }
     })
   }
-  
+
   updateContact() {
   }
 }
