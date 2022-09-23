@@ -31,6 +31,7 @@ const reviewRoute = "/reviews"
 const vouchersRoute = "/vouchers"
 const faqRoute = "/faq"
 const testimonialRoute = "/testimonials"
+const notificationsRoute = "/notifications"
 
 export const appRoutes = {
   BASE: "http://localhost:3000/",
@@ -166,5 +167,10 @@ export const appRoutes = {
     TESTIMONIAL_LIST: `${app}${testimonialRoute}`,
     ADD_TESTIMONIAL: `${app}${testimonialRoute}/add`,
     UPDATE_TESTIMONIAL: `${app}${testimonialRoute}/update`
+  },
+  notification: {
+    NOTIFICATION_LIST: `${app}${notificationsRoute}`,
+    ADD_NOTIFICATION: `${app}${notificationsRoute}/add`,
+    UPDATE_NOTIFICATION: `${app}${notificationsRoute}/update`,
   }
 };

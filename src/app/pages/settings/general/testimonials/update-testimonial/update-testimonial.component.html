@@ -1,1 +1,129 @@
-<p>update-testimonial works!</p>
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Testimonials" : "Add Testimonials" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.testimonial.TESTIMONIAL_LIST }}">Testimonials</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.testimonial.UPDATE_TESTIMONIAL}}" [queryParams]="{slug  : slug}">
+                     {{ editMode ? "Update Testimonials" : "Add Testimonials"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+      <div class="col-sm-12 fs-6 mt-10">
+         <div class="card">
+            <div class="card-body">
+               <form (ngSubmit)="onSubmit()" [formGroup]="testimonialForm">
+                  <div class="row">
+                     <div class="col-12">
+                        <h5 class="form-title fs-4"><span>Testimonial details</span></h5>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required">Name</label>
+                           <input type="text" class="form-control fs-6" formControlName="name"
+                              [ngClass]="{'is-invalid':(tf.name.touched || isSubmitted) && tf.name.errors?.required}" />
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3"> Profession</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="profession">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="Business">Business</option>
+                              <option value="CEO">CEO</option>
+                              <option value="Student">Student</option>
+                              <option value="Engineer">Engineer</option>
+                              <option value="Owner">Owner</option>
+                              <option value="Doctor">Doctor</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Business Name</label>
+                           <input type="text" class="form-control fs-6" formControlName="firmName" />
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required">Place</label>
+                           <input type="text" class="form-control fs-6" formControlName="place"
+                              [ngClass]="{'is-invalid':(tf.place.touched || isSubmitted) && tf.place.errors?.required}" />
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required required">Message</label>
+                           <textarea class=" form-control fs-6" formControlName="message" style="resize: none"
+                              id="featureddescription" rows="3"
+                              [ngClass]="{'is-invalid':(tf.message.touched || isSubmitted) && tf.message.errors?.required}"></textarea>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required">Status</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              formControlName="isActive">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="true">Active</option>
+                              <option value="false">Inactive</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="col-12">
+                           <h3 class="form-title required"><span>Media</span></h3>
+                        </div>
+                        <div class="form-group col-sm-6">
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                 (change)="handleInputChange($event)"
+                                 onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                                 style="height: 100px;" required>
+                              <div class="image-upload-div">
+                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
+                                       alt="" srcset=""></div>
+                                 <div class="right-text d-flex flex-column"><span
+                                       class="right-text-title fs-4 fw-bolder">Click to
+                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
+                                       style="font-weight: 500">Upload
+                                       up to 1
+                                       file</span></div>
+                              </div>
+                           </div>
+                           <div class="uploads uploaded">
+                              <div class="close-icon bg-dark"
+                                 onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
+                                 <i class="bi bi-x-lg text-white"></i>
+                              </div>
+                              <img id="previewImage" src="http://localhost:3000/{{data?.file}}">
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                           style="width: 200px; margin-right: 20px;">
+                           Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                           Update
+                        </button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>

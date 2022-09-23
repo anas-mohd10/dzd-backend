@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { appRoutes } from 'src/app/config/routes/app.routes';
+import { TestimonialService } from 'src/app/includes/services/testimonial.service';
 
 @Component({
   selector: 'app-testimonial-list',
@@ -6,10 +8,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./testimonial-list.component.scss']
 })
 export class TestimonialListComponent implements OnInit {
+  appRoute = appRoutes
+  testimonialsData: any
 
-  constructor() { }
+  constructor(private testimonialService: TestimonialService) { }
 
   ngOnInit(): void {
+    this.getTestimonials()
+  }
+
+  getTestimonials() {
+    this.testimonialService.getTestimonials().subscribe((res: any) => {
+      this.testimonialsData = res?.result
+    })
   }
 
 }

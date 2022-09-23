@@ -282,6 +282,11 @@ export const Routing: Routes = [
         path: 'testimonials',
         loadChildren: () => import('./settings/general/testimonials/testimonials.module').then((m) => m.TestimonialsModule),
         canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'notifications',
+        loadChildren: () => import('./marketing/notifications/notifications.module').then((m) => m.NotificationsModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   },
