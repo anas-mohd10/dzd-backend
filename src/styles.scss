@@ -105,25 +105,75 @@
 //Tag inputs
 .tag-inputs {
   height: auto;
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .tag-input {
+  width: calc(50% - 20px);
+  height: 46px;
   margin: 0 10px 10px 0;
-  padding: 10px 20px;
   border-radius: 50px;
-  color: #ffffff;
+  color: #181818;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.15rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tag-input .tag-name {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  max-width: 85%;
+  border-radius: 8px;
+  background: rgba(21, 112, 210, 0.1);
+  border: 1px solid rgba(21, 112, 210, 0.3);
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
 .bi-x {
+  cursor: pointer;
   color: #ffffff;
   font-size: 1.8rem;
+  background: #e13939;
+  height: 100%;
+  width: 15%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 8px;
+  margin: 0 0 0 8px
+}
+
+.tag-input .bi-trash2 {
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1.8rem;
+  background: #e13939;
+  height: 100%;
+  width: 15%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 8px;
+  margin: 0 0 0 8px
+}
+
+.close-icon i {
+  background: #e13939;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #ffffff;
 }
 
 //Validation text
@@ -149,7 +199,7 @@ label {
   height: 160px;
   width: 160px;
   border-radius: 10px;
-  margin: 30px 0 10px 0;
+  margin: 50px 0;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
@@ -158,10 +208,10 @@ label {
 .uploads .close-icon {
   cursor: pointer;
   position: absolute;
-  right: -30px;
+  right: -60px;
   top: 0;
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
   background: #ffffff;
   border-radius: 10px;
   display: flex;

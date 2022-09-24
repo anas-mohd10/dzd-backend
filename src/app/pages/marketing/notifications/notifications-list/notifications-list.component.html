@@ -1,1 +1,101 @@
-<p>notifications-list works!</p>
+<div class="notification -page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Notifications</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-6" color="primary" style="width: 200px;"
+               routerLink="{{ appRoute.notification.ADD_NOTIFICATION }}" style="width: 200px">
+               Add Notifications
+            </button>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12">
+            <div class="card card-table">
+               <div class="card-body">
+                  <div style="display: none"> {{notificationsData.length}}</div>
+                  <div class="table-responsive">
+                     <table datatable [dtOptions]="dtOptions"
+                        class="datatable table table-borderless table-center table-row-dashed mb-0">
+                        <thead class="thead">
+                           <tr class="fs-7 text-uppercase">
+                              <th class="text-gray-400 col-md-2">Sl No.</th>
+                              <th class="text-gray-400 col-md-2">Title</th>
+                              <th class="text-gray-400 col-md-2">To</th>
+                              <th class="text-gray-400 col-md-2">Type</th>
+                              <th class="text-gray-400 col-md-2">Media</th>
+                              <th class="text-gray-400 col-md-2">scheduled Date</th>
+                              <th class="text-gray-400 col-md-2">scheduled Time</th>
+                              <th class="text-gray-400 col-md-2">Notification Status</th>
+                              <th class="text-gray-400 col-md-2">Status</th>
+                              <th class="text-gray-400 col-md-2">Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let notification of notificationsData; let i = index">
+                              <td>
+                                 <h2 class="table-avatar">{{ i + 1 }}</h2>
+                              </td>
+                              <td>
+                                 <h2 class="table-avatar fs-6">{{ notification?.title }}</h2>
+                              </td>
+                              <td>
+                                 <ng-container *ngIf="notification?.isAllCustomer == true">
+                                    <h2 class="table-avatar fs-6">All active customers</h2>
+                                 </ng-container>
+                                 <ng-container *ngIf="notification?.isAllCustomer == false">
+                                    <h2 class="table-avatar fs-6">{{notification?.customer.length}} customers</h2>
+                                 </ng-container>
+                              </td>
+                              <td>
+                                 <h2 class="table-avatar fs-6">{{ notification?.type }}</h2>
+                              </td>
+                              <td>
+                                 <img class="notification-logo" src="http://localhost:3000/{{notification?.file}}"
+                                    alt="file" />
+                              </td>
+                              <td>
+                                 <h2 class="table-avatar fs-6" *ngIf="notification?.type != 'INSTANT'">{{ notification
+                                    ?.scheduledDate }}</h2>
+                              </td>
+                              <td>
+                                 <h2 class="table-avatar fs-6" *ngIf="notification?.type != 'INSTANT'">{{ notification
+                                    ?.scheduledTime }}</h2>
+                              </td>
+                              <td>
+                                 <h2 class="table-avatar fs-6">{{ notification ?.status }}</h2>
+                              </td>
+                              <td>
+                                 <ng-container *ngIf="notification ?.isActive == true">
+                                    <div class="active-text-view"><span class="active-text">active</span></div>
+                                 </ng-container>
+                                 <ng-container *ngIf="notification ?.isActive == false">
+                                    <div class="inactive-text-view"><span class="inactive-text">inactive</span></div>
+                                 </ng-container>
+                              </td>
+                              <td>
+                                 <a class="fs-6 h-100 cursor-pointer table-avatar text-darker"
+                                    routerLink="{{ appRoute.notification.UPDATE_NOTIFICATION }}"
+                                    [queryParams]="{ slug: notification?.code }">
+                                    <i class="bi bi-pen"></i> Edit
+                                 </a>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>

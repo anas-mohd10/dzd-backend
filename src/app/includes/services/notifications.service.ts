@@ -21,10 +21,13 @@ export class NotificationsService {
     return this.http.get(`${url}`);
   }
 
-  getLayoutBySlug(slug: any) {
+  getNotificationBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification + "?slug=" + slug);
     return this.http.get(`${url}`);
   }
 
-  // updateNotification(slug: any, )
+  updateNotification(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.update_notification + "?slug=" + slug);
+    return this.http.put(`${url}`, data);
+  }
 }
