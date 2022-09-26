@@ -32,10 +32,10 @@
                               <th class="text-gray-400 col-md-2">Sl No.</th>
                               <th class="text-gray-400 col-md-2">Title</th>
                               <th class="text-gray-400 col-md-2">To</th>
-                              <th class="text-gray-400 col-md-2">Type</th>
+                              <th class="text-gray-400 col-md-2">Channel</th>
                               <th class="text-gray-400 col-md-2">Media</th>
-                              <th class="text-gray-400 col-md-2">scheduled Date</th>
-                              <th class="text-gray-400 col-md-2">scheduled Time</th>
+                              <th class="text-gray-400 col-md-2">Date</th>
+                              <th class="text-gray-400 col-md-2">Time</th>
                               <th class="text-gray-400 col-md-2">Notification Status</th>
                               <th class="text-gray-400 col-md-2">Status</th>
                               <th class="text-gray-400 col-md-2">Action</th>
@@ -51,14 +51,14 @@
                               </td>
                               <td>
                                  <ng-container *ngIf="notification?.isAllCustomer == true">
-                                    <h2 class="table-avatar fs-6">All active customers</h2>
+                                    <h2 class="table-avatar fs-6">All</h2>
                                  </ng-container>
                                  <ng-container *ngIf="notification?.isAllCustomer == false">
                                     <h2 class="table-avatar fs-6">{{notification?.customer.length}} customers</h2>
                                  </ng-container>
                               </td>
                               <td>
-                                 <h2 class="table-avatar fs-6">{{ notification?.type }}</h2>
+                                 <h2 class="table-avatar fs-6">{{ notification?.channel }}</h2>
                               </td>
                               <td>
                                  <img class="notification-logo" src="http://localhost:3000/{{notification?.file}}"
@@ -73,7 +73,7 @@
                                     ?.scheduledTime }}</h2>
                               </td>
                               <td>
-                                 <h2 class="table-avatar fs-6">{{ notification ?.status }}</h2>
+                                 <div class="table-avatar fs-6 status-{{notification ?.status}}">{{ (notification ?.status).toLowerCase() }}</div>
                               </td>
                               <td>
                                  <ng-container *ngIf="notification ?.isActive == true">
@@ -84,7 +84,8 @@
                                  </ng-container>
                               </td>
                               <td>
-                                 <a class="fs-6 h-100 cursor-pointer table-avatar text-darker"
+                                 <a *ngIf="notification?.status == 'PENDING'"
+                                    class="fs-6 h-100 cursor-pointer table-avatar text-darker"
                                     routerLink="{{ appRoute.notification.UPDATE_NOTIFICATION }}"
                                     [queryParams]="{ slug: notification?.code }">
                                     <i class="bi bi-pen"></i> Edit

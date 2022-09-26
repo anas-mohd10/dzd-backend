@@ -28,6 +28,7 @@ export class UpdateNotificationsComponent implements OnInit {
   date: any
   type: any
   isScheduled: boolean;
+  image: any;
 
   constructor(
     private notificationsService: NotificationsService,
@@ -66,15 +67,27 @@ export class UpdateNotificationsComponent implements OnInit {
       this.notificationForm.get("channel")?.setValue(res?.result[0].channel)
       this.notificationForm.get("type")?.setValue(res?.result[0].type)
       this.notificationForm.get("isActive")?.setValue(res?.result[0].isActive)
+      this.notificationForm.get("status")?.setValue(res?.result[0].status)
       this.notificationForm.get("isAllCustomer")?.setValue(JSON.stringify(res?.result[0].isAllCustomer))
+      this.image = res?.result[0].file
       let type = res?.result[0].type
       if (type == "SCHEDULED") {
         this.isScheduled = true
       }
-      console.log(new Date(res?.result[0].scheduledDate).toLocaleDateString());
+      if (res?.result[0].isAllCustomer == false) {
+        this.getCustomer = true
+        for (let data of res?.result[0].customer) {
+          this.customers.push({
+            key: data.key,
+            name: data.name,
+            id: data.id,
+          })
+        }
+        this.notificationForm.get("scheduledDate")?.setValue(JSON.stringify(new Date(res?.result[0].scheduledDate).toLocaleDateString()))
+        this.notificationForm.get("scheduledTime")?.setValue(res?.result[0].scheduledTime)
+      } else {
 
-      this.notificationForm.get("scheduledDate")?.setValue(new Date(res?.result[0].scheduledDate).toLocaleDateString())
-      this.notificationForm.get("scheduledTime")?.setValue(res?.result[0].scheduledTime)
+      }
     })
   }
 
@@ -99,7 +112,7 @@ export class UpdateNotificationsComponent implements OnInit {
         let check = this.customers.some((_data: any) => _data.key == event.value)
         if (check == false) {
           this.customers.push({
-            key: event.value,
+            key: Number(event.value),
             name: cust.name,
             id: cust.id
           })
@@ -143,6 +156,7 @@ export class UpdateNotificationsComponent implements OnInit {
       customer: [''],
       isAllCustomer: ['', Validators.required],
       isActive: ['true', Validators.required],
+      status: ['', Validators.required],
     });
   }
 
@@ -183,6 +197,8 @@ export class UpdateNotificationsComponent implements OnInit {
     const formdata = new FormData()
     if (this.filedata != null && this.filedata != undefined) {
       formdata.append('file', this.filedata);
+    } else {
+      formdata.append("file", this.image)
     }
     for (const data of Object.keys(this.notificationForm.value)) {
       if (data != 'customer') {
@@ -190,22 +206,13 @@ export class UpdateNotificationsComponent implements OnInit {
       }
     }
     formdata.append("customer", JSON.stringify(this.customers))
-    if (this.getCustomer == true && this.customers.length != 0) {
-      if (this.invalidDate == false) {
-        this.notificationsService.addNotification(formdata).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error('Something went wrong');
-          } else if (res.errorCode == 0) {
-            this.toastr.success('Notifications added successfully');
-            this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
-          }
-        })
-      } else {
-        this.toastr.error("Invalid scheduled date time")
+    this.notificationsService.updateNotification(this.slug, formdata).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Notifications added successfully');
+        this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
       }
-    } else {
-      this.toastr.error("Minimum one customer required")
-    }
+    })
   }
-
 }
