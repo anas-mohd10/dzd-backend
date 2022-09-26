@@ -287,7 +287,27 @@ export const Routing: Routes = [
         path: 'notifications',
         loadChildren: () => import('./marketing/notifications/notifications.module').then((m) => m.NotificationsModule),
         canActivate: [AuthenticationGuard]
-      }
+      },
+      {
+        path: 'about',
+        loadChildren: () => import('./pages/about/about.module').then((m) => m.AboutModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'help-center',
+        loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCenterModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'privacy-policy',
+        loadChildren: () => import('./pages/privacy-policy/privacy-policy.module').then((m) => m.PrivacyPolicyModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'terms-conditions',
+        loadChildren: () => import('./pages/terms-conditions/terms-conditions.module').then((m) => m.TermsConditionsModule),
+        canActivate: [AuthenticationGuard]
+      },
     ]
   },
   {

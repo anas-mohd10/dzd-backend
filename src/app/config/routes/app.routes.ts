@@ -32,6 +32,10 @@ const vouchersRoute = "/vouchers"
 const faqRoute = "/faq"
 const testimonialRoute = "/testimonials"
 const notificationsRoute = "/notifications"
+const aboutRoute = "/about"
+const helpcenterRoute = "/help-center"
+const privacypolicyRoute = "/privacy-policy"
+const termsconditionsRoute = "/terms-conditions"
 
 export const appRoutes = {
   BASE: "http://localhost:3000/",
@@ -172,5 +176,17 @@ export const appRoutes = {
     NOTIFICATION_LIST: `${app}${notificationsRoute}`,
     ADD_NOTIFICATION: `${app}${notificationsRoute}/add`,
     UPDATE_NOTIFICATION: `${app}${notificationsRoute}/update`,
-  }
+  },
+  about: {
+    ABOUT: `${app}${aboutRoute}`
+  },
+  helpcenter: {
+    HELPCENTER: `${app}${helpcenterRoute}`
+  },
+  privacypolicy: {
+    PRIVACYPOLICY: `${app}${privacypolicyRoute}`
+  },
+  termsconditions: {
+    TERMSCONDITIONS: `${app}${termsconditionsRoute}`
+  },
 };

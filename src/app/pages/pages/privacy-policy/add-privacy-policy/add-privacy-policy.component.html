@@ -1,0 +1,49 @@
+<div class="coupon-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Privacy Policy</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.privacypolicy.PRIVACYPOLICY }}">Privacy Policy</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-10">
+      <div class="col-sm-12 fs-6">
+         <div class="card">
+            <div class="card-body">
+               <div class="about-form-container">
+                  <div class="col-12">
+                     <form [formGroup]="privacypolicyForm">
+                        <div class="form-group">
+                           <textarea class="form-control fs-5 about-textarea" name="" id="" cols="30"
+                              formControlName="description" rows="10"
+                              [ngClass]="{'is-invalid': (pf.description.touched || isSubmitted) && pf.description.errors?.required}"
+                              (click)="showButton()"></textarea>
+                        </div>
+                        <ng-container *ngIf="!isHidden">
+                           <div class="col-12 d-flex justify-content-end">
+                              <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"
+                                 style="width: 200px; margin-right: 20px;">
+                                 Cancel
+                              </a>
+                              <button (click)="onSubmit()" class="btn btn-primary  fs-6"
+                                 style="width: 200px">Update</button>
+                           </div>
+                        </ng-container>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
