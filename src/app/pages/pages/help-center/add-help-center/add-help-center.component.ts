@@ -37,7 +37,9 @@ export class AddHelpCenterComponent implements OnInit {
 
   initForm() {
     this.helpcenterForm = this.formBuilder.group({
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: ['', Validators.required],
     });
   }
 
@@ -63,6 +65,8 @@ export class AddHelpCenterComponent implements OnInit {
       this.len = res?.result.length
       this.slug = res?.result[0].slug
       this.helpcenterForm.get("description")?.setValue(res?.result[0].description)
+      this.helpcenterForm.get("phone")?.setValue(res?.result[0].phone)
+      this.helpcenterForm.get("email")?.setValue(res?.result[0].email)
     })
   }
 

@@ -39,9 +39,9 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  updateCategory(id: any, data: any) {
+  updateCategory(slug: any, data: any) {
     const url = this.commonService.getFullUrl(
-      this.categoryEndpoints.update_category + '/' + id
+      this.categoryEndpoints.update_category + '?slug=' + slug
     );
     return this.http.put(`${url}`, data);
   }

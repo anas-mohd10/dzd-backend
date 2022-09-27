@@ -31,7 +31,7 @@ export class AdminUsersService {
   }
 
   updateAdminUser(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin + "?id=" + slug);
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin + "?slug=" + slug);
     return this.http.put(`${url}`, data)
   }
 }

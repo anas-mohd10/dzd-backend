@@ -34,7 +34,7 @@ export class AddCustomersComponent implements OnInit {
   initForm() {
     this.customersForm = this.formBuilder.group({
       firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      lastname: [''],
       email: ['', Validators.required],
       mobile: ['', Validators.required],
       walletBalance: ['', Validators.required],

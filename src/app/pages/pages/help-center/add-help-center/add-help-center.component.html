@@ -29,6 +29,22 @@
                               [ngClass]="{'is-invalid': (hf.description.touched || isSubmitted) && hf.description.errors?.required}"
                               (click)="showButton()"></textarea>
                         </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label class="fs-6 mb-3 form-title required">Phone</label>
+                              <input type="text" class="form-control fs-6" formControlName="phone"
+                                 [ngClass]="{'is-invalid': (hf.phone.touched || isSubmitted) && hf.phone.errors?.required}"
+                                 (click)="showButton()" />
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label class="fs-6 mb-3 form-title required">Email</label>
+                              <input type="text" class="form-control fs-6" formControlName="email"
+                                 [ngClass]="{'is-invalid': (hf.email.touched || isSubmitted) && hf.email.errors?.required}"
+                                 (click)="showButton()" />
+                           </div>
+                        </div>
                         <ng-container *ngIf="!isHidden">
                            <div class="col-12 d-flex justify-content-end">
                               <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"

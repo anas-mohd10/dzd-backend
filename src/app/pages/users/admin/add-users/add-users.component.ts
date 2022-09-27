@@ -37,7 +37,7 @@ export class AddUsersComponent implements OnInit {
   initForm() {
     this.adminForm = this.formBuilder.group({
       firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      lastname: [''],
       email: ['', Validators.required],
       mobile: ['', Validators.required],
       username: ['', Validators.required],
@@ -58,9 +58,8 @@ export class AddUsersComponent implements OnInit {
     })
   }
 
-  checkEmail() {
-    let email = this.adminForm.get("email")?.value
-    this.adminService.getAdminUserByMail(email).subscribe((res: any) => {
+  checkEmail(event: any) {
+    this.adminService.getAdminUserByMail(event.value).subscribe((res: any) => {
       if (res?.result) {
         this.uniqueEmail = false
         this.toastr.error("Email already exists")

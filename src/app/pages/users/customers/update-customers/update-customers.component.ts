@@ -147,7 +147,6 @@ export class UpdateCustomersComponent implements OnInit {
       isActive: this.customersForm.get("isActive")?.value,
     }
     console.log(this.uniqueEmail);
-
     if (this.uniqueEmail == true) {
       this.customerService.updateCustomer(this.slug, data).subscribe((res: any) => {
         if (res.errorCode != 0) {

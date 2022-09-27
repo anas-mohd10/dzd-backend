@@ -9,7 +9,7 @@ import { collectionEndpoints } from 'src/app/config/endpoints';
 export class CollectionService {
   collectionEndpoints = collectionEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addCollection(data: any) {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.add_collection);
@@ -21,13 +21,13 @@ export class CollectionService {
     return this.http.get(`${url}`);
   }
 
-  getCollectionBySlug(slug: any){
+  getCollectionBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);
   }
 
-  updateCollection(slug: any, data: any){
-    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "/" + slug);
+  updateCollection(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
 }

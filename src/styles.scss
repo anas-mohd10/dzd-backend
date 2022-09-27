@@ -129,8 +129,8 @@
   align-items: center;
   padding: 0 20px;
   max-width: 85%;
-  border-radius: 8px;
-  background: rgba(21, 112, 210, 0.1);
+  border-radius: 6px;
+  background: #c2e3ff;
   border: 1px solid rgba(21, 112, 210, 0.3);
   font-size: 1.1rem;
   font-weight: 600;
@@ -146,8 +146,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  border-radius: 8px;
-  margin: 0 0 0 8px
+  border-radius: 6px;
 }
 
 .tag-input .bi-trash2 {
@@ -160,8 +159,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  border-radius: 8px;
-  margin: 0 0 0 8px
+  border-radius: 6px;
 }
 
 .close-icon i {
@@ -236,9 +234,8 @@ label {
   border-radius: 10px;
   display: flex;
   align-items: center;
-  background: #eaf7ff;
+  background: #e1f3ff;
 }
-
 
 #previewImage,
 #bannerFile,

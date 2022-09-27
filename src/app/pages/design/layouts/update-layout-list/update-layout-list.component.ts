@@ -95,12 +95,12 @@ export class UpdateLayoutListComponent implements OnInit {
       for (let file of res?.result[0].files) {
         this.localData.push({
           id: file.id,
-          product: file.product.name,
+          product: file.product,
           url: file.redirectionURL,
           file: `http://localhost:3000/${file.file}`
         })
       }
-      console.log(this.localData);
+      console.log('localdata',this.localData);
     })
   }
 

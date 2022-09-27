@@ -136,8 +136,9 @@
                         </div>
                         <div class="tag-inputs col-12">
                            <ng-container *ngFor="let category of categoryNames">
-                              <span class="tag-input bg-primary text-white">{{ category }}
-                                 <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
+                              <span class="tag-input">
+                                 <div class="tag-name">{{ category }}</div>
+                                 <i class="bi bi-trash2" (click)="tagCategoryRemove(category)"></i>
                               </span>
                            </ng-container>
                         </div>
@@ -159,8 +160,9 @@
                         </div>
                         <div class="tag-inputs col-12">
                            <ng-container *ngFor="let product of productNames">
-                              <span class="tag-input bg-primary text-white">{{ product }}
-                                 <i class="bi bi-x" (click)="tagProductRemove(product)"></i>
+                              <span class="tag-input">
+                                 <div class="tag-name">{{ product }}</div>
+                                 <i class="bi bi-trash2" (click)="tagProductRemove(product)"></i>
                               </span>
                            </ng-container>
                         </div>
@@ -182,8 +184,9 @@
                         </div>
                         <div class="tag-inputs col-12">
                            <ng-container *ngFor="let collection of collectionNames">
-                              <span class="tag-input bg-primary text-white">{{ collection }}
-                                 <i class="bi bi-x" (click)="tagCollectionRemove(collection)"></i>
+                              <span class="tag-input">
+                                 <div class="tag-name">{{ collection }}</div>
+                                 <i class="bi bi-trash2" (click)="tagCollectionRemove(collection)"></i>
                               </span>
                            </ng-container>
                         </div>

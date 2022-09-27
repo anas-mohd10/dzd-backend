@@ -47,17 +47,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required"> Last Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="lastname" [ngClass]="{
-                      'is-invalid':
-                      (af.lastname.touched || isSubmitted) &&
-                      af.lastname.errors?.required
-                    }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                      (af.lastname.touched || isSubmitted) &&
-                      af.lastname.errors?.required
-                  ">Last name is required
-                  </span>
+                  <label class="fs-6 mb-3 form-title "> Last Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="lastname"  />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -67,7 +58,7 @@
                       'is-invalid':
                       (af.email.touched || isSubmitted) &&
                       af.email.errors?.required
-                    }" (change)="checkEmail()" />
+                    }" (change)="checkEmail($event.target)" />
                   <span class="text-danger error-msg fs-6" *ngIf="
                       (af.email.touched || isSubmitted) &&
                       af.email.errors?.required
