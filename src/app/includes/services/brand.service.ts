@@ -9,25 +9,25 @@ import { brandEndpoints } from '../../config/endpoints';
 export class BrandService {
   brandEndpoints = brandEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addBrand(data: any) {
     const url = this.commonService.getFullUrl(this.brandEndpoints.add_brand);
     return this.http.post(`${url}`, data);
   }
 
-  getBrand(){
+  getBrand() {
     const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand);
     return this.http.get(`${url}`);
   }
 
-  getBrandBySlug(slug: any){
+  getBrandBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_by_slug + "/" + slug);
     return this.http.get(`${url}`);
   }
 
-  updateBrand(slug: any, data: any){
-    const url = this.commonService.getFullUrl(this.brandEndpoints.update_brand + "/" + slug);
+  updateBrand(slug: any, data: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.update_brand + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
 }

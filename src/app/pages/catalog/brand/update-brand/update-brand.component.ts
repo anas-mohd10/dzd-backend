@@ -32,7 +32,7 @@ export class UpdateBrandComponent implements OnInit {
     private router: Router,
     private brandService: BrandService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get bf() {
     return this.brandForm.controls;
@@ -48,9 +48,9 @@ export class UpdateBrandComponent implements OnInit {
 
   initForm() {
     this.brandForm = this.formBuilder.group({
-      name: [''],
-      isActive: [''],
-      isFeatured: [''],
+      name: ['', Validators.required],
+      isActive: ['', Validators.required],
+      isFeatured: ['', Validators.required],
     });
   }
 
@@ -68,9 +68,6 @@ export class UpdateBrandComponent implements OnInit {
   }
 
   handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
     this.fileData = <File>fileInput.target.files[0];
   }
 
@@ -96,7 +93,7 @@ export class UpdateBrandComponent implements OnInit {
       this.addBrand();
     }
   }
-  addBrand() {}
+  addBrand() { }
 
   updateBrand() {
     if (!this.brandForm.valid) {
@@ -108,22 +105,20 @@ export class UpdateBrandComponent implements OnInit {
     } else {
       formData.append('file', this.uploadedImg);
     }
-    
+
     for (const data of Object.keys(this.brandForm.value)) {
       if (this.brandForm.value[data] != '' || null) {
         formData.append(data, this.brandForm.value[data]);
       }
     }
 
-    this.brandService
-      .updateBrand(this.brand, formData)
-      .subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Brand Updated Successfully');
-          this.router.navigate([this.appRoute.brand.BRAND_LIST]);
-        }
-      });
+    this.brandService.updateBrand(this.brand, formData).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Brand Updated Successfully');
+        this.router.navigate([this.appRoute.brand.BRAND_LIST]);
+      }
+    });
   }
 }
