@@ -116,8 +116,9 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let cat of category">
-                    <span class="tag-input bg-primary text-white fs-6 ">{{ cat?.name }}
-                      <i class="bi bi-x" (click)="tagRemove(cat?.name, cat?.id, 'category')"></i>
+                    <span class="tag-input">
+                      <div class="tag-name">{{ cat?.name }}</div>
+                      <i class="bi bi-trash2" (click)="tagRemove(cat?.name, cat?.id, 'category')"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -140,8 +141,9 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let prod of product">
-                    <span class="tag-input bg-primary text-white fs-6">{{ prod?.name }}
-                      <i class="bi bi-x" (click)="tagRemove(prod?.name, prod?.id, 'product')"></i>
+                    <span class="tag-input">
+                      <div class="tag-name">{{ prod?.name }}</div>
+                      <i class="bi bi-trash2" (click)="tagRemove(prod?.name, prod?.id, 'product')"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -165,8 +167,9 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let collec of collection">
-                    <span class="tag-input bg-primary text-white fs-6">{{ collec?.name }}
-                      <i class="bi bi-x" (click)="tagRemove(collec?.name, collec?.id, 'collection')"></i>
+                    <span class="tag-input">
+                      <div class="tag-name">{{ collec?.name }}</div>
+                      <i class="bi bi-trash2" (click)="tagRemove(collec?.name, collec?.id, 'collection')"></i>
                     </span>
                   </ng-container>
                 </div>

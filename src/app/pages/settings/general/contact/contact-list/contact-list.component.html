@@ -24,12 +24,13 @@
       <div style="display: none"> {{contactsData.length}}</div>
       <ng-container *ngFor="let contact of contactsData">
          <div class="col-xl-4 contact-card">
-            <div class="contact-name fs-5 fw-bold">{{contact?.name}}</div>
+            <div class="contact-name fs-5">{{contact?.name}}</div>
             <div class="contact-email fs-6">{{contact?.email}} | {{contact?.mobile}}</div>
             <!-- <br> -->
-            <div class="contact-address-area">{{contact?.address[0]?.firstline}}, {{contact?.address[0]?.area}}</div>
-            <div class="contact-address-city">{{contact?.address[0]?.city}}, {{contact?.address[0]?.state}}</div>
-            <div class="contact-pincode">{{contact?.address[0]?.pincode}}</div>
+            <div class="contact-address-area fs-6">{{contact?.address[0]?.firstline}}, {{contact?.address[0]?.area}}
+            </div>
+            <div class="contact-address-city fs-6">{{contact?.address[0]?.city}}, {{contact?.address[0]?.state}}</div>
+            <div class="contact-pincode fs-6">{{contact?.address[0]?.pincode}}</div>
             <br>
             <div class="edit-btn fs-6">
                <a routerLink="{{ appRoute.contacts.UPDATE_CONTACTS_LIST }}" [queryParams]="{slug: contact?.slug}">Edit

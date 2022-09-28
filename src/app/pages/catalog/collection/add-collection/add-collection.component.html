@@ -39,34 +39,54 @@
                       (cf.name.touched || isSubmitted) &&
                       cf.name.errors?.required
                     }" />
-                    <div class="fs-7 mt-3">A collection name is required and recommended to be unique.</div>
+                  <div class="fs-7 mt-3">A collection name is required and recommended to be unique.</div>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title required">Products</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                    formControlName="products" (change)="tagInput()" [ngClass]="{
-                      'is-invalid':
-                      (cf.products.touched || isSubmitted) &&
-                      cf.products.errors?.required
-                    }">
-                    <option value="example" disabled>
-                      -- Select a product --
-                    </option>
-                    <option *ngFor="let product of productArray" value="{{ product?._id }}">
-                      {{ product?.name }}
-                    </option>
-                  </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
-                    (cf.products.touched || isSubmitted) &&
-                    cf.products.errors?.required
-                  ">Products are required</span>
                 </div>
-                <div class="tag-inputs col-12">
-                  <ng-container *ngFor="let name of productNames">
-                    <span class="tag-input bg-primary">{{ name }}
-                      <i class="bi bi-x" (click)="tagRemove(name)"></i>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bd-example-modal-xl"
+                  style="width: 200px; border-radius: 50px;">
+                  Add Products
+                </button>
+
+                <div class="modal fade bd-example-modal-xl" id="exampleModal" tabindex="-1"
+                  aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel">Add Products</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <ng-container *ngFor="let product of products">
+                          <div class="product-card">
+                            <div class="product-card-checkbox">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{product.key}}"
+                                  (change)="handleProduct($event.target, product.key)" id="flexCheckDefault">
+                              </div>
+                            </div>
+                            <div class="product-card-details">
+                              <div class="product-card-image">
+                                <img src="http://localhost:3000/{{product.file}}" alt="Product"
+                                  style="height: 60px; width: 60px">
+                              </div>
+                              <div class="product-card-name">{{product.name}}</div>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="tag-inputs col-12 mt-10">
+                  <ng-container *ngFor="let product of array">
+                    <span class="tag-input">
+                      <div class="tag-name">{{ product.name }}</div>
+                      <i class="bi bi-x-lg" (click)="removeProduct(product.key)"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -116,8 +136,8 @@
                 </div>
               </div>
               <div class="col-12">
-                <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                  style="width: 200px; margin-right: 20px;">
+                <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}"
+                  class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">

@@ -80,8 +80,9 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let name of rulesName">
-                    <span class="tag-input bg-primary">{{ name }}
-                      <i class="bi bi-x" (click)="tagRemove(name)"></i>
+                    <span class="tag-input">
+                      <div class="tag-name">{{ name }}</div>
+                      <i class="bi bi-trash2" (click)="tagRemove(name)"></i>
                     </span>
                   </ng-container>
                 </div>

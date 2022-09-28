@@ -18,20 +18,15 @@ export class AddCollectionComponent implements OnInit {
   task = PageTasks.ADD;
   productValue: any;
   editMode = false;
-  fileData: any;
+  filedata: any;
   appRoute = appRoutes;
-  collectionData: any;
-  collection: any;
-  collectionName: any;
-  isSubmitted: boolean;
-  selected: any;
-  filtered: any;
-  productData: any;
+
   products: any = [];
-  productFlag: boolean = false;
-  productArray: any = [];
-  valueArray: any = [];
-  productNames: any = [];
+  array: any = []
+
+  isSubmitted: boolean;
+  isAllSelected: Boolean = false
+  isChecked: Boolean = false
 
   constructor(
     private collectionService: CollectionService,
@@ -52,7 +47,6 @@ export class AddCollectionComponent implements OnInit {
   ngOnInit(): void {
     this.managePage();
     this.initForm();
-    this.getCollection();
     this.getProduct();
   }
 
@@ -83,60 +77,33 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
-  getCollection() {
-    this.collectionService.getCollection().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.collectionData = res?.result;
-          this.collectionName = this.collectionData?.name;
-          break;
-      }
-    });
-  }
-
   getProduct() {
     this.productService.getProduct().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.products = res?.result;
-          this.productArray = this.products;
-          this.productFlag = true;
+          for (let product of res?.result) {
+            this.products.push({
+              key: this.products.length,
+              name: product.name,
+              file: product.file,
+              id: product._id
+            })
+          }
           break;
       }
     });
   }
 
-  tagInput() {
-    if (!this.valueArray.includes(this.collectionForm.get("products")?.value)) {
-      this.valueArray.push(this.collectionForm.get("products")?.value)
-      this.getProductNames(this.collectionForm.get("products")?.value)
-    } else {
-      this.toastr.info('Product Already Added');
-    }
-    this.collectionForm.get("products")?.setValue('')
+  handleProduct(e: any, key: any) {
+    let products = [...this.products]
+    products = products.filter((_data) => _data.key == key)
+    this.array.push(products[0])
   }
 
-  getProductNames(value: any) {
-    for (let i = 0; i < this.productArray.length; i++) {
-      if (this.productArray[i]._id == value) {
-        this.productNames.push(this.productArray[i].name)
-      }
-    }
-  }
-
-  tagRemove(value: any) {
-    if (this.productNames.includes(value)) {
-      this.productNames.pop(value)
-      this.getProductId(value)
-    }
-  }
-
-  getProductId(value: any) {
-    for (let i = 0; i < this.productArray.length; i++) {
-      if (this.productArray[i].name == value) {
-        this.valueArray.pop(this.productArray[i]._id)
-      }
-    }
+  removeProduct(key: any) {
+    let products = [...this.array]
+    products = products.filter((_data) => _data.key != key)
+    this.array = [...products]
   }
 
   onSubmit() {
@@ -149,23 +116,18 @@ export class AddCollectionComponent implements OnInit {
   }
 
   handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
+    this.filedata = <File>fileInput.target.files[0];
   }
 
   addCollection() {
-
-    console.log(this.collectionForm.value);
     if (!this.collectionForm.valid) {
       console.error("error");
       return;
     }
 
     const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
+    if (this.filedata != null && this.filedata != undefined) {
+      formData.append('file', this.filedata);
     }
 
     for (const data of Object.keys(this.collectionForm.value)) {
@@ -173,9 +135,7 @@ export class AddCollectionComponent implements OnInit {
         formData.append(data, this.collectionForm.value[data]);
       }
     }
-
-    formData.append("products", this.valueArray);
-
+    // formData.append("products", this.valueArray);
     this.collectionService.addCollection(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');

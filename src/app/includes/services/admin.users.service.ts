@@ -24,6 +24,7 @@ export class AdminUsersService {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_count + "?email=" + email);
     return this.http.get(`${url}`)
   }
+  
 
   addAdminUsers(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.register_admin);
@@ -31,7 +32,7 @@ export class AdminUsersService {
   }
 
   updateAdminUser(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin + "?slug=" + slug);
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin + "?slug =" + slug);
     return this.http.put(`${url}`, data)
   }
 }

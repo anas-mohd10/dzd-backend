@@ -9,7 +9,7 @@ import { productEndpoints } from '../../config/endpoints';
 export class ProductService {
   productEndpoints = productEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addProduct(data: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.add_product);
@@ -37,7 +37,7 @@ export class ProductService {
   }
 
   updateProduct(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.update_product + "/" + slug);
+    const url = this.commonService.getFullUrl(this.productEndpoints.update_product + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
 }

@@ -110,17 +110,19 @@
 }
 
 .tag-input {
-  width: calc(50% - 20px);
+  width: calc(33% - 20px);
   height: 46px;
   margin: 0 10px 10px 0;
-  border-radius: 50px;
-  color: #181818;
+  border-radius: 10px;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 1rem;
   font-weight: 600;
+  padding: 5px;
 }
+
 
 .tag-input .tag-name {
   width: 85%;
@@ -130,23 +132,38 @@
   padding: 0 20px;
   max-width: 85%;
   border-radius: 6px;
-  background: #c2e3ff;
-  border: 1px solid rgba(21, 112, 210, 0.3);
   font-size: 1.1rem;
   font-weight: 600;
 }
 
-.bi-x {
+.tag-input .bi-x-lg {
   cursor: pointer;
   color: #ffffff;
-  font-size: 1.8rem;
-  background: #e13939;
+  font-size: 1.2rem;
   height: 100%;
   width: 15%;
   align-items: center;
   justify-content: center;
   display: flex;
-  border-radius: 6px;
+  border-radius: 50px;
+}
+
+.tag-input:nth-child(n) {
+  background: #1681bf;
+}
+
+.tag-input:nth-child(n):hover {
+  box-shadow: 0 0 1px 4px #0d5077;
+  background: #1681bf;
+}
+
+.tag-input:nth-child(2n+1) {
+  background: #3f8e5f;
+}
+
+.tag-input:nth-child(2n+1):hover {
+  box-shadow: 0 0 1px 4px #0a6425;
+  background: #3f8e5f;
 }
 
 .tag-input .bi-trash2 {
@@ -155,11 +172,11 @@
   font-size: 1.8rem;
   background: #e13939;
   height: 100%;
-  width: 15%;
+  width: 18%;
   align-items: center;
   justify-content: center;
   display: flex;
-  border-radius: 6px;
+  border-radius: 50px;
 }
 
 .close-icon i {

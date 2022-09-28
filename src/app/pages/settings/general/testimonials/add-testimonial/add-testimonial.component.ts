@@ -35,7 +35,7 @@ export class AddTestimonialComponent implements OnInit {
     this.testimonialForm = this.formBuilder.group({
       name: ['', Validators.required],
       profession: [''],
-      firmName: [''],
+      business: [''],
       file: [''],
       place: ['', Validators.required],
       message: ['', Validators.required],
