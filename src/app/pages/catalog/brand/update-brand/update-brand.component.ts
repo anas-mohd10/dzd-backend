@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-brand',
@@ -17,14 +18,14 @@ export class UpdateBrandComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  params: any;
-  fileData: File;
-  status: boolean;
+  filedata: File;
   brand: any;
   brandData: any;
-  active: boolean = false;
-  featured: boolean = false;
-  uploadedImg: any;
+  uploadedimg: any;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  loadImage: boolean;
+  filename: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -67,16 +68,41 @@ export class UpdateBrandComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) {
-    this.fileData = <File>fileInput.target.files[0];
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
 
   getBrand() {
     this.brandService.getBrandBySlug(this.brand).subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
           this.brandData = res?.result[0];
-          this.uploadedImg = this.brandData?.file;
+          this.uploadedimg = this.brandData?.file;
           this.brandForm.get('name')?.setValue(this.brandData.name);
           this.brandForm.get('isActive')?.setValue(this.brandData.isActive);
           this.brandForm.get('isFeatured')?.setValue(this.brandData.isFeatured);
@@ -99,20 +125,19 @@ export class UpdateBrandComponent implements OnInit {
     if (!this.brandForm.valid) {
       return;
     }
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    } else {
-      formData.append('file', this.uploadedImg);
+    const data = {
+      name: this.brandForm.get("name")?.value,
+      isActive: this.brandForm.get("isActive")?.value,
+      isfeatured: this.brandForm.get("isFeatured")?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      file: ''
+    }
+    if (this.uploadedimg != '') {
+      data.file = this.uploadedimg
     }
 
-    for (const data of Object.keys(this.brandForm.value)) {
-      if (this.brandForm.value[data] != '' || null) {
-        formData.append(data, this.brandForm.value[data]);
-      }
-    }
-
-    this.brandService.updateBrand(this.brand, formData).subscribe((res: any) => {
+    this.brandService.updateBrand(this.brand, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

@@ -26,7 +26,7 @@
     <div class="col-sm-12 fs-6">
       <div class="card" ngForm>
         <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm">
+          <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm" (keydown.Enter)="$event.preventDefault()">
             <div class="row">
               <div class="col-12">
                 <h3 class="form-title"><span>Collection Details</span></h3>
@@ -60,22 +60,46 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
+                        <div class="total-products mb-5">Showing {{products.length}} products</div>
+                        <div class="search-bar">
+                          <input class="form-control fs-6" type="text" placeholder="Search for product here..."
+                            (change)="searchValue($event.target)">
+                        </div>
                         <ng-container *ngFor="let product of products">
-                          <div class="product-card">
-                            <div class="product-card-checkbox">
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="{{product.key}}"
-                                  (change)="handleProduct($event.target, product.key)" id="flexCheckDefault">
+                          <ng-container *ngIf="product.selected == true">
+                            <div class="product-card">
+                              <div class="product-card-checkbox">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="{{product.key}}"
+                                    (change)="handleProduct($event.target, product.key)" id="flexCheckDefault" checked>
+                                </div>
+                              </div>
+                              <div class="product-card-details">
+                                <div class="product-card-image">
+                                  <img src="http://localhost:3000/{{product.file}}" alt="Product"
+                                    style="height: 60px; width: 60px">
+                                </div>
+                                <div class="product-card-name">{{product.name}}</div>
                               </div>
                             </div>
-                            <div class="product-card-details">
-                              <div class="product-card-image">
-                                <img src="http://localhost:3000/{{product.file}}" alt="Product"
-                                  style="height: 60px; width: 60px">
+                          </ng-container>
+                          <ng-container *ngIf="product.selected == false">
+                            <div class="product-card">
+                              <div class="product-card-checkbox">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="{{product.key}}"
+                                    (change)="handleProduct($event.target, product.key)" id="flexCheckDefault">
+                                </div>
                               </div>
-                              <div class="product-card-name">{{product.name}}</div>
+                              <div class="product-card-details">
+                                <div class="product-card-image">
+                                  <img src="http://localhost:3000/{{product.file}}" alt="Product"
+                                    style="height: 60px; width: 60px">
+                                </div>
+                                <div class="product-card-name">{{product.name}}</div>
+                              </div>
                             </div>
-                          </div>
+                          </ng-container>
                         </ng-container>
                       </div>
                     </div>
@@ -84,10 +108,11 @@
 
                 <div class="tag-inputs col-12 mt-10">
                   <ng-container *ngFor="let product of array">
-                    <span class="tag-input">
-                      <div class="tag-name">{{ product.name }}</div>
-                      <i class="bi bi-x-lg" (click)="removeProduct(product.key)"></i>
-                    </span>
+                    <ng-container *ngIf="product.selected == true">
+                      <span class="tag-input">
+                        <div class="tag-name">{{ product.name }}</div>
+                      </span>
+                    </ng-container>
                   </ng-container>
                 </div>
               </div>
@@ -130,10 +155,25 @@
                           file</span></div>
                     </div>
                   </div>
-                  <div class="uploads uploaded">
-                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
-                  </div>
                 </div>
+                <ng-container *ngIf=" loadImage">
+                  <div class="col-12 preview-section">
+                    <div class="crop-image col-sm-6">
+                      <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                        [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()">
+                      </image-cropper>
+                    </div>
+                    <div class="uploads uploaded col-sm-6">
+                      <div class="close-icon bg-dark">
+                        <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                      </div>
+                      <img class="preview-img" id="previewImage" [src]="croppedImage">
+                    </div>
+                  </div>
+                </ng-container>
               </div>
               <div class="col-12">
                 <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}"

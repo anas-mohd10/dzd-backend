@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-collection',
@@ -22,13 +23,20 @@ export class UpdateCollectionComponent implements OnInit {
   collectionData: any;
   collection: any;
   collectionName: any;
-  products: any;
+  products: any = [];
   valueArray: any = [];
   productArray: any = [];
   productNames: any = [];
   productValues: any = [];
   isSubmitted: boolean;
-  uploadedImg: any;
+  uploadedimg: any;
+  array: any = [];
+  product: any = [];
+  filedata: File;
+  filename: string;
+  imageChangedEvent: any;
+  loadImage: boolean;
+  croppedImage: any;
 
   constructor(
     private collectionService: CollectionService,
@@ -43,7 +51,6 @@ export class UpdateCollectionComponent implements OnInit {
     this.managePage();
     this.initForm();
     this.collection = this.route.snapshot.queryParams.collection || '';
-    this.getCollection();
     this.getProduct();
   }
 
@@ -54,6 +61,10 @@ export class UpdateCollectionComponent implements OnInit {
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
     });
+  }
+
+  get cf() {
+    return this.collectionForm.controls;
   }
 
   managePage() {
@@ -73,15 +84,19 @@ export class UpdateCollectionComponent implements OnInit {
     this.productService.getProduct().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.products = res?.result;
-          this.productArray = this.products;
-          for (let i = 0; i < this.products.length; i++) {
-            this.collectionForm
-              .get('products')
-              ?.setValue(this.products[i].name);
+          for (let product of res?.result) {
+            this.array.push({
+              key: this.array.length,
+              id: product._id,
+              name: product.name.toLowerCase(),
+              file: product.file,
+              selected: false
+            })
           }
           break;
       }
+      this.getCollection()
+      this.products = [...this.array]
     });
   }
 
@@ -90,57 +105,101 @@ export class UpdateCollectionComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.collectionData = res?.result[0];
-          this.uploadedImg = this.collectionData?.file
+          this.uploadedimg = this.collectionData?.file
           this.collectionForm.get('name')?.setValue(this.collectionData?.name);
           this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
           this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
-          for (let product of this.collectionData?.products) {
-            this.valueArray.push(product._id)
-            this.productNames.push(product.name)
+          for (let prod of res?.result[0].products) {
+            this.product.push({
+              key: prod.key,
+              id: prod.id?._id,
+              name: prod.id?.name.toLowerCase(),
+              file: prod.id?.file,
+              selected: true
+            })
           }
           break;
       }
+      this.checkProduct()
     });
   }
 
-  tagInput() {
-    if (!this.valueArray.includes(this.collectionForm.get('products')?.value)) {
-      this.valueArray.push(this.collectionForm.get('products')?.value);
-      this.getProductNames(this.collectionForm.get('products')?.value);
+  checkProduct() {
+    for (let prod of this.product) {
+      for (let arr of this.products) {
+        if (arr.id == prod.id) {
+          if (arr.selected != true) {
+            arr.selected = true
+          }
+        }
+      }
+    }
+  }
+
+  //Add and remove tag input product
+  handleProduct(e: any, key: any) {
+    for (let data of this.array) {
+      if (e.checked == true) {
+        if (data.key == key) {
+          data.selected = true
+        }
+      } else {
+        if (data.key == key) {
+          data.selected = false
+        }
+      }
+    }
+  }
+
+  //Custom search
+  searchValue(e: any) {
+    this.products = [...this.array]
+    let key = e.value.toLowerCase()
+    let result = []
+    for (let prod of this.products) {
+      if (prod.name.includes(key)) {
+        result.push({
+          key: prod.key,
+          id: prod.id,
+          name: prod.name,
+          file: prod.file,
+          selected: prod.selected
+        })
+      }
+    }
+    if (result.length > 0) {
+      this.products = [...result]
     } else {
-      this.toastr.info('Product Already Added');
-    }
-    this.collectionForm.get('products')?.setValue('');
-  }
-
-  getProductNames(value: any) {
-    for (let i = 0; i < this.productArray.length; i++) {
-      if (this.productArray[i]._id == value) {
-        this.productNames.push(this.productArray[i].name);
-      }
+      this.products = []
     }
   }
 
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
 
-  tagRemove(value: any) {
-    if (this.productNames.includes(value)) {
-      this.productNames.pop(value)
-      this.getProductId(value)
-    }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
   }
 
-  getProductId(value: any) {
-    for (let i = 0; i < this.productArray.length; i++) {
-      if (this.productArray[i].name == value) {
-        this.valueArray.pop(this.productArray[i]._id)
-      }
-    }
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -159,24 +218,26 @@ export class UpdateCollectionComponent implements OnInit {
     if (!this.collectionForm.valid) {
       return;
     }
-
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    } else {
-      formData.append('file', this.uploadedImg)
-    }
-
-    for (const data of Object.keys(this.collectionForm.value)) {
-      if (data != 'products') {
-        formData.append(data, this.collectionForm.value[data]);
+    if (this.array.length != 0) {
+      for (let i = 0; i < this.array.length; i++) {
+        if (this.array[i].selected == false) {
+          this.array.splice(i, 1)
+        }
       }
     }
-
-    formData.append("products", this.valueArray);
-
-    this.collectionService.updateCollection(this.collection, formData).subscribe((res: any) => {
-      console.log(res)
+    let data = {
+      name: this.collectionForm.get('name')?.value,
+      isFeatured: this.collectionForm.get('isFeatured')?.value,
+      isActive: this.collectionForm.get('isActive')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      products: this.array,
+      file: ''
+    }
+    if (this.uploadedimg != '') {
+      data.file = this.uploadedimg
+    }
+    this.collectionService.updateCollection(this.collection, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

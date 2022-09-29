@@ -52,6 +52,7 @@
     "ng-multiselect-dropdown": "^0.3.8",
     "ng-select2": "^1.4.1",
     "ngx-clipboard": "^14.0.1",
+    "ngx-image-cropper": "^5.0.0",
     "ngx-tags-input-box": "^0.1.5",
     "ngx-text-editor": "^3.3.0",
     "ngx-toastr": "^14.3.0",

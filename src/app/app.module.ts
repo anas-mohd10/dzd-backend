@@ -18,6 +18,7 @@ import { HttpInterceptor } from './includes/interceptor/http.interceptor';
 import { RouterModule } from '@angular/router';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
+import { ImageCropperModule } from 'ngx-image-cropper';
 // import { NgxTextEditorModule } from 'ngx-text-editor';
 import { LayoutModule } from './shared/layout';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,7 +44,8 @@ import { CsvService } from './includes/services/csv.service';
     LayoutModule,
     // FormBuilder,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ImageCropperModule
   ],
   exports: [
     RouterModule,

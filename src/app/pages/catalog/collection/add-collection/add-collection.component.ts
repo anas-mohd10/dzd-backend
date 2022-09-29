@@ -6,7 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-collection',
@@ -22,11 +22,17 @@ export class AddCollectionComponent implements OnInit {
   appRoute = appRoutes;
 
   products: any = [];
-  array: any = []
+  search: any = []
+  array: any = [];
+  productdata: any = [];
 
   isSubmitted: boolean;
   isAllSelected: Boolean = false
   isChecked: Boolean = false
+  croppedImage: any = '';
+  imageChangedEvent: any;
+  filename: any;
+  loadImage: boolean;
 
   constructor(
     private collectionService: CollectionService,
@@ -84,26 +90,75 @@ export class AddCollectionComponent implements OnInit {
           for (let product of res?.result) {
             this.products.push({
               key: this.products.length,
-              name: product.name,
+              name: product.name.toLowerCase(),
               file: product.file,
-              id: product._id
+              id: product._id,
+              selected: false
             })
           }
           break;
       }
+      this.array = [...this.products]
     });
   }
 
+  //Add and remove tag input product
   handleProduct(e: any, key: any) {
-    let products = [...this.products]
-    products = products.filter((_data) => _data.key == key)
-    this.array.push(products[0])
+    for (let data of this.array) {
+      if (e.checked == true) {
+        if (data.key == key) {
+          data.selected = true
+        }
+      } else {
+        if (data.key == key) {
+          data.selected = false
+        }
+      }
+    }
   }
 
-  removeProduct(key: any) {
-    let products = [...this.array]
-    products = products.filter((_data) => _data.key != key)
-    this.array = [...products]
+  //Custom search
+  searchValue(e: any) {
+    this.products = [...this.array]
+    let key = e.value.toLowerCase()
+    let result = []
+    for (let prod of this.products) {
+      if (prod.name.includes(key)) {
+        result.push({
+          key: prod.key,
+          id: prod.id,
+          name: prod.name,
+          file: prod.file,
+          selected: prod.selected
+        })
+      }
+    }
+    if (result.length > 0) {
+      this.products = [...result]
+    } else {
+      this.products = []
+    }
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -115,8 +170,11 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) {
-    this.filedata = <File>fileInput.target.files[0];
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
 
   addCollection() {
@@ -124,23 +182,26 @@ export class AddCollectionComponent implements OnInit {
       console.error("error");
       return;
     }
-
-    const formData = new FormData();
-    if (this.filedata != null && this.filedata != undefined) {
-      formData.append('file', this.filedata);
-    }
-
-    for (const data of Object.keys(this.collectionForm.value)) {
-      if (data != 'products') {
-        formData.append(data, this.collectionForm.value[data]);
+    if (this.array.length != 0) {
+      for (let i = 0; i < this.array.length; i++) {
+        if (this.array[i].selected == false) {
+          this.array.splice(i, 1)
+        }
       }
     }
-    // formData.append("products", this.valueArray);
-    this.collectionService.addCollection(formData).subscribe((res: any) => {
+    let data = {
+      name: this.collectionForm.get('name')?.value,
+      isFeatured: this.collectionForm.get('isFeatured')?.value,
+      isActive: this.collectionForm.get('isActive')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      products: this.array
+    }
+    this.collectionService.addCollection(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Collection Added Successfully');
+        this.toastr.success('Collection added successfully');
         this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
       }
     });

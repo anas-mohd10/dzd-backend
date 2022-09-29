@@ -1,5 +1,4 @@
 <div class="content container-fluid">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
@@ -22,7 +21,6 @@
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
   <div class="row mt-10">
     <div class="col-sm-12 fs-6">
       <div class="card">
@@ -84,15 +82,26 @@
                           file</span></div>
                     </div>
                   </div>
-                  <div class="uploads uploaded">
-                    <div class="close-icon bg-dark"
-                      onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
-                      <i class="bi bi-x-lg text-white"></i>
-                    </div>
-                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
-                  </div>
                 </div>
               </div>
+              <ng-container *ngIf=" loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon bg-dark">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12">
                 <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">

@@ -2,21 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AddCollectionComponent } from './add-collection.component';
-import { DataTablesModule } from 'angular-datatables';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelect2Module } from 'ng-select2';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [AddCollectionComponent],
   imports: [
     CommonModule,
-    DataTablesModule,
-    ReactiveFormsModule,
     ToastrModule,
     FormsModule,
+    ReactiveFormsModule,
+    ImageCropperModule,
     NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -32,4 +31,4 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     ]),
   ],
 })
-export class AddCollectionModule {}
+export class AddCollectionModule { }

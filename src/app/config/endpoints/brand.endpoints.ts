@@ -1,5 +1,5 @@
 export const brandEndpoints = {
-    add_brand: '/upload-brand',
+    add_brand: '/add-brand',
     get_brand: '/brands',
     get_active_brand: '/active-brands',
     get_brand_by_slug: '/brand',

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-brand',
@@ -17,22 +18,17 @@ export class AddBrandComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
 
-  validationMessages = {
-    name: [
-      {
-        type: 'required',
-        message: 'Brand name is required',
-      },
-    ],
-  };
-
   isSubmitted = false;
   params: any;
-  fileData: File;
+  filedata: File;
   status: boolean;
   imageArray: any;
   previewURL: any;
   uploadedImg: boolean = false;
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  filename: any
+  loadImage: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,9 +42,11 @@ export class AddBrandComponent implements OnInit {
     return this.brandForm.controls;
   }
 
-  handleInputChange(fileInput: any) {
-    this.fileData = <File>fileInput.target.files[0];
-    this.uploadedImg = true;
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
 
   ngOnInit(): void {
@@ -91,6 +89,27 @@ export class AddBrandComponent implements OnInit {
 
   handleCheckBox() { }
 
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
   //Update exsisting brand
   updateBrand() { }
 
@@ -99,20 +118,18 @@ export class AddBrandComponent implements OnInit {
     if (!this.brandForm.valid) {
       return;
     }
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
+    const data = {
+      name: this.brandForm.get("name")?.value,
+      isActive: this.brandForm.get("isActive")?.value,
+      isfeatured: this.brandForm.get("isFeatured")?.value,
+      filestring: this.croppedImage,
+      filename: this.filename
     }
-
-    for (const data of Object.keys(this.brandForm.value)) {
-      formData.append(data, this.brandForm.value[data]);
-    }
-
-    this.BrandService.addBrand(formData).subscribe((res: any) => {
+    this.BrandService.addBrand(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Brand Added Successfully');
+        this.toastr.success('Brand added successfully');
         this.router.navigate([this.appRoute.brand.BRAND_LIST]);
       }
     });

@@ -5,6 +5,7 @@ import { UpdateCollectionComponent } from './update-collection.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [UpdateCollectionComponent],
@@ -13,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
     DataTablesModule,
     ReactiveFormsModule,
     ToastrModule,
+    ImageCropperModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
@@ -27,4 +29,4 @@ import { ToastrModule } from 'ngx-toastr';
     ]),
   ],
 })
-export class UpdateCollectionModule {}
+export class UpdateCollectionModule { }

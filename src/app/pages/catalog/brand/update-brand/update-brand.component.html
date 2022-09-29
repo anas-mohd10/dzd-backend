@@ -1,5 +1,4 @@
 <div class="content container-fluid">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
@@ -21,8 +20,6 @@
       </div>
     </div>
   </div>
-  <!-- Page Header -->
-  <!-- Page Body -->
   <div class="row mt-10">
     <div class="col-sm-12 fs-6">
       <div class="card">
@@ -35,27 +32,32 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="required fs-6 mb-3">Brand Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" />
+                  <input type="text" class="form-control fs-6" formControlName="name" placeholder="Brand name"
+                    [ngClass]="{
+                      'is-invalid':
+                      (bf.name.touched || isSubmitted) &&
+                      bf.name.errors?.required
+                    }" />
                   <div class="fs-7 mt-3">A brand name is required and recommended to be unique.</div>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Status</label>
+                  <label class="fs-6 mb-3 required">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isActive">
-                    <option value="true">Active</option>
                     <option value="false">Inactive</option>
+                    <option value="true">Active</option>
                   </select>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Featured Brand ?</label>
+                  <label class="fs-6 mb-3 required">Featured Brand ?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
+                    <option value="false" selected>No</option>
                     <option value="true">Yes</option>
-                    <option value="false">No</option>
                   </select>
                 </div>
               </div>
@@ -64,8 +66,8 @@
                 <div class="col-12">
                   <h3 class="form-title required"><span>Media</span></h3>
                 </div>
-                <div class="form-group">
-                  <div class="image-upload">
+                <div class="form-group col-12">
+                  <div class="image-upload col-sm-6">
                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
                       (change)="handleInputChange($event)"
                       onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
@@ -73,25 +75,41 @@
                     <div class="image-upload-div">
                       <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
                           srcset=""></div>
-                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                          up to 1
-                          file</span></div>
+                      <div class="right-text d-flex flex-column">
+                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                        <span class="right-text-note fs-7 text-gray-400">Upload up to 1 file</span>
+                      </div>
                     </div>
                   </div>
-                  <div class="uploads uploaded">
-                    <img id="previewImage" src="http://localhost:3000/{{ brandData.file }}">
+                  <div class="uploaded-image col-sm-6 mt-5">
+                    <img src="http://localhost:3000/{{uploadedimg}}" alt="" style="width: 150px; height: 150px">
                   </div>
                 </div>
               </div>
+              <ng-container *ngIf=" loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon bg-dark">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12">
                 <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                  Update
-                </button>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">update</button>
               </div>
             </div>
           </form>
@@ -99,5 +117,4 @@
       </div>
     </div>
   </div>
-  <!-- Page Body -->
 </div>
