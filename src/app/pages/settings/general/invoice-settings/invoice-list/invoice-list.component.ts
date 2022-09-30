@@ -63,7 +63,6 @@ export class InvoiceListComponent implements OnInit {
   getInvoice() {
     this.invoiceSettingsService.getInvoiceSettings().subscribe((res: any) => {
       this.invoiceSettingsData = res?.result
-      console.log(this.invoiceSettingsData);
       let isDataLem = this.invoiceSettingsData.length
       if (this.invoiceSettingsData.length > 0) {
         this.currentData = {
@@ -101,10 +100,20 @@ export class InvoiceListComponent implements OnInit {
       code: this.invoiceSettingsForm.get("code")?.value,
       startingRange: this.invoiceSettingsForm.get("startingRange")?.value
     }
-
-    if (this.currentData["code"] == this.invoiceSettingsForm.get("code")?.value
-      && this.currentData["startingRange"] == this.invoiceSettingsForm.get("startingRange")?.value) {
-      this.toastr.info('Make any changes');
+    if (this.currentData) {
+      if (this.currentData["code"] == this.invoiceSettingsForm.get("code")?.value
+        && this.currentData["startingRange"] == this.invoiceSettingsForm.get("startingRange")?.value) {
+        this.toastr.info('Make any changes');
+      } else {
+        this.invoiceSettingsService.addInvoiceSettings(data).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error('Something went wrong');
+          } else if (res.errorCode == 0) {
+            this.toastr.success('Invoice added successfully');
+            window.open(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST, '_self')
+          }
+        })
+      }
     } else {
       this.invoiceSettingsService.addInvoiceSettings(data).subscribe((res: any) => {
         if (res.errorCode != 0) {

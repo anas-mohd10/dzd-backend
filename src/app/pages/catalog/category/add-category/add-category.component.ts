@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -23,6 +24,10 @@ export class AddCategoryComponent implements OnInit {
   splitCategory: any;
   root: any = '';
   parent: any = '';
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  imageChangedEvent: Event | undefined;
+  filename: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,7 +52,7 @@ export class AddCategoryComponent implements OnInit {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       file: [''],
-      root: ['false', Validators.required],
+      isRoot: ['false', Validators.required],
       parent: [],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
@@ -91,10 +96,6 @@ export class AddCategoryComponent implements OnInit {
     });
   }
 
-  handleInputChange(fileInput: any) {
-    this.filedata = <File>fileInput.target.files[0];
-  }
-
   handleCheckBox(event: any) {
     if (event.value == 'false') {
       this.isChecked = false;
@@ -124,6 +125,34 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -141,22 +170,18 @@ export class AddCategoryComponent implements OnInit {
       return;
     }
 
-    const formdata = new FormData();
-    if (this.categoryForm.get('root')?.value == 'true') {
-      this.root = '';
-      this.parent = '';
-      formdata.append('isRoot', 'true');
+    const data = {
+      name: this.categoryForm.get('name')?.value,
+      isRoot: this.categoryForm.get('isRoot')?.value,
+      root: this.root,
+      parent: this.parent,
+      isActive: this.categoryForm.get('isActive')?.value,
+      isFeatured: this.categoryForm.get('isFeatured')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename
     }
-    if (this.filedata != null && this.filedata != undefined) {
-      formdata.append('file', this.filedata);
-    }
-    for (const data of Object.keys(this.categoryForm.value)) {
-      formdata.append(data, this.categoryForm.value[data]);
 
-    }
-    formdata.append('root', this.root);
-    formdata.append('parent', this.parent);
-    this.CategoryService.addCategory(formdata).subscribe((res: any) => {
+    this.CategoryService.addCategory(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-offer',
@@ -16,8 +17,13 @@ export class AddOfferComponent implements OnInit {
   appRoute = appRoutes;
   editMode = false;
   task = PageTasks.ADD;
-  fileData: File;
+  filedata: File;
   isSubmitted: boolean;
+
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  filename: string;
+  imageChangedEvent: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,11 +67,32 @@ export class AddOfferComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -82,23 +109,17 @@ export class AddOfferComponent implements OnInit {
       console.error("Validation error")
       return;
     }
-    const formData = new FormData();
-
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
+    const data = {
+      name: this.offerForm.get('name')?.value,
+      description: this.offerForm.get('description')?.value,
+      fromDate: this.offerForm.get('fromDate')?.value,
+      lastDate: this.offerForm.get('lastDate')?.value,
+      isFeatured: this.offerForm.get('isFeatured')?.value,
+      isActive: this.offerForm.get('isActive')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename
     }
-    formData.append('name', this.offerForm.value?.name);
-    formData.append('description', this.offerForm.value?.description);
-    if (this.offerForm.value?.fromDate) {
-      formData.append('fromDate', new Date(this.offerForm.value?.fromDate).toDateString());
-    }
-
-    if (this.offerForm.value?.lastDate) {
-      formData.append('lastDate', new Date(this.offerForm.value?.lastDate).toDateString());
-    }
-    formData.append('isActive', this.offerForm.value?.isActive);
-    formData.append('isFeatured', this.offerForm.value?.isFeatured);
-    this.offerService.addOffer(formData).subscribe((res: any) => {
+    this.offerService.addOffer(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

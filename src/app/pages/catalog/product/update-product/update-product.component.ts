@@ -15,6 +15,7 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-product',
@@ -54,6 +55,14 @@ export class UpdateProductComponent implements OnInit {
   relProductIds: any = [];
   returnValue: any;
 
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  imageChangedEvent: Event | undefined;
+  filename: any;
+  filedata: File;
+  type: any;
+  uploadedimg: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -68,13 +77,6 @@ export class UpdateProductComponent implements OnInit {
 
   get pf() {
     return this.productForm.controls;
-  }
-
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
   }
 
   handleCheckBox() {
@@ -95,9 +97,6 @@ export class UpdateProductComponent implements OnInit {
     this.getTaxClassDetail();
     this.getProducts();
     this.getProductBySlug();
-    this.checkShippingMethod();
-    this.checkCod();
-    this.checkReturnable();
   }
 
   initForm() {
@@ -135,17 +134,19 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  handleProductType() {
-    this.productType = this.productForm.get('isSingle')?.value;
-    if (this.productType == 'true') {
+  //Check whether the product is single or configurable
+  handleProductType(event: any) {
+    this.type = event.value;
+    if (this.type == 'true') {
       this.isSingle = true;
-    } else if (this.productType == 'false') {
+    } else if (this.type == 'false') {
       this.isSingle = false;
     }
   }
 
-  checkReturnable() {
-    this.returnValue = this.productForm.get('returnable')?.value;
+  //Check whether the product is returnable or not
+  checkReturnable(event: any) {
+    this.returnValue = event.value;
     if (this.returnValue == 'true') {
       this.isReturn = true;
     }
@@ -154,8 +155,9 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  checkShippingMethod() {
-    this.method = this.productForm.get('shippingMethod')?.value;
+  //Check the shipping method
+  checkShippingMethod(event: any) {
+    this.method = event.value;
     if (this.method == 'paid') {
       this.isShipping = true;
     }
@@ -164,8 +166,9 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  checkCod() {
-    this.cod = this.productForm.get('cod')?.value;
+  //Check whether cod is available or not
+  checkCod(event: any) {
+    this.cod = event.value;
     if (this.cod == 'true') {
       this.isCod = true;
     }
@@ -266,7 +269,7 @@ export class UpdateProductComponent implements OnInit {
       } else if (this.productType == false) {
         this.isSingle = false;
       }
-      this.uploadedImg = this.productData?.file;
+      this.uploadedimg = this.productData?.file;
       this.productForm.get('isSingle')?.setValue(this.productType);
       this.productForm.get('name')?.setValue(this.productData.name);
       this.productForm.get('sku')?.setValue(this.productData.sku);
@@ -340,10 +343,9 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  tagProductAdd() {
-    let rProduct = this.productForm.get("relatedProducts")?.value
-    console.log(rProduct);
-
+  //Related products tag
+  tagProductAdd(event: any) {
+    let rProduct = event.value
     if (!this.relProductIds.includes(rProduct)) {
       this.relProductIds.push(rProduct)
       for (let i = 0; i < this.productsData.length; i++) {
@@ -351,19 +353,18 @@ export class UpdateProductComponent implements OnInit {
           this.relProductNames.push(this.productsData[i].name)
         }
       }
-      this.productForm.get("relatedProducts")?.setValue('')
+    } else {
+      this.toastr.info('Product already added');
     }
+    this.productForm.get("relatedProducts")?.setValue('')
   }
 
+  //Related product remove
   tagProductRemove(_val: any) {
-    let nIndex = this.relProductNames.indexOf(_val)
-    if (nIndex > -1) {
-      this.relProductNames.splice(nIndex, 1)
-    }
+    this.relProductNames = this.relProductNames.filter((_data: any) => _data != _val)
     for (let i = 0; i < this.productsData.length; i++) {
       if (this.productsData[i].name == _val) {
-        let iIndex = this.relProductIds.indexOf(this.productsData[i]._id)
-        this.relProductIds.splice(iIndex, 1)
+        this.relProductIds = this.relProductIds.filter((_data: any) => _data != this.productsData[i]._id)
       }
     }
   }
@@ -372,6 +373,34 @@ export class UpdateProductComponent implements OnInit {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
     );
+  }
+
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -390,25 +419,47 @@ export class UpdateProductComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    } else {
-      formData.append('file', this.uploadedImg);
+    const data = {
+      isSingle: this.productForm.get('isSingle')?.value,
+      name: this.productForm.get('name')?.value,
+      sku: this.productForm.get('sku')?.value,
+      hsn: this.productForm.get('hsn')?.value,
+      mrpPrice: this.productForm.get('mrpPrice')?.value,
+      offerPrice: this.productForm.get('offerPrice')?.value,
+      stock: this.productForm.get('stock')?.value,
+      moq: this.productForm.get('moq')?.value,
+      stockWarning: this.productForm.get('stockWarning')?.value,
+      description: this.productForm.get('description')?.value,
+      features: this.productForm.get('features')?.value,
+      categories: this.categoryArray,
+      brandId: this.productForm.get('brandId')?.value,
+      additionalbutton: this.productForm.get('additionalbutton')?.value,
+      buttonredireturl: this.productForm.get('buttonredireturl')?.value,
+      isActive: this.productForm.get('isActive')?.value,
+      isFeatured: this.productForm.get('isFeatured')?.value,
+      returnable: this.productForm.get('returnable')?.value,
+      returnDays: this.productForm.get('returnDays')?.value,
+      shippingMethod: this.productForm.get('shippingMethod')?.value,
+      shippingCost: this.productForm.get('shippingCost')?.value,
+      value: this.productForm.get('value')?.value,
+      unit: this.productForm.get('unit')?.value,
+      taxClassId: this.productForm.get('taxClassId')?.value,
+      cod: this.productForm.get('cod')?.value,
+      codCharge: this.productForm.get('codCharge')?.value,
+      searchKeywords: this.valueArray,
+      relatedProducts: this.relProductIds,
+      position: this.productForm.get('position')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      file: ''
     }
 
-    for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'searchKeywords' || 'categories' || 'relatedProducts') {
-        formData.append(data, this.productForm.value[data]);
-      }
+    if (this.uploadedimg) {
+      data.file = this.uploadedimg
     }
-
-    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
-    formData.append('categories', JSON.stringify(this.categoryArray))
-    formData.append('searchKeywords', JSON.stringify(this.valueArray))
 
     this.productService
-      .updateProduct(this.productSlug, formData)
+      .updateProduct(this.productSlug, data)
       .subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something Went Wrong');

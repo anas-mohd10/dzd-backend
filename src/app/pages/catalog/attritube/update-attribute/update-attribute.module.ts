@@ -6,6 +6,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [UpdateAttributeComponent],
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     DataTablesModule,
     ReactiveFormsModule,
     FormsModule,
+    ImageCropperModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

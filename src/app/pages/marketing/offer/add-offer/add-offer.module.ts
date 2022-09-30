@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { AddOfferComponent } from './add-offer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { ImageCropperModule } from 'ngx-image-cropper';
+
 
 @NgModule({
   declarations: [AddOfferComponent],
@@ -11,6 +13,7 @@ import { DataTablesModule } from 'angular-datatables';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    ImageCropperModule,
     RouterModule.forChild([
       {
         path: '',

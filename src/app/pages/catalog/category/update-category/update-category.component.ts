@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 @Component({
   selector: 'app-update-category',
   templateUrl: './update-category.component.html',
@@ -16,19 +17,9 @@ export class UpdateCategoryComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   categoryArray: any = [];
-
-  validationMessages = {
-    name: [
-      {
-        type: 'required',
-        message: 'Category name is required',
-      },
-    ],
-  };
-
   isSubmitted = false;
   params: any;
-  fileData: File;
+  filedata: File;
   isChecked = false;
   categoryData: any;
   splitCategory: any;
@@ -38,7 +29,11 @@ export class UpdateCategoryComponent implements OnInit {
   categoryValues: any;
   previewImg: any;
   parentIdValue: string;
-  uploadedImg: any;
+  uploadedimg: any;
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  imageChangedEvent: Event | undefined;
+  filename: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,13 +45,6 @@ export class UpdateCategoryComponent implements OnInit {
 
   get bf() {
     return this.categoryForm.controls;
-  }
-
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
   }
 
   handleCheckBox() {
@@ -100,6 +88,35 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -112,7 +129,7 @@ export class UpdateCategoryComponent implements OnInit {
   getCategoryBySlug() {
     this.CategoryService.getCategoryBySlug(this.category).subscribe((res: any) => {
       this.categoryValues = res?.result[0];
-      this.uploadedImg = this.categoryValues?.file;
+      this.uploadedimg = this.categoryValues?.file;
       this.categoryForm.get('name')?.setValue(this.categoryValues.name);
       this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
       this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
@@ -132,14 +149,10 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryData = res?.result;
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parentId && !res?.result[i].rootId) {
-          this.categoryArray.push(
-            res?.result[i].parentId.name + ' > ' + res?.result[i].name
-          );
+          this.categoryArray.push(res?.result[i].parentId.name + ' > ' + res?.result[i].name);
         }
         if (!res?.result[i].parentId && res?.result[i].rootId) {
-          this.categoryArray.push(
-            res?.result[i].rootId.name + ' > ' + res?.result[i].name
-          );
+          this.categoryArray.push(res?.result[i].rootId.name + ' > ' + res?.result[i].name);
         }
         if (res?.result[i].parentId && res?.result[i].rootId) {
           if (res?.result[i].parentId._id != res?.result[i].rootId._id) {
@@ -160,64 +173,18 @@ export class UpdateCategoryComponent implements OnInit {
 
   //Update exsisting category
   updateBrand() {
-    const formData = new FormData();
-    if (this.categoryForm.get('rootId')?.value == 'true') {
-      this.categoryForm.get('parentId')?.setValue('');
-      this.rootCategory = '';
-      this.parentCategory = '';
-      formData.append('isRoot', 'true');
+    const data = {
+      name: this.categoryForm.get('name')?.value,
+      isRoot: this.categoryForm.get('isRoot')?.value,
+      // root: this.root,
+      // parent: this.parent,
+      isActive: this.categoryForm.get('isActive')?.value,
+      isFeatured: this.categoryForm.get('isFeatured')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename
     }
 
-    if (this.categoryForm.get('parentId')?.value.includes('>')) {
-      this.splitCategory = this.categoryForm
-        .get('parentId')
-        ?.value.split(' > ');
-      for (let i = 0; i < this.categoryData.length; i++) {
-        if (this.splitCategory[0] == this.categoryData[i].name) {
-          this.rootCategory = this.categoryData[i]._id;
-        }
-        if (
-          this.splitCategory[this.splitCategory.length - 1] ==
-          this.categoryData[i].name
-        ) {
-          this.parentCategory = this.categoryData[i]._id;
-        }
-      }
-    } else {
-      this.splitCategory = this.categoryForm.get('parentId')?.value;
-      for (let i = 0; i < this.categoryData.length; i++) {
-        if (this.categoryData[i].name == this.splitCategory) {
-          this.rootCategory = this.categoryData[i]._id;
-          this.parentCategory = this.categoryData[i]._id;
-        }
-      }
-      for (let i = 0; i < this.splitCategory.length; i++) { }
-    }
-
-    if (!this.categoryForm.valid) {
-      console.error('Validation error');
-      return;
-    }
-
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    } else {
-      formData.append('file', this.uploadedImg);
-    }
-
-    for (const data of Object.keys(this.categoryForm.value)) {
-      if (data != 'rootId' || 'parentId') {
-        formData.append(data, this.categoryForm.value[data]);
-      }
-    }
-
-    console.log(this.rootCategory);
-
-
-    formData.append('rootId', this.rootCategory);
-    formData.append('parentId', this.parentCategory);
-
-    this.CategoryService.updateCategory(this.category, formData).subscribe(
+    this.CategoryService.updateCategory(this.category, data).subscribe(
       (res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something Went Wrong');

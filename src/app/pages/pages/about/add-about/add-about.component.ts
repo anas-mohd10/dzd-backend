@@ -86,6 +86,7 @@ export class AddAboutComponent implements OnInit {
         } else if (res.errorCode == 0) {
           this.toastr.success('About added successfully');
           this.router.navigate([this.appRoute.about.ABOUT]);
+          window.location.reload()
         }
       })
     } else {

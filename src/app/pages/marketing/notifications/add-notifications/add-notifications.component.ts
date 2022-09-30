@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-notifications',
@@ -26,6 +27,11 @@ export class AddNotificationsComponent implements OnInit {
   invalidDate: Boolean = false
   invalidTime: Boolean = false
   isScheduled: Boolean = false
+
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  filename: string;
+  imageChangedEvent: any;
 
   constructor(
     private notificationsService: NotificationsService,
@@ -57,6 +63,30 @@ export class AddNotificationsComponent implements OnInit {
 
   handleInputChange(event: any) {
     this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   selectcustomer(event: any) {
@@ -154,17 +184,22 @@ export class AddNotificationsComponent implements OnInit {
       this.toastr.error("Validation error")
       return;
     }
-    const formdata = new FormData()
-    if (this.filedata != null && this.filedata != undefined) {
-      formdata.append('file', this.filedata);
+
+    const data = {
+      title: this.notificationForm.get('title')?.value,
+      channel: this.notificationForm.get('channel')?.value,
+      type: this.notificationForm.get('type')?.value,
+      content: this.notificationForm.get('content')?.value,
+      scheduledDate: this.notificationForm.get('scheduledDate')?.value,
+      scheduledTime: this.notificationForm.get('scheduledTime')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      customer: this.customers,
+      isAllCustomer: this.notificationForm.get('isAllCustomer')?.value,
+      isActive: this.notificationForm.get('isActive')?.value,
     }
-    for (const data of Object.keys(this.notificationForm.value)) {
-      if (data != 'customer') {
-        formdata.append(data, this.notificationForm.value[data]);
-      }
-    }
-    formdata.append("customer", JSON.stringify(this.customers))
-    this.notificationsService.addNotification(formdata).subscribe((res: any) => {
+
+    this.notificationsService.addNotification(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {

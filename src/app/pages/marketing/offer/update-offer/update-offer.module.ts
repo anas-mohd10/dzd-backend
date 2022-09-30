@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { UpdateOfferComponent } from './update-offer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [UpdateOfferComponent],
@@ -11,6 +12,7 @@ import { DataTablesModule } from 'angular-datatables';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    ImageCropperModule,
     RouterModule.forChild([
       {
         path: '',

@@ -88,8 +88,9 @@ export class AddHelpCenterComponent implements OnInit {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('Help Request added successfully');
+          this.toastr.success('Help request added successfully');
           this.router.navigate([this.appRoute.helpcenter.HELPCENTER]);
+          window.location.reload()
         }
       })
     } else {
@@ -97,7 +98,7 @@ export class AddHelpCenterComponent implements OnInit {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('About added successfully');
+          this.toastr.success('Help request added successfully');
           window.location.reload()
         }
       })

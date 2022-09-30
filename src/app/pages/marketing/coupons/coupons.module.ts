@@ -8,7 +8,7 @@ import { UpdateCouponsComponent } from './update-coupons/update-coupons.componen
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     CommonModule,
     CouponsRoutingModule,
     DataTablesModule,
+    ImageCropperModule,
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({

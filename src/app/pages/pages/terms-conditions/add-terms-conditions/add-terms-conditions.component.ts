@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
-import { TermsConditionsService  } from 'src/app/includes/services/terms-conditions.service';
+import { TermsConditionsService } from 'src/app/includes/services/terms-conditions.service';
 
 @Component({
   selector: 'app-add-terms-conditions',
@@ -83,8 +83,9 @@ export class AddTermsConditionsComponent implements OnInit {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('Terms And Conditions added successfully');
+          this.toastr.success('Terms and conditions added successfully');
           this.router.navigate([this.appRoute.termsconditions.TERMSCONDITIONS]);
+          window.location.reload()
         }
       })
     } else {
@@ -92,7 +93,7 @@ export class AddTermsConditionsComponent implements OnInit {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('About added successfully');
+          this.toastr.success('Terms and conditions added successfully');
           window.location.reload()
         }
       })

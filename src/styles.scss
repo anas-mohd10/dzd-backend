@@ -14,6 +14,10 @@
   width: 100%;
 }
 
+.uploaded-image img{
+  border-radius: 10px;
+}
+
 .preview-section {
   display: flex;
 }
@@ -146,17 +150,17 @@
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 10px;
   max-width: 85%;
   border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-.tag-input .bi-x-lg {
+.tag-input .bi-x {
   cursor: pointer;
   color: #ffffff;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   height: 100%;
   width: 15%;
   align-items: center;

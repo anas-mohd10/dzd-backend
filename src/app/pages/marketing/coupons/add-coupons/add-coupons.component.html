@@ -36,9 +36,6 @@
                            <label class="fs-6 mb-3 form-title required">Title</label>
                            <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf=" (cf.title.touched || isSubmitted) && cf.title.errors?.required">Coupon title is
-                              required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -46,9 +43,6 @@
                            <label class="fs-6 mb-3 form-title required">Code</label>
                            <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf=" (cf.code.touched || isSubmitted) && cf.code.errors?.required">Coupon code is
-                              required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -61,9 +55,6 @@
                               <option value="%">%</option>
                               <option value="flat">Flat</option>
                            </select>
-                           <span class="text-danger fs-7"
-                              *ngIf=" (cf.type.touched || isSubmitted) && cf.type.errors?.required">Coupon type is
-                              required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -71,9 +62,6 @@
                            <label class="fs-6 mb-3 form-title required">Value</label>
                            <input type="text" class="form-control fs-6" formControlName="value" [ngClass]="{
                             'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf=" (cf.value.touched || isSubmitted) && cf.value.errors?.required">Coupon value is
-                              required</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -81,10 +69,6 @@
                            <label class="fs-6 mb-3 form-title required">From Date</label>
                            <input type="date" class="form-control fs-6" formControlName="fromDate"
                               [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf="(cf.fromDate.touched || isSubmitted) && cf.fromDate.errors?.required">
-                              Coupon from date is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -92,10 +76,6 @@
                            <label class="fs-6 mb-3 form-title required">Last Date</label>
                            <input type="date" class="form-control fs-6" formControlName="lastDate"
                               [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
-                           <span class="text-danger fs-7"
-                              *ngIf="(cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required">
-                              Coupon last date is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -121,22 +101,20 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">Category</label>
-                           <select class="form-select" formControlName="categories" (change)="tagCategoryInput()"
+                           <select class="form-select" formControlName="categories"
+                              (change)="tagInput($event.target, 'category')"
                               [ngClass]="{'is-invalid':  (cf.categories.touched || isSubmitted) && cf.categories.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
                               <option *ngFor="let category of categoriesData" value="{{ category?._id }}">
                                  {{ category?.name }}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf="(cf.categories.touched || isSubmitted) && cf.categories.errors?.required">Category
-                              is required</span>
                         </div>
                         <div class="tag-inputs col-12">
-                           <ng-container *ngFor="let category of categoryNames">
+                           <ng-container *ngFor="let cat of category">
                               <span class="tag-input">
-                                 <div class="tag-name">{{ category }}</div>
-                                 <i class="bi bi-trash2" (click)="tagCategoryRemove(category)"></i>
+                                 <div class="tag-name">{{ cat?.name }}</div>
+                                 <i class="bi bi-x" (click)="tagRemove(cat?.name, cat?.id, 'category')"></i>
                               </span>
                            </ng-container>
                         </div>
@@ -144,23 +122,20 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">Products</label>
-                           <select class="form-select" formControlName="products" (change)="tagProductInput()"
+                           <select class="form-select" formControlName="products"
+                              (change)="tagInput($event.target, 'product')"
                               [ngClass]="{'is-invalid':  (cf.products.touched || isSubmitted) && cf.products.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
                               <option *ngFor="let product of productsData" value="{{ product?._id }}">
                                  {{ product?.name }}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf="(cf.products.touched || isSubmitted) && cf.products.errors?.required">
-                              Product is required
-                           </span>
                         </div>
                         <div class="tag-inputs col-12">
-                           <ng-container *ngFor="let product of productNames">
+                           <ng-container *ngFor="let prod of product">
                               <span class="tag-input">
-                                 <div class="tag-name">{{ product }}</div>
-                                 <i class="bi bi-trash2" (click)="tagProductRemove(product)"></i>
+                                 <div class="tag-name">{{ prod?.name }}</div>
+                                 <i class="bi bi-x" (click)="tagRemove(prod?.name, prod?.id, 'product')"></i>
                               </span>
                            </ng-container>
                         </div>
@@ -168,23 +143,20 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">Collection</label>
-                           <select class="form-select" formControlName="collections" (change)="tagCollectionInput()"
+                           <select class="form-select" formControlName="collections"
+                              (change)="tagInput($event.target, 'collection')"
                               [ngClass]="{'is-invalid':  (cf.collections.touched || isSubmitted) && cf.collections.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
                               <option *ngFor="let collection of collectionsData" value="{{ collection?._id }}">
                                  {{ collection?.name }}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf="(cf.collections.touched || isSubmitted) && cf.collections.errors?.required">
-                              Collection is required
-                           </span>
                         </div>
                         <div class="tag-inputs col-12">
-                           <ng-container *ngFor="let collection of collectionNames">
+                           <ng-container *ngFor="let coll of collection">
                               <span class="tag-input">
-                                 <div class="tag-name">{{ collection }}</div>
-                                 <i class="bi bi-trash2" (click)="tagCollectionRemove(collection)"></i>
+                                 <div class="tag-name">{{ coll?.name }}</div>
+                                 <i class="bi bi-x" (click)="tagRemove(coll?.name, coll?.id, 'collection')"></i>
                               </span>
                            </ng-container>
                         </div>
@@ -200,10 +172,6 @@
                               <option value="true">Yes</option>
                               <option value="false">No</option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf="(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required">
-                              Multiple user option is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -215,39 +183,48 @@
                               <option value="true">Active</option>
                               <option value="false">Inactive</option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf=" (cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required">
-                              Status is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6"></div>
                      <div class="col-12 col-sm-6">
                         <div class="col-12">
-                           <h3 class="form-title required"><span>Media</span></h3>
+                          <h3 class="form-title required"><span>Media</span></h3>
                         </div>
                         <div class="form-group">
-                           <div class="image-upload">
-                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                                 (change)="handleInputChange($event)"
-                                 onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                                 style="height: 100px;" required>
-                              <div class="image-upload-div">
-                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
-                                       alt="" srcset=""></div>
-                                 <div class="right-text d-flex flex-column"><span
-                                       class="right-text-title fs-4 fw-bolder">Click to
-                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
-                                       style="font-weight: 500">Upload
-                                       up to 1
-                                       file</span></div>
-                              </div>
-                           </div>
-                           <div class="uploads uploaded">
-                              <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
-                           </div>
+                          <div class="image-upload">
+                            <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                              (change)="handleInputChange($event)"
+                              onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                              style="height: 100px;" required>
+                            <div class="image-upload-div">
+                              <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                                  srcset=""></div>
+                              <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                                  upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                                  up to 1
+                                  file</span></div>
+                            </div>
+                          </div>
                         </div>
-                     </div>
+                      </div>
+                      <ng-container *ngIf=" loadImage">
+                        <div class="col-12 preview-section">
+                          <div class="crop-image col-sm-6">
+                            <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                              [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                              [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                              (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                              (loadImageFailed)="loadImageFailed()">
+                            </image-cropper>
+                          </div>
+                          <div class="uploads uploaded col-sm-6">
+                            <div class="close-icon bg-dark">
+                              <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                            </div>
+                            <img class="preview-img" id="previewImage" [src]="croppedImage">
+                          </div>
+                        </div>
+                      </ng-container>
                      <div class="col-12">
                         <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}"
                            class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">

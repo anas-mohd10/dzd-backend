@@ -40,10 +40,6 @@
                       (tf.name.touched || isSubmitted) &&
                       tf.name.errors?.required
                     }" />
-                  <span class="text-danger error-msg fs-7" *ngIf="
-                      (tf.name.touched || isSubmitted) &&
-                      tf.name.errors?.required
-                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -67,10 +63,6 @@
                       tf.rate.errors?.required
                     }" />
                   </div>
-                  <span class="text-danger error-msg fs-7" *ngIf="
-                      (tf.rate.touched || isSubmitted) &&
-                      tf.rate.errors?.required
-                    ">Tax rate is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">

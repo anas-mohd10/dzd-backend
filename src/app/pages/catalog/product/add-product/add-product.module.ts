@@ -5,7 +5,7 @@ import { AddProductComponent } from './add-product.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-// import { NgxTextEditorModule } from 'ngx-text-editor';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [AddProductComponent],
@@ -13,7 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
-    // NgxTextEditorModule,
+    ImageCropperModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

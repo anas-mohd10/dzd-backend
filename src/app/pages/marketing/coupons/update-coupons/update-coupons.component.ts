@@ -8,6 +8,7 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-coupons',
@@ -18,12 +19,9 @@ export class UpdateCouponsComponent implements OnInit {
   couponForm: FormGroup;
   task = PageTasks.UPDATE;
   editMode = false;
-  fileData: File;
+  filedata: File;
   isSubmitted: boolean;
   appRoute = appRoutes;
-  categoriesData: any
-  productsData: any
-  collectionsData: any
   categoriesId: any = [];
   productsId: any = [];
   collectionsId: any = [];
@@ -32,8 +30,24 @@ export class UpdateCouponsComponent implements OnInit {
   collectionNames: any = []
   slug: any;
   couponData: any;
-  uploadedImg: any;
-  isGreater: boolean = false;
+  valueInvalid: boolean = false;
+
+  categories: any = []; //Array of category ids
+  categoriesData: any = []; //Data fetched from database
+  category: any = []; //Array of categorty name and id
+
+  products: any = []; //Array of product ids
+  productsData: any = []; //Data fetched from database
+  product: any = []; //Array of product name and id
+
+  collections: any = []; //Array of collection ids
+  collectionsData: any = []; //Data fetched from database
+  collection: any = []; //Array of collection name and id
+  filename: string;
+  imageChangedEvent: any;
+  loadImage: boolean;
+  croppedImage: string | null | undefined;
+  uploadedimg: any;
 
   constructor(
     private productService: ProductService,
@@ -69,7 +83,7 @@ export class UpdateCouponsComponent implements OnInit {
       minPurchase: [''],
       categories: [Validators.required],
       products: [Validators.required],
-      collections: [ Validators.required],
+      collections: [Validators.required],
       isMultiple: ['false', Validators.required],
       isActive: ['true', Validators.required],
     });
@@ -113,7 +127,7 @@ export class UpdateCouponsComponent implements OnInit {
   getCouponBySlug() {
     this.couponsService.getCouponBySlug(this.slug).subscribe((res: any) => {
       this.couponData = res?.result[0]
-      this.uploadedImg = this.couponData?.file
+      this.uploadedimg = this.couponData?.file
       this.couponForm.get("title")?.setValue(this.couponData.title)
       this.couponForm.get("code")?.setValue(this.couponData.code)
       this.couponForm.get("type")?.setValue(this.couponData.type)
@@ -124,111 +138,95 @@ export class UpdateCouponsComponent implements OnInit {
       this.couponForm.get("minPurchase")?.setValue(this.couponData.minPurchase)
       this.couponForm.get("isActive")?.setValue(this.couponData.isActive)
       this.couponForm.get("isMultiple")?.setValue(this.couponData.isMultiple)
-
-      for (let product of this.couponData.products) {
-        this.productsId.push(product._id)
-        this.productNames.push(product.name)
+      for (let prod of res?.result[0]?.products) {
+        this.products.push(prod?._id)
+        this.product.push({ name: prod?.name, id: prod?._id })
       }
-
-      for (let category of this.couponData.categories) {
-        this.categoriesId.push(category._id)
-        this.categoryNames.push(category.name)
+      for (let cat of res?.result[0]?.categories) {
+        this.categories.push(cat?._id)
+        this.category.push({ name: cat?.name, id: cat?._id })
       }
-
-      for (let collection of this.couponData.collections) {
-        this.collectionsId.push(collection._id)
-        this.collectionNames.push(collection.name)
+      for (let collec of res?.result[0]?.collections) {
+        this.collections.push(collec?._id)
+        this.collection.push({ name: collec?.name, id: collec?._id })
       }
     })
   }
 
-  tagCategoryInput() {
-    let category = this.couponForm.get('categories')?.value
-    if (!this.categoriesId.includes(category)) {
-      this.categoriesId.push(category)
-      for (let i = 0; i < this.categoriesData.length; i++) {
-        if (category == this.categoriesData[i]._id) {
-          this.categoryNames.push(this.categoriesData[i].name);
+  //Tag input add function
+  tagInput(event: any, type: any) {
+    let value = event.value
+    if (type == "category") {
+      if (!this.categories.includes(value)) {
+        this.categories.push(value)
+        for (let category of this.categoriesData) {
+          if (category?._id == value) {
+            this.category.push({
+              name: category?.name,
+              id: category?._id
+            })
+          }
         }
+      } else {
+        this.toastr.info('Category already added')
       }
-    } else {
-      this.toastr.info('Category Already Added');
-    }
-    this.couponForm.get('categories')?.setValue('');
-  }
-
-  tagCategoryRemove(category: any) {
-    const index = this.categoryNames.indexOf(category);
-    if (index > -1) {
-      this.categoryNames.splice(index, 1);
-    }
-    for (let i = 0; i < this.categoriesData.length; i++) {
-      if (this.categoriesData[i].name == category) {
-        this.categoriesId.pop(this.categoriesData[i]._id);
-      }
-    }
-  }
-
-  tagProductInput() {
-    let product = this.couponForm.get('products')?.value
-    if (!this.productsId.includes(product)) {
-      this.productsId.push(product)
-      for (let i = 0; i < this.productsData.length; i++) {
-        if (product == this.productsData[i]._id) {
-          this.productNames.push(this.productsData[i].name);
+      this.couponForm.get("categories")?.setValue('')
+    } else if (type == "product") {
+      if (!this.products.includes(value)) {
+        this.products.push(value)
+        for (let product of this.productsData) {
+          if (product?._id == value) {
+            this.product.push({
+              name: product?.name,
+              id: product?._id
+            })
+          }
         }
+      } else {
+        this.toastr.info('Product already added')
       }
-    } else {
-      this.toastr.info("Product already added");
-    }
-    this.couponForm.get('products')?.setValue('');
-  }
-
-  tagProductRemove(product: any) {
-    const index = this.productNames.indexOf(product);
-    if (index > -1) {
-      this.productNames.splice(index, 1);
-    }
-    for (let i = 0; i < this.productsData.length; i++) {
-      if (this.productsData[i].name == product) {
-        this.productsId.pop(this.productsData[i]._id);
-      }
-    }
-  }
-
-  tagCollectionInput() {
-    let collection = this.couponForm.get('collections')?.value
-    if (!this.collectionsId.includes(collection)) {
-      this.collectionsId.push(collection)
-      for (let i = 0; i < this.collectionsData.length; i++) {
-        if (collection == this.collectionsData[i]._id) {
-          this.collectionNames.push(this.collectionsData[i].name);
+      this.couponForm.get("products")?.setValue('')
+    } else if (type == "collection") {
+      if (!this.collections.includes(value)) {
+        this.collections.push(value)
+        for (let collection of this.collectionsData) {
+          if (collection?._id == value) {
+            this.collection.push({
+              name: collection?.name,
+              id: collection?._id
+            })
+          }
         }
+      } else {
+        this.toastr.info('Collection already added')
       }
-    } else {
-      this.toastr.info("Collection already added");
-    }
-    this.couponForm.get('collections')?.setValue('');
-  }
-
-
-  tagCollectionRemove(collection: any) {
-    const index = this.collectionNames.indexOf(collection);
-    if (index > -1) {
-      this.collectionNames.splice(index, 1);
-    }
-    for (let i = 0; i < this.collectionsData.length; i++) {
-      if (this.collectionsData[i].name == collection) {
-        this.collectionsId.pop(this.collectionsData[i]._id);
-      }
+      this.couponForm.get("collections")?.setValue('')
     }
   }
 
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
+  tagRemove(name: any, id: any, type: any) {
+    if (type == "category") {
+      this.categories = this.categories.filter((_data: any) => _data != id)
+      this.category = this.category.filter((_data: any) => _data.name != name)
+      this.couponForm.get("categories")?.setValue('')
+    }
+    if (type == "product") {
+      this.products = this.products.filter((_data: any) => _data != id)
+      this.product = this.product.filter((_data: any) => _data.name != name)
+      this.couponForm.get("products")?.setValue('')
+    }
+    if (type == "collection") {
+      this.collections = this.collections.filter((_data: any) => _data != id)
+      this.collection = this.collection.filter((_data: any) => _data.name != name)
+      this.couponForm.get("collections")?.setValue('')
+    }
+  }
+
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
 
   checkPercentage() {
@@ -237,11 +235,32 @@ export class UpdateCouponsComponent implements OnInit {
     if (type == "%") {
       if (value > 100) {
         this.toastr.warning("Value should be between 0 and 100")
-        this.isGreater = true
-      }else{
-        this.isGreater = false
+        this.valueInvalid = true
+      } else {
+        this.valueInvalid = false
       }
     }
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -258,25 +277,29 @@ export class UpdateCouponsComponent implements OnInit {
       console.error("Validation error")
       return;
     }
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    } else {
-      formData.append('file', this.uploadedImg);
+    const data = {
+      title: this.couponForm.get('title')?.value,
+      code: this.couponForm.get('code')?.value,
+      fromDate: this.couponForm.get('fromDate')?.value,
+      lastDate: this.couponForm.get('toDate')?.value,
+      maxDiscount: this.couponForm.get('maxDiscount')?.value,
+      minDiscount: this.couponForm.get('minDiscount')?.value,
+      value: this.couponForm.get('value')?.value,
+      type: this.couponForm.get('type')?.value,
+      categories: JSON.stringify(this.categories),
+      products: JSON.stringify(this.products),
+      collections: JSON.stringify(this.collections),
+      filestring: this.croppedImage,
+      filename: this.filename,
+      file: '',
+      isMultiple: this.couponForm.get('isMultiple')?.value,
+      isActive: this.couponForm.get('isActive')?.value,
     }
-
-    for (const data of Object.keys(this.couponForm.value)) {
-      if (data != 'collections' || 'categories' || 'products') {
-        formData.append(data, this.couponForm.value[data]);
-      }
+    if (this.uploadedimg) {
+      data.file = this.uploadedimg
     }
-
-    formData.append('categories', JSON.stringify(this.categoriesId));
-    formData.append('products', JSON.stringify(this.productsId));
-    formData.append('collections', JSON.stringify(this.collectionsId));
-
-    if (this.isGreater == false) {
-      this.couponsService.updateCoupon(this.slug, formData).subscribe((res: any) => {
+    if (!this.valueInvalid) {
+      this.couponsService.updateCoupon(this.slug, data).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
@@ -284,7 +307,7 @@ export class UpdateCouponsComponent implements OnInit {
           this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
         }
       })
-    } else if (this.isGreater == true) {
+    } else {
       this.toastr.warning("Value should be between 0 and 100")
     }
   }

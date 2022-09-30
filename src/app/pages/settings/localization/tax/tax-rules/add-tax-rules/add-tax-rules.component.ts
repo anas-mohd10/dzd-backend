@@ -20,18 +20,13 @@ export class AddTaxRulesComponent implements OnInit {
   status: boolean;
   formData: any = {};
 
-  validationMessages = {
-    name: [{ type: 'required', message: 'Brand name is required' }],
-    rate: [{ type: 'required', message: 'Rate is required' }],
-  };
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private taxRulesService: TaxRulesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get tf() {
     return this.taxRulesForm.controls;
@@ -61,7 +56,7 @@ export class AddTaxRulesComponent implements OnInit {
       name: ['', Validators.required],
       rate: ['', Validators.required],
       type: ['Normal', Validators.required],
-      isActive: ['Active', Validators.required],
+      isActive: ['true', Validators.required],
     });
   }
 
@@ -75,7 +70,7 @@ export class AddTaxRulesComponent implements OnInit {
   }
 
   //Update exsisting tax rules
-  updateBrand() {}
+  updateBrand() { }
 
   //Add tax rules
   addBrand() {

@@ -43,9 +43,9 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3 required">Root Category</label>
-                  <select class="form-select" aria-label="-- select --" formControlName="root"
+                  <select class="form-select" aria-label="-- select --" formControlName="isRoot"
                     (change)="handleCheckBox($event.target)"
-                    [ngClass]="{ 'is-invalid': (bf.root.touched || isSubmitted) && bf.root.errors?.required}">
+                    [ngClass]="{ 'is-invalid': (bf.isRoot.touched || isSubmitted) && bf.isRoot.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="false">No</option>
                     <option value="true">Yes</option>
@@ -116,15 +116,26 @@
                           file</span></div>
                     </div>
                   </div>
-                  <div class="uploads uploaded">
-                    <div class="close-icon bg-dark"
-                      onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
-                      <i class="bi bi-x-lg text-white"></i>
-                    </div>
-                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
-                  </div>
                 </div>
               </div>
+              <ng-container *ngIf=" loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon bg-dark">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12">
                 <a routerLink="{{ appRoute.category.CATEGORY_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">

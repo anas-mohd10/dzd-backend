@@ -110,15 +110,12 @@
                       {{ category?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-7"
-                    *ngIf="(vf.categories.touched || isSubmitted) && vf.categories.errors?.required">Category
-                    is required</span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let cat of category">
                     <span class="tag-input">
                       <div class="tag-name">{{ cat?.name }}</div>
-                      <i class="bi bi-trash2" (click)="tagRemove(cat?.name, cat?.id, 'category')"></i>
+                      <i class="bi bi-x" (click)="tagRemove(cat?.name, cat?.id, 'category')"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -134,16 +131,12 @@
                       {{ product?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-7"
-                    *ngIf="(vf.products.touched || isSubmitted) && vf.products.errors?.required">
-                    Product is required
-                  </span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let prod of product">
                     <span class="tag-input">
                       <div class="tag-name">{{ prod?.name }}</div>
-                      <i class="bi bi-trash2" (click)="tagRemove(prod?.name, prod?.id, 'product')"></i>
+                      <i class="bi bi-x" (click)="tagRemove(prod?.name, prod?.id, 'product')"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -160,16 +153,12 @@
                       {{ collection?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-7"
-                    *ngIf="(vf.collections.touched || isSubmitted) && vf.collections.errors?.required">
-                    Collection is required
-                  </span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let collec of collection">
                     <span class="tag-input">
                       <div class="tag-name">{{ collec?.name }}</div>
-                      <i class="bi bi-trash2" (click)="tagRemove(collec?.name, collec?.id, 'collection')"></i>
+                      <i class="bi bi-x" (click)="tagRemove(collec?.name, collec?.id, 'collection')"></i>
                     </span>
                   </ng-container>
                 </div>
@@ -186,10 +175,6 @@
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-7"
-                    *ngIf="(vf.isMultiple.touched || isSubmitted) && vf.isMultiple.errors?.required">
-                    Multiple user option is required
-                  </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -201,10 +186,6 @@
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
                   </select>
-                  <span class="text-danger error-msg fs-7"
-                    *ngIf=" (vf.isActive.touched || isSubmitted) && vf.isActive.errors?.required">
-                    Status is required
-                  </span>
                 </div>
               </div>
               <div class="col-12 col-sm-6"></div>
@@ -227,15 +208,26 @@
                           file</span></div>
                     </div>
                   </div>
-                  <div class="uploads uploaded">
-                    <div class="close-icon bg-dark"
-                      onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
-                      <i class="bi bi-x-lg text-white"></i>
-                    </div>
-                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
-                  </div>
                 </div>
               </div>
+              <ng-container *ngIf=" loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon bg-dark">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12">
                 <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">

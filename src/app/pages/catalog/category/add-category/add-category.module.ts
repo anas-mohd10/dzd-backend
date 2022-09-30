@@ -5,6 +5,7 @@ import { AddCategoryComponent } from './add-category.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [AddCategoryComponent],
@@ -12,6 +13,7 @@ import { ToastrModule } from 'ngx-toastr';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    ImageCropperModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

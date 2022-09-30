@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-notifications',
@@ -28,7 +29,12 @@ export class UpdateNotificationsComponent implements OnInit {
   date: any
   type: any
   isScheduled: boolean;
-  image: any;
+  uploadedimg: any;
+
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  filename: string;
+  imageChangedEvent: any;
 
   constructor(
     private notificationsService: NotificationsService,
@@ -69,7 +75,7 @@ export class UpdateNotificationsComponent implements OnInit {
       this.notificationForm.get("isActive")?.setValue(res?.result[0].isActive)
       this.notificationForm.get("status")?.setValue(res?.result[0].status)
       this.notificationForm.get("isAllCustomer")?.setValue(JSON.stringify(res?.result[0].isAllCustomer))
-      this.image = res?.result[0].file
+      this.uploadedimg = res?.result[0].file
       let type = res?.result[0].type
       if (type == "SCHEDULED") {
         this.isScheduled = true
@@ -91,9 +97,6 @@ export class UpdateNotificationsComponent implements OnInit {
     })
   }
 
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-  }
 
   selectcustomer(event: any) {
     let val = event.value
@@ -177,6 +180,34 @@ export class UpdateNotificationsComponent implements OnInit {
     }
   }
 
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -194,19 +225,25 @@ export class UpdateNotificationsComponent implements OnInit {
       this.toastr.error("Validation error")
       return;
     }
-    const formdata = new FormData()
-    if (this.filedata != null && this.filedata != undefined) {
-      formdata.append('file', this.filedata);
-    } else {
-      formdata.append("file", this.image)
+    const data = {
+      title: this.notificationForm.get('title')?.value,
+      channel: this.notificationForm.get('channel')?.value,
+      type: this.notificationForm.get('type')?.value,
+      content: this.notificationForm.get('content')?.value,
+      scheduledDate: this.notificationForm.get('scheduledDate')?.value,
+      scheduledTime: this.notificationForm.get('scheduledTime')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      customer: this.customers,
+      isAllCustomer: this.notificationForm.get('isAllCustomer')?.value,
+      isActive: this.notificationForm.get('isActive')?.value,
+      file: '',
+      status: this.notificationForm.get('status')?.value
     }
-    for (const data of Object.keys(this.notificationForm.value)) {
-      if (data != 'customer') {
-        formdata.append(data, this.notificationForm.value[data]);
-      }
+    if (this.uploadedimg) {
+      data.file = this.uploadedimg
     }
-    formdata.append("customer", JSON.stringify(this.customers))
-    this.notificationsService.updateNotification(this.slug, formdata).subscribe((res: any) => {
+    this.notificationsService.updateNotification(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {

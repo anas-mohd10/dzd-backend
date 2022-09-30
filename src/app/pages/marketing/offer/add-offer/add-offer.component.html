@@ -110,9 +110,7 @@
                 <div class="form-group">
                   <div class="image-upload">
                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                      (change)="handleInputChange($event)"
-                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                      style="height: 100px;" required>
+                      (change)="handleInputChange($event)" style="height: 100px;" required>
                     <div class="image-upload-div">
                       <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
                           srcset=""></div>
@@ -122,11 +120,26 @@
                           file</span></div>
                     </div>
                   </div>
-                  <div class="uploads uploaded">
-                    <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
-                  </div>
                 </div>
               </div>
+              <ng-container *ngIf="loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon bg-dark">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
               <div class="col-12">
                 <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">

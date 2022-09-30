@@ -8,6 +8,8 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -42,6 +44,11 @@ export class AddProductComponent implements OnInit {
 
   relProductNames: any = [];
   relProductIds: any = [];
+
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  imageChangedEvent: Event | undefined;
+  filename: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -111,11 +118,6 @@ export class AddProductComponent implements OnInit {
     } else if (this.type == 'false') {
       this.isSingle = false;
     }
-  }
-
-  //File input
-  handleInputChange(fileInput: any) {
-    this.filedata = <File>fileInput.target.files[0];
   }
 
   //Check whether the product is returnable or not
@@ -255,6 +257,35 @@ export class AddProductComponent implements OnInit {
     });
   }
 
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -268,26 +299,44 @@ export class AddProductComponent implements OnInit {
 
   addProduct() {
     if (!this.productForm.valid) {
-      console.error("Validation");
       return;
     }
 
-    const formData = new FormData();
-    if (this.filedata != null && this.filedata != undefined) {
-      formData.append('file', this.filedata);
+    const data = {
+      isSingle: this.productForm.get('isSingle')?.value,
+      name: this.productForm.get('name')?.value,
+      sku: this.productForm.get('sku')?.value,
+      hsn: this.productForm.get('hsn')?.value,
+      mrpPrice: this.productForm.get('mrpPrice')?.value,
+      offerPrice: this.productForm.get('offerPrice')?.value,
+      stock: this.productForm.get('stock')?.value,
+      moq: this.productForm.get('moq')?.value,
+      stockWarning: this.productForm.get('stockWarning')?.value,
+      description: this.productForm.get('description')?.value,
+      features: this.productForm.get('features')?.value,
+      categories: this.categoryid,
+      brandId: this.productForm.get('brandId')?.value,
+      additionalbutton: this.productForm.get('additionalbutton')?.value,
+      buttonredireturl: this.productForm.get('buttonredireturl')?.value,
+      isActive: this.productForm.get('isActive')?.value,
+      isFeatured: this.productForm.get('isFeatured')?.value,
+      returnable: this.productForm.get('returnable')?.value,
+      returnDays: this.productForm.get('returnDays')?.value,
+      shippingMethod: this.productForm.get('shippingMethod')?.value,
+      shippingCost: this.productForm.get('shippingCost')?.value,
+      value: this.productForm.get('value')?.value,
+      unit: this.productForm.get('unit')?.value,
+      taxClassId: this.productForm.get('taxClassId')?.value,
+      cod: this.productForm.get('cod')?.value,
+      codCharge: this.productForm.get('codCharge')?.value,
+      searchKeywords: this.searchKeyowrds,
+      relatedProducts: this.relProductIds,
+      position: this.productForm.get('position')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename
     }
 
-    for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'searchKeywords' || 'categories' || 'relatedProducts') {
-        formData.append(data, this.productForm.value[data]);
-      }
-    }
-
-    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
-    formData.append('categories', JSON.stringify(this.categoryid))
-    formData.append('searchKeywords', JSON.stringify(this.searchKeyowrds))
-
-    this.productService.addProduct(formData).subscribe((res: any) => {
+    this.productService.addProduct(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {

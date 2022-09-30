@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
-
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-testimonial',
@@ -20,8 +20,12 @@ export class UpdateTestimonialComponent implements OnInit {
   isSubmitted = false;
   filedata: File;
   slug: any
-  image: any
+  uploadedimg: any
   data: any;
+  filename: any;
+  croppedImage: any;
+  imageChangedEvent: any;
+  loadImage: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +46,7 @@ export class UpdateTestimonialComponent implements OnInit {
     this.testimonialForm = this.formBuilder.group({
       name: ['', Validators.required],
       profession: [''],
-      firmName: [''],
+      business: [''],
       file: [''],
       place: ['', Validators.required],
       message: ['', Validators.required],
@@ -67,21 +71,45 @@ export class UpdateTestimonialComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) {
-    this.filedata = <File>fileInput.target.files[0];
-  }
-
   getTestimonial() {
     this.testimonialService.getTestimonial(this.slug).subscribe((res: any) => {
       this.data = res?.result[0]
-      this.image = res?.result[0].file
+      this.uploadedimg = res?.result[0].file
       this.testimonialForm.get("name")?.setValue(res?.result[0].name)
-      this.testimonialForm.get("profession")?.setValue(res?.result[0]?.details.profession)
-      this.testimonialForm.get("firmName")?.setValue(res?.result[0]?.details.firmName)
-      this.testimonialForm.get("place")?.setValue(res?.result[0]?.details.place)
+      this.testimonialForm.get("profession")?.setValue(res?.result[0].profession)
+      this.testimonialForm.get("business")?.setValue(res?.result[0].business)
+      this.testimonialForm.get("place")?.setValue(res?.result[0].place)
       this.testimonialForm.get("message")?.setValue(res?.result[0].message)
       this.testimonialForm.get("isActive")?.setValue(res?.result[0].isActive)
     })
+  }
+
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -101,17 +129,21 @@ export class UpdateTestimonialComponent implements OnInit {
       this.toastr.error('Something wrong occured');
       return;
     }
-
-    const formdata = new FormData()
-    if (this.filedata != null && this.filedata != undefined) {
-      formdata.append('file', this.filedata);
-    } else {
-      formdata.append("file", this.image)
+    const data = {
+      name: this.testimonialForm.get('name')?.value,
+      profession: this.testimonialForm.get('profession')?.value,
+      business: this.testimonialForm.get('business')?.value,
+      place: this.testimonialForm.get('place')?.value,
+      message: this.testimonialForm.get('message')?.value,
+      isActive: this.testimonialForm.get('isActive')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      file: ''
     }
-    for (const data of Object.keys(this.testimonialForm.value)) {
-      formdata.append(data, this.testimonialForm.value[data]);
+    if (this.uploadedimg) {
+      data.file = this.uploadedimg
     }
-    this.testimonialService.updateTestimonial(this.slug, formdata).subscribe((res: any) => {
+    this.testimonialService.updateTestimonial(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {

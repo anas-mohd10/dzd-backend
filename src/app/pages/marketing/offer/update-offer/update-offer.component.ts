@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
-import { OfferService } from 'src/app/includes/services/offer.service';
+import { OfferService } from 'src/app/includes/services/offer.service'; 3
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-offer',
@@ -16,13 +17,17 @@ export class UpdateOfferComponent implements OnInit {
   appRoute = appRoutes;
   task = PageTasks.UPDATE;
   editMode = false;
-  fileData: File;
+  filedata: File;
   isSubmitted: boolean;
   offer: any;
   offerData: any;
   fromDate: any;
   lastDate: string;
-  uploadedImg: any;
+  uploadedimg: any;
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  filename: string;
+  imageChangedEvent: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,7 +35,7 @@ export class UpdateOfferComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private offerService: OfferService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.offer = this.route.snapshot.queryParams.offer || '';
@@ -63,12 +68,34 @@ export class UpdateOfferComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
 
   onSubmit() {
     this.isSubmitted = true;
@@ -83,7 +110,7 @@ export class UpdateOfferComponent implements OnInit {
     this.offerService.getOfferById(this.offer).subscribe((res: any) => {
       if (res.errorCode == 0) {
         this.offerData = res?.result[0];
-        this.uploadedImg = this.offerData?.file;
+        this.uploadedimg = this.offerData?.file;
         this.fromDate = new Date(this.offerData.fromDate)
           .toISOString()
           .split('T')[0];
@@ -101,32 +128,33 @@ export class UpdateOfferComponent implements OnInit {
     });
   }
 
-  addBrand() {}
+  addBrand() { }
 
   updateBrand() {
     if (!this.offerForm.valid) {
       return;
     }
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
-    } else {
-      formData.append('file', this.uploadedImg);
+    const data = {
+      name: this.offerForm.get('name')?.value,
+      description: this.offerForm.get('description')?.value,
+      fromDate: this.offerForm.get('fromDate')?.value,
+      lastDate: this.offerForm.get('lastDate')?.value,
+      isFeatured: this.offerForm.get('isFeatured')?.value,
+      isActive: this.offerForm.get('isActive')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      file: ''
     }
-    for (const data of Object.keys(this.offerForm.value)) {
-      if (this.offerForm.value[data] != '' || null) {
-        formData.append(data, this.offerForm.value[data]);
+    if (this.uploadedimg) {
+      data.file = this.uploadedimg
+    }
+    this.offerService.updateOffer(this.offer, data).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Offer updated successfully');
+        this.router.navigate([this.appRoute.offer.OFFER_LIST]);
       }
-    }
-    this.offerService
-      .updateOffer(this.offer, formData)
-      .subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Offer Updated Successfully');
-          this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-        }
-      });
+    });
   }
 }

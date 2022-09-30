@@ -40,10 +40,6 @@
                       (tf.name.touched || isSubmitted) &&
                       tf.name.errors?.required
                     }" />
-                  <span class="text-danger error-msg fs-7" *ngIf="
-                      (tf.name.touched || isSubmitted) &&
-                      tf.name.errors?.required
-                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -78,16 +74,12 @@
                       {{ taxRule?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-7" *ngIf="
-                  (tf.rule.touched || isSubmitted) &&
-                  tf.rule.errors?.required
-                ">Rule is required</span>
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let name of rulesName">
                     <span class="tag-input">
                       <div class="tag-name">{{ name }}</div>
-                      <i class="bi bi-trash2" (click)="tagRemove(name)"></i>
+                      <i class="bi bi-x" (click)="tagRemove(name)"></i>
                     </span>
                   </ng-container>
                 </div>

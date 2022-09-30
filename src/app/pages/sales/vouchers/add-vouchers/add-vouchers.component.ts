@@ -8,6 +8,7 @@ import { appRoutes } from 'src/app/config/routes/app.routes';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-vouchers',
@@ -37,6 +38,11 @@ export class AddVouchersComponent implements OnInit {
   collections: any = []; //Array of collection ids
   collectionsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
+
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  filename: string;
+  imageChangedEvent: any;
 
   constructor(
     private productService: ProductService,
@@ -183,23 +189,12 @@ export class AddVouchersComponent implements OnInit {
 
   handleInputChange(event: any) {
     this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
 
   checkDate() {
-    let validFrom = this.voucherForm.get("fromDate")?.value
-    let validTo = this.voucherForm.get("lastDate")?.value
-    if (new Date(validFrom).toLocaleDateString() >= new Date().toLocaleDateString()) {
-      if (validTo) {
-        if (validFrom > validTo) {
-          this.toastr.error(`Date is not Valid`);
-          this.dateInvalid = true
-        } else {
-          this.dateInvalid = false
-        }
-      }
-    } else {
-      this.toastr.error("From date cannot be less than current date");
-    }
   }
 
   checkValue() {
@@ -218,16 +213,6 @@ export class AddVouchersComponent implements OnInit {
   }
 
   checkDiscount() {
-    let discount = this.voucherForm.get("maxDiscount")?.value
-    let val = this.voucherForm.get("minPurchase")?.value
-    if (val) {
-      if (discount > val) {
-        this.toastr.error("Minimum purchase amount can't be lesser than discount amount")
-        this.discountInvalid = true
-      } else {
-        this.discountInvalid = false
-      }
-    }
   }
 
   onSubmit() {
@@ -239,6 +224,27 @@ export class AddVouchersComponent implements OnInit {
     }
   }
 
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
   updateVoucher() { }
 
   addVoucher() {
@@ -246,20 +252,25 @@ export class AddVouchersComponent implements OnInit {
       this.toastr.error("Validation error occured")
       return;
     }
-    const formdata = new FormData();
-    if (this.filedata != null && this.filedata != undefined) {
-      formdata.append('file', this.filedata);
+    const data = {
+      title: this.voucherForm.get('title')?.value,
+      code: this.voucherForm.get('code')?.value,
+      fromDate: this.voucherForm.get('fromDate')?.value,
+      lastDate: this.voucherForm.get('toDate')?.value,
+      maxDiscount: this.voucherForm.get('maxDiscount')?.value,
+      minDiscount: this.voucherForm.get('minDiscount')?.value,
+      value: this.voucherForm.get('value')?.value,
+      type: this.voucherForm.get('type')?.value,
+      categories: JSON.stringify(this.categories),
+      products: JSON.stringify(this.products),
+      collections: JSON.stringify(this.collections),
+      filestring: this.croppedImage,
+      filename: this.filename,
+      isMultiple: this.voucherForm.get('isMultiple')?.value,
+      isActive: this.voucherForm.get('isActive')?.value,
     }
-    for (const data of Object.keys(this.voucherForm.value)) {
-      if (data != 'collections' || 'categories' || 'products') {
-        formdata.append(data, this.voucherForm.value[data]);
-      }
-    }
-    formdata.append('categories', JSON.stringify(this.categories));
-    formdata.append('products', JSON.stringify(this.products));
-    formdata.append('collections', JSON.stringify(this.collections));
-    if (!this.dateInvalid && !this.valueInvalid && !this.discountInvalid) {
-      this.vouchersService.addVoucher(formdata).subscribe((res: any) => {
+    if (!this.valueInvalid) {
+      this.vouchersService.addVoucher(data).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
@@ -268,12 +279,8 @@ export class AddVouchersComponent implements OnInit {
         }
       })
     } else {
-      if (this.dateInvalid == true) {
-        this.toastr.error(`Date is invalid`);
-      } else if (this.valueInvalid == true) {
+      if (this.valueInvalid == true) {
         this.toastr.error("Value should be between 0 and 100")
-      } else if (this.discountInvalid == true) {
-        this.toastr.error("Minimum purchase amount can't be lesser than discount amount")
       }
     }
   }

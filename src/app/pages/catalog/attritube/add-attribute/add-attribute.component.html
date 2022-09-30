@@ -69,8 +69,10 @@
                     <input class="form-control fs-6 mb-10" formControlName="values" (keyup.Enter)="tagInput()" />
                     <div class="tag-inputs col-12">
                       <ng-container *ngFor="let value of textArray">
-                        <span class="tag-input bg-primary">{{ value }}
-                          <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
+                        <span class="tag-input">
+                          <div class="tag-name">{{ value }}</div>
+                          <i class="bi bi-x" (click)="tagRemove(value)"></i>
+                        </span>
                       </ng-container>
                     </div>
                   </div>
@@ -106,41 +108,73 @@
 
                 <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel"
                   aria-hidden="true">
-                  <div class="modal-dialog">
+                  <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <div class="col-12">
-                          <div class="form-group">
-                            <label class="fs-6 mb-3 form-title required">Media File</label>
-                            <div class="image-upload">
-                              <input type="file" class="form-control fs-6" name="multi-files" accept="image/*"
-                                (change)="handleInputChange($event)" formControlName="file">
-                              <label class="fs-7 text-disabled">Please upload an image of size 546px *
-                                390px</label>
+                          <div class="col-12 col-sm-6">
+                            <div class="col-12">
+                              <h3 class="form-title required"><span>Media</span></h3>
+                            </div>
+                            <div class="form-group mb-10">
+                              <div class="image-upload">
+                                <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                  (change)="handleInputChange($event)"
+                                  onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                                  style="height: 100px;" required>
+                                <div class="image-upload-div">
+                                  <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
+                                      alt="" srcset=""></div>
+                                  <div class="right-text d-flex flex-column"><span
+                                      class="right-text-title fs-4 fw-bolder">Click to
+                                      upload</span> <span class="right-text-note fs-7 text-gray-400"
+                                      style="font-weight: 500">Upload
+                                      up to 1
+                                      file</span></div>
+                                </div>
+                              </div>
                             </div>
                           </div>
+                          <ng-container *ngIf="loadImage">
+                            <div class="col-12 preview-section">
+                              <div class="crop-image col-sm-6">
+                                <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                                  [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                                  [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                                  (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                                  (loadImageFailed)="loadImageFailed()">
+                                </image-cropper>
+                              </div>
+                              <div class="uploads uploaded col-sm-6">
+                                <div class="close-icon bg-dark">
+                                  <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                                </div>
+                                <img class="preview-img" id="previewImage" [src]="croppedImage">
+                              </div>
+                            </div>
+                          </ng-container>
                         </div>
                       </div>
                       <div class="col-12 upload-layout">
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary fs-6" style="width: 200px"
                             data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary fs-6" style="width: 200px"
-                            (click)="addFile()">Save</button>
+                          <button type="button" data-bs-dismiss="modal" class="btn btn-primary fs-6"
+                            style="width: 200px" (click)="addFile()">Save</button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="uploaded-attributes">
-                  <div *ngFor="let attribute of localdata; let i=index">
+                  <div *ngFor="let img of imgs; let i=index">
                     <div class="attribute-card">
                       <div class="attribute-image fs-6 fw-bold mt-3">
-                        <img class="attribute-preview" [src]="attribute?.url" alt="" srcset="">
-                        <div class="close-icon bg-dark" (click)="removeFile(attribute?.id)">
+                        <img class="attribute-preview" [src]="img?.url" alt="" srcset="">
+                        <div class="close-icon bg-dark" (click)="removeFile(img?.id)">
                           <i class="bi bi-x-lg text-white"></i>
                         </div>
                       </div>

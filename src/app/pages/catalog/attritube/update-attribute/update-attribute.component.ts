@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { AttributeService } from '../../../../includes/services/attribute.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-attribute',
@@ -35,6 +36,11 @@ export class UpdateAttributeComponent implements OnInit {
   url: any;
   filedata: any
   attribute: any;
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  imageChangedEvent: Event | undefined;
+  filename: any;
+  imgs: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,27 +91,48 @@ export class UpdateAttributeComponent implements OnInit {
   }
 
   handleInputChange(event: any) {
-    if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      this.filedata = event.target.files[0]
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (e: any) => {
-        this.url = e.target.result
-      }
-    }
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   addFile() {
-    this.localdata.push({
-      id: this.localdata.length,
-      url: this.url,
-      file: this.filedata
-    })
-    this.attributeForm.get("file")?.setValue('')
+    if (this.croppedImage) {
+      this.imgs.push({
+        id: this.imgs.length,
+        url: this.croppedImage,
+        name: this.filename
+      })
+      this.loadImage = false
+      this.croppedImage = ''
+      this.attributeForm.get('file')?.setValue('')
+    }
   }
 
   removeFile(id: any) {
-    this.localdata = this.localdata.filter((_data: any) => _data.id != id)
+    this.imgs = this.imgs.filter((_data: any) => _data.id != id)
   }
 
   getCategoryDetails() {
@@ -206,33 +233,25 @@ export class UpdateAttributeComponent implements OnInit {
       return;
     }
 
+    const data = {
+      name: this.attributeForm.get('name')?.value,
+      type: this.attributeForm.get('type')?.value,
+      isActive: this.attributeForm.get('isActive')?.value,
+      isFiltered: this.attributeForm.get('isFiltered')?.value,
+      values: [],
+      files: [],
+      category: this.category
+    }
     if (this.type == 'color') {
-      this.values = this.colorArray;
+      data.values = this.colorArray;
     } else if (this.type == 'text') {
-      this.values = this.textArray;
+      data.values = this.textArray;
     } else if (this.type == 'image') {
-      for (let data of this.localdata) {
-        this.images.push(data.file)
-      }
+      data.files = this.imgs
+      this.values = []
     }
-    const formdata = new FormData
-    if (this.images.length) {
-      for (let img of this.images) {
-        formdata.append('file', img);
-      }
-      formdata.append("files", JSON.stringify(this.images))
-    } else {
-      for (let img of this.localdata) {
-        formdata.append('file', img.file);
-      }
-      formdata.append("files", this.images)
-    }
-    formdata.append("values", JSON.stringify(this.values))
-    for (const data of Object.keys(this.attributeForm.value)) {
-      formdata.append(data, this.attributeForm.value[data]);
-    }
-    formdata.append("category", this.category)
-    this.AttributeService.updateAttribute(this.attribute, this.category, formdata).subscribe((res: any) => {
+
+    this.AttributeService.updateAttribute(this.attribute, this.category, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res?.errorCode == 0) {

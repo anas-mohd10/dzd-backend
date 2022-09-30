@@ -8,7 +8,7 @@ import { UpdateNotificationsComponent } from './update-notifications/update-noti
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     NotificationsRoutingModule,
     DataTablesModule,
     FormsModule,
+    ImageCropperModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

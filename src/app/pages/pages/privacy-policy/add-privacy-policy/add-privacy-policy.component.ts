@@ -84,8 +84,9 @@ export class AddPrivacyPolicyComponent implements OnInit {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('Privacy Policy added successfully');
+          this.toastr.success('Privacy policy added successfully');
           this.router.navigate([this.appRoute.privacypolicy.PRIVACYPOLICY]);
+          window.location.reload()
         }
       })
     } else {
@@ -93,7 +94,7 @@ export class AddPrivacyPolicyComponent implements OnInit {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('About added successfully');
+          this.toastr.success('Privacy policy added successfully');
           window.location.reload()
         }
       })

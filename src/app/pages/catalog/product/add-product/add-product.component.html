@@ -1,5 +1,4 @@
 <div class="content container-fluid">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
@@ -22,8 +21,6 @@
       </div>
     </div>
   </div>
-  <!-- Page Header -->
-  <!-- Page Content -->
   <div class="row mt-10">
     <div class="col-sm-12 fs-6">
       <div class="card">
@@ -33,7 +30,6 @@
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Product Details</span></h5>
               </div>
-
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Product Type</label>
@@ -47,11 +43,6 @@
                     <option value="true">Single</option>
                     <option value="false">Configurable</option>
                   </select>
-                  <span class="text-danger fs-6" *ngIf="
-                      (pf.isSingle.touched || isSubmitted) &&
-                      pf.isSingle.errors?.required
-                    "><i class="bi bi-exclamation-triangle-fill"></i> Please
-                    provide a product type</span>
                 </div>
               </div>
 
@@ -156,7 +147,8 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input bg-primary text-white">{{ category }}
+                    <span class="tag-input">
+                      <div class="tag-name">{{ category }}</div>
                       <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                     </span>
                   </ng-container>
@@ -262,8 +254,10 @@
                   <input class="form-control fs-6" formControlName="searchKeywords" (keyup.Enter)="tagInput()" />
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of searchKeyowrds">
-                      <span class="tag-input bg-primary text-white">{{ value }}
-                        <i class="bi bi-x" (click)="tagRemove(value)"></i></span>
+                      <span class="tag-input">
+                        <div class="tag-name">{{ value }}</div>
+                        <i class="bi bi-x" (click)="tagRemove(value)"></i>
+                      </span>
                     </ng-container>
                   </div>
                 </div>
@@ -279,8 +273,10 @@
                   </select>
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of relProductNames">
-                      <span class="mb-10 tag-input bg-primary text-white">{{ value }}
-                        <i class="bi bi-x" (click)="tagProductRemove(value)"></i></span>
+                      <span class="tag-input">
+                        <div class="tag-name">{{ value }}</div>
+                        <i class="bi bi-x" (click)="tagProductRemove(value)"></i>
+                      </span>
                     </ng-container>
                   </div>
                 </div>
@@ -370,61 +366,72 @@
                   </div>
                 </div>
               </ng-container>
-            </div>
 
-            <div class="row">
-              <div class="col-sm-6">
-                <!-- Description -->
-                <div class="col-12">
-                  <div class="form-group">
-                    <label class="fs-6 mb-3">Description</label>
-                    <textarea class="form-control fs-6" formControlName="description" style="resize: none"
-                      id="productdescription" rows="3"></textarea>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <!-- Features -->
-                <div class="col-12">
-                  <div class="form-group">
-                    <label class="fs-6 mb-3">Features</label>
-                    <textarea class="form-control fs-6" formControlName="features" style="resize: none"
-                      id="featureddescription" rows="3"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Product Image -->
-            <div class="col-12 col-sm-6">
-              <div class="col-12">
-                <h3 class="form-title required"><span>Media</span></h3>
-              </div>
-              <div class="form-group">
-                <div class="image-upload">
-                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                    (change)="handleInputChange($event)"
-                    onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                    style="height: 100px;" required>
-                  <div class="image-upload-div">
-                    <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+              <div class="row">
+                <div class="col-sm-6">
+                  <!-- Description -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="fs-6 mb-3">Description</label>
+                      <textarea class="form-control fs-6" formControlName="description" style="resize: none"
+                        id="productdescription" rows="3"></textarea>
                     </div>
-                    <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                        upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                        up to 1
-                        file</span></div>
                   </div>
                 </div>
-                <div class="uploads uploaded">
-                  <div class="close-icon bg-dark"
-                    onclick="document.getElementById('previewImage').src = '../../../../../assets/media/icons/duotune/files/fil025.svg' ">
-                    <i class="bi bi-x-lg text-white"></i>
+                <div class="col-sm-6">
+                  <!-- Features -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label class="fs-6 mb-3">Features</label>
+                      <textarea class="form-control fs-6" formControlName="features" style="resize: none"
+                        id="featureddescription" rows="3"></textarea>
+                    </div>
                   </div>
-                  <img id="previewImage" src="../../../../../assets/media/icons/duotune/files/fil025.svg">
                 </div>
               </div>
-            </div>
 
+              <!-- Product Image -->
+              <div class="col-12 col-sm-6">
+                <div class="col-12">
+                  <h3 class="form-title required"><span>Media</span></h3>
+                </div>
+                <div class="form-group">
+                  <div class="image-upload">
+                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                      (change)="handleInputChange($event)"
+                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                      style="height: 100px;" required>
+                    <div class="image-upload-div">
+                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                          srcset="">
+                      </div>
+                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                          up to 1
+                          file</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf=" loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon bg-dark">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
+            </div>
             <div class="col-12">
               <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                 style="width: 200px; margin-right: 20px;">Cancel</a>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes/app.routes';
@@ -18,6 +19,10 @@ export class AddTestimonialComponent implements OnInit {
   testimonialForm: FormGroup
   isSubmitted = false;
   filedata: File;
+  filename: any;
+  croppedImage: any;
+  imageChangedEvent: any;
+  loadImage: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -60,8 +65,32 @@ export class AddTestimonialComponent implements OnInit {
     }
   }
 
-  handleInputChange(fileInput: any) {
-    this.filedata = <File>fileInput.target.files[0];
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -78,15 +107,17 @@ export class AddTestimonialComponent implements OnInit {
       this.toastr.error('Something wrong occured');
       return;
     }
-
-    const formdata = new FormData()
-    if (this.filedata != null && this.filedata != undefined) {
-      formdata.append('file', this.filedata);
+    const data = {
+      name: this.testimonialForm.get('name')?.value,
+      profession: this.testimonialForm.get('profession')?.value,
+      business: this.testimonialForm.get('business')?.value,
+      place: this.testimonialForm.get('place')?.value,
+      message: this.testimonialForm.get('message')?.value,
+      isActive: this.testimonialForm.get('isActive')?.value,
+      filestring: this.croppedImage,
+      filename: this.filename
     }
-    for (const data of Object.keys(this.testimonialForm.value)) {
-      formdata.append(data, this.testimonialForm.value[data]);
-    }
-    this.testimonialService.addTestimonial(formdata).subscribe((res: any) => {
+    this.testimonialService.addTestimonial(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
