@@ -165,10 +165,10 @@ export class UpdateAttributeComponent implements OnInit {
         this.colorFlag = false;
         this.imageFlag = true;
         for (let file of res?.result[0].files) {
-          this.localdata.push({
-            id: this.localdata.length,
-            url: '',
-            file: file
+          this.imgs.push({
+            id: this.imgs.length,
+            url: file,
+            name: ''
           })
         }
       }

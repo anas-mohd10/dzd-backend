@@ -28,6 +28,7 @@ export class AddCategoryComponent implements OnInit {
   loadImage: boolean;
   imageChangedEvent: Event | undefined;
   filename: any;
+  path: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,6 +107,7 @@ export class AddCategoryComponent implements OnInit {
 
   getParent(event: any) {
     let val = event.value
+    this.path = event.value
     let split = val.split(" > ")
     let len = split.length
     for (let category of this.categoryData) {
@@ -178,7 +180,8 @@ export class AddCategoryComponent implements OnInit {
       isActive: this.categoryForm.get('isActive')?.value,
       isFeatured: this.categoryForm.get('isFeatured')?.value,
       filestring: this.croppedImage,
-      filename: this.filename
+      filename: this.filename,
+      path: this.path
     }
 
     this.CategoryService.addCategory(data).subscribe((res: any) => {

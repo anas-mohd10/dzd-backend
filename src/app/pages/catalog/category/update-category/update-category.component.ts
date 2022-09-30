@@ -34,6 +34,10 @@ export class UpdateCategoryComponent implements OnInit {
   loadImage: boolean;
   imageChangedEvent: Event | undefined;
   filename: any;
+  categories: any = [];
+  root: any;
+  parent: any;
+  path: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -134,11 +138,9 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
       this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
       this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
+      this.categoryForm.get('parentId')?.setValue(this.categoryValues.path);
       if (this.categoryValues.isRoot == true) {
         this.isChecked = true;
-      } else {
-        this.parentIdValue = this.categoryValues.rootId.name + ' > ' + this.categoryValues.parentId.name + ' > ' + this.categoryValues.name;
-        this.categoryForm.get('parentId')?.setValue(this.parentIdValue);
       }
     }
     );
@@ -148,27 +150,46 @@ export class UpdateCategoryComponent implements OnInit {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
       for (let i = 0; i < res?.result.length; i++) {
-        if (res?.result[i].parentId && !res?.result[i].rootId) {
-          this.categoryArray.push(res?.result[i].parentId.name + ' > ' + res?.result[i].name);
+        if (res?.result[i].parent && !res?.result[i].root) {
+          this.categories.push(res?.result[i].parent.name + ' > ' + res?.result[i].name);
         }
-        if (!res?.result[i].parentId && res?.result[i].rootId) {
-          this.categoryArray.push(res?.result[i].rootId.name + ' > ' + res?.result[i].name);
+        if (!res?.result[i].parent && res?.result[i].root) {
+          this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
         }
-        if (res?.result[i].parentId && res?.result[i].rootId) {
-          if (res?.result[i].parentId._id != res?.result[i].rootId._id) {
-            this.categoryArray.push(res?.result[i].rootId.name + ' > ' + res?.result[i].parentId.name + ' > ' + res?.result[i].name);
-          } else if (res?.result[i].parentId._id == res?.result[i].rootId._id) {
-            this.categoryArray.push(
-              res?.result[i].rootId.name + ' > ' + res?.result[i].name
-            );
+        if (res?.result[i].parent && res?.result[i].root) {
+          if (res?.result[i].parent._id != res?.result[i].root._id) {
+            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.name + ' > ' + res?.result[i].name);
+          } else if (res?.result[i].parent._id == res?.result[i].root._id) {
+            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
           }
         }
-        if (!res?.result[i].parentId && !res?.result[i].rootId) {
-          this.categoryArray.push(res?.result[i].name);
+        if (!res?.result[i].parent && !res?.result[i].root) {
+          this.categories.push(res?.result[i].name);
         }
       }
-      this.categoryForm.get('parentId')?.setValue(this.categoryArray);
     });
+  }
+
+  getParent(event: any) {
+    let val = event.value
+    this.path = event.value
+    let split = val.split(" > ")
+    let len = split.length
+    for (let category of this.categoryData) {
+      if (len > 1) {
+        if (split[0] == category.name) {
+          this.root = category._id
+        }
+        if (split[len - 1] == category.name) {
+          this.parent = category._id
+        }
+      } else if (len == 1) {
+        if (split[0] == category.name) {
+          this.root = category._id
+          this.parent = category._id
+        }
+      }
+    }
   }
 
   //Update exsisting category
@@ -176,12 +197,13 @@ export class UpdateCategoryComponent implements OnInit {
     const data = {
       name: this.categoryForm.get('name')?.value,
       isRoot: this.categoryForm.get('isRoot')?.value,
-      // root: this.root,
-      // parent: this.parent,
+      root: this.root,
+      parent: this.parent,
       isActive: this.categoryForm.get('isActive')?.value,
       isFeatured: this.categoryForm.get('isFeatured')?.value,
       filestring: this.croppedImage,
-      filename: this.filename
+      filename: this.filename,
+      path: this.path
     }
 
     this.CategoryService.updateCategory(this.category, data).subscribe(

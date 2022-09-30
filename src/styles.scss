@@ -94,6 +94,7 @@
   height: 100%;
   object-fit: cover;
   width: 100%;
+  border-radius: 10px;
 }
 
 .attribute-card .close-icon {
@@ -107,6 +108,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+}
+
+.attr-images img{
+  border-radius: 5px;
 }
 
 .toast-container {

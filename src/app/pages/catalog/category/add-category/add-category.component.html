@@ -53,7 +53,7 @@
                   <div class="fs-7 mt-3">Kindly confirm whether this is a root category or not. </div>
                 </div>
               </div>
-              <ng-container *ngIf="isChecked == false">
+              <ng-container *ngIf="!isChecked">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-6 mb-3 required">Parent Category</label>
@@ -62,16 +62,6 @@
                       (change)="getParent($event.target)">
                       <option value="" disabled>-- Select parent category --</option>
                       <option *ngFor="let category of categories" value="{{ category }}">{{ category }}</option>
-                    </select>
-                  </div>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="isChecked == true">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-6 mb-3">Parent Category</label>
-                    <select class="form-select" aria-label="-- select --" disabled>
-                      <option selected>-- Select parent category --</option>
                     </select>
                   </div>
                 </div>
