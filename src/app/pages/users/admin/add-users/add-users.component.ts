@@ -58,9 +58,13 @@ export class AddUsersComponent implements OnInit {
     })
   }
 
-  checkEmail(event: any) {
-    this.adminService.getAdminUserByMail(event.value).subscribe((res: any) => {
-      if (res?.result) {
+  checkEmail(e: any) {
+    const data = { email: '' }
+    if (e.value) {
+      data.email = e.value
+    }
+    this.adminService.getAdminUserByMail(data).subscribe((res: any) => {
+      if (res?.result.length != 0) {
         this.uniqueEmail = false
         this.toastr.error("Email already exists")
       } else {

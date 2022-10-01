@@ -26,14 +26,19 @@ export class CustomersService {
     return this.http.get(`${url}`)
   }
 
-  getCustomerByMail(email: any) {
-    const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer_by_mail + "?email=" + email);
-    return this.http.get(`${url}`)
+  getCustomerByMail(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer_by_mail);
+    return this.http.post(`${url}`, data)
   }
 
   getCustomerBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`)
+  }
+
+  getCustomerByNum(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer_by_number);
+    return this.http.post(`${url}`, data)
   }
 
   getCustomersCoumt() {

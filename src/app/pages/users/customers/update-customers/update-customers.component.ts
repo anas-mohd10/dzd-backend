@@ -21,6 +21,7 @@ export class UpdateCustomersComponent implements OnInit {
   uniqueEmail: boolean = true;
   customerData: any;
   slug: any;
+  uniqueNum: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +43,7 @@ export class UpdateCustomersComponent implements OnInit {
       lastname: [''],
       email: ['', Validators.required],
       mobile: ['', Validators.required],
-      walletBalance: ['', Validators.required],
+      walletBalance: [''],
       isActive: ['true', Validators.required],
       isHome: ['', Validators.required],
       firstline: ['', Validators.required],
@@ -74,20 +75,34 @@ export class UpdateCustomersComponent implements OnInit {
     }
   }
 
-  checkEmail() {
-    let email = this.customersForm.get("email")?.value
-    if (this.customerData.email != email) {
-      this.customerService.getCustomerByMail(email).subscribe((res: any) => {
-        if (res?.result.length != 0) {
-          this.uniqueEmail = false
-          this.toastr.error("Email already exists")
-        } else {
-          this.uniqueEmail = true
-        }
-      })
-    } else {
-      this.uniqueEmail = true
+  checkEmail(e: any) {
+    const data = { email: '' }
+    if (e.value) {
+      data.email = e.value
     }
+    this.customerService.getCustomerByMail(data).subscribe((res: any) => {
+      if (res?.result.length != 0) {
+        this.uniqueEmail = false
+        this.toastr.error("Email already exists")
+      } else {
+        this.uniqueEmail = true
+      }
+    })
+  }
+
+  validateNumber(e: any) {
+    const data = { mobile: '' }
+    if (e.value) {
+      data.mobile = e.value
+    }
+    this.customerService.getCustomerByNum(data).subscribe((res: any) => {
+      if (res?.result.length != 0) {
+        this.uniqueNum = false
+        this.toastr.error("Mobile number already exists")
+      } else {
+        this.uniqueNum = true
+      }
+    })
   }
 
   getCustomerDetails() {

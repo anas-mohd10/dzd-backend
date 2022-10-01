@@ -17,7 +17,8 @@ export class AddCustomersComponent implements OnInit {
   appRoute = appRoutes
   customersForm: FormGroup
   isSubmitted = false;
-  uniqueEmail: boolean;
+  uniqueEmail: boolean = false
+  uniqueNum: boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +38,7 @@ export class AddCustomersComponent implements OnInit {
       lastname: [''],
       email: ['', Validators.required],
       mobile: ['', Validators.required],
-      walletBalance: ['', Validators.required],
+      walletBalance: [''],
       isActive: ['true', Validators.required],
       isHome: ['', Validators.required],
       firstline: ['', Validators.required],
@@ -69,14 +70,32 @@ export class AddCustomersComponent implements OnInit {
     }
   }
 
-  checkEmail() {
-    let email = this.customersForm.get("email")?.value
-    this.customerService.getCustomerByMail(email).subscribe((res: any) => {
+  checkEmail(e: any) {
+    const data = { email: '' }
+    if (e.value) {
+      data.email = e.value
+    }
+    this.customerService.getCustomerByMail(data).subscribe((res: any) => {
       if (res?.result.length != 0) {
         this.uniqueEmail = false
         this.toastr.error("Email already exists")
       } else {
         this.uniqueEmail = true
+      }
+    })
+  }
+
+  validateNumber(e: any) {
+    const data = { mobile: '' }
+    if (e.value) {
+      data.mobile = e.value
+    }
+    this.customerService.getCustomerByNum(data).subscribe((res: any) => {
+      if (res?.result.length != 0) {
+        this.uniqueNum = false
+        this.toastr.error("Mobile number already exists")
+      } else {
+        this.uniqueNum = true
       }
     })
   }
@@ -117,7 +136,7 @@ export class AddCustomersComponent implements OnInit {
       walletBalance: this.customersForm.get("walletBalance")?.value,
       isActive: this.customersForm.get("isActive")?.value,
     }
-    if (this.uniqueEmail == true) {
+    if (this.uniqueEmail == true && this.uniqueNum == true) {
       this.customerService.addCustomer(data).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
@@ -127,7 +146,7 @@ export class AddCustomersComponent implements OnInit {
         }
       })
     } else {
-      this.toastr.error('Email already exists');
+      this.toastr.error('Email or Mobile number already exists');
     }
   }
 }

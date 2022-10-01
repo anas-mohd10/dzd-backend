@@ -16,9 +16,9 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
-  getOrders() {
+  getOrders(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order);
-    return this.http.get(`${url}`)
+    return this.http.post(`${url}`, data)
   }
 
   getPendingOrders() {

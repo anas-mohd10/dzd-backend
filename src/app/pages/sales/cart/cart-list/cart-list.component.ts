@@ -24,6 +24,7 @@ export class CartListComponent implements OnInit, OnDestroy {
   cartForm: FormGroup;
   customersData: any;
   productsData: any;
+  cartdata: any = []
 
   constructor(
     private cartService: CartService,
@@ -73,7 +74,7 @@ export class CartListComponent implements OnInit, OnDestroy {
 
   getCartItems() {
     this.cartService.getCarts().subscribe((res: any) => {
-      this.cartsData = res?.result
+      this.cartdata = res?.result
     })
   }
 

@@ -47,6 +47,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       lengthMenu: [5, 10, 15],
       pageLength: 10,
       processing: true,
+      destroy: true
     };
     this.getOrders()
     this.initForm()
@@ -56,13 +57,13 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     this.orderForm = this.formBuilder.group({
       f: [''],
       t: [''],
-      p: [''],
-      s: [''],
+      paymentMethod: [''],
+      orderStatus: [''],
     });
   }
 
   getOrders() {
-    this.ordersService.getOrders().subscribe((res: any) => {
+    this.ordersService.getOrders({}).subscribe((res: any) => {
       this.ordersData = res?.result
       this.filteredData = res?.result
       this.orderCount += this.ordersData.length
@@ -93,22 +94,13 @@ export class OrdersListComponent implements OnDestroy, OnInit {
 
   onSubmit() {
     let data = this.orderForm.value
-    let slug = []
-    let str = ''
-    for (let val of Object.keys(data)) {
-      if (data[val] == '' || data[val] == null || data[val] == undefined) {
-        delete data[val]
-      } else {
-        slug.push(val + "," + data[val])
+    for (let key of Object.keys(data)) {
+      if (data[key] == '') {
+        delete data[key]
       }
     }
-    str = `?${slug[0].split(",")[0]}=${slug[0].split(",")[1]}`
-    for (let i = 1; i < slug.length; i++) {
-      str += `&${slug[i].split(",")[0]}=${slug[i].split(",")[1]}`
-    }
-    this.ordersService.getOrderFilter(str).subscribe((res: any) => {
-      this.ordersData = res?.result
-      console.log(this.ordersData);
+    this.ordersService.getOrders(data).subscribe((res: any) => {
+      this.filteredData = res?.result
       this.dtTrigger.next();
     })
   }
@@ -120,4 +112,13 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
+
+  // rerender(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     // Call the dtTrigger to rerender again
+  //     this.dtTrigger.next();
+  //   });
+  // }
 }

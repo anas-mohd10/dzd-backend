@@ -54,13 +54,14 @@
                               'is-invalid':
                               (cf.email.touched || isSubmitted) &&
                               cf.email.errors?.required
-                            }" (change)="checkEmail()" />
+                            }" (change)="checkEmail($event.target)" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> Mobile No.</label>
-                           <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                           <input type="text" class="form-control fs-6" formControlName="mobile"
+                              (change)="validateNumber($event.target)" [ngClass]="{
                               'is-invalid':
                               (cf.mobile.touched || isSubmitted) &&
                               cf.mobile.errors?.required

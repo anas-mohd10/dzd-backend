@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCustomersCount()
-    this.getOrders()
+    // this.getOrders()
   }
 
   getCustomersCount() {
@@ -23,9 +23,9 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getOrders() {
-    this.ordersService.getOrders().subscribe((res: any) => {
-      this.ordersData = res?.result
-    })
-  }
+  // getOrders() {
+  //   this.ordersService.getOrders().subscribe((res: any) => {
+  //     this.ordersData = res?.result
+  //   })
+  // }
 }

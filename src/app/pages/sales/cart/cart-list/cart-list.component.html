@@ -17,32 +17,6 @@
     </div>
   </div>
   <div class="top-form-container">
-    <div class="row cart-cards">
-      <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm001.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="5"
-          description="Total Cart Items">
-        </app-stats-widget5>
-      </div>
-      <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm002.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. 98"
-          description="Ordered Items">
-        </app-stats-widget5>
-      </div>
-      <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm005.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{0}}"
-          description="Non Ordered Items">
-        </app-stats-widget5>
-      </div>
-      <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm006.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{0}}"
-          description="Deleted Items">
-        </app-stats-widget5>
-      </div>
-    </div>
     <form action="" (ngSubmit)="onSubmit()" [formGroup]="cartForm">
       <div class="row align-items-end">
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
@@ -91,7 +65,7 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <div style="display: none"> {{cartsData.length}}</div>
+          <div style="display: none"> {{cartdata.length}}</div>
           <div class="table-responsive">
             <table datatable [dtOptions]="dtOptions"
               class="datatable table table-bcartless table-center table-row-dashed mb-0">
@@ -109,21 +83,27 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let cart of cartsData; let i = index">
+                <tr *ngFor="let cart of cartdata; let i = index">
                   <td>
                     <h2 class="table-avatar">{{ i + 1 }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.order?.orderNo }}</h2>
+                    <h2 class="table-avatar">{{ cart?.order }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.customer?.firstname }}</h2>
+                    <h2 class="table-avatar">{{ cart?.customer }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.customer?.firstname }}</h2>
+                    <h2 class="table-avatar">{{ cart?.product }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{cart?.total}}</h2>
+                    <h2 class="table-avatar">{{cart?.quantity}}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.total }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.carrier }}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.date }}</h2>

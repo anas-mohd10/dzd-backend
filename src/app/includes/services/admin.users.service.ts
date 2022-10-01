@@ -20,11 +20,10 @@ export class AdminUsersService {
     return this.http.get(`${url}`)
   }
 
-  getAdminUserByMail(email: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_count + "?email=" + email);
-    return this.http.get(`${url}`)
+  getAdminUserByMail(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_count);
+    return this.http.post(`${url}`, data)
   }
-
 
   addAdminUsers(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.register_admin);
