@@ -3,4 +3,5 @@ export const localstorageVariables = {
   is_logged_in: 'is_logged_in',
   userData: 'UserData',
   pData: 'pData',
+  slug: 'slug'
 };

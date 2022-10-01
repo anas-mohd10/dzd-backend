@@ -184,6 +184,12 @@ export class AddCategoryComponent implements OnInit {
       path: this.path
     }
 
+    if (data.isRoot == 'true') {
+      delete data.root
+      delete data.parent
+      delete data.path
+    }
+
     this.CategoryService.addCategory(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');

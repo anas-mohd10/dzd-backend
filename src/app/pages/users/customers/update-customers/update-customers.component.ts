@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -38,22 +38,22 @@ export class UpdateCustomersComponent implements OnInit {
 
   initForm() {
     this.customersForm = this.formBuilder.group({
-      firstname: [''],
+      firstname: ['', Validators.required],
       lastname: [''],
-      email: [''],
-      mobile: [''],
-      walletBalance: [''],
-      isActive: [''],
-      isHome: [''],
-      firstline: [''],
+      email: ['', Validators.required],
+      mobile: ['', Validators.required],
+      walletBalance: ['', Validators.required],
+      isActive: ['true', Validators.required],
+      isHome: ['', Validators.required],
+      firstline: ['', Validators.required],
       secondline: [''],
       area: [''],
-      city: [''],
-      landmark: [''],
-      pincode: [''],
+      city: ['', Validators.required],
+      landmark: ['', Validators.required],
+      pincode: ['', Validators.required],
       lat: [''],
       lng: [''],
-      state: [''],
+      state: ['', Validators.required],
     });
   }
 

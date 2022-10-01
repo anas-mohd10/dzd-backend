@@ -203,15 +203,26 @@ export class UpdateCategoryComponent implements OnInit {
       isFeatured: this.categoryForm.get('isFeatured')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      path: this.path
+      path: this.path,
+      file: ''
+    }
+
+    if (this.uploadedimg != '') {
+      data.file = this.uploadedimg
+    }
+
+    if (data.isRoot == 'true') {
+      delete data.root
+      delete data.parent
+      delete data.path
     }
 
     this.CategoryService.updateCategory(this.category, data).subscribe(
       (res: any) => {
         if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
+          this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
-          this.toastr.success('Category Added Successfully');
+          this.toastr.success('Category updated successfully');
           this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
         }
       }

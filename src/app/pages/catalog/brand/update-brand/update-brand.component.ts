@@ -139,9 +139,9 @@ export class UpdateBrandComponent implements OnInit {
 
     this.brandService.updateBrand(this.brand, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Brand Updated Successfully');
+        this.toastr.success('Brand updated successfully');
         this.router.navigate([this.appRoute.brand.BRAND_LIST]);
       }
     });

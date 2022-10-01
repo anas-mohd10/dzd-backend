@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.setItem(localstorageVariables.access_token, res?.result?.token);
         localStorage.setItem(localstorageVariables.is_logged_in, 'true');
         localStorage.setItem(localstorageVariables.pData, JSON.stringify(res?.Data?.permissions))
+        localStorage.setItem(localstorageVariables.slug, res?.result?.slug)
         this.router.navigate([this.redirectUrl]);
       }
     })

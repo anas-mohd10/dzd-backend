@@ -46,8 +46,8 @@ export class AddCustomersComponent implements OnInit {
       city: ['', Validators.required],
       landmark: ['', Validators.required],
       pincode: ['', Validators.required],
-      lat: ['', Validators.required],
-      lng: ['', Validators.required],
+      lat: [''],
+      lng: [''],
       state: ['', Validators.required],
     });
   }

@@ -20,14 +20,12 @@ export class DashboardComponent implements OnInit {
   getCustomersCount() {
     this.customersService.getCustomersCoumt().subscribe((res: any) => {
       this.customersCount = res?.result
-      console.log(this.customersCount);
     })
   }
 
   getOrders() {
     this.ordersService.getOrders().subscribe((res: any) => {
       this.ordersData = res?.result
-      console.log(this.ordersData.length);
     })
   }
 }

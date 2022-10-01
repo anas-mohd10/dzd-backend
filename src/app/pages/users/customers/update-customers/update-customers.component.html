@@ -32,34 +32,50 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> First Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="firstname" />
+                           <label class="fs-6 mb-3 form-title required">First Name</label>
+                           <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
+                              'is-invalid':
+                              (cf.firstname.touched || isSubmitted) &&
+                              cf.firstname.errors?.required
+                            }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title"> Last Name</label>
+                           <label class="fs-6 mb-3 form-title "> Last Name</label>
                            <input type="text" class="form-control fs-6" formControlName="lastname" />
+
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> Email</label>
-                           <input type="text" class="form-control fs-6" formControlName="email"
-                              (change)="checkEmail()" />
+                           <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                              'is-invalid':
+                              (cf.email.touched || isSubmitted) &&
+                              cf.email.errors?.required
+                            }" (change)="checkEmail()" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> Mobile No.</label>
-                           <input type="text" class="form-control fs-6" formControlName="mobile" />
+                           <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                              'is-invalid':
+                              (cf.mobile.touched || isSubmitted) &&
+                              cf.mobile.errors?.required
+                            }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <label class="fs-6 mb-3 form-title required">Wallet Balance</label>
                         <div class="input-group mb-3">
                            <span class="input-group-text">Rs</span>
-                           <input type="text" class="form-control" formControlName="walletBalance">
+                           <input type="text" class="form-control" formControlName="walletBalance" [ngClass]="{
+                              'is-invalid':
+                              (cf.walletBalance.touched || isSubmitted) &&
+                              cf.walletBalance.errors?.required
+                            }">
                            <span class="input-group-text">.00</span>
                         </div>
                      </div>
@@ -81,7 +97,11 @@
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">Address Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="isHome">
+                              formControlName="isHome" [ngClass]="{
+                                 'is-invalid':
+                                 (cf.isHome.touched || isSubmitted) &&
+                                 cf.isHome.errors?.required
+                               }">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Home</option>
                               <option value="false">Office</option>
@@ -91,7 +111,11 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> Address Line 1</label>
-                           <input type="text" class="form-control fs-6" formControlName="firstline" />
+                           <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
+                              'is-invalid':
+                              (cf.firstline.touched || isSubmitted) &&
+                              cf.firstline.errors?.required
+                            }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -109,30 +133,42 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> City</label>
-                           <input type="text" class="form-control fs-6" formControlName="city" />
+                           <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
+                              'is-invalid':
+                              (cf.city.touched || isSubmitted) &&
+                              cf.city.errors?.required
+                            }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> Landmark</label>
-                           <input type="text" class="form-control fs-6" formControlName="landmark" />
+                           <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
+                              'is-invalid':
+                              (cf.landmark.touched || isSubmitted) &&
+                              cf.landmark.errors?.required
+                            }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required"> Pincode</label>
-                           <input type="text" class="form-control fs-6" formControlName="pincode" />
+                           <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                              'is-invalid':
+                              (cf.pincode.touched || isSubmitted) &&
+                              cf.pincode.errors?.required
+                            }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Latitude</label>
+                           <label class="fs-6 mb-3 form-title"> Latitude</label>
                            <input type="text" class="form-control fs-6" formControlName="lat" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Longitude</label>
+                           <label class="fs-6 mb-3 form-title"> Longitude</label>
                            <input type="text" class="form-control fs-6" formControlName="lng" />
                         </div>
                      </div>
@@ -140,7 +176,11 @@
                         <div class="form-group">
                            <label class="fs-6 mb-3 form-title required">State</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="state">
+                              formControlName="state" [ngClass]="{
+                                 'is-invalid':
+                                 (cf.state.touched || isSubmitted) &&
+                                 cf.state.errors?.required
+                               }">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="Kerala">Kerala</option>
                               <option value="Karnataka">Karnataka</option>
