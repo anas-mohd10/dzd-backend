@@ -30,4 +30,9 @@ export class BrandService {
     const url = this.commonService.getFullUrl(this.brandEndpoints.update_brand + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  searchBrand(query: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.search_brand);
+    return this.http.post(`${url}`, query);
+  }
 }
