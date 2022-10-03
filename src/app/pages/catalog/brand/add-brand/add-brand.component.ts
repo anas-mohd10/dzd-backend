@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { ToastrService } from 'ngx-toastr';
-import { ImageCroppedEvent, LoadedImage } from 'ngx-image-cropper';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-brand',

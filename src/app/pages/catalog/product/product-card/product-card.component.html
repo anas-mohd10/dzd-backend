@@ -20,6 +20,41 @@
          </div>
       </div>
    </div>
+   <div class="product-form-container">
+      <form [formGroup]="productForm">
+         <div class="col-12 row" style="display: flex; align-items: flex-end;">
+            <div class="search-input col-sm-4">
+               <label class="fs-6">Search</label>
+               <input type="text" placeholder="Search for products here..." class="form-control fs-6"
+                  formControlName="name">
+            </div>
+            <div class="search-status col-sm-2">
+               <label class="fs-6">Status</label>
+               <select name="" id="" class="form-select fs-6" formControlName="isActive">
+                  <option value="">-- Select an option --</option>
+                  <option value=true>Active</option>
+                  <option value=false>Inactive</option>
+               </select>
+            </div>
+            <div class="search-featured col-sm-2">
+               <label class="fs-6 form-title">Featured</label>
+               <select name="" id="" class="form-select fs-6" formControlName="isFeatured">
+                  <option value="">-- Select an option --</option>
+                  <option value=true>Featured</option>
+                  <option value=false>Non featured</option>
+               </select>
+            </div>
+            <div class="search-submit col-sm-2">
+               <input type="reset" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+                  style="outline: none; border: none;">
+            </div>
+            <div class="search-submit col-sm-2">
+               <input type="submit" class="form-control fs-6 bg-primary text-white" (click)="onSubmit()"
+                  style="outline: none; border: none;">
+            </div>
+         </div>
+      </form>
+   </div>
    <div class="product-card-container">
       <div style="display: none;">{{productData.length}}</div>
       <ng-container *ngFor="let product of productData">
@@ -46,12 +81,12 @@
                      Inactive
                   </ng-container>
                </div>
-               <div class="edit-btn">
-                  <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: product?.slug }"
-                     class="fs-5 cursor-pointer text-darker">
-                     Edit
-                  </a>
-               </div>
+               <div class="card-edit-btn">
+                  <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: product?.slug }"
+                    class="fs-5 cursor-pointer text-darker">
+                    Edit
+                  </button>
+                </div>
             </div>
          </div>
       </ng-container>

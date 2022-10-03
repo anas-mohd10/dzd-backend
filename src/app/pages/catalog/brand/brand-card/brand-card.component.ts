@@ -15,8 +15,12 @@ export class BrandCardComponent implements OnInit {
   brandData: any;
   displayTable: boolean = false;
   base: any
+  len: any;
 
-  constructor(private brandService: BrandService, private formBuilder: FormBuilder,) { }
+  constructor(
+    private brandService: BrandService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.initForm()
@@ -25,6 +29,7 @@ export class BrandCardComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.brandData = res?.result
+          this.len = res?.result.length
           break;
       }
     });
@@ -38,10 +43,16 @@ export class BrandCardComponent implements OnInit {
     });
   }
 
+  onReload(){
+    window.location.reload()
+  }
+
   onSubmit() {
-    console.log(this.brandForm.value);
-    const data = {}
-    this.brandService.searchBrand(data).subscribe((res: any) => {
+    this.brandService.searchBrand(this.brandForm.value).subscribe((res: any) => {
+      if(res?.errorCode == 0){
+        this.brandData = res?.result
+        this.len = res?.result.length
+      }
     })
   }
 

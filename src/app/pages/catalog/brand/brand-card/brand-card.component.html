@@ -14,34 +14,38 @@
           </li>
         </ul>
         <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="{{ appRoute.brand.ADD_BRAND }}"
-          style="width: 200px">
-          Add Brand
-        </button>
+          style="width: 200px">Add Brand</button>
       </div>
     </div>
   </div>
   <div class="brand-form-container">
     <form [formGroup]="brandForm">
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
-        <div class="search-input col-sm-3">
+        <div class="search-input col-sm-4">
           <label class="fs-6">Search</label>
           <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name">
         </div>
-        <div class="search-status col-sm-3">
+        <div class="search-status col-sm-2">
           <label class="fs-6">Status</label>
-          <select name="" id="" class="form-select" formControlName="isActive">
+          <select name="" id="" class="form-select fs-6" formControlName="isActive">
+            <option value="">-- Select an option --</option>
             <option value=true>Active</option>
             <option value=false>Inactive</option>
           </select>
         </div>
-        <div class="search-featured col-sm-3">
-          <label class="fs-6">Featured</label>
-          <select name="" id="" class="form-select" formControlName="isFeatured">
+        <div class="search-featured col-sm-2">
+          <label class="fs-6 form-title">Featured</label>
+          <select name="" id="" class="form-select fs-6" formControlName="isFeatured">
+            <option value="">-- Select an option --</option>
             <option value=true>Featured</option>
             <option value=false>Non featured</option>
           </select>
         </div>
-        <div class="search-submit col-sm-3">
+        <div class="search-submit col-sm-2">
+          <input type="reset" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+            style="outline: none; border: none;">
+        </div>
+        <div class="search-submit col-sm-2">
           <input type="submit" class="form-control fs-6 bg-primary text-white" (click)="onSubmit()"
             style="outline: none; border: none;">
         </div>
@@ -59,31 +63,28 @@
           <div class="flex-1">
             <div class="brand-name">{{brand?.name}}</div>
             <div class="brand-featured-{{brand?.isFeatured}}">
-              <ng-container *ngIf="brand?.isFeatured == true">
-                Featured
-              </ng-container>
-              <ng-container *ngIf="brand?.isFeatured == false">
-                Not Featured
-              </ng-container>
+              <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
+              <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
             </div>
           </div>
         </div>
         <div class="flex-21">
           <div class="brand-status-{{brand?.isActive}}">
-            <ng-container *ngIf="brand?.isActive == true">
-              Active
-            </ng-container>
-            <ng-container *ngIf="brand?.isActive == false">
-              Inactive
-            </ng-container>
+            <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
+            <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
           </div>
-          <div class="edit-btn">
-            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
+          <div class="card-edit-btn">
+            <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
               class="fs-5 cursor-pointer text-darker">
               Edit
-            </a>
+            </button>
           </div>
         </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="len == 0">
+      <div class="no-data-container">
+        <h2>Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>

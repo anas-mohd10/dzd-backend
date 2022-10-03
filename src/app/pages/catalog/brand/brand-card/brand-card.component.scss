@@ -1,16 +1,14 @@
 .brand-card-container {
-   // display: flex;
-   // flex-wrap: nowrap;
+   display: flex;
+   flex-wrap: wrap;
    margin: 40px 0 0 0;
-   display: grid;
-   gap: 5px;
-   grid-template-columns: auto auto;
+   width: 100%;
 }
 
 .brand-card {
-   width: 100%;
+   width: calc(50% - 20px);
+   margin: 10px 10px;
    height: 200px;
-   margin: 0 10px 0 0;
    padding: 10px 30px;
    background: #ffffff;
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -51,17 +49,20 @@
 .brand-name {
    font-size: 1.2rem;
    font-weight: 600;
-   margin: 0 0 10px 0;
 }
 
 .brand-status-true {
    width: 150px;
-   background: #3f8e5f;
+   background: #00bdab;
    color: #ffffff;
    padding: 5px;
    font-size: 1.1rem;
+   font-weight: 600;
    margin: 5px 0;
    border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 
 .brand-status-false {
@@ -70,24 +71,22 @@
    color: #ffffff;
    padding: 5px;
    font-size: 1.1rem;
+   font-weight: 600;
    margin: 5px 0;
    border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 
 .brand-featured-true {
-   background: #F5FCFB;
    color: #00bdab;
    font-weight: 600;
    font-size: 1.1rem;
-   padding: 5px;
-   border-radius: 5px;
 }
 
 .brand-featured-false {
-   background: #F5FCFB;
    color: #0087bd;
    font-weight: 600;
    font-size: 1.1rem;
-   padding: 5px;
-   border-radius: 5px;
 }
