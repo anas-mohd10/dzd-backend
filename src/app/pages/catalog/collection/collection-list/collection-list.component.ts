@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'src/app/includes/services/collection.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-collection-list',
@@ -17,10 +18,12 @@ export class CollectionListComponent implements OnInit {
   appRoute = appRoutes;
   collectionData: any
   displayTable: boolean;
+  base: any
 
-  constructor(private collectionService: CollectionService) {}
+  constructor(private collectionService: CollectionService) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.getCollection();
     this.dtOptions = {
       pagingType: 'simple_numbers',
@@ -29,10 +32,10 @@ export class CollectionListComponent implements OnInit {
       processing: true,
     };
   }
-  
+
   getCollection() {
-    this.collectionService.getCollection().subscribe((res:any)=>{
-      switch(res?.errorCode){
+    this.collectionService.getCollection().subscribe((res: any) => {
+      switch (res?.errorCode) {
         case 0:
           this.collectionData = res?.result
           break

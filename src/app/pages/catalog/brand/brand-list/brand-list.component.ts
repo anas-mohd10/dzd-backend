@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-brand',
@@ -18,6 +19,7 @@ export class BrandComponent implements OnDestroy, OnInit {
   appRoute = appRoutes;
   brandData: any;
   displayTable: boolean = false;
+  base: any
 
   constructor(private brandService: BrandService) { }
 
@@ -28,6 +30,8 @@ export class BrandComponent implements OnDestroy, OnInit {
       pageLength: 10,
       processing: true,
     };
+
+    this.base = environment.base
 
     this.brandService.getBrand().subscribe((res: any) => {
       switch (res?.errorCode) {

@@ -74,7 +74,7 @@
                     </td>
                   </ng-container>
                   <td>
-                    <img class="category-logo" src="http://localhost:3000/{{ category?.file }}" alt="category" />
+                    <img class="category-logo" src="{{base}}/{{ category?.file }}" alt="category" />
                   </td>
                   <td>
                     <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: category?.slug }"

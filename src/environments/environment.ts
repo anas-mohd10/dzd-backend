@@ -5,7 +5,9 @@ export const environment = {
   isMockEnabled: true,
   // apiUrl: 'https://ccapi.previewbay.com/api/v1/w/admin/auth',
   // baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
+  // base: 'https://ccapi.previewbay.com',
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'http://localhost:3000/api/v1/w/',
+  base: 'http://localhost:3000',
   loginUrl: 'api',
 };

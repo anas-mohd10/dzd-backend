@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BrandComponent } from './brand-list.component';
 import { DataTablesModule } from 'angular-datatables';
+import { BrandCardComponent } from '../brand-card/brand-card.component';
 
 @NgModule({
   declarations: [BrandComponent],
@@ -13,6 +14,10 @@ import { DataTablesModule } from 'angular-datatables';
       {
         path: '',
         component: BrandComponent,
+      },
+      {
+        path: 'list',
+        component: BrandCardComponent,
       },
     ]),
   ],

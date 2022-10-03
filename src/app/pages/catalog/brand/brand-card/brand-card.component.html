@@ -1,0 +1,62 @@
+<div class="brand-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Brands</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+               routerLink="{{ appRoute.brand.ADD_BRAND }}" style="width: 200px">
+               Add Brand
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="brand-card-container">
+      <div style="display: none;">{{brandData.length}}</div>
+      <ng-container *ngFor="let brand of brandData">
+         <div class="brand-card">
+            <div class="brand-details">
+               <div class="brand-image">
+                  <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+               </div>
+               <div class="flex-1">
+                  <div class="brand-name">{{brand?.name}}</div>
+                  <div class="brand-featured-{{brand?.isFeatured}}">
+                     <ng-container *ngIf="brand?.isFeatured == true">
+                        Featured
+                     </ng-container>
+                     <ng-container *ngIf="brand?.isFeatured == false">
+                        Not Featured
+                     </ng-container>
+                  </div>
+               </div>
+            </div>
+            <div class="flex-21">
+               <div class="brand-status-{{brand?.isActive}}">
+                  <ng-container *ngIf="brand?.isActive == true">
+                     Active
+                  </ng-container>
+                  <ng-container *ngIf="brand?.isActive == false">
+                     Inactive
+                  </ng-container>
+               </div>
+               <div class="edit-btn">
+                  <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
+                     class="fs-5 cursor-pointer text-darker">
+                     Edit
+                  </a>
+               </div>
+            </div>
+         </div>
+      </ng-container>
+   </div>
+</div>

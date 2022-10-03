@@ -1,5 +1,4 @@
 <div class="collection-page-container">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder">Collections</h1>
@@ -15,14 +14,12 @@
           </li>
         </ul>
         <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.collection.ADD_COLLECTION }}"  style=" width: 200px">
+          routerLink="{{ appRoute.collection.ADD_COLLECTION }}" style=" width: 200px">
           Add Collection
         </button>
       </div>
     </div>
   </div>
-  <!-- Page Header -->
-  <!-- Page Content -->
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
@@ -48,7 +45,7 @@
                     <h2 class="table-avatar fs-6">{{ collection?.name }}</h2>
                   </td>
                   <td>
-                    <img class="collection-logo" src="http://localhost:3000/{{collection?.file}}" alt="collection" />
+                    <img class="collection-logo" src="{{base}}/{{collection?.file}}" alt="collection" />
                   </td>
                   <td>
                     <ng-container *ngIf="collection?.isFeatured == true">

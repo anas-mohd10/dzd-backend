@@ -171,7 +171,7 @@
                     <ng-container *ngIf="img?.name == '' ">
                       <div class="attribute-card">
                         <div class="attribute-image fs-6 fw-bold mt-3">
-                          <img class="attribute-preview" src="http://localhost:3000/{{img?.url}}" alt=""
+                          <img class="attribute-preview" src="{{base}}/{{img?.url}}" alt=""
                             srcset="">
                           <div class="close-icon bg-dark" (click)="removeFile(img?.id)">
                             <i class="bi bi-x-lg text-white"></i>

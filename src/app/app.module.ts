@@ -23,10 +23,12 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { LayoutModule } from './shared/layout';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvService } from './includes/services/csv.service';
+import { ProductCardComponent } from './pages/catalog/product/product-card/product-card.component';
+import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
 // #fake-end#
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent],
   imports: [
     DataTablesModule,
     // NgxTextEditorModule,

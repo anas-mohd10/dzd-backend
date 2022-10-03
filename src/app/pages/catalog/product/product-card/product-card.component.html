@@ -1,0 +1,59 @@
+<div class="product-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Products</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+               routerLink="{{ appRoute.product.ADD_PRODUCT }}" style="width: 200px">
+               Add Product
+            </button>
+         </div>
+      </div>
+   </div>
+   <div class="product-card-container">
+      <div style="display: none;">{{productData.length}}</div>
+      <ng-container *ngFor="let product of productData">
+         <div class="product-card">
+            <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" /></div>
+            <div class="product-details">
+               <div class="product-name">{{product?.name}}</div>
+               <div class="product-type">
+                  <ng-container *ngIf="product?.isSingle == true">
+                     Single
+                  </ng-container>
+                  <ng-container *ngIf="product?.isSingle == false">
+                     Configurable
+                  </ng-container>
+               </div>
+               <div class="product-mrpprice">MRP - RS. {{product?.mrpPrice}}</div>
+               <div class="product-offerprice">Offer - Rs. {{product?.offerPrice}}</div>
+               <div class="product-stock">{{product?.stock}} products left</div>
+               <div class="product-status-{{product?.isActive}}">
+                  <ng-container *ngIf="product?.isActive == true">
+                     Active
+                  </ng-container>
+                  <ng-container *ngIf="product?.isActive == false">
+                     Inactive
+                  </ng-container>
+               </div>
+               <div class="edit-btn">
+                  <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: product?.slug }"
+                     class="fs-5 cursor-pointer text-darker">
+                     Edit
+                  </a>
+               </div>
+            </div>
+         </div>
+      </ng-container>
+   </div>
+</div>

@@ -21,12 +21,12 @@
       </div>
    </div>
    <div class="row">
-      <div class="col-lg-3">
+      <!-- <div class="col-lg-3">
          <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
             class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
             title="{{customersCount ? customersCount : 0}}" description="Total Active Customers">
          </app-stats-widget5>
-      </div>
+      </div> -->
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
@@ -76,8 +76,7 @@
                            </td>
                            <td>
                               <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}"
-                                 [queryParams]="{ customer: customer?.slug }"
-                                 class="fs-6 cursor-pointer text-darker">
+                                 [queryParams]="{ customer: customer?.slug }" class="fs-6 cursor-pointer text-darker">
                                  <i class="bi bi-pen"></i>
                                  Edit
                               </a>

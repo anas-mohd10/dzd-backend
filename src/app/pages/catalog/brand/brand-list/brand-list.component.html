@@ -51,7 +51,7 @@
                     <h2 class="table-avatar fs-6">{{ brand?.name }}</h2>
                   </td>
                   <td>
-                    <img class="brand-logo" src="http://localhost:3000/{{ brand?.file }}" alt="brand" />
+                    <img class="brand-logo" src="{{base}}/{{ brand?.file }}" alt="brand" />
                   </td>
                   <td>
                     <ng-container *ngIf="brand?.isFeatured == true">

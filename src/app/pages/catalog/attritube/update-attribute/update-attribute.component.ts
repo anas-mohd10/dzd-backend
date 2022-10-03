@@ -7,6 +7,8 @@ import { AttributeService } from '../../../../includes/services/attribute.servic
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-update-attribute',
@@ -41,6 +43,7 @@ export class UpdateAttributeComponent implements OnInit {
   imageChangedEvent: Event | undefined;
   filename: any;
   imgs: any = [];
+  base: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,6 +55,7 @@ export class UpdateAttributeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.slug = this.route.snapshot.queryParams.category || '';
     this.attribute = this.route.snapshot.queryParams.attribute || '';

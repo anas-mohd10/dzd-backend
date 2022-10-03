@@ -4,6 +4,7 @@ import { appRoutes } from '../../../../config/routes';
 import { AttributeService } from '../../../../includes/services/attribute.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { DataTableDirective } from 'angular-datatables';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-attribute-list',
@@ -22,12 +23,13 @@ export class AttributeComponent implements OnInit {
   categoryId: any;
   displayTable: boolean = false;
   categoryName: any;
+  base: any
 
   constructor(
     private route: ActivatedRoute,
     private CategoryService: CategoryService,
     private AttributeService: AttributeService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.category = this.route.snapshot.queryParams.category || '';
@@ -38,6 +40,7 @@ export class AttributeComponent implements OnInit {
       processing: true,
     };
     this.getDetails();
+    this.base = environment.base
   }
 
   getDetails() {

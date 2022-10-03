@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-category',
@@ -18,9 +19,9 @@ export class CategoryComponent implements OnInit {
   appRoute = appRoutes;
   categoryData: any;
   displayTable: boolean;
+  base: any
 
   constructor(private categoryService: CategoryService) { }
-
 
   ngOnInit(): void {
     this.getCategory()
@@ -30,6 +31,7 @@ export class CategoryComponent implements OnInit {
       pageLength: 10,
       processing: true,
     };
+    this.base = environment.base
   }
 
   getCategory() {

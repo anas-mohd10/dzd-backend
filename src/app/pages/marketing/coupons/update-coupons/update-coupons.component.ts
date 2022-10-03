@@ -9,6 +9,7 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-coupons',
@@ -48,6 +49,7 @@ export class UpdateCouponsComponent implements OnInit {
   loadImage: boolean;
   croppedImage: string | null | undefined;
   uploadedimg: any;
+  base: any
 
   constructor(
     private productService: ProductService,

@@ -3,6 +3,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-coupons-list',
@@ -18,11 +19,13 @@ export class CouponsListComponent implements OnInit {
   appRoute = appRoutes
   couponsData: any;
   displayTable: boolean;
+  base: string;
   constructor(
     private couponService: CouponsService
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.getCoupons()
     this.dtOptions = {
       pagingType: 'simple_numbers',
