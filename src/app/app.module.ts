@@ -25,6 +25,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvService } from './includes/services/csv.service';
 import { ProductCardComponent } from './pages/catalog/product/product-card/product-card.component';
 import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 // #fake-end#
 
 @NgModule({
@@ -45,6 +46,7 @@ import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.
     NgbModule,
     LayoutModule,
     // FormBuilder,
+    NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
     ImageCropperModule

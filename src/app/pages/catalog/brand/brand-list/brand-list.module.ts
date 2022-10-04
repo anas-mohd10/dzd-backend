@@ -4,12 +4,15 @@ import { RouterModule } from '@angular/router';
 import { BrandComponent } from './brand-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { BrandCardComponent } from '../brand-card/brand-card.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   declarations: [BrandComponent],
   imports: [
     CommonModule,
     DataTablesModule,
+    NgxPaginationModule,
     RouterModule.forChild([
       {
         path: '',

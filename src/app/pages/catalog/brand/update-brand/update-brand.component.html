@@ -13,7 +13,7 @@
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand }">
+            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: slug }">
               {{ editMode ? "Update Brand" : "Add Brand" }}</a>
           </li>
         </ul>
@@ -82,7 +82,7 @@
                     </div>
                   </div>
                   <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="https://ccapi.previewbay.com/{{uploadedimg}}" alt="" style="width: 150px; height: 150px">
+                    <img src="{{base}}/{{brand?.file}}" alt="" style="width: 150px; height: 150px">
                   </div>
                 </div>
               </div>

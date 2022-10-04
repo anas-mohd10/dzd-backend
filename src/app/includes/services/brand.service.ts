@@ -21,6 +21,11 @@ export class BrandService {
     return this.http.get(`${url}`);
   }
 
+  getBrands(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
+
   getBrandBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_by_slug + "/" + slug);
     return this.http.get(`${url}`);
@@ -31,8 +36,13 @@ export class BrandService {
     return this.http.put(`${url}`, data);
   }
 
-  searchBrand(query: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.search_brand);
+  searchBrand(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.search_brand + "?page=" + page + "&limit=" + limit);
     return this.http.post(`${url}`, query);
+  }
+
+  getBrandCount() {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_count);
+    return this.http.get(`${url}`);
   }
 }

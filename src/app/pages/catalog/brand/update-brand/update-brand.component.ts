@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-brand',
@@ -19,20 +20,22 @@ export class UpdateBrandComponent implements OnInit {
   appRoute = appRoutes;
   isSubmitted = false;
   filedata: File;
+  slug: any;
   brand: any;
-  brandData: any;
   uploadedimg: any;
   imageChangedEvent: any = '';
   croppedImage: any = '';
   loadImage: boolean;
   filename: string;
+  base: any
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private brandService: BrandService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get bf() {
@@ -40,9 +43,10 @@ export class UpdateBrandComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.brand = this.route.snapshot.queryParams.brand || '';
+    this.slug = this.route.snapshot.queryParams.brand || '';
     this.managePage();
     this.getBrand();
   }
@@ -96,16 +100,15 @@ export class UpdateBrandComponent implements OnInit {
     this.loadImage = false
   }
 
-
   getBrand() {
-    this.brandService.getBrandBySlug(this.brand).subscribe((res: any) => {
+    this.brandService.getBrandBySlug(this.slug).subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.brandData = res?.result[0];
-          this.uploadedimg = this.brandData?.file;
-          this.brandForm.get('name')?.setValue(this.brandData.name);
-          this.brandForm.get('isActive')?.setValue(this.brandData.isActive);
-          this.brandForm.get('isFeatured')?.setValue(this.brandData.isFeatured);
+          this.brand = res?.result[0];
+          this.cdr.markForCheck()
+          this.brandForm.get('name')?.setValue(this.brand.name);
+          this.brandForm.get('isActive')?.setValue(this.brand.isActive);
+          this.brandForm.get('isFeatured')?.setValue(this.brand.isFeatured);
           break;
       }
     });
@@ -119,6 +122,7 @@ export class UpdateBrandComponent implements OnInit {
       this.addBrand();
     }
   }
+
   addBrand() { }
 
   updateBrand() {
@@ -133,11 +137,12 @@ export class UpdateBrandComponent implements OnInit {
       filename: this.filename,
       file: ''
     }
+
     if (this.uploadedimg != '') {
-      data.file = this.uploadedimg
+      data.file = this.brand?.file;
     }
 
-    this.brandService.updateBrand(this.brand, data).subscribe((res: any) => {
+    this.brandService.updateBrand(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
