@@ -21,10 +21,11 @@ export class BrandCardComponent implements OnInit {
   page: any = 1;
   limit: any = 4;
   datalength: any;
-  number: any = 2
   isPreviousExist: boolean = false;
   currPage: any;
   isNextExist: boolean = true;
+  isData: boolean = true;
+  selectedPage: any = 1;
 
   constructor(
     private brandService: BrandService,
@@ -50,7 +51,9 @@ export class BrandCardComponent implements OnInit {
       this.cdr.markForCheck();
       this.count = Math.ceil((res?.result) / this.limit)
       for (let i = 1; i <= this.count; i++) {
-        this.pages.push(i)
+        this.pages.push({
+          key: i,
+        })
       }
     })
   }
@@ -73,53 +76,40 @@ export class BrandCardComponent implements OnInit {
         this.brands = res?.result
         this.len = res?.result.length
         this.cdr.markForCheck();
-        this.pages.length = 0
-        this.count = Math.ceil((res?.result.length) / this.limit)
-        for (let i = 1; i <= this.count; i++) {
-          this.pages.push(i)
+        this.isData = true
+        if (this.brands.length == 0) {
+          this.isData = false
         }
       }
     })
   }
 
-  fetchData(page: any) {
-    this.brandService.searchBrand(this.brandForm.value, page, this.limit).subscribe((res: any) => {
-      this.brands = res?.result
-      this.pages.length = 0
-      this.cdr.markForCheck();
-      this.count = Math.ceil(this.datalength / this.limit)
-      for (let i = 1; i <= this.count; i++) {
-        this.pages.push(i)
-      }
-    })
+  //Pagination fetch data
+  fetchByPage(page: any) {
+    this.fetchData(this.brandForm.value, page, this.limit)
+    this.selectedPage = page
   }
 
-  getLimit(e: any) {
+  fetchByLimit(e: any) {
     this.limit = e.value
-    this.brandService.searchBrand(this.brandForm.value, this.page, this.limit).subscribe((res: any) => {
+    this.fetchData(this.brandForm.value, this.page, this.limit)
+  }
+
+  fetchData(data: any, page: any, limit: any) {
+    this.brandService.searchBrand(data, page, limit).subscribe((res: any) => {
       this.brands = res?.result
       this.pages.length = 0
+      this.isData = true
+      if (this.brands.length == 0) {
+        this.isData = false
+      }
       this.cdr.markForCheck();
       this.count = Math.ceil(this.datalength / this.limit)
       for (let i = 1; i <= this.count; i++) {
-        this.pages.push(i)
+        this.pages.push({
+          key: i,
+        })
       }
     })
-  }
-
-  nextPage() {
-    if (this.number < this.pages.length) {
-      this.number += 1
-      this.isPreviousExist = true
-      this.isNextExist = false
-    }
-  }
-
-  previousPage() {
-    if (this.number >= 2) {
-      this.number -= 1
-      this.isNextExist = true
-      this.isPreviousExist = false
-    }
   }
 }

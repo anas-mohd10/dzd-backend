@@ -19,20 +19,16 @@ import { RouterModule } from '@angular/router';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
 import { ImageCropperModule } from 'ngx-image-cropper';
-// import { NgxTextEditorModule } from 'ngx-text-editor';
 import { LayoutModule } from './shared/layout';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvService } from './includes/services/csv.service';
 import { ProductCardComponent } from './pages/catalog/product/product-card/product-card.component';
 import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
-import { NgxPaginationModule } from 'ngx-pagination';
-// #fake-end#
 
 @NgModule({
   declarations: [AppComponent, ProductCardComponent, BrandCardComponent],
   imports: [
     DataTablesModule,
-    // NgxTextEditorModule,
     BrowserModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot(),
@@ -45,8 +41,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgHttpLoaderModule.forRoot(),
     NgbModule,
     LayoutModule,
-    // FormBuilder,
-    NgxPaginationModule,
     FormsModule,
     ReactiveFormsModule,
     ImageCropperModule

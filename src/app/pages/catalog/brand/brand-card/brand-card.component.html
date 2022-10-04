@@ -52,19 +52,19 @@
       </div>
     </form>
   </div>
-  <div class="pagelength-container col-12 row" *ngIf="len != 0">
-    <div class="col-sm-4 page-length-container">
+  <div class="pagelength-container col-12 row">
+    <div class="col-sm-2 page-length-container">
       <label class="fs-6 form-title">Show</label>
-      <select name="" id="" class="form-select fs-6" (change)="getLimit($event.target)">
-        <option value="">-- Select an option --</option>
+      <select name="" id="" class="form-select fs-6" (change)="fetchByLimit($event.target)">
         <option value=3>3</option>
+        <option value=4 selected>4</option>
         <option value=25>25</option>
         <option value=50>50</option>
       </select>
       <label class="fs-6 form-title">entries</label>
     </div>
   </div>
-  <div class="brand-card-container">
+  <div class="brand-card-container view-container">
     <ng-container *ngFor="let brand of brands">
       <div class="brand-card">
         <div class="brand-details">
@@ -93,19 +93,18 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="len == 0">
+    <ng-container *ngIf="!isData">
       <div class="no-data-container">
         <h2>Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>
-  <div class="pagination-conatiner col-12" *ngIf="len != 0 && count != 1 && datalength > limit">
+  <div class="pagination-conatiner col-12">
     <ul class="pagination justify-content-end">
-      <li class="page-item previous-{{isPreviousExist}}" (click)="previousPage()">Previous</li>
-      <li class="page-item page-number" (click)="fetchData(1)">1</li>
-      <li class="page-item" *ngIf="isPreviousExist">...</li>
-      <li class="page-item page-number" (click)="fetchData(number)">{{number}}</li>
-      <li class="page-item next-{{isNextExist}}" (click)="nextPage()">Next</li>
+      <ng-container *ngFor="let key of pages">
+        <li *ngIf="selectedPage == key.key" class="page-item active" (click)="fetchByPage(key.key)">{{key.key}}</li>
+        <li *ngIf="selectedPage != key.key" class="page-item" (click)="fetchByPage(key.key)">{{key.key}}</li>
+      </ng-container>
     </ul>
   </div>
 </div>
