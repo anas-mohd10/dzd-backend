@@ -13,7 +13,6 @@ export class BrandCardComponent implements OnInit {
   brandForm: FormGroup;
   appRoute = appRoutes;
   brands: any;
-  displayTable: boolean = false;
   base: any
   len: any;
   count: any;
@@ -40,7 +39,6 @@ export class BrandCardComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.brands = res?.result
-          this.len = res?.result.length
           this.cdr.markForCheck();
           break;
       }
@@ -73,12 +71,18 @@ export class BrandCardComponent implements OnInit {
   onSubmit() {
     this.brandService.searchBrand(this.brandForm.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.brands = res?.result
-        this.len = res?.result.length
+        this.brands = res?.result?.data
         this.cdr.markForCheck();
         this.isData = true
         if (this.brands.length == 0) {
           this.isData = false
+        }
+        this.pages.length = 0
+        this.count = Math.ceil(res?.result?.total / this.limit)
+        for (let i = 1; i <= this.count; i++) {
+          this.pages.push({
+            key: i,
+          })
         }
       }
     })
@@ -86,8 +90,8 @@ export class BrandCardComponent implements OnInit {
 
   //Pagination fetch data
   fetchByPage(page: any) {
-    this.fetchData(this.brandForm.value, page, this.limit)
     this.selectedPage = page
+    this.fetchData(this.brandForm.value, page, this.limit)
   }
 
   fetchByLimit(e: any) {
@@ -97,14 +101,14 @@ export class BrandCardComponent implements OnInit {
 
   fetchData(data: any, page: any, limit: any) {
     this.brandService.searchBrand(data, page, limit).subscribe((res: any) => {
-      this.brands = res?.result
+      this.brands = res?.result.data
       this.pages.length = 0
       this.isData = true
       if (this.brands.length == 0) {
         this.isData = false
       }
       this.cdr.markForCheck();
-      this.count = Math.ceil(this.datalength / this.limit)
+      this.count = Math.ceil(res?.result?.total / this.limit)
       for (let i = 1; i <= this.count; i++) {
         this.pages.push({
           key: i,
