@@ -23,11 +23,12 @@
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
         <div class="search-input col-sm-4">
           <label class="fs-6">Search</label>
-          <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name">
+          <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name"
+            (change)="onChange()">
         </div>
         <div class="search-status col-sm-2">
           <label class="fs-6">Status</label>
-          <select name="" id="" class="form-select fs-6" formControlName="isActive">
+          <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="onChange()">
             <option value="">-- Select an option --</option>
             <option value=true>Active</option>
             <option value=false>Inactive</option>
@@ -35,7 +36,7 @@
         </div>
         <div class="search-featured col-sm-2">
           <label class="fs-6 form-title">Featured</label>
-          <select name="" id="" class="form-select fs-6" formControlName="isFeatured">
+          <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="onChange()">
             <option value="">-- Select an option --</option>
             <option value=true>Featured</option>
             <option value=false>Non featured</option>
@@ -44,10 +45,6 @@
         <div class="search-submit col-sm-2">
           <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
             style="outline: none; border: none;">Clear</button>
-        </div>
-        <div class="search-submit col-sm-2">
-          <button type="submit" class="form-control fs-6 bg-primary text-white" (click)="onSubmit()"
-            style="outline: none; border: none;">Search brand</button>
         </div>
       </div>
     </form>

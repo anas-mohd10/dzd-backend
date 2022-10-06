@@ -68,7 +68,7 @@ export class BrandCardComponent implements OnInit {
     window.location.reload()
   }
 
-  onSubmit() {
+  onChange() {
     this.brandService.searchBrand(this.brandForm.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
