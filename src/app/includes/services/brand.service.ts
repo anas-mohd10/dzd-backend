@@ -27,7 +27,7 @@ export class BrandService {
   }
 
   getBrandBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_by_slug + "/" + slug);
+    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);
   }
 

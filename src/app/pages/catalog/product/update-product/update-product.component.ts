@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import {
   FormBuilder,
@@ -16,6 +16,7 @@ import { TaxClassesService } from 'src/app/includes/services/tax-classes.service
 import { ToastrService } from 'ngx-toastr';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-product',
@@ -62,6 +63,7 @@ export class UpdateProductComponent implements OnInit {
   filedata: File;
   type: any;
   uploadedimg: any;
+  base: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,7 +74,8 @@ export class UpdateProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private attributeService: AttributeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get pf() {
@@ -88,6 +91,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.productSlug = this.route.snapshot.queryParams.product || '';
@@ -262,7 +266,7 @@ export class UpdateProductComponent implements OnInit {
   getProductBySlug() {
     this.productService.getProductBySlug(this.productSlug).subscribe((res: any) => {
       this.productData = res?.result[0];
-      console.log(this.productData);
+      this.cdr.markForCheck()
       this.productType = this.productData.isSingle;
       if (this.productType == true) {
         this.isSingle = true;

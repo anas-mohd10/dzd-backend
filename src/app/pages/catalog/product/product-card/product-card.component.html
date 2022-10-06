@@ -26,7 +26,7 @@
             <div class="search-input col-sm-4">
                <label class="fs-6">Search</label>
                <input type="text" placeholder="Search for products here..." class="form-control fs-6"
-                  formControlName="name">
+                  formControlName="name" (change)="onChange()">
             </div>
             <div class="search-status col-sm-2">
                <label class="fs-6">Status</label>
@@ -48,16 +48,11 @@
                <input type="reset" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
                   style="outline: none; border: none;">
             </div>
-            <div class="search-submit col-sm-2">
-               <input type="submit" class="form-control fs-6 bg-primary text-white" (click)="onSubmit()"
-                  style="outline: none; border: none;">
-            </div>
          </div>
       </form>
    </div>
-   <div class="product-card-container">
-      <div style="display: none;">{{productData.length}}</div>
-      <ng-container *ngFor="let product of productData">
+   <div class="product-card-container view-container">
+      <ng-container *ngFor="let product of products">
          <div class="product-card">
             <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" /></div>
             <div class="product-details">
@@ -70,25 +65,35 @@
                      Configurable
                   </ng-container>
                </div>
-               <div class="product-mrpprice">MRP - RS. {{product?.mrpPrice}}</div>
-               <div class="product-offerprice">Offer - Rs. {{product?.offerPrice}}</div>
+               <div class="product-mrpprice">MRP Rs. {{product?.mrpPrice}}</div>
+               <div class="product-offerprice">Offer Rs. {{product?.offerPrice}}</div>
                <div class="product-stock">{{product?.stock}} products left</div>
-               <div class="product-status-{{product?.isActive}}">
-                  <ng-container *ngIf="product?.isActive == true">
-                     Active
-                  </ng-container>
-                  <ng-container *ngIf="product?.isActive == false">
-                     Inactive
-                  </ng-container>
+               <div class="product-card-bottom">
+                  <div class="product-status-{{product?.isActive}}">
+                     <ng-container *ngIf="product?.isActive == true">
+                        Active
+                     </ng-container>
+                     <ng-container *ngIf="product?.isActive == false">
+                        Inactive
+                     </ng-container>
+                  </div>
+                  <div class="card-edit-btn">
+                     <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
+                        [queryParams]="{ product: product?.slug }" class="fs-5 cursor-pointer text-darker">
+                        Edit
+                     </button>
+                  </div>
                </div>
-               <div class="card-edit-btn">
-                  <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: product?.slug }"
-                    class="fs-5 cursor-pointer text-darker">
-                    Edit
-                  </button>
-                </div>
             </div>
          </div>
       </ng-container>
+   </div>
+   <div class="pagination-conatiner col-12" *ngIf="isData">
+      <ul class="pagination justify-content-end">
+         <ng-container *ngFor="let key of pages">
+            <li *ngIf="selectedPage == key.key" class="page-item active" (click)="fetchByPage(key.key)">{{key.key}}</li>
+            <li *ngIf="selectedPage != key.key" class="page-item" (click)="fetchByPage(key.key)">{{key.key}}</li>
+         </ng-container>
+      </ul>
    </div>
 </div>

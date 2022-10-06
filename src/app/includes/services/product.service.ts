@@ -21,6 +21,11 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
+  getProductsCount() {
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_products_count);
+    return this.http.get(`${url}`);
+  }
+
   getActiveProduct() {
     const url = this.commonService.getFullUrl(this.productEndpoints.get_active_products);
     return this.http.get(`${url}`);
@@ -34,6 +39,11 @@ export class ProductService {
   getProductNames() {
     const url = this.commonService.getFullUrl(this.productEndpoints.get_product_names);
     return this.http.get(`${url}`);
+  }
+
+  searchProducts(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.search_product + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, query);
   }
 
   updateProduct(slug: any, data: any) {

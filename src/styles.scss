@@ -1,7 +1,79 @@
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
 
-.card-edit-btn button{
+//pagination
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-length-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-length-container select {
+  margin: 0 5px;
+}
+
+.pagination li {
+  cursor: pointer;
+  padding: 0 8px;
+  height: 40px;
+  width: 40px;
+  border: 1px solid #cdcecf;
+  color: #000000;
+  margin: 0 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.pagination li:hover {
+  border: 1px solid #00bdab;
+}
+
+.pagination .page-number {
+  height: 40px;
+  width: 40px;
+}
+
+.pagination .active {
+  background: #00bdab;
+  color: #ffffff;
+}
+
+.previous-false {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.next-false {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.view-container {
+  animation: scaleUp 0.333s ease-in-out;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.card-edit-btn button {
   width: 150px;
   border-radius: 5px;
   outline: none;
@@ -24,7 +96,7 @@
   width: 100%;
 }
 
-.uploaded-image img{
+.uploaded-image img {
   border-radius: 10px;
 }
 
@@ -121,7 +193,7 @@
   cursor: pointer;
 }
 
-.attr-images img{
+.attr-images img {
   border-radius: 5px;
 }
 
