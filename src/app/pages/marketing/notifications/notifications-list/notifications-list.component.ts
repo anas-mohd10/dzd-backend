@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
@@ -18,9 +18,10 @@ export class NotificationsListComponent implements OnInit {
   appRoute = appRoutes
   couponsData: any;
   notificationsData: any
-  displayTable: boolean;
+  displayTable: boolean=false;
 
-  constructor(private notificationsService: NotificationsService) { }
+  constructor(private notificationsService: NotificationsService,
+    private cdr:ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -34,10 +35,12 @@ export class NotificationsListComponent implements OnInit {
 
   getNotifications() {
     this.notificationsService.getNotifications().subscribe((res: any) => {
-      this.notificationsData = res?.result
+      this.notificationsData = res?.result;
+      this.cdr.markForCheck()
       for (let notification of this.notificationsData) {
         notification.scheduledDate = new Date(notification.scheduledDate).toDateString()
       }
+      this.displayTable=true
       this.dtTrigger.next();
     })
   }

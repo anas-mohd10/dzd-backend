@@ -26,6 +26,16 @@ export class CollectionService {
     return this.http.get(`${url}`);
   }
 
+  searchCollection(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.search_collection + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, query);
+  }
+
+  getCollectionCount() {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_count);
+    return this.http.get(`${url}`);
+  }
+
   updateCollection(slug: any, data: any) {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "?slug=" + slug);
     return this.http.put(`${url}`, data);

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
@@ -20,7 +20,8 @@ export class BannerListComponent implements OnInit {
   displayTable: boolean;
 
   constructor(
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +37,7 @@ export class BannerListComponent implements OnInit {
   getBanners() {
     this.bannerService.getBanners().subscribe((res: any) => {
       this.bannersData = res?.result
+      this.cdr.markForCheck()
       for (let banner of this.bannersData) {
         banner.validFrom = new Date(banner.validFrom).toDateString()
         banner.validTo = new Date(banner.validTo).toDateString()

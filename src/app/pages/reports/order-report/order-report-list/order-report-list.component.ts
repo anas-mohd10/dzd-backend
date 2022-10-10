@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef,Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -31,7 +31,8 @@ export class OrderReportListComponent implements OnDestroy, OnInit {
     private customersService: CustomersService,
     private formBuilder: FormBuilder,
     private ordersService: OrdersService,
-    private csvService: CsvService
+    private csvService: CsvService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -65,12 +66,14 @@ export class OrderReportListComponent implements OnDestroy, OnInit {
   getCustomers() {
     this.customersService.getCustomers().subscribe((res: any) => {
       this.customersData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getOrderReportsData() {
     this.ordersService.getOrderReport().subscribe((res: any) => {
       this.ordersReportsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 

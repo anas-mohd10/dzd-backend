@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -30,6 +30,7 @@ export class ProductReportListComponent implements OnInit {
     private formBuilder: FormBuilder,
     private productReportService: ProductReportService,
     private csvService: CsvService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -55,12 +56,14 @@ export class ProductReportListComponent implements OnInit {
   getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
       this.productsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getProductReports() {
     this.productReportService.getProductReport().subscribe((res: any) => {
       this.productsReportsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 

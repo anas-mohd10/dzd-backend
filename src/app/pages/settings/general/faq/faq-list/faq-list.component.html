@@ -21,7 +21,6 @@
     </div>
   </div>
   <div class="faq-container">
-    <div style="display: none"> {{faqData.length}}</div>
     <ng-container *ngFor="let faq of faqData">
       <div class="faq-card {{faq?.isActive}}">
         <div class="faq-subject"> {{faq?.subject}}</div>

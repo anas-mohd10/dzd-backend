@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-category',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss'],
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
@@ -18,12 +19,24 @@ export class CategoryComponent implements OnInit {
 
   appRoute = appRoutes;
   categoryData: any;
-  displayTable: boolean;
+  displayTable: boolean = false;
   base: any
+  categoryForm:FormGroup
+  pages: any = [];
+  page: any = 1;
+  limit: any = 4;
+  categories: any;
+  isData: boolean = true;
+  count: any;
 
-  constructor(private categoryService: CategoryService) { }
+
+  constructor(private categoryService: CategoryService,
+    private cdr: ChangeDetectorRef,
+    private formBuilder: FormBuilder,
+  ) { }
 
   ngOnInit(): void {
+    this.initForm()
     this.getCategory()
     this.dtOptions = {
       pagingType: 'simple_numbers',
@@ -39,11 +52,51 @@ export class CategoryComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.categoryData = res?.result;
+          this.cdr.markForCheck();
+          this.dtTrigger.next();
+
           // this.categoryData[3]?.rootId.name + " > " + this.categoryData[3]?.parentId.parentId.name + " >  " + this.categoryData[3]?.parentId.name;
           break;
       }
-      // this.dtTrigger.next();
-      this.displayTable = true;
+      // this.displayTable = true;
     });
   }
+
+  initForm() {
+    this.categoryForm = this.formBuilder.group({
+      name: [''],
+      isActive: [''],
+      isFeatured: [''],
+    });
+  }
+
+  onReload() {
+    window.location.reload()
+  }
+
+  onChange() {
+    this.categoryService.searchCategory(this.categoryForm.value, this.page, this.limit).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.categories = res?.result?.data
+        this.cdr.markForCheck();
+        this.isData = true
+        if (this.categories.length == 0) {
+          this.isData = false
+        }
+        this.pages.length = 0
+        this.count = Math.ceil(res?.result?.total / this.limit)
+        for (let i = 1; i <= this.count; i++) {
+          this.pages.push({
+            key: i,
+          })
+        }
+      }
+    })
+  }
+
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
+
 }

@@ -25,6 +25,7 @@ export class BrandCardComponent implements OnInit {
   isNextExist: boolean = true;
   isData: boolean = true;
   selectedPage: any = 1;
+  name:any
 
   constructor(
     private brandService: BrandService,

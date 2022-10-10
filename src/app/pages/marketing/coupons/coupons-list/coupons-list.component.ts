@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
@@ -21,7 +21,8 @@ export class CouponsListComponent implements OnInit {
   displayTable: boolean;
   base: string;
   constructor(
-    private couponService: CouponsService
+    private couponService: CouponsService,
+    private cdr:ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +39,7 @@ export class CouponsListComponent implements OnInit {
   getCoupons() {
     this.couponService.getCoupons().subscribe((res: any) => {
       this.couponsData = res?.result
+      this.cdr.markForCheck()
       for (let i = 0; i < this.couponsData.length; i++) {
         this.couponsData[i].fromDate = new Date(
           this.couponsData[i].fromDate

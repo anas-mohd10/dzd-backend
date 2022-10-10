@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
@@ -20,7 +20,8 @@ export class TaxRulesComponent implements OnInit {
   taxRulesData: any;
   displayTable: boolean;
 
-  constructor(private taxRulesService: TaxRulesService) { }
+  constructor(private taxRulesService: TaxRulesService,
+    private cdr:ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getTaxRules()
@@ -35,6 +36,7 @@ export class TaxRulesComponent implements OnInit {
   getTaxRules() {
     this.taxRulesService.getTaxRules().subscribe((res: any) => {
       this.taxRulesData = res?.result;
+      this.cdr.markForCheck()
       this.dtTrigger.next()
       this.displayTable = true;
     });

@@ -25,6 +25,16 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
+  searchCategory(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.search_category + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, query);
+  }
+
+  getCategoryCount() {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_count);
+    return this.http.get(`${url}`);
+  }
+
   // getCategoryById(id: any) {
   //   const url = this.commonService.getFullUrl(
   //     this.categoryEndpoints.get_category_by_id + id

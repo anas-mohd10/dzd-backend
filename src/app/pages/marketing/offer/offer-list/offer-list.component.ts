@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -14,7 +14,7 @@ export class OfferListComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
-  
+
   appRoute = appRoutes;
   offerData: any;
   activeFilter: boolean = false;
@@ -23,7 +23,8 @@ export class OfferListComponent implements OnInit {
 
   constructor(
     private offerService: OfferService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private cdr:ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +61,7 @@ export class OfferListComponent implements OnInit {
         switch (res?.errorCode) {
           case 0:
             this.offerData = res?.result;
+            this.cdr.markForCheck()
             for (let i = 0; i < this.offerData.length; i++) {
               this.offerData[i].fromDate = new Date(
                 this.offerData[i].fromDate
@@ -80,6 +82,7 @@ export class OfferListComponent implements OnInit {
         switch (res?.errorCode) {
           case 0:
             this.offerData = res?.result;
+            this.cdr.markForCheck()
             for (let i = 0; i < this.offerData.length; i++) {
               this.offerData[i].fromDate = new Date(
                 this.offerData[i].fromDate

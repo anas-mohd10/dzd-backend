@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef,Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
@@ -20,7 +20,8 @@ export class LayoutListComponent implements OnInit, OnDestroy {
   layoutsData: any;
 
   constructor(
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +37,7 @@ export class LayoutListComponent implements OnInit, OnDestroy {
   getLayouts() {
     this.layoutService.getLayouts().subscribe((res: any) => {
       this.layoutsData = res?.result
+      this.cdr.markForCheck()
       this.displayTable = true
       this.dtTrigger.next('')
     })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { FaqService } from 'src/app/includes/services/faq.service';
 
@@ -11,7 +11,8 @@ export class FaqListComponent implements OnInit {
   appRoute = appRoutes
   faqData: any
 
-  constructor(private faqService: FaqService) { }
+  constructor(private faqService: FaqService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getFaqs()
@@ -20,6 +21,7 @@ export class FaqListComponent implements OnInit {
   getFaqs() {
     this.faqService.getFaqs().subscribe((res: any) => {
       this.faqData = res?.result
+      this.cdr.markForCheck()
     })
   }
 

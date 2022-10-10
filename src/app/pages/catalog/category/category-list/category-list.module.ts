@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CategoryComponent } from './category-list.component';
 import { DataTablesModule } from 'angular-datatables';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 // import { WidgetsModule } from '../../_metronic/partials';
 
 @NgModule({
@@ -10,6 +12,8 @@ import { DataTablesModule } from 'angular-datatables';
   imports: [
     CommonModule,
     DataTablesModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: '',

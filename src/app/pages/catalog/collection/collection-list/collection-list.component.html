@@ -20,11 +20,40 @@
       </div>
     </div>
   </div>
+  <form [formGroup]="collectionForm">
+    <div class="col-12 row" style="display: flex; align-items: flex-end;">
+      <div class="search-input col-sm-4">
+        <label class="fs-6">Search</label>
+        <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name"
+          (ngModelChange)="onChange()">
+      </div>
+      <div class="search-status col-sm-2">
+        <label class="fs-6">Status</label>
+        <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="onChange()">
+          <option value="">-- Select an option --</option>
+          <option value=true>Active</option>
+          <option value=false>Inactive</option>
+        </select>
+      </div>
+      <div class="search-featured col-sm-2">
+        <label class="fs-6 form-title">Featured</label>
+        <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="onChange()">
+          <option value="">-- Select an option --</option>
+          <option value=true>Featured</option>
+          <option value=false>Non featured</option>
+        </select>
+      </div>
+      <div class="search-submit col-sm-2">
+        <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+          style="outline: none; border: none;">Clear</button>
+      </div>
+    </div>
+  </form>
+
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <div style="display: none"> {{collectionData.length}}</div>
           <div class="table-responsive" *ngIf="displayTable">
             <table datatable [dtOptions]="dtOptions"
               class="datatable table table-borderless table-center table-row-dashed mb-0">
@@ -86,6 +115,12 @@
         </div>
       </div>
     </div>
+    <ng-container *ngIf="!isData">
+      <div class="no-data-container">
+        <h2>Sorry, we haven't found any data</h2>
+      </div>
+    </ng-container>
+
   </div>
   <!-- Page Content -->
 </div>

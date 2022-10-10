@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef,Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { ContactsService } from 'src/app/includes/services/contacts.service';
 
@@ -12,7 +12,8 @@ export class ContactListComponent implements OnInit {
   contactsData: any
 
   constructor(
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
+    private cdr:ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -22,6 +23,7 @@ export class ContactListComponent implements OnInit {
   getContacts() {
     this.contactsService.getContacts().subscribe((res: any) => {
       this.contactsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
