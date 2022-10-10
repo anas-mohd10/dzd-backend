@@ -18,26 +18,29 @@
       </div>
     </div>
   </div>
+  <hr class="horizontal-line">
   <div class="brand-form-container">
-    <form [formGroup]="brandForm">
+    <form [formGroup]="brandform">
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
         <div class="search-input col-sm-4">
           <label class="fs-6">Search</label>
           <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name"
-            (ngModelChange)="onChange()">
+            (ngModelChange)="searchBrand('Name', $event.target)">
         </div>
         <div class="search-status col-sm-2">
           <label class="fs-6">Status</label>
-          <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="onChange()">
-            <option value="">-- Select an option --</option>
+          <select name="" id="" class="form-select fs-6" formControlName="isActive"
+            (change)="searchBrand('Status', $event.target)">
+            <option value="">Select an option</option>
             <option value=true>Active</option>
             <option value=false>Inactive</option>
           </select>
         </div>
         <div class="search-featured col-sm-2">
           <label class="fs-6 form-title">Featured</label>
-          <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="onChange()">
-            <option value="">-- Select an option --</option>
+          <select name="" id="" class="form-select fs-6" formControlName="isFeatured"
+            (change)="searchBrand('Featured', $event.target)">
+            <option value="">Select an option</option>
             <option value=true>Featured</option>
             <option value=false>Non featured</option>
           </select>
@@ -49,17 +52,14 @@
       </div>
     </form>
   </div>
-  <div class="pagelength-container col-12 row" *ngIf="isData">
-    <div class="col-sm-2 page-length-container">
-      <label class="fs-6 form-title">Show</label>
-      <select name="" id="" class="form-select fs-6" (change)="fetchByLimit($event.target)">
-        <option value=3>3</option>
-        <option value=4 selected>4</option>
-        <option value=25>25</option>
-        <option value=50>50</option>
-      </select>
-      <label class="fs-6 form-title">entries</label>
-    </div>
+  <div class="applied-filters-container">
+    <ng-container *ngFor="let filter of filters">
+      {{filter}}
+    </ng-container>
+  </div>
+  <hr class="horizontal-line">
+  <div class="total-count-container" *ngIf="isData">
+    <h3>{{totalcount}} brands</h3>
   </div>
   <div class="brand-card-container view-container">
     <ng-container *ngFor="let brand of brands">
@@ -83,7 +83,7 @@
           </div>
           <div class="card-edit-btn">
             <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-              class="fs-5 cursor-pointer text-darker">
+              class="fs-5 cursor-pointer text-darker" (click)="storeItem($event)">
               Edit
             </button>
           </div>
@@ -96,12 +96,11 @@
       </div>
     </ng-container>
   </div>
-  <div class="pagination-conatiner col-12" *ngIf="isData">
-    <ul class="pagination justify-content-end">
-      <ng-container *ngFor="let key of pages">
-        <li *ngIf="selectedPage == key.key" class="page-item active" (click)="fetchByPage(key.key)">{{key.key}}</li>
-        <li *ngIf="selectedPage != key.key" class="page-item" (click)="fetchByPage(key.key)">{{key.key}}</li>
-      </ng-container>
-    </ul>
+  <div class="load-data-btn">
+    <div class="no-data-text">Showing {{count}} of {{totalcount}}</div>
+    <div class="buttons">
+      <button class="show-more-btn show-more-{{showBtn}}" (click)="fetchMore()">Show {{limit}} More</button>
+      <button class="show-less-btn show-less-{{showLessBtn}}" (click)="fetchLess()">Show Less</button>
+    </div>
   </div>
 </div>

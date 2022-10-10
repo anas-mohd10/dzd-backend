@@ -42,7 +42,7 @@ export const appRoutes = {
   DASHBOARD: `${app}${dashboardRoute}`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
-    BRAND_LIST: `${app}${brandRoute}/list`,
+    BRAND_LIST: `${app}${brandRoute}`,
     ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
     UPDATE_BRAND: `${app}${brandRoute}/update`
   },

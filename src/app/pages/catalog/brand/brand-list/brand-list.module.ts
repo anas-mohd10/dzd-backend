@@ -12,10 +12,6 @@ import { BrandCardComponent } from '../brand-card/brand-card.component';
     RouterModule.forChild([
       {
         path: '',
-        component: BrandComponent,
-      },
-      {
-        path: 'list',
         component: BrandCardComponent,
       },
     ]),

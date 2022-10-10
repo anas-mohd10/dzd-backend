@@ -10,55 +10,60 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./brand-card.component.scss']
 })
 export class BrandCardComponent implements OnInit {
-  brandForm: FormGroup;
+  brandform: FormGroup;
   appRoute = appRoutes;
   brands: any;
   base: any
-  len: any;
-  count: any;
-  pages: any = [];
+
+  //Page and limit for query
   page: any = 1;
-  limit: any = 4;
-  datalength: any;
-  isPreviousExist: boolean = false;
-  currPage: any;
-  isNextExist: boolean = true;
+  currpage: any = 1;
+  limit: any = 8;
+
+  //Total no. of data from backend
+  totalcount: any;
+  count: any = 0
+
+  //Conditions
   isData: boolean = true;
-  selectedPage: any = 1;
-  name:any
+  showBtn: boolean = true;
+  showLessBtn: boolean = false;
+
+  //Filters array
+  filters: any = [];
 
   constructor(
     private brandService: BrandService,
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
     this.initForm()
     this.base = environment.base
+
+    // window.scrollTo({
+    //   top: 5560,
+    //   left: 7308,
+    //   behavior: 'smooth'
+    // })
+
     this.brandService.getBrands(this.page, this.limit).subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.brands = res?.result
-          this.cdr.markForCheck();
-          break;
-      }
-    });
-    this.brandService.getBrandCount().subscribe((res: any) => {
-      this.pages.length = 0
-      this.datalength = res?.result
+      this.brands = res?.result
+      this.count = this.brands.length
       this.cdr.markForCheck();
-      this.count = Math.ceil((res?.result) / this.limit)
-      for (let i = 1; i <= this.count; i++) {
-        this.pages.push({
-          key: i,
-        })
-      }
+    });
+
+    this.brandService.getBrandCount().subscribe((res: any) => {
+      this.totalcount = res?.result
+      this.cdr.markForCheck();
     })
+
+    window.scrollTo(2356, 7308)
   }
 
   initForm() {
-    this.brandForm = this.formBuilder.group({
+    this.brandform = this.formBuilder.group({
       name: [''],
       isActive: [''],
       isFeatured: [''],
@@ -69,52 +74,71 @@ export class BrandCardComponent implements OnInit {
     window.location.reload()
   }
 
-  onChange() {
-    this.brandService.searchBrand(this.brandForm.value, this.page, this.limit).subscribe((res: any) => {
+  searchBrand(key: any, e: any) {
+    this.currpage = 1
+    this.brandService.searchBrand(this.brandform.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
+        this.count = this.brands.length
         this.cdr.markForCheck();
         this.isData = true
-        if (this.brands.length == 0) {
-          this.isData = false
-        }
-        this.pages.length = 0
-        this.count = Math.ceil(res?.result?.total / this.limit)
-        for (let i = 1; i <= this.count; i++) {
-          this.pages.push({
-            key: i,
-          })
-        }
+        this.totalcount = res?.result?.total
+        this.setBoolValues(this.totalcount, this.brands.length)
       }
     })
   }
 
-  //Pagination fetch data
-  fetchByPage(page: any) {
-    this.selectedPage = page
-    this.fetchData(this.brandForm.value, page, this.limit)
+  storeItem(event: any) {
+    let offsetLeft = 0;
+    let offsetTop = 0;
+    let el = event.srcElement;
+    while (el) {
+      offsetLeft += el.offsetLeft;
+      offsetTop += el.offsetTop;
+      el = el.parentElement;
+    }
+    const coords = {
+      top: offsetTop,
+      left: offsetLeft
+    }
+    localStorage.setItem('coords', JSON.stringify(coords))
   }
 
-  fetchByLimit(e: any) {
-    this.limit = e.value
-    this.fetchData(this.brandForm.value, this.page, this.limit)
-  }
-
-  fetchData(data: any, page: any, limit: any) {
-    this.brandService.searchBrand(data, page, limit).subscribe((res: any) => {
-      this.brands = res?.result.data
-      this.pages.length = 0
-      this.isData = true
-      if (this.brands.length == 0) {
-        this.isData = false
-      }
+  fetchMore() {
+    this.currpage += 1
+    this.brandService.searchBrand(this.brandform.value, this.currpage, this.limit).subscribe((res: any) => {
+      this.brands = [...this.brands, ...res?.result.data]
+      this.count = this.brands.length
+      this.setBoolValues(this.totalcount, this.brands.length)
       this.cdr.markForCheck();
-      this.count = Math.ceil(res?.result?.total / this.limit)
-      for (let i = 1; i <= this.count; i++) {
-        this.pages.push({
-          key: i,
-        })
-      }
     })
+    if (this.currpage > 1) {
+      this.showLessBtn = true
+    }
+  }
+
+  fetchLess() {
+    this.currpage = 1
+    this.brandService.searchBrand(this.brandform.value, this.currpage, this.limit).subscribe((res: any) => {
+      this.brands = res?.result?.data
+      this.count = this.brands.length
+      this.setBoolValues(this.totalcount, this.brands.length)
+      this.cdr.markForCheck();
+    })
+  }
+
+  setBoolValues(datalen: any, brandlen: any) {
+    if (datalen == brandlen) {
+      this.showBtn = false
+      this.showLessBtn = true
+    } else {
+      this.showBtn = true
+      this.showLessBtn = false
+    }
+    if (brandlen == 0) {
+      this.isData = false
+    } else {
+      this.isData = true
+    }
   }
 }

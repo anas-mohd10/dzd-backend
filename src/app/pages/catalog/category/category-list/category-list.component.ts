@@ -54,11 +54,10 @@ export class CategoryComponent implements OnDestroy, OnInit {
           this.categoryData = res?.result;
           this.cdr.markForCheck();
           this.dtTrigger.next();
-
           // this.categoryData[3]?.rootId.name + " > " + this.categoryData[3]?.parentId.parentId.name + " >  " + this.categoryData[3]?.parentId.name;
           break;
       }
-      // this.displayTable = true;
+      this.displayTable = true;
     });
   }
 
