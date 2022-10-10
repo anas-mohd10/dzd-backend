@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { BrandService } from '../../../../includes/services/brand.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-update-brand',
@@ -28,6 +29,7 @@ export class UpdateBrandComponent implements OnInit {
   loadImage: boolean;
   filename: string;
   base: any
+  img: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,8 +37,10 @@ export class UpdateBrandComponent implements OnInit {
     private router: Router,
     private brandService: BrandService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+    private location: Location
+  ) {
+  }
 
   get bf() {
     return this.brandForm.controls;
@@ -49,6 +53,11 @@ export class UpdateBrandComponent implements OnInit {
     this.slug = this.route.snapshot.queryParams.brand || '';
     this.managePage();
     this.getBrand();
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    event.preventDefault();
   }
 
   initForm() {
@@ -105,10 +114,11 @@ export class UpdateBrandComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.brand = res?.result[0];
-          this.cdr.markForCheck()
+          this.img = this.base + "/" + res?.result[0].file
           this.brandForm.get('name')?.setValue(this.brand.name);
           this.brandForm.get('isActive')?.setValue(this.brand.isActive);
           this.brandForm.get('isFeatured')?.setValue(this.brand.isFeatured);
+          this.cdr.markForCheck()
           break;
       }
     });
