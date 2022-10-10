@@ -20,7 +20,93 @@
          </div>
       </div>
    </div>
-   <div class="row">
+   <hr class="horizontal-line">
+   <div class="coupon-form-container">
+     <form [formGroup]="couponForm">
+       <div class="col-12 row" style="display: flex; align-items: flex-end;">
+         <div class="search-input col-sm-4">
+           <label class="fs-6">Search</label>
+           <input type="text" placeholder="Search for coupons here..." class="form-control fs-6" formControlName="name"
+             (ngModelChange)="searchCoupon('Name', $event.target)">
+         </div>
+         <div class="search-status col-sm-2">
+           <label class="fs-6">Status</label>
+           <select name="" id="" class="form-select fs-6" formControlName="isActive"
+             (change)="searchCoupon('Status', $event.target)">
+             <option value="">Select an option</option>
+             <option value=true>Active</option>
+             <option value=false>Inactive</option>
+           </select>
+         </div>
+         <div class="search-featured col-sm-2">
+           <label class="fs-6 form-title">Featured</label>
+           <select name="" id="" class="form-select fs-6" formControlName="isFeatured"
+             (change)="searchCoupon('Featured', $event.target)">
+             <option value="">Select an option</option>
+             <option value=true>Featured</option>
+             <option value=false>Non featured</option>
+           </select>
+         </div>
+         <div class="search-submit col-sm-2">
+           <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+             style="outline: none; border: none;">Clear</button>
+         </div>
+       </div>
+     </form>
+   </div>
+   <div class="applied-filters-container">
+     <ng-container *ngFor="let filter of filters">
+       {{filter}}
+     </ng-container>
+   </div>
+   <hr class="horizontal-line">
+   <div class="total-count-container" *ngIf="isData">
+     <h3>{{totalcount}} coupons</h3>
+   </div>
+   <div class="coupon-card-container view-container">
+     <ng-container *ngFor="let coupon of coupons">
+       <div class="coupon-card">
+         <div class="coupon-details">
+           <div class="coupon-image">
+             <img src='{{base}}/{{coupon?.file}}' alt="coupon image" srcset="" />
+           </div>
+           <div class="flex-1">
+             <div class="coupon-name">{{coupon?.title}}</div>
+             <div class="coupon-featured-{{coupon?.isFeatured}}">
+               <ng-container *ngIf="coupon?.isFeatured == true">Featured</ng-container>
+               <ng-container *ngIf="coupon?.isFeatured == false">Not Featured</ng-container>
+             </div>
+           </div>
+         </div>
+         <div class="flex-21">
+           <div class="coupon-status-{{coupon?.isActive}}">
+             <ng-container *ngIf="coupon?.isActive == true">Active</ng-container>
+             <ng-container *ngIf="coupon?.isActive == false">Inactive</ng-container>
+           </div>
+           <div class="card-edit-btn">
+             <button routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{ coupon: coupon?.slug }"
+               class="fs-5 cursor-pointer text-darker" (click)="storeItem($event)">
+               Edit
+             </button>
+           </div>
+         </div>
+       </div>
+     </ng-container>
+     <ng-container *ngIf="!isData">
+       <div class="no-data-container">
+         <h2>Sorry, we haven't found any data</h2>
+       </div>
+     </ng-container>
+   </div>
+   <div class="load-data-btn">
+     <div class="no-data-text">Showing {{count}} of {{totalcount}}</div>
+     <div class="buttons">
+       <button class="show-more-btn show-more-{{showBtn}}" (click)="fetchMore()">Show {{limit}} More</button>
+       <button class="show-less-btn show-less-{{showLessBtn}}" (click)="fetchLess()">Show Less</button>
+     </div>
+   </div>
+
+   <!-- <div class="row">
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
@@ -89,5 +175,5 @@
             </div>
          </div>
       </div>
-   </div>
+   </div> -->
 </div>

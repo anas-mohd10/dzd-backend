@@ -12,21 +12,26 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./collection-list.component.scss'],
 })
 export class CollectionListComponent implements OnInit {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-
   appRoute = appRoutes;
-  collectionData: any
-  displayTable: boolean;
   base: any
   collectionForm: FormGroup;
-  count: any;
-  pages: any = [];
-  page: any = 1;
-  limit: any = 4;
   collections: any;
-  isData: boolean= true;
+  //Page and limit for query
+  page: any = 1;
+  currpage: any = 1;
+  limit: any = 8;
+
+  //Total no. of data from backend
+  totalcount: any;
+  count: any = 0
+
+  //Conditions
+  isData: boolean = true;
+  showBtn: boolean = true;
+  showLessBtn: boolean = false;
+
+  //Filters array
+  filters: any = [];
 
 
   constructor(private collectionService: CollectionService,
@@ -37,25 +42,21 @@ export class CollectionListComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.base = environment.base
-    this.getCollection();
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 10,
-      processing: true,
-    };
-  }
+    this.collectionService.getCollectionPage(this.page, this.limit).subscribe((res: any) => {
+      this.collections = res?.result
+      this.count = this.collections.length
+      this.cdr.markForCheck();
+    });
 
-  getCollection() {
-    this.collectionService.getCollection().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.collectionData = res?.result
-          this.cdr.markForCheck()
-          break
-      }
-      this.displayTable = true;
+    this.collectionService.getCollectionCount().subscribe((res: any) => {
+      this.totalcount = res?.result
+      console.log(this.totalcount);
+
+      this.cdr.markForCheck();
     })
+
+    window.scrollTo(2356, 7308)
+
   }
 
   initForm() {
@@ -70,26 +71,73 @@ export class CollectionListComponent implements OnInit {
     window.location.reload()
   }
 
-  onChange() {
+  searchCollection(key: any, e: any) {
+    this.currpage = 1
     this.collectionService.searchCollection(this.collectionForm.value, this.page, this.limit).subscribe((res: any) => {
-      console.log(res);
-
       if (res?.errorCode == 0) {
         this.collections = res?.result?.data
+        this.count = this.collections.length
         this.cdr.markForCheck();
         this.isData = true
-        if (this.collections.length == 0) {
-          this.isData = false
-        }
-        this.pages.length = 0
-        this.count = Math.ceil(res?.result?.total / this.limit)
-        for (let i = 1; i <= this.count; i++) {
-          this.pages.push({
-            key: i,
-          })
-        }
+        this.totalcount = res?.result?.total
+        this.setBoolValues(this.totalcount, this.collections.length)
       }
     })
   }
+
+  storeItem(event: any) {
+    let offsetLeft = 0;
+    let offsetTop = 0;
+    let el = event.srcElement;
+    while (el) {
+      offsetLeft += el.offsetLeft;
+      offsetTop += el.offsetTop;
+      el = el.parentElement;
+    }
+    const coords = {
+      top: offsetTop,
+      left: offsetLeft
+    }
+    localStorage.setItem('coords', JSON.stringify(coords))
+  }
+
+  fetchMore() {
+    this.currpage += 1
+    this.collectionService.searchCollection(this.collectionForm.value, this.currpage, this.limit).subscribe((res: any) => {
+      this.collections = [...this.collections, ...res?.result.data]
+      this.count = this.collections.length
+      this.setBoolValues(this.totalcount, this.collections.length)
+      this.cdr.markForCheck();
+    })
+    if (this.currpage > 1) {
+      this.showLessBtn = true
+    }
+  }
+
+  fetchLess() {
+    this.currpage = 1
+    this.collectionService.searchCollection(this.collectionForm.value, this.currpage, this.limit).subscribe((res: any) => {
+      this.collections = res?.result?.data
+      this.count = this.collections.length
+      this.setBoolValues(this.totalcount, this.collections.length)
+      this.cdr.markForCheck();
+    })
+  }
+
+  setBoolValues(datalen: any, brandlen: any) {
+    if (datalen == brandlen) {
+      this.showBtn = false
+      this.showLessBtn = true
+    } else {
+      this.showBtn = true
+      this.showLessBtn = false
+    }
+    if (brandlen == 0) {
+      this.isData = false
+    } else {
+      this.isData = true
+    }
+  }
+
 
 }
