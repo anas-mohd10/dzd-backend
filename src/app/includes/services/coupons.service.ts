@@ -35,4 +35,20 @@ export class CouponsService {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.update_coupon + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  searchCoupon(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.search_coupon + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, query);
+  }
+
+  getCouponCount() {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_count);
+    return this.http.get(`${url}`);
+  }
+
+  getCouponPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_page + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
+
 }

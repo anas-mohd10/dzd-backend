@@ -21,6 +21,12 @@ export class CollectionService {
     return this.http.get(`${url}`);
   }
 
+  getCollectionPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_page + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
+
+
   getCollectionBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);

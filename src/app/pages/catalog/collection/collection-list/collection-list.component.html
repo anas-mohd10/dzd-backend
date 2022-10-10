@@ -20,37 +20,93 @@
       </div>
     </div>
   </div>
-  <form [formGroup]="collectionForm">
-    <div class="col-12 row" style="display: flex; align-items: flex-end;">
-      <div class="search-input col-sm-4">
-        <label class="fs-6">Search</label>
-        <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name"
-          (ngModelChange)="onChange()">
+  <hr class="horizontal-line">
+  <div class="collection-form-container">
+    <form [formGroup]="collectionForm">
+      <div class="col-12 row" style="display: flex; align-items: flex-end;">
+        <div class="search-input col-sm-4">
+          <label class="fs-6">Search</label>
+          <input type="text" placeholder="Search for collections here..." class="form-control fs-6" formControlName="name"
+            (ngModelChange)="searchCollection('Name', $event.target)">
+        </div>
+        <div class="search-status col-sm-2">
+          <label class="fs-6">Status</label>
+          <select name="" id="" class="form-select fs-6" formControlName="isActive"
+            (change)="searchCollection('Status', $event.target)">
+            <option value="">Select an option</option>
+            <option value=true>Active</option>
+            <option value=false>Inactive</option>
+          </select>
+        </div>
+        <div class="search-featured col-sm-2">
+          <label class="fs-6 form-title">Featured</label>
+          <select name="" id="" class="form-select fs-6" formControlName="isFeatured"
+            (change)="searchCollection('Featured', $event.target)">
+            <option value="">Select an option</option>
+            <option value=true>Featured</option>
+            <option value=false>Non featured</option>
+          </select>
+        </div>
+        <div class="search-submit col-sm-2">
+          <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+            style="outline: none; border: none;">Clear</button>
+        </div>
       </div>
-      <div class="search-status col-sm-2">
-        <label class="fs-6">Status</label>
-        <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="onChange()">
-          <option value="">-- Select an option --</option>
-          <option value=true>Active</option>
-          <option value=false>Inactive</option>
-        </select>
+    </form>
+  </div>
+  <div class="applied-filters-container">
+    <ng-container *ngFor="let filter of filters">
+      {{filter}}
+    </ng-container>
+  </div>
+  <hr class="horizontal-line">
+  <div class="total-count-container" *ngIf="isData">
+    <h3>{{totalcount}} collections</h3>
+  </div>
+  <div class="collection-card-container view-container">
+    <ng-container *ngFor="let collection of collections">
+      <div class="collection-card">
+        <div class="collection-details">
+          <div class="collection-image">
+            <img src='{{base}}/{{collection?.file}}' alt="collection image" srcset="" />
+          </div>
+          <div class="flex-1">
+            <div class="collection-name">{{collection?.name}}</div>
+            <div class="collection-featured-{{collection?.isFeatured}}">
+              <ng-container *ngIf="collection?.isFeatured == true">Featured</ng-container>
+              <ng-container *ngIf="collection?.isFeatured == false">Not Featured</ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="flex-21">
+          <div class="collection-status-{{collection?.isActive}}">
+            <ng-container *ngIf="collection?.isActive == true">Active</ng-container>
+            <ng-container *ngIf="collection?.isActive == false">Inactive</ng-container>
+          </div>
+          <div class="card-edit-btn">
+            <button routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}" [queryParams]="{ collection: collection?.slug }"
+              class="fs-5 cursor-pointer text-darker" (click)="storeItem($event)">
+              Edit
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="search-featured col-sm-2">
-        <label class="fs-6 form-title">Featured</label>
-        <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="onChange()">
-          <option value="">-- Select an option --</option>
-          <option value=true>Featured</option>
-          <option value=false>Non featured</option>
-        </select>
+    </ng-container>
+    <ng-container *ngIf="!isData">
+      <div class="no-data-container">
+        <h2>Sorry, we haven't found any data</h2>
       </div>
-      <div class="search-submit col-sm-2">
-        <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
-          style="outline: none; border: none;">Clear</button>
-      </div>
+    </ng-container>
+  </div>
+  <div class="load-data-btn">
+    <div class="no-data-text">Showing {{count}} of {{totalcount}}</div>
+    <div class="buttons">
+      <button class="show-more-btn show-more-{{showBtn}}" (click)="fetchMore()">Show {{limit}} More</button>
+      <button class="show-less-btn show-less-{{showLessBtn}}" (click)="fetchLess()">Show Less</button>
     </div>
-  </form>
+  </div>
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
@@ -115,12 +171,6 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="!isData">
-      <div class="no-data-container">
-        <h2>Sorry, we haven't found any data</h2>
-      </div>
-    </ng-container>
-
-  </div>
+  </div> -->
   <!-- Page Content -->
 </div>
