@@ -21,25 +21,26 @@
       </div>
     </div>
   </div>
+  <hr class="horizontal-line">
   <form [formGroup]="categoryForm">
     <div class="col-12 row" style="display: flex; align-items: flex-end;">
       <div class="search-input col-sm-4">
         <label class="fs-6">Search</label>
         <input type="text" placeholder="Search for brands here..." class="form-control fs-6" formControlName="name"
-          (ngModelChange)="onChange()">
+          (ngModelChange)="searchCategory()">
       </div>
       <div class="search-status col-sm-2">
         <label class="fs-6">Status</label>
-        <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="onChange()">
-          <option value="">-- Select an option --</option>
+        <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="searchCategory()">
+          <option value="">Select an option</option>
           <option value=true>Active</option>
           <option value=false>Inactive</option>
         </select>
       </div>
       <div class="search-featured col-sm-2">
         <label class="fs-6 form-title">Featured</label>
-        <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="onChange()">
-          <option value="">-- Select an option --</option>
+        <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="searchCategory()">
+          <option value="">Select an option</option>
           <option value=true>Featured</option>
           <option value=false>Non featured</option>
         </select>
@@ -50,92 +51,50 @@
       </div>
     </div>
   </form>
-
-  <!-- Table start -->
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card card-table">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" *ngIf="displayTable"
-              class="datatable table table-borderless table-center table-row-dashed mb-0">
-              <thead class="thead mt-100">
-                <tr class="fs-7 text-uppercase">
-                  <th class="text-gray-400 col-md-2">Sl No.</th>
-                  <th class="text-gray-400 col-md-2">Category</th>
-                  <th class="text-gray-400 col-md-2">Root Category</th>
-                  <th class="text-gray-400 col-md-2">Parent Category</th>
-                  <th class="text-gray-400 col-md-2">Image</th>
-                  <th class="text-gray-400 col-md-2">Attributes</th>
-                  <th class="text-gray-400 col-md-2">Status</th>
-                  <th class="text-gray-400 col-md-2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let category of categoryData; let i = index">
-                  <td>{{ i + 1 }}</td>
-                  <td>
-                    <h2 class="table-avatar fs-6">{{ category?.name }}</h2>
-                  </td>
-                  <ng-container *ngIf="category?.root">
-                    <td>
-                      <h2 class="table-avatar fs-6">
-                        {{ category?.root.name }}
-                      </h2>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="category?.parent">
-                    <td>
-                      <h2 class="table-avatar fs-6">
-                        {{ category?.parent.name }}
-                      </h2>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="!category?.root">
-                    <td>
-                      <h2 class="table-avatar fs-6">-</h2>
-                    </td>
-                  </ng-container>
-                  <ng-container *ngIf="!category?.parent">
-                    <td>
-                      <h2 class="table-avatar fs-6">-</h2>
-                    </td>
-                  </ng-container>
-                  <td>
-                    <img class="category-logo" src="{{base}}/{{ category?.file }}" alt="category" />
-                  </td>
-                  <td>
-                    <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: category?.slug }"
-                      class="fs-6 cursor-pointer text-darker">Attributes</a>
-                  </td>
-                  <td>
-                    <ng-container *ngIf="category?.isActive == true">
-                      <div class="active-text-view">
-                        <span class="active-text"> active </span>
-                      </div>
-                    </ng-container>
-                    <ng-container *ngIf="category?.isActive == false">
-                      <div class="inactive-text-view">
-                        <span class="inactive-text"> inactive </span>
-                      </div>
-                    </ng-container>
-                  </td>
-                  <td>
-                    <a class="fs-6 cursor-pointer text-darker" routerLink="{{ appRoute.category.UPDATE_CATEGORY }}"
-                      [queryParams]="{ category: category?.slug }"><i class="bi bi-pen fs-4"></i> Edit
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+  <hr class="horizontal-line">
+  <div class="total-count-container" *ngIf="isData">
+    <h3>{{count}} categories</h3>
+  </div>
+  <div class="category-card-container view-container">
+    <ng-container *ngFor="let category of categories">
+      <div class="category-card">
+        <div class="category-details">
+          <div class="category-image">
+            <img src='{{base}}/{{category?.file}}' alt="category image" srcset="" />
+          </div>
+          <div class="flex-1">
+            <div class="category-name">{{category?.name}}</div>
+            <div class="category-featured-{{category?.isFeatured}}">
+              <ng-container *ngIf="category?.isFeatured == true">Featured</ng-container>
+              <ng-container *ngIf="category?.isFeatured == false">Not Featured</ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="flex-21">
+          <div class="category-status-{{category?.isActive}}">
+            <ng-container *ngIf="category?.isActive == true">Active</ng-container>
+            <ng-container *ngIf="category?.isActive == false">Inactive</ng-container>
+          </div>
+          <div class="card-edit-btn">
+            <button routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }"
+              class="fs-5 cursor-pointer text-darker">
+              Edit
+            </button>
           </div>
         </div>
       </div>
+    </ng-container>
+    <ng-container *ngIf="!isData">
+      <div class="no-data-container">
+        <h2>Sorry, we haven't found any data</h2>
+      </div>
+    </ng-container>
+  </div>
+  <div class="load-data-btn">
+    <div class="no-data-text">Showing {{count}} of {{totalcount}}</div>
+    <div class="buttons">
+      <button class="show-more-btn show-more-{{showBtn}}" (click)="fetchMore()">Show {{limit}} More</button>
+      <button class="show-less-btn show-less-{{showLessBtn}}" (click)="fetchLess()">Show Less</button>
     </div>
   </div>
-  <ng-container *ngIf="!isData">
-    <div class="no-data-container">
-      <h2>Sorry, we haven't found any data</h2>
-    </div>
-  </ng-container>
 </div>
