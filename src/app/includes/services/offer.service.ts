@@ -34,4 +34,19 @@ export class OfferService {
     const url = this.commonService.getFullUrl(this.offerEndpoints.update_offer + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  searchOffer(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.offerEndpoints.search_offer + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, query);
+  }
+
+  getOfferCount() {
+    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_count);
+    return this.http.get(`${url}`);
+  }
+
+  getOfferPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_page + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
 }

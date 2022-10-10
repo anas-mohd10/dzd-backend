@@ -6,4 +6,8 @@ export const offerEndpoints = {
   update_offer_status: '/update-offer-status',
   update_offer: '/update-offer',
   delete_offer: '/delete-offer',
+  get_offer_page: '/offer-page',
+  get_offer_count: '/offer/count',
+  search_offer: '/offer/search'
+
 };
