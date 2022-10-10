@@ -43,11 +43,6 @@ class ScrollTopComponent {
         this._scroll()
       })
     })
-
-    this.element.addEventListener('click', (e: Event) => {
-      e.preventDefault()
-      this._go()
-    })
   }
 
   private _scroll = () => {
@@ -64,10 +59,10 @@ class ScrollTopComponent {
     }
   }
 
-  private _go = () => {
-    const speed = parseInt(this._getOption('speed') as string)
-    ElementAnimateUtil.scrollTop(0, speed)
-  }
+  // private _go = () => {
+  //   const speed = parseInt(this._getOption('speed') as string)
+  //   ElementAnimateUtil.scrollTop(0, speed)
+  // }
 
   private _getOption = (name: string) => {
     const attr = this.element.getAttribute(`data-kt-scrolltop-${name}`)
@@ -90,9 +85,9 @@ class ScrollTopComponent {
   ///////////////////////
 
   // Plugin API
-  public go = () => {
-    return this._go()
-  }
+  // public go = () => {
+  //   return this._go()
+  // }
 
   public getElement = () => {
     return this.element
@@ -143,8 +138,8 @@ class ScrollTopComponent {
     ScrollTopComponent.createInstances('[data-kt-scrolltop="true"]')
   }
 
-  public static goTop = () => {
-    ElementAnimateUtil.scrollTop(0, defaultScrollTopOptions.speed)
-  }
+  // public static goTop = () => {
+  //   ElementAnimateUtil.scrollTop(0, defaultScrollTopOptions.speed)
+  // }
 }
 export {ScrollTopComponent, defaultScrollTopOptions}

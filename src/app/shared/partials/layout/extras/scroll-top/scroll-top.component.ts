@@ -30,9 +30,6 @@ export class LayoutScrollTopComponent implements OnInit, OnDestroy {
       if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
         this.pluginsReinitialization();
         this.updateHeaderSticky();
-        setTimeout(() => {
-          this.scrollTop();
-        }, 0);
       }
     });
     this.unsubscribe.push(routerSubscription);
@@ -52,19 +49,13 @@ export class LayoutScrollTopComponent implements OnInit, OnDestroy {
     }
   }
 
-  scrollTop() {
-    ScrollTopComponent.goTop();
-  }
-
   pluginsReinitialization() {
     setTimeout(() => {
-      // ScrollTopComponent.reinitialization()
       MenuComponent.reinitialization();
       StickyComponent.reInitialization();
       setTimeout(() => {
         ToggleComponent.reinitialization();
         DrawerComponent.reinitialization();
-        // ScrollComponent.reinitialization()
       }, 70);
     }, 140);
   }

@@ -85,27 +85,4 @@ export class ElementAnimateUtil {
   public static animationDuration(element: HTMLElement, value: string) {
     ElementStyleUtil.set(element, 'animation-duration', value)
   }
-
-  public static scrollTo(element: HTMLElement | null, offset: number, duration: number = 500) {
-    let targetPos = element ? getElementOffset(element).top : 0
-    let scrollPos =
-      window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
-
-    if (offset) {
-      scrollPos += offset
-      targetPos = targetPos - offset
-    }
-
-    const from = scrollPos
-    const to = targetPos
-
-    ElementAnimateUtil.animate(from, to, duration, function (value: number) {
-      document.documentElement.scrollTop = value
-      // document.body.parentNode.scrollTop = value;
-      document.body.scrollTop = value
-    }) //, easing, done
-  }
-  public static scrollTop(offset: number, duration: number) {
-    ElementAnimateUtil.scrollTo(null, offset, duration)
-  }
 }

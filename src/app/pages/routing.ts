@@ -324,10 +324,9 @@ export const Routing: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(Routing, {
-      useHash: true,
-      relativeLinkResolution: 'legacy',
+      scrollPositionRestoration: 'disabled'
     }),
   ],
   exports: [RouterModule],
 })
-export class RoutingModule { }
+export class RoutingModule { } 

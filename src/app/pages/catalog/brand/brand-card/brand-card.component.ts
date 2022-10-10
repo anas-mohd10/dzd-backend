@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ElementRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-brand-card',
@@ -42,12 +43,6 @@ export class BrandCardComponent implements OnInit {
     this.initForm()
     this.base = environment.base
 
-    // window.scrollTo({
-    //   top: 5560,
-    //   left: 7308,
-    //   behavior: 'smooth'
-    // })
-
     this.brandService.getBrands(this.page, this.limit).subscribe((res: any) => {
       this.brands = res?.result
       this.count = this.brands.length
@@ -58,8 +53,6 @@ export class BrandCardComponent implements OnInit {
       this.totalcount = res?.result
       this.cdr.markForCheck();
     })
-
-    window.scrollTo(2356, 7308)
   }
 
   initForm() {
@@ -86,22 +79,6 @@ export class BrandCardComponent implements OnInit {
         this.setBoolValues(this.totalcount, this.brands.length)
       }
     })
-  }
-
-  storeItem(event: any) {
-    let offsetLeft = 0;
-    let offsetTop = 0;
-    let el = event.srcElement;
-    while (el) {
-      offsetLeft += el.offsetLeft;
-      offsetTop += el.offsetTop;
-      el = el.parentElement;
-    }
-    const coords = {
-      top: offsetTop,
-      left: offsetLeft
-    }
-    localStorage.setItem('coords', JSON.stringify(coords))
   }
 
   fetchMore() {
