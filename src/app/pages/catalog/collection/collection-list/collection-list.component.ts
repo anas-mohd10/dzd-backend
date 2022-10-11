@@ -33,11 +33,10 @@ export class CollectionListComponent implements OnInit {
   //Filters array
   filters: any = [];
 
-
   constructor(private collectionService: CollectionService,
-    private cdr:ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private formBuilder: FormBuilder,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.initForm()
@@ -47,16 +46,10 @@ export class CollectionListComponent implements OnInit {
       this.count = this.collections.length
       this.cdr.markForCheck();
     });
-
     this.collectionService.getCollectionCount().subscribe((res: any) => {
       this.totalcount = res?.result
-      console.log(this.totalcount);
-
       this.cdr.markForCheck();
     })
-
-    window.scrollTo(2356, 7308)
-
   }
 
   initForm() {
@@ -71,7 +64,7 @@ export class CollectionListComponent implements OnInit {
     window.location.reload()
   }
 
-  searchCollection(key: any, e: any) {
+  searchCollection() {
     this.currpage = 1
     this.collectionService.searchCollection(this.collectionForm.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -83,22 +76,6 @@ export class CollectionListComponent implements OnInit {
         this.setBoolValues(this.totalcount, this.collections.length)
       }
     })
-  }
-
-  storeItem(event: any) {
-    let offsetLeft = 0;
-    let offsetTop = 0;
-    let el = event.srcElement;
-    while (el) {
-      offsetLeft += el.offsetLeft;
-      offsetTop += el.offsetTop;
-      el = el.parentElement;
-    }
-    const coords = {
-      top: offsetTop,
-      left: offsetLeft
-    }
-    localStorage.setItem('coords', JSON.stringify(coords))
   }
 
   fetchMore() {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { environment } from 'src/environments/environment.prod';
@@ -67,6 +67,11 @@ export class BrandCardComponent implements OnInit {
       this.cdr.markForCheck();
       this.setPages()
     })
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: any) {
+    console.log('Back button pressed');
   }
 
   initForm() {

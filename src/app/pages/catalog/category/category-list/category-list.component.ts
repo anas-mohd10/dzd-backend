@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -11,23 +9,21 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss'],
 })
-export class CategoryComponent implements OnDestroy, OnInit {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
-
+export class CategoryComponent implements OnInit {
   appRoute = appRoutes;
-  categoryData: any;
   displayTable: boolean = false;
   base: any
-  categoryForm:FormGroup
+  categoryForm: FormGroup
   pages: any = [];
   page: any = 1;
   limit: any = 4;
   categories: any;
   isData: boolean = true;
   count: any;
+  totalcount: any;
+  currpage: number;
+  showLessBtn: boolean;
+  showBtn: boolean;
 
 
   constructor(private categoryService: CategoryService,
@@ -37,28 +33,17 @@ export class CategoryComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.initForm()
-    this.getCategory()
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 10,
-      processing: true,
-    };
     this.base = environment.base
-  }
-
-  getCategory() {
     this.categoryService.getCategory().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.categoryData = res?.result;
-          this.cdr.markForCheck();
-          this.dtTrigger.next();
-          // this.categoryData[3]?.rootId.name + " > " + this.categoryData[3]?.parentId.parentId.name + " >  " + this.categoryData[3]?.parentId.name;
-          break;
-      }
-      this.displayTable = true;
+      this.categories = res?.result;
+      this.count = this.categories.length
+      this.cdr.markForCheck();
     });
+    this.categoryService.getCategoryCount().subscribe((res: any) => {
+      console.log(res?.result);
+      this.totalcount = res?.result
+      this.cdr.markForCheck();
+    })
   }
 
   initForm() {
@@ -73,29 +58,55 @@ export class CategoryComponent implements OnDestroy, OnInit {
     window.location.reload()
   }
 
-  onChange() {
+  searchCategory() {
+    this.currpage = 1
     this.categoryService.searchCategory(this.categoryForm.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result?.data
+        this.count = this.categories.length
         this.cdr.markForCheck();
         this.isData = true
-        if (this.categories.length == 0) {
-          this.isData = false
-        }
-        this.pages.length = 0
-        this.count = Math.ceil(res?.result?.total / this.limit)
-        for (let i = 1; i <= this.count; i++) {
-          this.pages.push({
-            key: i,
-          })
-        }
+        this.totalcount = res?.result?.total
+        this.setBoolValues(this.totalcount, this.categories.length)
       }
     })
   }
 
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
+  fetchMore() {
+    this.currpage += 1
+    this.categoryService.searchCategory(this.categoryForm.value, this.currpage, this.limit).subscribe((res: any) => {
+      this.categories = [...this.categories, ...res?.result.data]
+      this.count = this.categories.length
+      this.setBoolValues(this.totalcount, this.categories.length)
+      this.cdr.markForCheck();
+    })
+    if (this.currpage > 1) {
+      this.showLessBtn = true
+    }
   }
 
+  fetchLess() {
+    this.currpage = 1
+    this.categoryService.searchCategory(this.categoryForm.value, this.currpage, this.limit).subscribe((res: any) => {
+      this.categories = res?.result?.data
+      this.count = this.categories.length
+      this.setBoolValues(this.totalcount, this.categories.length)
+      this.cdr.markForCheck();
+    })
+  }
+
+  setBoolValues(datalen: any, catlen: any) {
+    if (datalen == catlen) {
+      this.showBtn = false
+      this.showLessBtn = true
+    } else {
+      this.showBtn = true
+      this.showLessBtn = false
+    }
+    if (catlen == 0) {
+      this.isData = false
+    } else {
+      this.isData = true
+    }
+  }
 }

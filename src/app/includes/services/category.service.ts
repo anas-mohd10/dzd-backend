@@ -35,13 +35,6 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  // getCategoryById(id: any) {
-  //   const url = this.commonService.getFullUrl(
-  //     this.categoryEndpoints.get_category_by_id + id
-  //   );
-  //   return this.http.get(`${url}`);
-  // }
-
   getCategoryBySlug(slug: any) {
     const url = this.commonService.getFullUrl(
       this.categoryEndpoints.get_category_by_slug + '?slug=' + slug
