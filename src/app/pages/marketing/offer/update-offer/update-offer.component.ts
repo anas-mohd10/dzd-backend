@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service'; 3
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-offer',
@@ -28,16 +29,19 @@ export class UpdateOfferComponent implements OnInit {
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
+  base: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private offerService: OfferService
+    private offerService: OfferService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.offer = this.route.snapshot.queryParams.offer || '';
     this.initForm();
     this.managePage();
@@ -110,14 +114,10 @@ export class UpdateOfferComponent implements OnInit {
     this.offerService.getOfferById(this.offer).subscribe((res: any) => {
       if (res.errorCode == 0) {
         this.offerData = res?.result[0];
+        this.cdr.markForCheck()
         this.uploadedimg = this.offerData?.file;
-        this.fromDate = new Date(this.offerData.fromDate)
-          .toISOString()
-          .split('T')[0];
-        this.lastDate = new Date(this.offerData.lastDate)
-          .toISOString()
-          .split('T')[0];
-
+        this.fromDate = new Date(this.offerData.fromDate).toISOString().split('T')[0];
+        this.lastDate = new Date(this.offerData.lastDate).toISOString().split('T')[0];
         this.offerForm.get('name')?.setValue(this.offerData.name);
         this.offerForm.get('description')?.setValue(this.offerData.description);
         this.offerForm.get('isActive')?.setValue(this.offerData.isActive);

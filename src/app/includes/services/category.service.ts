@@ -9,19 +9,20 @@ import { categoryEndpoints } from 'src/app/config/endpoints/category.endpoints';
 export class CategoryService {
   categoryEndpoints = categoryEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addCategory(data: any) {
-    const url = this.commonService.getFullUrl(
-      this.categoryEndpoints.add_category
-    );
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.add_category);
     return this.http.post(`${url}`, data);
   }
 
   getCategory() {
-    const url = this.commonService.getFullUrl(
-      this.categoryEndpoints.get_category
-    );
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category);
+    return this.http.get(`${url}`);
+  }
+
+  getCategoryByPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_page + "?page=" + page + "&limit=" + limit);
     return this.http.get(`${url}`);
   }
 

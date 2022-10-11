@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-brand-card',
@@ -15,7 +14,6 @@ export class BrandCardComponent implements OnInit {
   appRoute = appRoutes;
   brands: any;
   base: any
-  data: any
 
   //Page and limit for query
   page: any = 1;
@@ -67,11 +65,6 @@ export class BrandCardComponent implements OnInit {
       this.cdr.markForCheck();
       this.setPages()
     })
-  }
-
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event: any) {
-    console.log('Back button pressed');
   }
 
   initForm() {

@@ -121,7 +121,7 @@ export class AddBrandComponent implements OnInit {
     const data = {
       name: this.brandForm.get("name")?.value,
       isActive: this.brandForm.get("isActive")?.value,
-      isfeatured: this.brandForm.get("isFeatured")?.value,
+      isFeatured: this.brandForm.get("isFeatured")?.value,
       filestring: this.croppedImage,
       filename: this.filename
     }

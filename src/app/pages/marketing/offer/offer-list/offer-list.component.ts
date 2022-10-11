@@ -1,9 +1,8 @@
-import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { OfferService } from '../../../../includes/services/offer.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-offer-list',
@@ -11,95 +10,157 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./offer-list.component.scss'],
 })
 export class OfferListComponent implements OnInit {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-
   appRoute = appRoutes;
-  offerData: any;
-  activeFilter: boolean = false;
-  offerForm: FormGroup;
-  displayTable: boolean = false;
+  offers: any;
+  offerform: FormGroup;
+  base: any
+
+  //Page and limit for query
+  page: any = 1;
+  pages: any = []
+  nextpages: any = []
+  currpage: any = 1;
+  limit: any = 8;
+  selectedpage: any = 1
+  max: any = 3
+
+  //Total no. of data from backend
+  totalcount: any;
+  totaldata: any;
+  count: any = 0
+
+  //Conditions
+  isData: boolean = true;
+  showBtn: boolean = true;
+  showLessBtn: boolean = false;
+  isNext: boolean = true
+
+  //Filters array
+  filters: any = [];
+  show: any;
+  shifted: any
 
   constructor(
     private offerService: OfferService,
     private formBuilder: FormBuilder,
-    private cdr:ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.getOffer();
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 5,
-      processing: true,
-    };
+    this.base = environment.base
+    setTimeout(() => {
+      this.setPages()
+    })
+
+    this.offerService.getOffer(this.page, this.limit).subscribe((res: any) => {
+      this.offers = res?.result
+      this.count = this.offers.length
+      this.cdr.markForCheck();
+    });
+
+    this.offerService.getOfferCount().subscribe((res: any) => {
+      this.totalcount = res?.result
+      this.totaldata = Math.ceil(this.totalcount / this.limit)
+      this.cdr.markForCheck();
+      this.setPages()
+    })
   }
 
   initForm() {
-    this.offerForm = this.formBuilder.group({
-      active: ['No', Validators.required],
+    this.offerform = this.formBuilder.group({
+      name: [''],
+      isActive: [''],
+      isFeatured: [''],
     });
   }
 
-  onChange(){
-    if(this.offerForm.value.active == "Yes"){
-      this.activeFilter = true
-      this.getOffer()
-    }
-    if(this.offerForm.value.active == "No"){
-      this.activeFilter = false
-      this.getOffer()
+  onReload() {
+    window.location.reload()
+  }
+
+  searchOffer() {
+    this.currpage = 1
+    this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.offers = res?.result?.data
+        this.count = this.offers.length
+        this.totalcount = res?.result?.total
+        this.totaldata = Math.ceil(this.totalcount / this.limit)
+        this.setPages()
+        this.cdr.markForCheck();
+        this.isData = true
+      }
+    })
+  }
+
+  fetchOffer(page: any, limit: any) {
+    this.selectedpage = page
+    this.currpage = page
+    this.getData(this.offerform.value, page, limit)
+  }
+
+  loadNext() {
+    this.currpage += 1
+    this.selectedpage += 1
+    if (this.currpage <= 3) {
+      if (this.currpage <= this.totaldata) {
+        this.getData(this.offerform.value, this.currpage, this.limit)
+      } else {
+        this.isNext = false
+      }
+    } else {
+      this.shifted = this.pages.shift() //Captures the shifted number from pagination array
+      this.pages.push(this.currpage)
+      if (this.currpage <= this.totaldata) {
+        this.getData(this.offerform.value, this.currpage, this.limit)
+      } else {
+        this.isNext = false
+      }
     }
   }
 
-  getOffer() {
-    if (this.activeFilter == false) {
-      this.offerService.getOffer().subscribe((res: any) => {
-        switch (res?.errorCode) {
-          case 0:
-            this.offerData = res?.result;
-            this.cdr.markForCheck()
-            for (let i = 0; i < this.offerData.length; i++) {
-              this.offerData[i].fromDate = new Date(
-                this.offerData[i].fromDate
-              ).toDateString();
-            }
-            for (let i = 0; i < this.offerData.length; i++) {
-              this.offerData[i].lastDate = new Date(
-                this.offerData[i].lastDate
-              ).toDateString();
-            }
-            break;
-        }
-        // this.dtTrigger.next();
-        this.displayTable = true;
-      });
-    } else if (this.activeFilter == true) {
-      this.offerService.getActiveOffer().subscribe((res: any) => {
-        switch (res?.errorCode) {
-          case 0:
-            this.offerData = res?.result;
-            this.cdr.markForCheck()
-            for (let i = 0; i < this.offerData.length; i++) {
-              this.offerData[i].fromDate = new Date(
-                this.offerData[i].fromDate
-              ).toDateString();
-            }
-            for (let i = 0; i < this.offerData.length; i++) {
-              this.offerData[i].lastDate = new Date(
-                this.offerData[i].lastDate
-              ).toDateString();
-            }
-            break;
-        }
-        // this.dtTrigger.next();
-        this.displayTable = true;
-      });
+  loadPrevious() {
+    this.currpage -= 1
+    this.selectedpage -= 1
+    if (this.currpage > 3 && this.currpage <= this.totaldata && this.currpage > 0) {
+      this.getData(this.offerform.value, this.currpage, this.limit)
+    }
+    else {
+      if (this.pages[0] != 1) {
+        this.pages.pop()
+        this.pages.unshift(this.shifted)
+        this.shifted -= 1
+        this.getData(this.offerform.value, this.currpage, this.limit)
+      } else {
+        this.getData(this.offerform.value, this.currpage, this.limit)
+      }
     }
   }
 
-  onSubmit() {}
+  setPages() {
+    this.currpage = 1
+    this.selectedpage = 1
+    this.pages.length = 0
+    if (this.totaldata > 3) {
+      for (let i = 1; i <= this.max; i++) {
+        this.pages.push(i)
+      }
+    } else {
+      for (let i = 1; i <= this.totaldata; i++) {
+        this.pages.push(i)
+      }
+    }
+  }
+
+  getData(data: any, page: any, limit: any) {
+    this.offerService.searchOffer(data, page, limit).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.offers = res?.result?.data
+        this.count = this.offers.length
+        this.cdr.markForCheck();
+      }
+    })
+    this.isNext = true
+  }
 }

@@ -15,8 +15,8 @@ export class OfferService {
     return this.http.post(`${url}`, data);
   }
 
-  getOffer() {
-    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer);
+  getOffer(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer + "?page=" + page + "&limit=" + limit);
     return this.http.get(`${url}`);
   }
 
@@ -42,11 +42,6 @@ export class OfferService {
 
   getOfferCount() {
     const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_count);
-    return this.http.get(`${url}`);
-  }
-
-  getOfferPage(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_page + "?page=" + page + "&limit=" + limit);
     return this.http.get(`${url}`);
   }
 }
