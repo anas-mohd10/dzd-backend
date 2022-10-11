@@ -90,3 +90,64 @@
   font-weight: 600;
   font-size: 1.1rem;
 }
+
+.page-next-false {
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.page-next-true {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.pagination-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  align-items: center;
+  margin: 0;
+  list-style: none;
+}
+
+.pagination-container .page-item .page-link {
+  cursor: pointer;
+  padding: 0 8px;
+  height: 40px;
+  width: 40px;
+  color: #222222;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.pagination-container .page-item .page-active {
+  background: #00bdab;
+  color: #ffffff;
+  border: none;
+}
+
+.pagination-container .page-change-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.pagination-container .page-change-icon .page-link {
+  height: 100%;
+  width: 100%px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-container .page-change-icon .page-link i {
+  font-size: 2rem;
+  color: #444444;
+}
