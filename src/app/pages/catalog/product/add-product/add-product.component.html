@@ -190,9 +190,9 @@
                   <select class="form-select" formControlName="shippingMethod"
                     (change)="checkShippingMethod($event.target)"
                     [ngClass]="{'is-invalid': (pf.shippingMethod.touched || isSubmitted) && pf.shippingMethod.errors?.required}">
-                    <option value="paid">Paid Shipping</option>
-                    <option value="unpaid">Unpaid Shipping</option>
-                    <option value="external">External Shipping Service</option>
+                    <option value="Paid">Paid Shipping</option>
+                    <option value="Unpaid">Unpaid Shipping</option>
+                    <option value="External">External Shipping Service</option>
                   </select>
                 </div>
               </div>

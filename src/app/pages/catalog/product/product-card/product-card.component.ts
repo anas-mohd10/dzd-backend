@@ -12,19 +12,33 @@ import { environment } from 'src/environments/environment';
 export class ProductCardComponent implements OnInit {
   appRoute = appRoutes;
   products: any;
-  productForm: any;
+  productform: any;
   base: any
-  len: any;
-  count: any;
-  pages: any = [];
+
+  //Page and limit for query
   page: any = 1;
-  limit: any = 4;
-  datalength: any;
-  isPreviousExist: boolean = false;
-  currPage: any;
-  isNextExist: boolean = true;
+  pages: any = []
+  nextpages: any = []
+  currpage: any = 1;
+  limit: any = 1;
+  selectedpage: any = 1
+  max: any = 3
+
+  //Total no. of data from backend
+  totalcount: any;
+  totaldata: any;
+  count: any = 0
+
+  //Conditions
   isData: boolean = true;
-  selectedPage: any = 1;
+  showBtn: boolean = true;
+  showLessBtn: boolean = false;
+  isNext: boolean = true
+
+  //Filters array
+  filters: any = [];
+  show: any;
+  shifted: any
 
   constructor(
     private productService: ProductService,
@@ -34,90 +48,120 @@ export class ProductCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.base = environment.base
-    this.getProduct()
+    setTimeout(() => {
+      this.setPages()
+    })
     this.initForm()
-    this.productService.getProductsCount().subscribe((res: any) => {
-      this.pages.length = 0
-      this.datalength = res?.result
+
+    this.productService.getProductByPage(this.page, this.limit).subscribe((res: any) => {
+      this.products = res?.result
+      this.count = this.products.length
       this.cdr.markForCheck();
-      this.count = Math.ceil((res?.result) / this.limit)
-      for (let i = 1; i <= this.count; i++) {
-        this.pages.push({
-          key: i,
-        })
-      }
+    });
+
+    this.productService.getProductsCount().subscribe((res: any) => {
+      this.totalcount = res?.result
+      this.totaldata = Math.ceil(this.totalcount / this.limit)
+      this.cdr.markForCheck();
+      this.setPages()
     })
   }
 
   initForm() {
-    this.productForm = this.formBuilder.group({
+    this.productform = this.formBuilder.group({
       name: [''],
       isActive: [''],
       isFeatured: [''],
     });
   }
 
-  getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.products = res?.result;
-          this.cdr.markForCheck();
-          break;
+  setPages() {
+    this.currpage = 1
+    this.selectedpage = 1
+    this.pages.length = 0
+    if (this.totaldata > 3) {
+      for (let i = 1; i <= this.max; i++) {
+        this.pages.push(i)
       }
-    });
+    } else {
+      for (let i = 1; i <= this.totaldata; i++) {
+        this.pages.push(i)
+      }
+    }
   }
+
   onReload() {
     window.location.reload()
   }
 
-  onChange() {
-    this.productService.searchProducts(this.productForm.value, this.page, this.limit).subscribe((res: any) => {
+  searchProduct() {
+    this.currpage = 1
+    this.productService.searchProducts(this.productform.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
+        this.count = this.products.length
+        this.totalcount = res?.result?.total
+        this.totaldata = Math.ceil(this.totalcount / this.limit)
+        this.setPages()
         this.cdr.markForCheck();
         this.isData = true
-        if (this.products.length == 0) {
-          this.isData = false
-        }
-        this.pages.length = 0
-        this.count = Math.ceil(res?.result?.total / this.limit)
-        for (let i = 1; i <= this.count; i++) {
-          this.pages.push({
-            key: i,
-          })
-        }
       }
     })
   }
 
-  //Pagination fetch data
-  fetchByPage(page: any) {
-    this.selectedPage = page
-    this.fetchData(this.productForm.value, page, this.limit)
+  fetchProduct(page: any, limit: any) {
+    this.selectedpage = page
+    this.currpage = page
+    this.getData(this.productform.value, page, limit)
   }
 
-  fetchByLimit(e: any) {
-    this.limit = e.value
-    this.fetchData(this.productForm.value, this.page, this.limit)
+  loadNext() {
+    this.currpage += 1
+    this.selectedpage += 1
+    if (this.currpage <= 3) {
+      if (this.currpage <= this.totaldata) {
+        this.getData(this.productform.value, this.currpage, this.limit)
+      } else {
+        this.isNext = false
+      }
+    } else {
+      this.shifted = this.pages.shift() //Captures the shifted number from pagination array
+      this.pages.push(this.currpage)
+      if (this.currpage <= this.totaldata) {
+        this.getData(this.productform.value, this.currpage, this.limit)
+      } else {
+        this.isNext = false
+      }
+    }
   }
 
-  fetchData(data: any, page: any, limit: any) {
+  loadPrevious() {
+    this.currpage -= 1
+    this.selectedpage -= 1
+    if (this.currpage > 3 && this.currpage <= this.totaldata && this.currpage > 0) {
+      this.getData(this.productform.value, this.currpage, this.limit)
+    }
+    else {
+      if (this.pages[0] != 1) {
+        this.pages.pop()
+        this.pages.unshift(this.shifted)
+        this.shifted -= 1
+        this.getData(this.productform.value, this.currpage, this.limit)
+      } else {
+        this.getData(this.productform.value, this.currpage, this.limit)
+      }
+    }
+  }
+
+  getData(data: any, page: any, limit: any) {
     this.productService.searchProducts(data, page, limit).subscribe((res: any) => {
-      this.products = res?.result.data
-      this.pages.length = 0
-      this.isData = true
-      if (this.products.length == 0) {
-        this.isData = false
-      }
-      this.cdr.markForCheck();
-      this.count = Math.ceil(res?.result?.total / this.limit)
-      for (let i = 1; i <= this.count; i++) {
-        this.pages.push({
-          key: i,
-        })
+      if (res?.errorCode == 0) {
+        this.products = res?.result?.data
+        this.count = this.products.length
+        this.cdr.markForCheck();
       }
     })
+    this.isNext = true
   }
 }
 

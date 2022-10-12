@@ -315,7 +315,7 @@ export class AddProductComponent implements OnInit {
       description: this.productForm.get('description')?.value,
       features: this.productForm.get('features')?.value,
       categories: this.categoryid,
-      brandId: this.productForm.get('brandId')?.value,
+      brand: this.productForm.get('brandId')?.value,
       additionalbutton: this.productForm.get('additionalbutton')?.value,
       buttonredireturl: this.productForm.get('buttonredireturl')?.value,
       isActive: this.productForm.get('isActive')?.value,
@@ -326,7 +326,7 @@ export class AddProductComponent implements OnInit {
       shippingCost: this.productForm.get('shippingCost')?.value,
       value: this.productForm.get('value')?.value,
       unit: this.productForm.get('unit')?.value,
-      taxClassId: this.productForm.get('taxClassId')?.value,
+      tax: this.productForm.get('taxClassId')?.value,
       cod: this.productForm.get('cod')?.value,
       codCharge: this.productForm.get('codCharge')?.value,
       searchKeywords: this.searchKeyowrds,
@@ -340,7 +340,7 @@ export class AddProductComponent implements OnInit {
       if (res.errorCode != 0) {
         this.toastr.error('Something Went Wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Product Added Successfully');
+        this.toastr.success('Product added successfully');
         this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
         this.ngOnInit();
       }

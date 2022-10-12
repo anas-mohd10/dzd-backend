@@ -21,6 +21,11 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
+  getProductByPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.get_product_page + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
+
   getProductsCount() {
     const url = this.commonService.getFullUrl(this.productEndpoints.get_products_count);
     return this.http.get(`${url}`);
