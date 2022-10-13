@@ -1,15 +1,11 @@
 export const collectionEndpoints = {
-    add_collection: '/upload-collection',
+    add_collection: '/add-collection',
     get_collection: '/collections',
-    get_active_collections: '/active-collections',
-    get_collection_by_id: '/collection',
+    get_collection_page: '/collections-page',
+    get_active_collections: '/collections/active',
     get_collection_by_slug: '/collection',
-    update_collection_status: '/update-collection',
     update_collection: '/update-collection',
-    delete_collection: '/delete-collection',
     get_collection_count: '/collections/count',
     //Filter APIs
-    search_collection: '/collection/search',
-    get_collection_page: '/collections-page',
-
+    search_collection: '/collections/search',
 }

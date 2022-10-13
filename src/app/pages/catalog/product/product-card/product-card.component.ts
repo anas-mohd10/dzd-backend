@@ -20,7 +20,7 @@ export class ProductCardComponent implements OnInit {
   pages: any = []
   nextpages: any = []
   currpage: any = 1;
-  limit: any = 1;
+  limit: any = 8;
   selectedpage: any = 1
   max: any = 3
 

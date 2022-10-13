@@ -9,7 +9,7 @@
   width: calc(50% - 20px);
   margin: 10px 10px 10px 0;
   height: 200px;
-  padding: 10px 30px;
+  padding: 10px 20px;
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
@@ -91,3 +91,11 @@
   font-size: 1.1rem;
 }
 
+.offer-from-date, .offer-last-date{
+  font-size: 1.2rem;
+}
+
+.offer-from-date span, .offer-last-date span{
+  font-size: 1.3rem;
+  font-weight: 600;
+}

@@ -30,4 +30,19 @@ export class VouchersService {
     const url = this.commonService.getFullUrl(this.voucherEndpoints.update_voucher + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  getVoucherCount() {
+    const url = this.commonService.getFullUrl(this.voucherEndpoints.get_vouchers_count);
+    return this.http.get(`${url}`);
+  }
+
+  getVoucherByPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.voucherEndpoints.get_voucher_page + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
+
+  searchVoucher(data: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.voucherEndpoints.search_voucher + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, data);
+  }
 }

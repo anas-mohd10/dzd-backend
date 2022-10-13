@@ -55,6 +55,10 @@ export class OfferListComponent implements OnInit {
 
     this.offerService.getOffer(this.page, this.limit).subscribe((res: any) => {
       this.offers = res?.result
+      for (let data of this.offers) {
+        data.fromDate = new Date(data.fromDate).toDateString()
+        data.lastDate = new Date(data.lastDate).toDateString()
+      }
       this.count = this.offers.length
       this.cdr.markForCheck();
     });
@@ -72,6 +76,8 @@ export class OfferListComponent implements OnInit {
       name: [''],
       isActive: [''],
       isFeatured: [''],
+      fromDate: [''],
+      lastDate: [''],
     });
   }
 
@@ -84,6 +90,10 @@ export class OfferListComponent implements OnInit {
     this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
+        for (let data of this.offers) {
+          data.fromDate = new Date(data.fromDate).toDateString()
+          data.lastDate = new Date(data.lastDate).toDateString()
+        }
         this.count = this.offers.length
         this.totalcount = res?.result?.total
         this.totaldata = Math.ceil(this.totalcount / this.limit)
@@ -157,6 +167,10 @@ export class OfferListComponent implements OnInit {
     this.offerService.searchOffer(data, page, limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
+        for (let data of this.offers) {
+          data.fromDate = new Date(data.fromDate).toDateString()
+          data.lastDate = new Date(data.lastDate).toDateString()
+        }
         this.count = this.offers.length
         this.cdr.markForCheck();
       }

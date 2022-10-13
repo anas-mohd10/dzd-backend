@@ -1,7 +1,10 @@
 export const voucherEndpoints = {
-  add_voucher: '/voucher/create',
-  get_vouchers: '/voucher-all',
-  get_active_vouchers: '/voucher-active',
+  add_voucher: '/add-voucher',
+  get_vouchers: '/vouchers',
+  get_voucher_page: '/vouchers-page',
+  get_vouchers_count: '/vouchers/count',
+  get_active_vouchers: '/vouchers/active',
   get_voucher_by_slug: '/voucher',
-  update_voucher: '/voucher/update',
+  update_voucher: '/update-voucher',
+  search_voucher: '/vouchers/search'
 }

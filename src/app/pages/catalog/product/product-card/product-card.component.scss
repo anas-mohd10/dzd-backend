@@ -7,7 +7,7 @@
 .product-card {
    width: calc(33.33% - 20px);
    margin: 10px 10px;
-   height: 400px;
+   height: 440px;
    padding: 20px;
    background: #ffffff;
    box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
@@ -20,6 +20,7 @@
 .product-image {
    height: 130px;
    width: 130px;
+   margin: 0 0 20px 0;
 }
 
 .product-image img {
@@ -30,6 +31,11 @@
 
 .product-details {
    width: 100%;
+}
+
+.product-brand{
+   font-size: 1.1rem;
+   font-weight: 600;
 }
 
 .product-name {

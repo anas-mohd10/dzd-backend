@@ -17,7 +17,7 @@
   flex-wrap: wrap;
   justify-content: end;
   align-items: center;
-  margin: 0;
+  margin: 40px 0 0 0;
   list-style: none;
 }
 
@@ -36,7 +36,7 @@
 }
 
 .pagination-container .page-item .page-active {
-  background: #00bdab;
+  background: #1681bf;
   color: #ffffff;
   border: none;
 }
