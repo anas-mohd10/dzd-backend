@@ -16,9 +16,9 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
-  getOrders(data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order);
-    return this.http.post(`${url}`, data)
+  getOrders(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`)
   }
 
   getPendingOrders() {
@@ -28,36 +28,6 @@ export class OrdersService {
 
   getPendingOrdersByNumber(number: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_pending_orders_by_orderNo + "?number=" + number);
-    return this.http.get(`${url}`)
-  }
-
-  getOrderByPayment(method: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment + "?payment=" + method);
-    return this.http.get(`${url}`)
-  }
-
-  getOrderByStatus(status: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_status + "?status=" + status);
-    return this.http.get(`${url}`)
-  }
-
-  getOrderByDate(status: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order + "?status=" + status);
-    return this.http.get(`${url}`)
-  }
-
-  getOrderByPaymentAndStatus(method: any, status: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment_and_order + "?status=" + status + "&payment=" + method);
-    return this.http.get(`${url}`)
-  }
-
-  getOrderByDateAndStatus(ldate: any, gdate: any, status: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_status_date + "?s=" + status + "&ld=" + ldate + "&ud=" + gdate);
-    return this.http.get(`${url}`)
-  }
-
-  getOrdersByStatus(status: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_payment_and_order + "?status=" + status);
     return this.http.get(`${url}`)
   }
 
@@ -82,9 +52,8 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
-  //filter
-  getOrderFilter(slug: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_filter + slug);
-    return this.http.get(`${url}`)
+  searchOrder(query: any, page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.search_order + "?page=" + page + "&limit=" + limit);
+    return this.http.post(`${url}`, query)
   }
 }

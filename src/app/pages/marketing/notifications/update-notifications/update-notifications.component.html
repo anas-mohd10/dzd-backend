@@ -13,7 +13,7 @@
                   <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
                </li>
                <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.notification.UPDATE_NOTIFICATION}}" [queryParams]="{slug: slug}">
+                  <a routerLink="{{ appRoute.notification.UPDATE_NOTIFICATION}}" [queryParams]="{notification: slug}">
                      {{ editMode ? "Update Notifications" : "Add Notifications"}}
                   </a>
                </li>
@@ -73,8 +73,8 @@
                            'is-invalid': (nf.channel.touched || isSubmitted) && nf.channel.errors?.required}">
                            <option value="" disabled>-- Select an option --</option>
                            <option value="SMS">SMS</option>
-                           <option value="EMAIL">Email</option>
-                           <option value="PUSH">Push notifications</option>
+                           <option value="Email">Email</option>
+                           <option value="Push">Push notifications</option>
                         </select>
                      </div>
                      <div class="col-sm-6">
@@ -83,8 +83,8 @@
                            (change)="checkType($event.target)" formControlName="type"
                            [ngClass]="{'is-invalid': (nf.type.touched || isSubmitted) && nf.type.errors?.required}">
                            <option value="" disabled>-- Select an option --</option>
-                           <option value="INSTANT">Instant</option>
-                           <option value="SCHEDULED">Scheduled</option>
+                           <option value="Instant">Instant</option>
+                           <option value="Scheduled">Scheduled</option>
                         </select>
                      </div>
                      <div class="col-12" *ngIf="isScheduled == true">
@@ -135,8 +135,8 @@
                            <select class="form-select" formControlName="status" [ngClass]="{
                             'is-invalid':(nf.status.touched || isSubmitted) && nf.status.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
-                              <option value="PENDING">Pending</option>
-                              <option value="SENT">Sent</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Sent">Sent</option>
                            </select>
                         </div>
                      </div>
@@ -160,7 +160,7 @@
                               </div>
                            </div>
                            <div class="uploaded-image col-sm-6 mt-5">
-                              <img src="https://ccapi.previewbay.com/{{uploadedimg}}" alt=""
+                              <img src="{{img}}" alt=""
                                  style="width: 150px; height: 150px">
                            </div>
                         </div>
@@ -189,7 +189,7 @@
                            Cancel
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                           Add
+                           Update
                         </button>
                      </div>
                   </div>

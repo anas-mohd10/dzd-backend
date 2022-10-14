@@ -73,8 +73,8 @@
                            'is-invalid': (nf.channel.touched || isSubmitted) && nf.channel.errors?.required}">
                            <option value="" disabled>-- Select an option --</option>
                            <option value="SMS">SMS</option>
-                           <option value="EMAIL">Email</option>
-                           <option value="PUSH">Push notifications</option>
+                           <option value="Email">Email</option>
+                           <option value="Push">Push notifications</option>
                         </select>
                      </div>
                      <div class="col-sm-6">
@@ -83,8 +83,8 @@
                            (change)="checkType($event.target)" formControlName="type"
                            [ngClass]="{'is-invalid': (nf.type.touched || isSubmitted) && nf.type.errors?.required}">
                            <option value="" disabled>-- Select an option --</option>
-                           <option value="INSTANT">Instant</option>
-                           <option value="SCHEDULED">Scheduled</option>
+                           <option value="Instant">Instant</option>
+                           <option value="Scheduled">Scheduled</option>
                         </select>
                      </div>
                      <div class="col-12" *ngIf="isScheduled == true">

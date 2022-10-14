@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +7,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-notifications',
@@ -30,11 +31,13 @@ export class UpdateNotificationsComponent implements OnInit {
   type: any
   isScheduled: boolean;
   uploadedimg: any;
+  img: any
 
   croppedImage: string | null | undefined;
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
+  base: string;
 
   constructor(
     private notificationsService: NotificationsService,
@@ -43,13 +46,15 @@ export class UpdateNotificationsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm()
     this.managePage()
     this.getCustomers()
-    this.slug = this.route.snapshot.queryParams.slug || ''
+    this.slug = this.route.snapshot.queryParams.notification || ''
     this.getNotification()
   }
 
@@ -76,8 +81,9 @@ export class UpdateNotificationsComponent implements OnInit {
       this.notificationForm.get("status")?.setValue(res?.result[0].status)
       this.notificationForm.get("isAllCustomer")?.setValue(JSON.stringify(res?.result[0].isAllCustomer))
       this.uploadedimg = res?.result[0].file
+      this.img = this.base + "/" + res?.result[0].file
       let type = res?.result[0].type
-      if (type == "SCHEDULED") {
+      if (type == "Scheduled") {
         this.isScheduled = true
       }
       if (res?.result[0].isAllCustomer == false) {
@@ -91,8 +97,7 @@ export class UpdateNotificationsComponent implements OnInit {
         }
         this.notificationForm.get("scheduledDate")?.setValue(JSON.stringify(new Date(res?.result[0].scheduledDate).toLocaleDateString()))
         this.notificationForm.get("scheduledTime")?.setValue(res?.result[0].scheduledTime)
-      } else {
-
+        this.cdr.markForCheck()
       }
     })
   }
@@ -134,7 +139,7 @@ export class UpdateNotificationsComponent implements OnInit {
 
   checkType(event: any) {
     let type = event.value
-    if (type == "SCHEDULED") {
+    if (type == "Scheduled") {
       this.isScheduled = true
     } else {
       this.isScheduled = false
@@ -247,7 +252,7 @@ export class UpdateNotificationsComponent implements OnInit {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
       } else if (res.errorCode == 0) {
-        this.toastr.success('Notifications added successfully');
+        this.toastr.success('Notifications updated successfully');
         this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
       }
     })

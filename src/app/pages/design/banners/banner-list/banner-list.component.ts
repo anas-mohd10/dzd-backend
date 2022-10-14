@@ -3,6 +3,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
 import { BannerService } from 'src/app/includes/services/banner.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-banner-list',
@@ -18,6 +19,7 @@ export class BannerListComponent implements OnInit {
   appRoute = appRoutes;
   bannersData: any
   displayTable: boolean;
+  base: string;
 
   constructor(
     private bannerService: BannerService,
@@ -25,6 +27,7 @@ export class BannerListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.dtOptions = {
       pagingType: 'simple_numbers',
       lengthMenu: [5, 10, 15],

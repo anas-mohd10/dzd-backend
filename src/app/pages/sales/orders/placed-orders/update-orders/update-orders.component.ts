@@ -1,5 +1,5 @@
 
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -30,6 +30,7 @@ export class UpdateOrdersComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -68,6 +69,7 @@ export class UpdateOrdersComponent implements OnInit {
       this.orderForm.get("orderStatus")?.setValue(this.orderData?.orderStatus)
       this.orderForm.get("trackingURL")?.setValue(this.orderData?.trackingURL)
       this.orderForm.get("orderNote")?.setValue(this.orderData?.orderNote)
+      this.cdr.markForCheck()
     })
   }
 

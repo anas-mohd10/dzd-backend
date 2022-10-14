@@ -125,7 +125,7 @@ export class AddNotificationsComponent implements OnInit {
 
   checkType(event: any) {
     let type = event.value
-    if (type == "SCHEDULED") {
+    if (type == "Scheduled") {
       this.isScheduled = true
     } else {
       this.isScheduled = false
