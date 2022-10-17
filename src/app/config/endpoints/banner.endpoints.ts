@@ -1,7 +1,9 @@
 export const bannerEndpoints = {
-   add_banner: '/banner/create-banner',
-   get_banners: '/banner/get-all-banner',
-   get_banner: '/banner/get-banner',
-   get_active_banner: '/banner/get-active-banner',
-   update_banner: '/banner/update-banner'
+   add_banner: '/add-banner',
+   get_banners: '/banners',
+   get_banners_page: '/banners-page',
+   get_banners_count: '/banners/count',
+   get_banner: '/banner',
+   get_active_banner: '/banners/active',
+   update_banner: '/update-banner'
 }

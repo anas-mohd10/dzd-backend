@@ -46,7 +46,7 @@ export class AddLayoutListComponent implements OnInit {
       validTo: [''],
       isActive: ['true'],
       gridCount: ['1'],
-      type: ['slider'],
+      type: ['Slider'],
       product: [''],
       redirectionURL: [''],
       file: ['']

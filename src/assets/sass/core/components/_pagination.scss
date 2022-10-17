@@ -34,6 +34,7 @@
 
 .page-item {
     margin-right: $pagination-item-space;
+	 margin-left: $pagination-item-space;
 
 	&:last-child {
         margin-right: 0;

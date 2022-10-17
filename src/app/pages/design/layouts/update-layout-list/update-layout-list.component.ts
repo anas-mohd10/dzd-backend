@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
@@ -35,6 +35,7 @@ export class UpdateLayoutListComponent implements OnInit {
     private layoutService: LayoutService,
     private router: Router,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -85,13 +86,13 @@ export class UpdateLayoutListComponent implements OnInit {
   getLayoutBySlug() {
     this.layoutService.getLayoutBySlug(this.slug).subscribe((res: any) => {
       this.layoutData = res?.result[0]
-      console.log(this.layoutData);
       this.layoutForm.get("title")?.setValue(res?.result[0].title)
       this.layoutForm.get("validFrom")?.setValue(res?.result[0].validFrom)
       this.layoutForm.get("validTo")?.setValue(res?.result[0].validTo)
       this.layoutForm.get("isActive")?.setValue(res?.result[0].isActive)
       this.layoutForm.get("gridCount")?.setValue(res?.result[0].gridCount)
       this.layoutForm.get("type")?.setValue(res?.result[0].type)
+      this.cdr.markForCheck();
       for (let file of res?.result[0].files) {
         this.localData.push({
           id: file.id,
@@ -100,7 +101,6 @@ export class UpdateLayoutListComponent implements OnInit {
           file: `http://localhost:3000/${file.file}`
         })
       }
-      console.log('localdata',this.localData);
     })
   }
 
@@ -130,8 +130,6 @@ export class UpdateLayoutListComponent implements OnInit {
             })
           }
         }
-
-        console.log(this.localData);
 
         //Reset values to null
         this.layoutForm.get("product")?.setValue('')
@@ -179,17 +177,25 @@ export class UpdateLayoutListComponent implements OnInit {
       this.toastr.error('Kindly fill required fields...');
       return;
     }
-    const formData = new FormData();
+    const formdata = new FormData();
     if (this.images != null && this.images != undefined) {
       for (let img of this.images) {
-        formData.append('file', img);
+        formdata.append('file', img);
       }
-      formData.append('file', this.images)
+      formdata.append('file', this.images)
     }
     for (const data of Object.keys(this.layoutForm.value)) {
-      formData.append(data, this.layoutForm.value[data]);
+      formdata.append(data, this.layoutForm.value[data]);
     }
-    formData.append("data", JSON.stringify(this.files))
+    formdata.append("data", JSON.stringify(this.files))
+    this.layoutService.updateLayout(this.slug, formdata).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Layout updated successfully');
+        this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
+      }
+    })
   }
 
   addLayout() {

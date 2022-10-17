@@ -35,10 +35,6 @@
                            <label class="fs-6 mb-3 form-title required">Title</label>
                            <input type="text" class="form-control fs-6" formControlName="title"
                               [ngClass]="{'is-invalid': (lf.title.touched || isSubmitted) && lf.title.errors?.required}" />
-                           <span class="text-danger error-msg fs-6"
-                              *ngIf="(lf.title.touched || isSubmitted) && lf.title.errors?.required">
-                              Title is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -47,10 +43,6 @@
                            <input type="date" class="form-control fs-6" formControlName="validFrom"
                               (change)="checkDate()"
                               [ngClass]="{'is-invalid': (lf.validFrom.touched || isSubmitted) &&  lf.validFrom.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf="(lf.validFrom.touched || isSubmitted) && lf.validFrom.errors?.required">
-                              From date is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -58,10 +50,6 @@
                            <label class="fs-6 mb-3 form-title required">Valid To</label>
                            <input type="date" class="form-control fs-6" formControlName="validTo" (change)="checkDate()"
                               [ngClass]="{'is-invalid': (lf.validTo.touched || isSubmitted) &&  lf.validTo.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf="(lf.validTo.touched || isSubmitted) && lf.validTo.errors?.required">
-                              To date is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -95,8 +83,8 @@
                            <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="type">
                               <option value="" disabled>-- Select an option --</option>
-                              <option value="slider">Slider</option>
-                              <option value="list">List</option>
+                              <option value="Slider">Slider</option>
+                              <option value="List">List</option>
                            </select>
                         </div>
                      </div>

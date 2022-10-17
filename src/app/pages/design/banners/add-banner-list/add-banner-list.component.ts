@@ -97,7 +97,10 @@ export class AddBannerListComponent implements OnInit {
     for (const data of Object.keys(this.bannerForm.value)) {
       formData.append(data, this.bannerForm.value[data]);
     }
-  
+
+    console.log(this.images);
+
+
     this.bannerService.addBaner(formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');

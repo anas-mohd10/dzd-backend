@@ -1,50 +1,118 @@
-import { ChangeDetectorRef,Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { LayoutService } from 'src/app/includes/services/layout.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-layout-list',
   templateUrl: './layout-list.component.html',
   styleUrls: ['./layout-list.component.scss']
 })
-export class LayoutListComponent implements OnInit, OnDestroy {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement!: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
+export class LayoutListComponent implements OnInit {
 
   appRoute = appRoutes;
-  displayTable: boolean;
-  layoutsData: any;
+  layouts: any = [];
+  base: any
+  page: any = 1
+  limit: any = 8
+  totalcount: any;
+  totaldata: number;
+  currpage: number = 1;
+  selectedpage: number = 1;
+  pages: any = [];
+  max: number = 3;
+  isNext: boolean;
+  count: any;
+  shifted: number;
 
   constructor(
-    private layoutService: LayoutService,
+    private service: LayoutService,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 10,
-      processing: true,
-    }
-    this.getLayouts()
-  }
+    this.base = environment.base
 
-  getLayouts() {
-    this.layoutService.getLayouts().subscribe((res: any) => {
-      this.layoutsData = res?.result
+    this.service.getLayoutByPage(this.page, this.limit).subscribe((res: any) => {
+      this.layouts = res?.result
       this.cdr.markForCheck()
-      this.displayTable = true
-      this.dtTrigger.next('')
+    })
+
+    this.service.getLayoutsCount().subscribe((res: any) => {
+      this.totalcount = res?.result
+      this.totaldata = Math.ceil(this.totalcount / this.limit)
+      this.cdr.markForCheck();
+      this.setPages()
     })
   }
 
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
+  loadNext() {
+    this.currpage += 1
+    this.selectedpage += 1
+    if (this.currpage <= 3) {
+      if (this.currpage <= this.totaldata) {
+        this.getData(this.currpage, this.limit)
+      } else {
+        this.isNext = false
+      }
+    } else {
+      this.shifted = this.pages.shift() //Captures the shifted number from pagination array
+      this.pages.push(this.currpage)
+      if (this.currpage <= this.totaldata) {
+        this.getData(this.currpage, this.limit)
+      } else {
+        this.isNext = false
+      }
+    }
   }
 
+  fetchLayout(page: any, limit: any) {
+    this.selectedpage = page
+    this.currpage = page
+    this.getData(page, limit)
+  }
+
+  loadPrevious() {
+    this.currpage -= 1
+    this.selectedpage -= 1
+    if (this.currpage > 3 && this.currpage <= this.totaldata && this.currpage > 0) {
+      this.getData(this.currpage, this.limit)
+    }
+    else {
+      if (this.pages[0] != 1) {
+        this.pages.pop()
+        this.pages.unshift(this.shifted)
+        this.shifted -= 1
+        this.getData(this.currpage, this.limit)
+      } else {
+        this.getData(this.currpage, this.limit)
+      }
+    }
+  }
+
+  setPages() {
+    this.currpage = 1
+    this.selectedpage = 1
+    this.pages.length = 0
+    if (this.totaldata > 3) {
+      for (let i = 1; i <= this.max; i++) {
+        this.pages.push(i)
+      }
+    } else {
+      for (let i = 1; i <= this.totaldata; i++) {
+        this.pages.push(i)
+      }
+    }
+  }
+
+  getData(page: any, limit: any) {
+    this.service.getLayoutByPage(page, limit).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.layouts = res?.result
+        this.count = this.layouts.length
+        this.cdr.markForCheck();
+      }
+    })
+    this.isNext = true
+  }
 }

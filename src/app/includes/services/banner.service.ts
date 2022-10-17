@@ -21,6 +21,16 @@ export class BannerService {
     return this.http.get(`${url}`);
   }
 
+  getBannersByPage(page: any, limit: any) {
+    const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banners_page + "?page=" + page + "&limit=" + limit);
+    return this.http.get(`${url}`);
+  }
+
+  getBannersCount() {
+    const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banners_count);
+    return this.http.get(`${url}`);
+  }
+
   getBanner(slug: any) {
     const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banner + "?slug=" + slug);
     return this.http.get(`${url}`);
