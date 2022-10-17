@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes/app.routes';
-import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
 import { CartService } from 'src/app/includes/services/cart.service';
@@ -13,6 +12,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
   templateUrl: './cart-list.component.html',
   styleUrls: ['./cart-list.component.scss']
 })
+
 export class CartListComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
@@ -22,15 +22,17 @@ export class CartListComponent implements OnInit, OnDestroy {
   appRoute = appRoutes
   cartsData: any
   cartForm: FormGroup;
-  customersData: any;
-  productsData: any;
-  cartdata: any = []
+  customers: any = [];
+  products: any = [];
+  carts: any = []
+  isTable: Boolean = false
 
   constructor(
     private cartService: CartService,
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private customersService: CustomersService
+    private customerService: CustomersService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -49,37 +51,45 @@ export class CartListComponent implements OnInit, OnDestroy {
   initForm() {
     this.cartForm = this.formBuilder.group({
       product: [''],
-      cartStatus: [''],
+      status: [''],
       customer: [''],
     });
   }
 
   getCustomers() {
-    this.customersService.getCustomers().subscribe((res: any) => {
-      this.customersData = res?.ṛesult
+    this.customerService.getActiveCustomers().subscribe((res: any) => {
+      this.customers = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getProducts() {
-    this.productService.getProduct().subscribe((res: any) => {
-      this.productsData = res?.ṛesult
+    this.productService.getActiveProduct().subscribe((res: any) => {
+      this.products = res?.result
+      this.cdr.markForCheck()
     })
   }
-
-  checkToDate() { }
-
   reloadPage() { }
 
   onSubmit() { }
 
-  getCartItems() {
-    this.cartService.getCarts().subscribe((res: any) => {
-      this.cartdata = res?.result
+  seachCart() {
+    this.cartService.searchCart(this.cartForm.value).subscribe((res: any) => {
+      // this.carts = res?.result
     })
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
+  getCartItems() {
+    this.cartService.getCarts().subscribe((res: any) => {
+      this.carts = res?.result
+      for (let cart of this.carts) {
+        cart.date = new Date(cart?.date).toLocaleString()
+        cart.purchasedDate = new Date(cart?.purchasedDate).toLocaleString()
+      }
+      this.dtTrigger.next();
+      this.isTable = true
+      this.cdr.markForCheck()
+    })
   }
 
   ngOnDestroy(): void {

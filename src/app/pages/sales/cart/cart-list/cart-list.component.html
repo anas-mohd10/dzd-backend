@@ -22,29 +22,33 @@
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
           <label class="col-sm-2 col-form-label">Customer</label>
           <div class="form-group">
-            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="customer">
+            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="customer"
+              (change)="seachCart()">
               <option value="" selected disabled>-- Select An Option --</option>
+              <option *ngFor="let customer of customers" value="{{customer?._id}}">{{customer?.firstname}}</option>
             </select>
           </div>
         </div>
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
           <label class="col-sm-2 col-form-label">Product</label>
           <div class="form-group">
-            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="product">
+            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="product"
+              (change)="seachCart()">
               <option value="" selected disabled>-- Select An Option --</option>
-              <option *ngFor="let product of productsData" value="{{product?.slug}}">{{product?.name}}
-              </option>
+              <option *ngFor="let product of products" value="{{product?._id}}">{{product?.name}}</option>
             </select>
           </div>
         </div>
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
           <label class="col-sm-2 col-form-label">Status</label>
           <div class="form-group">
-            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="cartStatus">
+            <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg" formControlName="status"
+              (change)="seachCart()">
               <option value="" selected disabled>-- Select An Option --</option>
-              <option value="ORDERED" class="fs-7">Ordered</option>
-              <option value="NONORDERED" class="fs-7">Non Ordered</option>
-              <option value="DELETED" class="fs-7">Deleted</option>
+              <option value="Ordered" class="fs-7">Ordered</option>
+              <option value="Unordered" class="fs-7">Non Ordered</option>
+              <option value="Deleted" class="fs-7">Deleted</option>
+              <option value="Pending" class="fs-7">Pending</option>
             </select>
           </div>
         </div>
@@ -65,8 +69,7 @@
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <div style="display: none"> {{cartdata.length}}</div>
-          <div class="table-responsive">
+          <div class="table-responsive" *ngIf="isTable">
             <table datatable [dtOptions]="dtOptions"
               class="datatable table table-bcartless table-center table-row-dashed mb-0">
               <thead class="thead mt-100">
@@ -83,7 +86,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let cart of cartdata; let i = index">
+                <tr *ngFor="let cart of carts; let i = index">
                   <td>
                     <h2 class="table-avatar">{{ i + 1 }}</h2>
                   </td>

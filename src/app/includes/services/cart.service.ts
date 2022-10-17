@@ -16,4 +16,9 @@ export class CartService {
     const url = this.commonService.getFullUrl(this.cartEndpoints.get_cart);
     return this.http.get(`${url}`)
   }
+
+  searchCart(data: any) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.search_carts);
+    return this.http.post(`${url}`, data)
+  }
 }

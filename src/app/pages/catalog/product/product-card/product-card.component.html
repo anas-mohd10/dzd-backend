@@ -97,13 +97,18 @@
    </div>
    <ng-container *ngIf="count == 0">
       <div class="no-data-container">
-        <h2>Sorry, we haven't found any data</h2>
+         <h2>Sorry, we haven't found any data</h2>
       </div>
-    </ng-container>
+   </ng-container>
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
             <a class="page-link" (click)="loadPrevious()" aria-label="Previous">
+               <i class="bi bi-arrow-left-circle"></i>
+            </a>
+         </div>
+         <div class="page-change-icon" *ngIf="selectedpage == 1">
+            <a class="page-link page-link-disabled" aria-label="Previous">
                <i class="bi bi-arrow-left-circle"></i>
             </a>
          </div>
@@ -113,6 +118,11 @@
          </li>
          <div class="page-change-icon" *ngIf="selectedpage != totaldata">
             <a class="page-link" (click)="loadNext()" aria-label="Next">
+               <i class="bi bi-arrow-right-circle"></i>
+            </a>
+         </div>
+         <div class="page-change-icon" *ngIf="selectedpage == totaldata">
+            <a class="page-link page-link-disabled" aria-label="Next">
                <i class="bi bi-arrow-right-circle"></i>
             </a>
          </div>

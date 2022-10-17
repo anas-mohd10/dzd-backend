@@ -26,8 +26,7 @@
             <div class="col-12 row" style="display: flex; align-items: flex-end;">
                <div class="search-status col-sm-2">
                   <label class="fs-6">Type</label>
-                  <select name="" id="" class="form-select fs-6" formControlName="type"
-                     (change)="searchNotification()">
+                  <select name="" id="" class="form-select fs-6" formControlName="type" (change)="searchNotification()">
                      <option value="">Select an option</option>
                      <option value="Instant">Instant</option>
                      <option value="Scheduled">Scheduled</option>
@@ -116,6 +115,11 @@
                   <i class="bi bi-arrow-left-circle"></i>
                </a>
             </div>
+            <div class="page-change-icon" *ngIf="selectedpage == 1">
+               <a class="page-link page-link-disabled" aria-label="Previous">
+                  <i class="bi bi-arrow-left-circle"></i>
+               </a>
+            </div>
             <li class="page-item" *ngFor="let key of pages">
                <a *ngIf="selectedpage != key" class="page-link" (click)="fetchNotification(key, limit)">{{key}}</a>
                <a *ngIf="selectedpage == key" class="page-link page-active"
@@ -123,6 +127,11 @@
             </li>
             <div class="page-change-icon" *ngIf="selectedpage != totaldata">
                <a class="page-link" (click)="loadNext()" aria-label="Next">
+                  <i class="bi bi-arrow-right-circle"></i>
+               </a>
+            </div>
+            <div class="page-change-icon" *ngIf="selectedpage == totaldata">
+               <a class="page-link page-link-disabled" aria-label="Next">
                   <i class="bi bi-arrow-right-circle"></i>
                </a>
             </div>
