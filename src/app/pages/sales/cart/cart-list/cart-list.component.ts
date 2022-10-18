@@ -43,9 +43,27 @@ export class CartListComponent implements OnInit, OnDestroy {
       pageLength: 10,
       processing: true,
     };
-    this.getProducts()
-    this.getCustomers()
-    this.getCartItems()
+
+    this.productService.getActiveProduct().subscribe((res: any) => {
+      this.products = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.customerService.getActiveCustomers().subscribe((res: any) => {
+      this.customers = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.cartService.getCarts().subscribe((res: any) => {
+      this.carts = res?.result
+      for (let cart of this.carts) {
+        cart.date = new Date(cart?.date).toLocaleString()
+        cart.purchasedDate = new Date(cart?.purchasedDate).toLocaleString()
+      }
+      this.dtTrigger.next();
+      this.isTable = true
+      this.cdr.markForCheck()
+    })
   }
 
   initForm() {
@@ -56,38 +74,13 @@ export class CartListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getCustomers() {
-    this.customerService.getActiveCustomers().subscribe((res: any) => {
-      this.customers = res?.result
-      this.cdr.markForCheck()
-    })
+  reloadPage() {
+    window.location.reload()
   }
-
-  getProducts() {
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      this.products = res?.result
-      this.cdr.markForCheck()
-    })
-  }
-  reloadPage() { }
-
-  onSubmit() { }
 
   seachCart() {
     this.cartService.searchCart(this.cartForm.value).subscribe((res: any) => {
-      // this.carts = res?.result
-    })
-  }
-
-  getCartItems() {
-    this.cartService.getCarts().subscribe((res: any) => {
       this.carts = res?.result
-      for (let cart of this.carts) {
-        cart.date = new Date(cart?.date).toLocaleString()
-        cart.purchasedDate = new Date(cart?.purchasedDate).toLocaleString()
-      }
-      this.dtTrigger.next();
-      this.isTable = true
       this.cdr.markForCheck()
     })
   }

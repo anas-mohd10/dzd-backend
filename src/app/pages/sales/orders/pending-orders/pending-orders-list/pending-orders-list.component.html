@@ -21,28 +21,28 @@
       </div>
    </div>
    <div class="top-form-container">
-      <form action="" (ngSubmit)="onSubmit()" [formGroup]="orderForm">
+      <form action="" [formGroup]="orderform">
          <div class="row align-items-end">
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">From</label>
                <div class="form-group">
-                  <input type="date" class="form-control fs-7" formControlName="fromDate" id="">
+                  <input type="date" class="form-control fs-7" formControlName="fdate" id=""
+                     (change)="searchPendingOrder()">
                </div>
             </div>
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">To</label>
                <div class="form-group">
-                  <input type="date" class="form-control fs-7" formControlName="toDate" id="" (change)="checkToDate()">
+                  <input type="date" class="form-control fs-7" formControlName="tdate" id=""
+                     (change)="searchPendingOrder()">
                </div>
             </div>
             <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
                <label class="col-sm-2 col-form-label">Payment</label>
                <div class="form-group">
                   <select class="form-select form-select-lg fs-7" aria-label=".form-select-lg"
-                     formControlName="paymentMethod">
-                     <option value="check" disabled>
-                        -- Select An Option --
-                     </option>
+                     formControlName="paymentMethod" (change)="searchPendingOrder()">
+                     <option value="" disabled>Select an option</option>
                      <option value="COD" class="fs-7">COD</option>
                      <option value="ONLINE" class="fs-7">Online</option>
                      <option value="CASH" class="fs-7">Cash</option>
@@ -54,13 +54,8 @@
             <div class="col-12 col-sm-2">
                <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">
-                  Reset
+                  Clear
                </a>
-            </div>
-            <div class="col-12 col-sm-2">
-               <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
-                  Apply
-               </button>
             </div>
          </div>
       </form>
@@ -69,12 +64,16 @@
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-               <div style="display: none"> {{ordersData.length}}</div>
-               <div class="table-responsive">
+               <ng-container *ngIf="count == 0">
+                  <div class="no-data-container mb-10">
+                     <h2>Sorry, we haven't found any data</h2>
+                  </div>
+               </ng-container>
+               <div class="table-responsive" *ngIf="isTable">
                   <table datatable [dtOptions]="dtOptions"
                      class="datatable table table-borderless table-center table-row-dashed mb-0">
                      <thead class="thead mt-100">
-                        <tr class="fs-7 text-uppercase">
+                        <tr class="fs-6 text-uppercase">
                            <th class="text-gray-400 col-md-2">Sl No.</th>
                            <th class="text-gray-400 col-md-2">Order No.</th>
                            <th class="text-gray-400 col-md-2">Order Date</th>
@@ -87,31 +86,27 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr *ngFor="let order of ordersData; let i = index">
+                        <tr *ngFor="let order of orders; let i = index" class="fs-5">
+                           <td>{{ i + 1 }}</td>
+                           <td>{{ order?.orderNo }}</td>
                            <td>
-                              <h2 class="table-avatar">{{ i + 1 }}</h2>
+                              {{ order?.orderDate }}
                            </td>
                            <td>
-                              <h2 class="table-avatar">{{ order?.orderNo }}</h2>
+                              <span class="{{(order?.orderStatus).toLowerCase()}}">{{
+                                 order?.orderStatus.toLowerCase() }}</span>
                            </td>
                            <td>
-                              <h2 class="table-avatar">{{ order?.orderDate }}</h2>
+                              {{ order?.customerId.firstname }}
                            </td>
                            <td>
-                              <h2 class="table-avatar"><span class="{{(order?.orderStatus).toLowerCase()}}">{{
-                                    order?.orderStatus.toLowerCase() }}</span></h2>
+                              <h2>-</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar">{{ order?.customerId.firstname }}</h2>
+                              {{order?.total}}
                            </td>
                            <td>
-                              <h2 class="table-avatar">-</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{order?.total}}</h2>
-                           </td>
-                           <td>
-                              <h2 class="table-avatar">{{ order?.paymentMethod }}</h2>
+                              {{ order?.paymentMethod }}
                            </td>
                            <td>
                               <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
@@ -121,6 +116,11 @@
                               </a>
                            </td>
                         </tr>
+                        <ng-container *ngIf="count == 0">
+                           <div class="no-data-container mt-10">
+                              <span>-</span>
+                           </div>
+                        </ng-container>
                      </tbody>
                   </table>
                </div>

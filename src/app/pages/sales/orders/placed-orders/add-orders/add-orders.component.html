@@ -41,10 +41,6 @@
                                  {{cust?.firstname}}
                               </option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf=" (of.customer.touched || isSubmitted) && of.customer.errors?.required ">
-                              Customer is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12">
@@ -58,11 +54,6 @@
                                  (of.firstline.touched || isSubmitted) &&
                                  of.firstline.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-7" *ngIf="
-                                 (of.firstline.touched || isSubmitted) &&
-                                 of.firstline.errors?.required
-                             ">Address line 1 is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -85,11 +76,6 @@
                                  (of.city.touched || isSubmitted) &&
                                  of.city.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-7" *ngIf="
-                                 (of.city.touched || isSubmitted) &&
-                                 of.city.errors?.required
-                             ">City is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -100,11 +86,6 @@
                                  (of.landmark.touched || isSubmitted) &&
                                  of.landmark.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-7" *ngIf="
-                                 (of.landmark.touched || isSubmitted) &&
-                                 of.landmark.errors?.required
-                             ">Landmark is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -115,11 +96,6 @@
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
                                }" />
-                           <span class="text-danger error-msg fs-7" *ngIf="
-                                 (of.pincode.touched || isSubmitted) &&
-                                 of.pincode.errors?.required
-                             ">Pincode is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -165,10 +141,6 @@
                               <option value="UNPAID">Unpaid</option>
                               <option value="ONLINE">Online</option>
                            </select>
-                           <span class="text-danger error-msg fs-7"
-                              *ngIf=" (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required ">
-                              Payment method is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">

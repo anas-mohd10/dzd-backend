@@ -14,7 +14,7 @@ import { OrdersService } from 'src/app/includes/services/orders.service';
 })
 export class UpdateOrdersComponent implements OnInit {
   appRoute = appRoutes
-  orderData: any;
+  order: any;
   productCount: any
   orderNumber: any;
   orderForm: FormGroup
@@ -24,6 +24,8 @@ export class UpdateOrdersComponent implements OnInit {
   orderNo: any;
   isSubmitted: boolean;
   price: any = 0
+  slug: any
+
   constructor(
     private orderService: OrdersService,
     private route: ActivatedRoute,
@@ -36,7 +38,7 @@ export class UpdateOrdersComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.managePage()
-    this.orderNumber = this.route.snapshot.queryParams.order || ''
+    this.slug = this.route.snapshot.queryParams.order || ''
     this.getOrderDetails()
   }
 
@@ -62,13 +64,14 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getOrderDetails() {
-    this.orderService.getOrdersByNumber(this.orderNumber).subscribe((res: any) => {
-      this.orderData = res?.result[0]
-      this.productCount = this.orderData.product.length
-      this.orderData.orderDate = new Date(this.orderData.orderDate).toDateString()
-      this.orderForm.get("orderStatus")?.setValue(this.orderData?.orderStatus)
-      this.orderForm.get("trackingURL")?.setValue(this.orderData?.trackingURL)
-      this.orderForm.get("orderNote")?.setValue(this.orderData?.orderNote)
+    this.orderService.getOrdersByNumber(this.slug).subscribe((res: any) => {
+      this.order = res?.result[0]
+      this.orderNumber = res?.result[0].orderNo
+      this.productCount = this.order.product.length
+      this.order.orderDate = new Date(this.order.orderDate).toDateString()
+      this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
+      this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
+      this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
       this.cdr.markForCheck()
     })
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appRoutes } from "../../../../config/routes/app.routes"
 import { DataTableDirective } from 'angular-datatables';
@@ -18,35 +18,32 @@ export class CustomersListComponent implements OnDestroy, OnInit {
 
   appRoute = appRoutes;
   customersData: any;
-  displayTable: boolean = false;
+  isTable: boolean = false;
   customersCount: any;
 
   constructor(
-    private customersService: CustomersService
+    private customersService: CustomersService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
-    this.getCustomersCount()
-    this.getCustomers()
     this.dtOptions = {
       pagingType: 'simple_numbers',
       lengthMenu: [5, 10, 15],
       pageLength: 10,
       processing: true,
     };
-  }
 
-  getCustomersCount() {
     this.customersService.getCustomersCoumt().subscribe((res: any) => {
       this.customersCount = res?.result
+      this.cdr.markForCheck()
     })
-  }
 
-  getCustomers() {
     this.customersService.getCustomers().subscribe((res: any) => {
       this.customersData = res?.result
-      this.displayTable = true
+      this.isTable = true
       this.dtTrigger.next();
+      this.cdr.markForCheck()
     })
   }
 

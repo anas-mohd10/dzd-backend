@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -27,6 +27,7 @@ export class UpdateCustomersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private customerService: CustomersService,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
     private router: Router,
     private toastr: ToastrService) { }
 
@@ -124,6 +125,7 @@ export class UpdateCustomersComponent implements OnInit {
       this.customersForm.get("lat")?.setValue(this.customerData.address[0].lat)
       this.customersForm.get("lng")?.setValue(this.customerData.address[0].lng)
       this.customersForm.get("state")?.setValue(this.customerData.address[0].state)
+      this.cdr.markForCheck()
     })
   }
 
@@ -161,7 +163,6 @@ export class UpdateCustomersComponent implements OnInit {
       walletBalance: this.customersForm.get("walletBalance")?.value,
       isActive: this.customersForm.get("isActive")?.value,
     }
-    console.log(this.uniqueEmail);
     if (this.uniqueEmail == true) {
       this.customerService.updateCustomer(this.slug, data).subscribe((res: any) => {
         if (res.errorCode != 0) {

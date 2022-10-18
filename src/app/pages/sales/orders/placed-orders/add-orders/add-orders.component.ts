@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -34,7 +34,8 @@ export class AddOrdersComponent implements OnInit {
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private couponsService: CouponsService
+    private couponsService: CouponsService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +44,7 @@ export class AddOrdersComponent implements OnInit {
     this.getActiveCustomers()
     this.getActiveProducts()
     this.getActiveCoupons()
+
   }
 
   initForm() {
@@ -84,18 +86,21 @@ export class AddOrdersComponent implements OnInit {
   getActiveCustomers() {
     this.customerService.getActiveCustomers().subscribe((res: any) => {
       this.activeCustomersData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getActiveProducts() {
     this.productService.getActiveProduct().subscribe((res: any) => {
       this.activeProducts = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getActiveCoupons() {
     this.couponsService.getActiveCoupons().subscribe((res: any) => {
       this.activeCoupons = res?.result
+      this.cdr.markForCheck()
     })
   }
 

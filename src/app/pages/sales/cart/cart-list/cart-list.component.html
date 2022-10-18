@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="top-form-container">
-    <form action="" (ngSubmit)="onSubmit()" [formGroup]="cartForm">
+    <form action="" [formGroup]="cartForm">
       <div class="row align-items-end">
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
           <label class="col-sm-2 col-form-label">Customer</label>
@@ -54,13 +54,8 @@
         </div>
         <div class="col-12 col-sm-2">
           <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark" style="width: 200px; margin-right: 20px;">
-            Reset
+            Clear
           </a>
-        </div>
-        <div class="col-12 col-sm-2">
-          <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
-            Apply
-          </button>
         </div>
       </div>
     </form>
@@ -81,6 +76,7 @@
                   <th class="text-gray-400 col-md-2">Quantity</th>
                   <th class="text-gray-400 col-md-2">Grand Total</th>
                   <th class="text-gray-400 col-md-2">Carrier</th>
+                  <th class="text-gray-400 col-md-2">Status</th>
                   <th class="text-gray-400 col-md-2">Date</th>
                   <th class="text-gray-400 col-md-2">Purchased Date</th>
                 </tr>
@@ -107,6 +103,9 @@
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.carrier }}</h2>
+                  </td>
+                  <td>
+                    <h2 class="table-avatar">{{ cart?.status }}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.date }}</h2>

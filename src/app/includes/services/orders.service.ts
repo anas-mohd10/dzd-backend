@@ -16,8 +16,8 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
-  getOrders(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order + "?page=" + page + "&limit=" + limit);
+  getOrders() {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order);
     return this.http.get(`${url}`)
   }
 
@@ -52,8 +52,13 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
-  searchOrder(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.search_order + "?page=" + page + "&limit=" + limit);
+  searchOrder(query: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.search_order);
+    return this.http.post(`${url}`, query)
+  }
+
+  searchPendingOrder(query: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.search_pending_orders);
     return this.http.post(`${url}`, query)
   }
 }

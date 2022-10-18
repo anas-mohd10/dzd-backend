@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -20,18 +20,19 @@ export class PendingOrdersListComponent implements OnInit {
 
   appRoute = appRoutes
   displayTable: boolean = false;
-  ordersData: any;
+  orders: any;
   orderCount: Number = 0
   totalRevenue: Number = 0
-  orderForm: FormGroup;
+  orderform: FormGroup;
   isDateValid: Boolean = true;
+  isTable: boolean = false;
+  count: any;
 
   constructor(
     private ordersService: OrdersService,
-    private route: ActivatedRoute,
-    private router: Router,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -42,21 +43,29 @@ export class PendingOrdersListComponent implements OnInit {
       processing: true,
     };
     this.initForm()
-    this.getPendingOrders()
+
+    this.ordersService.getPendingOrders().subscribe((res: any) => {
+      this.orders = res?.result
+      for (let order of this.orders) {
+        order.orderDate = new Date(order.orderDate).toDateString()
+      }
+      this.count = this.orders.length
+      this.isTable = true
+      this.cdr.markForCheck()
+    })
   }
 
   initForm() {
-    this.orderForm = this.formBuilder.group({
-      fromDate: [''],
-      toDate: [''],
+    this.orderform = this.formBuilder.group({
+      fdate: [''],
+      tdate: [''],
       paymentMethod: [''],
-      orderStatus: [''],
     });
   }
 
   checkToDate() {
-    let fromDate = this.orderForm.get("fromDate")?.value
-    let toDate = this.orderForm.get("toDate")?.value
+    let fromDate = this.orderform.get("fromDate")?.value
+    let toDate = this.orderform.get("toDate")?.value
     if (toDate < fromDate) {
       this.isDateValid = false
       this.toastr.error("Kindly enter a valid To date")
@@ -69,13 +78,18 @@ export class PendingOrdersListComponent implements OnInit {
     window.location.reload()
   }
 
-  getPendingOrders() {
-    this.ordersService.getPendingOrders().subscribe((res: any) => {
-      this.ordersData = res?.result
+  searchPendingOrder() {
+    this.ordersService.searchPendingOrder(this.orderform.value).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.orders = res?.result?.data
+        for (let order of this.orders) {
+          order.orderDate = new Date(order.orderDate).toDateString()
+        }
+        this.count = this.orders.length
+        this.cdr.markForCheck();
+      }
     })
   }
-
-  onSubmit() { }
 
   ngAfterViewInit(): void {
     this.dtTrigger.next();
@@ -84,5 +98,4 @@ export class PendingOrdersListComponent implements OnInit {
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
-
 }

@@ -49,7 +49,7 @@
 .packed {
    height: 30px;
    padding: 10px 30px;
-   background: #dc2f02;
+   background: #0285dc;
    border-radius: 5px;
    display: flex;
    align-items: center;
@@ -73,7 +73,7 @@
 .shipped {
    height: 30px;
    padding: 10px 30px;
-   background: #370617;
+   background: #280637;
    border-radius: 5px;
    display: flex;
    align-items: center;
@@ -110,6 +110,18 @@
    height: 30px;
    padding: 10px 30px;
    background: #03071e;
+   border-radius: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   color: rgb(255, 255, 255);
+   font-weight: 500;
+}
+
+.pending {
+   height: 30px;
+   padding: 10px 30px;
+   background: rgb(62, 57, 113);
    border-radius: 5px;
    display: flex;
    align-items: center;
