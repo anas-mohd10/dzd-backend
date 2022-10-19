@@ -52,8 +52,8 @@ export class CategoryComponent implements OnInit {
       this.setPages()
     })
 
-    this.categoryService.getCategoryByPage(this.page, this.limit).subscribe((res: any) => {
-      this.categories = res?.result;
+    this.categoryService.searchCategory(this.categoryform.value, this.page, this.limit).subscribe((res: any) => {
+      this.categories = res?.result?.data;
       this.count = this.categories.length
       this.cdr.markForCheck();
     });

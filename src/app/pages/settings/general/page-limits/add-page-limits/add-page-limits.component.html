@@ -1,0 +1,24 @@
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update Page Limits" : "Add Page Limits" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.pageLimits.PAGE_LIMITS_LIST }}">Page Limits</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.pageLimits.ADD_PAGE_LIMITS }}">
+                     {{ editMode ? "Update Page Limits" : "Add Page Limits"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-update-category',
   templateUrl: './update-category.component.html',
@@ -38,13 +39,21 @@ export class UpdateCategoryComponent implements OnInit {
   root: any;
   parent: any;
   path: any;
+  base: any
+  img: any
+
+  //Styling variables
+  background: any
+  border: any
+  color: any
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private CategoryService: CategoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get bf() {
@@ -61,6 +70,7 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.category = this.route.snapshot.queryParams.category || '';
@@ -76,6 +86,12 @@ export class UpdateCategoryComponent implements OnInit {
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       parentId: [''],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -120,6 +136,15 @@ export class UpdateCategoryComponent implements OnInit {
     this.loadImage = false
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
 
   onSubmit() {
     this.isSubmitted = true;
@@ -134,16 +159,26 @@ export class UpdateCategoryComponent implements OnInit {
     this.CategoryService.getCategoryBySlug(this.category).subscribe((res: any) => {
       this.categoryValues = res?.result[0];
       this.uploadedimg = this.categoryValues?.file;
+      this.img = this.base + "/" + res?.result[0].file
       this.categoryForm.get('name')?.setValue(this.categoryValues.name);
       this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
       this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
       this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
       this.categoryForm.get('parentId')?.setValue(this.categoryValues.path);
+      this.categoryForm.get('background')?.setValue(this.categoryValues.style.background);
+      this.categoryForm.get('border')?.setValue(this.categoryValues.style.border);
+      this.categoryForm.get('radius')?.setValue(this.categoryValues.style.radius);
+      this.categoryForm.get('color')?.setValue(this.categoryValues.style.text.color);
+      this.categoryForm.get('fontWeight')?.setValue(this.categoryValues.style.text.fontWeight);
+      this.categoryForm.get('fontSize')?.setValue(this.categoryValues.style.text.fontSize);
+      this.border = this.categoryValues.style.border
+      this.background = this.categoryValues.style.background
+      this.color = this.categoryValues.style.text.color
+      this.cdr.markForCheck()
       if (this.categoryValues.isRoot == true) {
         this.isChecked = true;
       }
-    }
-    );
+    });
   }
 
   getCategory() {
@@ -204,7 +239,17 @@ export class UpdateCategoryComponent implements OnInit {
       filestring: this.croppedImage,
       filename: this.filename,
       path: this.path,
-      file: ''
+      file: '',
+      style: {
+        background: this.categoryForm.get('background')?.value,
+        border: this.categoryForm.get('border')?.value,
+        radius: this.categoryForm.get('radius')?.value,
+        text: {
+          color: this.categoryForm.get('color')?.value,
+          fontSize: this.categoryForm.get('fontSize')?.value,
+          fontWeight: this.categoryForm.get('fontWeight')?.value,
+        }
+      }
     }
 
     if (this.uploadedimg != '') {

@@ -308,6 +308,11 @@ export const Routing: Routes = [
         loadChildren: () => import('./pages/terms-conditions/terms-conditions.module').then((m) => m.TermsConditionsModule),
         canActivate: [AuthenticationGuard]
       },
+      {
+        path: 'page-limits',
+        loadChildren: () => import('./settings/general/page-limits/page-limits.module').then((m) => m.PageLimitsModule),
+        canActivate: [AuthenticationGuard]
+      },
     ]
   },
   {

@@ -30,6 +30,11 @@ export class AddCategoryComponent implements OnInit {
   filename: any;
   path: any;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -57,6 +62,12 @@ export class AddCategoryComponent implements OnInit {
       parent: [],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -155,6 +166,16 @@ export class AddCategoryComponent implements OnInit {
     this.loadImage = false
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -181,13 +202,23 @@ export class AddCategoryComponent implements OnInit {
       isFeatured: this.categoryForm.get('isFeatured')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      path: this.path
+      // path: this.path,
+      style: {
+        background: this.categoryForm.get('background')?.value,
+        border: this.categoryForm.get('border')?.value,
+        radius: this.categoryForm.get('radius')?.value,
+        text: {
+          color: this.categoryForm.get('color')?.value,
+          fontSize: this.categoryForm.get('fontSize')?.value,
+          fontWeight: this.categoryForm.get('fontWeight')?.value,
+        }
+      }
     }
 
     if (data.isRoot == 'true') {
       delete data.root
       delete data.parent
-      delete data.path
+      // delete data.path
     }
 
     this.CategoryService.addCategory(data).subscribe((res: any) => {
