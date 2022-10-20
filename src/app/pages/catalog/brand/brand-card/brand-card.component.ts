@@ -76,7 +76,10 @@ export class BrandCardComponent implements OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.brandform.get('name')?.setValue('')
+    this.brandform.get('isActive')?.setValue('')
+    this.brandform.get('isFeatured')?.setValue('')
+    this.searchBrand()
   }
 
   searchBrand() {

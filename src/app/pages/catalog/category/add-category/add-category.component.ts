@@ -29,6 +29,7 @@ export class AddCategoryComponent implements OnInit {
   imageChangedEvent: Event | undefined;
   filename: any;
   path: any;
+  catid: any;
 
   //Styling variables
   background: any
@@ -89,15 +90,15 @@ export class AddCategoryComponent implements OnInit {
       this.categoryData = res?.result;
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parent && !res?.result[i].root) {
-          this.categories.push(res?.result[i].parent.name + ' > ' + res?.result[i].name);
+          this.categories.push(res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
         }
         if (!res?.result[i].parent && res?.result[i].root) {
           this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
         }
         if (res?.result[i].parent && res?.result[i].root) {
-          if (res?.result[i].parent._id != res?.result[i].root._id) {
-            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.name + ' > ' + res?.result[i].name);
-          } else if (res?.result[i].parent._id == res?.result[i].root._id) {
+          if (res?.result[i].parent.refid._id != res?.result[i].root._id) {
+            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
+          } else if (res?.result[i].parent.refid._id == res?.result[i].root._id) {
             this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
           }
         }
@@ -128,11 +129,13 @@ export class AddCategoryComponent implements OnInit {
         }
         if (split[len - 1] == category.name) {
           this.parent = category._id
+          this.catid = category.catid
         }
       } else if (len == 1) {
         if (split[0] == category.name) {
           this.root = category._id
           this.parent = category._id
+          this.catid = category.catid
         }
       }
     }
@@ -197,7 +200,7 @@ export class AddCategoryComponent implements OnInit {
       name: this.categoryForm.get('name')?.value,
       isRoot: this.categoryForm.get('isRoot')?.value,
       root: this.root,
-      parent: this.parent,
+      parent: { refid: this.parent, catid: this.catid },
       isActive: this.categoryForm.get('isActive')?.value,
       isFeatured: this.categoryForm.get('isFeatured')?.value,
       filestring: this.croppedImage,
@@ -217,7 +220,8 @@ export class AddCategoryComponent implements OnInit {
 
     if (data.isRoot == 'true') {
       delete data.root
-      delete data.parent
+      delete data.parent.refid
+      delete data.parent.catid
       // delete data.path
     }
 

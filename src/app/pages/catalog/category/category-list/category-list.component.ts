@@ -20,7 +20,7 @@ export class CategoryComponent implements OnInit {
   pages: any = []
   nextpages: any = []
   currpage: any = 1;
-  limit: any = 8;
+  limit: any;
   selectedpage: any = 1
   max: any = 3
 
@@ -52,18 +52,15 @@ export class CategoryComponent implements OnInit {
       this.setPages()
     })
 
-    this.categoryService.searchCategory(this.categoryform.value, this.page, this.limit).subscribe((res: any) => {
+    this.categoryService.searchCategory(this.categoryform.value, this.page).subscribe((res: any) => {
       this.categories = res?.result?.data;
       this.count = this.categories.length
+      this.totalcount = res?.result?.total_item
+      this.limit = res?.result?.items_per_page
+      this.totaldata = Math.ceil(this.totalcount / this.limit)
+      this.setPages()
       this.cdr.markForCheck();
     });
-
-    this.categoryService.getCategoryCount().subscribe((res: any) => {
-      this.totalcount = res?.result
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.cdr.markForCheck();
-      this.setPages()
-    })
   }
 
   initForm() {
@@ -75,16 +72,19 @@ export class CategoryComponent implements OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.categoryform.get('name')?.setValue('')
+    this.categoryform.get('isActive')?.setValue('')
+    this.categoryform.get('isFeatured')?.setValue('')
+    this.searchCategory()
   }
 
   searchCategory() {
     this.currpage = 1
-    this.categoryService.searchCategory(this.categoryform.value, this.page, this.limit).subscribe((res: any) => {
+    this.categoryService.searchCategory(this.categoryform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result?.data
         this.count = this.categories.length
-        this.totalcount = res?.result?.total
+        this.totalcount = res?.result?.total_item
         this.totaldata = Math.ceil(this.totalcount / this.limit)
         this.setPages()
         this.cdr.markForCheck();
@@ -154,7 +154,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getData(data: any, page: any, limit: any) {
-    this.categoryService.searchCategory(data, page, limit).subscribe((res: any) => {
+    this.categoryService.searchCategory(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result?.data
         this.count = this.categories.length

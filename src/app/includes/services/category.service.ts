@@ -26,8 +26,8 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  searchCategory(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.search_category + "?page=" + page + "&limit=" + limit);
+  searchCategory(query: any, page: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.search_category + "?page=" + page);
     return this.http.post(`${url}`, query);
   }
 
@@ -37,16 +37,17 @@ export class CategoryService {
   }
 
   getCategoryBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(
-      this.categoryEndpoints.get_category_by_slug + '?slug=' + slug
-    );
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_by_slug + '?slug=' + slug);
     return this.http.get(`${url}`);
   }
 
   updateCategory(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(
-      this.categoryEndpoints.update_category + '?slug=' + slug
-    );
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.update_category + '?slug=' + slug);
     return this.http.put(`${url}`, data);
+  }
+
+  getMainCategories() {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_main_categories);
+    return this.http.get(`${url}`);
   }
 }

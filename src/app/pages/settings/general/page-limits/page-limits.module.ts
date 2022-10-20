@@ -5,6 +5,8 @@ import { PageLimitsRoutingModule } from './page-limits-routing.module';
 import { AddPageLimitsComponent } from './add-page-limits/add-page-limits.component';
 import { PageLimitsComponent } from './page-limits/page-limits.component';
 import { UpdatePageLimitsComponent } from './update-page-limits/update-page-limits.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -15,7 +17,15 @@ import { UpdatePageLimitsComponent } from './update-page-limits/update-page-limi
   ],
   imports: [
     CommonModule,
-    PageLimitsRoutingModule
+    PageLimitsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      progressAnimation: 'decreasing',
+      preventDuplicates: true,
+      progressBar: true,
+    }),
   ]
 })
 export class PageLimitsModule { }

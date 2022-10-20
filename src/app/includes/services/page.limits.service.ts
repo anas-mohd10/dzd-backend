@@ -24,14 +24,19 @@ export class PageLimitsService {
     return this.http.get(`${url}`);
   }
 
+  getPageLimit(id: any) {
+    const url = this.commonService.getFullUrl(this.pageLimitsEndpoints.get_page_limit + "?id=" + id);
+    return this.http.get(`${url}`);
+  }
+
   getPageLimitsCount() {
     const url = this.commonService.getFullUrl(this.pageLimitsEndpoints.get_page_limits_count);
     return this.http.get(`${url}`);
   }
 
   updatePageLimit(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.pageLimitsEndpoints.update_page_limit + "?slug=" + slug);
-    return this.http.post(`${url}`, data);
+    const url = this.commonService.getFullUrl(this.pageLimitsEndpoints.update_page_limit + "?id=" + slug);
+    return this.http.put(`${url}`, data);
   }
 
 }

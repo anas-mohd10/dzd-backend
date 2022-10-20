@@ -13,11 +13,95 @@
                   <a routerLink="{{ appRoute.pageLimits.PAGE_LIMITS_LIST }}">Page Limits</a>
                </li>
             </ul>
-            <button class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary" style="width: 200px"
-               routerLink="{{ appRoute.pageLimits.ADD_PAGE_LIMITS }}">
-               Add Page Limits
+            <button *ngIf="pagelimitscount == 0" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
+               style="width: 200px" routerLink="{{ appRoute.pageLimits.ADD_PAGE_LIMITS }}">
+               Add Configurations
+            </button>
+            <button *ngIf="pagelimitscount != 0" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
+               style="width: 200px" routerLink="{{ appRoute.pageLimits.UPDATE_PAGE_LIMITS }}"
+               [queryParams]="{id: slug}">
+               Edit Configurations
             </button>
          </div>
       </div>
+   </div>
+   <ng-container *ngIf="len == 0">
+      <div class="no-data-container">
+         <h2>Sorry, we haven't found any data</h2>
+      </div>
+   </ng-container>
+   <div class="page-settings-container">
+      <ng-container *ngFor="let settings of pagelimits">
+         <div class="page-settings-view-card">
+            <div class="page-settings">
+               <div class="page-settings-limit fs-5">
+                  Page limit : <span class="fw-bolder">{{settings?.brands?.pagelimit}}</span>
+               </div>
+               <div class="page-settings-title fs-5">
+                  Selected default brand
+               </div>
+               <div class="page-settings-details">
+                  <div class="page-settings-image">
+                     <img src="{{base}}/{{settings?.brands?.selecteditem?.file}}" alt=""
+                        style="height: 40px; width: 40px;">
+                  </div>
+                  <div class="page-settings-name fs-5 fw-bolder">
+                     {{settings?.brands?.selecteditem?.name}}
+                  </div>
+               </div>
+            </div>
+            <div class="page-settings">
+               <div class="page-settings-limit fs-5">
+                  Page limit : <span class="fw-bolder">{{settings?.categories?.pagelimit}}</span>
+               </div>
+               <div class="page-settings-title fs-5">
+                  Selected default category
+               </div>
+               <div class="page-settings-details">
+                  <div class="page-settings-image">
+                     <img src="{{base}}/{{settings?.categories?.selecteditem?.file}}" alt=""
+                        style="height: 40px; width: 40px;">
+                  </div>
+                  <div class="page-settings-name fs-5 fw-bolder">
+                     {{settings?.categories?.selecteditem?.name}}
+                  </div>
+               </div>
+            </div>
+            <div class="page-settings">
+               <div class="page-settings-limit fs-5">
+                  Page limit : <span class="fw-bolder">{{settings?.collections?.pagelimit}}</span>
+               </div>
+               <div class="page-settings-title fs-5">
+                  Selected default collection
+               </div>
+               <div class="page-settings-details">
+                  <div class="page-settings-image">
+                     <img src="{{base}}/{{settings?.collections?.selecteditem?.file}}" alt=""
+                        style="height: 40px; width: 40px;">
+                  </div>
+                  <div class="page-settings-name fs-5 fw-bolder">
+                     {{settings?.collections?.selecteditem?.name}}
+                  </div>
+               </div>
+            </div>
+            <div class="page-settings">
+               <div class="page-settings-limit fs-5">
+                  Page limit : <span class="fw-bolder">{{settings?.products?.pagelimit}}</span>
+               </div>
+               <div class="page-settings-title fs-5">
+                  Selected default product
+               </div>
+               <div class="page-settings-details">
+                  <div class="page-settings-image">
+                     <img src="{{base}}/{{settings?.products?.selecteditem?.file}}" alt=""
+                        style="height: 40px; width: 40px;">
+                  </div>
+                  <div class="page-settings-name fs-5 fw-bolder">
+                     {{settings?.products?.selecteditem?.name}}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </ng-container>
    </div>
 </div>

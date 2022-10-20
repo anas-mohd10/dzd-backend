@@ -6,5 +6,7 @@ export const categoryEndpoints = {
   get_category_by_slug: '/category',
   update_category: '/update-category',
   get_category_count: '/categories/count',
-  search_category: '/categories/search'
+  search_category: '/categories/search',
+
+  get_main_categories: '/main-categories'
 }
