@@ -92,7 +92,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 80px;"
+                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                     formControlName="background" (change)="getColors('background', $event.target)" />
                   <span>{{background}}</span>
                 </div>
@@ -100,8 +100,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 80px;"
-                    formControlName="border" (change)="getColors('border', $event.target)" />
+                  <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
+                    style="height: 50px;" (change)="getColors('border', $event.target)" />
                   <span>{{border}}</span>
                 </div>
               </div>

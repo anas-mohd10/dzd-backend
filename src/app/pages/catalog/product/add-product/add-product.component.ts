@@ -50,6 +50,11 @@ export class AddProductComponent implements OnInit {
   imageChangedEvent: Event | undefined;
   filename: any;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -107,6 +112,12 @@ export class AddProductComponent implements OnInit {
       relatedProducts: [],
       position: [''],
       file: [''],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -133,11 +144,12 @@ export class AddProductComponent implements OnInit {
 
   //Check the shipping method
   checkShippingMethod(event: any) {
+    console.log(event.value);
     this.method = event.value;
-    if (this.method == 'paid') {
+    if (this.method === 'Paid') {
       this.isShipping = true;
     }
-    if (this.method == 'unpaid' || this.method == 'external') {
+    if (this.method == 'Unpaid' || this.method == 'External') {
       this.isShipping = false;
     }
   }
@@ -285,6 +297,16 @@ export class AddProductComponent implements OnInit {
     this.loadImage = false
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
 
   onSubmit() {
     this.isSubmitted = true;
@@ -333,7 +355,17 @@ export class AddProductComponent implements OnInit {
       relatedProducts: this.relProductIds,
       position: this.productForm.get('position')?.value,
       filestring: this.croppedImage,
-      filename: this.filename
+      filename: this.filename,
+      style: {
+        background: this.productForm.get('background')?.value,
+        border: this.productForm.get('border')?.value,
+        radius: this.productForm.get('radius')?.value,
+        text: {
+          color: this.productForm.get('color')?.value,
+          fontSize: this.productForm.get('fontSize')?.value,
+          fontWeight: this.productForm.get('fontWeight')?.value,
+        }
+      }
     }
 
     this.productService.addProduct(data).subscribe((res: any) => {

@@ -30,6 +30,13 @@ export class AddBrandComponent implements OnInit {
   filename: any
   loadImage: boolean = false;
 
+
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -62,6 +69,12 @@ export class AddBrandComponent implements OnInit {
       file: [''],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -110,6 +123,16 @@ export class AddBrandComponent implements OnInit {
     this.loadImage = false
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
   //Update exsisting brand
   updateBrand() { }
 
@@ -123,9 +146,19 @@ export class AddBrandComponent implements OnInit {
       isActive: this.brandForm.get("isActive")?.value,
       isFeatured: this.brandForm.get("isFeatured")?.value,
       filestring: this.croppedImage,
-      filename: this.filename
+      filename: this.filename,
+      style: {
+        background: this.brandForm.get('background')?.value,
+        border: this.brandForm.get('border')?.value,
+        radius: this.brandForm.get('radius')?.value,
+        text: {
+          color: this.brandForm.get('color')?.value,
+          fontSize: this.brandForm.get('fontSize')?.value,
+          fontWeight: this.brandForm.get('fontWeight')?.value,
+        }
+      }
     }
-    if(data.filestring != ''){
+    if (data.filestring != '') {
       this.BrandService.addBrand(data).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');
@@ -135,8 +168,8 @@ export class AddBrandComponent implements OnInit {
         }
       });
     }
-    else{
+    else {
       this.toastr.error('Something went wrong');
     }
-    }
+  }
 }
