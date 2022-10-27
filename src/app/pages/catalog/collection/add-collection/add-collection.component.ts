@@ -34,6 +34,11 @@ export class AddCollectionComponent implements OnInit {
   filename: any;
   loadImage: boolean;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -63,6 +68,12 @@ export class AddCollectionComponent implements OnInit {
       products: [Validators.required],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -140,6 +151,16 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
   }
@@ -195,7 +216,17 @@ export class AddCollectionComponent implements OnInit {
       isActive: this.collectionForm.get('isActive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      products: this.array
+      products: this.array,
+      style: {
+        background: this.collectionForm.get('background')?.value,
+        border: this.collectionForm.get('border')?.value,
+        radius: this.collectionForm.get('radius')?.value,
+        text: {
+          color: this.collectionForm.get('color')?.value,
+          fontSize: this.collectionForm.get('fontSize')?.value,
+          fontWeight: this.collectionForm.get('fontWeight')?.value,
+        }
+      }
     }
     this.collectionService.addCollection(data).subscribe((res: any) => {
       if (res.errorCode != 0) {

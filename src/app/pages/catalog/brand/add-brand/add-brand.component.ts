@@ -30,12 +30,10 @@ export class AddBrandComponent implements OnInit {
   filename: any
   loadImage: boolean = false;
 
-
   //Styling variables
   background: any
   border: any
   color: any
-
 
   constructor(
     private formBuilder: FormBuilder,
