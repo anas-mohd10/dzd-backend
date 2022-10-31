@@ -1,0 +1,80 @@
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row align-items-center">
+         <div class="col">
+            <h3 class="page-title fw-bolder fs-2">
+               {{ editMode ? "Update App Settings" : "Add App Settings" }}
+            </h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}">App Settings</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.appSettings.UPDATE_APP_SETTINGS }}">
+                     {{ editMode ? "Update App Settings" : "Add App Settings"}}
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="page-container">
+      <div class="col-sm-12 fs-6 mt-10">
+         <div class="card">
+            <div class="card-body">
+               <form [formGroup]="appsettingsform">
+                  <div class="row">
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required">Primary Color</label>
+                           <input type="color" placeholder="App primary color" class="form-control fs-6"
+                              style="height: 50px;" formControlName="primaryColor" />
+                           <span>{{primary}}</span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required">Secondary Color</label>
+                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                              style="height: 50px;" formControlName="secondaryColor" />
+                           <span>{{secondary}}</span>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3 required">Items Per Page</label>
+                           <input type="number" placeholder="14" class="form-control fs-6"
+                              formControlName="itemPerPage" />
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Font Family</label>
+                           <select formControlName="fontFamily" class="form-control fs-6">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="Poppins">Poppins</option>
+                              <option value="Sans serif">Sans serif</option>
+                              <option value="Roboto">Roboto</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
+                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                           (click)="onSubmit()">
+                           Update
+                        </button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

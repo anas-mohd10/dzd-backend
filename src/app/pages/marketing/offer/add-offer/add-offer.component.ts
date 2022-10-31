@@ -25,6 +25,11 @@ export class AddOfferComponent implements OnInit {
   filename: string;
   imageChangedEvent: any;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -47,6 +52,12 @@ export class AddOfferComponent implements OnInit {
       lastDate: ['', Validators.required],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -95,6 +106,16 @@ export class AddOfferComponent implements OnInit {
     this.loadImage = false
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -117,7 +138,17 @@ export class AddOfferComponent implements OnInit {
       isFeatured: this.offerForm.get('isFeatured')?.value,
       isActive: this.offerForm.get('isActive')?.value,
       filestring: this.croppedImage,
-      filename: this.filename
+      filename: this.filename,
+      style: {
+        background: this.offerForm.get('background')?.value,
+        border: this.offerForm.get('border')?.value,
+        radius: this.offerForm.get('radius')?.value,
+        text: {
+          color: this.offerForm.get('color')?.value,
+          fontSize: this.offerForm.get('fontSize')?.value,
+          fontWeight: this.offerForm.get('fontWeight')?.value,
+        }
+      }
     }
     this.offerService.addOffer(data).subscribe((res: any) => {
       if (res.errorCode != 0) {

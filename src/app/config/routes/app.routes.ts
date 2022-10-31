@@ -37,6 +37,7 @@ const helpcenterRoute = "/help-center"
 const privacypolicyRoute = "/privacy-policy"
 const termsconditionsRoute = "/terms-conditions"
 const pageLimitsRoutes = "/page-limits"
+const generalSettingsRoutes = "/app-settings"
 
 export const appRoutes = {
   BASE: "http://localhost:3000/",
@@ -194,5 +195,10 @@ export const appRoutes = {
     PAGE_LIMITS_LIST: `${app}${pageLimitsRoutes}`,
     ADD_PAGE_LIMITS: `${app}${pageLimitsRoutes}/add`,
     UPDATE_PAGE_LIMITS: `${app}${pageLimitsRoutes}/update`,
+  },
+  appSettings: {
+    APP_SETTINGS_LIST: `${app}${generalSettingsRoutes}`,
+    ADD_APP_SETTINGS: `${app}${generalSettingsRoutes}/add`,
+    UPDATE_APP_SETTINGS: `${app}${generalSettingsRoutes}/update`,
   }
 };

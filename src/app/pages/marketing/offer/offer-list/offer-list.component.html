@@ -92,7 +92,7 @@
             <ng-container *ngIf="offer?.isActive == false">Inactive</ng-container>
           </div>
           <div class="card-edit-btn">
-            <button routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.slug }"
+            <button routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.offerid }"
               class="fs-5 cursor-pointer text-darker">
               Edit
             </button>

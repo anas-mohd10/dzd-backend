@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PageTasks } from 'src/app/config/constants';
+import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
@@ -62,6 +62,11 @@ export class AddPageLimitsComponent implements OnInit {
   ngOnInit(): void {
     this.initform()
     this.base = environment.base
+
+    this.pagelimitform.get('categorylimit')?.setValue(AppSettings.ITEMS_PER_PAGE)
+    this.pagelimitform.get('brandlimit')?.setValue(AppSettings.ITEMS_PER_PAGE)
+    this.pagelimitform.get('collectionlimit')?.setValue(AppSettings.ITEMS_PER_PAGE)
+    this.pagelimitform.get('productlimit')?.setValue(AppSettings.ITEMS_PER_PAGE)
 
     this.BrandService.searchBrand({ isActive: true, isDelete: false }, this.page, this.limit).subscribe((res: any) => {
       this.brands = res?.result?.data

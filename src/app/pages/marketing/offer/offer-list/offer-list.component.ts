@@ -53,13 +53,13 @@ export class OfferListComponent implements OnInit {
       this.setPages()
     })
 
-    this.offerService.getOffer(this.page, this.limit).subscribe((res: any) => {
-      this.offers = res?.result
+    this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
+      this.offers = res?.result?.data
       for (let data of this.offers) {
         data.fromDate = new Date(data.fromDate).toDateString()
         data.lastDate = new Date(data.lastDate).toDateString()
       }
-      this.count = this.offers.length
+      this.count = res?.result?.total_item
       this.cdr.markForCheck();
     });
 
@@ -95,7 +95,7 @@ export class OfferListComponent implements OnInit {
           data.lastDate = new Date(data.lastDate).toDateString()
         }
         this.count = this.offers.length
-        this.totalcount = res?.result?.total
+        this.totalcount = res?.result?.total_item
         this.totaldata = Math.ceil(this.totalcount / this.limit)
         this.setPages()
         this.cdr.markForCheck();

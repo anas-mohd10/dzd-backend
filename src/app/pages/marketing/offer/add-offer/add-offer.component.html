@@ -38,10 +38,6 @@
                     (of.name.touched || isSubmitted) &&
                     of.name.errors?.required
                   }" />
-                  <span class="text-danger fs-7" *ngIf="
-                      (of.name.touched || isSubmitted) &&
-                      of.name.errors?.required
-                    ">Name is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -52,10 +48,6 @@
                     (of.description.touched || isSubmitted) &&
                     of.description.errors?.required
                   }" />
-                  <span class="text-danger mt-10 fs-7" *ngIf="
-                      (of.description.touched || isSubmitted) &&
-                      of.description.errors?.required
-                    ">Description is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -66,11 +58,6 @@
                         (of.fromDate.touched || isSubmitted) &&
                         of.fromDate.errors?.required
                     }" />
-                  <span class="text-danger fs-7" *ngIf="
-                      (of.fromDate.touched || isSubmitted) &&
-                      of.fromDate.errors?.required
-                    ">
-                    From date is required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -78,9 +65,6 @@
                   <label class="fs-6 mb-3 form-title required">Last Date</label>
                   <input type="date" class="form-control fs-6" formControlName="lastDate"
                     [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
-                  <span class="text-danger fs-7"
-                    *ngIf="(of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required">Last date is
-                    required</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -101,6 +85,51 @@
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Offer Styles</span></h5>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Background</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
+                    formControlName="background" (change)="getColors('background', $event.target)" />
+                  <span>{{background}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Border</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
+                    style="height: 50px;" (change)="getColors('border', $event.target)" />
+                  <span>{{border}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Border Radius</label>
+                  <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Color</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
+                    formControlName="color" (change)="getColors('color', $event.target)" />
+                  <span>{{color}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Font Weight</label>
+                  <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Font Size ( in px )</label>
+                  <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">

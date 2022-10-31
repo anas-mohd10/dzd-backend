@@ -1,0 +1,22 @@
+.app-settings-container {
+   margin: 30px 0 0 0;
+
+   .row {
+      .color-container {
+         width: 250px;
+         height: 80px;
+         border-radius: 8px;
+      }
+
+      .primary-color,
+      .secondary-color {
+         font-size: 1.2rem;
+         font-weight: 500;
+      }
+
+      .items-per-page,
+      .font-family {
+         font-size: 1.2rem;
+      }
+   }
+}

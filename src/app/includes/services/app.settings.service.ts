@@ -1,0 +1,41 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { generalSettingsEndpoints } from 'src/app/config/endpoints/general.settings.endpoints';
+import { CommonService } from './common.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AppSettingsService {
+  generalSettingsEndpoints = generalSettingsEndpoints
+
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
+
+  addGeneralSettings(data: any) {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.add_general_settings);
+    return this.http.post(`${url}`, data);
+  }
+
+  getGeneralSettings() {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_settings);
+    return this.http.get(`${url}`);
+  }
+
+  getGeneralSettingsCount() {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_settings_count);
+    return this.http.get(`${url}`);
+  }
+
+  getGeneralSetting(id: any) {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_setting + "?id=" + id);
+    return this.http.get(`${url}`);
+  }
+
+  updateGeneralSettings(id: any, data: any) {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.update_general_settings + "?id=" + id);
+    return this.http.put(`${url}`, data);
+  }
+}

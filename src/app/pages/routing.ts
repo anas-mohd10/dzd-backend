@@ -313,6 +313,11 @@ export const Routing: Routes = [
         loadChildren: () => import('./settings/general/page-limits/page-limits.module').then((m) => m.PageLimitsModule),
         canActivate: [AuthenticationGuard]
       },
+      {
+        path: 'app-settings',
+        loadChildren: () => import('./settings/general/app-settings/app-settings.module').then((m) => m.AppSettingsModule),
+        canActivate: [AuthenticationGuard]
+      },
     ]
   },
   {

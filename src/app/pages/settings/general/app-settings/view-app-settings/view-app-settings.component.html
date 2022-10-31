@@ -1,0 +1,63 @@
+<div class="contact-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">App Settings</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST}}">App Settings</a>
+               </li>
+            </ul>
+            <button *ngIf="generalSettingsCount == 0" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
+               style="width: 200px" routerLink="{{ appRoute.appSettings.ADD_APP_SETTINGS }}">
+               Add Configurations
+            </button>
+            <button *ngIf="generalSettingsCount != 0" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
+               style="width: 200px" routerLink="{{ appRoute.appSettings.UPDATE_APP_SETTINGS}}"
+               [queryParams]="{id: slug}">
+               Edit Configurations
+            </button>
+         </div>
+      </div>
+   </div>
+   <ng-container *ngIf="generalSettingsCount == 0">
+      <div class="no-data-container" style="margin: 40px 0 0 0;">
+         <h2>Sorry, we haven't found any data</h2>
+      </div>
+   </ng-container>
+   <div class="app-settings-container">
+      <div class="row">
+         <ng-container *ngFor="let data of generalSettings">
+            <div class="col-12 col-sm-6">
+               <div class="primary-color">
+                  <div class="color-container" [ngStyle]="{background: data?.primaryColor}">
+                  </div>
+                  <span> Primary color : {{data?.primaryColor}}</span>
+               </div>
+            </div>
+            <div class="col-12 col-sm-6">
+               <div class="secondary-color">
+                  <div class="color-container" [ngStyle]="{background: data?.secondaryColor}">
+                  </div>
+                  <span>Secondary color : {{data?.secondaryColor}}</span>
+               </div>
+            </div>
+            <div class="col-12">
+               <div class="items-per-page">
+                  Items per page : {{data?.itemsPerPage ? data?.itemsPerPage : "0"}}
+               </div>
+            </div>
+            <div class="col-12">
+               <div class="font-family">
+                  Font family used : {{data?.fontFamily ? data?.fontFamily : "-"}}
+               </div>
+            </div>
+         </ng-container>
+      </div>
+   </div>
+</div>
