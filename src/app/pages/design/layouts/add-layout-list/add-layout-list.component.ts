@@ -92,7 +92,7 @@ export class AddLayoutListComponent implements OnInit {
         })
         //Localdata for preview purpose
         for (let prod of this.productsData) {
-          if (prod._id == product) {
+          if (prod.prodid == product) {
             this.localData.push({
               id: this.localData.length,
               product: prod.name,

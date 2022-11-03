@@ -65,6 +65,11 @@ export class UpdateProductComponent implements OnInit {
   uploadedimg: any;
   base: string;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -135,6 +140,12 @@ export class UpdateProductComponent implements OnInit {
       relatedProducts: [''],
       position: [''],
       file: [''],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -263,6 +274,16 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
   getProductBySlug() {
     this.productService.getProductBySlug(this.productSlug).subscribe((res: any) => {
       this.productData = res?.result[0];
@@ -300,7 +321,16 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('stockWarning')?.setValue(this.productData.stockWarning);
       this.productForm.get('description')?.setValue(this.productData.description);
       this.productForm.get('features')?.setValue(this.productData.features);
+      this.productForm.get('background')?.setValue(this.productData.style.background);
+      this.productForm.get('border')?.setValue(this.productData.style.border);
+      this.productForm.get('radius')?.setValue(this.productData.style.radius);
+      this.productForm.get('color')?.setValue(this.productData.style.text.color);
+      this.productForm.get('fontSize')?.setValue(this.productData.style.text.fontSize);
+      this.productForm.get('fontWeight')?.setValue(this.productData.style.text.fontWeight);
 
+      this.color = this.productData.style.text.color
+      this.background = this.productData.style.background
+      this.border = this.productData.style.border
 
       for (let i = 0; i < this.productData.categories.length; i++) {
         this.categoryArray.push(this.productData.categories[i]._id)
@@ -455,7 +485,17 @@ export class UpdateProductComponent implements OnInit {
       position: this.productForm.get('position')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      file: ''
+      file: '',
+      style: {
+        background: this.productForm.get('background')?.value,
+        border: this.productForm.get('border')?.value,
+        radius: this.productForm.get('radius')?.value,
+        text: {
+          color: this.productForm.get('color')?.value,
+          fontSize: this.productForm.get('fontSize')?.value,
+          fontWeight: this.productForm.get('fontWeight')?.value,
+        }
+      }
     }
 
     if (this.uploadedimg) {

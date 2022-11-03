@@ -307,7 +307,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {

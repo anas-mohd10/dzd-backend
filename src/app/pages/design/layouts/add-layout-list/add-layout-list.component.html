@@ -131,7 +131,7 @@
                                        <select class="form-select form-select-lg fs-6" aria-label=".form-select-lg"
                                           formControlName="product">
                                           <option value="disabled" disabled>-- Select an option --</option>
-                                          <option *ngFor="let prod of productsData" value="{{prod?._id}}">
+                                          <option *ngFor="let prod of productsData" value="{{prod?.prodid}}">
                                              {{prod?.name}}
                                           </option>
                                        </select>

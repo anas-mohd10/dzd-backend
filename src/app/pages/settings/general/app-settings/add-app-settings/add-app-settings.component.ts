@@ -21,6 +21,7 @@ export class AddAppSettingsComponent implements OnInit {
   //Varibales
   primary: any
   secondary: any
+  items_per_page: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,19 +33,19 @@ export class AddAppSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initform()
-    this.primary = AppSettings.PRIMARY_COLOR
-    this.secondary = AppSettings.SECONDARY_COLOR
+    this.primary = AppSettings.PRIMARY_COLOR ? AppSettings.PRIMARY_COLOR : '#00bdab'
+    this.secondary = AppSettings.SECONDARY_COLOR ? AppSettings.SECONDARY_COLOR : '#333333'
+    this.items_per_page = AppSettings.ITEMS_PER_PAGE ? AppSettings.ITEMS_PER_PAGE : 25
 
-    this.appsettingsform.get('primaryColor')?.setValue(AppSettings.PRIMARY_COLOR)
-    this.appsettingsform.get('secondaryColor')?.setValue(AppSettings.SECONDARY_COLOR)
-    this.appsettingsform.get('itemPerPage')?.setValue(AppSettings.ITEMS_PER_PAGE)
+    this.appsettingsform.get('primaryColor')?.setValue(this.primary)
+    this.appsettingsform.get('secondaryColor')?.setValue(this.secondary)
+    this.appsettingsform.get('itemsPerPage')?.setValue(this.items_per_page)
   }
 
   initform() {
     this.appsettingsform = this.formBuilder.group({
       primaryColor: ['', Validators.required],
       secondaryColor: ['', Validators.required],
-      fontFamily: [''],
       itemsPerPage: ['', Validators.required]
     })
   }
@@ -57,10 +58,9 @@ export class AddAppSettingsComponent implements OnInit {
     const data = {
       primaryColor: this.appsettingsform.get('primaryColor')?.value,
       secondaryColor: this.appsettingsform.get('secondaryColor')?.value,
-      fontFamily: this.appsettingsform.get('fontFamily')?.value,
-      itemsPerPage: this.appsettingsform.get('itemPerPage')?.value
+      itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value
     }
-
+    
     this.AppSettingsService.addGeneralSettings(data).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.toastr.success('Settings configured');

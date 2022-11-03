@@ -31,6 +31,11 @@ export class UpdateOfferComponent implements OnInit {
   imageChangedEvent: any;
   base: any;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -56,6 +61,12 @@ export class UpdateOfferComponent implements OnInit {
       lastDate: [''],
       isFeatured: [''],
       isActive: [''],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -69,6 +80,16 @@ export class UpdateOfferComponent implements OnInit {
         break;
       default:
         break;
+    }
+  }
+
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
     }
   }
 
@@ -100,7 +121,6 @@ export class UpdateOfferComponent implements OnInit {
     this.loadImage = false
   }
 
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -124,6 +144,17 @@ export class UpdateOfferComponent implements OnInit {
         this.offerForm.get('isFeatured')?.setValue(this.offerData.isFeatured);
         this.offerForm.get('fromDate')?.setValue(this.fromDate);
         this.offerForm.get('lastDate')?.setValue(this.lastDate);
+
+        this.offerForm.get('background')?.setValue(this.offerData.style.background);
+        this.offerForm.get('border')?.setValue(this.offerData.style.border);
+        this.offerForm.get('radius')?.setValue(this.offerData.style.radius);
+        this.offerForm.get('color')?.setValue(this.offerData.style.text.color);
+        this.offerForm.get('fontSize')?.setValue(this.offerData.style.text.fontSize);
+        this.offerForm.get('fontWeight')?.setValue(this.offerData.style.text.fontWeight);
+
+        this.color = this.offerData.style.text.color
+        this.background = this.offerData.style.background
+        this.border = this.offerData.style.border
       }
     });
   }
@@ -143,7 +174,17 @@ export class UpdateOfferComponent implements OnInit {
       isActive: this.offerForm.get('isActive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      file: ''
+      file: '',
+      style: {
+        background: this.offerForm.get('background')?.value,
+        border: this.offerForm.get('border')?.value,
+        radius: this.offerForm.get('radius')?.value,
+        text: {
+          color: this.offerForm.get('color')?.value,
+          fontSize: this.offerForm.get('fontSize')?.value,
+          fontWeight: this.offerForm.get('fontWeight')?.value,
+        }
+      }
     }
     if (this.uploadedimg) {
       data.file = this.uploadedimg

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-collection',
@@ -37,6 +38,12 @@ export class UpdateCollectionComponent implements OnInit {
   imageChangedEvent: any;
   loadImage: boolean;
   croppedImage: any;
+  base: any
+
+  //Styling variables
+  background: any
+  border: any
+  color: any
 
   constructor(
     private collectionService: CollectionService,
@@ -44,7 +51,8 @@ export class UpdateCollectionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +60,7 @@ export class UpdateCollectionComponent implements OnInit {
     this.initForm();
     this.collection = this.route.snapshot.queryParams.collection || '';
     this.getProduct();
+    this.base = environment.base
   }
 
   initForm() {
@@ -60,6 +69,12 @@ export class UpdateCollectionComponent implements OnInit {
       products: [],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -109,6 +124,16 @@ export class UpdateCollectionComponent implements OnInit {
           this.collectionForm.get('name')?.setValue(this.collectionData?.name);
           this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
           this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
+          this.collectionForm.get('background')?.setValue(this.collectionData?.style.background);
+          this.collectionForm.get('border')?.setValue(this.collectionData?.style.border);
+          this.collectionForm.get('radius')?.setValue(this.collectionData?.style.radius);
+          this.collectionForm.get('color')?.setValue(this.collectionData?.style.text.color);
+          this.collectionForm.get('fontSize')?.setValue(this.collectionData?.style.text.fontSize);
+          this.collectionForm.get('fontWeight')?.setValue(this.collectionData?.style.text.fontWeight);
+          this.color = this.collectionData?.style.text.color
+          this.background = this.collectionData?.style.background
+          this.border = this.collectionData?.style.border
+          this.cdr.markForCheck()
           for (let prod of res?.result[0].products) {
             this.product.push({
               key: prod.key,
@@ -202,6 +227,17 @@ export class UpdateCollectionComponent implements OnInit {
     this.loadImage = false
   }
 
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
+  }
+
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -232,7 +268,17 @@ export class UpdateCollectionComponent implements OnInit {
       filestring: this.croppedImage,
       filename: this.filename,
       products: this.array,
-      file: ''
+      file: '',
+      style: {
+        background: this.collectionForm.get('background')?.value,
+        border: this.collectionForm.get('border')?.value,
+        radius: this.collectionForm.get('radius')?.value,
+        text: {
+          color: this.collectionForm.get('color')?.value,
+          fontSize: this.collectionForm.get('fontSize')?.value,
+          fontWeight: this.collectionForm.get('fontWeight')?.value,
+        }
+      }
     }
     if (this.uploadedimg != '') {
       data.file = this.uploadedimg

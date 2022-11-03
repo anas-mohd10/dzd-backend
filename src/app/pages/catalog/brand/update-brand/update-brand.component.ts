@@ -30,6 +30,11 @@ export class UpdateBrandComponent implements OnInit {
   base: any
   img: any;
 
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -58,6 +63,12 @@ export class UpdateBrandComponent implements OnInit {
       name: ['', Validators.required],
       isActive: ['', Validators.required],
       isFeatured: ['', Validators.required],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
@@ -111,10 +122,29 @@ export class UpdateBrandComponent implements OnInit {
           this.brandForm.get('name')?.setValue(this.brand.name);
           this.brandForm.get('isActive')?.setValue(this.brand.isActive);
           this.brandForm.get('isFeatured')?.setValue(this.brand.isFeatured);
+          this.brandForm.get('background')?.setValue(this.brand.style.background);
+          this.brandForm.get('border')?.setValue(this.brand.style.border);
+          this.brandForm.get('radius')?.setValue(this.brand.style.radius);
+          this.brandForm.get('color')?.setValue(this.brand.style.text.color);
+          this.brandForm.get('fontSize')?.setValue(this.brand.style.text.fontSize);
+          this.brandForm.get('fontWeight')?.setValue(this.brand.style.text.fontWeight);
+          this.background = this.brand.style.background
+          this.color = this.brand.style.text.color
+          this.border = this.brand.style.border
           this.cdr.markForCheck()
           break;
       }
     });
+  }
+
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
   }
 
   onSubmit() {
@@ -138,7 +168,17 @@ export class UpdateBrandComponent implements OnInit {
       isFeatured: this.brandForm.get("isFeatured")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      file: ''
+      file: '',
+      style: {
+        background: this.brandForm.get('background')?.value,
+        border: this.brandForm.get('border')?.value,
+        radius: this.brandForm.get('radius')?.value,
+        text: {
+          color: this.brandForm.get('color')?.value,
+          fontSize: this.brandForm.get('fontSize')?.value,
+          fontWeight: this.brandForm.get('fontWeight')?.value,
+        }
+      }
     }
 
     if (this.uploadedimg != '') {
