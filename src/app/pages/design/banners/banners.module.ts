@@ -9,6 +9,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { WidgetsModule } from 'src/app/shared/partials';
     BannersRoutingModule,
     DataTablesModule,
     FormsModule,
+    ImageCropperModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

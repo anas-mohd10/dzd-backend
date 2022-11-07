@@ -113,21 +113,22 @@
                 <div class="form-group">
                   <div class="image-upload">
                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                      (change)="handleInputChange($event)"
-                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                      style="height: 100px;" required>
+                      (change)="handleInputChange($event)" style="height: 100px;" required>
                     <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset=""></div>
-                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                          up to 1
-                          file</span></div>
+                      <div class="left-img">
+                        <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                      </div>
+                      <div class="right-text d-flex flex-column">
+                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                        <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                          Upload up to 1 file
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <ng-container *ngIf=" loadImage">
+              <ng-container *ngIf="loadImage">
                 <div class="col-12 preview-section">
                   <div class="crop-image col-sm-6">
                     <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"

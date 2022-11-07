@@ -9,7 +9,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
-
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -21,6 +21,7 @@ import { WidgetsModule } from 'src/app/shared/partials';
     CommonModule,
     LayoutsRoutingModule,
     DataTablesModule,
+    ImageCropperModule,
     FormsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
