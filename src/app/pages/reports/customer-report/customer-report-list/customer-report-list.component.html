@@ -6,14 +6,14 @@
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.reports.ORDER_REPORT }}">Customer Report</a>
                </li>
             </ul>
-            <button class="btn btn-dark cursor-pointer fs-6" color="text-white" style="width: 200px"
+            <button class="btn btn-dark cursor-pointer fs-5" color="text-white" style="width: 200px"
                (click)="downloadCsvFile()">Export</button>
          </div>
       </div>
@@ -46,13 +46,13 @@
             </div>
          </div>
          <div class="col-12 col-sm-2">
-            <a (click)="reloadPage()" class=" btn btn-secondary fs-6 text-dark"
+            <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark"
                style="width: 200px; margin-right: 20px;">
                Reset
             </a>
          </div>
          <div class="col-12 col-sm-2">
-            <button type="submit" class="btn btn-primary btn-submit fs-6" style="width: 200px;">
+            <button type="submit" class="btn btn-primary btn-submit fs-5" style="width: 200px;">
                Apply
             </button>
          </div>
@@ -84,7 +84,7 @@
                               <h2 class="table-avatar">{{ i + 1 }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-6">{{data?.customer}}</h2>
+                              <h2 class="table-avatar fs-5">{{data?.customer}}</h2>
                            </td>
                            <td>
                               <h2 class="table-avatar">{{data?.orders}}</h2>

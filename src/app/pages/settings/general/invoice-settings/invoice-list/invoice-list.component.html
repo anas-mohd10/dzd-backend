@@ -6,10 +6,10 @@
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.invoiceSettings.INVOICE_SETTINGS_LIST }}">Invoice settings</a>
                </li>
             </ul>
@@ -17,7 +17,7 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-6">
+      <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="invoiceSettingsForm">
@@ -28,8 +28,8 @@
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title required"> Code</label>
-                           <input type="text" class="form-control fs-6" formControlName="code"
+                           <label class="fs-5 mb-3 form-title required"> Code</label>
+                           <input type="text" class="form-control fs-5" formControlName="code"
                               [ngClass]="{'is-invalid':(isf.code.touched || isSubmitted) &&isf.code.errors?.required}" />
                            <span class="text-danger error-msg fs-7"
                               *ngIf="(isf.code.touched || isSubmitted) && isf.code.errors?.required">
@@ -39,8 +39,8 @@
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title required"> Starting range</label>
-                           <input type="text" class="form-control fs-6" formControlName="startingRange"
+                           <label class="fs-5 mb-3 form-title required"> Starting range</label>
+                           <input type="text" class="form-control fs-5" formControlName="startingRange"
                               [ngClass]="{'is-invalid':(isf.startingRange.touched || isSubmitted) &&isf.startingRange.errors?.required}" />
                            <span class="text-danger error-msg fs-7"
                               *ngIf="(isf.startingRange.touched || isSubmitted) && isf.startingRange.errors?.required">
@@ -49,11 +49,11 @@
                         </div>
                      </div>
                      <div class="col-12">
-                        <button type="reset" class="btn btn-dark btn-sm fs-6" style="width: 200px;margin-right: 20px"
+                        <button type="reset" class="btn btn-dark btn-sm fs-5" style="width: 200px;margin-right: 20px"
                            (change)="resetAll()">
                            Reset
                         </button>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                            Submit
                         </button>
                      </div>

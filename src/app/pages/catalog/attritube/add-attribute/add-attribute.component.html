@@ -7,16 +7,16 @@
           {{ editMode ? "Update Attribute" : "Add Attribute" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}" [queryParams]="{ category: slug }">Attributes</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: slug }">
               {{ editMode ? "Update Attribute" : "Add Attribute" }}
             </a>
@@ -27,7 +27,7 @@
   </div>
   <!-- /Page Header -->
   <div class="row mt-10">
-    <div class="col-sm-12 fs-6">
+    <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
           <form [formGroup]="attributeForm" enctype="multipart/form-data" (keydown.Enter)="$event.preventDefault()">
@@ -37,8 +37,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 required">Attribute Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                  <label class="fs-5 mb-3 required">Attribute Name</label>
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
                     'is-invalid':
                     (af.name.touched || isSubmitted) &&
                     af.name.errors?.required
@@ -49,8 +49,8 @@
               <div class="col-12 col-sm-6"></div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 required">Value Type</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                  <label class="fs-5 mb-3 required">Value Type</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="type" (change)="changeValueType()">
                     <option value="check" disabled>
                       -- Select An Option --
@@ -65,8 +65,8 @@
               <ng-container *ngIf="textFlag">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-6 mb-3 required">Text </label>
-                    <input class="form-control fs-6 mb-10" formControlName="values" (keyup.Enter)="tagInput()" />
+                    <label class="fs-5 mb-3 required">Text </label>
+                    <input class="form-control fs-5 mb-10" formControlName="values" (keyup.Enter)="tagInput()" />
                     <div class="tag-inputs col-12">
                       <ng-container *ngFor="let value of textArray">
                         <span class="tag-input">
@@ -82,8 +82,8 @@
               <ng-container *ngIf="colorFlag">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-6 mb-3 required"> Colors </label>
-                    <input type="color" class="form-control color-picker fs-6 mb-10" formControlName="colorValue"
+                    <label class="fs-5 mb-3 required"> Colors </label>
+                    <input type="color" class="form-control color-picker fs-5 mb-10" formControlName="colorValue"
                       (keyup.Arrowright)="tagInput()" (change)="getColorCode()" />
                   </div>
                   <div class="color-inputs col-12">
@@ -121,7 +121,7 @@
                             </div>
                             <div class="form-group mb-10">
                               <div class="image-upload">
-                                <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                <input type="file" class="form-control fs-5" name="image" accept="image/*"
                                   (change)="handleInputChange($event)"
                                   onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
                                   style="height: 100px;" required>
@@ -160,9 +160,9 @@
                       </div>
                       <div class="col-12 upload-layout">
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary fs-6" style="width: 200px"
+                          <button type="button" class="btn btn-secondary fs-5" style="width: 200px"
                             data-bs-dismiss="modal">Close</button>
-                          <button type="button" data-bs-dismiss="modal" class="btn btn-primary fs-6"
+                          <button type="button" data-bs-dismiss="modal" class="btn btn-primary fs-5"
                             style="width: 200px" (click)="addFile()">Save</button>
                         </div>
                       </div>
@@ -172,7 +172,7 @@
                 <div class="uploaded-attributes">
                   <div *ngFor="let img of imgs; let i=index">
                     <div class="attribute-card">
-                      <div class="attribute-image fs-6 fw-bold mt-3">
+                      <div class="attribute-image fs-5 fw-bold mt-3">
                         <img class="attribute-preview" [src]="img?.url" alt="" srcset="">
                         <div class="close-icon bg-dark" (click)="removeFile(img?.id)">
                           <i class="bi bi-x-lg text-white"></i>
@@ -185,8 +185,8 @@
               </ng-container>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Active</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                  <label class="fs-5 mb-3">Active</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="true">Active</option>
                     <option value="false">Inactive</option>
@@ -195,7 +195,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Filtered Attribute ?</label>
+                  <label class="fs-5 mb-3">Filtered Attribute ?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFiltered">
                     <option value="false">False</option>
@@ -205,10 +205,10 @@
               </div>
               <div class="col-12">
                 <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST}}" [queryParams]="{category: category}"
-                  class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                  class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button (click)="onSubmit()" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                <button (click)="onSubmit()" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                   Add
                 </button>
               </div>

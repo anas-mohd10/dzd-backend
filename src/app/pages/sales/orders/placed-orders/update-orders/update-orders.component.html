@@ -7,13 +7,13 @@
                {{ editMode ? "Update Order" : "Add Order" }}
             </h5>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{ order: slug }">
                      {{ editMode ? "Update Order" : "Add Order" }}
                   </a>
@@ -32,7 +32,7 @@
             </div>
             <div class="card-body pt-0">
                <div class="table-responsive">
-                  <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                  <table class="table align-middle table-row-bordered mb-0 fs-5 gy-5 min-w-300px">
                      <tbody class="fw-bold text-gray-600">
                         <tr>
                            <td class="text-muted">
@@ -109,7 +109,7 @@
             </div>
             <div class="card-body pt-0">
                <div class="table-responsive">
-                  <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                  <table class="table align-middle table-row-bordered mb-0 fs-5 gy-5 min-w-300px">
                      <tbody class="fw-bold text-gray-600">
                         <tr>
                            <td class="text-muted">
@@ -186,7 +186,7 @@
             </div>
             <div class="card-body pt-0">
                <div class="table-responsive">
-                  <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                  <table class="table align-middle table-row-bordered mb-0 fs-5 gy-5 min-w-300px">
                      <tbody class="fw-bold text-gray-600">
                         <tr>
                            <td class="text-muted">
@@ -297,7 +297,7 @@
             </div>
             <div class="card-body pt-0">
                <div class="table-responsive">
-                  <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
+                  <table class="table align-middle table-row-dashed fs-5 gy-5 mb-0">
                      <thead>
                         <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                            <th class="min-w-175px">Product</th>
@@ -379,7 +379,7 @@
          </div>
       </div>
       <div class="row mt-10">
-         <div class="col-sm-12 fs-6">
+         <div class="col-sm-12 fs-5">
             <div class="card">
                <div class="card-body">
                   <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
@@ -389,21 +389,21 @@
                         </div>
                         <div class="col-12">
                            <div class="form-group col-sm-6">
-                              <label class="fs-6 mb-3 form-title">Tracking URL</label>
-                              <input type="text" class="form-control fs-6" formControlName="trackingURL" />
+                              <label class="fs-5 mb-3 form-title">Tracking URL</label>
+                              <input type="text" class="form-control fs-5" formControlName="trackingURL" />
                            </div>
                         </div>
                         <div class="col-12">
                            <div class="form-group col-sm-6">
-                              <label class="fs-6 mb-3 form-title">Order Note</label>
-                              <textarea class="form-control fs-6" formControlName="orderNote" style="resize: none"
+                              <label class="fs-5 mb-3 form-title">Order Note</label>
+                              <textarea class="form-control fs-5" formControlName="orderNote" style="resize: none"
                                  id="orderNote" rows="5"></textarea>
                            </div>
                         </div>
                         <div class="col-12">
                            <div class="form-group col-sm-6">
-                              <label class="fs-6 mb-3 form-title">Order Status</label>
-                              <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                              <label class="fs-5 mb-3 form-title">Order Status</label>
+                              <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                                  formControlName="orderStatus">
                                  <option value="disabled" disabled>-- Select an option --</option>
                                  <option value="ACCEPTED" class="fs-7">Accepted</option>
@@ -421,10 +421,10 @@
                         </div>
                         <div class="col-12">
                            <a routerLink="{{ appRoute.orders.ORDERS_LIST}}"
-                              class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                              class="btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                               Cancel
                            </a>
-                           <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                           <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                               Update
                            </button>
                         </div>

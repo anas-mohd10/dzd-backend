@@ -7,18 +7,18 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.attribute.ATTRIBUTE_LIST }}"
               [queryParams]="{ category: category }">Attributes</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+        <button class="btn btn-primary cursor-pointer fs-5" color="primary"
           routerLink="{{ appRoute.attribute.ADD_ATTRIBUTE }}" [queryParams]="{ category: category }"
           style="width: 200px">
           Add Attribute
@@ -50,14 +50,14 @@
                 <tr *ngFor="let attribute of attributeData; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    <h2 class="table-avatar fs-6">{{ attribute?.name }}</h2>
+                    <h2 class="table-avatar fs-5">{{ attribute?.name }}</h2>
                   </td>
                   <td>
                     <div class="attribute-col" *ngIf="attribute?.type == 'text'">
                       <ng-container *ngFor="let value of attribute?.values">
                         <div class="row">
                           <div class="col">
-                            <h2 class="attribute-value border bg-secondary text-dark fs-6">{{ value }}</h2>
+                            <h2 class="attribute-value border bg-secondary text-dark fs-5">{{ value }}</h2>
                           </div>
                         </div>
                       </ng-container>
@@ -75,7 +75,7 @@
                       <ng-container *ngFor="let value of attribute?.files">
                         <div class="row">
                           <div class="col">
-                            <h2 class="attribute-value attr-images fs-6">
+                            <h2 class="attribute-value attr-images fs-5">
                               <img src="{{base}}/{{value}}" alt="" style="height: 60px; width: 60px">
                             </h2>
                           </div>
@@ -104,7 +104,7 @@
                     </ng-container>
                   </td>
                   <td>
-                    <a class="fs-6 cursor-pointer text-darker" routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
+                    <a class="fs-5 cursor-pointer text-darker" routerLink="{{ appRoute.attribute.UPDATE_ATTRIBUTE }}"
                       [queryParams]="{category: category, attribute: attribute?.slug}">
                       <i class="bi bi-pen fs-4"></i>Edit
                     </a>

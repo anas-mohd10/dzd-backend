@@ -6,13 +6,13 @@
           {{ editMode ? "Update Vouchers" : "Add Vouchers" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.vouchers.VOUCHERS_LIST }}">Vouchers</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.vouchers.UPDATE_VOUCHERS_LIST}}" [queryParams]="{voucher: slug}">
               {{ editMode ? "Update Vouchers" : "Add Vouchers"}}
             </a>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="row mt-10">
-    <div class="col-sm-12 fs-6">
+    <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="voucherForm">
@@ -32,21 +32,21 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Title</label>
-                  <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required">Title</label>
+                  <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
                            'is-invalid': (vf.title.touched || isSubmitted) && vf.title.errors?.required}" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Code</label>
-                  <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required">Code</label>
+                  <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
                            'is-invalid': (vf.code.touched || isSubmitted) && vf.code.errors?.required}" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Type</label>
+                  <label class="fs-5 mb-3 form-title required">Type</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
                     [ngClass]="{
                                 'is-invalid': (vf.type.touched || isSubmitted) && vf.type.errors?.required}"
@@ -59,29 +59,29 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Value</label>
-                  <input type="text" class="form-control fs-6" formControlName="value" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required">Value</label>
+                  <input type="text" class="form-control fs-5" formControlName="value" [ngClass]="{
                            'is-invalid': (vf.value.touched || isSubmitted) && vf.value.errors?.required}"
                     (change)="checkValue()" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">From Date</label>
-                  <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="checkDate()"
+                  <label class="fs-5 mb-3 form-title required">From Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="fromDate" (change)="checkDate()"
                     [ngClass]="{'is-invalid': (vf.fromDate.touched || isSubmitted) &&  vf.fromDate.errors?.required}" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Last Date</label>
-                  <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="checkDate()"
+                  <label class="fs-5 mb-3 form-title required">Last Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="lastDate" (change)="checkDate()"
                     [ngClass]="{ 'is-invalid': (vf.lastDate.touched || isSubmitted) && vf.lastDate.errors?.required }" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Discount Value</label>
+                  <label class="fs-5 mb-3">Discount Value</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
                     <input type="text" class="form-control" formControlName="maxDiscount" (change)="checkDiscount()" />
@@ -91,7 +91,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Minimum Purchase</label>
+                  <label class="fs-5 mb-3">Minimum Purchase</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">Rs.</span>
                     <input type="text" class="form-control" formControlName="minPurchase" (change)="checkDiscount()" />
@@ -101,7 +101,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Category</label>
+                  <label class="fs-5 mb-3 form-title required">Category</label>
                   <select class="form-select" formControlName="categories"
                     (change)="tagInput($event.target, 'category')"
                     [ngClass]="{'is-invalid':  (vf.categories.touched || isSubmitted) && vf.categories.errors?.required}">
@@ -116,7 +116,7 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let cat of category">
-                    <span class="tag-input text-white fs-6 ">
+                    <span class="tag-input text-white fs-5 ">
                       <div class="tag-name">{{ cat?.name }}</div>
                       <i class="bi bi-x" (click)="tagRemove(cat?.name, cat?.id, 'category')"></i>
                     </span>
@@ -126,7 +126,7 @@
 
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Products</label>
+                  <label class="fs-5 mb-3 form-title required">Products</label>
                   <select class="form-select" formControlName="products" (change)="tagInput($event.target, 'product')"
                     [ngClass]="{'is-invalid':  (vf.products.touched || isSubmitted) && vf.products.errors?.required}">
                     <option value="" disabled>-- Select a product --</option>
@@ -141,7 +141,7 @@
                 </div>
                 <div class="tag-inputs col-12">
                   <ng-container *ngFor="let prod of product">
-                    <span class="tag-input text-white fs-6">
+                    <span class="tag-input text-white fs-5">
                       <div class="tag-name">{{ prod?.name }}</div>
                       <i class="bi bi-x" (click)="tagRemove(prod?.name, prod?.id, 'product')"></i>
                     </span>
@@ -151,7 +151,7 @@
 
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Collection</label>
+                  <label class="fs-5 mb-3 form-title required">Collection</label>
                   <select class="form-select" formControlName="collections"
                     (change)="tagInput($event.target, 'collection')"
                     [ngClass]="{'is-invalid':  (vf.collections.touched || isSubmitted) && vf.collections.errors?.required}">
@@ -177,7 +177,7 @@
 
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Multiple use per user</label>
+                  <label class="fs-5 mb-3 form-title required">Multiple use per user</label>
                   <select class="form-select" formControlName="isMultiple" [ngClass]="{
                            'is-invalid':(vf.isMultiple.touched || isSubmitted) && vf.isMultiple.errors?.required}">
                     <option value="0" disabled>
@@ -194,7 +194,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Status</label>
+                  <label class="fs-5 mb-3 form-title required">Status</label>
                   <select class="form-select" formControlName="isActive" [ngClass]="{
                            'is-invalid':(vf.isActive.touched || isSubmitted) && vf.isActive.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>
@@ -214,7 +214,7 @@
                 </div>
                 <div class="form-group col-12">
                   <div class="image-upload col-sm-6">
-                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
                       (change)="handleInputChange($event)"
                       onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
                       style="height: 100px;" required>
@@ -251,11 +251,11 @@
                 </div>
               </ng-container>
               <div class="col-12">
-                <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                   Update
                 </button>
               </div>

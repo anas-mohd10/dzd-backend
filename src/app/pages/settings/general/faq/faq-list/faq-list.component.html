@@ -6,14 +6,14 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.faq.FAQ_LIST}}">FAQs</a>
           </li>
         </ul>
-        <button class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary" style="width: 200px"
+        <button class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary" style="width: 200px"
           routerLink="{{ appRoute.faq.ADD_FAQ }}">
           Add FAQ
         </button>
@@ -26,7 +26,7 @@
         <div class="faq-subject"> {{faq?.subject}}</div>
         <div class="faq-question"> {{faq?.question}}</div>
         <div class="faq-answer"> {{faq?.answer}}</div>
-        <button class="edit-btn btn btn-primary btn-sm fs-6 text-white"
+        <button class="edit-btn btn btn-primary btn-sm fs-5 text-white"
           style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; width: 200px;"
           routerLink="{{ appRoute.faq.UPDATE_FAQ }}" [queryParams]="{slug: faq?.slug}">Edit</button>
       </div>

@@ -6,13 +6,13 @@
                {{ editMode ? "Update Page Limits" : "Add Page Limits" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.pageLimits.PAGE_LIMITS_LIST }}">Page Limits</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.pageLimits.UPDATE_PAGE_LIMITS }}" [queryParams]="{id: slug}">
                      {{ editMode ? "Update Page Limits" : "Add Page Limits"}}
                   </a>
@@ -22,7 +22,7 @@
       </div>
    </div>
    <div class="page-container">
-      <div class="col-sm-12 fs-6 mt-10">
+      <div class="col-sm-12 fs-5 mt-10">
          <div class="card">
             <div class="card-body">
                <form [formGroup]="pagelimitform">
@@ -41,12 +41,12 @@
                                  <!-- Brand settings -->
                                  <div class="col-sm-6">
                                     <div class="form-group">
-                                       <label class="fs-6 mb-3"> Brand limit</label>
-                                       <input type="number" class="form-control fs-6" formControlName="brandlimit"
+                                       <label class="fs-5 mb-3"> Brand limit</label>
+                                       <input type="number" class="form-control fs-5" formControlName="brandlimit"
                                           min="1" />
                                     </div>
                                  </div>
-                                 <label class="fs-6 mb-3 mt-10">Select default brand</label>
+                                 <label class="fs-5 mb-3 mt-10">Select default brand</label>
                                  <div class="list-view-container">
                                     <ng-container *ngFor="let brand of brands">
                                        <div *ngIf="brand?._id != selectedBrand" class="clickable-card"
@@ -54,7 +54,7 @@
                                           <div class="list-card">
                                              <div class="lidt-card-image"><img src="{{base}}/{{brand?.file}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{brand?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{brand?.name}}</div>
                                           </div>
                                        </div>
                                        <div *ngIf="brand?._id == selectedBrand" class="clickable-card"
@@ -62,7 +62,7 @@
                                           <div class="list-card card-selected">
                                              <div class="lidt-card-image"><img src="{{base}}/{{brand?.file}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{brand?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{brand?.name}}</div>
                                           </div>
                                        </div>
                                     </ng-container>
@@ -84,12 +84,12 @@
                                  <!-- Category settings -->
                                  <div class="col-sm-6">
                                     <div class="form-group">
-                                       <label class="fs-6 mb-3"> Category limit</label>
-                                       <input type="number" class="form-control fs-6" formControlName="categorylimit"
+                                       <label class="fs-5 mb-3"> Category limit</label>
+                                       <input type="number" class="form-control fs-5" formControlName="categorylimit"
                                           min="1" />
                                     </div>
                                  </div>
-                                 <label class="fs-6 mb-3 mt-10">Select default category</label>
+                                 <label class="fs-5 mb-3 mt-10">Select default category</label>
                                  <div class="list-view-container">
                                     <ng-container *ngFor="let category of categories">
                                        <div *ngIf="category?._id != selectedCategory" class="clickable-card"
@@ -97,7 +97,7 @@
                                           <div class="list-card">
                                              <div class="lidt-card-image"><img src="{{base}}/{{category?.file}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{category?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{category?.name}}</div>
                                           </div>
                                        </div>
                                        <div *ngIf="category?._id == selectedCategory" class="clickable-card"
@@ -105,7 +105,7 @@
                                           <div class="list-card card-selected">
                                              <div class="lidt-card-image"><img src="{{base}}/{{category?.file}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{category?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{category?.name}}</div>
                                           </div>
                                        </div>
                                     </ng-container>
@@ -127,12 +127,12 @@
                                  <!-- Collection settings -->
                                  <div class="col-sm-6">
                                     <div class="form-group">
-                                       <label class="fs-6 mb-3"> Collection limit</label>
-                                       <input type="number" class="form-control fs-6" formControlName="collectionlimit"
+                                       <label class="fs-5 mb-3"> Collection limit</label>
+                                       <input type="number" class="form-control fs-5" formControlName="collectionlimit"
                                           min="1" />
                                     </div>
                                  </div>
-                                 <label class="fs-6 mb-3 mt-10">Select default collection</label>
+                                 <label class="fs-5 mb-3 mt-10">Select default collection</label>
                                  <div class="list-view-container">
                                     <ng-container *ngFor="let collection of collections">
                                        <div *ngIf="collection?._id != selectedCollection" class="clickable-card"
@@ -140,7 +140,7 @@
                                           <div class="list-card">
                                              <div class="lidt-card-image"><img src="{{base}}/{{collection?.file}}"
                                                    alt="" style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{collection?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{collection?.name}}</div>
                                           </div>
                                        </div>
                                        <div *ngIf="collection?._id == selectedCollection" class="clickable-card"
@@ -148,7 +148,7 @@
                                           <div class="list-card card-selected">
                                              <div class="lidt-card-image"><img src="{{base}}/{{collection?.file}}"
                                                    alt="" style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{collection?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{collection?.name}}</div>
                                           </div>
                                        </div>
                                     </ng-container>
@@ -170,12 +170,12 @@
                                  <!-- Product settings -->
                                  <div class="col-sm-6">
                                     <div class="form-group">
-                                       <label class="fs-6 mb-3"> Product limit</label>
-                                       <input type="number" class="form-control fs-6" formControlName="productlimit"
+                                       <label class="fs-5 mb-3"> Product limit</label>
+                                       <input type="number" class="form-control fs-5" formControlName="productlimit"
                                           min="1" />
                                     </div>
                                  </div>
-                                 <label class="fs-6 mb-3 mt-10">Select default product</label>
+                                 <label class="fs-5 mb-3 mt-10">Select default product</label>
                                  <div class="list-view-container">
                                     <ng-container *ngFor="let product of products">
                                        <div *ngIf="product?._id != selectedProduct" class="clickable-card"
@@ -183,7 +183,7 @@
                                           <div class="list-card">
                                              <div class="lidt-card-image"><img src="{{base}}/{{product?.file}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{product?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{product?.name}}</div>
                                           </div>
                                        </div>
                                        <div *ngIf="product?._id == selectedProduct" class="clickable-card"
@@ -191,7 +191,7 @@
                                           <div class="list-card card-selected">
                                              <div class="lidt-card-image"><img src="{{base}}/{{product?.file}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
-                                             <div class="list-card-name fs-6 fw-bolder">{{product?.name}}</div>
+                                             <div class="list-card-name fs-5 fw-bolder">{{product?.name}}</div>
                                           </div>
                                        </div>
                                     </ng-container>
@@ -203,7 +203,7 @@
                      </div>
                      <div class="col-12">
                         <a routerLink="{{ appRoute.pageLimits.PAGE_LIMITS_LIST}}"
-                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"

@@ -7,13 +7,13 @@
           {{ editMode ? "Update Tax Rules" : "Add Tax Rules" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST }}">Tax Rules</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.taxRules.ADD_TAX_RULES }}">{{
               editMode ? "Update Tax Rules" : "Add Tax Rules"
               }}</a>
@@ -24,7 +24,7 @@
   </div>
   <!-- /Page Header -->
   <div class="row mt-10">
-    <div class="col-sm-12 fs-6">
+    <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="taxRulesForm">
@@ -34,8 +34,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required"> Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required"> Name</label>
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
                       'is-invalid':
                       (tf.name.touched || isSubmitted) &&
                       tf.name.errors?.required
@@ -44,8 +44,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Type</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                  <label class="fs-5 mb-3 form-title required">Type</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="type">
                     <option value="Normal" selected>Normal</option>
                     <option value="Combine">Combine</option>
@@ -54,10 +54,10 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required"> Rate</label>
+                  <label class="fs-5 mb-3 form-title required"> Rate</label>
                   <div class="input-group">
                     <span class="input-group-text">%</span>
-                    <input type="text" class="form-control fs-6" formControlName="rate" [ngClass]="{
+                    <input type="text" class="form-control fs-5" formControlName="rate" [ngClass]="{
                       'is-invalid':
                       (tf.rate.touched || isSubmitted) &&
                       tf.rate.errors?.required
@@ -67,8 +67,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Status</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                  <label class="fs-5 mb-3 form-title required">Status</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
@@ -76,11 +76,11 @@
                 </div>
               </div>
               <div class="col-12">
-                <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                   Add
                 </button>
               </div>

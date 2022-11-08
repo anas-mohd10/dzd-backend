@@ -7,13 +7,13 @@
                {{ editMode ? "Update Return Lists" : "Add Return Lists" }}
             </h5>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.returns.RETURN_LIST}}">Return Lists</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.returns.UPDATE_RETURN }}" [queryParams]="{ order: orderNumber }">
                      {{ editMode ? "Update Return Lists" : "Add Return Lists" }}
                   </a>
@@ -23,61 +23,61 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-6">
+      <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="returnForm">
                   <div class="row">
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title">Order Number</label>
-                           <input type="text" class="form-control fs-6" formControlName="order" />
+                           <label class="fs-5 mb-3 form-title">Order Number</label>
+                           <input type="text" class="form-control fs-5" formControlName="order" />
                         </div>
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title">Product Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="product" />
+                           <label class="fs-5 mb-3 form-title">Product Name</label>
+                           <input type="text" class="form-control fs-5" formControlName="product" />
                         </div>
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title">Quantity</label>
-                           <input type="text" class="form-control fs-6" formControlName="quantity" />
+                           <label class="fs-5 mb-3 form-title">Quantity</label>
+                           <input type="text" class="form-control fs-5" formControlName="quantity" />
                         </div>
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title">Reason</label>
-                           <textarea class="form-control fs-6" formControlName="reason" style="resize: none"
+                           <label class="fs-5 mb-3 form-title">Reason</label>
+                           <textarea class="form-control fs-5" formControlName="reason" style="resize: none"
                               id="orderNote" rows="5"></textarea>
                         </div>
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title">Description</label>
-                           <textarea class="form-control fs-6" formControlName="description" style="resize: none"
+                           <label class="fs-5 mb-3 form-title">Description</label>
+                           <textarea class="form-control fs-5" formControlName="description" style="resize: none"
                               id="orderNote" rows="5"></textarea>
                         </div>
                      </div>
                      <div  class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title">Status</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                           <label class="fs-5 mb-3 form-title">Status</label>
+                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="status">
                               <option value="disabled" disabled>-- Select an option --</option>
-                              <option value="REFUNDED" class="fs-6">Refunded</option>
-                              <option value="INITIATED" class="fs-6">Initiated</option>
-                              <option value="REPLACED" class="fs-6">Replaced</option>>
+                              <option value="REFUNDED" class="fs-5">Refunded</option>
+                              <option value="INITIATED" class="fs-5">Initiated</option>
+                              <option value="REPLACED" class="fs-5">Replaced</option>>
                            </select>
                         </div>
                      </div>
                      <div class="col-12">
-                        <a routerLink="{{ appRoute.returns.RETURN_LIST}}" class="btn btn-secondary btn-sm fs-6 text-dark"
+                        <a routerLink="{{ appRoute.returns.RETURN_LIST}}" class="btn btn-secondary btn-sm fs-5 text-dark"
                            style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                            Update
                         </button>
                      </div>

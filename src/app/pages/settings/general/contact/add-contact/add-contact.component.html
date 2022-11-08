@@ -6,13 +6,13 @@
                {{ editMode ? "Update Contacts" : "Add Contacts" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.contacts.CONTACTS_LIST }}">Contacts</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.contacts.ADD_CONTACTS_LIST}}">
                      {{ editMode ? "Update Contacts" : "Add Contacts"}}
                   </a>
@@ -21,7 +21,7 @@
          </div>
       </div>
    </div>
-   <div class="col-sm-12 fs-6 mt-10">
+   <div class="col-sm-12 fs-5 mt-10">
       <div class="card">
          <div class="card-body">
             <form (ngSubmit)="onSubmit()" [formGroup]="contactsForm">
@@ -31,8 +31,8 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required"> Name</label>
-                        <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                        <label class="fs-5 mb-3 required"> Name</label>
+                        <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
                            'is-invalid':
                            (ctf.name.touched || isSubmitted) &&
                            ctf.name.errors?.required
@@ -41,8 +41,8 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required"> Email</label>
-                        <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                        <label class="fs-5 mb-3 required"> Email</label>
+                        <input type="text" class="form-control fs-5" formControlName="email" [ngClass]="{
                            'is-invalid':
                            (ctf.email.touched || isSubmitted) &&
                            ctf.email.errors?.required
@@ -51,8 +51,8 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required"> Mobile No.</label>
-                        <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                        <label class="fs-5 mb-3 required"> Mobile No.</label>
+                        <input type="text" class="form-control fs-5" formControlName="mobile" [ngClass]="{
                            'is-invalid':
                            (ctf.mobile.touched || isSubmitted) &&
                            ctf.mobile.errors?.required
@@ -61,7 +61,7 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3">Status</label>
+                        <label class="fs-5 mb-3">Status</label>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                            formControlName="isActive">
                            <option value="" disabled>-- Select an option --</option>
@@ -75,8 +75,8 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required"> Address line 1</label>
-                        <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
+                        <label class="fs-5 mb-3 required"> Address line 1</label>
+                        <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
                            'is-invalid':
                            (ctf.firstline.touched || isSubmitted) &&
                            ctf.firstline.errors?.required
@@ -85,20 +85,20 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Address line 2</label>
-                        <input type="text" class="form-control fs-6" formControlName="secondline" />
+                        <label class="fs-5 mb-3"> Address line 2</label>
+                        <input type="text" class="form-control fs-5" formControlName="secondline" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Area</label>
-                        <input type="text" class="form-control fs-6" formControlName="area" />
+                        <label class="fs-5 mb-3"> Area</label>
+                        <input type="text" class="form-control fs-5" formControlName="area" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required"> City</label>
-                        <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
+                        <label class="fs-5 mb-3 required"> City</label>
+                        <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
                            'is-invalid':
                            (ctf.city.touched || isSubmitted) &&
                            ctf.city.errors?.required
@@ -107,8 +107,8 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required"> Pincode</label>
-                        <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                        <label class="fs-5 mb-3 required"> Pincode</label>
+                        <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                            'is-invalid':
                            (ctf.pincode.touched || isSubmitted) &&
                            ctf.pincode.errors?.required
@@ -117,19 +117,19 @@
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Latitude</label>
-                        <input type="text" class="form-control fs-6" formControlName="lat" />
+                        <label class="fs-5 mb-3"> Latitude</label>
+                        <input type="text" class="form-control fs-5" formControlName="lat" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3"> Longitude</label>
-                        <input type="text" class="form-control fs-6" formControlName="lng" />
+                        <label class="fs-5 mb-3"> Longitude</label>
+                        <input type="text" class="form-control fs-5" formControlName="lng" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-6 mb-3 required">State</label>
+                        <label class="fs-5 mb-3 required">State</label>
                         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                            formControlName="state" [ngClass]="{
                               'is-invalid':
@@ -148,7 +148,7 @@
                   </div>
                   <div class="col-12">
                      <a routerLink="{{ appRoute.contacts.CONTACTS_LIST}}"
-                        class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                        class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                         Cancel
                      </a>
                      <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">

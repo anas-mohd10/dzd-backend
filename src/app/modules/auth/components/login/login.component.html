@@ -8,13 +8,13 @@
       <h1 class="mb-3 fs-2" style="font-weight: 800;">Login to dashboard</h1>
     </div>
     <div class="fv-row mb-10">
-      <label class="form-label fs-6 text-dark">Email</label>
-      <input class="form-control fs-6" type="email" formControlName="email" autocomplete="off" [ngClass]="{
+      <label class="form-label fs-5 text-dark">Email</label>
+      <input class="form-control fs-5" type="email" formControlName="email" autocomplete="off" [ngClass]="{
           'is-invalid':
           (af.email.touched || isSubmitted) &&
           af.email.errors?.required
         }" />
-      <span class="text-danger error-msg fs-6" *ngIf="
+      <span class="text-danger error-msg fs-5" *ngIf="
         (af.email.touched || isSubmitted) &&
         af.email.errors?.required
       ">Email is required</span>
@@ -22,7 +22,7 @@
     <div class="fv-row mb-10">
       <div class="d-flex justify-content-between mt-n5">
         <div class="d-flex flex-stack mb-2">
-          <label class="form-label text-dark fs-6 mb-0">Password</label>
+          <label class="form-label text-dark fs-5 mb-0">Password</label>
         </div>
       </div>
       <input class="form-control" type="password" autocomplete="off" formControlName="password" [ngClass]="{
@@ -30,7 +30,7 @@
           (af.password.touched || isSubmitted) &&
           af.password.errors?.required
         }" />
-      <span class="text-danger error-msg fs-6" *ngIf="
+      <span class="text-danger error-msg fs-5" *ngIf="
         (af.password.touched || isSubmitted) &&
         af.password.errors?.required
       ">Password is required</span>

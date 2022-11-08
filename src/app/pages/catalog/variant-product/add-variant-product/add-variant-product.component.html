@@ -48,7 +48,7 @@
                     (pf.name.touched || isSubmitted) &&
                     pf.name.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.name.touched || isSubmitted) &&
                       pf.name.errors?.required
                     ">Name is required</span>
@@ -63,7 +63,7 @@
                     'is-invalid':
                     (pf.sku.touched || isSubmitted) && pf.sku.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.sku.touched || isSubmitted) && pf.sku.errors?.required
                     ">SKU is required</span>
                 </div>
@@ -77,7 +77,7 @@
                     'is-invalid':
                     (pf.hsn.touched || isSubmitted) && pf.hsn.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.hsn.touched || isSubmitted) && pf.hsn.errors?.required
                     ">HSN is required</span>
                 </div>
@@ -96,7 +96,7 @@
                     }" />
                     <span class="input-group-text">.00</span>
                   </div>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.mrpPrice.touched || isSubmitted) &&
                       pf.mrpPrice.errors?.required
                     ">MRP is required</span>
@@ -124,7 +124,7 @@
                     (pf.stock.touched || isSubmitted) &&
                     pf.stock.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.stock.touched || isSubmitted) &&
                       pf.stock.errors?.required
                     ">Stock is required</span>
@@ -139,7 +139,7 @@
                     'is-invalid':
                     (pf.moq.touched || isSubmitted) && pf.moq.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.moq.touched || isSubmitted) && pf.moq.errors?.required
                     ">MOQ is required</span>
                 </div>
@@ -188,7 +188,7 @@
                       {{ category?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.categories.touched || isSubmitted) &&
                       pf.categories.errors?.required
                     ">ategories is required</span>
@@ -218,7 +218,7 @@
                       {{ brand?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.brandId.touched || isSubmitted) &&
                       pf.brandId.errors?.required
                     ">Brand is required</span>
@@ -255,7 +255,7 @@
                     <option value="unpaid">Unpaid Shipping</option>
                     <option value="external">External Shipping Service</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.shippingMethod.touched || isSubmitted) &&
                       pf.shippingMethod.errors?.required
                     ">Shipping method is required</span>
@@ -292,7 +292,7 @@
                     <option value="number">Number of</option>
                     <option value="pack">Pack of</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.unit.touched || isSubmitted) &&
                       pf.unit.errors?.required
                     ">Unit is required</span>
@@ -308,7 +308,7 @@
                     (pf.weight.touched || isSubmitted) &&
                     pf.weight.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.weight.touched || isSubmitted) &&
                       pf.weight.errors?.required
                     ">Weight is required</span>
@@ -331,7 +331,7 @@
                       {{ taxClass?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.taxClassId.touched || isSubmitted) &&
                       pf.taxClassId.errors?.required
                     ">Tax class is required</span>
@@ -343,7 +343,7 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3">Search Keywords</label>
                   <input class="form-control fs-5" formControlName="searchKeywords" (keyup.Arrowright)="tagInput()" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.searchKeywords.touched || isSubmitted) &&
                       pf.searchKeywords.errors?.required
                     ">Search keywords is required</span>
@@ -368,7 +368,7 @@
                       {{ product?.name }}
                     </option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.searchKeywords.touched || isSubmitted) &&
                       pf.searchKeywords.errors?.required
                     ">Related products is required</span>
@@ -390,7 +390,7 @@
                     (pf.position.touched || isSubmitted) &&
                     pf.position.errors?.required
                   }" />
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.position.touched || isSubmitted) &&
                       pf.position.errors?.required
                     ">Position is required</span>
@@ -412,7 +412,7 @@
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.isFeatured.touched || isSubmitted) &&
                       pf.isFeatured.errors?.required
                     ">Featured is required</span>
@@ -434,7 +434,7 @@
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.isActive.touched || isSubmitted) &&
                       pf.isActive.errors?.required
                     ">Active is required</span>
@@ -455,7 +455,7 @@
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.cod.touched || isSubmitted) &&
                       pf.cod.errors?.required
                     ">COD is required</span>
@@ -491,7 +491,7 @@
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
-                  <span class="text-danger error-msg fs-6" *ngIf="
+                  <span class="text-danger error-msg fs-5" *ngIf="
                       (pf.returnable.touched || isSubmitted) &&
                       pf.returnable.errors?.required
                     ">Returnable is required</span>

@@ -6,13 +6,13 @@
                {{ editMode ? "Update Testimonials" : "Add Testimonials" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.testimonial.TESTIMONIAL_LIST }}">Testimonials</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.testimonial.ADD_TESTIMONIAL}}">
                      {{ editMode ? "Update Testimonials" : "Add Testimonials"}}
                   </a>
@@ -20,7 +20,7 @@
             </ul>
          </div>
       </div>
-      <div class="col-sm-12 fs-6 mt-10">
+      <div class="col-sm-12 fs-5 mt-10">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="testimonialForm">
@@ -30,15 +30,15 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required">Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="name"
+                           <label class="fs-5 mb-3 required">Name</label>
+                           <input type="text" class="form-control fs-5" formControlName="name"
                               [ngClass]="{'is-invalid':(tf.name.touched || isSubmitted) && tf.name.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Profession</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                           <label class="fs-5 mb-3"> Profession</label>
+                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="profession">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="Business">Business</option>
@@ -52,29 +52,29 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Business Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="business" />
+                           <label class="fs-5 mb-3">Business Name</label>
+                           <input type="text" class="form-control fs-5" formControlName="business" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required">Place</label>
-                           <input type="text" class="form-control fs-6" formControlName="place"
+                           <label class="fs-5 mb-3 required">Place</label>
+                           <input type="text" class="form-control fs-5" formControlName="place"
                               [ngClass]="{'is-invalid':(tf.place.touched || isSubmitted) && tf.place.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required required">Message</label>
-                           <textarea class=" form-control fs-6" formControlName="message" style="resize: none"
+                           <label class="fs-5 mb-3 required required">Message</label>
+                           <textarea class=" form-control fs-5" formControlName="message" style="resize: none"
                               id="featureddescription" rows="3"
                               [ngClass]="{'is-invalid':(tf.message.touched || isSubmitted) && tf.message.errors?.required}"></textarea>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required">Status</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                           <label class="fs-5 mb-3 required">Status</label>
+                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Active</option>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="form-group">
                            <div class="image-upload">
-                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                              <input type="file" class="form-control fs-5" name="image" accept="image/*"
                                  (change)="handleInputChange($event)"
                                  onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
                                  style="height: 100px;" required>
@@ -125,7 +125,7 @@
                         </div>
                      </ng-container>
                      <div class="col-12">
-                        <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                        <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                            style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>

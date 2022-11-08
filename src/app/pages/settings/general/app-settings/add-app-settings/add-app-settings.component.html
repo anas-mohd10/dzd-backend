@@ -6,13 +6,13 @@
                {{ editMode ? "Update Page Limits" : "Add Page Limits" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.pageLimits.PAGE_LIMITS_LIST }}">Page Limits</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.pageLimits.ADD_PAGE_LIMITS }}">
                      {{ editMode ? "Update Page Limits" : "Add Page Limits"}}
                   </a>
@@ -22,37 +22,37 @@
       </div>
    </div>
    <div class="page-container">
-      <div class="col-sm-12 fs-6 mt-10">
+      <div class="col-sm-12 fs-5 mt-10">
          <div class="card">
             <div class="card-body">
                <form [formGroup]="appsettingsform">
                   <div class="row">
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required">Primary Color</label>
-                           <input type="color" placeholder="App primary color" class="form-control fs-6"
+                           <label class="fs-5 mb-3 required">Primary Color</label>
+                           <input type="color" placeholder="App primary color" class="form-control fs-5"
                               style="height: 50px;" formControlName="primaryColor" />
                            <span>{{primary}}</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required">Secondary Color</label>
-                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                           <label class="fs-5 mb-3 required">Secondary Color</label>
+                           <input type="color" placeholder="App secondary color" class="form-control fs-5"
                               style="height: 50px;" formControlName="secondaryColor" />
                            <span>{{secondary}}</span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 required">Items Per Page</label>
-                           <input type="number" placeholder="14" class="form-control fs-6"
+                           <label class="fs-5 mb-3 required">Items Per Page</label>
+                           <input type="number" placeholder="14" class="form-control fs-5"
                               formControlName="itemsPerPage" />
                         </div>
                      </div>
                      <div class="col-12">
                         <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST    }}"
-                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"

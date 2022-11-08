@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -22,7 +22,7 @@ export class AddNotificationsComponent implements OnInit {
   isSubmitted: boolean;
   appRoute = appRoutes;
   customersdata: any = []
-  customers: any = []
+  customers: any
   getCustomer: Boolean = false
   invalidDate: Boolean = false
   invalidTime: Boolean = false
@@ -33,6 +33,8 @@ export class AddNotificationsComponent implements OnInit {
   filename: string;
   imageChangedEvent: any;
 
+  selectedProduct: any
+
   constructor(
     private notificationsService: NotificationsService,
     private customersService: CustomersService,
@@ -40,6 +42,7 @@ export class AddNotificationsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -52,11 +55,13 @@ export class AddNotificationsComponent implements OnInit {
   getCustomers() {
     this.customersService.getActiveCustomers().subscribe((res: any) => {
       for (let cust of res?.result) {
+        this.customersdata = []
         this.customersdata.push({
           name: cust.firstname,
           id: cust._id,
           key: this.customersdata.length
         })
+        this.cdr.markForCheck()
       }
     })
   }
@@ -96,31 +101,7 @@ export class AddNotificationsComponent implements OnInit {
     } else {
       this.getCustomer = false
       this.customers = []
-      this.notificationForm.get("customer")?.setValue('')
     }
-  }
-
-  customerInput(event: any) {
-    for (let cust of this.customersdata) {
-      if (cust.key == event.value) {
-        let check = this.customers.some((_data: any) => _data.key == event.value)
-        if (check == false) {
-          this.customers.push({
-            key: event.value,
-            name: cust.name,
-            id: cust.id
-          })
-          this.notificationForm.get("customer")?.setValue('')
-        } else {
-          this.toastr.info("Customer already added")
-          this.notificationForm.get("customer")?.setValue('')
-        }
-      }
-    }
-  }
-
-  removeCustomer(value: any) {
-    this.customers = this.customers.filter((_data: any) => _data.key != value)
   }
 
   checkType(event: any) {
@@ -130,12 +111,6 @@ export class AddNotificationsComponent implements OnInit {
     } else {
       this.isScheduled = false
     }
-  }
-
-  checkScheduleDate(event: any) {
-  }
-
-  checkScheduleTime(event: any) {
   }
 
   initForm() {
@@ -181,7 +156,7 @@ export class AddNotificationsComponent implements OnInit {
 
   addNotification() {
     if (!this.notificationForm.valid) {
-      this.toastr.error("Validation error")
+      this.toastr.error("Kindly fill required fields")
       return;
     }
 
@@ -201,9 +176,9 @@ export class AddNotificationsComponent implements OnInit {
 
     this.notificationsService.addNotification(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Notifications added successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
       }
     })

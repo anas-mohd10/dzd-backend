@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { AddCollectionComponent } from './add-collection.component';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgSelect2Module } from 'ng-select2';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ImageCropperModule } from 'ngx-image-cropper';
 

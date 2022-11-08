@@ -6,13 +6,13 @@
                {{ editMode ? "Update Customers" : "Add Customers" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
                      {{ editMode ? "Update Customers" : "Add Customers"}}
                   </a>
@@ -22,7 +22,7 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-6">
+      <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="customersForm">
@@ -32,8 +32,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">First Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required">First Name</label>
+                           <input type="text" class="form-control fs-5" formControlName="firstname" [ngClass]="{
                               'is-invalid':
                               (cf.firstname.touched || isSubmitted) &&
                               cf.firstname.errors?.required
@@ -42,15 +42,15 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title "> Last Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="lastname" />
+                           <label class="fs-5 mb-3 form-title "> Last Name</label>
+                           <input type="text" class="form-control fs-5" formControlName="lastname" />
 
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Email</label>
-                           <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Email</label>
+                           <input type="text" class="form-control fs-5" formControlName="email" [ngClass]="{
                               'is-invalid':
                               (cf.email.touched || isSubmitted) &&
                               cf.email.errors?.required
@@ -59,8 +59,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Mobile No.</label>
-                           <input type="text" class="form-control fs-6" formControlName="mobile"
+                           <label class="fs-5 mb-3 form-title required"> Mobile No.</label>
+                           <input type="text" class="form-control fs-5" formControlName="mobile"
                               (change)="validateNumber($event.target)" [ngClass]="{
                               'is-invalid':
                               (cf.mobile.touched || isSubmitted) &&
@@ -69,7 +69,7 @@
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
-                        <label class="fs-6 mb-3 form-title required">Wallet Balance</label>
+                        <label class="fs-5 mb-3 form-title required">Wallet Balance</label>
                         <div class="input-group mb-3">
                            <span class="input-group-text">Rs</span>
                            <input type="text" class="form-control" formControlName="walletBalance" [ngClass]="{
@@ -82,7 +82,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Status</label>
+                           <label class="fs-5 mb-3 form-title required">Status</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
@@ -96,7 +96,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Address Type</label>
+                           <label class="fs-5 mb-3 form-title required">Address Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="isHome" [ngClass]="{
                                  'is-invalid':
@@ -111,8 +111,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Address Line 1</label>
-                           <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Address Line 1</label>
+                           <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
                               'is-invalid':
                               (cf.firstline.touched || isSubmitted) &&
                               cf.firstline.errors?.required
@@ -121,20 +121,20 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Address Line 2</label>
-                           <input type="text" class="form-control fs-6" formControlName="secondline" />
+                           <label class="fs-5 mb-3"> Address Line 2</label>
+                           <input type="text" class="form-control fs-5" formControlName="secondline" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Area</label>
-                           <input type="text" class="form-control fs-6" formControlName="area" />
+                           <label class="fs-5 mb-3"> Area</label>
+                           <input type="text" class="form-control fs-5" formControlName="area" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> City</label>
-                           <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> City</label>
+                           <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
                               'is-invalid':
                               (cf.city.touched || isSubmitted) &&
                               cf.city.errors?.required
@@ -143,8 +143,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Landmark</label>
-                           <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Landmark</label>
+                           <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
                               'is-invalid':
                               (cf.landmark.touched || isSubmitted) &&
                               cf.landmark.errors?.required
@@ -153,8 +153,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Pincode</label>
-                           <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Pincode</label>
+                           <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                               'is-invalid':
                               (cf.pincode.touched || isSubmitted) &&
                               cf.pincode.errors?.required
@@ -163,19 +163,19 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title"> Latitude</label>
-                           <input type="text" class="form-control fs-6" formControlName="lat" />
+                           <label class="fs-5 mb-3 form-title"> Latitude</label>
+                           <input type="text" class="form-control fs-5" formControlName="lat" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title"> Longitude</label>
-                           <input type="text" class="form-control fs-6" formControlName="lng" />
+                           <label class="fs-5 mb-3 form-title"> Longitude</label>
+                           <input type="text" class="form-control fs-5" formControlName="lng" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">State</label>
+                           <label class="fs-5 mb-3 form-title required">State</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="state" [ngClass]="{
                                  'is-invalid':
@@ -194,10 +194,10 @@
                      </div>
                      <div class="col-12">
                         <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
-                           class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           class="btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                            Update
                         </button>
                      </div>

@@ -55,6 +55,7 @@ export class CartListComponent implements OnInit, OnDestroy {
     })
 
     this.cartService.getCarts().subscribe((res: any) => {
+      console.log(res?.result);
       this.carts = res?.result
       for (let cart of this.carts) {
         cart.date = new Date(cart?.date).toLocaleString()

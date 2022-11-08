@@ -46,6 +46,11 @@ export class CustomersService {
     return this.http.get(`${url}`)
   }
 
+  searchCustomers(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.search_customers);
+    return this.http.post(`${url}`, data)
+  }
+
   updateCustomer(slug: any, data: any) {
     const url = this.commonService.getFullUrl(this.customerEndpoints.update_customer + "?slug=" + slug);
     return this.http.put(`${url}`, data)

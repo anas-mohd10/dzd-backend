@@ -6,13 +6,13 @@
           {{ editMode ? "Update Offer" : "Add Offer" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.offer.ADD_OFFER }}">
               {{ editMode ? "Update Offer" : "Add Offer" }}
             </a>
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="row mt-10">
-    <div class="col-sm-12 fs-6">
+    <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
@@ -32,8 +32,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required">Name</label>
+                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
                     'is-invalid':
                     (of.name.touched || isSubmitted) &&
                     of.name.errors?.required
@@ -42,8 +42,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Description</label>
-                  <input type="text" class="form-control fs-6" formControlName="description" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required">Description</label>
+                  <input type="text" class="form-control fs-5" formControlName="description" [ngClass]="{
                     'is-invalid':
                     (of.description.touched || isSubmitted) &&
                     of.description.errors?.required
@@ -52,8 +52,8 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">From Date</label>
-                  <input type="date" class="form-control fs-6" formControlName="fromDate" [ngClass]="{
+                  <label class="fs-5 mb-3 form-title required">From Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="fromDate" [ngClass]="{
                       'is-invalid':
                         (of.fromDate.touched || isSubmitted) &&
                         of.fromDate.errors?.required
@@ -62,14 +62,14 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Last Date</label>
-                  <input type="date" class="form-control fs-6" formControlName="lastDate"
+                  <label class="fs-5 mb-3 form-title required">Last Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="lastDate"
                     [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Featured</label>
+                  <label class="fs-5 mb-3 form-title required">Featured</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
                     <option value="true" selected>Yes</option>
@@ -79,7 +79,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 form-title required">Status</label>
+                  <label class="fs-5 mb-3 form-title required">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="true" selected>Active</option>
@@ -92,44 +92,44 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
+                  <label class="fs-5 mb-3">Background</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
                     formControlName="background" (change)="getColors('background', $event.target)" />
                   <span>{{background}}</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
+                  <label class="fs-5 mb-3">Border</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
                     style="height: 50px;" (change)="getColors('border', $event.target)" />
                   <span>{{border}}</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Border Radius</label>
-                  <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
+                  <label class="fs-5 mb-3">Border Radius</label>
+                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Color</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
+                  <label class="fs-5 mb-3">Color</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
                     formControlName="color" (change)="getColors('color', $event.target)" />
                   <span>{{color}}</span>
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Font Weight</label>
-                  <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
+                  <label class="fs-5 mb-3">Font Weight</label>
+                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-6 mb-3">Font Size ( in px )</label>
-                  <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
+                  <label class="fs-5 mb-3">Font Size ( in px )</label>
+                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -138,7 +138,7 @@
                 </div>
                 <div class="form-group">
                   <div class="image-upload">
-                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
                       (change)="handleInputChange($event)" style="height: 100px;" required>
                     <div class="image-upload-div">
                       <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
@@ -170,11 +170,11 @@
                 </div>
               </ng-container>
               <div class="col-12">
-                <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                   Add
                 </button>
               </div>

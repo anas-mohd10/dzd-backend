@@ -6,13 +6,13 @@
                {{ editMode ? "Update Coupons" : "Add Coupons" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
                      {{ editMode ? "Update Coupons" : "Add Coupons"}}
                   </a>
@@ -22,7 +22,7 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-6">
+      <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="couponForm">
@@ -33,21 +33,21 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Title</label>
-                           <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required">Title</label>
+                           <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Code</label>
-                           <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required">Code</label>
+                           <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Type</label>
+                           <label class="fs-5 mb-3 form-title required">Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="type" [ngClass]="{
                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
@@ -59,28 +59,28 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Value</label>
-                           <input type="text" class="form-control fs-6" formControlName="value" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required">Value</label>
+                           <input type="text" class="form-control fs-5" formControlName="value" [ngClass]="{
                             'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">From Date</label>
-                           <input type="date" class="form-control fs-6" formControlName="fromDate"
+                           <label class="fs-5 mb-3 form-title required">From Date</label>
+                           <input type="date" class="form-control fs-5" formControlName="fromDate"
                               [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Last Date</label>
-                           <input type="date" class="form-control fs-6" formControlName="lastDate"
+                           <label class="fs-5 mb-3 form-title required">Last Date</label>
+                           <input type="date" class="form-control fs-5" formControlName="lastDate"
                               [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Discount Value</label>
+                           <label class="fs-5 mb-3">Discount Value</label>
                            <div class="input-group mb-3">
                               <span class="input-group-text">Rs.</span>
                               <input type="text" class="form-control" formControlName="maxDiscount" />
@@ -90,7 +90,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">Minimum Purchase</label>
+                           <label class="fs-5 mb-3">Minimum Purchase</label>
                            <div class="input-group mb-3">
                               <span class="input-group-text">Rs.</span>
                               <input type="text" class="form-control" formControlName="minPurchase" />
@@ -100,7 +100,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Category</label>
+                           <label class="fs-5 mb-3 form-title required">Category</label>
                            <select class="form-select" formControlName="categories"
                               (change)="tagInput($event.target, 'category')"
                               [ngClass]="{'is-invalid':  (cf.categories.touched || isSubmitted) && cf.categories.errors?.required}">
@@ -121,7 +121,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Products</label>
+                           <label class="fs-5 mb-3 form-title required">Products</label>
                            <select class="form-select" formControlName="products"
                               (change)="tagInput($event.target, 'product')"
                               [ngClass]="{'is-invalid':  (cf.products.touched || isSubmitted) && cf.products.errors?.required}">
@@ -142,7 +142,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Collection</label>
+                           <label class="fs-5 mb-3 form-title required">Collection</label>
                            <select class="form-select" formControlName="collections"
                               (change)="tagInput($event.target, 'collection')"
                               [ngClass]="{'is-invalid':  (cf.collections.touched || isSubmitted) && cf.collections.errors?.required}">
@@ -163,7 +163,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Multiple use per user</label>
+                           <label class="fs-5 mb-3 form-title required">Multiple use per user</label>
                            <select class="form-select" formControlName="isMultiple" [ngClass]="{
                             'is-invalid':(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required}">
                               <option value="" disabled>
@@ -176,7 +176,7 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Status</label>
+                           <label class="fs-5 mb-3 form-title required">Status</label>
                            <select class="form-select" formControlName="isActive" [ngClass]="{
                             'is-invalid':(cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="form-group">
                           <div class="image-upload">
-                            <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                            <input type="file" class="form-control fs-5" name="image" accept="image/*"
                               (change)="handleInputChange($event)"
                               onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
                               style="height: 100px;" required>
@@ -227,10 +227,10 @@
                       </ng-container>
                      <div class="col-12">
                         <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}"
-                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                            Add
                         </button>
                      </div>

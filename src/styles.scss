@@ -1,5 +1,15 @@
 @import "./assets/sass/style";
 @import "~ngx-toastr/toastr";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+.no-data-container {
+  .no-data-image {
+    img{
+      height: auto;
+      width: 200px;
+    }
+  }
+}
 
 //pagination
 .page-next-false {
@@ -85,6 +95,7 @@ a.page-link.page-link-disabled {
 
 .horizontal-line {
   margin: 40px 0 20px 0;
+  color: #e0e0e0;
 }
 
 .load-data-btn {
@@ -286,11 +297,6 @@ a.page-link.page-link-disabled {
 
 .attr-images img {
   border-radius: 5px;
-}
-
-.toast-container {
-  font-size: 14px;
-  font-weight: 500;
 }
 
 .required::after {
@@ -690,4 +696,15 @@ table.table th {
 
 .table-responsive {
   overflow-x: hidden;
+}
+
+.toast-message{
+  font-size: 1.2rem !important;
+  font-weight: normal !important;
+}
+
+.toast-container .ngx-toastr{
+  box-shadow: none !important;
+  border-radius: 10px !important;
+  width: 350px !important;
 }

@@ -7,14 +7,14 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="{{ appRoute.brand.ADD_BRAND }}"
+        <button class="btn btn-primary cursor-pointer fs-5" color="primary" routerLink="{{ appRoute.brand.ADD_BRAND }}"
           style="width: 200px">
           Add Brand
         </button>
@@ -45,20 +45,20 @@
               <tbody>
                 <tr *ngFor="let brand of brandData; let i = index">
                   <td>
-                    <h2 class="table-avatar fs-6">{{ i + 1 }}</h2>
+                    <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar fs-6">{{ brand?.name }}</h2>
+                    <h2 class="table-avatar fs-5">{{ brand?.name }}</h2>
                   </td>
                   <td>
                     <img class="brand-logo" src="{{base}}/{{ brand?.file }}" alt="brand" />
                   </td>
                   <td>
                     <ng-container *ngIf="brand?.isFeatured == true">
-                      <h2 class="table-avatar fs-6">Yes</h2>
+                      <h2 class="table-avatar fs-5">Yes</h2>
                     </ng-container>
                     <ng-container *ngIf="brand?.isFeatured == false">
-                      <h2 class="table-avatar fs-6">No</h2>
+                      <h2 class="table-avatar fs-5">No</h2>
                     </ng-container>
                   </td>
                   <td>
@@ -75,7 +75,7 @@
                   </td>
                   <td>
                     <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-                      class="fs-6 cursor-pointer text-darker"><i class="bi bi-pen"></i> Edit
+                      class="fs-5 cursor-pointer text-darker"><i class="bi bi-pen"></i> Edit
                     </a>
                   </td>
                 </tr>

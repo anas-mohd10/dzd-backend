@@ -7,14 +7,14 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
+          <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-6">
+          <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+        <button class="btn btn-primary cursor-pointer fs-5" color="primary"
           routerLink="{{ appRoute.category.ADD_CATEGORY }}" style="width: 200px">
           Add Category
         </button>
@@ -25,28 +25,28 @@
   <form [formGroup]="categoryform">
     <div class="col-12 row" style="display: flex; align-items: flex-end;">
       <div class="search-input col-sm-4">
-        <label class="fs-6">Search</label>
-        <input type="text" placeholder="Search for category here..." class="form-control fs-6" formControlName="name"
+        <label class="fs-5">Search</label>
+        <input type="text" placeholder="Search for category here..." class="form-control fs-5" formControlName="name"
           (ngModelChange)="searchCategory()">
       </div>
       <div class="search-status col-sm-2">
-        <label class="fs-6">Status</label>
-        <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="searchCategory()">
+        <label class="fs-5">Status</label>
+        <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchCategory()">
           <option value="" disabled>Select an option</option>
           <option value=true>Active</option>
           <option value=false>Inactive</option>
         </select>
       </div>
       <div class="search-featured col-sm-2">
-        <label class="fs-6 form-title">Featured</label>
-        <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="searchCategory()">
+        <label class="fs-5 form-title">Featured</label>
+        <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchCategory()">
           <option value="" disabled>Select an option</option>
           <option value=true>Featured</option>
           <option value=false>Non featured</option>
         </select>
       </div>
       <div class="search-submit col-sm-2">
-        <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+        <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
           style="outline: none; border: none;">Clear</button>
       </div>
     </div>
@@ -87,6 +87,7 @@
     </ng-container>
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">
+        <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
         <h2>Sorry, we haven't found any data</h2>
       </div>
     </ng-container>

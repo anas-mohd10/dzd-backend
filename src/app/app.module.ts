@@ -10,7 +10,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
-import { NgSelect2Module } from 'ng-select2';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './core/auth/authentication.guard';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -24,6 +23,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvService } from './includes/services/csv.service';
 import { ProductCardComponent } from './pages/catalog/product/product-card/product-card.component';
 import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [AppComponent, ProductCardComponent, BrandCardComponent],
@@ -40,6 +40,7 @@ import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
     NgbModule,
+    NgSelectModule,
     LayoutModule,
     FormsModule,
     ReactiveFormsModule,

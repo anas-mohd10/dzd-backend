@@ -25,13 +25,13 @@ export class AddLayoutListComponent implements OnInit {
   localData: any = []
   dataFiles: any = []
   url: any;
-
   filedata: any
-
   imageChangedEvent: any = '';
   croppedImage: any = '';
   filename: any
   loadImage: boolean = false;
+  productName: any
+  selectedProduct: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,8 +51,8 @@ export class AddLayoutListComponent implements OnInit {
   initForm() {
     this.layoutForm = this.formBuilder.group({
       title: ['', Validators.required],
-      validFrom: [''],
-      validTo: [''],
+      validFrom: ['', Validators.required],
+      validTo: ['', Validators.required],
       isActive: ['true'],
       gridCount: ['1'],
       type: ['Slider'],
@@ -80,63 +80,44 @@ export class AddLayoutListComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.getActiveProduct().subscribe((res: any) => {
+    this.productService.getProductNames().subscribe((res: any) => {
       this.productsData = res?.result
       this.cdr.markForCheck()
     })
   }
 
   addFile() {
-    // //Form fields
-    // let product = this.layoutForm.get("product")?.value
-    // let redirectionURL = this.layoutForm.get("redirectionURL")?.value
-    // let maxVal = this.layoutForm.get("gridCount")?.value
-
-    // if (product && this.url != '') {
-    //   if (maxVal > this.localData.length) {
-    //     //Files for db
-    //     this.files.push({
-    //       product: product,
-    //       id: this.files.length,
-    //       redirectionURL: redirectionURL
-    //     })
-    //     //Localdata for preview purpose
-    //     for (let prod of this.productsData) {
-    //       if (prod.prodid == product) {
-    //         this.localData.push({
-    //           id: this.localData.length,
-    //           product: prod.name,
-    //           url: redirectionURL,
-    //           file: this.url
-    //         })
-    //       }
-    //     }
-    //     //Reset values to null
-    //     this.layoutForm.get("product")?.setValue('')
-    //     this.layoutForm.get("redirectionURL")?.setValue('')
-    //     this.layoutForm.get("file")?.setValue('')
-    //     this.dataFiles.pop()
-    //   } else {
-    //     this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
-    //   }
-    // } else {
-    //   this.toastr.error(`Kindly fill required fields`);
-    // }
-    let prevlen = this.dataFiles.length
-    this.dataFiles.push({
-      filestring: this.croppedImage,
-      filename: this.filename,
-      id: this.dataFiles.length,
-      product: this.layoutForm.get("product")?.value
-    })
-    this.croppedImage = ''
-    this.filename = ''
-    let newlen = this.dataFiles.length
-    if (prevlen < newlen) {
-      this.layoutForm.get("product")?.setValue('')
-      this.loadImage = false
-      this.layoutForm.get("redirectionURL")?.setValue('')
-      this.layoutForm.get("file")?.setValue('')
+    let maxVal = this.layoutForm.get("gridCount")?.value
+    if (this.selectedProduct && this.url != '') {
+      if (maxVal > this.dataFiles.length) {
+        for (let prod of this.productsData) {
+          if (prod?.prodid == this.selectedProduct) {
+            this.productName = prod?.name
+          }
+        }
+        let prevlen = this.dataFiles.length
+        this.dataFiles.push({
+          filestring: this.croppedImage,
+          url: this.url,
+          redirect: this.layoutForm.get("redirectionURL")?.value,
+          filename: this.filename,
+          id: this.dataFiles.length,
+          product: this.selectedProduct,
+          prodName: this.productName
+        })
+        this.croppedImage = ''
+        this.filename = ''
+        let newlen = this.dataFiles.length
+        if (prevlen < newlen) {
+          this.loadImage = false
+          this.layoutForm.get("redirectionURL")?.setValue('')
+          this.layoutForm.get("file")?.setValue('')
+        }
+      } else {
+        this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
+      }
+    } else {
+      this.toastr.error(`Kindly fill required fields`);
     }
   }
 
@@ -153,11 +134,6 @@ export class AddLayoutListComponent implements OnInit {
         this.url = e.target.result
       }
     }
-    //   for (let i = 0; i < event.target.files.length; i++) {
-    //     this.images.push(event.target.files[i])
-    //     this.dataFiles.push(event.target.files[i])
-    //   }
-    // }
     this.filedata = <File>event.target.files[0];
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
@@ -199,37 +175,25 @@ export class AddLayoutListComponent implements OnInit {
 
   addLayout() {
     if (!this.layoutForm.valid) {
-      this.toastr.error('Kindly fill required fields...');
+      this.toastr.error('Kindly fill required fields');
       return;
     }
-    const formData = new FormData();
-    if (this.images != null && this.images != undefined) {
-      for (let img of this.images) {
-        formData.append('file', img);
-      }
-      formData.append('file', this.images)
+    const data = {
+      title: this.layoutForm.get('title')?.value,
+      validFrom: this.layoutForm.get('validFrom')?.value,
+      validTo: this.layoutForm.get('validTo')?.value,
+      isActive: this.layoutForm.get('isActive')?.value,
+      gridCount: this.layoutForm.get('gridCount')?.value,
+      type: this.layoutForm.get('type')?.value,
+      files: this.dataFiles
     }
-    for (const data of Object.keys(this.layoutForm.value)) {
-      formData.append(data, this.layoutForm.value[data]);
-    }
-    formData.append("data", JSON.stringify(this.files))
-    this.layoutService.addLayout(formData).subscribe((res: any) => {
+    this.layoutService.addLayout(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Layout added successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
       }
     })
-  }
-
-  checkDate() {
-    let validFrom = this.layoutForm.get("validFrom")?.value
-    let validTo = this.layoutForm.get("validTo")?.value
-    if (validTo) {
-      if (validFrom > validTo) {
-        this.toastr.error(`Date is not Valid`);
-      }
-    }
   }
 }

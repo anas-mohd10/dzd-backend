@@ -6,14 +6,14 @@
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
                </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-6" color="primary" style="width: 200px;"
+            <button class="btn btn-primary cursor-pointer fs-5" color="primary" style="width: 200px;"
                routerLink="{{ appRoute.notification.ADD_NOTIFICATION }}" style="width: 200px">
                Add Notification
             </button>
@@ -25,16 +25,16 @@
          <form [formGroup]="notificationform">
             <div class="col-12 row" style="display: flex; align-items: flex-end;">
                <div class="search-status col-sm-2">
-                  <label class="fs-6">Type</label>
-                  <select name="" id="" class="form-select fs-6" formControlName="type" (change)="searchNotification()">
+                  <label class="fs-5">Type</label>
+                  <select name="" id="" class="form-select fs-5" formControlName="type" (change)="searchNotification()">
                      <option value="">Select an option</option>
                      <option value="Instant">Instant</option>
                      <option value="Scheduled">Scheduled</option>
                   </select>
                </div>
                <div class="search-status col-sm-2">
-                  <label class="fs-6">Status</label>
-                  <select name="" id="" class="form-select fs-6" formControlName="status"
+                  <label class="fs-5">Status</label>
+                  <select name="" id="" class="form-select fs-5" formControlName="status"
                      (change)="searchNotification()">
                      <option value="">Select an option</option>
                      <option value="Sent">Sent</option>
@@ -42,8 +42,8 @@
                   </select>
                </div>
                <div class="search-featured col-sm-2">
-                  <label class="fs-6 form-title">Channel</label>
-                  <select name="" id="" class="form-select fs-6" formControlName="channel"
+                  <label class="fs-5 form-title">Channel</label>
+                  <select name="" id="" class="form-select fs-5" formControlName="channel"
                      (change)="searchNotification()">
                      <option value="">Select an option</option>
                      <option value="Push">Push notification</option>
@@ -52,7 +52,7 @@
                   </select>
                </div>
                <div class="search-submit col-sm-2">
-                  <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
+                  <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
                      style="outline: none; border: none;">Clear</button>
                </div>
             </div>

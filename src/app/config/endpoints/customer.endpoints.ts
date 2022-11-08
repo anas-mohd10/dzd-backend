@@ -6,5 +6,6 @@ export const customerEndpoints = {
   get_customer_count: '/customers/count',
   get_customer_by_slug: '/customer/slug',
   update_customer: '/customer/update',
-  get_customer_by_number: '/customer/number'
+  get_customer_by_number: '/customer/number',
+  search_customers: '/customer/search'
 }

@@ -6,11 +6,11 @@
           <div class="row align-items-center">
                <div class="col d-flex flex-row justify-content-between">
                     <ul class="breadcrumb">
-                         <li class="breadcrumb-item fs-6"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
-                         <li class="breadcrumb-item active fs-6"><a
+                         <li class="breadcrumb-item fs-5"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
+                         <li class="breadcrumb-item active fs-5"><a
                                    routerLink="{{ appRoute.roles.ROLES_LIST}}">Roles</a></li>
                     </ul>
-                    <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+                    <button class="btn btn-primary cursor-pointer fs-5" color="primary"
                          routerLink="{{ appRoute.roles.ADD_ROLES }}" style="width: 200px;">
                          Add Roles
                     </button>
@@ -36,18 +36,18 @@
                                    <tbody>
                                         <tr *ngFor="let role of rolesData; let i = index">
                                              <td>
-                                                  <h2 class="table-avatar fs-6">{{ i + 1 }}</h2>
+                                                  <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
                                              </td>
                                              <td>
-                                                  <h2 class="table-avatar fs-6">{{role.name}}</h2>
+                                                  <h2 class="table-avatar fs-5">{{role.name}}</h2>
                                              </td>
                                              <td>
-                                                  <h2 class="table-avatar fs-6">{{ role.description }}</h2>
+                                                  <h2 class="table-avatar fs-5">{{ role.description }}</h2>
                                              </td>
                                              <td>
                                                   <a routerLink="{{ appRoute.roles.UPDATE_ROLES }}"
                                                        [queryParams]="{ role: role?.slug }"
-                                                       class="fs-6 cursor-pointer text-darker">
+                                                       class="fs-5 cursor-pointer text-darker">
                                                        <i class="bi bi-pen"></i>
                                                        Edit
                                                   </a>

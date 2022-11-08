@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     DataTablesModule,
     ImageCropperModule,
     FormsModule,
+    NgSelectModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

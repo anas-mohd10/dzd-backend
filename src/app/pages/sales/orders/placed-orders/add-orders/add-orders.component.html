@@ -6,13 +6,13 @@
                {{ editMode ? "Update Orders" : "Add Orders" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-6">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
                </li>
-               <li class="breadcrumb-item active fs-6">
+               <li class="breadcrumb-item active fs-5">
                   <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST}}">
                      {{ editMode ? "Update Orders" : "Add Orders"}}
                   </a>
@@ -22,7 +22,7 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-6">
+      <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
@@ -32,12 +32,12 @@
                      </div>
                      <div class="col-12">
                         <div class="form-group col-sm-6">
-                           <label class="fs-6 mb-3 form-title required">Customer</label>
+                           <label class="fs-5 mb-3 form-title required">Customer</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="customer" (change)="getAddress()"
                               [ngClass]="{ 'is-invalid': (of.customer.touched || isSubmitted) && of.customer.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
-                              <option *ngFor="let cust of activeCustomersData" value="{{[cust?._id, cust?.slug]}}">
+                              <option *ngFor="let cust of activeCustomersData" value="{{[cust?._id, cust?.userid]}}">
                                  {{cust?.firstname}}
                               </option>
                            </select>
@@ -48,8 +48,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Address Line 1</label>
-                           <input type="text" class="form-control fs-6" formControlName="firstline" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Address Line 1</label>
+                           <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
                                  'is-invalid':
                                  (of.firstline.touched || isSubmitted) &&
                                  of.firstline.errors?.required
@@ -58,20 +58,20 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Address Line 2</label>
-                           <input type="text" class="form-control fs-6" formControlName="secondline" />
+                           <label class="fs-5 mb-3"> Address Line 2</label>
+                           <input type="text" class="form-control fs-5" formControlName="secondline" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3"> Area</label>
-                           <input type="text" class="form-control fs-6" formControlName="area" />
+                           <label class="fs-5 mb-3"> Area</label>
+                           <input type="text" class="form-control fs-5" formControlName="area" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> City</label>
-                           <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> City</label>
+                           <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
                                  'is-invalid':
                                  (of.city.touched || isSubmitted) &&
                                  of.city.errors?.required
@@ -80,8 +80,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Landmark</label>
-                           <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Landmark</label>
+                           <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
                                  'is-invalid':
                                  (of.landmark.touched || isSubmitted) &&
                                  of.landmark.errors?.required
@@ -90,8 +90,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required"> Pincode</label>
-                           <input type="text" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                           <label class="fs-5 mb-3 form-title required"> Pincode</label>
+                           <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                                  'is-invalid':
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
@@ -100,20 +100,20 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title"> Latitude</label>
-                           <input type="text" class="form-control fs-6" formControlName="lat" />
+                           <label class="fs-5 mb-3 form-title"> Latitude</label>
+                           <input type="text" class="form-control fs-5" formControlName="lat" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title"> Longitude</label>
-                           <input type="text" class="form-control fs-6" formControlName="lng" />
+                           <label class="fs-5 mb-3 form-title"> Longitude</label>
+                           <input type="text" class="form-control fs-5" formControlName="lng" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">State</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                           <label class="fs-5 mb-3 form-title required">State</label>
+                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="state">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="Kerala">Kerala</option>
@@ -130,8 +130,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Payment Method</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                           <label class="fs-5 mb-3 form-title required">Payment Method</label>
+                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="paymentMethod"
                               [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
@@ -145,8 +145,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title">Coupon</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                           <label class="fs-5 mb-3 form-title">Coupon</label>
+                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="coupon">
                               <option value="disabled" disabled>-- Select an option --</option>
                               <option *ngFor="let coupon of activeCoupons" value="{{coupon?._id}}">
@@ -157,8 +157,8 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-6 mb-3">GST No.</label>
-                           <input type="text" formControlName="gst" class="form-control fs-6">
+                           <label class="fs-5 mb-3">GST No.</label>
+                           <input type="text" formControlName="gst" class="form-control fs-5">
                         </div>
                      </div>
                      <div class="product-add-container" formArrayName="products">
@@ -175,8 +175,8 @@
                            style="margin-top: 40px">
                            <div class="col-12 col-sm-6">
                               <div class="form-group">
-                                 <label class="fs-6 mb-3 form-title required">Product</label>
-                                 <select class="form-select form-select-lg fs-6" aria-label=".form-select-lg"
+                                 <label class="fs-5 mb-3 form-title required">Product</label>
+                                 <select class="form-select form-select-lg fs-5" aria-label=".form-select-lg"
                                     formControlName="productId">
                                     <option value="disabled" disabled>-- Select an option --</option>
                                     <option *ngFor="let prod of activeProducts" value="{{prod?._id}}">
@@ -186,9 +186,9 @@
                               </div>
                            </div>
                            <div class="col-12 col-sm-6">
-                              <label class="fs-6 mb-3 form-title required">Quantity</label>
+                              <label class="fs-5 mb-3 form-title required">Quantity</label>
                               <div class="form-group d-flex align-items-center">
-                                 <input type="text" class="form-control fs-6" id="quantity" formControlName="quantity">
+                                 <input type="text" class="form-control fs-5" id="quantity" formControlName="quantity">
                               </div>
                            </div>
                            <div class="col-12">
@@ -200,11 +200,11 @@
                         </div>
                      </div>
                      <div class="col-12">
-                        <a routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary btn-sm fs-6 text-dark"
+                        <a routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary btn-sm fs-5 text-dark"
                            style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
                            Submit
                         </button>
                      </div>
