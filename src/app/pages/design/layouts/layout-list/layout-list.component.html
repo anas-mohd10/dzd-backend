@@ -21,7 +21,7 @@
       </div>
    </div>
    <div class="total-count-container mb-10 mt-10" *ngIf="count != 0">
-      <h3>{{totalcount}} layouts</h3>
+      <h3>{{totalcount ? totalcount : 0}} layouts</h3>
    </div>
    <!-- card container start -->
    <div class="layout-card-container">
@@ -47,6 +47,12 @@
                   </ng-container>
                </div>
             </div>
+         </div>
+      </ng-container>
+      <ng-container *ngIf="count == 0">
+         <div class="no-data-container">
+            <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
+            <h2>Sorry, we haven't found any data</h2>
          </div>
       </ng-container>
    </div>

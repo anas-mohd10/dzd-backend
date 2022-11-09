@@ -4,6 +4,15 @@
    height: 50px;
    display: flex;
    align-items: center;
+   justify-content: center;
+   background: #ffffff;
+   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+   margin: 0 10px 0 0;
+   border-radius: 6px;
+
+   h3 {
+      margin: 0;
+   }
 }
 
 .notification-card-container {
@@ -42,11 +51,11 @@
    border-radius: 10px;
 }
 
-.notification-details-right{
-   margin:  0 0 0 20px;
+.notification-details-right {
+   margin: 0 0 0 20px;
 }
 
-.notification-Pending{
+.notification-Pending {
    margin: 10px 0;
    background: rgba(174, 24, 24, 0.1);
    color: rgb(174, 24, 24);
@@ -54,7 +63,7 @@
    border-radius: 5px;
 }
 
-.notification-Sent{
+.notification-Sent {
    margin: 10px 0;
    background: rgba(16, 114, 57, 0.1);
    color: rgb(16, 114, 57);

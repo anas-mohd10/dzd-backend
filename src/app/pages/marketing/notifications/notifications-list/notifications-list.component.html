@@ -61,13 +61,13 @@
       <!-- Form end -->
       <hr class="horizontal-line">
       <div class="notifications-details col-12 row">
-         <div class="total-count-container col-sm-4">
+         <div class="total-count-container col-sm-3">
             <h3>{{alldata}} Total notifications</h3>
          </div>
-         <div class="sent-count-container col-sm-4">
+         <div class="sent-count-container col-sm-3">
             <h3>{{sentdata}} Sent notifications</h3>
          </div>
-         <div class="pending-count-container col-sm-4">
+         <div class="pending-count-container col-sm-3">
             <h3>{{pendingdata}} Pending notifications</h3>
          </div>
       </div>
@@ -102,6 +102,7 @@
          </ng-container>
          <ng-container *ngIf="count == 0">
             <div class="no-data-container">
+               <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
                <h2>Sorry, we haven't found any data</h2>
             </div>
          </ng-container>

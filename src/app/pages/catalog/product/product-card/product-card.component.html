@@ -32,7 +32,7 @@
             <div class="search-status col-sm-2">
                <label class="fs-5">Status</label>
                <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchProduct()">
-                  <option value="" disabled>-- Select an option --</option>
+                  <option value="" disabled>Select an option</option>
                   <option value=true>Active</option>
                   <option value=false>Inactive</option>
                </select>
@@ -40,7 +40,7 @@
             <div class="search-featured col-sm-2">
                <label class="fs-5 form-title">Featured</label>
                <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchProduct()">
-                  <option value="" disabled>-- Select an option --</option>
+                  <option value="" disabled>Select an option</option>
                   <option value=true>Featured</option>
                   <option value=false>Non featured</option>
                </select>
@@ -94,13 +94,13 @@
             </div>
          </div>
       </ng-container>
+      <ng-container *ngIf="count == 0">
+         <div class="no-data-container">
+            <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
+            <h2>Sorry, we haven't found any data</h2>
+         </div>
+      </ng-container>
    </div>
-   <ng-container *ngIf="count == 0">
-      <div class="no-data-container">
-         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-         <h2>Sorry, we haven't found any data</h2>
-      </div>
-   </ng-container>
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
