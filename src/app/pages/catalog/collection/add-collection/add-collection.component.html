@@ -63,7 +63,7 @@
                         <div class="total-products mb-5">Showing {{products.length}} products</div>
                         <div class="search-bar">
                           <input class="form-control fs-5" type="text" placeholder="Search for product here..."
-                            (change)="searchValue($event.target)">
+                            (ngModelChange)="searchValue($event.target)">
                         </div>
                         <ng-container *ngFor="let product of products">
                           <ng-container *ngIf="product.selected == true">
@@ -76,8 +76,7 @@
                               </div>
                               <div class="product-card-details">
                                 <div class="product-card-image">
-                                  <img src="https://ccapi.previewbay.com/{{product.file}}" alt="Product"
-                                    style="height: 60px; width: 60px">
+                                  <img src="{{base}}/{{product.file}}" alt="Product" style="height: 60px; width: 60px">
                                 </div>
                                 <div class="product-card-name">{{product.name}}</div>
                               </div>
@@ -93,8 +92,7 @@
                               </div>
                               <div class="product-card-details">
                                 <div class="product-card-image">
-                                  <img src="https://ccapi.previewbay.com/{{product.file}}" alt="Product"
-                                    style="height: 60px; width: 60px">
+                                  <img src="{{base}}/{{product.file}}" alt="Product" style="height: 60px; width: 60px">
                                 </div>
                                 <div class="product-card-name">{{product.name}}</div>
                               </div>

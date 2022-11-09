@@ -91,10 +91,14 @@ export class ProductCardComponent implements OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.productform.get('name')?.setValue('')
+    this.productform.get('isActive')?.setValue('')
+    this.productform.get('isFeatured')?.setValue('')
+    this.searchProduct()
   }
 
   searchProduct() {
+    console.log(this.productform.value);
     this.currpage = 1
     this.productService.searchProducts(this.productform.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {

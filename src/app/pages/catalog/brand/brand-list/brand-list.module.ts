@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { BrandComponent } from './brand-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { BrandCardComponent } from '../brand-card/brand-card.component';
+import { ArchivedBrandComponent } from '../archived-brand/archived-brand.component';
 @NgModule({
   declarations: [BrandComponent],
   imports: [
@@ -14,6 +15,10 @@ import { BrandCardComponent } from '../brand-card/brand-card.component';
         path: '',
         component: BrandCardComponent,
       },
+      {
+        path: 'archive',
+        component: ArchivedBrandComponent
+      }
     ]),
   ],
 })

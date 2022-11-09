@@ -24,9 +24,10 @@ import { CsvService } from './includes/services/csv.service';
 import { ProductCardComponent } from './pages/catalog/product/product-card/product-card.component';
 import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ArchivedBrandComponent } from './pages/catalog/brand/archived-brand/archived-brand.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent],
   imports: [
     DataTablesModule,
     BrowserModule,

@@ -55,6 +55,13 @@ export class AddProductComponent implements OnInit {
   border: any
   color: any
 
+  selectedCategories: any = []
+  selectedBrand: any = ''
+  selectedProducts: any = []
+
+  errors: any
+  validError: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -94,7 +101,7 @@ export class AddProductComponent implements OnInit {
       description: [''],
       features: [''],
       categories: [],
-      brandId: ['', Validators.required],
+      brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
       isActive: ['true', Validators.required],
@@ -246,13 +253,13 @@ export class AddProductComponent implements OnInit {
   }
 
   getBrandDetail() {
-    this.brandService.getBrand().subscribe((res: any) => {
+    this.brandService.getActiveBrands().subscribe((res: any) => {
       this.brandData = res?.result;
     });
   }
 
   getCategoryDetail() {
-    this.categoryService.getCategory().subscribe((res: any) => {
+    this.categoryService.getActiveCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
     });
   }
@@ -319,6 +326,8 @@ export class AddProductComponent implements OnInit {
   updateProduct() { }
 
   addProduct() {
+    console.log(this.selectedCategories);
+
     if (!this.productForm.valid) {
       return;
     }
@@ -335,8 +344,8 @@ export class AddProductComponent implements OnInit {
       stockWarning: this.productForm.get('stockWarning')?.value,
       description: this.productForm.get('description')?.value,
       features: this.productForm.get('features')?.value,
-      categories: this.categoryid,
-      brand: this.productForm.get('brandId')?.value,
+      categories: this.selectedCategories,
+      brand: this.selectedBrand,
       additionalbutton: this.productForm.get('additionalbutton')?.value,
       buttonredireturl: this.productForm.get('buttonredireturl')?.value,
       isActive: this.productForm.get('isActive')?.value,
@@ -351,7 +360,7 @@ export class AddProductComponent implements OnInit {
       cod: this.productForm.get('cod')?.value,
       codCharge: this.productForm.get('codCharge')?.value,
       searchKeywords: this.searchKeyowrds,
-      relatedProducts: this.relProductIds,
+      relatedProducts: this.selectedProducts,
       position: this.productForm.get('position')?.value,
       filestring: this.croppedImage,
       filename: this.filename,

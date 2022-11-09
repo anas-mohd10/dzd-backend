@@ -57,9 +57,19 @@
 
   <hr class="horizontal-line">
 
-  <div class="total-count-container" *ngIf="count != 0">
-    <h3>{{totalcount}} brands</h3>
+  <div class="col-12 d-flex justify-content-between">
+    <div class="total-count-container col-sm-3">
+      <h3>Total {{totalcount ? totalcount : 0}} brands</h3>
+    </div>
+    <div>
+      <button class="btn btn-secondary cursor-pointer fs-5" color="primary" routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}"
+        style="width: 200px">Archived Brands</button>
+    </div>
   </div>
+
+  <!-- <div class="total-count-container col-sm-3" *ngIf="count != 0">
+    <h3>Total {{totalcount}} brands</h3>
+  </div> -->
 
   <!-- Card start -->
   <div class="brand-card-container view-container">

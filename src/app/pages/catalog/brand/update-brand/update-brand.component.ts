@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
@@ -29,11 +29,13 @@ export class UpdateBrandComponent implements OnInit {
   filename: string;
   base: any
   img: any;
-
   //Styling variables
   background: any
   border: any
   color: any
+  isArchived: any
+
+  restore = new FormControl('false');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,6 +65,7 @@ export class UpdateBrandComponent implements OnInit {
       name: ['', Validators.required],
       isActive: ['', Validators.required],
       isFeatured: ['', Validators.required],
+      isArchive: ['', Validators.required],
       background: [''],
       border: [''],
       radius: [''],
@@ -121,6 +124,7 @@ export class UpdateBrandComponent implements OnInit {
           this.img = this.base + "/" + res?.result[0].file
           this.brandForm.get('name')?.setValue(this.brand.name);
           this.brandForm.get('isActive')?.setValue(this.brand.isActive);
+          this.brandForm.get('isArchive')?.setValue(this.brand.isArchive);
           this.brandForm.get('isFeatured')?.setValue(this.brand.isFeatured);
           this.brandForm.get('background')?.setValue(this.brand.style.background);
           this.brandForm.get('border')?.setValue(this.brand.style.border);
@@ -131,6 +135,9 @@ export class UpdateBrandComponent implements OnInit {
           this.background = this.brand.style.background
           this.color = this.brand.style.text.color
           this.border = this.brand.style.border
+          if (this.brand.isArchive == true) {
+            this.isArchived = true
+          }
           this.cdr.markForCheck()
           break;
       }
@@ -166,6 +173,7 @@ export class UpdateBrandComponent implements OnInit {
       name: this.brandForm.get("name")?.value,
       isActive: this.brandForm.get("isActive")?.value,
       isFeatured: this.brandForm.get("isFeatured")?.value,
+      isArchive: this.brandForm.get("isArchive")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       file: '',
@@ -178,7 +186,8 @@ export class UpdateBrandComponent implements OnInit {
           fontSize: this.brandForm.get('fontSize')?.value,
           fontWeight: this.brandForm.get('fontWeight')?.value,
         }
-      }
+      },
+      brandid: this.brand.brandid
     }
 
     if (this.uploadedimg != '') {
@@ -187,11 +196,26 @@ export class UpdateBrandComponent implements OnInit {
 
     this.brandService.updateBrand(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Brand updated successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.brand.BRAND_LIST]);
       }
     });
+  }
+
+  restoreBrand() {
+    if (this.restore.value == "true") {
+      this.brandService.restoreBrand({ brandid: this.brand?.brandid }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.brand.ARCHIVED_BRAND]);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      })
+    } else {
+      this.router.navigate([this.appRoute.brand.ARCHIVED_BRAND]);
+    }
   }
 }

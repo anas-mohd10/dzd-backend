@@ -21,6 +21,11 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
+  getActiveCategory() {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_active_categories);
+    return this.http.get(`${url}`);
+  }
+
   getCategoryByPage(page: any, limit: any) {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_page + "?page=" + page + "&limit=" + limit);
     return this.http.get(`${url}`);

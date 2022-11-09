@@ -43,7 +43,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Status</label>
+                  <label class="fs-5 mb-3">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="false">Inactive</option>
@@ -53,9 +53,19 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Featured Brand ?</label>
+                  <label class="fs-5 mb-3">Featured Brand?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Archive Brand?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isArchive">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>

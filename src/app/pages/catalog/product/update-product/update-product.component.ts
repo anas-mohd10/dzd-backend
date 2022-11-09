@@ -70,6 +70,13 @@ export class UpdateProductComponent implements OnInit {
   border: any
   color: any
 
+  selectedCategories: any = []
+  selectedBrand: any = ''
+  selectedProducts: any = []
+
+  errors: any
+  validError: any
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -253,24 +260,28 @@ export class UpdateProductComponent implements OnInit {
   getBrandDetail() {
     this.brandService.getBrand().subscribe((res: any) => {
       this.brandData = res?.result;
+      this.cdr.markForCheck()
     });
   }
 
   getCategoryDetail() {
     this.categoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
+      this.cdr.markForCheck()
     });
   }
 
   getTaxClassDetail() {
     this.taxClassService.getTaxClasses().subscribe((res: any) => {
       this.taxClassData = res?.result;
+      this.cdr.markForCheck()
     });
   }
 
   getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
       this.productsData = res?.result;
+      this.cdr.markForCheck()
     });
   }
 
@@ -327,10 +338,14 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('color')?.setValue(this.productData.style.text.color);
       this.productForm.get('fontSize')?.setValue(this.productData.style.text.fontSize);
       this.productForm.get('fontWeight')?.setValue(this.productData.style.text.fontWeight);
+      this.productForm.get('taxClassId')?.setValue(this.productData.tax);
 
       this.color = this.productData.style.text.color
       this.background = this.productData.style.background
       this.border = this.productData.style.border
+
+      this.selectedCategories = this.productData.categories
+      this.selectedBrand = this.productData.brand
 
       for (let i = 0; i < this.productData.categories.length; i++) {
         this.categoryArray.push(this.productData.categories[i]._id)
@@ -343,16 +358,7 @@ export class UpdateProductComponent implements OnInit {
       }
 
       this.valueArray = this.productData.searchKeywords
-      for (let brand of this.brandData) {
-        if (this.productData.brandId == brand._id) {
-          this.productForm.get('brandId')?.setValue(brand._id);
-        }
-      }
-      for (let tax of this.taxClassData) {
-        if (this.productData.taxClassId._id == tax._id) {
-          this.productForm.get('taxClassId')?.setValue(tax._id);
-        }
-      }
+
       this.cod = this.productData.cod;
       if (this.cod == true) {
         this.isCod = true;
@@ -375,6 +381,10 @@ export class UpdateProductComponent implements OnInit {
         this.isReturn = false;
       }
     });
+  }
+
+  compareFn(item: any, selected: any) {
+    return item._id === selected._id;
   }
 
   //Related products tag
@@ -465,8 +475,8 @@ export class UpdateProductComponent implements OnInit {
       stockWarning: this.productForm.get('stockWarning')?.value,
       description: this.productForm.get('description')?.value,
       features: this.productForm.get('features')?.value,
-      categories: this.categoryArray,
-      brandId: this.productForm.get('brandId')?.value,
+      categories: this.selectedCategories,
+      brand: this.selectedBrand,
       additionalbutton: this.productForm.get('additionalbutton')?.value,
       buttonredireturl: this.productForm.get('buttonredireturl')?.value,
       isActive: this.productForm.get('isActive')?.value,
@@ -481,7 +491,7 @@ export class UpdateProductComponent implements OnInit {
       cod: this.productForm.get('cod')?.value,
       codCharge: this.productForm.get('codCharge')?.value,
       searchKeywords: this.valueArray,
-      relatedProducts: this.relProductIds,
+      relatedProducts: this.selectedProducts,
       position: this.productForm.get('position')?.value,
       filestring: this.croppedImage,
       filename: this.filename,

@@ -54,7 +54,7 @@
    </div>
    <hr class="horizontal-line">
    <div class="total-count-container" *ngIf="count != 0">
-      <h3>{{totalcount}} products</h3>
+      <h3>{{totalcount ? totalcount: 0}} products</h3>
    </div>
    <div class="product-card-container view-container">
       <ng-container *ngFor="let product of products">

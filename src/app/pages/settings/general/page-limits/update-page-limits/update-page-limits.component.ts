@@ -68,7 +68,7 @@ export class UpdatePageLimitsComponent implements OnInit {
     this.base = environment.base
     this.slug = this.route.snapshot.queryParams.id || ''
 
-    this.BrandService.searchBrand({ isActive: true, isDelete: false }, this.page, this.limit).subscribe((res: any) => {
+    this.BrandService.searchBrand({ isActive: true, isDelete: false }, this.page).subscribe((res: any) => {
       this.brands = res?.result?.data
       this.brandscount = res?.result?.total
       this.cdr.markForCheck();

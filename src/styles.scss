@@ -4,10 +4,26 @@
 
 .no-data-container {
   .no-data-image {
-    img{
+    img {
       height: auto;
       width: 200px;
     }
+  }
+}
+
+.total-count-container {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  padding: 0 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+  margin: 0 10px 0 0;
+  border-radius: 6px;
+
+  h3 {
+    margin: 0;
   }
 }
 
@@ -698,13 +714,14 @@ table.table th {
   overflow-x: hidden;
 }
 
-.toast-message{
-  font-size: 1.2rem !important;
+.toast-message {
+  font-size: 1.1rem !important;
   font-weight: normal !important;
 }
 
-.toast-container .ngx-toastr{
+.toast-container .ngx-toastr {
   box-shadow: none !important;
   border-radius: 10px !important;
   width: 350px !important;
+  font-weight: 700 !important;
 }

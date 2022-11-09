@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UpdateProductComponent } from './update-product.component';
 import { DataTablesModule } from 'angular-datatables';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [UpdateProductComponent],
@@ -13,7 +14,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    FormsModule,
     ImageCropperModule,
+    NgSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
@@ -28,4 +31,4 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ]),
   ],
 })
-export class UpdateProductModule {}
+export class UpdateProductModule { }

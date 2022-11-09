@@ -15,7 +15,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ReactiveFormsModule,
     ImageCropperModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-center',
       progressAnimation: 'decreasing',
       preventDuplicates: true,
       progressBar: true,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from '../../../../config/constants';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-add-collection',
@@ -39,13 +40,16 @@ export class AddCollectionComponent implements OnInit {
   border: any
   color: any
 
+  base: any
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get value(): string[] {
@@ -56,6 +60,7 @@ export class AddCollectionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.managePage();
     this.initForm();
     this.getProduct();
@@ -110,6 +115,7 @@ export class AddCollectionComponent implements OnInit {
           break;
       }
       this.array = [...this.products]
+      this.cdr.markForCheck()
     });
   }
 
@@ -130,6 +136,8 @@ export class AddCollectionComponent implements OnInit {
 
   //Custom search
   searchValue(e: any) {
+    console.log(e);
+
     this.products = [...this.array]
     let key = e.value.toLowerCase()
     let result = []

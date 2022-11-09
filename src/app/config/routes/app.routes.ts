@@ -46,7 +46,8 @@ export const appRoutes = {
     ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,
     ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
-    UPDATE_BRAND: `${app}${brandRoute}/update`
+    UPDATE_BRAND: `${app}${brandRoute}/update`,
+    ARCHIVED_BRAND: `${app}${brandRoute}/archive`
   },
   category: {
     ADD_CATEGORY: `${app}${categoryRoute}/add`,

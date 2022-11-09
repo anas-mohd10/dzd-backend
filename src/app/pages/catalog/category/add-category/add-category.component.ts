@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -41,7 +42,8 @@ export class AddCategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private CategoryService: CategoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get bf() {
@@ -106,6 +108,7 @@ export class AddCategoryComponent implements OnInit {
           this.categories.push(res?.result[i].name);
         }
       }
+      this.cdr.markForCheck()
     });
   }
 
@@ -205,7 +208,7 @@ export class AddCategoryComponent implements OnInit {
       isFeatured: this.categoryForm.get('isFeatured')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      // path: this.path,
+      path: this.path,
       style: {
         background: this.categoryForm.get('background')?.value,
         border: this.categoryForm.get('border')?.value,

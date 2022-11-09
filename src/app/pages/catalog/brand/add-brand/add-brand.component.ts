@@ -67,6 +67,7 @@ export class AddBrandComponent implements OnInit {
       file: [''],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
+      isArchive: ['false', Validators.required],
       background: [''],
       border: [''],
       radius: [''],
@@ -143,6 +144,7 @@ export class AddBrandComponent implements OnInit {
       name: this.brandForm.get("name")?.value,
       isActive: this.brandForm.get("isActive")?.value,
       isFeatured: this.brandForm.get("isFeatured")?.value,
+      isArchive: this.brandForm.get("isArchive")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       style: {
@@ -156,6 +158,7 @@ export class AddBrandComponent implements OnInit {
         }
       }
     }
+    
     if (data.filestring != '') {
       this.BrandService.addBrand(data).subscribe((res: any) => {
         if (res.errorCode != 0) {

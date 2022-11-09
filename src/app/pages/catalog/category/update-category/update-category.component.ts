@@ -7,6 +7,7 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+
 @Component({
   selector: 'app-update-category',
   templateUrl: './update-category.component.html',
@@ -61,7 +62,6 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   handleCheckBox() {
-    console.log(this.categoryForm.get('isRoot')?.value);
     if (this.categoryForm.get('isRoot')?.value == 'false') {
       this.isChecked = false;
     } else if (this.categoryForm.get('isRoot')?.value == 'true') {
@@ -186,15 +186,15 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryData = res?.result;
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].parent && !res?.result[i].root) {
-          this.categories.push(res?.result[i].parent.name + ' > ' + res?.result[i].name);
+          this.categories.push(res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
         }
         if (!res?.result[i].parent && res?.result[i].root) {
           this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
         }
         if (res?.result[i].parent && res?.result[i].root) {
-          if (res?.result[i].parent._id != res?.result[i].root._id) {
-            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.name + ' > ' + res?.result[i].name);
-          } else if (res?.result[i].parent._id == res?.result[i].root._id) {
+          if (res?.result[i].parent.refid._id != res?.result[i].root._id) {
+            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
+          } else if (res?.result[i].parent.refid._id == res?.result[i].root._id) {
             this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
           }
         }
@@ -202,6 +202,7 @@ export class UpdateCategoryComponent implements OnInit {
           this.categories.push(res?.result[i].name);
         }
       }
+      this.cdr.markForCheck()
     });
   }
 

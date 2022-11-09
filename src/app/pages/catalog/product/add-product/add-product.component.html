@@ -59,7 +59,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Store Keeping Unit</label>
-                  <input type="text" class="form-control fs-5" formControlName="sku" [ngClass]="{
+                  <input type="number" class="form-control fs-5" formControlName="sku" [ngClass]="{
                     'is-invalid': (pf.sku.touched || isSubmitted) && pf.sku.errors?.required}" />
                 </div>
               </div>
@@ -80,7 +80,7 @@
                     <label class="fs-5 mb-3 required">Price (MRP)</label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="mrpPrice" [ngClass]="{
+                      <input type="number" class="form-control" formControlName="mrpPrice" [ngClass]="{
                       'is-invalid':(pf.mrpPrice.touched || isSubmitted) &&pf.mrpPrice.errors?.required}" />
                       <span class="input-group-text">.00</span>
                     </div>
@@ -95,7 +95,7 @@
                     <label class="fs-5 mb-3">Offer Price</label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="offerPrice" />
+                      <input type="number" class="form-control" formControlName="offerPrice" />
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
@@ -118,7 +118,7 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3 required">Minimum Order Quantity</label>
-                    <input type="text" class="form-control fs-5" formControlName="moq" [ngClass]="{
+                    <input type="number" class="form-control fs-5" formControlName="moq" [ngClass]="{
                     'is-invalid':(pf.moq.touched || isSubmitted) && pf.moq.errors?.required}" />
                   </div>
                 </div>
@@ -136,7 +136,7 @@
 
               <!-- Category -->
               <div class="col-12 col-sm-6">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label class="fs-5 mb-3 required">Category</label>
                   <select class="form-select" formControlName="categories" (change)="tagCategoryInput()" [ngClass]="{
                     'is-invalid': (pf.categories.touched || isSubmitted) && pf.categories.errors?.required}">
@@ -152,18 +152,27 @@
                       <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
                     </span>
                   </ng-container>
-                </div>
+                </div> -->
+                <label class="fs-5 mb-3 required">Category</label>
+                <ng-select [items]="categoryData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCategories"
+                  placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
+                </ng-select>
               </div>
 
               <!-- Brand -->
               <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Brand</label>
+                <!-- <div class="form-group">
                   <select name="brand" formControlName="brandId" class="form-select" [ngClass]="{
                     'is-invalid':(pf.brandId.touched || isSubmitted) && pf.brandId.errors?.required}">
                     <option value="example" disabled>-- Select a Brand --</option>
                     <option *ngFor="let brand of brandData" value="{{ brand?._id }}">{{ brand?.name }}</option>
                   </select>
+                </div> -->
+                <label class="fs-5 mb-3 required">Brand</label>
+                <div class="brand-select">
+                  <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
+                    [ngModelOptions]="{standalone: true}" placeholder="Select brand">
+                  </ng-select>
                 </div>
               </div>
 
@@ -204,7 +213,7 @@
                     <label class="fs-5 mb-3">Shipping Cost </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="shippingCost" />
+                      <input type="number" class="form-control" formControlName="shippingCost" />
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
@@ -229,7 +238,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Value</label>
-                  <input type="text" class="form-control" formControlName="value"
+                  <input type="number" class="form-control" formControlName="value"
                     [ngClass]="{'is-invalid': (pf.value.touched || isSubmitted) && pf.value.errors?.required}">
                 </div>
               </div>
@@ -255,7 +264,7 @@
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of searchKeyowrds">
                       <span class="tag-input">
-                        <div class="tag-name">{{ value }}</div>
+                        <div class="tag-name fs-5">{{ value }}</div>
                         <i class="bi bi-x" (click)="tagRemove(value)"></i>
                       </span>
                     </ng-container>
@@ -265,7 +274,7 @@
 
               <!-- Related Products -->
               <div class="col-12 col-sm-6">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label class="fs-5 mb-3 required">Related Products</label>
                   <select class="form-select" formControlName="relatedProducts" (change)="tagProductAdd($event.target)">
                     <option value="example" disabled>-- Select Related Products --</option>
@@ -279,14 +288,18 @@
                       </span>
                     </ng-container>
                   </div>
-                </div>
+                </div> -->
+                <label class="fs-5 mb-3 required">Related Products</label>
+                <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
+                  placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
+                </ng-select>
               </div>
 
               <!-- Postion -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Position</label>
-                  <input type="text" class="form-control fs-5" formControlName="position" [ngClass]="{
+                  <input type="number" class="form-control fs-5" formControlName="position" [ngClass]="{
                     'is-invalid': (pf.position.touched || isSubmitted) && pf.position.errors?.required}" />
                 </div>
               </div>
@@ -336,7 +349,7 @@
                     <label class="fs-5 mb-3 required"> COD Charge </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="codCharge" />
+                      <input type="number" class="form-control" formControlName="codCharge" />
                       <span class="input-group-text">.00</span>
                     </div>
                   </div>
@@ -362,7 +375,7 @@
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label class="fs-5 mb-3 required">Return Days</label>
-                    <input type="text" class="form-control fs-5" formControlName="returnDays" />
+                    <input type="number" class="form-control fs-5" formControlName="returnDays" />
                   </div>
                 </div>
               </ng-container>

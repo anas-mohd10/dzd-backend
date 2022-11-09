@@ -1,87 +1,68 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { appRoutes } from 'src/app/config/routes';
-import { BrandService } from '../../../../includes/services/brand.service';
-import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { appRoutes } from 'src/app/config/routes';
+import { BrandService } from 'src/app/includes/services/brand.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
-  selector: 'app-brand-card',
-  templateUrl: './brand-card.component.html',
-  styleUrls: ['./brand-card.component.scss']
+  selector: 'app-archived-brand',
+  templateUrl: './archived-brand.component.html',
+  styleUrls: ['./archived-brand.component.scss']
 })
-export class BrandCardComponent implements OnInit {
+export class ArchivedBrandComponent implements OnInit {
+  appRoute = appRoutes
   brandform: FormGroup;
-  appRoute = appRoutes;
+  page: any = 1
+  limit: any
+  count: any
+  totalcount: any
   brands: any;
+  totaldata: number;
+  currpage: number;
+  selectedpage: any;
+  isData: boolean;
+  shifted: any;
+  pages: any = [];
+  isNext: boolean;
+  max: number;
   base: any
 
-  //Page and limit for query
-  page: any = 1;
-  pages: any = []
-  nextpages: any = []
-  currpage: any = 1;
-  limit: any = 8;
-  selectedpage: any = 1
-  max: any = 3
-
-  //Total no. of data from backend
-  totalcount: any;
-  totaldata: any;
-  count: any = 0
-
-  //Conditions
-  isData: boolean = true;
-  showBtn: boolean = true;
-  showLessBtn: boolean = false;
-  isNext: boolean = true
-
-  //Filters array
-  filters: any = [];
-  show: any;
-  shifted: any
-
   constructor(
-    private brandService: BrandService,
-    private formBuilder: FormBuilder,
+    private BrandService: BrandService,
     private cdr: ChangeDetectorRef,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    this.initForm()
     this.base = environment.base
-    setTimeout(() => {
-      this.setPages()
+    this.initForm()
+    this.BrandService.getArchivedBrands(this.brandform.value, this.page).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.brands = res?.result?.data
+        this.count = this.brands.length
+        this.totalcount = res?.result?.total_item
+        this.limit = res?.result?.items_per_page
+        this.totaldata = Math.ceil(this.totalcount / this.limit)
+        this.setPages()
+        this.cdr.markForCheck();
+      }
     })
-
-    this.brandService.searchBrand(this.brandform.value, this.page).subscribe((res: any) => {
-      this.brands = res?.result?.data
-      this.count = this.brands.length
-      this.totalcount = res?.result?.total_item
-      this.limit = res?.result?.items_per_page
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.setPages()
-      this.cdr.markForCheck();
-    });
   }
 
   initForm() {
     this.brandform = this.formBuilder.group({
       name: [''],
-      isActive: [''],
-      isFeatured: [''],
     });
   }
 
   onReload() {
     this.brandform.get('name')?.setValue('')
-    this.brandform.get('isActive')?.setValue('')
-    this.brandform.get('isFeatured')?.setValue('')
     this.searchBrand()
   }
 
   searchBrand() {
     this.currpage = 1
-    this.brandService.searchBrand(this.brandform.value, this.page).subscribe((res: any) => {
+    this.BrandService.searchBrand(this.brandform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
         this.count = this.brands.length
@@ -154,7 +135,7 @@ export class BrandCardComponent implements OnInit {
   }
 
   getData(data: any, page: any) {
-    this.brandService.searchBrand(data, page).subscribe((res: any) => {
+    this.BrandService.searchBrand(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
         this.count = this.brands.length
@@ -163,4 +144,5 @@ export class BrandCardComponent implements OnInit {
     })
     this.isNext = true
   }
+
 }
