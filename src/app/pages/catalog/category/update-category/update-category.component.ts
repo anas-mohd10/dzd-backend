@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
@@ -48,6 +48,10 @@ export class UpdateCategoryComponent implements OnInit {
   border: any
   color: any
 
+  restore = new FormControl('false');
+  isArchived: boolean;
+  catid: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -85,6 +89,7 @@ export class UpdateCategoryComponent implements OnInit {
       isRoot: ['check', Validators.required],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
+      isArchive: ['false', Validators.required],
       parentId: [''],
       background: [''],
       border: [''],
@@ -150,8 +155,6 @@ export class UpdateCategoryComponent implements OnInit {
     this.isSubmitted = true;
     if (this.editMode) {
       this.updateBrand();
-    } else {
-      this.addCategory();
     }
   }
 
@@ -164,6 +167,7 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
       this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
       this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
+      this.categoryForm.get('isArchive')?.setValue(this.categoryValues.isArchive);
       this.categoryForm.get('parentId')?.setValue(this.categoryValues.path);
       this.categoryForm.get('background')?.setValue(this.categoryValues.style.background);
       this.categoryForm.get('border')?.setValue(this.categoryValues.style.border);
@@ -174,9 +178,16 @@ export class UpdateCategoryComponent implements OnInit {
       this.border = this.categoryValues.style.border
       this.background = this.categoryValues.style.background
       this.color = this.categoryValues.style.text.color
+      this.parent = this.categoryValues?.parent?.refid?._id
+      this.catid = this.categoryValues?.parent?.catid
+      this.root = this.categoryValues?.root?._id
+      this.path = this.categoryValues?.path
       this.cdr.markForCheck()
       if (this.categoryValues.isRoot == true) {
         this.isChecked = true;
+      }
+      if (this.categoryValues.isArchive == true) {
+        this.isArchived = true
       }
     });
   }
@@ -218,11 +229,13 @@ export class UpdateCategoryComponent implements OnInit {
         }
         if (split[len - 1] == category.name) {
           this.parent = category._id
+          this.catid = category.catid
         }
       } else if (len == 1) {
         if (split[0] == category.name) {
           this.root = category._id
           this.parent = category._id
+          this.catid = category.catid
         }
       }
     }
@@ -230,13 +243,36 @@ export class UpdateCategoryComponent implements OnInit {
 
   //Update exsisting category
   updateBrand() {
+    if (!this.categoryForm.valid) {
+      console.error('Validation error');
+      return;
+    }
+    const payload = this.createPayload()
+    if (payload) {
+      this.CategoryService.updateCategory(this.category, payload).subscribe(
+        (res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error('Something went wrong');
+          } else if (res.errorCode == 0) {
+            this.toastr.success('Category updated successfully');
+            this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
+          }
+        }
+      );
+    } else {
+      this.toastr.error('Category not updated');
+    }
+  }
+
+  createPayload() {
     const data = {
       name: this.categoryForm.get('name')?.value,
       isRoot: this.categoryForm.get('isRoot')?.value,
       root: this.root,
-      parent: this.parent,
+      parent: { refid: this.parent, catid: this.catid },
       isActive: this.categoryForm.get('isActive')?.value,
       isFeatured: this.categoryForm.get('isFeatured')?.value,
+      isArchive: this.categoryForm.get('isArchive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       path: this.path,
@@ -250,31 +286,33 @@ export class UpdateCategoryComponent implements OnInit {
           fontSize: this.categoryForm.get('fontSize')?.value,
           fontWeight: this.categoryForm.get('fontWeight')?.value,
         }
-      }
+      },
+      catid: this.categoryValues.catid
     }
-
     if (this.uploadedimg != '') {
       data.file = this.uploadedimg
     }
-
     if (data.isRoot == 'true') {
       delete data.root
-      delete data.parent
+      delete data.parent.refid
+      delete data.parent.catid
       delete data.path
     }
-
-    this.CategoryService.updateCategory(this.category, data).subscribe(
-      (res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Category updated successfully');
-          this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
-        }
-      }
-    );
+    return data
   }
 
-  //Add Category
-  addCategory() { }
+  restoreBrand() {
+    if (this.restore.value == "true") {
+      this.CategoryService.restoreCategory({ catid: this.categoryValues?.catid }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.category.ARCHIVED_CATEGORY]);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      })
+    } else {
+      this.router.navigate([this.appRoute.category.ARCHIVED_CATEGORY]);
+    }
+  }
 }

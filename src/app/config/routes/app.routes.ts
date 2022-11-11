@@ -52,7 +52,8 @@ export const appRoutes = {
   category: {
     ADD_CATEGORY: `${app}${categoryRoute}/add`,
     CATEGORY_LIST: `${app}${categoryRoute}`,
-    UPDATE_CATEGORY: `${app}${categoryRoute}/update`
+    UPDATE_CATEGORY: `${app}${categoryRoute}/update`,
+    ARCHIVED_CATEGORY: `${app}${categoryRoute}/archive`
   },
   attribute: {
     ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,
@@ -61,8 +62,9 @@ export const appRoutes = {
   },
   product: {
     ADD_PRODUCT: `${app}${productRoute}/add`,
-    PRODUCT_LIST: `${app}${productRoute}/list`,
-    UPDATE_PRODUCT: `${app}${productRoute}/update`
+    PRODUCT_LIST: `${app}${productRoute}`,
+    UPDATE_PRODUCT: `${app}${productRoute}/update`,
+    ARCHIVED_PRODUCT: `${app}${productRoute}/archive`
   },
   variantProduct: {
     ADD_VARIANT_PRODUCT: `${app}${variantProductRoute}/add`,

@@ -258,14 +258,14 @@ export class UpdateProductComponent implements OnInit {
   }
 
   getBrandDetail() {
-    this.brandService.getBrand().subscribe((res: any) => {
+    this.brandService.getActiveBrands().subscribe((res: any) => {
       this.brandData = res?.result;
       this.cdr.markForCheck()
     });
   }
 
   getCategoryDetail() {
-    this.categoryService.getCategory().subscribe((res: any) => {
+    this.categoryService.getActiveCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
       this.cdr.markForCheck()
     });
@@ -279,7 +279,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.getProduct().subscribe((res: any) => {
+    this.productService.getActiveProduct().subscribe((res: any) => {
       this.productsData = res?.result;
       this.cdr.markForCheck()
     });
@@ -505,7 +505,8 @@ export class UpdateProductComponent implements OnInit {
           fontSize: this.productForm.get('fontSize')?.value,
           fontWeight: this.productForm.get('fontWeight')?.value,
         }
-      }
+      },
+      prodid: this.productData.prodid
     }
 
     if (this.uploadedimg) {

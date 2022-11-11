@@ -140,6 +140,28 @@ export class AddBrandComponent implements OnInit {
     if (!this.brandForm.valid) {
       return;
     }
+
+    const payload = this.createPayload()
+    if (payload) {
+      if (payload.filestring != '') {
+        this.BrandService.addBrand(payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error('Something went wrong');
+          } else if (res.errorCode == 0) {
+            this.toastr.success('Brand added successfully');
+            this.router.navigate([this.appRoute.brand.BRAND_LIST]);
+          }
+        });
+      }
+      else {
+        this.toastr.error('Something went wrong');
+      }
+    } else {
+      this.toastr.error('Brand add failed');
+    }
+  }
+
+  createPayload() {
     const data = {
       name: this.brandForm.get("name")?.value,
       isActive: this.brandForm.get("isActive")?.value,
@@ -158,19 +180,6 @@ export class AddBrandComponent implements OnInit {
         }
       }
     }
-    
-    if (data.filestring != '') {
-      this.BrandService.addBrand(data).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Brand added successfully');
-          this.router.navigate([this.appRoute.brand.BRAND_LIST]);
-        }
-      });
-    }
-    else {
-      this.toastr.error('Something went wrong');
-    }
+    return data
   }
 }

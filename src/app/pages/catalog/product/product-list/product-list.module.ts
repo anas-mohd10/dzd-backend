@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ProductComponent } from './product-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ProductCardComponent } from '../product-card/product-card.component';
+import { ArchivedProductComponent } from '../archived-product/archived-product.component';
 // import { WidgetsModule } from '../../_metronic/partials';
 
 @NgModule({
@@ -14,11 +15,11 @@ import { ProductCardComponent } from '../product-card/product-card.component';
     RouterModule.forChild([
       {
         path: '',
-        component: ProductComponent,
+        component: ProductCardComponent,
       },
       {
-        path: 'list',
-        component: ProductCardComponent
+        path: 'archive',
+        component: ArchivedProductComponent
       }
     ]),
     // WidgetsModule,

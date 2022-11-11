@@ -7,6 +7,7 @@ export const categoryEndpoints = {
   update_category: '/update-category',
   get_category_count: '/categories/count',
   search_category: '/categories/search',
-
-  get_main_categories: '/main-categories'
+  get_main_categories: '/main-categories',
+  archive_category: '/categories/archive',
+  restore_category: '/categories/restore'
 }

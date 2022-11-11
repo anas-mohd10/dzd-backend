@@ -133,7 +133,7 @@
                                     </div>
                                  </div>
                                  <label class="fs-5 mb-3 mt-10">Select default collection</label>
-                                 <div class="list-view-container">
+                                 <div class="list-view-container" *ngIf="collectionscount != 0">
                                     <ng-container *ngFor="let collection of collections">
                                        <div *ngIf="collection?._id != selectedCollection" class="clickable-card"
                                           (click)="selectedItem('collection', collection?._id)">
@@ -164,8 +164,8 @@
                                  Product details
                               </button>
                            </h2>
-                           <div id="collapseFour" class="accordion-collapse collapse show"
-                              aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                           <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour"
+                              data-bs-parent="#accordionExample">
                               <div class="accordion-body">
                                  <!-- Product settings -->
                                  <div class="col-sm-6">

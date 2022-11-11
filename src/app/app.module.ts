@@ -25,9 +25,11 @@ import { ProductCardComponent } from './pages/catalog/product/product-card/produ
 import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ArchivedBrandComponent } from './pages/catalog/brand/archived-brand/archived-brand.component';
+import { ArchivedCategoryComponent } from './pages/catalog/category/archived-category/archived-category.component';
+import { ArchivedProductComponent } from './pages/catalog/product/archived-product/archived-product.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent],
   imports: [
     DataTablesModule,
     BrowserModule,

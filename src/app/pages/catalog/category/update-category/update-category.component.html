@@ -27,7 +27,7 @@
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="categoryForm">
-            <div class="row">
+            <div class="row archieved-{{categoryValues?.isArchive}}">
               <div class="col-12">
                 <h5 class="form-title fs-4"><span>Category Details</span></h5>
               </div>
@@ -92,9 +92,19 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Featured Category ?</label>
+                  <label class="fs-5 mb-3">Featured Category?</label>
                   <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="isFeatured">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Archive Category?</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                    formControlName="isArchive">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
@@ -196,6 +206,27 @@
               </div>
             </div>
           </form>
+          <div class="restore-container">
+            <ng-container *ngIf="isArchived">
+              <div class="col-12">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5 mb-3">Restore Category?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" [formControl]="restore">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <a routerLink="{{ appRoute.category.CATEGORY_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px"
+                  (click)="restoreBrand()">Restore</button>
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>

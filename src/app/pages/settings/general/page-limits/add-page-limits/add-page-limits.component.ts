@@ -81,7 +81,7 @@ export class AddPageLimitsComponent implements OnInit {
       this.cdr.markForCheck();
     });
 
-    this.ProductService.searchProducts({ isActive: true, isDelete: false }, this.page, this.limit).subscribe((res: any) => {
+    this.ProductService.searchProducts({ isActive: true, isDelete: false }, this.page).subscribe((res: any) => {
       this.products = res?.result?.data
       this.selectedProduct = this.products[0]._id
       this.productscount = res?.result?.total

@@ -46,8 +46,18 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
-  searchProducts(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.search_product + "?page=" + page + "&limit=" + limit);
+  searchProducts(query: any, page: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.search_product + "?page=" + page);
+    return this.http.post(`${url}`, query);
+  }
+
+  archivedProducts(query: any, page: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.archive_product + "?page=" + page);
+    return this.http.post(`${url}`, query);
+  }
+
+  restoreProducts(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.restore_product);
     return this.http.post(`${url}`, query);
   }
 

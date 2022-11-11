@@ -52,9 +52,17 @@
     </div>
   </form>
   <hr class="horizontal-line">
-  <div class="total-count-container" *ngIf="count != 0">
-    <h3>{{count ? count : 0}} categories</h3>
+
+  <div class="col-12 d-flex justify-content-between">
+    <div class="total-count-container col-sm-3">
+      <h3>Total {{totalcount ? totalcount : 0}} categories</h3>
+    </div>
+    <div>
+      <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+        routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}" style="width: 200px">Archived Categories</button>
+    </div>
   </div>
+
   <!-- Card start -->
   <div class="category-card-container view-container">
     <ng-container *ngFor="let category of categories">

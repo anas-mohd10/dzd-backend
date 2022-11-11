@@ -7,6 +7,7 @@ export const productEndpoints = {
     get_active_products: '/products/active',
     update_product: '/update-product',
     search_product: '/products/search',
-    get_products_count: '/products/count'
-
+    get_products_count: '/products/count',
+    archive_product: '/products/archive',
+    restore_product: '/products/restore'
 }

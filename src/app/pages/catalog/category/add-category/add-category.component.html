@@ -78,9 +78,19 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Featured Category ?</label>
+                  <label class="fs-5 mb-3">Featured Category?</label>
                   <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="isFeatured">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Archive Category?</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                    formControlName="isArchive">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>

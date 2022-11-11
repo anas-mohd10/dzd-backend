@@ -1,4 +1,4 @@
-<div class="product-page-container">
+<div class="brand-page-container">
    <div class="page-header">
       <div class="page-title">
          <h1 class="fw-bolder">Products</h1>
@@ -9,20 +9,20 @@
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
                </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.product.ARCHIVED_PRODUCT}}">Archived Products</a>
+               </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
-               routerLink="{{ appRoute.product.ADD_PRODUCT }}" style="width: 200px">
-               Add Product
-            </button>
          </div>
       </div>
    </div>
 
    <hr class="horizontal-line">
-   <div class="product-form-container">
+   <!-- Form start -->
+   <div class="category-form-container">
       <form [formGroup]="productform">
          <div class="col-12 row" style="display: flex; align-items: flex-end;">
             <div class="search-input col-sm-4">
@@ -30,39 +30,18 @@
                <input type="text" placeholder="Search for products here..." class="form-control fs-5"
                   formControlName="name" (ngModelChange)="searchProduct()">
             </div>
-            <div class="search-status col-sm-2">
-               <label class="fs-5">Status</label>
-               <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchProduct()">
-                  <option value="" disabled>Select an option</option>
-                  <option value=true>Active</option>
-                  <option value=false>Inactive</option>
-               </select>
-            </div>
-            <div class="search-featured col-sm-2">
-               <label class="fs-5 form-title">Featured</label>
-               <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchProduct()">
-                  <option value="" disabled>Select an option</option>
-                  <option value=true>Featured</option>
-                  <option value=false>Non featured</option>
-               </select>
-            </div>
             <div class="search-submit col-sm-2">
-               <input type="reset" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
-                  style="outline: none; border: none;">
+               <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+                  style="outline: none; border: none;">Clear</button>
             </div>
          </div>
       </form>
    </div>
+   <!-- Form end -->
    <hr class="horizontal-line">
 
-   <div class="col-12 d-flex justify-content-between">
-      <div class="total-count-container col-sm-3">
-         <h3>Total {{totalcount ? totalcount : 0}} products</h3>
-      </div>
-      <div>
-         <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
-            routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">Archived Products</button>
-      </div>
+   <div class="total-count-container col-sm-3">
+      <h3>Total {{totalcount ? totalcount : 0}} archived products</h3>
    </div>
 
    <div class="product-card-container view-container">

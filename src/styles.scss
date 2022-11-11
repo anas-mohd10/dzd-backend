@@ -95,17 +95,23 @@ a.page-link.page-link-disabled {
 }
 
 .view-container {
-  animation: scaleUp 0.333s ease-in-out;
+  animation: scaleUp 0.5s ease-in-out;
 }
 
 @keyframes scaleUp {
   0% {
-    transform: scale(0.5);
+    // transform: scale(0.5);
+    transform: translateY(-30%);
     opacity: 0;
   }
 
+  50%{
+    transform: translateY(10%);
+  }
+
   100% {
-    transform: scale(1);
+    // transform: scale(1);
+    transform: translateY(0%);
   }
 }
 

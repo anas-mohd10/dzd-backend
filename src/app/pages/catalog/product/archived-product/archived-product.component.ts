@@ -5,11 +5,12 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-product-card',
-  templateUrl: './product-card.component.html',
-  styleUrls: ['./product-card.component.scss']
+  selector: 'app-archived-product',
+  templateUrl: './archived-product.component.html',
+  styleUrls: ['./archived-product.component.scss']
 })
-export class ProductCardComponent implements OnInit {
+
+export class ArchivedProductComponent implements OnInit {
   appRoute = appRoutes;
   products: any;
   productform: any;
@@ -53,7 +54,7 @@ export class ProductCardComponent implements OnInit {
     })
     this.initForm()
 
-    this.productService.searchProducts(this.productform.value, this.page).subscribe((res: any) => {
+    this.productService.archivedProducts(this.productform.value, this.page).subscribe((res: any) => {
       this.products = res?.result?.data
       this.count = this.products.length
       this.totalcount = res?.result?.total_item
@@ -95,8 +96,9 @@ export class ProductCardComponent implements OnInit {
   }
 
   searchProduct() {
+    console.log(this.productform.value);
     this.currpage = 1
-    this.productService.searchProducts(this.productform.value, this.page).subscribe((res: any) => {
+    this.productService.archivedProducts(this.productform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
         this.count = this.products.length
@@ -154,7 +156,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   getData(data: any, page: any, limit: any) {
-    this.productService.searchProducts(data, page).subscribe((res: any) => {
+    this.productService.archivedProducts(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
         this.count = this.products.length
@@ -164,4 +166,3 @@ export class ProductCardComponent implements OnInit {
     this.isNext = true
   }
 }
-

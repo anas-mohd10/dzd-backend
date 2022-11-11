@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { CategoryComponent } from './category-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ArchivedCategoryComponent } from '../archived-category/archived-category.component';
 
 // import { WidgetsModule } from '../../_metronic/partials';
 
@@ -18,6 +19,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       {
         path: '',
         component: CategoryComponent,
+      },
+      {
+        path: 'archive',
+        component: ArchivedCategoryComponent,
       },
     ]),
     // WidgetsModule,

@@ -169,6 +169,24 @@ export class UpdateBrandComponent implements OnInit {
     if (!this.brandForm.valid) {
       return;
     }
+
+    const payload = this.createPayload()
+
+    if (payload) {
+      this.brandService.updateBrand(this.slug, payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.brand.BRAND_LIST]);
+        }
+      });
+    } else {
+      this.toastr.success("Brand update failed");
+    }
+  }
+
+  createPayload() {
     const data = {
       name: this.brandForm.get("name")?.value,
       isActive: this.brandForm.get("isActive")?.value,
@@ -193,15 +211,7 @@ export class UpdateBrandComponent implements OnInit {
     if (this.uploadedimg != '') {
       data.file = this.brand?.file;
     }
-
-    this.brandService.updateBrand(this.slug, data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.brand.BRAND_LIST]);
-      }
-    });
+    return data
   }
 
   restoreBrand() {

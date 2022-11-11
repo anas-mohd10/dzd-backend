@@ -65,6 +65,7 @@ export class AddCategoryComponent implements OnInit {
       parent: [],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
+      isArchive: ['false', Validators.required],
       background: [''],
       border: [''],
       radius: [''],
@@ -199,6 +200,22 @@ export class AddCategoryComponent implements OnInit {
       return;
     }
 
+    const payload = this.createPayload()
+    if (payload) {
+      this.CategoryService.addCategory(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something Went Wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Category Added Successfully');
+          this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
+        }
+      });
+    } else {
+      this.toastr.error('Category not created');
+    }
+  }
+
+  createPayload() {
     const data = {
       name: this.categoryForm.get('name')?.value,
       isRoot: this.categoryForm.get('isRoot')?.value,
@@ -206,6 +223,7 @@ export class AddCategoryComponent implements OnInit {
       parent: { refid: this.parent, catid: this.catid },
       isActive: this.categoryForm.get('isActive')?.value,
       isFeatured: this.categoryForm.get('isFeatured')?.value,
+      isArchive: this.categoryForm.get('isArchive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       path: this.path,
@@ -225,16 +243,9 @@ export class AddCategoryComponent implements OnInit {
       delete data.root
       delete data.parent.refid
       delete data.parent.catid
-      // delete data.path
+      delete data.path
     }
-
-    this.CategoryService.addCategory(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Category Added Successfully');
-        this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
-      }
-    });
+    
+    return data
   }
 }

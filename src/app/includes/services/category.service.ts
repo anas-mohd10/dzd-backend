@@ -55,4 +55,14 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.get_main_categories);
     return this.http.get(`${url}`);
   }
+
+  archivedCategories(data: any, page: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.archive_category + "?page=" + page);
+    return this.http.post(`${url}`, data);
+  }
+
+  restoreCategory(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.restore_category);
+    return this.http.post(`${url}`, data);
+  }
 }

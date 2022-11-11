@@ -62,7 +62,7 @@ export class ArchivedBrandComponent implements OnInit {
 
   searchBrand() {
     this.currpage = 1
-    this.BrandService.searchBrand(this.brandform.value, this.page).subscribe((res: any) => {
+    this.BrandService.getArchivedBrands(this.brandform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
         this.count = this.brands.length
@@ -135,7 +135,7 @@ export class ArchivedBrandComponent implements OnInit {
   }
 
   getData(data: any, page: any) {
-    this.BrandService.searchBrand(data, page).subscribe((res: any) => {
+    this.BrandService.getArchivedBrands(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
         this.count = this.brands.length
