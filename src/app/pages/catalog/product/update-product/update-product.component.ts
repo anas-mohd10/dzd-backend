@@ -199,34 +199,9 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  tagCategoryInput() {
-    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
-      this.categoryArray.push(this.productForm.get('categories')?.value);
-      for (let i = 0; i < this.categoryData.length; i++) {
-        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
-          this.categoryNames.push(this.categoryData[i].name);
-        }
-      }
-    } else {
-      this.toastr.info('Category Already Added');
-    }
-    // this.productForm.get('categories')?.setValue('');
-  }
-
-  tagCategoryRemove(category: any) {
-    const index = this.categoryNames.indexOf(category);
-    if (index > -1) {
-      this.categoryNames.splice(index, 1);
-    }
-    for (let i = 0; i < this.categoryData.length; i++) {
-      if (this.categoryData[i].name == category) {
-        this.categoryArray.pop(this.categoryData[i]._id);
-      }
-    }
-  }
-
-  tagInput() {
-    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
+  tagInput(event: any) {
+    let _value = event.value
+    if (_value) {
       this.valueArray.push(this.productForm.get('searchKeywords')?.value);
       this.productForm.get('searchKeywords')?.setValue('');
     }
@@ -515,9 +490,9 @@ export class UpdateProductComponent implements OnInit {
 
     this.productService.updateProduct(this.productSlug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Product Added Successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
       }
     });

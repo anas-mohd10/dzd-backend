@@ -252,9 +252,9 @@ export class UpdateCategoryComponent implements OnInit {
       this.CategoryService.updateCategory(this.category, payload).subscribe(
         (res: any) => {
           if (res.errorCode != 0) {
-            this.toastr.error('Something went wrong');
+            this.toastr.error(res?.message);
           } else if (res.errorCode == 0) {
-            this.toastr.success('Category updated successfully');
+            this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.category.CATEGORY_LIST]);
           }
         }

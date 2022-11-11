@@ -76,7 +76,7 @@ export class ArchivedCategoryComponent implements OnInit {
 
   searchCategory() {
     this.currpage = 1
-    this.categoryService.searchCategory(this.categoryform.value, this.page).subscribe((res: any) => {
+    this.categoryService.archivedCategories(this.categoryform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result?.data
         this.count = this.categories.length

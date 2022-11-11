@@ -22,8 +22,8 @@
     </div>
   </div>
   <!-- Page Header -->
+
   <hr class="horizontal-line">
-  <!-- Form start -->
   <div class="offer-form-container">
     <form [formGroup]="offerform">
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
@@ -63,11 +63,12 @@
       </div>
     </form>
   </div>
-  <!-- Form end -->
   <hr class="horizontal-line">
-  <div class="total-count-container" *ngIf="count != 0">
-    <h3>{{totalcount}} offers</h3>
+
+  <div class="total-count-container col-sm-3 bg-dark">
+    <h4 class="text-white">Total {{totalcount ? totalcount : 0}} offers</h4>
   </div>
+
   <!-- Card start -->
   <div class="offer-card-container view-container">
     <ng-container *ngFor="let offer of offers">
@@ -77,7 +78,7 @@
             <img src='{{base}}/{{offer?.file}}' alt="offer image" srcset="" />
           </div>
           <div class="flex-1">
-            <div class="offer-name">{{offer?.name}}</div>
+            <div class="offer-name fs-3">{{offer?.name}}</div>
             <div class="offer-featured-{{offer?.isFeatured}}">
               <ng-container *ngIf="offer?.isFeatured == true">Featured</ng-container>
               <ng-container *ngIf="offer?.isFeatured == false">Not Featured</ng-container>

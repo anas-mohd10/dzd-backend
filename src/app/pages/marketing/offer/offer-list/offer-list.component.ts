@@ -53,22 +53,19 @@ export class OfferListComponent implements OnInit {
       this.setPages()
     })
 
-    this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
+    this.offerService.searchOffer(this.offerform.value, this.page).subscribe((res: any) => {
       this.offers = res?.result?.data
       for (let data of this.offers) {
         data.fromDate = new Date(data.fromDate).toDateString()
         data.lastDate = new Date(data.lastDate).toDateString()
       }
-      this.count = res?.result?.total_item
-      this.cdr.markForCheck();
-    });
-
-    this.offerService.getOfferCount().subscribe((res: any) => {
-      this.totalcount = res?.result
+      this.count = this.offers.length
+      this.totalcount = res?.result?.total_item
       this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.cdr.markForCheck();
       this.setPages()
-    })
+      this.cdr.markForCheck();
+      this.isData = true
+    });
   }
 
   initForm() {
@@ -82,12 +79,17 @@ export class OfferListComponent implements OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.offerform.get('name')?.setValue('')
+    this.offerform.get('isActive')?.setValue('')
+    this.offerform.get('isFeatured')?.setValue('')
+    this.offerform.get('fromDate')?.setValue('')
+    this.offerform.get('lastDate')?.setValue('')
+    this.searchOffer()
   }
 
   searchOffer() {
     this.currpage = 1
-    this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
+    this.offerService.searchOffer(this.offerform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         for (let data of this.offers) {
@@ -164,7 +166,7 @@ export class OfferListComponent implements OnInit {
   }
 
   getData(data: any, page: any, limit: any) {
-    this.offerService.searchOffer(data, page, limit).subscribe((res: any) => {
+    this.offerService.searchOffer(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         for (let data of this.offers) {

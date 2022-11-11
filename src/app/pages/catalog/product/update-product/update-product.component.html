@@ -262,10 +262,11 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Search Keywords</label>
-                  <input class="form-control fs-5" formControlName="searchKeywords" (keyup.Enter)="tagInput()" />
+                  <input class="form-control fs-5" formControlName="searchKeywords"
+                    (keyup.Enter)="tagInput($event.target)" />
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of valueArray">
-                      <span class="tag-input">
+                      <span class="tag-input bg-primary">
                         <div class="tag-name">{{ value }}</div>
                         <i class="bi bi-x" (click)="tagRemove(value)"></i>
                       </span>
@@ -291,7 +292,7 @@
                     </ng-container>
                   </div>
                 </div> -->
-                <label class="fs-5 mb-3 required">Related Products</label>
+                <label class="fs-5 mb-3">Related Products</label>
                 <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
                   placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}"
                   [compareWith]="compareFn">
@@ -323,7 +324,7 @@
               <!-- Featured Product -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Active Product ?</label>
+                  <label class="fs-5 mb-3">Active Product?</label>
                   <select class="form-select" formControlName="isActive"
                     [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
                     <option value="Check" disabled>-- Select an option --</option>

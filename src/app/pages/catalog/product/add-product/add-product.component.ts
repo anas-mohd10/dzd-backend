@@ -173,39 +173,14 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  //Category tag input
-  tagCategoryInput() {
-    if (!this.categoryid.includes(this.productForm.get('categories')?.value)) {
-      this.categoryid.push(this.productForm.get('categories')?.value);
-      for (let i = 0; i < this.categoryData.length; i++) {
-        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
-          this.categoryNames.push(this.categoryData[i].name);
-        }
-      }
-    } else {
-      this.toastr.info('Category Already Added');
-    }
-    this.productForm.get('categories')?.setValue('');
-  }
-
-  //Category tag remove
-  tagCategoryRemove(category: any) {
-    const index = this.categoryNames.indexOf(category);
-    if (index > -1) {
-      this.categoryNames.splice(index, 1);
-    }
-    for (let i = 0; i < this.categoryData.length; i++) {
-      if (this.categoryData[i].name == category) {
-        this.categoryid.pop(this.categoryData[i]._id);
-      }
-    }
-  }
-
   //Search keywords input
-  tagInput() {
-    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
-      this.searchKeyowrds.push(this.productForm.get('searchKeywords')?.value);
-      this.productForm.get('searchKeywords')?.setValue('');
+  tagInput(event: any) {
+    let _value = event.value
+    if (_value) {
+      if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
+        this.searchKeyowrds.push(this.productForm.get('searchKeywords')?.value);
+        this.productForm.get('searchKeywords')?.setValue('');
+      }
     }
   }
 
@@ -356,7 +331,7 @@ export class AddProductComponent implements OnInit {
       returnDays: this.productForm.get('returnDays')?.value,
       shippingMethod: this.productForm.get('shippingMethod')?.value,
       shippingCost: this.productForm.get('shippingCost')?.value,
-      value: this.productForm.get('value')?.value,                                                                 
+      value: this.productForm.get('value')?.value,
       unit: this.productForm.get('unit')?.value,
       tax: this.productForm.get('taxClassId')?.value,
       cod: this.productForm.get('cod')?.value,
@@ -380,9 +355,9 @@ export class AddProductComponent implements OnInit {
 
     this.productService.addProduct(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Product added successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
         this.ngOnInit();
       }

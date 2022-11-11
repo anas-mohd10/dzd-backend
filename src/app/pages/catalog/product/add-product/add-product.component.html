@@ -260,10 +260,10 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Search Keywords</label>
-                  <input class="form-control fs-5" formControlName="searchKeywords" (keyup.Enter)="tagInput()" />
+                  <input class="form-control fs-5" formControlName="searchKeywords" (keyup.Enter)="tagInput($event.target)" />
                   <div class="tag-inputs col-12">
                     <ng-container *ngFor="let value of searchKeyowrds">
-                      <span class="tag-input">
+                      <span class="tag-input bg-primary">
                         <div class="tag-name fs-5">{{ value }}</div>
                         <i class="bi bi-x" (click)="tagRemove(value)"></i>
                       </span>

@@ -100,7 +100,7 @@ export class ProductCardComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
         this.count = this.products.length
-        this.totalcount = res?.result?.total
+        this.totalcount = res?.result?.total_item
         this.totaldata = Math.ceil(this.totalcount / this.limit)
         this.setPages()
         this.cdr.markForCheck();
