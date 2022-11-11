@@ -34,14 +34,13 @@ export class AddCollectionComponent implements OnInit {
   imageChangedEvent: any;
   filename: any;
   loadImage: boolean;
-
   //Styling variables
   background: any
   border: any
   color: any
-
   base: any
-
+  page: any = 1
+  selectedProducts: any = []
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -51,13 +50,6 @@ export class AddCollectionComponent implements OnInit {
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef
   ) { }
-
-  get value(): string[] {
-    return this.productValue;
-  }
-  set value(value: string[]) {
-    this.productValue = value;
-  }
 
   ngOnInit(): void {
     this.base = environment.base
@@ -72,6 +64,7 @@ export class AddCollectionComponent implements OnInit {
       file: [''],
       products: [Validators.required],
       isFeatured: ['false', Validators.required],
+      isArchive: ['false', Validators.required],
       isActive: ['true', Validators.required],
       background: [''],
       border: [''],
@@ -103,60 +96,10 @@ export class AddCollectionComponent implements OnInit {
     this.productService.getProduct().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          for (let product of res?.result) {
-            this.products.push({
-              key: this.products.length,
-              name: product.name.toLowerCase(),
-              file: product.file,
-              id: product._id,
-              selected: false
-            })
-          }
+          this.products = res?.result
           break;
       }
-      this.array = [...this.products]
-      this.cdr.markForCheck()
     });
-  }
-
-  //Add and remove tag input product
-  handleProduct(e: any, key: any) {
-    for (let data of this.array) {
-      if (e.checked == true) {
-        if (data.key == key) {
-          data.selected = true
-        }
-      } else {
-        if (data.key == key) {
-          data.selected = false
-        }
-      }
-    }
-  }
-
-  //Custom search
-  searchValue(e: any) {
-    console.log(e);
-
-    this.products = [...this.array]
-    let key = e.value.toLowerCase()
-    let result = []
-    for (let prod of this.products) {
-      if (prod.name.includes(key)) {
-        result.push({
-          key: prod.key,
-          id: prod.id,
-          name: prod.name,
-          file: prod.file,
-          selected: prod.selected
-        })
-      }
-    }
-    if (result.length > 0) {
-      this.products = [...result]
-    } else {
-      this.products = []
-    }
   }
 
   getColors(type: any, e: any) {
@@ -211,20 +154,28 @@ export class AddCollectionComponent implements OnInit {
       console.error("error");
       return;
     }
-    if (this.array.length != 0) {
-      for (let i = 0; i < this.array.length; i++) {
-        if (this.array[i].selected == false) {
-          this.array.splice(i, 1)
-        }
+
+    const payload = this.createPayload()
+
+    this.collectionService.addCollection(payload).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something went wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Collection added successfully');
+        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
       }
-    }
+    });
+  }
+
+  createPayload() {
     let data = {
       name: this.collectionForm.get('name')?.value,
       isFeatured: this.collectionForm.get('isFeatured')?.value,
       isActive: this.collectionForm.get('isActive')?.value,
+      isArchive: this.collectionForm.get('isArchive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      products: this.array,
+      products: this.selectedProducts,
       style: {
         background: this.collectionForm.get('background')?.value,
         border: this.collectionForm.get('border')?.value,
@@ -236,14 +187,7 @@ export class AddCollectionComponent implements OnInit {
         }
       }
     }
-    this.collectionService.addCollection(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Collection added successfully');
-        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-      }
-    });
+    return data
   }
 
   updateCollection() { }

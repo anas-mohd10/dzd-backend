@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
@@ -39,11 +39,13 @@ export class UpdateCollectionComponent implements OnInit {
   loadImage: boolean;
   croppedImage: any;
   base: any
-
   //Styling variables
   background: any
   border: any
   color: any
+  restore = new FormControl('false');
+  isArchived: boolean;
+  selectedProducts: any = []
 
   constructor(
     private collectionService: CollectionService,
@@ -60,6 +62,7 @@ export class UpdateCollectionComponent implements OnInit {
     this.initForm();
     this.collection = this.route.snapshot.queryParams.collection || '';
     this.getProduct();
+    this.getCollection()
     this.base = environment.base
   }
 
@@ -69,6 +72,7 @@ export class UpdateCollectionComponent implements OnInit {
       products: [],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
+      isArchive: ['false', Validators.required],
       background: [''],
       border: [''],
       radius: [''],
@@ -99,19 +103,9 @@ export class UpdateCollectionComponent implements OnInit {
     this.productService.getProduct().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          for (let product of res?.result) {
-            this.array.push({
-              key: this.array.length,
-              id: product._id,
-              name: product.name.toLowerCase(),
-              file: product.file,
-              selected: false
-            })
-          }
+          this.products = res?.result
           break;
       }
-      this.getCollection()
-      this.products = [...this.array]
     });
   }
 
@@ -124,6 +118,7 @@ export class UpdateCollectionComponent implements OnInit {
           this.collectionForm.get('name')?.setValue(this.collectionData?.name);
           this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
           this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
+          this.collectionForm.get('isArchive')?.setValue(this.collectionData?.isArchive);
           this.collectionForm.get('background')?.setValue(this.collectionData?.style.background);
           this.collectionForm.get('border')?.setValue(this.collectionData?.style.border);
           this.collectionForm.get('radius')?.setValue(this.collectionData?.style.radius);
@@ -133,70 +128,18 @@ export class UpdateCollectionComponent implements OnInit {
           this.color = this.collectionData?.style.text.color
           this.background = this.collectionData?.style.background
           this.border = this.collectionData?.style.border
-          this.cdr.markForCheck()
-          for (let prod of res?.result[0].products) {
-            this.product.push({
-              key: prod.key,
-              id: prod.id?._id,
-              name: prod.id?.name.toLowerCase(),
-              file: prod.id?.file,
-              selected: true
-            })
+          this.selectedProducts = this.collectionData?.products
+          if (this.collectionData.isArchive == true) {
+            this.isArchived = true
           }
-          break;
+          this.cdr.markForCheck()
+          break
       }
-      this.checkProduct()
     });
   }
 
-  checkProduct() {
-    for (let prod of this.product) {
-      for (let arr of this.products) {
-        if (arr.id == prod.id) {
-          if (arr.selected != true) {
-            arr.selected = true
-          }
-        }
-      }
-    }
-  }
-
-  //Add and remove tag input product
-  handleProduct(e: any, key: any) {
-    for (let data of this.array) {
-      if (e.checked == true) {
-        if (data.key == key) {
-          data.selected = true
-        }
-      } else {
-        if (data.key == key) {
-          data.selected = false
-        }
-      }
-    }
-  }
-
-  //Custom search
-  searchValue(e: any) {
-    this.products = [...this.array]
-    let key = e.value.toLowerCase()
-    let result = []
-    for (let prod of this.products) {
-      if (prod.name.includes(key)) {
-        result.push({
-          key: prod.key,
-          id: prod.id,
-          name: prod.name,
-          file: prod.file,
-          selected: prod.selected
-        })
-      }
-    }
-    if (result.length > 0) {
-      this.products = [...result]
-    } else {
-      this.products = []
-    }
+  compareFn(item: any, selected: any) {
+    return item._id === selected._id;
   }
 
   handleInputChange(event: any) {
@@ -237,7 +180,6 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -249,25 +191,47 @@ export class UpdateCollectionComponent implements OnInit {
 
   addCollection() { }
 
-
   updateCollection() {
     if (!this.collectionForm.valid) {
       return;
     }
-    if (this.array.length != 0) {
-      for (let i = 0; i < this.array.length; i++) {
-        if (this.array[i].selected == false) {
-          this.array.splice(i, 1)
-        }
+
+    const payload = this.createPayload()
+
+    this.collectionService.updateCollection(this.collectionData?.colid, payload).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Collection Added Successfully');
+        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
       }
+    });
+  }
+
+  restoreCollection() {
+    if (this.restore.value == "true") {
+      this.collectionService.restoreCollection({ colid: this.collectionData?.colid }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.collection.ARCHIVED_COLLECTION]);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      })
+    } else {
+      this.router.navigate([this.appRoute.collection.ARCHIVED_COLLECTION]);
     }
+  }
+
+  createPayload() {
     let data = {
       name: this.collectionForm.get('name')?.value,
       isFeatured: this.collectionForm.get('isFeatured')?.value,
+      isArchive: this.collectionForm.get('isArchive')?.value,
       isActive: this.collectionForm.get('isActive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      products: this.array,
+      products: this.selectedProducts,
       file: '',
       style: {
         background: this.collectionForm.get('background')?.value,
@@ -278,18 +242,13 @@ export class UpdateCollectionComponent implements OnInit {
           fontSize: this.collectionForm.get('fontSize')?.value,
           fontWeight: this.collectionForm.get('fontWeight')?.value,
         }
-      }
+      },
+      colid: this.collectionData?.colid
     }
     if (this.uploadedimg != '') {
       data.file = this.uploadedimg
     }
-    this.collectionService.updateCollection(this.collection, data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Collection Added Successfully');
-        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-      }
-    });
+
+    return data
   }
 }

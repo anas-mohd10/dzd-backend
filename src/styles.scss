@@ -11,19 +11,27 @@
   }
 }
 
+.card-hover {
+  transition: all 0.333s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4%);
+}
+
 .total-count-container {
   height: 50px;
   display: flex;
   align-items: center;
-  // justify-content: center;
   padding: 0 20px;
   background: #ffffff;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
   margin: 0 10px 0 0;
   border-radius: 6px;
 
-  h3 {
+  h4 {
     margin: 0;
+    font-weight: 500;
   }
 }
 

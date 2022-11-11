@@ -8,4 +8,6 @@ export const collectionEndpoints = {
     get_collection_count: '/collections/count',
     //Filter APIs
     search_collection: '/collections/search',
+    archive_collection: '/collections/archive',
+    restore_collection: '/collections/restore',
 }

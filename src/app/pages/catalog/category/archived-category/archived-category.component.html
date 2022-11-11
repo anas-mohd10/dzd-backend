@@ -40,20 +40,20 @@
    <!-- Form end -->
    <hr class="horizontal-line">
 
-   <div class="total-count-container col-sm-3">
-      <h3>Total {{totalcount ? totalcount : 0}} archived categories</h3>
+   <div class="total-count-container col-sm-3 bg-dark">
+      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} archived categories</h4>
    </div>
 
    <!-- Card start -->
    <div class="category-card-container view-container">
       <ng-container *ngFor="let category of categories">
-         <div class="category-card">
+         <div class="category-card card-hover">
             <div class="category-details">
                <div class="category-image">
                   <img src='{{base}}/{{category?.file}}' alt="category image" srcset="" />
                </div>
                <div class="flex-1">
-                  <div class="category-name">{{category?.name}}</div>
+                  <div class="category-name fs-3">{{category?.name}}</div>
                   <div class="category-featured-{{category?.isFeatured}}">
                      <ng-container *ngIf="category?.isFeatured == true">Featured</ng-container>
                      <ng-container *ngIf="category?.isFeatured == false">Not Featured</ng-container>

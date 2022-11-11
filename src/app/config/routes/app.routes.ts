@@ -74,7 +74,8 @@ export const appRoutes = {
   collection: {
     ADD_COLLECTION: `${app}${collectionRoute}/add`,
     COLLECTION_LIST: `${app}${collectionRoute}`,
-    UPDATE_COLLECTION: `${app}${collectionRoute}/update`
+    UPDATE_COLLECTION: `${app}${collectionRoute}/update`,
+    ARCHIVED_COLLECTION: `${app}${collectionRoute}/archive`
   },
   offer: {
     ADD_OFFER: `${app}${offerRoute}/add`,

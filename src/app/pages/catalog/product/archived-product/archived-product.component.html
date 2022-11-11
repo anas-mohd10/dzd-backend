@@ -40,13 +40,13 @@
    <!-- Form end -->
    <hr class="horizontal-line">
 
-   <div class="total-count-container col-sm-3">
-      <h3>Total {{totalcount ? totalcount : 0}} archived products</h3>
+   <div class="total-count-container col-sm-3 bg-dark">
+      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} archived products</h4>
    </div>
 
    <div class="product-card-container view-container">
       <ng-container *ngFor="let product of products">
-         <div class="product-card">
+         <div class="product-card card-hover">
             <div class="product-type">
                <ng-container *ngIf="product?.isSingle == true">
                   Single
@@ -58,7 +58,7 @@
             <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" /></div>
             <div class="product-details">
                <div class="product-brand">{{product?.brand?.name}}</div>
-               <div class="product-name">{{product?.name}}</div>
+               <div class="product-name fs-3">{{product?.name}}</div>
                <div class="product-mrpprice">Rs. {{product?.mrpPrice}} <span>( MRP Price )</span></div>
                <div class="product-offerprice">Rs. {{product?.offerPrice}} <span>( Offer Price )</span></div>
                <div class="product-delivery">{{product?.shippingMethod}} shipping</div>

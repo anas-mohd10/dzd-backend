@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UpdateCollectionComponent } from './update-collection.component';
 import { DataTablesModule } from 'angular-datatables';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [UpdateCollectionComponent],
@@ -13,7 +14,9 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     CommonModule,
     DataTablesModule,
     ReactiveFormsModule,
+    FormsModule,
     ToastrModule,
+    NgSelectModule,
     ImageCropperModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

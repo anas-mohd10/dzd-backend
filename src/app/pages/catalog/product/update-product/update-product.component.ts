@@ -55,7 +55,6 @@ export class UpdateProductComponent implements OnInit {
   relProductNames: any = [];
   relProductIds: any = [];
   returnValue: any;
-
   croppedImage: string | null | undefined;
   loadImage: boolean;
   imageChangedEvent: Event | undefined;
@@ -64,18 +63,18 @@ export class UpdateProductComponent implements OnInit {
   type: any;
   uploadedimg: any;
   base: string;
-
   //Styling variables
   background: any
   border: any
   color: any
-
   selectedCategories: any = []
   selectedBrand: any = ''
   selectedProducts: any = []
-
   errors: any
   validError: any
+  isArchived: any
+
+  restore = new FormControl('false');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -134,6 +133,7 @@ export class UpdateProductComponent implements OnInit {
       buttonredireturl: [''],
       isFeatured: [''],
       isActive: [''],
+      isArchive: [''],
       returnable: [''],
       returnDays: [''],
       shippingMethod: [''],
@@ -318,6 +318,7 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('buttonredireturl')?.setValue(this.productData.buttonredireturl);
       this.productForm.get('isFeatured')?.setValue(this.productData.isFeatured);
       this.productForm.get('isActive')?.setValue(this.productData.isActive);
+      this.productForm.get('isArchive')?.setValue(this.productData.isArchive);
       this.productForm.get('returnable')?.setValue(this.productData.returnable);
       this.productForm.get('returnDays')?.setValue(this.productData.returnDays);
       this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);
@@ -339,26 +340,21 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.get('fontSize')?.setValue(this.productData.style.text.fontSize);
       this.productForm.get('fontWeight')?.setValue(this.productData.style.text.fontWeight);
       this.productForm.get('taxClassId')?.setValue(this.productData.tax);
-
       this.color = this.productData.style.text.color
       this.background = this.productData.style.background
       this.border = this.productData.style.border
-
       this.selectedCategories = this.productData.categories
       this.selectedBrand = this.productData.brand
-
+      this.selectedProducts = this.productData.relatedProducts
       for (let i = 0; i < this.productData.categories.length; i++) {
         this.categoryArray.push(this.productData.categories[i]._id)
         this.categoryNames.push(this.productData.categories[i].name);
       }
-
       for (let i = 0; i < this.productData.relatedProducts.length; i++) {
         this.relProductIds.push(this.productData.relatedProducts[i]._id)
         this.relProductNames.push(this.productData.relatedProducts[i].name)
       }
-
       this.valueArray = this.productData.searchKeywords
-
       this.cod = this.productData.cod;
       if (this.cod == true) {
         this.isCod = true;
@@ -367,10 +363,10 @@ export class UpdateProductComponent implements OnInit {
         this.isCod = false;
       }
       this.method = this.productData.shippingMethod;
-      if (this.method == 'paid') {
+      if (this.method == 'Paid') {
         this.isShipping = true;
       }
-      if (this.method == 'unpaid' || this.method == 'external') {
+      if (this.method == 'Unpaid' || this.method == 'External') {
         this.isShipping = false;
       }
       this.returnValue = this.productData.returnable;
@@ -379,6 +375,9 @@ export class UpdateProductComponent implements OnInit {
       }
       if (this.returnValue == false) {
         this.isReturn = false;
+      }
+      if (this.productData.isArchive == true) {
+        this.isArchived = true
       }
     });
   }
@@ -481,6 +480,7 @@ export class UpdateProductComponent implements OnInit {
       buttonredireturl: this.productForm.get('buttonredireturl')?.value,
       isActive: this.productForm.get('isActive')?.value,
       isFeatured: this.productForm.get('isFeatured')?.value,
+      isArchive: this.productForm.get('isArchive')?.value,
       returnable: this.productForm.get('returnable')?.value,
       returnDays: this.productForm.get('returnDays')?.value,
       shippingMethod: this.productForm.get('shippingMethod')?.value,
@@ -513,15 +513,28 @@ export class UpdateProductComponent implements OnInit {
       data.file = this.uploadedimg
     }
 
-    this.productService
-      .updateProduct(this.productSlug, data)
-      .subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Product Added Successfully');
-          this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+    this.productService.updateProduct(this.productSlug, data).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error('Something Went Wrong');
+      } else if (res.errorCode == 0) {
+        this.toastr.success('Product Added Successfully');
+        this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+      }
+    });
+  }
+
+  restoreProduct() {
+    if (this.restore.value == "true") {
+      this.productService.restoreProducts({ prodid: this.productData?.prodid }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
+        } else {
+          this.toastr.error(res?.message);
         }
-      });
+      })
+    } else {
+      this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
+    }
   }
 }

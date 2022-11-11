@@ -31,8 +31,8 @@ export class CollectionService {
     return this.http.get(`${url}`);
   }
 
-  searchCollection(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.collectionEndpoints.search_collection + "?page=" + page + "&limit=" + limit);
+  searchCollection(query: any, page: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.search_collection + "?page=" + page);
     return this.http.post(`${url}`, query);
   }
 
@@ -44,5 +44,15 @@ export class CollectionService {
   updateCollection(slug: any, data: any) {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "?slug=" + slug);
     return this.http.put(`${url}`, data);
+  }
+
+  archiveCollection(data: any, page: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.archive_collection + "?page=" + page);
+    return this.http.post(`${url}`, data);
+  }
+
+  restoreCollection(data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.restore_collection);
+    return this.http.post(`${url}`, data);
   }
 }

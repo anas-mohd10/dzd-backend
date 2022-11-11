@@ -53,18 +53,26 @@
     </form>
   </div>
   <hr class="horizontal-line">
-  <div class="total-count-container" *ngIf="count != 0">
-    <h3>{{totalcount}} collections</h3>
+
+  <div class="col-12 d-flex justify-content-between">
+    <div class="total-count-container col-sm-3 bg-dark">
+      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} collections</h4>
+    </div>
+    <div>
+      <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+        routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION}}" style="width: 200px">Archived Collections</button>
+    </div>
   </div>
+
   <div class="collection-card-container view-container">
     <ng-container *ngFor="let collection of collections">
-      <div class="collection-card">
+      <div class="collection-card card-hover">
         <div class="collection-details">
           <div class="collection-image">
             <img src='{{base}}/{{collection?.file}}' alt="collection image" srcset="" />
           </div>
           <div class="flex-1">
-            <div class="collection-name">{{collection?.name}}</div>
+            <div class="collection-name fs-3">{{collection?.name}}</div>
             <div class="collection-featured-{{collection?.isFeatured}}">
               <ng-container *ngIf="collection?.isFeatured == true">Featured</ng-container>
               <ng-container *ngIf="collection?.isFeatured == false">Not Featured</ng-container>

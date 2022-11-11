@@ -43,7 +43,7 @@
                 </div>
               </div>
               <div class="col-12">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Products</label>
                 </div>
                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bd-example-modal-xl"
@@ -65,46 +65,59 @@
                           <input class="form-control fs-5" type="text" placeholder="Search for product here..."
                             (ngModelChange)="searchValue($event.target)">
                         </div>
-                        <ng-container *ngFor="let product of products">
-                          <ng-container *ngIf="product.selected == true">
-                            <div class="product-card">
-                              <div class="product-card-checkbox">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="{{product.key}}"
-                                    (change)="handleProduct($event.target, product.key)" id="flexCheckDefault" checked>
+                        <div class="products-cards">
+                          <ng-container *ngFor="let product of products">
+                            <ng-container *ngIf="product.selected == true">
+                              <div class="product-card">
+                                <div class="product-card-checkbox">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{product.key}}"
+                                      (change)="handleProduct($event.target, product.key)" id="flexCheckDefault"
+                                      checked>
+                                  </div>
+                                </div>
+                                <div class="product-card-details">
+                                  <div class="product-card-image">
+                                    <img src="{{base}}/{{product.file}}" alt="Product"
+                                      style="height: 60px; width: 60px">
+                                  </div>
+                                  <div class="product-card-name">{{product.name}}</div>
                                 </div>
                               </div>
-                              <div class="product-card-details">
-                                <div class="product-card-image">
-                                  <img src="{{base}}/{{product.file}}" alt="Product" style="height: 60px; width: 60px">
+                            </ng-container>
+                            <ng-container *ngIf="product.selected == false">
+                              <div class="product-card">
+                                <div class="product-card-checkbox">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{product.key}}"
+                                      (change)="handleProduct($event.target, product.key)" id="flexCheckDefault">
+                                  </div>
                                 </div>
-                                <div class="product-card-name">{{product.name}}</div>
+                                <div class="product-card-details">
+                                  <div class="product-card-image">
+                                    <img src="{{base}}/{{product.file}}" alt="Product"
+                                      style="height: 60px; width: 60px">
+                                  </div>
+                                  <div class="product-card-name">{{product.name}}</div>
+                                </div>
                               </div>
-                            </div>
+                            </ng-container>
                           </ng-container>
-                          <ng-container *ngIf="product.selected == false">
-                            <div class="product-card">
-                              <div class="product-card-checkbox">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="{{product.key}}"
-                                    (change)="handleProduct($event.target, product.key)" id="flexCheckDefault">
-                                </div>
-                              </div>
-                              <div class="product-card-details">
-                                <div class="product-card-image">
-                                  <img src="{{base}}/{{product.file}}" alt="Product" style="height: 60px; width: 60px">
-                                </div>
-                                <div class="product-card-name">{{product.name}}</div>
-                              </div>
-                            </div>
-                          </ng-container>
-                        </ng-container>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div> -->
+
+                <div class="col-sm-6">
+                  <label class="fs-5 mb-3 required">Products</label>
+                  <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
+                    placeholder="Select products" [multiple]=true [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                  <div class="fs-7 mt-3">Selected products will be under this collection</div>
                 </div>
 
-                <div class="tag-inputs col-12 mt-10">
+                <!-- <div class="tag-inputs col-12 mt-10">
                   <ng-container *ngFor="let product of array">
                     <ng-container *ngIf="product.selected == true">
                       <span class="tag-input">
@@ -112,11 +125,11 @@
                       </span>
                     </ng-container>
                   </ng-container>
-                </div>
+                </div> -->
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Featured Collection</label>
+                  <label class="fs-5 mb-3 form-title">Featured Collection?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
                     <option value="false" selected>No</option>
@@ -126,11 +139,21 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Status</label>
+                  <label class="fs-5 mb-3 form-title">Active Collection?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isActive">
-                    <option value="false" selected>Inactive</option>
-                    <option value="true">Active</option>
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Archive Collection?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="isArchive">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
                   </select>
                 </div>
               </div>

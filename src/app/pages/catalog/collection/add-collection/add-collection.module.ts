@@ -6,6 +6,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [AddCollectionComponent],
@@ -14,6 +15,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ToastrModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
     ImageCropperModule,
     NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({

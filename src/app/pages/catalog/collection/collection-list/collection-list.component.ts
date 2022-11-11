@@ -55,18 +55,15 @@ export class CollectionListComponent implements OnInit {
       this.setPages()
     })
 
-    this.collectionService.getCollectionPage(this.page, this.limit).subscribe((res: any) => {
-      this.collections = res?.result
+    this.collectionService.searchCollection(this.collectionform.value, this.page).subscribe((res: any) => {
+      this.collections = res?.result?.data
       this.count = this.collections.length
+      this.totalcount = res?.result?.total_item
+      this.limit = res?.result?.items_per_page
+      this.totaldata = Math.ceil(this.totalcount / this.limit)
+      this.setPages()
       this.cdr.markForCheck();
     });
-
-    this.collectionService.getCollectionCount().subscribe((res: any) => {
-      this.totalcount = res?.result
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.cdr.markForCheck();
-      this.setPages()
-    })
   }
 
   initForm() {
@@ -78,16 +75,19 @@ export class CollectionListComponent implements OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.collectionform.get('name')?.setValue('')
+    this.collectionform.get('isActive')?.setValue('')
+    this.collectionform.get('isFeatured')?.setValue('')
+    this.searchCollection()
   }
 
   searchCollection() {
     this.currpage = 1
-    this.collectionService.searchCollection(this.collectionform.value, this.page, this.limit).subscribe((res: any) => {
+    this.collectionService.searchCollection(this.collectionform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.collections = res?.result?.data
         this.count = this.collections.length
-        this.totalcount = res?.result?.total
+        this.totalcount = res?.result?.total_item
         this.totaldata = Math.ceil(this.totalcount / this.limit)
         this.setPages()
         this.cdr.markForCheck();
@@ -156,7 +156,7 @@ export class CollectionListComponent implements OnInit {
   }
 
   getData(data: any, page: any, limit: any) {
-    this.collectionService.searchCollection(data, page, limit).subscribe((res: any) => {
+    this.collectionService.searchCollection(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.collections = res?.result?.data
         this.count = this.collections.length
