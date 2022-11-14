@@ -6,8 +6,8 @@
 }
 
 .coupon-card {
-  width: calc(50% - 20px);
-  margin: 10px 10px 10px 0;
+  // width: calc(50% - 20px);
+  // margin: 10px 10px 10px 0;
   height: 200px;
   border-radius: 10px;
   display: flex;
@@ -23,8 +23,7 @@
   align-items: center;
   justify-content: center;
   padding: 10px 0 10px 10px;
-  border-radius: 15px 30px 30px 15px;
-  border-right: 2px dashed #ffffff;
+  border-radius: 15px;
 }
 
 .inner-coupon-details {
@@ -39,7 +38,7 @@
 .coupon-card-right {
   width: 35%;
   height: 100%;
-  border-radius: 30px 15px 15px 30px;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -144,9 +143,7 @@
 
 .coupon-code {
   display: flex;
-  flex-direction: column;
   color: #1c1421;
-  font-size: 1.1rem;
 }
 
 .coupon-code span {

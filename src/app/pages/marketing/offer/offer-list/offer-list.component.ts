@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from '../../../../includes/services/offer.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -20,7 +20,7 @@ export class OfferListComponent implements OnInit {
   pages: any = []
   nextpages: any = []
   currpage: any = 1;
-  limit: any = 8;
+  limit: any = 15;
   selectedpage: any = 1
   max: any = 3
 
@@ -40,6 +40,8 @@ export class OfferListComponent implements OnInit {
   show: any;
   shifted: any
 
+  pageLimit = new FormControl(this.limit)
+
   constructor(
     private offerService: OfferService,
     private formBuilder: FormBuilder,
@@ -53,7 +55,7 @@ export class OfferListComponent implements OnInit {
       this.setPages()
     })
 
-    this.offerService.searchOffer(this.offerform.value, this.page).subscribe((res: any) => {
+    this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
       this.offers = res?.result?.data
       for (let data of this.offers) {
         data.fromDate = new Date(data.fromDate).toDateString()
@@ -87,9 +89,14 @@ export class OfferListComponent implements OnInit {
     this.searchOffer()
   }
 
+  changeLimit(_val: any) {
+    this.limit = _val.value
+    this.searchOffer()
+  }
+
   searchOffer() {
     this.currpage = 1
-    this.offerService.searchOffer(this.offerform.value, this.page).subscribe((res: any) => {
+    this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         for (let data of this.offers) {
@@ -166,7 +173,7 @@ export class OfferListComponent implements OnInit {
   }
 
   getData(data: any, page: any, limit: any) {
-    this.offerService.searchOffer(data, page).subscribe((res: any) => {
+    this.offerService.searchOffer(data, page, limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         for (let data of this.offers) {

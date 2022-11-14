@@ -62,8 +62,8 @@
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} brands</h4>
     </div>
     <div>
-      <button class="btn btn-secondary cursor-pointer fs-5" color="primary" routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}"
-        style="width: 200px">Archived Brands</button>
+      <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+        routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}" style="width: 200px">Archived Brands</button>
     </div>
   </div>
 
@@ -72,31 +72,33 @@
   </div> -->
 
   <!-- Card start -->
-  <div class="brand-card-container view-container">
+  <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
-      <div class="brand-card card-hover">
-        <div class="brand-details">
-          <div class="brand-image">
-            <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
-          </div>
-          <div class="flex-1">
-            <div class="brand-name fs-3">{{brand?.name}}</div>
-            <div class="brand-featured-{{brand?.isFeatured}}">
-              <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
-              <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
+      <div class="col-sm-6">
+        <div class="brand-card card-hover">
+          <div class="brand-details">
+            <div class="brand-image">
+              <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+            </div>
+            <div class="flex-1">
+              <div class="brand-name fs-3">{{brand?.name}}</div>
+              <div class="brand-featured-{{brand?.isFeatured}}">
+                <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
+                <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="flex-21">
-          <div class="brand-status-{{brand?.isActive}}">
-            <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
-            <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
-          </div>
-          <div class="card-edit-btn">
-            <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-              class="fs-5 cursor-pointer text-darker">
-              Edit
-            </button>
+          <div class="flex-21">
+            <div class="brand-status-{{brand?.isActive}}">
+              <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
+              <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
+            </div>
+            <div class="card-edit-btn">
+              <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
+                class="fs-5 cursor-pointer text-darker">
+                Edit
+              </button>
+            </div>
           </div>
         </div>
       </div>

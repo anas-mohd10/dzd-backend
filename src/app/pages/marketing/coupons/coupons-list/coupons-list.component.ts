@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { environment } from 'src/environments/environment.prod';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-coupons-list',
@@ -40,6 +40,8 @@ export class CouponsListComponent implements OnInit {
   show: any;
   shifted: any
 
+  pageLimit = new FormControl('15')
+
   constructor(
     private couponService: CouponsService,
     private formBuilder: FormBuilder,
@@ -53,22 +55,18 @@ export class CouponsListComponent implements OnInit {
       this.setPages()
     })
 
-    this.couponService.getCouponPage(this.page, this.limit).subscribe((res: any) => {
-      this.coupons = res?.result
+    this.couponService.searchCoupon(this.couponform.value, this.page, this.limit).subscribe((res: any) => {
+      this.coupons = res?.result?.data
       for (let data of this.coupons) {
         data.fromDate = new Date(data.fromDate).toDateString()
         data.lastDate = new Date(data.lastDate).toDateString()
       }
       this.count = this.coupons.length
+      this.totalcount = res?.result?.total
+      this.totaldata = Math.ceil(this.totalcount / this.limit)
+      this.setPages()
       this.cdr.markForCheck();
     });
-
-    this.couponService.getCouponCount().subscribe((res: any) => {
-      this.totalcount = res?.result
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.cdr.markForCheck();
-      this.setPages()
-    })
   }
 
   initForm() {
@@ -82,7 +80,17 @@ export class CouponsListComponent implements OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.couponform.get('title')?.setValue('')
+    this.couponform.get('fromDate')?.setValue('')
+    this.couponform.get('lastDate')?.setValue('')
+    this.couponform.get('isActive')?.setValue('')
+    this.couponform.get('isFeatured')?.setValue('')
+    this.searchCoupon()
+  }
+
+  changeLimit(_val: any) {
+    this.limit = _val.value
+    this.searchCoupon()
   }
 
   searchCoupon() {

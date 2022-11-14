@@ -50,7 +50,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Email</label>
-                           <input type="text" class="form-control fs-5" formControlName="email" [ngClass]="{
+                           <input type="email" class="form-control fs-5" formControlName="email" [ngClass]="{
                               'is-invalid':
                               (cf.email.touched || isSubmitted) &&
                               cf.email.errors?.required
@@ -60,7 +60,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Mobile No.</label>
-                           <input type="text" class="form-control fs-5" formControlName="mobile"
+                           <input type="number" class="form-control fs-5" formControlName="mobile"
                               (change)="validateNumber($event.target)" [ngClass]="{
                               'is-invalid':
                               (cf.mobile.touched || isSubmitted) &&
@@ -69,10 +69,10 @@
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
-                        <label class="fs-5 mb-3 form-title required">Wallet Balance</label>
+                        <label class="fs-5 mb-3 form-title">Wallet Balance</label>
                         <div class="input-group mb-3">
                            <span class="input-group-text">Rs</span>
-                           <input type="text" class="form-control" formControlName="walletBalance" [ngClass]="{
+                           <input type="number" class="form-control" formControlName="walletBalance" [ngClass]="{
                               'is-invalid':
                               (cf.walletBalance.touched || isSubmitted) &&
                               cf.walletBalance.errors?.required

@@ -65,38 +65,51 @@
   </div>
   <hr class="horizontal-line">
 
-  <div class="total-count-container col-sm-3 bg-dark">
-    <h4 class="text-white">Total {{totalcount ? totalcount : 0}} offers</h4>
+  <div class="col-12 d-flex justify-content-between">
+    <div class="total-count-container col-sm-3 bg-dark">
+      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} offers</h4>
+    </div>
+    <div class="page-limit-container d-flex justify-content-between">
+      <label class="fs-5">Page Length</label>
+      <select class="form-select" [formControl]="pageLimit" (change)="changeLimit($event.target)">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="30">30</option>
+      </select>
+    </div>
   </div>
 
   <!-- Card start -->
-  <div class="offer-card-container view-container">
+  <div class="offer-card-container view-container row col-12">
     <ng-container *ngFor="let offer of offers">
-      <div class="offer-card">
-        <div class="offer-details">
-          <div class="offer-image">
-            <img src='{{base}}/{{offer?.file}}' alt="offer image" srcset="" />
-          </div>
-          <div class="flex-1">
-            <div class="offer-name fs-3">{{offer?.name}}</div>
-            <div class="offer-featured-{{offer?.isFeatured}}">
-              <ng-container *ngIf="offer?.isFeatured == true">Featured</ng-container>
-              <ng-container *ngIf="offer?.isFeatured == false">Not Featured</ng-container>
+      <div class="col-sm-6">
+        <div class="offer-card card-hover">
+          <div class="offer-details">
+            <div class="offer-image">
+              <img src='{{base}}/{{offer?.file}}' alt="offer image" srcset="" />
             </div>
-            <div class="offer-from-date">From : <span>{{offer?.fromDate}}</span></div>
-            <div class="offer-last-date">To : <span>{{offer?.lastDate}}</span></div>
+            <div class="flex-1">
+              <div class="offer-name fs-3">{{offer?.name}}</div>
+              <div class="offer-featured-{{offer?.isFeatured}}">
+                <ng-container *ngIf="offer?.isFeatured == true">Featured</ng-container>
+                <ng-container *ngIf="offer?.isFeatured == false">Not Featured</ng-container>
+              </div>
+              <div class="offer-from-date">From : <span>{{offer?.fromDate}}</span></div>
+              <div class="offer-last-date">To : <span>{{offer?.lastDate}}</span></div>
+            </div>
           </div>
-        </div>
-        <div class="flex-21">
-          <div class="offer-status-{{offer?.isActive}}">
-            <ng-container *ngIf="offer?.isActive == true">Active</ng-container>
-            <ng-container *ngIf="offer?.isActive == false">Inactive</ng-container>
-          </div>
-          <div class="card-edit-btn">
-            <button routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.offerid }"
-              class="fs-5 cursor-pointer text-darker">
-              Edit
-            </button>
+          <div class="flex-21">
+            <div class="offer-status-{{offer?.isActive}}">
+              <ng-container *ngIf="offer?.isActive == true">Active</ng-container>
+              <ng-container *ngIf="offer?.isActive == false">Inactive</ng-container>
+            </div>
+            <div class="card-edit-btn">
+              <button routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.offerid }"
+                class="fs-5 cursor-pointer text-darker">
+                Edit
+              </button>
+            </div>
           </div>
         </div>
       </div>

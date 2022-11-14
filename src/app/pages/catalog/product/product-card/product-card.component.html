@@ -48,7 +48,7 @@
             </div>
             <div class="search-submit col-sm-2">
                <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
-               style="outline: none; border: none;">Clear</button>
+                  style="outline: none; border: none;">Clear</button>
             </div>
          </div>
       </form>
@@ -65,39 +65,41 @@
       </div>
    </div>
 
-   <div class="product-card-container view-container">
+   <div class="product-card-container view-container col-12">
       <ng-container *ngFor="let product of products">
-         <div class="product-card card-hover">
-            <div class="product-type">
-               <ng-container *ngIf="product?.isSingle == true">
-                  Single
-               </ng-container>
-               <ng-container *ngIf="product?.isSingle == false">
-                  Configurable
-               </ng-container>
-            </div>
-            <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" /></div>
-            <div class="product-details">
-               <div class="product-brand">{{product?.brand?.name}}</div>
-               <div class="product-name fs-3">{{product?.name}}</div>
-               <div class="product-mrpprice">Rs. {{product?.mrpPrice}} <span>( MRP Price )</span></div>
-               <div class="product-offerprice">Rs. {{product?.offerPrice}} <span>( Offer Price )</span></div>
-               <div class="product-delivery">{{product?.shippingMethod}} shipping</div>
-               <div class="product-stock">{{product?.stock}} products left</div>
-               <div class="product-card-bottom">
-                  <div class="product-status-{{product?.isActive}}">
-                     <ng-container *ngIf="product?.isActive == true">
-                        Active
-                     </ng-container>
-                     <ng-container *ngIf="product?.isActive == false">
-                        Inactive
-                     </ng-container>
-                  </div>
-                  <div class="card-edit-btn">
-                     <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
-                        [queryParams]="{ product: product?.slug }" class="fs-5 cursor-pointer text-darker">
-                        Edit
-                     </button>
+         <div class="col-sm-4">
+            <div class="product-card card-hover">
+               <div class="product-type">
+                  <ng-container *ngIf="product?.isSingle == true">
+                     Single
+                  </ng-container>
+                  <ng-container *ngIf="product?.isSingle == false">
+                     Configurable
+                  </ng-container>
+               </div>
+               <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" /></div>
+               <div class="product-details">
+                  <div class="product-brand">{{product?.brand?.name}}</div>
+                  <div class="product-name fs-3">{{product?.name}}</div>
+                  <div class="product-mrpprice">Rs. {{product?.mrpPrice}} <span>( MRP Price )</span></div>
+                  <div class="product-offerprice">Rs. {{product?.offerPrice}} <span>( Offer Price )</span></div>
+                  <div class="product-delivery">{{product?.shippingMethod}} shipping</div>
+                  <div class="product-stock">{{product?.stock}} products left</div>
+                  <div class="product-card-bottom">
+                     <div class="product-status-{{product?.isActive}}">
+                        <ng-container *ngIf="product?.isActive == true">
+                           Active
+                        </ng-container>
+                        <ng-container *ngIf="product?.isActive == false">
+                           Inactive
+                        </ng-container>
+                     </div>
+                     <div class="card-edit-btn">
+                        <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
+                           [queryParams]="{ product: product?.slug }" class="fs-5 cursor-pointer text-darker">
+                           Edit
+                        </button>
+                     </div>
                   </div>
                </div>
             </div>

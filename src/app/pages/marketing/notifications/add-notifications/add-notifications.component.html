@@ -103,6 +103,10 @@
                            <textarea class=" form-control fs-5" formControlName="content" style="resize: none"
                               id="content" rows="5"
                               [ngClass]="{'is-invalid':(nf.content.touched || isSubmitted) && nf.content.errors?.required}"></textarea>
+                           <!-- <div class="NgxEditor__Wrapper">
+                              <ngx-text-editor [spellcheck]="true"
+                                 [(ngModel)]="htmlContent" [config]="config"></ngx-text-editor>
+                           </div> -->
                         </div>
                      </div>
                      <div class="col-12">

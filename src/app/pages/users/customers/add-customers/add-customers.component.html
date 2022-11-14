@@ -50,7 +50,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Email</label>
-                           <input type="text" class="form-control fs-5" formControlName="email" [ngClass]="{
+                           <input type="email" class="form-control fs-5" formControlName="email" [ngClass]="{
                               'is-invalid':
                               (cf.email.touched || isSubmitted) &&
                               cf.email.errors?.required
@@ -60,7 +60,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Mobile No.</label>
-                           <input type="text" class="form-control fs-5" formControlName="mobile"
+                           <input type="number" class="form-control fs-5" formControlName="mobile"
                               (change)="validateNumber($event.target)" [ngClass]="{
                               'is-invalid':
                               (cf.mobile.touched || isSubmitted) &&
@@ -72,7 +72,7 @@
                         <label class="fs-5 mb-3 form-title">Wallet Balance</label>
                         <div class="input-group mb-3">
                            <span class="input-group-text">Rs</span>
-                           <input type="text" class="form-control" formControlName="walletBalance" [ngClass]="{
+                           <input type="number" class="form-control" formControlName="walletBalance" [ngClass]="{
                               'is-invalid':
                               (cf.walletBalance.touched || isSubmitted) &&
                               cf.walletBalance.errors?.required
@@ -82,12 +82,12 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Status</label>
+                           <label class="fs-5 mb-3 form-title">Active Customer?</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Active</option>
-                              <option value="false">Inactive</option>
+                              <option value="true">Yes</option>
+                              <option value="false">No</option>
                            </select>
                         </div>
                      </div>
@@ -154,7 +154,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Pincode</label>
-                           <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
+                           <input type="number" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                               'is-invalid':
                               (cf.pincode.touched || isSubmitted) &&
                               cf.pincode.errors?.required
@@ -164,13 +164,13 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title"> Latitude</label>
-                           <input type="text" class="form-control fs-5" formControlName="lat" />
+                           <input type="number" class="form-control fs-5" formControlName="lat" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title"> Longitude</label>
-                           <input type="text" class="form-control fs-5" formControlName="lng" />
+                           <input type="number" class="form-control fs-5" formControlName="lng" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
