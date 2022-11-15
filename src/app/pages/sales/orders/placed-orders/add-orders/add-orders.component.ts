@@ -25,6 +25,7 @@ export class AddOrdersComponent implements OnInit {
   activeProducts: any
   custAddress: any
   activeCoupons: any
+  selectedCategories: any
 
   constructor(
     private orderService: OrdersService,

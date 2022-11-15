@@ -188,6 +188,9 @@ export class AddNotificationsComponent implements OnInit {
       isActive: this.notificationForm.get('isActive')?.value,
     }
 
+    console.log(data);
+    
+
     this.notificationsService.addNotification(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error(res?.message);

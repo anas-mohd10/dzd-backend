@@ -33,14 +33,19 @@
                      <div class="col-12">
                         <div class="form-group col-sm-6">
                            <label class="fs-5 mb-3 form-title required">Customer</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <!-- <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="customer" (change)="getAddress()"
                               [ngClass]="{ 'is-invalid': (of.customer.touched || isSubmitted) && of.customer.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
                               <option *ngFor="let cust of activeCustomersData" value="{{[cust?._id, cust?.userid]}}">
                                  {{cust?.firstname}}
                               </option>
-                           </select>
+                           </select> -->
+
+                           <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
+                              [(ngModel)]="selectedCategories" placeholder="Select category" [multiple]=true
+                              [ngModelOptions]="{standalone: true}">
+                           </ng-select>
                         </div>
                      </div>
                      <div class="col-12">

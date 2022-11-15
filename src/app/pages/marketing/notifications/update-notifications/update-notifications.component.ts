@@ -102,6 +102,9 @@ export class UpdateNotificationsComponent implements OnInit {
     })
   }
 
+  compareFn(item: any, selected: any) {
+    return item._id === selected._id;
+  }
 
   selectcustomer(event: any) {
     let val = event.value

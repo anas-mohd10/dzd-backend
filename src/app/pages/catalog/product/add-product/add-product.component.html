@@ -136,23 +136,6 @@
 
               <!-- Category -->
               <div class="col-12 col-sm-6">
-                <!-- <div class="form-group">
-                  <label class="fs-5 mb-3 required">Category</label>
-                  <select class="form-select" formControlName="categories" (change)="tagCategoryInput()" [ngClass]="{
-                    'is-invalid': (pf.categories.touched || isSubmitted) && pf.categories.errors?.required}">
-                    <option value="example" disabled>-- Select a Category --</option>
-                    <option *ngFor="let category of categoryData" value="{{ category?._id }}">{{ category?.name }}
-                    </option>
-                  </select>
-                </div>
-                <div class="tag-inputs col-12">
-                  <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input">
-                      <div class="tag-name">{{ category }}</div>
-                      <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
-                    </span>
-                  </ng-container>
-                </div> -->
                 <label class="fs-5 mb-3 required">Category</label>
                 <ng-select [items]="categoryData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCategories"
                   placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
@@ -161,13 +144,6 @@
 
               <!-- Brand -->
               <div class="col-12 col-sm-6">
-                <!-- <div class="form-group">
-                  <select name="brand" formControlName="brandId" class="form-select" [ngClass]="{
-                    'is-invalid':(pf.brandId.touched || isSubmitted) && pf.brandId.errors?.required}">
-                    <option value="example" disabled>-- Select a Brand --</option>
-                    <option *ngFor="let brand of brandData" value="{{ brand?._id }}">{{ brand?.name }}</option>
-                  </select>
-                </div> -->
                 <label class="fs-5 mb-3 required">Brand</label>
                 <div class="brand-select">
                   <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
@@ -274,21 +250,6 @@
 
               <!-- Related Products -->
               <div class="col-12 col-sm-6">
-                <!-- <div class="form-group">
-                  <label class="fs-5 mb-3 required">Related Products</label>
-                  <select class="form-select" formControlName="relatedProducts" (change)="tagProductAdd($event.target)">
-                    <option value="example" disabled>-- Select Related Products --</option>
-                    <option *ngFor="let product of productsData" value="{{ product?._id }}">{{ product?.name }}</option>
-                  </select>
-                  <div class="tag-inputs col-12">
-                    <ng-container *ngFor="let value of relProductNames">
-                      <span class="tag-input">
-                        <div class="tag-name">{{ value }}</div>
-                        <i class="bi bi-x" (click)="tagProductRemove(value)"></i>
-                      </span>
-                    </ng-container>
-                  </div>
-                </div> -->
                 <label class="fs-5 mb-3">Related Products</label>
                 <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
                   placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
