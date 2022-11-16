@@ -6,7 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/includes/services/product.service'
 import { LayoutService } from 'src/app/includes/services/layout.service';
-
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-layout-list',
@@ -25,8 +26,16 @@ export class UpdateLayoutListComponent implements OnInit {
   localData: any = []
   dataFiles: any = []
   url: any;
-  slug: any;
-  layoutData: any;
+  filedata: any
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+  filename: any
+  loadImage: boolean = false;
+  productName: any
+  selectedProduct: string;
+  slug: any = ''
+  layoutData: any
+  base: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +48,7 @@ export class UpdateLayoutListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm()
     this.managePage()
     this.getProducts()
@@ -94,50 +104,49 @@ export class UpdateLayoutListComponent implements OnInit {
       this.layoutForm.get("type")?.setValue(res?.result[0].type)
       this.cdr.markForCheck();
       for (let file of res?.result[0].files) {
-        this.localData.push({
+        this.dataFiles.push({
           id: file.id,
           product: file.product,
-          url: file.redirectionURL,
-          file: `http://localhost:3000/${file.file}`
+          refid: file.refid,
+          redirect: file.redirectionURL,
+          url: file.file,
+          file: file.file
         })
       }
     })
   }
 
   addFile() {
-    //Form fields
-    let product = this.layoutForm.get("product")?.value
-    let redirectionURL = this.layoutForm.get("redirectionURL")?.value
     let maxVal = this.layoutForm.get("gridCount")?.value
-
-    if (product && this.url != '') {
-      if (maxVal > this.localData.length) {
-        //Files for db
-        this.files.push({
-          product: product,
-          id: this.files.length,
-          redirectionURL: redirectionURL
-        })
-
-        //Localdata for preview purpose
+    if (this.selectedProduct && this.url != '') {
+      if (maxVal > this.dataFiles.length) {
         for (let prod of this.productsData) {
-          if (prod._id == product) {
-            this.localData.push({
-              id: this.localData.length,
-              product: prod.name,
-              url: redirectionURL,
-              file: this.url
-            })
+          if (prod?.prodid == this.selectedProduct) {
+            this.productName = prod?.name
           }
         }
+        let prevlen = this.dataFiles.length
+        this.dataFiles.push({
+          filestring: this.croppedImage,
+          url: this.url,
+          redirect: this.layoutForm.get("redirectionURL")?.value,
+          filename: this.filename,
+          id: this.dataFiles.length,
+          product: this.selectedProduct,
+          prodName: this.productName
+        })
 
-        //Reset values to null
-        this.layoutForm.get("product")?.setValue('')
-        this.layoutForm.get("redirectionURL")?.setValue('')
-        this.layoutForm.get("file")?.setValue('')
-        this.dataFiles.pop()
+        this.croppedImage = ''
+        this.filename = ''
+        let newlen = this.dataFiles.length
+        if (prevlen < newlen) {
+          this.loadImage = false
+          this.layoutForm.get("redirectionURL")?.setValue('')
+          this.layoutForm.get("file")?.setValue('')
+          this.selectedProduct = ''
+        }
       } else {
-        this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
+        this.toastr.warning(`No.of files that can be uploaded is ${maxVal}.To upload more, change grid count value`);
       }
     } else {
       this.toastr.error(`Kindly fill required fields`);
@@ -145,7 +154,7 @@ export class UpdateLayoutListComponent implements OnInit {
   }
 
   removeFile(id: any) {
-    this.localData = this.localData.filter((_data: any) => _data.id != id)
+    this.dataFiles = this.dataFiles.filter((_data: any) => _data.product != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
   }
 
@@ -156,11 +165,32 @@ export class UpdateLayoutListComponent implements OnInit {
       reader.onload = (e: any) => {
         this.url = e.target.result
       }
-      for (let i = 0; i < event.target.files.length; i++) {
-        this.images.push(event.target.files[i])
-        this.dataFiles.push(event.target.files[i])
-      }
     }
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
   }
 
   onSubmit() {
@@ -177,35 +207,35 @@ export class UpdateLayoutListComponent implements OnInit {
       this.toastr.error('Kindly fill required fields...');
       return;
     }
-    const formdata = new FormData();
-    if (this.images != null && this.images != undefined) {
-      for (let img of this.images) {
-        formdata.append('file', img);
-      }
-      formdata.append('file', this.images)
+    const payload = this.createPayload()
+    if (payload) {
+      this.layoutService.updateLayout(this.slug, payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something went wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Layout updated successfully');
+          this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
+        }
+      })
     }
-    for (const data of Object.keys(this.layoutForm.value)) {
-      formdata.append(data, this.layoutForm.value[data]);
+  }
+
+  createPayload() {
+    const data = {
+      title: this.layoutForm.get('title')?.value,
+      validFrom: this.layoutForm.get('validFrom')?.value,
+      validTo: this.layoutForm.get('validTo')?.value,
+      isActive: this.layoutForm.get('isActive')?.value,
+      gridCount: this.layoutForm.get('gridCount')?.value,
+      type: this.layoutForm.get('type')?.value,
+      files: this.dataFiles,
+      layid: this.slug
     }
-    formdata.append("data", JSON.stringify(this.files))
-    this.layoutService.updateLayout(this.slug, formdata).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Layout updated successfully');
-        this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
-      }
-    })
+    console.log(this.dataFiles);
+
+    return data
   }
 
   addLayout() {
-  }
-
-  checkDate() {
-    let validFrom = this.layoutForm.get("validFrom")?.value
-    let validTo = this.layoutForm.get("validTo")?.value
-    if (validFrom > validTo) {
-      this.toastr.error(`Date is not Valid`);
-    }
   }
 }

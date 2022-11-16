@@ -33,7 +33,7 @@ export class BannerListComponent implements OnInit {
     this.base = environment.base
 
     this.bannerService.getBannersByPage(this.page, this.limit).subscribe((res: any) => {
-      this.banners = res?.result
+      this.banners = JSON.parse(res?.result)
       this.count = this.banners.length
       this.cdr.markForCheck()
     })

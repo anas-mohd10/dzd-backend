@@ -24,28 +24,31 @@
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} banners</h4>
    </div>
    <!-- card containe start -->
-   <div class="banner-card-container">
+   <div class="banner-card-container view-container col-12">
       <ng-container *ngFor="let banner of banners">
-         <div class="banner-card">
-            <div class="banner-card-left">
-               <div class="banner-title">{{banner?.title}}</div>
-               <div class="banner-from">Valid from <span>{{banner?.validFrom}}</span></div>
-               <div class="banner-till">Valid to <span>{{banner?.validTo}}</span></div>
-               <div class="banner-position">Position <span>{{banner?.position}}</span></div>
-               <div class="banner-status" *ngIf="banner?.isActive">Active</div>
-               <div class="banner-status" *ngIf="!banner?.isActive">Inactive</div>
-               <div class="banner-edit-btn">
-                  <a [routerLink]="appRoute.banner.UPDATE_BANNER" [queryParams]="{banner: banner?.slug}">Edit</a>
+         <div class="col-sm-6">
+            <div class="banner-card card-hover"
+               [ngClass]="{'inactive-banner': !banner?.isActive, 'active-banner': banner?.isActive}">
+               <div class="banner-card-left">
+                  <div class="banner-title">{{banner?.title}}</div>
+                  <div class="banner-from">Valid from <span>{{banner?.validFrom}}</span></div>
+                  <div class="banner-till">Valid to <span>{{banner?.validTo}}</span></div>
+                  <div class="banner-position">Position <span>{{banner?.position}}</span></div>
+                  <div class="banner-status" *ngIf="banner?.isActive">Active</div>
+                  <div class="banner-status" *ngIf="!banner?.isActive">Inactive</div>
+                  <div class="banner-edit-btn">
+                     <a [routerLink]="appRoute.banner.UPDATE_BANNER" [queryParams]="{banner: banner?.bannerid}">Edit</a>
+                  </div>
                </div>
-            </div>
-            <div class="banner-card-right">
-               <div class="banner-web-image">
-                  <img src="{{base}}/{{banner?.w_file}}" alt="web banner">
-                  <div class="banner-image-text">Web banner</div>
-               </div>
-               <div class="banner-mobile-image">
-                  <img src="{{base}}/{{banner?.m_file}}" alt="mobile banner">
-                  <div class="banner-image-text">Mobile banner</div>
+               <div class="banner-card-right">
+                  <div class="banner-web-image">
+                     <img src="{{base}}/{{banner?.w_file}}" alt="web banner">
+                     <div class="banner-image-text">Web banner</div>
+                  </div>
+                  <div class="banner-mobile-image">
+                     <img src="{{base}}/{{banner?.m_file}}" alt="mobile banner">
+                     <div class="banner-image-text">Mobile banner</div>
+                  </div>
                </div>
             </div>
          </div>

@@ -3,10 +3,18 @@
    flex-wrap: wrap;
    margin: 10px 0 0 0;
    width: 100%;
+
+   .inactive-layout{
+      background: rgba(255, 0, 0, 0.08);
+   }
+
+   .active-layout{
+      background: rgba(0, 255, 128, 0.08);
+   }
 }
 
 .layout-card {
-   width: calc(50% - 20px);
+   width: 98%;
    margin: 10px 10px 10px 0;
    height: 220px;
    padding: 10px 30px;

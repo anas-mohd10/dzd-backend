@@ -1,12 +1,11 @@
-
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
 import { BannerService } from 'src/app/includes/services/banner.service';
-import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-update-banner-list',
@@ -24,51 +23,63 @@ export class UpdateBannerListComponent implements OnInit {
   images: any = [];
   eImages: any = [] //Exsisting images
   isSubmitted = false;
+  imageWebChangedEvent: any = '';
+  imageMobileChangedEvent: any = '';
+  croppedImage: any = '';
 
+  webLoadImage: boolean = false;
+  mobileLoadImage: boolean = false
+
+  w_file: any
+  m_file: any
+
+  w_name: any
+  m_name: any
+
+  web_file: any
+  mobile_file: any
   constructor(
     private formBuilder: FormBuilder,
-    private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
     private bannerService: BannerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.slug = this.route.snapshot.queryParams.banner || ''
     this.getBanner()
-    this.getProduct()
     this.initForm()
     this.managePage()
   }
 
-  getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
-      this.productsData = res?.result
-    })
-  }
-
   getBanner() {
-    console.log(this.slug);
     this.bannerService.getBanner(this.slug).subscribe((res: any) => {
       this.bannerData = res?.result[0]
-      this.eImages.push(this.bannerData?.bFile)
-      this.eImages.push(this.bannerData?.mbFile)
       this.bannerForm.get("title")?.setValue(res?.result[0].title)
       this.bannerForm.get("position")?.setValue(res?.result[0].position)
       this.bannerForm.get("validFrom")?.setValue(res?.result[0].validFrom)
       this.bannerForm.get("validTo")?.setValue(res?.result[0].validTo)
       this.bannerForm.get("isActive")?.setValue(res?.result[0].isActive)
-      this.bannerForm.get("product")?.setValue(res?.result[0].product)
       this.bannerForm.get("redirectURL")?.setValue(res?.result[0].redirectURL)
+      this.web_file = this.bannerData?.w_file
+      this.mobile_file = this.bannerData?.m_file
+      this.cdr.markForCheck()
     })
   }
 
-  handleInputChange(event: any) {
-    if (event.target.files.length > 0) {
-      for (let i = 0; i < event.target.files.length; i++) {
-        this.images.push(event.target.files[i])
-      }
+  handleInputChange(event: any, key: any) {
+    if (key === 'web') {
+      this.w_file = event.target.files[0]
+      this.w_name = this.w_file.name
+      this.imageWebChangedEvent = event;
+      this.webLoadImage = true
+    } else if (key === 'mobile') {
+      this.m_file = event.target.files[0]
+      this.m_name = this.m_file.name
+      this.imageMobileChangedEvent = event;
+      this.mobileLoadImage = true
     }
   }
 
@@ -80,7 +91,6 @@ export class UpdateBannerListComponent implements OnInit {
       validTo: ['', Validators.required],
       redirectURL: [''],
       isActive: ['true', Validators.required],
-      product: [''],
     });
   }
 
@@ -101,33 +111,79 @@ export class UpdateBannerListComponent implements OnInit {
     }
   }
 
+  imageCroppedWeb(event: ImageCroppedEvent) {
+    this.web_file = event.base64;
+  }
+
+  imageCroppedMobile(event: ImageCroppedEvent) {
+    this.mobile_file = event.base64;
+  }
+
+  imageWebLoaded() {
+    // show cropper
+  }
+
+  cropperWebReady() {
+    // cropper ready
+  }
+
+  loadImageWebFailed() {
+    // show message
+  }
+
+  imageMobileLoaded() {
+    // show cropper
+  }
+
+  cropperMobileReady() {
+    // cropper ready
+  }
+
+  loadImageMobileFailed() {
+    // show message
+  }
+
+  removeImage(key: any) {
+    this.croppedImage = ''
+    if (key === 'web') {
+      this.webLoadImage = false
+    } else if (key === 'mobile') {
+      this.mobileLoadImage = false
+    }
+  }
+
   onSubmit() {
     if (!this.bannerForm.valid) {
       return;
     }
-    const formData = new FormData();
-    if (this.images != null && this.images != undefined) {
-      for (let img of this.images) {
-        formData.append('file', img);
-      }
-      formData.append('file', this.images)
-    } else {
-      formData.append("bFile", this.eImages[0])
-      formData.append("mbFile", this.eImages[1])
+
+    const payload = this.createPayload()
+    if (payload) {
+      this.bannerService.updateBanner(this.slug, payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something went wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Banner updated successfully');
+          this.router.navigate([this.appRoute.banner.BANNER_LIST]);
+        }
+      })
     }
-    console.log(this.images);
-    console.log(this.eImages);
-    for (const data of Object.keys(this.bannerForm.value)) {
-      formData.append(data, this.bannerForm.value[data]);
+  }
+
+  createPayload() {
+    const data = {
+      title: this.bannerForm.get('title')?.value,
+      position: this.bannerForm.get('position')?.value,
+      validFrom: this.bannerForm.get('validFrom')?.value,
+      isActive: this.bannerForm.get('isActive')?.value,
+      validTo: this.bannerForm.get('validTo')?.value,
+      w_file: this.web_file,
+      w_name: this.w_name,
+      m_file: this.mobile_file,
+      m_name: this.m_name,
+      bannerid: this.slug
     }
-    this.bannerService.updateBanner(this.slug, formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Banner updated successfully');
-        this.router.navigate([this.appRoute.banner.BANNER_LIST]);
-      }
-    })
+    return data
   }
 
 

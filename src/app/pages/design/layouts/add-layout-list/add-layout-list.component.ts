@@ -112,6 +112,7 @@ export class AddLayoutListComponent implements OnInit {
           this.loadImage = false
           this.layoutForm.get("redirectionURL")?.setValue('')
           this.layoutForm.get("file")?.setValue('')
+          this.selectedProduct = ''
         }
       } else {
         this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
@@ -122,7 +123,7 @@ export class AddLayoutListComponent implements OnInit {
   }
 
   removeFile(id: any) {
-    this.localData = this.localData.filter((_data: any) => _data.id != id)
+    this.dataFiles = this.dataFiles.filter((_data: any) => _data.product != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
   }
 
@@ -178,6 +179,20 @@ export class AddLayoutListComponent implements OnInit {
       this.toastr.error('Kindly fill required fields');
       return;
     }
+    const payload = this.createPayload()
+    if (payload) {
+      this.layoutService.addLayout(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
+        }
+      })
+    }
+  }
+
+  createPayload() {
     const data = {
       title: this.layoutForm.get('title')?.value,
       validFrom: this.layoutForm.get('validFrom')?.value,
@@ -187,13 +202,6 @@ export class AddLayoutListComponent implements OnInit {
       type: this.layoutForm.get('type')?.value,
       files: this.dataFiles
     }
-    this.layoutService.addLayout(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
-      }
-    })
+    return data
   }
 }
