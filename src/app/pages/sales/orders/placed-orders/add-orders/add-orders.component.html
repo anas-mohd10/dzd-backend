@@ -42,9 +42,9 @@
                               </option>
                            </select> -->
 
-                           <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
-                              [(ngModel)]="selectedCategories" placeholder="Select category" [multiple]=true
-                              [ngModelOptions]="{standalone: true}">
+                           <ng-select [items]="activeCustomersData" bindLabel="firstname" bindValue="userid"
+                              [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=true
+                              [ngModelOptions]="{standalone: true}" (change)="getAddress()">
                            </ng-select>
                         </div>
                      </div>

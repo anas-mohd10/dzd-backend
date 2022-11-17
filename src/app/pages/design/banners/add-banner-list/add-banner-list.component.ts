@@ -65,7 +65,6 @@ export class AddBannerListComponent implements OnInit {
       validTo: ['', Validators.required],
       redirectURL: [''],
       isActive: ['true', Validators.required],
-      product: [''],
     });
   }
 
@@ -159,7 +158,6 @@ export class AddBannerListComponent implements OnInit {
       isActive: this.bannerForm.get('isActive')?.value,
       redirectionUrl: this.bannerForm.get('redirectURL')?.value,
       validTo: this.bannerForm.get('validTo')?.value,
-      product: this.bannerForm.get('product')?.value,
       w_file: this.web_file,
       w_name: this.w_name,
       m_file: this.mobile_file,

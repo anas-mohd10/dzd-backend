@@ -25,7 +25,8 @@ export class AddOrdersComponent implements OnInit {
   activeProducts: any
   custAddress: any
   activeCoupons: any
-  selectedCategories: any
+  selectedCustomer: any
+  customerId: any;
 
   constructor(
     private orderService: OrdersService,
@@ -45,13 +46,11 @@ export class AddOrdersComponent implements OnInit {
     this.getActiveCustomers()
     this.getActiveProducts()
     this.getActiveCoupons()
-
   }
 
   initForm() {
     this.orderForm = this.formBuilder.group({
       paymentMethod: ['', Validators.required],
-      customer: ['', Validators.required],
       firstline: ['', Validators.required],
       secondline: [''],
       area: [''],
@@ -106,9 +105,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   getAddress() {
-    let data = this.orderForm.get("customer")?.value
-    let slug = data.split(',')[1]
-    this.customerService.getCustomerBySlug(slug).subscribe((res: any) => {
+    this.customerService.getCustomerBySlug(this.selectedCustomer).subscribe((res: any) => {
+      this.customerId = res?.result[0]._id
       this.orderForm.get("firstline")?.setValue(res?.result[0].address[0].firstline)
       this.orderForm.get("secondline")?.setValue(res?.result[0].address[0].secondline)
       this.orderForm.get("city")?.setValue(res?.result[0].address[0].city)
@@ -159,7 +157,7 @@ export class AddOrdersComponent implements OnInit {
 
     let data = this.orderForm.value
     let payload = {
-      customerId: data.customer.split(",")[0],
+      customerId: this.customerId,
       address: {
         firstline: data.firstline,
         secondline: data.secondline,
