@@ -164,16 +164,7 @@
                                        </div>
                                     </ng-container>
                                  </div>
-                                 <div class="col-12" style="margin-top: 50px;">
-                                    <label class="fs-5 mb-3 form-title required">Product</label>
-                                    <div class="product-select-dropdown">
-                                       <ng-select [items]="productsData" bindLabel="name" bindValue="prodid"
-                                          [(ngModel)]="selectedProduct" [ngModelOptions]="{standalone: true}"
-                                          placeholder="Select product">
-                                       </ng-select>
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
+                                 <div class="col-12 mt-20">
                                     <div class="form-group">
                                        <label class="fs-5 mb-3">Redirection URL</label>
                                        <input type="text" formControlName="redirectionURL" class="form-control fs-5">
@@ -196,22 +187,16 @@
                               <div class="layout-card">
                                  <div class="prod-details-layout fs-5 fw-bold mt-3">
                                     <div class="prod-img-layout mt-3">
-                                       <img class="layout-preview" *ngIf='layout?.refid' src="{{base}}/{{layout?.url}}"
-                                          alt="" srcset="">
-                                       <img class="layout-preview" *ngIf='!layout?.refid' [src]="layout?.url" alt=""
-                                          srcset="">
-                                    </div>
-                                    <div class="prod-name fs-5 fw-bold mt-3" *ngIf='layout?.refid'>
-                                       Product : {{layout?.product?.name}}
-                                    </div>
-                                    <div class="prod-name fs-5 fw-bold mt-3" *ngIf='!layout?.refid'>
-                                       Product : {{layout?.prodName}}
+                                       <img class="layout-preview" *ngIf="!layout?.isNew" src="{{base}}/{{layout?.url}}"
+                                          alt="layout-image">
+                                       <img class="layout-preview" *ngIf="layout?.isNew" [src]="layout?.url"
+                                          alt="layout-image">
                                     </div>
                                  </div>
                                  <div class="prod-url fs-5 fw-bold mt-3">
                                     Redirection URL : {{layout?.redirect}}
                                  </div>
-                                 <div class="close-icon bg-dark" (click)="removeFile(layout?.product)">
+                                 <div class="close-icon bg-dark" (click)="removeFile(layout?.id)">
                                     <i class="bi bi-x-lg"></i>
                                  </div>
                               </div>

@@ -12,6 +12,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   templateUrl: './update-banner-list.component.html',
   styleUrls: ['./update-banner-list.component.scss']
 })
+
 export class UpdateBannerListComponent implements OnInit {
   task = PageTasks.UPDATE;
   editMode = false;
@@ -26,7 +27,7 @@ export class UpdateBannerListComponent implements OnInit {
   imageWebChangedEvent: any = '';
   imageMobileChangedEvent: any = '';
   croppedImage: any = '';
-
+  
   webLoadImage: boolean = false;
   mobileLoadImage: boolean = false
 
@@ -62,7 +63,7 @@ export class UpdateBannerListComponent implements OnInit {
       this.bannerForm.get("validFrom")?.setValue(res?.result[0].validFrom)
       this.bannerForm.get("validTo")?.setValue(res?.result[0].validTo)
       this.bannerForm.get("isActive")?.setValue(res?.result[0].isActive)
-      this.bannerForm.get("redirectURL")?.setValue(res?.result[0].redirectURL)
+      this.bannerForm.get("redirectURL")?.setValue(res?.result[0].redirectionUrl)
       this.web_file = this.bannerData?.w_file
       this.mobile_file = this.bannerData?.m_file
       this.cdr.markForCheck()
@@ -175,6 +176,7 @@ export class UpdateBannerListComponent implements OnInit {
       title: this.bannerForm.get('title')?.value,
       position: this.bannerForm.get('position')?.value,
       validFrom: this.bannerForm.get('validFrom')?.value,
+      redirectionUrl: this.bannerForm.get('redirectURL')?.value,
       isActive: this.bannerForm.get('isActive')?.value,
       validTo: this.bannerForm.get('validTo')?.value,
       w_file: this.web_file,
@@ -185,6 +187,4 @@ export class UpdateBannerListComponent implements OnInit {
     }
     return data
   }
-
-
 }

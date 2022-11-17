@@ -19,7 +19,6 @@ export class AddLayoutListComponent implements OnInit {
   appRoute = appRoutes
   layoutForm: FormGroup
   isSubmitted = false;
-  productsData: any;
   images: any = [];
   files: any = []
   localData: any = []
@@ -30,8 +29,6 @@ export class AddLayoutListComponent implements OnInit {
   croppedImage: any = '';
   filename: any
   loadImage: boolean = false;
-  productName: any
-  selectedProduct: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +42,6 @@ export class AddLayoutListComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.managePage()
-    this.getProducts()
   }
 
   initForm() {
@@ -56,7 +52,6 @@ export class AddLayoutListComponent implements OnInit {
       isActive: ['true'],
       gridCount: ['1'],
       type: ['Slider'],
-      product: [''],
       redirectionURL: [''],
       file: ['']
     });
@@ -79,51 +74,33 @@ export class AddLayoutListComponent implements OnInit {
     }
   }
 
-  getProducts() {
-    this.productService.getProductNames().subscribe((res: any) => {
-      this.productsData = res?.result
-      this.cdr.markForCheck()
-    })
-  }
-
   addFile() {
     let maxVal = this.layoutForm.get("gridCount")?.value
-    if (this.selectedProduct && this.url != '') {
-      if (maxVal > this.dataFiles.length) {
-        for (let prod of this.productsData) {
-          if (prod?.prodid == this.selectedProduct) {
-            this.productName = prod?.name
-          }
-        }
-        let prevlen = this.dataFiles.length
-        this.dataFiles.push({
-          filestring: this.croppedImage,
-          url: this.url,
-          redirect: this.layoutForm.get("redirectionURL")?.value,
-          filename: this.filename,
-          id: this.dataFiles.length,
-          product: this.selectedProduct,
-          prodName: this.productName
-        })
-        this.croppedImage = ''
-        this.filename = ''
-        let newlen = this.dataFiles.length
-        if (prevlen < newlen) {
-          this.loadImage = false
-          this.layoutForm.get("redirectionURL")?.setValue('')
-          this.layoutForm.get("file")?.setValue('')
-          this.selectedProduct = ''
-        }
-      } else {
-        this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
+    if (maxVal > this.dataFiles.length) {
+      let prevlen = this.dataFiles.length
+      this.dataFiles.push({
+        filestring: this.croppedImage,
+        url: this.url,
+        redirect: this.layoutForm.get("redirectionURL")?.value,
+        filename: this.filename,
+        id: this.dataFiles.length,
+      })
+      this.croppedImage = ''
+      this.filename = ''
+      this.loadImage = false
+      let newlen = this.dataFiles.length
+      if (prevlen < newlen) {
+        this.loadImage = false
+        this.layoutForm.get("redirectionURL")?.setValue('')
+        this.layoutForm.get("file")?.setValue('')
       }
     } else {
-      this.toastr.error(`Kindly fill required fields`);
+      this.toastr.warning(`No. of files that can be uploaded is ${maxVal}. To upload more, change grid count value`);
     }
   }
 
   removeFile(id: any) {
-    this.dataFiles = this.dataFiles.filter((_data: any) => _data.product != id)
+    this.dataFiles = this.dataFiles.filter((_data: any) => _data.id != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
   }
 

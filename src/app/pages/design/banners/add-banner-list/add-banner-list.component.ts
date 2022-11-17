@@ -157,6 +157,7 @@ export class AddBannerListComponent implements OnInit {
       position: this.bannerForm.get('position')?.value,
       validFrom: this.bannerForm.get('validFrom')?.value,
       isActive: this.bannerForm.get('isActive')?.value,
+      redirectionUrl: this.bannerForm.get('redirectURL')?.value,
       validTo: this.bannerForm.get('validTo')?.value,
       product: this.bannerForm.get('product')?.value,
       w_file: this.web_file,

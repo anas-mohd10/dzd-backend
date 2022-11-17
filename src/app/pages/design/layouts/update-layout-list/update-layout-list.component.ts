@@ -64,7 +64,6 @@ export class UpdateLayoutListComponent implements OnInit {
       isActive: ['true'],
       gridCount: ['1'],
       type: ['slider'],
-      product: [''],
       redirectionURL: [''],
       file: ['']
     });
@@ -106,11 +105,9 @@ export class UpdateLayoutListComponent implements OnInit {
       for (let file of res?.result[0].files) {
         this.dataFiles.push({
           id: file.id,
-          product: file.product,
-          refid: file.refid,
-          redirect: file.redirectionURL,
+          redirect: file.redirect,
           url: file.file,
-          file: file.file
+          file: file.file,
         })
       }
     })
@@ -118,43 +115,32 @@ export class UpdateLayoutListComponent implements OnInit {
 
   addFile() {
     let maxVal = this.layoutForm.get("gridCount")?.value
-    if (this.selectedProduct && this.url != '') {
-      if (maxVal > this.dataFiles.length) {
-        for (let prod of this.productsData) {
-          if (prod?.prodid == this.selectedProduct) {
-            this.productName = prod?.name
-          }
-        }
-        let prevlen = this.dataFiles.length
-        this.dataFiles.push({
-          filestring: this.croppedImage,
-          url: this.url,
-          redirect: this.layoutForm.get("redirectionURL")?.value,
-          filename: this.filename,
-          id: this.dataFiles.length,
-          product: this.selectedProduct,
-          prodName: this.productName
-        })
-
-        this.croppedImage = ''
-        this.filename = ''
-        let newlen = this.dataFiles.length
-        if (prevlen < newlen) {
-          this.loadImage = false
-          this.layoutForm.get("redirectionURL")?.setValue('')
-          this.layoutForm.get("file")?.setValue('')
-          this.selectedProduct = ''
-        }
-      } else {
-        this.toastr.warning(`No.of files that can be uploaded is ${maxVal}.To upload more, change grid count value`);
+    if (maxVal > this.dataFiles.length) {
+      let prevlen = this.dataFiles.length
+      this.dataFiles.push({
+        filestring: this.croppedImage,
+        url: this.url,
+        redirect: this.layoutForm.get("redirectionURL")?.value,
+        filename: this.filename,
+        id: this.dataFiles.length,
+        isNew: true
+      })
+      this.loadImage = false
+      this.croppedImage = ''
+      this.filename = ''
+      let newlen = this.dataFiles.length
+      if (prevlen < newlen) {
+        this.loadImage = false
+        this.layoutForm.get("redirectionURL")?.setValue('')
+        this.layoutForm.get("file")?.setValue('')
       }
     } else {
-      this.toastr.error(`Kindly fill required fields`);
+      this.toastr.warning(`No.of files that can be uploaded is ${maxVal}.To upload more, change grid count value`);
     }
   }
 
   removeFile(id: any) {
-    this.dataFiles = this.dataFiles.filter((_data: any) => _data.product != id)
+    this.dataFiles = this.dataFiles.filter((_data: any) => _data.id != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
   }
 
@@ -211,9 +197,9 @@ export class UpdateLayoutListComponent implements OnInit {
     if (payload) {
       this.layoutService.updateLayout(this.slug, payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
+          this.toastr.error(res?.message);
         } else if (res.errorCode == 0) {
-          this.toastr.success('Layout updated successfully');
+          this.toastr.success(res?.message);
           this.router.navigate([this.appRoute.layout.LAYOUT_LIST]);
         }
       })
