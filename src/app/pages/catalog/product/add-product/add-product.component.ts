@@ -23,6 +23,7 @@ export class AddProductComponent implements OnInit {
   isSubmitted = false;
 
   filedata: File;
+  fileThumbnaildata: File
   type: any;
   isSingle: boolean = false;
 
@@ -46,9 +47,13 @@ export class AddProductComponent implements OnInit {
   relProductIds: any = [];
 
   croppedImage: string | null | undefined;
+  thumbnailImage: string | null | undefined;
   loadImage: boolean;
+  loadThumbnailImage: boolean;
   imageChangedEvent: Event | undefined;
+  imageThumbnailChangedEvent: Event | undefined;
   filename: any;
+  thumbnailFilename: any
 
   //Styling variables
   background: any
@@ -107,14 +112,14 @@ export class AddProductComponent implements OnInit {
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
-      returnable: ['', Validators.required],
+      returnable: ['false', Validators.required],
       returnDays: [''],
       shippingMethod: ['', Validators.required],
       shippingCost: [''],
       value: ['', Validators.required],
       unit: ['', Validators.required],
       taxClassId: ['', Validators.required],
-      cod: ['', Validators.required],
+      cod: ['false', Validators.required],
       codCharge: [''],
       searchKeywords: [],
       relatedProducts: [],
@@ -259,6 +264,13 @@ export class AddProductComponent implements OnInit {
     this.loadImage = true
   }
 
+  handleInputThumbnailChange(event: any) {
+    this.fileThumbnaildata = <File>event.target.files[0];
+    this.thumbnailFilename = this.fileThumbnaildata.name
+    this.imageThumbnailChangedEvent = event;
+    this.loadThumbnailImage = true
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
   }
@@ -278,6 +290,27 @@ export class AddProductComponent implements OnInit {
   removeImage() {
     this.croppedImage = ''
     this.loadImage = false
+  }
+
+  imageThumbnailCropped(event: ImageCroppedEvent) {
+    this.thumbnailImage = event.base64;
+  }
+
+  thumbnailImageLoaded() {
+    // show cropper
+  }
+
+  cropperThumbnailReady() {
+    // cropper ready
+  }
+
+  loadThumbnailImageFailed() {
+    // show message
+  }
+
+  removeThumbnailImage() {
+    this.thumbnailImage = ''
+    this.loadThumbnailImage = false
   }
 
   getColors(type: any, e: any) {
@@ -302,12 +335,25 @@ export class AddProductComponent implements OnInit {
   updateProduct() { }
 
   addProduct() {
-    console.log(this.selectedCategories);
-
     if (!this.productForm.valid) {
       return;
     }
 
+    const payload = this.createPayload()
+    if (payload) {
+      this.productService.addProduct(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+          this.ngOnInit();
+        }
+      });
+    }
+  }
+
+  createPayload() {
     const data = {
       isSingle: this.productForm.get('isSingle')?.value,
       name: this.productForm.get('name')?.value,
@@ -341,6 +387,8 @@ export class AddProductComponent implements OnInit {
       position: this.productForm.get('position')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      thumbFilename: this.thumbnailFilename,
+      thumbFilestring: this.thumbnailImage,
       style: {
         background: this.productForm.get('background')?.value,
         border: this.productForm.get('border')?.value,
@@ -353,14 +401,6 @@ export class AddProductComponent implements OnInit {
       }
     }
 
-    this.productService.addProduct(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-        this.ngOnInit();
-      }
-    });
+    return data
   }
 }

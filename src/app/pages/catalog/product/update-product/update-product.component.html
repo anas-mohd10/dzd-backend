@@ -136,23 +136,6 @@
 
               <!-- Category -->
               <div class="col-12 col-sm-6">
-                <!-- <div class="form-group">
-                  <label class="fs-5 mb-3 required">Category</label>
-                  <select class="form-select" formControlName="categories" (change)="tagCategoryInput()" [ngClass]="{
-                    'is-invalid': (pf.categories.touched || isSubmitted) && pf.categories.errors?.required}">
-                    <option value="example" disabled>-- Select a Category --</option>
-                    <option *ngFor="let category of categoryData" value="{{ category?._id }}">{{ category?.name }}
-                    </option>
-                  </select>
-                </div>
-                <div class="tag-inputs col-12">
-                  <ng-container *ngFor="let category of categoryNames">
-                    <span class="tag-input">
-                      <div class="tag-name">{{ category }}</div>
-                      <i class="bi bi-x" (click)="tagCategoryRemove(category)"></i>
-                    </span>
-                  </ng-container>
-                </div> -->
                 <label class="fs-5 mb-3 required">Category</label>
                 <ng-select [items]="categoryData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCategories"
                   placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}"
@@ -162,14 +145,6 @@
 
               <!-- Brand -->
               <div class="col-12 col-sm-6">
-                <!-- <div class="form-group">
-                  <label class="fs-5 mb-3 required">Brand</label>
-                  <select name="brand" formControlName="brandId" class="form-select" [ngClass]="{
-                    'is-invalid':(pf.brandId.touched || isSubmitted) && pf.brandId.errors?.required}">
-                    <option value="example" disabled>-- Select a Brand --</option>
-                    <option *ngFor="let brand of brandData" value="{{ brand?._id }}">{{ brand?.name }}</option>
-                  </select>
-                </div> -->
                 <label class="fs-5 mb-3 required">Brand</label>
                 <div class="brand-select">
                   <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
@@ -277,21 +252,6 @@
 
               <!-- Related Products -->
               <div class="col-12 col-sm-6">
-                <!-- <div class="form-group">
-                  <label class="fs-5 mb-3 required">Related Products</label>
-                  <select class="form-select" formControlName="relatedProducts" (change)="tagProductAdd($event.target)">
-                    <option value="example" disabled>-- Select Related Products --</option>
-                    <option *ngFor="let product of productsData" value="{{ product?._id }}">{{ product?.name }}</option>
-                  </select>
-                  <div class="tag-inputs col-12">
-                    <ng-container *ngFor="let value of relProductNames">
-                      <span class="tag-input">
-                        <div class="tag-name">{{ value }}</div>
-                        <i class="bi bi-x" (click)="tagProductRemove(value)"></i>
-                      </span>
-                    </ng-container>
-                  </div>
-                </div> -->
                 <label class="fs-5 mb-3">Related Products</label>
                 <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
                   placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}"
@@ -465,10 +425,10 @@
                 </div>
               </div>
 
-              <!-- Product Image -->
+              <!-- Product image -->
               <div class="col-12 col-sm-6">
                 <div class="col-12">
-                  <h3 class="form-title required"><span>Media</span></h3>
+                  <h3 class="form-title required"><span>Product Image</span></h3>
                 </div>
                 <div class="form-group col-12">
                   <div class="image-upload col-sm-6">
@@ -486,36 +446,83 @@
                     </div>
                   </div>
                   <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{base}}/{{uploadedimg}}" alt="" style="width: 150px; height: 150px">
+                    <img src="{{p_img}}" alt="" style="width: 150px; height: 150px">
                   </div>
                 </div>
-              </div>
-              <ng-container *ngIf=" loadImage">
-                <div class="col-12 preview-section">
-                  <div class="crop-image col-sm-6">
-                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
-                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                      (loadImageFailed)="loadImageFailed()">
-                    </image-cropper>
-                  </div>
-                  <div class="uploads uploaded col-sm-6">
-                    <div class="close-icon bg-dark">
-                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                <ng-container *ngIf=" loadImage">
+                  <div class="col-12 preview-section" style="margin-top: 50px;">
+                    <div class="crop-image col-sm-6">
+                      <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                        [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                        (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()">
+                      </image-cropper>
                     </div>
-                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                    <div class="uploads uploaded col-sm-6">
+                      <div class="close-icon bg-dark">
+                        <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                      </div>
+                      <img class="preview-img" id="previewImage" [src]="croppedImage">
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+              <!-- Product thumbnail image -->
+              <div class="col-12 col-sm-6">
+                <div class="col-12">
+                  <h3 class="form-title required"><span>Thumbnail Image</span></h3>
+                </div>
+                <div class="form-group col-12">
+                  <div class="image-upload col-sm-6">
+                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                      (change)="handleInputChange($event)"
+                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                      style="height: 100px;" required>
+                    <div class="image-upload-div">
+                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                          srcset=""></div>
+                      <div class="right-text d-flex flex-column">
+                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                        <span class="right-text-note fs-7 text-gray-400">Upload up to 1 file</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="uploaded-image col-sm-6 mt-5">
+                    <img src="{{tp_img}}" alt="" style="width: 150px; height: 150px">
                   </div>
                 </div>
-              </ng-container>
+                <ng-container *ngIf="loadThumbnailImage">
+                  <div class="col-12 preview-section" style="margin-top: 50px;">
+                    <div class="crop-image col-sm-6">
+                      <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
+                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="400"
+                        [cropperMaxHeight]="400" format="png" (imageCropped)="imageThumbnailCropped($event)"
+                        (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
+                        (loadImageFailed)="loadThumbnailImageFailed()">
+                      </image-cropper>
+                    </div>
+                    <div class="uploads uploaded col-sm-6">
+                      <div class="close-icon bg-dark">
+                        <i class="bi bi-x-lg text-white" (click)="removeThumbnailImage()"></i>
+                      </div>
+                      <img class="preview-img" id="previewImage" [src]="thumbnailImage">
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
               <div class="col-12">
                 <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
                   (click)="onSubmit()">Add</button>
               </div>
+
             </div>
           </form>
+
           <div class="restore-container">
             <ng-container *ngIf="isArchived">
               <div class="col-12">
@@ -527,6 +534,7 @@
                   </select>
                 </div>
               </div>
+
               <div class="col-12">
                 <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
@@ -535,8 +543,10 @@
                 <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px"
                   (click)="restoreProduct()">Restore</button>
               </div>
+
             </ng-container>
           </div>
+
         </div>
       </div>
     </div>

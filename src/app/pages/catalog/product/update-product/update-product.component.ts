@@ -55,13 +55,25 @@ export class UpdateProductComponent implements OnInit {
   relProductNames: any = [];
   relProductIds: any = [];
   returnValue: any;
+
   croppedImage: string | null | undefined;
+  thumbnailImage: string | null | undefined;
+
   loadImage: boolean;
+  loadThumbnailImage: boolean;
+
   imageChangedEvent: Event | undefined;
+  imageThumbnailChangedEvent: Event | undefined;
+
   filename: any;
+  thumbnailFilename: any
+
   filedata: File;
+  fileThumbnaildata: File
+
   type: any;
   uploadedimg: any;
+  uploadedThumbnailImg: any
   base: string;
   //Styling variables
   background: any
@@ -75,6 +87,9 @@ export class UpdateProductComponent implements OnInit {
   isArchived: any
 
   restore = new FormControl('false');
+
+  p_img: any
+  tp_img: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -281,6 +296,9 @@ export class UpdateProductComponent implements OnInit {
         this.isSingle = false;
       }
       this.uploadedimg = this.productData?.file;
+      this.p_img = this.base + "/" + this.productData?.file;
+      this.uploadedThumbnailImg = this.productData?.thumbnail
+      this.tp_img = this.base + "/" + this.productData?.thumbnail
       this.productForm.get('isSingle')?.setValue(this.productType);
       this.productForm.get('name')?.setValue(this.productData.name);
       this.productForm.get('sku')?.setValue(this.productData.sku);
@@ -361,32 +379,6 @@ export class UpdateProductComponent implements OnInit {
     return item._id === selected._id;
   }
 
-  //Related products tag
-  tagProductAdd(event: any) {
-    let rProduct = event.value
-    if (!this.relProductIds.includes(rProduct)) {
-      this.relProductIds.push(rProduct)
-      for (let i = 0; i < this.productsData.length; i++) {
-        if (this.productsData[i]._id == rProduct) {
-          this.relProductNames.push(this.productsData[i].name)
-        }
-      }
-    } else {
-      this.toastr.info('Product already added');
-    }
-    this.productForm.get("relatedProducts")?.setValue('')
-  }
-
-  //Related product remove
-  tagProductRemove(_val: any) {
-    this.relProductNames = this.relProductNames.filter((_data: any) => _data != _val)
-    for (let i = 0; i < this.productsData.length; i++) {
-      if (this.productsData[i].name == _val) {
-        this.relProductIds = this.relProductIds.filter((_data: any) => _data != this.productsData[i]._id)
-      }
-    }
-  }
-
   onOptionsSelected() {
     this.filtered = this.brandData.filter(
       (t: { value: any }) => t.value == this.selected
@@ -398,6 +390,13 @@ export class UpdateProductComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+  }
+
+  handleInputThumbnailChange(event: any) {
+    this.fileThumbnaildata = <File>event.target.files[0];
+    this.thumbnailFilename = this.fileThumbnaildata.name
+    this.imageThumbnailChangedEvent = event;
+    this.loadThumbnailImage = true
   }
 
   imageCropped(event: ImageCroppedEvent) {
@@ -419,6 +418,27 @@ export class UpdateProductComponent implements OnInit {
   removeImage() {
     this.croppedImage = ''
     this.loadImage = false
+  }
+
+  imageThumbnailCropped(event: ImageCroppedEvent) {
+    this.thumbnailImage = event.base64;
+  }
+
+  thumbnailImageLoaded() {
+    // show cropper
+  }
+
+  cropperThumbnailReady() {
+    // cropper ready
+  }
+
+  loadThumbnailImageFailed() {
+    // show message
+  }
+
+  removeThumbnailImage() {
+    this.thumbnailImage = ''
+    this.loadThumbnailImage = false
   }
 
   onSubmit() {
@@ -470,7 +490,10 @@ export class UpdateProductComponent implements OnInit {
       position: this.productForm.get('position')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      thumbFilename: this.thumbnailFilename,
+      thumbFilestring: this.thumbnailImage,
       file: '',
+      thumbnail: '',
       style: {
         background: this.productForm.get('background')?.value,
         border: this.productForm.get('border')?.value,
@@ -486,6 +509,10 @@ export class UpdateProductComponent implements OnInit {
 
     if (this.uploadedimg) {
       data.file = this.uploadedimg
+    }
+
+    if (this.uploadedThumbnailImg) {
+      data.thumbnail = this.uploadedThumbnailImg
     }
 
     this.productService.updateProduct(this.productSlug, data).subscribe((res: any) => {
