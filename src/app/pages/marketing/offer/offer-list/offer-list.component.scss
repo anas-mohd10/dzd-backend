@@ -3,10 +3,14 @@
   flex-wrap: wrap;
   margin: 10px 0 0 0;
   width: 100%;
+
+  .editable-false{
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }
 
 .offer-card {
-  // width: calc(50% - 20px);
   margin: 10px 10px 10px 0;
   height: 200px;
   padding: 10px 20px;

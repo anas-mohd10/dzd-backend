@@ -29,6 +29,8 @@ export class AddOfferComponent implements OnInit {
   background: any
   border: any
   color: any
+  from_date: string;
+  to_date: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +41,11 @@ export class AddOfferComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const get_date = new Date().getDate()
+    const date = new Date()
+    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
+    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+
     this.initForm();
     this.managePage();
   }
@@ -50,8 +57,8 @@ export class AddOfferComponent implements OnInit {
       description: ['', Validators.required],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
-      isFeatured: ['false', Validators.required],
-      isActive: ['true', Validators.required],
+      isFeatured: ['false'],
+      isActive: ['true'],
       background: [''],
       border: [''],
       radius: [''],
@@ -59,6 +66,8 @@ export class AddOfferComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+    this.offerForm.get('fromDate')?.setValue(this.from_date)
+    this.offerForm.get('lastDate')?.setValue(this.to_date)
   }
 
   get of() {
@@ -130,6 +139,21 @@ export class AddOfferComponent implements OnInit {
       console.error("Validation error")
       return;
     }
+
+    const payload = this.createPayload()
+    if (payload) {
+      this.offerService.addOffer(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+        }
+      });
+    }
+  }
+
+  createPayload() {
     const data = {
       name: this.offerForm.get('name')?.value,
       description: this.offerForm.get('description')?.value,
@@ -150,14 +174,8 @@ export class AddOfferComponent implements OnInit {
         }
       }
     }
-    this.offerService.addOffer(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Offer Added Successfully');
-        this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-      }
-    });
+
+    return data
   }
 
   updateBrand() { }

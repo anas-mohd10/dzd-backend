@@ -68,10 +68,11 @@ export class AddCouponsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.from_date = new Date().toISOString().split('T')[0]
     const get_date = new Date().getDate()
     const date = new Date()
-    this.to_date = new Date(date.setDate(get_date + 2)).toISOString().split('T')[0]
+    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
+    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+    
     this.initForm();
     this.managePage();
     this.getProducts()

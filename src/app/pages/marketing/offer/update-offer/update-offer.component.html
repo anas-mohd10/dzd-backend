@@ -52,7 +52,8 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Last Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="lastDate" />
+                  <input type="date" class="form-control fs-5" formControlName="lastDate"
+                    (change)="validateDate($event.target)" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -140,7 +141,7 @@
                     </div>
                   </div>
                   <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{base}}/{{offerData?.file}}" alt="" style="width: 150px; height: 150px">
+                    <img src="{{image}}" alt="" style="width: 150px; height: 150px">
                   </div>
                 </div>
               </div>

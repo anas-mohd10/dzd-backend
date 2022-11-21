@@ -58,6 +58,12 @@ export class OfferListComponent implements OnInit {
     this.offerService.searchOffer(this.offerform.value, this.page, this.limit).subscribe((res: any) => {
       this.offers = res?.result?.data
       for (let data of this.offers) {
+        const today = new Date().toISOString()
+        if (data.lastDate > today) {
+          data.isEditable = true
+        } else {
+          data.isEditable = false
+        }
         data.fromDate = new Date(data.fromDate).toDateString()
         data.lastDate = new Date(data.lastDate).toDateString()
       }
@@ -100,6 +106,12 @@ export class OfferListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         for (let data of this.offers) {
+          const today = new Date().toISOString()
+          if (data.lastDate > today) {
+            data.isEditable = true
+          } else {
+            data.isEditable = false
+          }
           data.fromDate = new Date(data.fromDate).toDateString()
           data.lastDate = new Date(data.lastDate).toDateString()
         }
@@ -177,6 +189,12 @@ export class OfferListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         for (let data of this.offers) {
+          const today = new Date().toISOString()
+          if (data.lastDate > today) {
+            data.isEditable = true
+          } else {
+            data.isEditable = false
+          }
           data.fromDate = new Date(data.fromDate).toDateString()
           data.lastDate = new Date(data.lastDate).toDateString()
         }

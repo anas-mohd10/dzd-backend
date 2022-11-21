@@ -84,7 +84,7 @@
   <div class="offer-card-container view-container row col-12">
     <ng-container *ngFor="let offer of offers">
       <div class="col-sm-6">
-        <div class="offer-card card-hover">
+        <div class="offer-card card-hover editable-{{offer?.isEditable}}">
           <div class="offer-details">
             <div class="offer-image">
               <img src='{{base}}/{{offer?.file}}' alt="offer image" srcset="" />

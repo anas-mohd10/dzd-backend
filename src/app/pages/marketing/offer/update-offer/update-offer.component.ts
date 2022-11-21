@@ -35,6 +35,8 @@ export class UpdateOfferComponent implements OnInit {
   background: any
   border: any
   color: any
+  offerStarted: boolean = false;
+  image: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -135,13 +137,23 @@ export class UpdateOfferComponent implements OnInit {
       if (res.errorCode == 0) {
         this.offerData = res?.result[0];
         this.cdr.markForCheck()
+        this.image = this.base + "/" + this.offerData?.file;
         this.uploadedimg = this.offerData?.file;
-        this.fromDate = new Date(this.offerData.fromDate).toISOString().split('T')[0];
-        this.lastDate = new Date(this.offerData.lastDate).toISOString().split('T')[0];
+
         this.offerForm.get('name')?.setValue(this.offerData.name);
         this.offerForm.get('description')?.setValue(this.offerData.description);
         this.offerForm.get('isActive')?.setValue(this.offerData.isActive);
         this.offerForm.get('isFeatured')?.setValue(this.offerData.isFeatured);
+
+        const today = new Date().toISOString()
+        if (today > this.offerData?.fromDate) {
+          this.offerStarted = true
+          this.offerForm.get('fromDate')?.disable()
+        }
+
+        this.fromDate = new Date(this.offerData.fromDate).toISOString().split('T')[0];
+        this.lastDate = new Date(this.offerData.lastDate).toISOString().split('T')[0];
+
         this.offerForm.get('fromDate')?.setValue(this.fromDate);
         this.offerForm.get('lastDate')?.setValue(this.lastDate);
 
@@ -159,12 +171,35 @@ export class UpdateOfferComponent implements OnInit {
     });
   }
 
+  validateDate(e: any) {
+    const today = new Date().toISOString()
+    console.log(e.value);
+    if (this.offerStarted) {
+
+    }
+  }
+
   addBrand() { }
 
   updateBrand() {
     if (!this.offerForm.valid) {
       return;
     }
+
+    const payload = this.createPayload()
+    if (payload) {
+      this.offerService.updateOffer(this.offer, payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+        }
+      });
+    }
+  }
+
+  createPayload() {
     const data = {
       name: this.offerForm.get('name')?.value,
       description: this.offerForm.get('description')?.value,
@@ -184,18 +219,13 @@ export class UpdateOfferComponent implements OnInit {
           fontSize: this.offerForm.get('fontSize')?.value,
           fontWeight: this.offerForm.get('fontWeight')?.value,
         }
-      }
+      },
+      offerid: this.offer
     }
     if (this.uploadedimg) {
       data.file = this.uploadedimg
     }
-    this.offerService.updateOffer(this.offer, data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Offer updated successfully');
-        this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-      }
-    });
+
+    return data
   }
 }
