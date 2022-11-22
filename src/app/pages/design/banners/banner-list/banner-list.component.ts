@@ -35,7 +35,13 @@ export class BannerListComponent implements OnInit {
     this.bannerService.getBannersByPage(this.page, this.limit).subscribe((res: any) => {
       this.banners = JSON.parse(res?.result)
       this.count = this.banners.length
-      for(let data of this.banners){
+      for (let data of this.banners) {
+        const today = new Date().toISOString()
+        if (data.validTo > today) {
+          data.isEditable = true
+        } else {
+          data.isEditable = false
+        }
         data.validFrom = new Date(data.validFrom).toDateString()
         data.validTo = new Date(data.validTo).toDateString()
       }
@@ -113,6 +119,16 @@ export class BannerListComponent implements OnInit {
     this.bannerService.getBannersByPage(page, limit).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.banners = res?.result
+        for (let data of this.banners) {
+          const today = new Date().toISOString()
+          if (data.validTo > today) {
+            data.isEditable = true
+          } else {
+            data.isEditable = false
+          }
+          data.validFrom = new Date(data.validFrom).toDateString()
+          data.validTo = new Date(data.validTo).toDateString()
+        }
         this.count = this.banners.length
         this.cdr.markForCheck();
       }

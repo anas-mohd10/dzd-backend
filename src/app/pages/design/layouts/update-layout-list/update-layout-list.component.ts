@@ -36,6 +36,8 @@ export class UpdateLayoutListComponent implements OnInit {
   slug: any = ''
   layoutData: any
   base: any
+  lastDate: string;
+  fromDate: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -101,6 +103,14 @@ export class UpdateLayoutListComponent implements OnInit {
       this.layoutForm.get("isActive")?.setValue(res?.result[0].isActive)
       this.layoutForm.get("gridCount")?.setValue(res?.result[0].gridCount)
       this.layoutForm.get("type")?.setValue(res?.result[0].type)
+
+
+      this.fromDate = new Date(this.layoutData.validFrom).toISOString().split('T')[0];
+      this.lastDate = new Date(this.layoutData.validTo).toISOString().split('T')[0];
+
+      this.layoutForm.get('validFrom')?.setValue(this.fromDate);
+      this.layoutForm.get('validTo')?.setValue(this.lastDate);
+
       this.cdr.markForCheck();
       for (let file of res?.result[0].files) {
         this.dataFiles.push({

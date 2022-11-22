@@ -37,6 +37,12 @@ export class LayoutListComponent implements OnInit {
       this.layouts = res?.result
       this.count = this.layouts.length
       for (let data of this.layouts) {
+        const today = new Date().toISOString()
+        if (data.validTo > today) {
+          data.isEditable = true
+        } else {
+          data.isEditable = false
+        }
         data.validFrom = new Date(data.validFrom).toDateString()
         data.validTo = new Date(data.validTo).toDateString()
       }
@@ -115,6 +121,16 @@ export class LayoutListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.layouts = res?.result
         this.count = this.layouts.length
+        for (let data of this.layouts) {
+          const today = new Date().toISOString()
+          if (data.validTo > today) {
+            data.isEditable = true
+          } else {
+            data.isEditable = false
+          }
+          data.validFrom = new Date(data.validFrom).toDateString()
+          data.validTo = new Date(data.validTo).toDateString()
+        }
         this.cdr.markForCheck();
       }
     })

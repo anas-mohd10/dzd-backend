@@ -11,6 +11,11 @@
    .active-banner {
       background: rgba(0, 255, 128, 0.08);
    }
+
+   .editable-false{
+      pointer-events: none;
+      opacity: 0.6;
+    }
 }
 
 .banner-card {

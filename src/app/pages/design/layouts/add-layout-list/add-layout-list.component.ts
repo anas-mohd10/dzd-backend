@@ -29,6 +29,8 @@ export class AddLayoutListComponent implements OnInit {
   croppedImage: any = '';
   filename: any
   loadImage: boolean = false;
+  from_date: string;
+  to_date: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +42,11 @@ export class AddLayoutListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    const get_date = new Date().getDate()
+    const date = new Date()
+    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
+    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+
     this.initForm()
     this.managePage()
   }
@@ -55,6 +62,8 @@ export class AddLayoutListComponent implements OnInit {
       redirectionURL: [''],
       file: ['']
     });
+    this.layoutForm.get('validFrom')?.setValue(this.from_date)
+    this.layoutForm.get('validTo')?.setValue(this.to_date)
   }
 
   get lf() {

@@ -27,7 +27,7 @@ export class UpdateBannerListComponent implements OnInit {
   imageWebChangedEvent: any = '';
   imageMobileChangedEvent: any = '';
   croppedImage: any = '';
-  
+
   webLoadImage: boolean = false;
   mobileLoadImage: boolean = false
 
@@ -39,6 +39,9 @@ export class UpdateBannerListComponent implements OnInit {
 
   web_file: any
   mobile_file: any
+  fromDate: string;
+  lastDate: string;
+  validBanner: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -59,11 +62,23 @@ export class UpdateBannerListComponent implements OnInit {
     this.bannerService.getBanner(this.slug).subscribe((res: any) => {
       this.bannerData = res?.result[0]
       this.bannerForm.get("title")?.setValue(res?.result[0].title)
-      this.bannerForm.get("position")?.setValue(res?.result[0].position)
       this.bannerForm.get("validFrom")?.setValue(res?.result[0].validFrom)
       this.bannerForm.get("validTo")?.setValue(res?.result[0].validTo)
       this.bannerForm.get("isActive")?.setValue(res?.result[0].isActive)
       this.bannerForm.get("redirectURL")?.setValue(res?.result[0].redirectionUrl)
+
+      this.fromDate = new Date(this.bannerData.validFrom).toISOString().split('T')[0];
+      this.lastDate = new Date(this.bannerData.validTo).toISOString().split('T')[0];
+
+      this.bannerForm.get('validFrom')?.setValue(this.fromDate);
+      this.bannerForm.get('validTo')?.setValue(this.lastDate);
+
+      const today = new Date().toISOString()
+      if (today > this.bannerData?.validFrom) {
+        this.validBanner = true
+        this.bannerForm.get('validFrom')?.disable()
+      }
+
       this.web_file = this.bannerData?.w_file
       this.mobile_file = this.bannerData?.m_file
       this.cdr.markForCheck()
@@ -87,7 +102,6 @@ export class UpdateBannerListComponent implements OnInit {
   initForm() {
     this.bannerForm = this.formBuilder.group({
       title: ['', Validators.required],
-      position: ['TOP', Validators.required],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       redirectURL: [''],
@@ -174,7 +188,6 @@ export class UpdateBannerListComponent implements OnInit {
   createPayload() {
     const data = {
       title: this.bannerForm.get('title')?.value,
-      position: this.bannerForm.get('position')?.value,
       validFrom: this.bannerForm.get('validFrom')?.value,
       redirectionUrl: this.bannerForm.get('redirectURL')?.value,
       isActive: this.bannerForm.get('isActive')?.value,

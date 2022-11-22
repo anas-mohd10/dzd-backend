@@ -27,7 +27,7 @@
    <div class="layout-card-container view-container col-12">
       <ng-container *ngFor="let layout of layouts">
          <div class="col-sm-6">
-            <div class="layout-card card-hover"
+            <div class="layout-card card-hover editable-{{layout?.isEditable}}"
                [ngClass]="{'inactive-layout': !layout?.isActive, 'active-layout': layout?.isActive}">
                <div class="layout-card-left">
                   <div class="layout-title">{{layout?.title}}</div>

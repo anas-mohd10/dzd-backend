@@ -74,7 +74,7 @@
       <ng-container *ngFor="let coupon of coupons">
          <div class="col-sm-6">
             <div class="coupon-card card-hover editable-{{coupon?.isEditable}}">
-               <div class="coupon-details">
+               <div class="coupon-details bg-dark">
                   <div class="inner-coupon-details">
                      <div class="coupon-image">
                         <img src='{{base}}/{{coupon?.file}}' alt="coupon image" srcset="" />
@@ -98,7 +98,7 @@
                      </div>
                      <div class="card-edit-btn coupon-edit-btn">
                         <button routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}"
-                           [queryParams]="{ coupon: coupon?.couponid }" class="fs-5 cursor-pointer text-darker">
+                           [queryParams]="{ coupon: coupon?.couponid }" class="fs-5 cursor-pointer text-white bg-dark">
                            Edit
                         </button>
                      </div>

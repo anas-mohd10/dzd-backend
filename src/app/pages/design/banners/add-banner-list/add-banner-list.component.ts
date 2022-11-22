@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
@@ -41,6 +41,8 @@ export class AddBannerListComponent implements OnInit {
 
   web_file: any
   mobile_file: any
+  to_date: string;
+  from_date: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,10 +50,16 @@ export class AddBannerListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private bannerService: BannerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    const get_date = new Date().getDate()
+    const date = new Date()
+    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
+    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+
     this.initForm()
     this.managePage()
     this.getProduct()
@@ -60,12 +68,13 @@ export class AddBannerListComponent implements OnInit {
   initForm() {
     this.bannerForm = this.formBuilder.group({
       title: ['', Validators.required],
-      position: ['TOP', Validators.required],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       redirectURL: [''],
       isActive: ['true', Validators.required],
     });
+    this.bannerForm.get('validFrom')?.setValue(this.from_date)
+    this.bannerForm.get('validTo')?.setValue(this.to_date)
   }
 
   get hf() {
@@ -88,6 +97,7 @@ export class AddBannerListComponent implements OnInit {
   getProduct() {
     this.productService.getProduct().subscribe((res: any) => {
       this.productsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
@@ -151,9 +161,22 @@ export class AddBannerListComponent implements OnInit {
       return;
     }
 
+    const payload = this.createPayload()
+    if (payload) {
+      this.bannerService.addBaner(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.banner.BANNER_LIST]);
+        }
+      })
+    }
+  }
+
+  createPayload() {
     const data = {
       title: this.bannerForm.get('title')?.value,
-      position: this.bannerForm.get('position')?.value,
       validFrom: this.bannerForm.get('validFrom')?.value,
       isActive: this.bannerForm.get('isActive')?.value,
       redirectionUrl: this.bannerForm.get('redirectURL')?.value,
@@ -164,13 +187,6 @@ export class AddBannerListComponent implements OnInit {
       m_name: this.m_name
     }
 
-    this.bannerService.addBaner(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Banner added successfully');
-        this.router.navigate([this.appRoute.banner.BANNER_LIST]);
-      }
-    })
+    return data
   }
 }

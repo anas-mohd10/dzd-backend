@@ -38,31 +38,6 @@
                               (hf.title.touched || isSubmitted) &&
                               hf.title.errors?.required
                             }" />
-                           <span class="text-danger error-msg fs-5" *ngIf="(hf.title.touched || isSubmitted) &&
-                              hf.title.errors?.required">
-                              Title is required
-                           </span>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Position</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                              formControlName="position" [ngClass]="{
-                              'is-invalid':
-                              (hf.position.touched || isSubmitted) &&
-                              hf.position.errors?.required
-                            }">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="TOP" selected>Top</option>
-                              <option value="MIDDLE">Middle</option>
-                              <option value="BOTTOM">Bottom</option>
-                           </select>
-                           <span class="text-danger error-msg fs-5" *ngIf="
-                              (hf.position.touched || isSubmitted) &&
-                              hf.position.errors?.required
-                          ">Position is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -70,10 +45,6 @@
                            <label class="fs-5 mb-3 form-title required">Valid From</label>
                            <input type="date" class="form-control fs-5" formControlName="validFrom"
                               [ngClass]="{'is-invalid': (hf.validFrom.touched || isSubmitted) &&  hf.validFrom.errors?.required}" />
-                           <span class="text-danger fs-7"
-                              *ngIf="(hf.validFrom.touched || isSubmitted) && hf.validFrom.errors?.required">
-                              From date is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -81,10 +52,6 @@
                            <label class="fs-5 mb-3 form-title required">Valid To</label>
                            <input type="date" class="form-control fs-5" formControlName="validTo"
                               [ngClass]="{ 'is-invalid': (hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required }" />
-                           <span class="text-danger fs-7"
-                              *ngIf="(hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required">
-                              Last date is required
-                           </span>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
