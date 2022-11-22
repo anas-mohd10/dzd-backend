@@ -16,7 +16,7 @@
 .layout-card {
    width: 98%;
    margin: 10px 10px 10px 0;
-   height: 220px;
+   height: 250px;
    padding: 10px 30px;
    background: #ffffff;
    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -30,12 +30,12 @@
 }
 
 .layout-card-left {
-   width: 35%;
+   width: 40%;
 }
 
 .layout-card-right {
    height: 100%;
-   width: 65%;
+   width: 60%;
    padding: 0 30px;
    display: flex;
    flex-direction: column;

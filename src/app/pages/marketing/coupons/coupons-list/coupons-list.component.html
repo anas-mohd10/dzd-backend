@@ -73,7 +73,7 @@
    <div class="coupon-card-container view-container col-12">
       <ng-container *ngFor="let coupon of coupons">
          <div class="col-sm-6">
-            <div class="coupon-card card-hover">
+            <div class="coupon-card card-hover editable-{{coupon?.isEditable}}">
                <div class="coupon-details">
                   <div class="inner-coupon-details">
                      <div class="coupon-image">

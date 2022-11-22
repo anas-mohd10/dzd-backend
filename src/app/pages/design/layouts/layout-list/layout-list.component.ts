@@ -36,6 +36,10 @@ export class LayoutListComponent implements OnInit {
     this.service.getLayoutByPage(this.page, this.limit).subscribe((res: any) => {
       this.layouts = res?.result
       this.count = this.layouts.length
+      for (let data of this.layouts) {
+        data.validFrom = new Date(data.validFrom).toDateString()
+        data.validTo = new Date(data.validTo).toDateString()
+      }
       this.cdr.markForCheck()
     })
 

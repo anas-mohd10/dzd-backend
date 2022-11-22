@@ -35,6 +35,10 @@ export class BannerListComponent implements OnInit {
     this.bannerService.getBannersByPage(this.page, this.limit).subscribe((res: any) => {
       this.banners = JSON.parse(res?.result)
       this.count = this.banners.length
+      for(let data of this.banners){
+        data.validFrom = new Date(data.validFrom).toDateString()
+        data.validTo = new Date(data.validTo).toDateString()
+      }
       this.cdr.markForCheck()
     })
 

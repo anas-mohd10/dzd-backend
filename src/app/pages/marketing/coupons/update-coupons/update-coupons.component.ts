@@ -58,6 +58,8 @@ export class UpdateCouponsComponent implements OnInit {
   background: any
   border: any
   color: any
+  image: string;
+  couponStarted: boolean;
 
   constructor(
     private productService: ProductService,
@@ -127,24 +129,28 @@ export class UpdateCouponsComponent implements OnInit {
   getProducts() {
     this.productService.getActiveProduct().subscribe((res: any) => {
       this.productsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getCollections() {
     this.collectionService.getCollection().subscribe((res: any) => {
       this.collectionsData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getCategories() {
     this.categoryService.getActiveCategory().subscribe((res: any) => {
       this.categoriesData = res?.result
+      this.cdr.markForCheck()
     })
   }
 
   getCouponBySlug() {
     this.couponsService.getCouponBySlug(this.slug).subscribe((res: any) => {
       this.couponData = res?.result[0]
+      this.image = this.base + "/" + this.couponData?.file;
       this.uploadedimg = this.base + "/" + this.couponData?.file
       this.couponForm.get("title")?.setValue(this.couponData.title)
       this.couponForm.get("code")?.setValue(this.couponData.code)
@@ -156,6 +162,12 @@ export class UpdateCouponsComponent implements OnInit {
       this.couponForm.get("minPurchase")?.setValue(this.couponData.minPurchase)
       this.couponForm.get("isActive")?.setValue(this.couponData.isActive)
       this.couponForm.get("isMultiple")?.setValue(this.couponData.isMultiple)
+
+      const today = new Date().toISOString()
+      if (today > this.couponData?.fromDate) {
+        this.couponStarted = true
+        this.couponForm.get('fromDate')?.disable()
+      }
 
       this.couponForm.get('background')?.setValue(this.couponData.style.background);
       this.couponForm.get('border')?.setValue(this.couponData.style.border);
