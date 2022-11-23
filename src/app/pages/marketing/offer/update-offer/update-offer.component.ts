@@ -173,9 +173,15 @@ export class UpdateOfferComponent implements OnInit {
 
   validateDate(e: any) {
     const today = new Date().toISOString()
+    const fromDate = this.offerForm.get('fromDate')?.value
     console.log(e.value);
     if (this.offerStarted) {
-
+      if(e.value<fromDate){
+        this.toastr.error('inavlid date')
+      }
+      // else if (e.value < today) {
+      //   this.toastr.error('inavlid date')
+      // }
     }
   }
 
