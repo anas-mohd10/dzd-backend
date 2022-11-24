@@ -69,6 +69,7 @@ export class UpdateCollectionComponent implements OnInit {
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
+      subname: ['', Validators.required],
       products: [],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
@@ -116,6 +117,7 @@ export class UpdateCollectionComponent implements OnInit {
           this.collectionData = res?.result[0];
           this.uploadedimg = this.collectionData?.file
           this.collectionForm.get('name')?.setValue(this.collectionData?.name);
+          this.collectionForm.get('subname')?.setValue(this.collectionData?.subname);
           this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
           this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
           this.collectionForm.get('isArchive')?.setValue(this.collectionData?.isArchive);
@@ -226,6 +228,7 @@ export class UpdateCollectionComponent implements OnInit {
   createPayload() {
     let data = {
       name: this.collectionForm.get('name')?.value,
+      subname: this.collectionForm.get('subname')?.value,
       isFeatured: this.collectionForm.get('isFeatured')?.value,
       isArchive: this.collectionForm.get('isArchive')?.value,
       isActive: this.collectionForm.get('isActive')?.value,

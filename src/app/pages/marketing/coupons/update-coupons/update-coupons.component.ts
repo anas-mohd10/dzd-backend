@@ -60,6 +60,7 @@ export class UpdateCouponsComponent implements OnInit {
   color: any
   image: string;
   couponStarted: boolean;
+  validDate: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -239,70 +240,83 @@ export class UpdateCouponsComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateCoupon();
+  validateDate(e: any) {
+    const today = new Date().toISOString()
+    const fromDate = this.couponForm.get('fromDate')?.value
+    if (e.value < fromDate || e.value < today) {
+      this.validDate = false
+      this.toastr.error('inavlid date')
+    }
+    else {
+      this.validDate = true
     }
   }
 
-  updateCoupon() {
-    if (!this.couponForm.valid) {
-      return;
-    }
 
-    const payload = this.createPayload()
-    if (payload) {
-      this.couponsService.updateCoupon(this.slug, payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
-        }
-      })
-    }
+onSubmit() {
+  this.isSubmitted = true;
+  if (this.editMode) {
+    this.updateCoupon();
+  }
+}
+
+updateCoupon() {
+  if (!this.couponForm.valid) {
+    return;
   }
 
-  createPayload() {
-    if (this.isValidValue == true) {
-      const data = {
-        title: this.couponForm.get('title')?.value,
-        code: this.couponForm.get('code')?.value,
-        fromDate: this.couponForm.get('fromDate')?.value,
-        lastDate: this.couponForm.get('lastDate')?.value,
-        maxDiscount: this.couponForm.get('maxDiscount')?.value,
-        minDiscount: this.couponForm.get('minDiscount')?.value,
-        value: this.couponForm.get('value')?.value,
-        type: this.couponForm.get('type')?.value,
-        categories: JSON.stringify(this.categories),
-        products: JSON.stringify(this.products),
-        collections: JSON.stringify(this.collections),
-        filestring: this.croppedImage,
-        filename: this.filename,
-        file: '',
-        isMultiple: this.couponForm.get('isMultiple')?.value,
-        isActive: this.couponForm.get('isActive')?.value,
-        couponid: this.slug,
-        style: {
-          background: this.couponForm.get('background')?.value,
-          border: this.couponForm.get('border')?.value,
-          radius: this.couponForm.get('radius')?.value,
-          text: {
-            color: this.couponForm.get('color')?.value,
-            fontSize: this.couponForm.get('fontSize')?.value,
-            fontWeight: this.couponForm.get('fontWeight')?.value,
-          }
+  const payload = this.createPayload()
+  if (payload) {
+    this.couponsService.updateCoupon(this.slug, payload).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error(res?.message);
+      } else if (res.errorCode == 0) {
+        this.toastr.success(res?.message);
+        this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
+      }
+    })
+  }
+}
+
+createPayload() {
+  if (this.isValidValue == true) {
+    const data = {
+      title: this.couponForm.get('title')?.value,
+      code: this.couponForm.get('code')?.value,
+      fromDate: this.couponForm.get('fromDate')?.value,
+      lastDate: this.couponForm.get('lastDate')?.value,
+      maxDiscount: this.couponForm.get('maxDiscount')?.value,
+      minDiscount: this.couponForm.get('minDiscount')?.value,
+      value: this.couponForm.get('value')?.value,
+      type: this.couponForm.get('type')?.value,
+      categories: JSON.stringify(this.categories),
+      products: JSON.stringify(this.products),
+      collections: JSON.stringify(this.collections),
+      filestring: this.croppedImage,
+      filename: this.filename,
+      file: '',
+      isMultiple: this.couponForm.get('isMultiple')?.value,
+      isActive: this.couponForm.get('isActive')?.value,
+      couponid: this.slug,
+      style: {
+        background: this.couponForm.get('background')?.value,
+        border: this.couponForm.get('border')?.value,
+        radius: this.couponForm.get('radius')?.value,
+        text: {
+          color: this.couponForm.get('color')?.value,
+          fontSize: this.couponForm.get('fontSize')?.value,
+          fontWeight: this.couponForm.get('fontWeight')?.value,
         }
       }
-      if (this.couponData?.file) {
-        data.file = this.couponData?.file
-      }
-      console.log(data);
-      return data
-    } else {
-      this.error_message = 'Value should be always less than or equal to 100'
-      this.toastr.error(this.error_message)
     }
+    if (this.couponData?.file) {
+      data.file = this.couponData?.file
+    }
+    console.log(data);
+    return data
+  } else {
+    this.error_message = 'Value should be always less than or equal to 100'
+    this.toastr.error(this.error_message)
   }
+}
 }

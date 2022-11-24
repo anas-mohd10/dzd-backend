@@ -73,6 +73,7 @@
           </div>
           <div class="flex-1">
             <div class="collection-name fs-3">{{collection?.name}}</div>
+            <div class="collection-subname fs-4">{{collection?.subname}}</div>
             <div class="collection-featured-{{collection?.isFeatured}}">
               <ng-container *ngIf="collection?.isFeatured == true">Featured</ng-container>
               <ng-container *ngIf="collection?.isFeatured == false">Not Featured</ng-container>

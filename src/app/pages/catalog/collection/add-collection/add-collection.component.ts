@@ -61,6 +61,7 @@ export class AddCollectionComponent implements OnInit {
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
+      subname: ['', Validators.required],
       file: [''],
       products: [Validators.required],
       isFeatured: ['false', Validators.required],
@@ -170,6 +171,7 @@ export class AddCollectionComponent implements OnInit {
   createPayload() {
     let data = {
       name: this.collectionForm.get('name')?.value,
+      subname: this.collectionForm.get('subname')?.value,
       isFeatured: this.collectionForm.get('isFeatured')?.value,
       isActive: this.collectionForm.get('isActive')?.value,
       isArchive: this.collectionForm.get('isArchive')?.value,

@@ -33,82 +33,27 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Name</label>
+                  <label class="fs-5 mb-3 form-title required">Title</label>
                   <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
                       'is-invalid':
                       (cf.name.touched || isSubmitted) &&
                       cf.name.errors?.required
                     }" />
-                  <div class="fs-7 mt-3">A collection name is required and recommended to be unique.</div>
+                  <div class="fs-7 mt-3">A collection title is required</div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Sub Title</label>
+                  <input type="text" class="form-control fs-5" formControlName="subname" [ngClass]="{
+                      'is-invalid':
+                      (cf.name.touched || isSubmitted) &&
+                      cf.name.errors?.required
+                    }" />
+                  <div class="fs-7 mt-3">A collection subtitle is required</div>
                 </div>
               </div>
               <div class="col-12">
-                <!-- <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Products</label>
-                </div>
-                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target=".bd-example-modal-xl"
-                  style="width: 200px; border-radius: 50px;">
-                  Add Products
-                </button>
-
-                <div class="modal fade bd-example-modal-xl" id="exampleModal" tabindex="-1"
-                  aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalLabel">Add Products</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="total-products mb-5">Showing {{products.length}} products</div>
-                        <div class="search-bar">
-                          <input class="form-control fs-5" type="text" placeholder="Search for product here..."
-                            (ngModelChange)="searchValue($event.target)">
-                        </div>
-                        <div class="products-cards">
-                          <ng-container *ngFor="let product of products">
-                            <ng-container *ngIf="product.selected == true">
-                              <div class="product-card">
-                                <div class="product-card-checkbox">
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{product.key}}"
-                                      (change)="handleProduct($event.target, product.key)" id="flexCheckDefault"
-                                      checked>
-                                  </div>
-                                </div>
-                                <div class="product-card-details">
-                                  <div class="product-card-image">
-                                    <img src="{{base}}/{{product.file}}" alt="Product"
-                                      style="height: 60px; width: 60px">
-                                  </div>
-                                  <div class="product-card-name">{{product.name}}</div>
-                                </div>
-                              </div>
-                            </ng-container>
-                            <ng-container *ngIf="product.selected == false">
-                              <div class="product-card">
-                                <div class="product-card-checkbox">
-                                  <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{product.key}}"
-                                      (change)="handleProduct($event.target, product.key)" id="flexCheckDefault">
-                                  </div>
-                                </div>
-                                <div class="product-card-details">
-                                  <div class="product-card-image">
-                                    <img src="{{base}}/{{product.file}}" alt="Product"
-                                      style="height: 60px; width: 60px">
-                                  </div>
-                                  <div class="product-card-name">{{product.name}}</div>
-                                </div>
-                              </div>
-                            </ng-container>
-                          </ng-container>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-
                 <div class="col-sm-6">
                   <label class="fs-5 mb-3 required">Products</label>
                   <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
@@ -116,16 +61,6 @@
                   </ng-select>
                   <div class="fs-7 mt-3">Selected products will be under this collection</div>
                 </div>
-
-                <!-- <div class="tag-inputs col-12 mt-10">
-                  <ng-container *ngFor="let product of array">
-                    <ng-container *ngIf="product.selected == true">
-                      <span class="tag-input">
-                        <div class="tag-name">{{ product.name }}</div>
-                      </span>
-                    </ng-container>
-                  </ng-container>
-                </div> -->
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">

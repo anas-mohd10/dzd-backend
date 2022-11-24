@@ -37,6 +37,7 @@ export class UpdateOfferComponent implements OnInit {
   color: any
   offerStarted: boolean = false;
   image: string;
+  validDate: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -174,14 +175,22 @@ export class UpdateOfferComponent implements OnInit {
   validateDate(e: any) {
     const today = new Date().toISOString()
     const fromDate = this.offerForm.get('fromDate')?.value
-    console.log(e.value);
     if (this.offerStarted) {
-      if(e.value<fromDate){
+      if (e.value < fromDate || e.value < today) {
+        this.validDate = false
         this.toastr.error('inavlid date')
       }
-      // else if (e.value < today) {
-      //   this.toastr.error('inavlid date')
-      // }
+      else {
+        this.validDate = true
+      }
+    }
+    else {
+      if (e.value < today || e.value < fromDate) {
+        this.validDate = false
+        this.toastr.error('inavlid date')
+      } else {
+        this.validDate = true
+      }
     }
   }
 
@@ -194,14 +203,16 @@ export class UpdateOfferComponent implements OnInit {
 
     const payload = this.createPayload()
     if (payload) {
-      this.offerService.updateOffer(this.offer, payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-        }
-      });
+      if (this.validDate == true) {
+        this.offerService.updateOffer(this.offer, payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+          }
+        });
+      }
     }
   }
 
