@@ -37,7 +37,7 @@ export class LayoutListComponent implements OnInit {
       this.layouts = res?.result
       this.count = this.layouts.length
       for (let data of this.layouts) {
-        const today = new Date().toISOString()
+        const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
         if (data.validTo > today) {
           data.isEditable = true
         } else {

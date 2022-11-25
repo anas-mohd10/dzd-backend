@@ -11,8 +11,8 @@
   }
 }
 
-.page-limit-container{
-  label{
+.page-limit-container {
+  label {
     margin: 0 20px;
     width: 30%;
   }
@@ -120,7 +120,7 @@ a.page-link.page-link-disabled {
     opacity: 0;
   }
 
-  50%{
+  50% {
     transform: translateY(10%);
   }
 
@@ -412,11 +412,15 @@ a.page-link.page-link-disabled {
   border-radius: 50px;
 }
 
+.close-icon {
+  border-radius: 10px;
+}
+
 .close-icon i {
   background: #e13939;
   height: 100%;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;

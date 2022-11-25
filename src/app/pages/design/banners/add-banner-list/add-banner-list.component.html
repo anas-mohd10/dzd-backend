@@ -98,7 +98,7 @@
                            <div class="image-upload">
                               <input type="file" class="form-control fs-5" name="image" accept="image/*"
                                  (change)="handleInputChange($event, 'web')" style="height: 100px;" required>
-                              <label class="fs-7 text-disabled">Please upload an banner with 1366px * 300px</label>
+                              <label class="fs-7 text-disabled">Please upload an banner with 1200px * 600px</label>
                               <div class="image-upload-div">
                                  <div class="left-img">
                                     <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
@@ -112,20 +112,20 @@
 
                               </div>
                            </div>
-                           
+
                         </div>
                         <ng-container *ngIf="webLoadImage">
                            <div class="col-12 preview-section">
                               <div class="crop-image col-sm-6">
                                  <image-cropper class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
-                                    [maintainAspectRatio]="true" [aspectRatio]="9 / 2" [cropperMaxWidth]="1366"
-                                    [cropperMaxHeight]="300" format="png" (imageCropped)="imageCroppedWeb($event)"
+                                    [maintainAspectRatio]="true" [aspectRatio]="8 / 4" [cropperMaxWidth]="1200"
+                                    [cropperMaxHeight]="600" format="png" (imageCropped)="imageCroppedWeb($event)"
                                     (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
                                     (loadImageFailed)="loadImageWebFailed()">
                                  </image-cropper>
                               </div>
                               <div class="uploads uploaded col-sm-6">
-                                 <div class="close-icon bg-dark">
+                                 <div class="close-icon">
                                     <i class="bi bi-x-lg text-white" (click)="removeImage('web')"></i>
                                  </div>
                                  <img class="preview-img" id="previewImage" [src]="web_file">
@@ -141,7 +141,7 @@
                            <div class="image-upload">
                               <input type="file" class="form-control fs-5" name="image" accept="image/*"
                                  (change)="handleInputChange($event, 'mobile')" style="height: 100px;" required>
-                              <label class="fs-7 text-disabled">Please upload a Mobile banner with 375px * 174px</label>
+                              <label class="fs-7 text-disabled">Please upload a Mobile banner with 600px * 300px</label>
                               <div class="image-upload-div">
                                  <div class="left-img">
                                     <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
@@ -151,7 +151,7 @@
                                     <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
                                        Upload up to 1 file
                                     </span>
-                                 </div>
+                                 </div>   
                               </div>
                            </div>
                         </div>
@@ -159,14 +159,14 @@
                            <div class="col-12 preview-section">
                               <div class="crop-image col-sm-6">
                                  <image-cropper class="crop-section" [imageChangedEvent]="imageMobileChangedEvent "
-                                    [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="375"
-                                    [cropperMaxHeight]="174" format="png" (imageCropped)="imageCroppedMobile($event)"
+                                    [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="600"
+                                    [cropperMaxHeight]="300" format="png" (imageCropped)="imageCroppedMobile($event)"
                                     (imageLoaded)="imageMobileLoaded()" (cropperReady)="cropperMobileReady()"
                                     (loadImageFailed)="loadImageMobileFailed()">
                                  </image-cropper>
                               </div>
                               <div class="uploads uploaded col-sm-6">
-                                 <div class="close-icon bg-dark">
+                                 <div class="close-icon">
                                     <i class="bi bi-x-lg text-white" (click)="removeImage('mobile')"></i>
                                  </div>
                                  <img class="preview-img" id="previewImage" [src]="mobile_file">

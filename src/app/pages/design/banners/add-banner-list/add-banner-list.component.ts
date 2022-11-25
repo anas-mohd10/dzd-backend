@@ -187,6 +187,10 @@ export class AddBannerListComponent implements OnInit {
       m_name: this.m_name
     }
 
-    return data
+    if (this.web_file != '' && this.mobile_file != '') {
+      return data
+    } else {
+      this.toastr.info('Banner image is being processed')
+    }
   }
 }

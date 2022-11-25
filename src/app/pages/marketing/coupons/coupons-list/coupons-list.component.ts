@@ -58,7 +58,7 @@ export class CouponsListComponent implements OnInit {
     this.couponService.searchCoupon(this.couponform.value, this.page, this.limit).subscribe((res: any) => {
       this.coupons = res?.result?.data
       for (let data of this.coupons) {
-        const today = new Date().toISOString()
+        const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
         if (data.lastDate > today) {
           data.isEditable = true
         } else {

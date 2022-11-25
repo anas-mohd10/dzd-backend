@@ -6,6 +6,7 @@ import { BannerService } from 'src/app/includes/services/banner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-banner-list',
@@ -42,6 +43,7 @@ export class UpdateBannerListComponent implements OnInit {
   fromDate: string;
   lastDate: string;
   validBanner: boolean;
+  base: string;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -52,6 +54,7 @@ export class UpdateBannerListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.slug = this.route.snapshot.queryParams.banner || ''
     this.getBanner()
     this.initForm()
@@ -198,6 +201,11 @@ export class UpdateBannerListComponent implements OnInit {
       m_name: this.m_name,
       bannerid: this.slug
     }
-    return data
+
+    if (this.web_file != '' && this.mobile_file != '') {
+      return data
+    } else {
+      this.toastr.info('Banner image is being processed')
+    }
   }
 }

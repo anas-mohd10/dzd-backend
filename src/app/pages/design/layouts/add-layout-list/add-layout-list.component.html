@@ -145,8 +145,8 @@
                                        <div class="col-12 preview-section" style="margin: 50px 0 0 0;">
                                           <div class="crop-image col-sm-6">
                                              <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                                                [maintainAspectRatio]="true" [aspectRatio]="3 / 2"
-                                                [cropperMaxWidth]="546" [cropperMaxHeight]="390" format="png"
+                                                [maintainAspectRatio]="true" [aspectRatio]="4 / 2"
+                                                [cropperMaxWidth]="600" [cropperMaxHeight]="300" format="png"
                                                 (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
                                                 (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
                                              </image-cropper>
@@ -156,7 +156,7 @@
                                              </div>
                                           </div>
                                           <div class="uploads uploaded col-sm-6">
-                                             <div class="close-icon bg-dark">
+                                             <div class="close-icon">
                                                 <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
                                              </div>
                                              <img class="preview-img" id="previewImage" [src]="croppedImage">
@@ -194,7 +194,7 @@
                                  <div class="prod-url fs-5 fw-bold mt-3">
                                     Redirection URL : {{layout?.redirect}}
                                  </div>
-                                 <div class="close-icon bg-dark" (click)="removeFile(layout?.id)">
+                                 <div class="close-icon" (click)="removeFile(layout?.id)">
                                     <i class="bi bi-x-lg"></i>
                                  </div>
                               </div>
