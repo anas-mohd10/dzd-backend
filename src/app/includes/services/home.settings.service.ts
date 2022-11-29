@@ -34,8 +34,8 @@ export class HomeSettingsService {
     return this.http.get(`${url}`);
   }
 
-  updateHomeSettings(id: any, data: any) {
-    const url = this.commonService.getFullUrl(this.homeSettingsEndpoints.update_home_settings + "?id=" + id);
+  updateHomeSettings(data: any) {
+    const url = this.commonService.getFullUrl(this.homeSettingsEndpoints.update_home_settings);
     return this.http.put(`${url}`, data);
   }
 }

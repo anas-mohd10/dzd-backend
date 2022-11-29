@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { HomeSettingsService } from 'src/app/includes/services/home.settings.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-dashboard-settings',
@@ -16,10 +18,16 @@ export class ViewDashboardSettingsComponent implements OnInit {
   positions: any;
   sorted_postions: any = {}
   result: any = []
+  isSave: boolean;
+  data: any = {
+    positions: {
+    }
+  }
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private HomeSettingsService: HomeSettingsService
+    private HomeSettingsService: HomeSettingsService,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -63,4 +71,63 @@ export class ViewDashboardSettingsComponent implements OnInit {
     })
   }
 
+  drop(event: any) {
+    moveItemInArray(this.result, event.previousIndex, event.currentIndex);
+    this.isSave = true
+  }
+
+
+  saveButton() {
+    for (let values of this.result) {
+      switch (values['title']) {
+        case 'Banners':
+          this.data['positions']['banners'] = {
+            title: values['title'],
+            value: values['value']
+          }
+          break
+        case 'Brands':
+          this.data['positions']['brands'] = {
+            title: values['title'],
+            value: values['value']
+          }
+          break
+        case 'Collection':
+          this.data['positions']['collection'] = {
+            title: values['title'],
+            value: values['value']
+          }
+          break
+        case 'Category':
+          this.data['positions']['category'] = {
+            title: values['title'],
+            value: values['value']
+          }
+          break
+        case 'Products':
+          this.data['positions']['products'] = {
+            title: values['title'],
+            value: values['value']
+          }
+          break
+        case 'Carausel':
+          this.data['positions']['carausel'] = {
+            title: values['title'],
+            value: values['value']
+          }
+          break
+      }
+    }
+    this.data['slug'] = this.slug
+    if (this.data) {
+      this.HomeSettingsService.updateHomeSettings(this.data).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          document.location.reload()
+          this.ToastrService.success(res?.message)
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      })
+    }
+  }
 }

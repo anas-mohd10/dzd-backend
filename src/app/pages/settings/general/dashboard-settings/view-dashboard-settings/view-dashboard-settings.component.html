@@ -19,9 +19,8 @@
                Add Configurations
             </button>
             <button *ngIf="dashboardSettingsCount != 0" class="btn btn-primary btn-sm cursor-pointer fs-5"
-               color="primary" style="width: 200px"
-               routerLink="{{ appRoute.dashboardSettings.UPDATE_DASHBOARD_SETTINGS}}" [queryParams]="{id: slug}">
-               Edit Configurations
+               color="primary" style="width: 200px" (click)="saveButton()">
+               Save Changes
             </button>
          </div>
       </div>
@@ -35,16 +34,13 @@
       <div class="mobile-phone-container">
          <img src="../../../../../../assets/media/screen_mockup.jpg" alt="">
          <div class="content-box">
-            <ng-container *ngFor="let data of result">
-               <div class="col-sm-6 content-container">
-                  <span class="content-name">{{data?.title}}</span>
-                  <span class="content-position">{{data?.value}}</span>
-               </div>
-            </ng-container>
+            <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+               <div class="example-box" *ngFor="let data of result" cdkDrag>{{data.title}}</div>
+            </div>
          </div>
-         <div class="content-info">
-            <i class="bi bi-info-circle"></i> Mobile app home screen app contents will be placed as displayed above
-         </div>
+      </div>
+      <div class="content-info">
+         <i class="bi bi-info-circle"></i> Mobile app home screen app contents will be placed as displayed above
       </div>
    </div>
 </div>
