@@ -38,6 +38,7 @@ const privacypolicyRoute = "/privacy-policy"
 const termsconditionsRoute = "/terms-conditions"
 const pageLimitsRoutes = "/page-limits"
 const generalSettingsRoutes = "/app-settings"
+const dashboardSettings = "/home-settings"
 
 export const appRoutes = {
   BASE: "http://localhost:3000/",
@@ -204,5 +205,10 @@ export const appRoutes = {
     APP_SETTINGS_LIST: `${app}${generalSettingsRoutes}`,
     ADD_APP_SETTINGS: `${app}${generalSettingsRoutes}/add`,
     UPDATE_APP_SETTINGS: `${app}${generalSettingsRoutes}/update`,
+  },
+  dashboardSettings: {
+    DASHBOARD_SETTINGS_LIST: `${app}${dashboardSettings}`,
+    ADD_DASHBOARD_SETTINGS: `${app}${dashboardSettings}/add`,
+    UPDATE_DASHBOARD_SETTINGS: `${app}${dashboardSettings}/update`,
   }
 };

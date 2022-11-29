@@ -25,7 +25,7 @@ export class AddProductComponent implements OnInit {
   filedata: File;
   fileThumbnaildata: File
   type: any;
-  isSingle: boolean = false;
+  isSingle: boolean = true;
 
   brandData: any;
   categoryData: any;
@@ -94,7 +94,7 @@ export class AddProductComponent implements OnInit {
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      isSingle: ['false'],
+      isSingle: ['true'],
       name: ['', Validators.required],
       sku: ['', Validators.required],
       hsn: ['', Validators.required],

@@ -446,7 +446,7 @@
                     </div>
                   </div>
                   <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{p_img}}" alt="" style="width: 150px; height: 150px">
+                    <img src="{{p_img}}" alt="" style="width: 150px; height: 150px; object-fit: contain;">
                   </div>
                 </div>
                 <ng-container *ngIf=" loadImage">
@@ -490,15 +490,15 @@
                     </div>
                   </div>
                   <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{tp_img}}" alt="" style="width: 150px; height: 150px">
+                    <img src="{{tp_img}}" alt="" style="width: 150px; height: 150px; object-fit: contain;">
                   </div>
                 </div>
                 <ng-container *ngIf="loadThumbnailImage">
                   <div class="col-12 preview-section" style="margin-top: 50px;">
                     <div class="crop-image col-sm-6">
                       <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="400"
-                        [cropperMaxHeight]="400" format="png" (imageCropped)="imageThumbnailCropped($event)"
+                        [maintainAspectRatio]="true" [aspectRatio]="2 / 3" [cropperMaxWidth]="480"
+                        [cropperMaxHeight]="702" format="png" (imageCropped)="imageThumbnailCropped($event)"
                         (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
                         (loadImageFailed)="loadThumbnailImageFailed()">
                       </image-cropper>

@@ -488,8 +488,8 @@
                   <div class="col-12 preview-section" style="margin-top: 50px;">
                     <div class="crop-image col-sm-6">
                       <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="400"
-                        [cropperMaxHeight]="400" format="png" (imageCropped)="imageThumbnailCropped($event)"
+                        [maintainAspectRatio]="true" [aspectRatio]="2 / 3" [cropperMaxWidth]="480"
+                        [cropperMaxHeight]="702" format="png" (imageCropped)="imageThumbnailCropped($event)"
                         (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
                         (loadImageFailed)="loadThumbnailImageFailed()">
                       </image-cropper>

@@ -318,6 +318,11 @@ export const Routing: Routes = [
         loadChildren: () => import('./settings/general/app-settings/app-settings.module').then((m) => m.AppSettingsModule),
         canActivate: [AuthenticationGuard]
       },
+      {
+        path: 'home-settings',
+        loadChildren: () => import('./settings/general/dashboard-settings/dashboard-settings.module').then((m) => m.DashboardSettingsModule),
+        canActivate: [AuthenticationGuard]
+      },
     ]
   },
   {

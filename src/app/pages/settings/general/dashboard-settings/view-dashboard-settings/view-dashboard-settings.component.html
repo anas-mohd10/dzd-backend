@@ -1,0 +1,50 @@
+<div class="contact-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Home Settings</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.dashboardSettings.DASHBOARD_SETTINGS_LIST}}">Home Settings</a>
+               </li>
+            </ul>
+            <button *ngIf="dashboardSettingsCount == 0" class="btn btn-primary btn-sm cursor-pointer fs-5"
+               color="primary" style="width: 200px"
+               routerLink="{{ appRoute.dashboardSettings.ADD_DASHBOARD_SETTINGS }}">
+               Add Configurations
+            </button>
+            <button *ngIf="dashboardSettingsCount != 0" class="btn btn-primary btn-sm cursor-pointer fs-5"
+               color="primary" style="width: 200px"
+               routerLink="{{ appRoute.dashboardSettings.UPDATE_DASHBOARD_SETTINGS}}" [queryParams]="{id: slug}">
+               Edit Configurations
+            </button>
+         </div>
+      </div>
+   </div>
+   <ng-container *ngIf="dashboardSettingsCount == 0">
+      <div class="no-data-container" style="margin: 40px 0 0 0;">
+         <h2>Sorry, we haven't found any data</h2>
+      </div>
+   </ng-container>
+   <div class="home-settings-container col-12" *ngIf="dashboardSettingsCount != 0">
+      <div class="mobile-phone-container">
+         <img src="../../../../../../assets/media/screen_mockup.jpg" alt="">
+         <div class="content-box">
+            <ng-container *ngFor="let data of result">
+               <div class="col-sm-6 content-container">
+                  <span class="content-name">{{data?.title}}</span>
+                  <span class="content-position">{{data?.value}}</span>
+               </div>
+            </ng-container>
+         </div>
+         <div class="content-info">
+            <i class="bi bi-info-circle"></i> Mobile app home screen app contents will be placed as displayed above
+         </div>
+      </div>
+   </div>
+</div>
