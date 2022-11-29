@@ -63,9 +63,12 @@ export class AddProductComponent implements OnInit {
   selectedCategories: any = []
   selectedBrand: any = ''
   selectedProducts: any = []
+  imageFiles : any =[]
+  files : any = []
 
   errors: any
   validError: any
+  url: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -257,7 +260,34 @@ export class AddProductComponent implements OnInit {
     });
   }
 
+  addImage() {
+    this.imageFiles.push({
+      fileString : this.croppedImage,
+      filename : this.filename,
+      url : this.url,
+      id : this.imageFiles.length
+    })
+
+    this.croppedImage = ''
+    this.filename = ''
+    this.loadImage = false
+  }
+
+  removeFile(id: any) {
+    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
+    this.files = this.files.filter((_data: any) => _data.id != id)
+    console.log(this.imageFiles);
+
+  }
+
   handleInputChange(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.url = e.target.result
+      }
+    }
     this.filedata = <File>event.target.files[0];
     this.filename = this.filedata.name
     this.imageChangedEvent = event;

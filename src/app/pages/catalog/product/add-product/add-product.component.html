@@ -460,6 +460,7 @@
                       <img class="preview-img" id="previewImage" [src]="croppedImage">
                     </div>
                   </div>
+                  <button class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="addImage()">Save</button>
                 </ng-container>
               </div>
 
@@ -503,8 +504,24 @@
                   </div>
                 </ng-container>
               </div>
-              
             </div>
+
+            <div class="col-12 upload-layout">
+              <div *ngFor="let image of imageFiles; let i=index">
+                 <div class="uploaded-layouts">
+                    <div class="layout-card">
+                       <div class="prod-details-layout fs-5 fw-bold mt-3">
+                          <div class="prod-img-layout mt-3">
+                             <img class="product-preview" [src]="image?.url" alt="" srcset="">
+                          </div>
+                       </div>
+                       <div class="close-icon" (click)="removeFile(image?.id)">
+                          <i class="bi bi-x-lg"></i>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
 
             <div class="col-12">
               <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
