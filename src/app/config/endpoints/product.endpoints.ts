@@ -9,5 +9,6 @@ export const productEndpoints = {
     search_product: '/products/search',
     get_products_count: '/products/count',
     archive_product: '/products/archive',
-    restore_product: '/products/restore'
+    restore_product: '/products/restore',
+    product_by_prodid: '/products/prodid'
 }

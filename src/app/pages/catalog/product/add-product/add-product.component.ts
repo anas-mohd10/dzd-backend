@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
 })
+
 export class AddProductComponent implements OnInit {
   productForm: FormGroup;
   task = PageTasks.ADD;
@@ -63,12 +64,18 @@ export class AddProductComponent implements OnInit {
   selectedCategories: any = []
   selectedBrand: any = ''
   selectedProducts: any = []
-  imageFiles : any =[]
-  files : any = []
+  imageFiles: any = []
+  files: any = []
 
   errors: any
   validError: any
-  url: any;
+  // url: any;
+  format: string | undefined;
+  url: string | ArrayBuffer | null | undefined;
+  playVideo: boolean;
+  video: string | ArrayBuffer | null;
+  videoFile: any = {}
+  disableButton: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,7 +85,8 @@ export class AddProductComponent implements OnInit {
     private brandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get pf() {
@@ -262,11 +270,18 @@ export class AddProductComponent implements OnInit {
 
   addImage() {
     this.imageFiles.push({
-      fileString : this.croppedImage,
-      filename : this.filename,
-      url : this.url,
-      id : this.imageFiles.length
+      fileString: this.croppedImage,
+      filename: this.filename,
+      url: this.url,
+      id: this.imageFiles.length
     })
+
+    this.files.push({
+      id: this.files.length,
+      file: this.croppedImage,
+      name: this.filename
+    })
+
 
     this.croppedImage = ''
     this.filename = ''
@@ -276,8 +291,6 @@ export class AddProductComponent implements OnInit {
   removeFile(id: any) {
     this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
-    console.log(this.imageFiles);
-
   }
 
   handleInputChange(event: any) {
@@ -343,6 +356,25 @@ export class AddProductComponent implements OnInit {
     this.loadThumbnailImage = false
   }
 
+  videoUpload(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 })
+        setTimeout(() => {
+          this.video = e.target.result
+          this.toastr.success('Video Successfully Uploaded', '', { timeOut: 2000 })
+          this.videoFile = {
+            video: this.video,
+            name: event.target.files[0].name
+          }
+          this.cdr.markForCheck()
+        }, 2000)
+      }
+    }
+  }
+
   getColors(type: any, e: any) {
     if (type == "background") {
       this.background = e.value
@@ -371,15 +403,18 @@ export class AddProductComponent implements OnInit {
 
     const payload = this.createPayload()
     if (payload) {
-      this.productService.addProduct(payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-          this.ngOnInit();
-        }
-      });
+      this.disableButton = true
+      setTimeout(() => {
+        this.productService.addProduct(payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+            this.ngOnInit();
+          }
+        });
+      }, 2000)
     }
   }
 
@@ -415,8 +450,8 @@ export class AddProductComponent implements OnInit {
       searchKeywords: this.searchKeyowrds,
       relatedProducts: this.selectedProducts,
       position: this.productForm.get('position')?.value,
-      filestring: this.croppedImage,
-      filename: this.filename,
+      files: this.files,
+      video: this.videoFile,
       thumbFilename: this.thumbnailFilename,
       thumbFilestring: this.thumbnailImage,
       style: {

@@ -65,7 +65,8 @@ export const appRoutes = {
     ADD_PRODUCT: `${app}${productRoute}/add`,
     PRODUCT_LIST: `${app}${productRoute}`,
     UPDATE_PRODUCT: `${app}${productRoute}/update`,
-    ARCHIVED_PRODUCT: `${app}${productRoute}/archive`
+    ARCHIVED_PRODUCT: `${app}${productRoute}/archive`,
+    PRODUCT_SUCCESS: `${app}${productRoute}/success`
   },
   variantProduct: {
     ADD_VARIANT_PRODUCT: `${app}${variantProductRoute}/add`,

@@ -1,12 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NgForm,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from 'src/app/includes/services/brand.service';
@@ -15,6 +9,7 @@ import { TaxClassesService } from 'src/app/includes/services/tax-classes.service
 import { ToastrService } from 'ngx-toastr';
 import { VariantProductService } from 'src/app/includes/services/variant.product.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-add-variant-product',
@@ -27,42 +22,77 @@ export class AddVariantProductComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  params: any;
-  fileData: File;
-  isChecked = false;
-  productType: any;
-  isSingle: boolean = false;
+
+  filedata: File;
+  fileThumbnaildata: File
+  type: any;
+  isSingle: boolean = true;
+
   brandData: any;
-  selected: any;
-  filtered: any;
   categoryData: any;
   taxClassData: any;
-  valueArray: any = [];
-  productData: any;
+  productsData: any;
+
+  searchKeyowrds: any = [];
   categoryNames: any = [];
-  categoryArray: any = [];
-  slug: any;
-  parentProductId: any;
-  parentProductName: any;
+  categoryid: any = [];
+
   returnValue: any;
   isReturn: boolean = false;
   isShipping: boolean = false;
   isCod: boolean = false;
   method: any;
   cod: any;
+
   relProductNames: any = [];
   relProductIds: any = [];
+
+  croppedImage: string | null | undefined;
+  thumbnailImage: string | null | undefined;
+  loadImage: boolean;
+  loadThumbnailImage: boolean;
+  imageChangedEvent: Event | undefined;
+  imageThumbnailChangedEvent: Event | undefined;
+  filename: any;
+  thumbnailFilename: any
+
+  //Styling variables
+  background: any
+  border: any
+  color: any
+
+  selectedCategories: any = []
+  selectedBrand: any = ''
+  selectedProducts: any = []
+  imageFiles: any = []
+  files: any = []
+
+  errors: any
+  validError: any
+  // url: any;
+  format: string | undefined;
+  url: string | ArrayBuffer | null | undefined;
+  playVideo: boolean;
+  video: string | ArrayBuffer | null;
+  videoFile: any = {}
+  disableButton: boolean = false;
+
+  slug: any
+  parent: any
+  parentName: any;
+  refid: any
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private variantProductService: VariantProductService,
     private brandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
+    private VariantProductService: VariantProductService
   ) { }
 
   get pf() {
@@ -72,20 +102,28 @@ export class AddVariantProductComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.slug = this.route.snapshot.queryParams.product || '';
+    this.slug = this.route.snapshot.queryParams.id || ''
     this.managePage();
     this.getBrandDetail();
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
-    this.getProductBySlug();
+
+    this.productService.getProductbyId({ prodid: this.slug }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.parent = res?.result[0]?._id
+        this.refid = res?.result[0]?.prodid
+        this.parentName = res?.result[0]?.name
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
-      name: [''],
-      sku: [''],
-      hsn: [''],
+      name: ['', Validators.required],
+      sku: ['', Validators.required],
+      hsn: ['', Validators.required],
       mrpPrice: [''],
       offerPrice: [''],
       stock: [''],
@@ -97,41 +135,34 @@ export class AddVariantProductComponent implements OnInit {
       brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
-      isActive: ['true'],
-      isFeatured: ['false'],
-      returnable: [''],
+      isActive: ['true', Validators.required],
+      isFeatured: ['false', Validators.required],
+      isArchive: ['false', Validators.required],
+      returnable: ['false', Validators.required],
       returnDays: [''],
-      shippingMethod: [''],
+      shippingMethod: ['', Validators.required],
       shippingCost: [''],
-      weight: [''],
-      unit: [''],
-      taxClassId: [''],
-      cod: [''],
+      value: ['', Validators.required],
+      unit: ['', Validators.required],
+      taxClassId: ['', Validators.required],
+      cod: ['false', Validators.required],
       codCharge: [''],
       searchKeywords: [],
-      relatedProducts: [''],
+      relatedProducts: [],
       position: [''],
       file: [''],
+      background: [''],
+      border: [''],
+      radius: [''],
+      color: [''],
+      fontSize: [''],
+      fontWeight: ['']
     });
   }
 
-  handleInputChange(fileInput: any) {
-    const file = fileInput.dataTransfer
-      ? fileInput.dataTransfer.files[0]
-      : fileInput.target.files[0];
-    this.fileData = <File>fileInput.target.files[0];
-  }
-
-  handleCheckBox() {
-    if (this.isChecked == false) {
-      this.isChecked = true;
-    } else if (this.isChecked == true) {
-      this.isChecked = false;
-    }
-  }
-
-  checkReturnable() {
-    this.returnValue = this.productForm.get('returnable')?.value;
+  //Check whether the product is returnable or not
+  checkReturnable(event: any) {
+    this.returnValue = event.value;
     if (this.returnValue == 'true') {
       this.isReturn = true;
     }
@@ -140,18 +171,21 @@ export class AddVariantProductComponent implements OnInit {
     }
   }
 
-  checkShippingMethod() {
-    this.method = this.productForm.get('shippingMethod')?.value;
-    if (this.method == 'paid') {
+  //Check the shipping method
+  checkShippingMethod(event: any) {
+    console.log(event.value);
+    this.method = event.value;
+    if (this.method === 'Paid') {
       this.isShipping = true;
     }
-    if (this.method == 'unpaid' || this.method == 'external') {
+    if (this.method == 'Unpaid' || this.method == 'External') {
       this.isShipping = false;
     }
   }
 
-  checkCod() {
-    this.cod = this.productForm.get('cod')?.value;
+  //Check whether cod is available or not
+  checkCod(event: any) {
+    this.cod = event.value;
     if (this.cod == 'true') {
       this.isCod = true;
     }
@@ -160,56 +194,44 @@ export class AddVariantProductComponent implements OnInit {
     }
   }
 
-  handleProductType() {
-    this.productType = this.productForm.get('isSingle')?.value;
-    if (this.productType == 'true') {
-      this.isSingle = true;
-    } else if (this.productType == 'false') {
-      this.isSingle = false;
+  //Search keywords input
+  tagInput(event: any) {
+    let _value = event.value
+    if (_value) {
+      if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
+        this.searchKeyowrds.push(this.productForm.get('searchKeywords')?.value);
+        this.productForm.get('searchKeywords')?.setValue('');
+      }
     }
   }
 
-  tagCategoryInput() {
-    if (!this.categoryArray.includes(this.productForm.get('categories')?.value)) {
-      this.categoryArray.push(this.productForm.get('categories')?.value);
-      for (let i = 0; i < this.categoryData.length; i++) {
-        if (this.productForm.get('categories')?.value == this.categoryData[i]._id) {
-          this.categoryNames.push(this.categoryData[i].name);
+  //Search keywords remove
+  tagRemove(value: any) {
+    this.searchKeyowrds = this.searchKeyowrds.filter((_data: any) => _data != value)
+  }
+
+  //Related products tag
+  tagProductAdd(event: any) {
+    let rProduct = event.value
+    if (!this.relProductIds.includes(rProduct)) {
+      this.relProductIds.push(rProduct)
+      for (let i = 0; i < this.productsData.length; i++) {
+        if (this.productsData[i]._id == rProduct) {
+          this.relProductNames.push(this.productsData[i].name)
         }
       }
     } else {
-      this.toastr.info('Category Already Added');
+      this.toastr.info('Product already added');
     }
-    this.productForm.get('categories')?.setValue('');
+    this.productForm.get("relatedProducts")?.setValue('')
   }
 
-  tagCategoryRemove(category: any) {
-    const index = this.categoryNames.indexOf(category);
-    if (index > -1) {
-      this.categoryNames.splice(index, 1);
-    }
-    for (let i = 0; i < this.categoryData.length; i++) {
-      if (this.categoryData[i].name == category) {
-        this.categoryArray.pop(this.categoryData[i]._id);
-      }
-    }
-  }
-
-  tagInput() {
-    if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
-      this.valueArray.push(this.productForm.get('searchKeywords')?.value);
-      this.productForm.get('searchKeywords')?.setValue('');
-    }
-  }
-
-  tagRemove(value: any) {
-    const index = this.valueArray.indexOf(value);
-    if (index > -1) {
-      this.valueArray.splice(index, 1);
-    }
-    for (let i = 0; i < this.valueArray.length; i++) {
-      if (this.valueArray[i] == value) {
-        this.valueArray.pop(value);
+  //Related product remove
+  tagProductRemove(_val: any) {
+    this.relProductNames = this.relProductNames.filter((_data: any) => _data != _val)
+    for (let i = 0; i < this.productsData.length; i++) {
+      if (this.productsData[i].name == _val) {
+        this.relProductIds = this.relProductIds.filter((_data: any) => _data != this.productsData[i]._id)
       }
     }
   }
@@ -228,13 +250,13 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   getBrandDetail() {
-    this.brandService.getBrand().subscribe((res: any) => {
+    this.brandService.getActiveBrands().subscribe((res: any) => {
       this.brandData = res?.result;
     });
   }
 
   getCategoryDetail() {
-    this.categoryService.getCategory().subscribe((res: any) => {
+    this.categoryService.getActiveCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
     });
   }
@@ -247,47 +269,125 @@ export class AddVariantProductComponent implements OnInit {
 
   getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
-      this.productData = res?.result;
+      this.productsData = res?.result;
     });
   }
 
-  getProductBySlug() {
-    this.productService.getProductBySlug(this.slug).subscribe((res: any) => {
-      this.parentProductName = res?.result[0]?.name;
-      this.parentProductId = res?.result[0]._id;
-    });
+  addImage() {
+    this.imageFiles.push({
+      fileString: this.croppedImage,
+      filename: this.filename,
+      url: this.url,
+      id: this.imageFiles.length
+    })
+
+    this.files.push({
+      id: this.files.length,
+      file: this.croppedImage,
+      name: this.filename
+    })
+
+
+    this.croppedImage = ''
+    this.filename = ''
+    this.loadImage = false
   }
 
-  tagProductAdd() {
-    let rProduct = this.productForm.get("relatedProducts")?.value
-    if (!this.relProductIds.includes(rProduct)) {
-      this.relProductIds.push(rProduct)
-      for (let i = 0; i < this.productData.length; i++) {
-        if (this.productData[i]._id == rProduct) {
-          this.relProductNames.push(this.productData[i].name)
-        }
+  removeFile(id: any) {
+    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
+    this.files = this.files.filter((_data: any) => _data.id != id)
+  }
+
+  handleInputChange(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.url = e.target.result
       }
-      this.productForm.get("relatedProducts")?.setValue('')
     }
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
   }
 
-  tagProductRemove(_val: any) {
-    let nIndex = this.relProductNames.indexOf(_val)
-    if (nIndex > -1) {
-      this.relProductNames.splice(nIndex, 1)
-    }
-    for (let i = 0; i < this.productData.length; i++) {
-      if (this.productData[i].name == _val) {
-        let iIndex = this.relProductIds.indexOf(this.productData[i]._id)
-        this.relProductIds.splice(iIndex, 1)
+  handleInputThumbnailChange(event: any) {
+    this.fileThumbnaildata = <File>event.target.files[0];
+    this.thumbnailFilename = this.fileThumbnaildata.name
+    this.imageThumbnailChangedEvent = event;
+    this.loadThumbnailImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() {
+    // show cropper
+  }
+
+  cropperReady() {
+    // cropper ready
+  }
+
+  loadImageFailed() {
+    // show message
+  }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
+  imageThumbnailCropped(event: ImageCroppedEvent) {
+    this.thumbnailImage = event.base64;
+  }
+
+  thumbnailImageLoaded() {
+    // show cropper
+  }
+
+  cropperThumbnailReady() {
+    // cropper ready
+  }
+
+  loadThumbnailImageFailed() {
+    // show message
+  }
+
+  removeThumbnailImage() {
+    this.thumbnailImage = ''
+    this.loadThumbnailImage = false
+  }
+
+  videoUpload(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 })
+        setTimeout(() => {
+          this.video = e.target.result
+          this.toastr.success('Video Successfully Uploaded', '', { timeOut: 2000 })
+          this.videoFile = {
+            video: this.video,
+            name: event.target.files[0].name
+          }
+          this.cdr.markForCheck()
+        }, 2000)
       }
     }
   }
 
-  onOptionsSelected() {
-    this.filtered = this.brandData.filter(
-      (t: { value: any }) => t.value == this.selected
-    );
+  getColors(type: any, e: any) {
+    if (type == "background") {
+      this.background = e.value
+    } else if (type == "border") {
+      this.border = e.value
+    } else if (type == "color") {
+      this.color = e.value
+    }
   }
 
   onSubmit() {
@@ -306,33 +406,74 @@ export class AddVariantProductComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
-    if (this.fileData != null && this.fileData != undefined) {
-      formData.append('file', this.fileData);
+    const payload = this.createPayload()
+    if (payload) {
+      this.disableButton = true
+      setTimeout(() => {
+        this.VariantProductService.addVariantProduct(payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+            this.ngOnInit();
+          }
+        });
+      }, 2000)
     }
+  }
 
-    for (const data of Object.keys(this.productForm.value)) {
-      if (data != 'values' || 'categories' || 'relatedProducts') {
-        formData.append(data, this.productForm.value[data]);
+  createPayload() {
+    const data = {
+      parent: {
+        id: this.parent,
+        refid: this.refid
+      },
+      name: this.productForm.get('name')?.value,
+      sku: this.productForm.get('sku')?.value,
+      hsn: this.productForm.get('hsn')?.value,
+      mrpPrice: this.productForm.get('mrpPrice')?.value,
+      offerPrice: this.productForm.get('offerPrice')?.value,
+      stock: this.productForm.get('stock')?.value,
+      moq: this.productForm.get('moq')?.value,
+      stockWarning: this.productForm.get('stockWarning')?.value,
+      description: this.productForm.get('description')?.value,
+      features: this.productForm.get('features')?.value,
+      categories: this.selectedCategories,
+      brand: this.selectedBrand,
+      additionalbutton: this.productForm.get('additionalbutton')?.value,
+      buttonredireturl: this.productForm.get('buttonredireturl')?.value,
+      isActive: this.productForm.get('isActive')?.value,
+      isArchive: this.productForm.get('isArchive')?.value,
+      isFeatured: this.productForm.get('isFeatured')?.value,
+      returnable: this.productForm.get('returnable')?.value,
+      returnDays: this.productForm.get('returnDays')?.value,
+      shippingMethod: this.productForm.get('shippingMethod')?.value,
+      shippingCost: this.productForm.get('shippingCost')?.value,
+      value: this.productForm.get('value')?.value,
+      unit: this.productForm.get('unit')?.value,
+      tax: this.productForm.get('taxClassId')?.value,
+      cod: this.productForm.get('cod')?.value,
+      codCharge: this.productForm.get('codCharge')?.value,
+      searchKeywords: this.searchKeyowrds,
+      relatedProducts: this.selectedProducts,
+      position: this.productForm.get('position')?.value,
+      files: this.files,
+      video: this.videoFile,
+      thumbFilename: this.thumbnailFilename,
+      thumbFilestring: this.thumbnailImage,
+      style: {
+        background: this.productForm.get('background')?.value,
+        border: this.productForm.get('border')?.value,
+        radius: this.productForm.get('radius')?.value,
+        text: {
+          color: this.productForm.get('color')?.value,
+          fontSize: this.productForm.get('fontSize')?.value,
+          fontWeight: this.productForm.get('fontWeight')?.value,
+        }
       }
     }
 
-    formData.append('relatedProducts', JSON.stringify(this.relProductIds))
-    formData.append('categories', JSON.stringify(this.categoryArray))
-    formData.append('searchKeywords', JSON.stringify(this.valueArray))
-    formData.append('parentId', this.parentProductId);
-
-    this.variantProductService.addVariantProduct(formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Product Added Successfully');
-        this.router.navigate(
-          [this.appRoute.variantProduct.VARIANT_PRODUCT_LIST],
-          { queryParams: { product: this.slug } }
-        );
-        this.ngOnInit();
-      }
-    });
+    return data
   }
 }

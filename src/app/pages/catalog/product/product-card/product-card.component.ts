@@ -1,7 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { VariantProductService } from 'src/app/includes/services/variant.product.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,6 +15,7 @@ export class ProductCardComponent implements OnInit {
   appRoute = appRoutes;
   products: any;
   productform: any;
+  variantProductform: any;
   base: any
 
   //Page and limit for query
@@ -40,10 +43,30 @@ export class ProductCardComponent implements OnInit {
   show: any;
   shifted: any
 
+  showVariants: Boolean = false
+  variantproduct: any
+
+  variantProducts: any;
+  variantPage: any = 1;
+  variantPages: any = []
+  vairnatNextPages: any = []
+  variantCurrpage: any = 1;
+  variantLimit: any = 8;
+  variantSelectedpage: any = 1
+  variantMax: any = 3
+
+  variantTotalCount: any;
+  variantTotalData: any;
+  variantCount: any = 0
+  prodid: any;
+
   constructor(
     private productService: ProductService,
+    private VariantProductService: VariantProductService,
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private Router: Router,
+    private ActivatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -66,6 +89,12 @@ export class ProductCardComponent implements OnInit {
 
   initForm() {
     this.productform = this.formBuilder.group({
+      name: [''],
+      isActive: [''],
+      isFeatured: [''],
+    });
+
+    this.variantProductform = this.formBuilder.group({
       name: [''],
       isActive: [''],
       isFeatured: [''],
@@ -163,5 +192,62 @@ export class ProductCardComponent implements OnInit {
     })
     this.isNext = true
   }
-}
 
+  //Variants
+  showVariantProducts(name: any, prodid: any) {
+    this.showVariants = !this.showVariants;
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+    this.variantproduct = name
+
+    this.prodid = prodid
+    this.VariantProductService.searchVariantProducts(prodid, this.page, this.variantProductform.value,).subscribe((res: any) => {
+      this.variantProducts = res?.result?.data
+      this.variantCount = this.variantProducts.length
+      this.variantTotalCount = res?.result?.total_item
+      this.variantLimit = res?.result?.items_per_page
+      this.variantTotalData = Math.ceil(this.totalcount / this.limit)
+      this.setVariantPages()
+      this.cdr.markForCheck();
+    });
+  }
+
+  setVariantPages() {
+    this.variantCurrpage = 1
+    this.variantSelectedpage = 1
+    this.variantPages.length = 0
+    if (this.variantTotalData > 3) {
+      for (let i = 1; i <= this.variantMax; i++) {
+        this.variantPages.push(i)
+      }
+    } else {
+      for (let i = 1; i <= this.variantTotalData; i++) {
+        this.variantPages.push(i)
+      }
+    }
+  }
+
+  hideVariantProducts() {
+    this.showVariants = !this.showVariants;
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+  }
+
+  navigateToAdd() {
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+    this.Router.navigate([this.appRoute.variantProduct.ADD_VARIANT_PRODUCT], { queryParams: { id: this.prodid } })
+  }
+
+  onVariantReload() {
+    this.variantProductform.get('name')?.setValue('')
+    this.variantProductform.get('isActive')?.setValue('')
+    this.variantProductform.get('isFeatured')?.setValue('')
+    this.searchVariantProduct()
+  }
+
+  searchVariantProduct() {
+
+  }
+
+}

@@ -5,6 +5,7 @@ import { ProductComponent } from './product-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { ArchivedProductComponent } from '../archived-product/archived-product.component';
+import { ProductSuccessComponent } from '../product-success/product-success.component';
 // import { WidgetsModule } from '../../_metronic/partials';
 
 @NgModule({
@@ -20,6 +21,10 @@ import { ArchivedProductComponent } from '../archived-product/archived-product.c
       {
         path: 'archive',
         component: ArchivedProductComponent
+      },
+      {
+        path: 'success',
+        component: ProductSuccessComponent
       }
     ]),
     // WidgetsModule,

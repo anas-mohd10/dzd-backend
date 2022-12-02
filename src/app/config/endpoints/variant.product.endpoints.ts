@@ -1,11 +1,10 @@
 export const variantProductEndpoints = {
-    add_product: '/upload-variant-product',
+    add_product: '/add-variant-product',
     get_product: '/variant-products',
     get_product_names: '/variant-product-names',
     get_product_by_slug: '/variant-product',
-    get_product_by_parent: '/variant-parent-product',
-    get_active_products: '/active-variant-products',
-    update_product_status: '/update-variant-product/:id',
+    get_product_by_parent: '/variant-products/parent',
+    get_active_products: '/variant-products/active',
     update_product: '/update-variant-product',
-    delete_product: '/delete-variant-product/:id'
+    search_product: '/variant-products/search'
 }

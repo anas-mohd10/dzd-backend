@@ -9,7 +9,7 @@ import { variantProductEndpoints } from '../../config/endpoints';
 export class VariantProductService {
   variantProductEndpoints = variantProductEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addVariantProduct(data: any) {
     const url = this.commonService.getFullUrl(this.variantProductEndpoints.add_product);
@@ -34,6 +34,11 @@ export class VariantProductService {
   getVariantProductByParent(id: any) {
     const url = this.commonService.getFullUrl(this.variantProductEndpoints.get_product_by_parent + '?id=' + id);
     return this.http.get(`${url}`);
+  }
+
+  searchVariantProducts(id: any, page: any, data: any) {
+    const url = this.commonService.getFullUrl(this.variantProductEndpoints.search_product + "?page=" + page + "&id=" + id);
+    return this.http.post(`${url}`, data);
   }
 
   getVariantProductNames() {

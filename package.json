@@ -34,6 +34,7 @@
     "@types/node": "^12.11.1",
     "@types/object-path": "^0.11.1",
     "@types/prismjs": "^1.16.6",
+    "@videogular/ngx-videogular": "^5.0.1",
     "angular-datatables": "^13.0.0",
     "angular-in-memory-web-api": "^0.11.0",
     "animate.css": "^4.1.1",

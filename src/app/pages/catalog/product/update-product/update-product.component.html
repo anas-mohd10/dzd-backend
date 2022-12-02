@@ -426,27 +426,23 @@
               </div>
 
               <!-- Product image -->
-              <div class="col-12 col-sm-6">
+              <div class="col-12">
                 <div class="col-12">
                   <h3 class="form-title required"><span>Product Image</span></h3>
                 </div>
-                <div class="form-group col-12">
-                  <div class="image-upload col-sm-6">
+                <div class="form-group col-sm-6">
+                  <div class="image-upload">
                     <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="handleInputChange($event)"
-                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                      style="height: 100px;" required>
+                      (change)="handleInputChange($event)" style="height: 100px;" required>
                     <div class="image-upload-div">
                       <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset=""></div>
-                      <div class="right-text d-flex flex-column">
-                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                        <span class="right-text-note fs-7 text-gray-400">Upload up to 1 file</span>
+                          srcset="">
                       </div>
+                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                          up to 1
+                          file</span></div>
                     </div>
-                  </div>
-                  <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{p_img}}" alt="" style="width: 150px; height: 150px; object-fit: contain;">
                   </div>
                 </div>
                 <ng-container *ngIf=" loadImage">
@@ -466,15 +462,30 @@
                       <img class="preview-img" id="previewImage" [src]="croppedImage">
                     </div>
                   </div>
+                  <button class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="addImage()">Save</button>
                 </ng-container>
+                <div class="col-12" *ngIf="imageFiles.length != 0">
+                  <div class="products-image-container">
+                    <ng-container *ngFor="let image of imageFiles">
+                      <div class="products-image-card col-sm-3">
+                        <div class="products-image">
+                          <img class="product-preview" [src]="image?.url" alt="" srcset="">
+                        </div>
+                        <div class="products-delete-icon" (click)="removeFile(image?.id)">
+                          <i class="bi bi-x-lg"></i>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
               </div>
 
               <!-- Product thumbnail image -->
-              <div class="col-12 col-sm-6">
+              <div class="col-12">
                 <div class="col-12">
                   <h3 class="form-title required"><span>Thumbnail Image</span></h3>
                 </div>
-                <div class="form-group">
+                <div class="form-group col-sm-6">
                   <div class="image-upload">
                     <input type="file" class="form-control fs-5" name="image" accept="image/*"
                       (change)="handleInputThumbnailChange($event)" style="height: 100px;" required>
@@ -514,12 +525,40 @@
               </div>
 
               <div class="col-12">
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">Cancel</a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                  (click)="onSubmit()">Update</button>
+                <div class="col-12">
+                  <h3 class="form-title"><span>Product Video</span></h3>
+                </div>
+                <div class="form-group col-sm-6">
+                  <div class="image-upload">
+                    <input type="file" accept="video/*" class="form-control fs-5" name="image"
+                      (change)="videoUpload($event)" style="height: 100px;" required>
+                    <div class="image-upload-div">
+                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                          srcset="">
+                      </div>
+                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                          up to 1
+                          file</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="video-player-container">
+                  <video *ngIf="video" [src]="video" controls height="200" autoplay></video>
+                </div>
               </div>
 
+              <div class="col-12">
+                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                  style="width: 200px; margin-right: 20px;">Cancel</a>
+                <button *ngIf="!showLoader" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                  (click)="onSubmit()">Update</button>
+                <button *ngIf="showLoader" class="btn btn-primary btn-sm fs-5" type="button" disabled
+                  style="width: 200px">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="visually-hidden">Loading...</span>
+                </button>
+              </div>
             </div>
           </form>
 

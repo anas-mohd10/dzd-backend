@@ -18,6 +18,7 @@ export class ViewDashboardSettingsComponent implements OnInit {
   positions: any;
   sorted_postions: any = {}
   result: any = []
+  newResult: any = []
   isSave: boolean;
   data: any = {
     positions: {
@@ -54,6 +55,7 @@ export class ViewDashboardSettingsComponent implements OnInit {
             this.result.push(this.positions[key])
           }
         }
+        this.newResult = [...this.result]
         this.slug = res?.result[0]?.slug
         this.cdr.markForCheck()
       } else {
@@ -78,47 +80,47 @@ export class ViewDashboardSettingsComponent implements OnInit {
 
 
   saveButton() {
-    for (let values of this.result) {
-      switch (values['title']) {
-        case 'Banners':
-          this.data['positions']['banners'] = {
-            title: values['title'],
-            value: values['value']
-          }
-          break
-        case 'Brands':
-          this.data['positions']['brands'] = {
-            title: values['title'],
-            value: values['value']
-          }
-          break
-        case 'Collection':
-          this.data['positions']['collection'] = {
-            title: values['title'],
-            value: values['value']
+    this.data['slug'] = this.slug
+    for (let i = 0; i < this.result.length; i++) {
+      switch (this.result[i]['title']) {
+        case 'Carausel':
+          this.data['positions']['carausel'] = {
+            title: this.result[i]['title'],
+            value: i
           }
           break
         case 'Category':
           this.data['positions']['category'] = {
-            title: values['title'],
-            value: values['value']
+            title: this.result[i]['title'],
+            value: i
+          }
+          break
+        case 'Collection':
+          this.data['positions']['collection'] = {
+            title: this.result[i]['title'],
+            value: i
+          }
+          break
+        case 'Banners':
+          this.data['positions']['banners'] = {
+            title: this.result[i]['title'],
+            value: i
+          }
+          break
+        case 'Brands':
+          this.data['positions']['brands'] = {
+            title: this.result[i]['title'],
+            value: i
           }
           break
         case 'Products':
           this.data['positions']['products'] = {
-            title: values['title'],
-            value: values['value']
-          }
-          break
-        case 'Carausel':
-          this.data['positions']['carausel'] = {
-            title: values['title'],
-            value: values['value']
+            title: this.result[i]['title'],
+            value: i
           }
           break
       }
     }
-    this.data['slug'] = this.slug
     if (this.data) {
       this.HomeSettingsService.updateHomeSettings(this.data).subscribe((res: any) => {
         if (res?.errorCode == 0) {

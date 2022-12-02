@@ -1,12 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NgForm,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -90,6 +84,16 @@ export class UpdateProductComponent implements OnInit {
 
   p_img: any
   tp_img: any
+
+  format: string | undefined;
+  url: string | ArrayBuffer | null | undefined;
+  playVideo: boolean;
+  video: string | ArrayBuffer | null;
+  videoFile: any = {}
+  files: any = [];
+  imageFiles: any = [];
+
+  showLoader: Boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -295,10 +299,20 @@ export class UpdateProductComponent implements OnInit {
       } else if (this.productType == false) {
         this.isSingle = false;
       }
-      this.uploadedimg = this.productData?.file;
-      this.p_img = this.base + "/" + this.productData?.file;
+
+      for (let i = 0; i < this.productData?.files?.length; i++) {
+        this.imageFiles.push({ url: this.base + "/" + this.productData?.files[i], id: i })
+        this.files.push({ url: this.productData?.files[i], id: i })
+      }
+
+      if (this.productData?.video) {
+        this.video = this.base + "/" + this.productData?.video
+        this.videoFile = this.productData?.video
+      }
+
       this.uploadedThumbnailImg = this.productData?.thumbnail
       this.tp_img = this.base + "/" + this.productData?.thumbnail
+
       this.productForm.get('isSingle')?.setValue(this.productType);
       this.productForm.get('name')?.setValue(this.productData.name);
       this.productForm.get('sku')?.setValue(this.productData.sku);
@@ -385,7 +399,38 @@ export class UpdateProductComponent implements OnInit {
     );
   }
 
+  addImage() {
+    this.imageFiles.push({
+      fileString: this.croppedImage,
+      filename: this.filename,
+      url: this.url,
+      id: this.imageFiles.length
+    })
+
+    this.files.push({
+      id: this.files.length,
+      file: this.croppedImage,
+      name: this.filename
+    })
+
+    this.croppedImage = ''
+    this.filename = ''
+    this.loadImage = false
+  }
+
+  removeFile(id: any) {
+    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
+    this.files = this.files.filter((_data: any) => _data.id != id)
+  }
+
   handleInputChange(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.url = e.target.result
+      }
+    }
     this.filedata = <File>event.target.files[0];
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
@@ -441,6 +486,25 @@ export class UpdateProductComponent implements OnInit {
     this.loadThumbnailImage = false
   }
 
+  videoUpload(event: any) {
+    if (event.target.files.length > 0) {
+      let reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (e: any) => {
+        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 })
+        setTimeout(() => {
+          this.video = e.target.result
+          this.toastr.success('Video Successfully Uploaded', '', { timeOut: 2000 })
+          this.videoFile = {
+            video: this.video,
+            name: event.target.files[0].name
+          }
+          this.cdr.markForCheck()
+        }, 2000)
+      }
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -456,7 +520,23 @@ export class UpdateProductComponent implements OnInit {
     if (!this.productForm.valid) {
       return;
     }
+    const payload = this.createPayload()
+    this.showLoader = true
+    if (payload) {
+      setTimeout(() => {
+        this.productService.updateProduct(this.productSlug, payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+          }
+        });
+      }, 2000)
+    }
+  }
 
+  createPayload() {
     const data = {
       isSingle: this.productForm.get('isSingle')?.value,
       name: this.productForm.get('name')?.value,
@@ -488,12 +568,11 @@ export class UpdateProductComponent implements OnInit {
       searchKeywords: this.valueArray,
       relatedProducts: this.selectedProducts,
       position: this.productForm.get('position')?.value,
-      filestring: this.croppedImage,
-      filename: this.filename,
+      files: this.files,
+      video: this.videoFile,
       thumbFilename: this.thumbnailFilename,
       thumbFilestring: this.thumbnailImage,
-      file: '',
-      thumbnail: '',
+      thumbnail: this.uploadedThumbnailImg,
       style: {
         background: this.productForm.get('background')?.value,
         border: this.productForm.get('border')?.value,
@@ -506,23 +585,11 @@ export class UpdateProductComponent implements OnInit {
       },
       prodid: this.productData.prodid
     }
-
-    if (this.uploadedimg) {
-      data.file = this.uploadedimg
-    }
-
-    if (this.uploadedThumbnailImg) {
+    if (data.thumbFilename == '' && data.thumbFilestring == '') {
       data.thumbnail = this.uploadedThumbnailImg
     }
 
-    this.productService.updateProduct(this.productSlug, data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-      }
-    });
+    return data
   }
 
   restoreProduct() {

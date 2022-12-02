@@ -7,6 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 
 @NgModule({
   declarations: [AddProductComponent],
@@ -16,6 +20,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     FormsModule,
     ImageCropperModule,
+    VgBufferingModule,
+    VgOverlayPlayModule,
+    VgCoreModule,
+    VgControlsModule,
     NgSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -23,12 +31,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
       preventDuplicates: true,
       progressBar: true,
     }),
-    RouterModule.forChild([
-      {
-        path: '',
-        component: AddProductComponent,
-      },
-    ]),
+    RouterModule.forChild([{ path: '', component: AddProductComponent, }]),
   ],
 })
+
 export class AddProductModule { }

@@ -1,0 +1,17 @@
+<div class="product-success-container">
+   <div class="product-success-icon">
+      <i class="bi bi-check2-circle text-primary"></i>
+   </div>
+   <div class="product-success-title">
+      {{name}} product added successfully
+   </div>
+   <div class="product-success-subtitle">
+      To add variants, click on <span class="text-primary">Add Variants</span> button
+   </div>
+   <div class="add-variants-button">
+      <button class="btn btn-primary fs-5" routerLink="{{appRoutes.variantProduct.ADD_VARIANT_PRODUCT}}"
+         [queryParams]="{id: prodid}">
+         Add Variants
+      </button>
+   </div>
+</div>
