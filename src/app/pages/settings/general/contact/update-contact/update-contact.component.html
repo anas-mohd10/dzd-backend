@@ -59,6 +59,7 @@
                        ">Email is required
                         </span>
                      </div>
+                     <div class="text-danger" *ngIf="ctf.email.errors?.pattern">Plese Enter Valid Email</div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
@@ -74,6 +75,7 @@
                        ">Mobile is required
                         </span>
                      </div>
+                     <div class="text-danger" *ngIf="ctf.mobile.errors?.pattern">Plese Enter Valid Phone Number</div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
@@ -145,6 +147,7 @@
                        ">Pincode is required
                         </span>
                      </div>
+                     <div class="text-danger" *ngIf="ctf.pincode.errors?.pattern">Plese Enter Valid Pincode</div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">

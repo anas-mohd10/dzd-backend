@@ -60,7 +60,7 @@ export class UpdateLayoutListComponent implements OnInit {
 
   initForm() {
     this.layoutForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: [''],
       validFrom: [''],
       validTo: [''],
       isActive: ['true'],

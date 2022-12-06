@@ -38,14 +38,14 @@ export class UpdateContactComponent implements OnInit {
   initForm() {
     this.contactsForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
-      mobile: ['', Validators.required],
+      email: ['',[ Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      mobile: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
       isActive: ['true', Validators.required],
       firstline: ['', Validators.required],
       secondline: [''],
       area: [''],
       city: ['', Validators.required],
-      pincode: ['', Validators.required],
+      pincode: ['',[ Validators.required, Validators.pattern("^[1-9]{1}[0-9]{2}[0-9]{3}$")]],
       lat: ['', Validators.required],
       lng: ['', Validators.required],
       state: ['', Validators.required],

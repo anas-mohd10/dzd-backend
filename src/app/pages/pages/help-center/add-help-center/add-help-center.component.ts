@@ -38,8 +38,8 @@ export class AddHelpCenterComponent implements OnInit {
   initForm() {
     this.helpcenterForm = this.formBuilder.group({
       description: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
     });
   }
 

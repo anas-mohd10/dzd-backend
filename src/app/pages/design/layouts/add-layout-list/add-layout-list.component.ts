@@ -53,7 +53,7 @@ export class AddLayoutListComponent implements OnInit {
 
   initForm() {
     this.layoutForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       isActive: ['true'],

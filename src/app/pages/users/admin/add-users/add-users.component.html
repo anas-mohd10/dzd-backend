@@ -65,6 +65,7 @@
                   ">Email is required
                   </span>
                 </div>
+                <div class="text-danger" *ngIf="af.email.errors?.pattern">Please, Enter Valid Email</div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
@@ -80,6 +81,7 @@
                   ">Mobile is required
                   </span>
                 </div>
+                <div class="text-danger" *ngIf="af.mobile.errors?.pattern">Please, Enter Valid Phone Number</div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">

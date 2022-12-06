@@ -110,7 +110,8 @@ export class InvoiceListComponent implements OnInit {
             this.toastr.error('Something went wrong');
           } else if (res.errorCode == 0) {
             this.toastr.success('Invoice added successfully');
-            window.open(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST, '_self')
+            this.router.navigateByUrl(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST)
+            // window.open(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST, '_self')
           }
         })
       }
@@ -120,7 +121,8 @@ export class InvoiceListComponent implements OnInit {
           this.toastr.error('Something went wrong');
         } else if (res.errorCode == 0) {
           this.toastr.success('Invoice added successfully');
-          window.open(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST, '_self')
+          this.router.navigateByUrl(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST)
+          // window.open(this.appRoute.invoiceSettings.INVOICE_SETTINGS_LIST, '_self')
         }
       })
     }
