@@ -36,6 +36,7 @@
                                  [ngClass]="{'is-invalid': (hf.phone.touched || isSubmitted) && hf.phone.errors?.required}"
                                  (click)="showButton()" />
                            </div>
+                           <div class="text-danger" *ngIf="hf.phone.errors?.pattern">Please Enter Valid Phone Number</div>
                         </div>
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
@@ -44,6 +45,7 @@
                                  [ngClass]="{'is-invalid': (hf.email.touched || isSubmitted) && hf.email.errors?.required}"
                                  (click)="showButton()" />
                            </div>
+                           <div class="text-danger" *ngIf="hf.email.errors?.pattern">Please Enter Valid Email</div>
                         </div>
                         <ng-container *ngIf="!isHidden">
                            <div class="col-12 d-flex justify-content-end">

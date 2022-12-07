@@ -56,6 +56,7 @@
                               cf.email.errors?.required
                             }" (change)="checkEmail($event.target)" />
                         </div>
+                        <div class="text-danger" *ngIf="cf.email.errors?.pattern">Please, Enter Valid Email</div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
@@ -67,6 +68,7 @@
                               cf.mobile.errors?.required
                             }" />
                         </div>
+                        <div class="text-danger" *ngIf="cf.mobile.errors?.pattern">Please, Enter Valid Phone Number</div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <label class="fs-5 mb-3 form-title">Wallet Balance</label>
@@ -160,6 +162,7 @@
                               cf.pincode.errors?.required
                             }" />
                         </div>
+                        <div class="text-danger" *ngIf="cf.pincode.errors?.pattern">Please, Enter Valid Pincode</div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">

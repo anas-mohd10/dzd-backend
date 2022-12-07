@@ -18,7 +18,7 @@
                routerLink="{{ appRoute.dashboardSettings.ADD_DASHBOARD_SETTINGS }}">
                Add Configurations
             </button>
-            <button *ngIf="dashboardSettingsCount != 0" class="btn btn-primary btn-sm cursor-pointer fs-5"
+            <button *ngIf="isSave" class="btn btn-primary btn-sm cursor-pointer fs-5"
                color="primary" style="width: 200px" (click)="saveButton()">
                Save Changes
             </button>

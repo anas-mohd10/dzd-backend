@@ -66,6 +66,8 @@ export class ViewDashboardSettingsComponent implements OnInit {
     this.HomeSettingsService.getHomeSettingsCount().subscribe((res: any) => {
       if (res?.result) {
         this.dashboardSettingsCount = res?.result
+        console.log(this.homeSettings);
+
       } else {
         this.dashboardSettingsCount = 0
       }

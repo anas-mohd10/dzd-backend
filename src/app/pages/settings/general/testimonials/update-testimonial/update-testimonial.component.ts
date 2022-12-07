@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { environment } from './../../../../../../environments/environment';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -26,16 +27,19 @@ export class UpdateTestimonialComponent implements OnInit {
   croppedImage: any;
   imageChangedEvent: any;
   loadImage: boolean;
+  base: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private testimonialService: TestimonialService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm()
     this.managePage()
     this.slug = this.route.snapshot.queryParams.slug || ''
@@ -74,7 +78,8 @@ export class UpdateTestimonialComponent implements OnInit {
   getTestimonial() {
     this.testimonialService.getTestimonial(this.slug).subscribe((res: any) => {
       this.data = res?.result[0]
-      this.uploadedimg = res?.result[0].file
+      this.cdr.markForCheck()
+      this.uploadedimg = this.base + "/" + res?.result[0].file
       this.testimonialForm.get("name")?.setValue(res?.result[0].name)
       this.testimonialForm.get("profession")?.setValue(res?.result[0].profession)
       this.testimonialForm.get("business")?.setValue(res?.result[0].business)
