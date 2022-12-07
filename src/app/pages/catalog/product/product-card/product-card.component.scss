@@ -18,11 +18,21 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
+      .product-price {
+         display: flex;
+         align-items: center;
+         justify-content: start;
+
+         .strike-price {
+            text-decoration: line-through;
+         }
+      }
    }
 
    .product-image {
-      height: 130px;
-      width: 130px;
+      height: 200px;
+      width: 120px;
       margin: 0 0 20px 0;
    }
 
@@ -57,13 +67,14 @@
 
 
    .product-offerprice {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 600;
       color: #000000;
+      margin: 0 0.5rem 0 0;
    }
 
    .product-mrpprice {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: #555555;
    }
 
@@ -107,17 +118,17 @@
    }
 
    .product-stock {
-      margin: 10px 0;
+      margin: 10px 0 0 0;
       font-size: 1.1rem;
       font-weight: 500;
    }
 
    .product-card-bottom {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between
+      // display: flex;
+      // flex-direction: column;
+      // align-items: center;
+      // justify-content: space-between
    }
 
    .product-delivery {
@@ -268,11 +279,21 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+
+      .product-price {
+         display: flex;
+         align-items: center;
+         justify-content: start;
+
+         .strike-price {
+            text-decoration: line-through;
+         }
+      }
    }
 
    .product-image {
-      height: 160px;
-      width: 130px;
+      height: 200px;
+      width: 120px;
       margin: 0 0 20px 0;
    }
 
@@ -288,7 +309,7 @@
    }
 
    .product-brand {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: 600;
    }
 
@@ -305,15 +326,15 @@
       border-radius: 5px;
    }
 
-
    .product-offerprice {
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 600;
       color: #000000;
+      margin: 0 0.5rem 0 0;
    }
 
    .product-mrpprice {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: #555555;
    }
 

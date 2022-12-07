@@ -186,7 +186,7 @@
               <ng-container *ngIf="isShipping">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
-                    <label class="fs-5 mb-3">Shipping Cost </label>
+                    <label class="fs-5 mb-3 required">Shipping Cost </label>
                     <div class="input-group mb-3">
                       <span class="input-group-text">Rs.</span>
                       <input type="number" class="form-control" formControlName="shippingCost" />
@@ -260,7 +260,7 @@
               <!-- Postion -->
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Position</label>
+                  <label class="fs-5 mb-3">Position</label>
                   <input type="number" class="form-control fs-5" formControlName="position" [ngClass]="{
                     'is-invalid': (pf.position.touched || isSubmitted) && pf.position.errors?.required}" />
                 </div>
@@ -548,14 +548,9 @@
             <div class="col-12">
               <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                 style="width: 200px; margin-right: 20px;">Cancel</a>
-              <button *ngIf="!disableButton" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+              <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
                 (click)="onSubmit()">Add</button>
-              <button *ngIf="disableButton" class="btn btn-primary btn-sm fs-5" type="button" disabled style="width: 200px">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <span class="visually-hidden">Loading...</span>
-              </button>
             </div>
-
           </form>
         </div>
       </div>

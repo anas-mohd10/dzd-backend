@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { VariantProductService } from 'src/app/includes/services/variant.product.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-variant-product',
@@ -117,6 +118,7 @@ export class UpdateVariantProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.slug = this.route.snapshot.queryParams.id || ''
@@ -128,81 +130,89 @@ export class UpdateVariantProductComponent implements OnInit {
 
     this.VariantProductService.getVariantProductBySlug(this.slug).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.parent = res?.result[0]?._id
-        this.refid = res?.result[0]?.prodid
-        this.parentName = res?.result[0]?.name
-        //Form values start
-        this.uploadedImg = res?.result[0]?.file;
-        this.productForm.get('name')?.setValue(res?.result[0]?.name);
-        this.productForm.get('sku')?.setValue(res?.result[0]?.sku);
-        this.productForm.get('hsn')?.setValue(res?.result[0]?.hsn);
-        this.productForm.get('mrpPrice')?.setValue(res?.result[0]?.mrpPrice);
-        this.productForm.get('offerPrice')?.setValue(res?.result[0]?.offerPrice);
-        this.productForm.get('stock')?.setValue(res?.result[0]?.stock);
-        this.productForm.get('moq')?.setValue(res?.result[0]?.moq);
-        this.productForm.get('additionalbutton')?.setValue(res?.result[0]?.additionalbutton);
-        this.productForm.get('buttonredireturl')?.setValue(res?.result[0]?.buttonredireturl);
-        this.productForm.get('isFeatured')?.setValue(res?.result[0]?.isFeatured);
-        this.productForm.get('isActive')?.setValue(res?.result[0]?.isActive);
-        this.productForm.get('returnable')?.setValue(res?.result[0]?.returnable);
-        this.productForm.get('returnDays')?.setValue(res?.result[0]?.returnDays);
-        this.productForm.get('shippingMethod')?.setValue(res?.result[0]?.shippingMethod);
-        this.productForm.get('value')?.setValue(res?.result[0]?.value);
-        this.productForm.get('unit')?.setValue(res?.result[0]?.unit);
-        this.productForm.get('cod')?.setValue(res?.result[0]?.cod);
-        this.productForm.get('codCharge')?.setValue(res?.result[0]?.codCharge);
-        this.productForm.get('shippingCost')?.setValue(res?.result[0]?.shippingCost);
-        this.productForm.get('position')?.setValue(res?.result[0]?.position);
-        this.productForm.get('cod')?.setValue(res?.result[0]?.cod);
-        this.productForm.get('codCharge')?.setValue(res?.result[0]?.codCharge);
-        this.productForm.get('stockWarning')?.setValue(res?.result[0]?.stockWarning);
-        this.productForm.get('description')?.setValue(res?.result[0]?.description);
-        this.productForm.get('features')?.setValue(res?.result[0]?.features);
-        this.productForm.get('relatedProducts')?.setValue(res?.result[0]?.relatedProducts);
-        this.productForm.get('taxClassId')?.setValue(res?.result[0]?.tax);
-        this.color = res?.result[0]?.text.color
-        this.background = res?.result[0]?.background
-        this.border = res?.result[0]?.border
+        this.productData = res?.result[0];
+        for (let i = 0; i < this.productData?.files?.length; i++) {
+          this.imageFiles.push({ url: this.base + "/" + this.productData?.files[i], id: i })
+          this.files.push({ url: this.productData?.files[i], id: i })
+        }
+        if (this.productData?.video) {
+          this.video = this.base + "/" + this.productData?.video
+          this.videoFile = this.productData?.video
+        }
+        this.uploadedThumbnailImg = this.productData?.thumbnail
+        this.tp_img = this.base + "/" + this.productData?.thumbnail
+        this.productForm.get('name')?.setValue(this.productData.name);
+        this.productForm.get('sku')?.setValue(this.productData.sku);
+        this.productForm.get('hsn')?.setValue(this.productData.hsn);
+        this.productForm.get('mrpPrice')?.setValue(this.productData.mrpPrice);
+        this.productForm.get('offerPrice')?.setValue(this.productData.offerPrice);
+        this.productForm.get('stock')?.setValue(this.productData.stock);
+        this.productForm.get('moq')?.setValue(this.productData.moq);
+        this.productForm.get('additionalbutton')?.setValue(this.productData.additionalbutton);
+        this.productForm.get('buttonredireturl')?.setValue(this.productData.buttonredireturl);
+        this.productForm.get('isFeatured')?.setValue(this.productData.isFeatured);
+        this.productForm.get('isActive')?.setValue(this.productData.isActive);
+        this.productForm.get('isArchive')?.setValue(this.productData.isArchive);
+        this.productForm.get('returnable')?.setValue(this.productData.returnable);
+        this.productForm.get('returnDays')?.setValue(this.productData.returnDays);
+        this.productForm.get('shippingMethod')?.setValue(this.productData.shippingMethod);
+        this.productForm.get('unit')?.setValue(this.productData.unit);
+        this.productForm.get('value')?.setValue(this.productData.value);
+        this.productForm.get('cod')?.setValue(this.productData.cod);
+        this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
+        this.productForm.get('shippingCost')?.setValue(this.productData.shippingCost);
+        this.productForm.get('position')?.setValue(this.productData.position);
+        this.productForm.get('cod')?.setValue(this.productData.cod);
+        this.productForm.get('codCharge')?.setValue(this.productData.codCharge);
+        this.productForm.get('stockWarning')?.setValue(this.productData.stockWarning);
+        this.productForm.get('description')?.setValue(this.productData.description);
+        this.productForm.get('features')?.setValue(this.productData.features);
+        this.productForm.get('background')?.setValue(this.productData.style.background);
+        this.productForm.get('border')?.setValue(this.productData.style.border);
+        this.productForm.get('radius')?.setValue(this.productData.style.radius);
+        this.productForm.get('color')?.setValue(this.productData.style.text.color);
+        this.productForm.get('fontSize')?.setValue(this.productData.style.text.fontSize);
+        this.productForm.get('fontWeight')?.setValue(this.productData.style.text.fontWeight);
+        this.productForm.get('taxClassId')?.setValue(this.productData.tax?._id);
+        this.color = this.productData.style.text.color
+        this.background = this.productData.style.background
+        this.border = this.productData.style.border
         this.selectedCategories = res?.result[0]?.categories
         this.selectedBrand = res?.result[0]?.brand
         this.selectedProducts = res?.result[0]?.relatedProducts
-        this.cod = res?.result[0]?.cod;
-
-        for (let i = 0; i < res?.result[0]?.categories.length; i++) {
-          this.categoryArray.push(res?.result[0]?.categories[i]._id)
-          this.categoryNames.push(res?.result[0]?.categories[i].name);
+        for (let i = 0; i < this.productData.categories.length; i++) {
+          this.categoryArray.push(this.productData.categories[i]._id)
+          this.categoryNames.push(this.productData.categories[i].name);
         }
-
-        for (let i = 0; i < res?.result[0]?.relatedProducts.length; i++) {
-          this.relProductIds.push(res?.result[0]?.relatedProducts[i]._id)
-          this.relProductNames.push(res?.result[0]?.relatedProducts[i].name)
+        for (let i = 0; i < this.productData.relatedProducts.length; i++) {
+          this.relProductIds.push(this.productData.relatedProducts[i]._id)
+          this.relProductNames.push(this.productData.relatedProducts[i].name)
         }
-
-        this.valueArray = res?.result[0]?.searchKeywords
-
-        this.returnValue = res?.result[0]?.returnable;
-        if (this.returnValue == true) {
-          this.isReturn = true;
-        }
-        if (this.returnValue == false) {
-          this.isReturn = false;
-        }
-
-        this.method = res?.result[0]?.shippingMethod;
-        if (this.method == 'paid') {
-          this.isShipping = true;
-        }
-        if (this.method == 'unpaid' || this.method == 'external') {
-          this.isShipping = false;
-        }
+        this.valueArray = this.productData.searchKeywords
+        this.cod = this.productData.cod;
         if (this.cod == true) {
           this.isCod = true;
         }
         if (this.cod == false) {
           this.isCod = false;
         }
-        //Form values end
-
+        this.method = this.productData.shippingMethod;
+        if (this.method == 'Paid') {
+          this.isShipping = true;
+        }
+        if (this.method == 'Unpaid' || this.method == 'External') {
+          this.isShipping = false;
+        }
+        this.returnValue = this.productData.returnable;
+        if (this.returnValue == true) {
+          this.isReturn = true;
+        }
+        if (this.returnValue == false) {
+          this.isReturn = false;
+        }
+        if (this.productData.isArchive == true) {
+          this.isArchived = true
+        }
         this.cdr.markForCheck()
       }
     })
@@ -384,6 +394,7 @@ export class UpdateVariantProductComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+    this.cdr.markForCheck()
   }
 
   handleInputThumbnailChange(event: any) {
@@ -391,10 +402,13 @@ export class UpdateVariantProductComponent implements OnInit {
     this.thumbnailFilename = this.fileThumbnaildata.name
     this.imageThumbnailChangedEvent = event;
     this.loadThumbnailImage = true
+    this.cdr.markForCheck()
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+    setTimeout(() => {
+      this.croppedImage = event.base64;
+    }, 800)
   }
 
   imageLoaded() {
@@ -415,7 +429,9 @@ export class UpdateVariantProductComponent implements OnInit {
   }
 
   imageThumbnailCropped(event: ImageCroppedEvent) {
-    this.thumbnailImage = event.base64;
+    setTimeout(() => {
+      this.thumbnailImage = event.base64;
+    }, 800)
   }
 
   thumbnailImageLoaded() {
@@ -440,10 +456,10 @@ export class UpdateVariantProductComponent implements OnInit {
       let reader = new FileReader()
       reader.readAsDataURL(event.target.files[0])
       reader.onload = (e: any) => {
-        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 })
+        this.toastr.info('Video uploading in progress', '', { timeOut: 2000 })
         setTimeout(() => {
           this.video = e.target.result
-          this.toastr.success('Video Successfully Uploaded', '', { timeOut: 2000 })
+          this.toastr.success('Video successfully uploaded', '', { timeOut: 2000 })
           this.videoFile = {
             video: this.video,
             name: event.target.files[0].name
@@ -473,18 +489,17 @@ export class UpdateVariantProductComponent implements OnInit {
     }
   }
 
-  updateProduct() { }
-
-  addProduct() {
+  updateProduct() {
     if (!this.productForm.valid) {
       return;
     }
 
     const payload = this.createPayload()
     if (payload) {
-      this.disableButton = true
+      this.showLoader = true
+      this.toastr.info('Updating product...', '', { timeOut: 2000 })
       setTimeout(() => {
-        this.VariantProductService.addVariantProduct(payload).subscribe((res: any) => {
+        this.VariantProductService.updateVariantProduct(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
           } else if (res.errorCode == 0) {
@@ -496,11 +511,13 @@ export class UpdateVariantProductComponent implements OnInit {
     }
   }
 
+  addProduct() { }
+
   createPayload() {
     const data = {
       parent: {
-        id: this.parent,
-        refid: this.refid
+        id: this.productData?.parent?.id,
+        refid: this.productData?.parent?.refid
       },
       name: this.productForm.get('name')?.value,
       sku: this.productForm.get('sku')?.value,
@@ -535,6 +552,7 @@ export class UpdateVariantProductComponent implements OnInit {
       video: this.videoFile,
       thumbFilename: this.thumbnailFilename,
       thumbFilestring: this.thumbnailImage,
+      thumbnail: this.uploadedThumbnailImg,
       style: {
         background: this.productForm.get('background')?.value,
         border: this.productForm.get('border')?.value,
@@ -544,7 +562,12 @@ export class UpdateVariantProductComponent implements OnInit {
           fontSize: this.productForm.get('fontSize')?.value,
           fontWeight: this.productForm.get('fontWeight')?.value,
         }
-      }
+      },
+      prodid: this.productData.prodid
+    }
+
+    if (data.thumbFilename == '' && data.thumbFilestring == '') {
+      data.thumbnail = this.uploadedThumbnailImg
     }
 
     return data

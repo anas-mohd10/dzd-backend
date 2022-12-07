@@ -46,8 +46,8 @@ export class VariantProductService {
     return this.http.get(`${url}`);
   }
 
-  updateVariantProduct(id: any, data: any) {
-    const url = this.commonService.getFullUrl(this.variantProductEndpoints.update_product + "/" + id);
+  updateVariantProduct(data: any) {
+    const url = this.commonService.getFullUrl(this.variantProductEndpoints.update_product);
     return this.http.put(`${url}`, data);
   }
 }

@@ -219,6 +219,7 @@ a.page-link.page-link-disabled {
   border: none;
   padding: 5px;
   font-size: 1.1rem;
+  margin: 0.5rem 0;
 }
 
 
@@ -417,10 +418,10 @@ a.page-link.page-link-disabled {
 }
 
 .close-icon i {
-  background: #e13939;
+  background: #eb2b2b;
   height: 100%;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
