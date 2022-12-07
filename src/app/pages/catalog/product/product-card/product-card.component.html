@@ -133,8 +133,6 @@
          </div>
       </ul>
    </nav>
-
-
 </div>
 
 <!-- Variant products list container start-->
@@ -170,8 +168,7 @@
             </div>
             <div class="search-featured col-sm-2">
                <label class="fs-5 form-title">Featured</label>
-               <select name="" id="" class="form-select fs-5" formControlName="isFeatured"
-                  (change)="searchVariantProduct()">
+               <select class="form-select fs-5" formControlName="isFeatured" (change)="searchVariantProduct()">
                   <option value="" disabled>Select an option</option>
                   <option value=true>Featured</option>
                   <option value=false>Non featured</option>
@@ -184,7 +181,51 @@
          </div>
       </form>
    </div>
+   <div class="col-12 d-flex justify-content-between" style="margin: 40px 0;">
+      <div class="total-count-container col-sm-3 bg-dark">
+         <h4 class="text-white">Total {{variantTotalCount ? variantTotalCount : 0}} products</h4>
+      </div>
+      <div class="total-count-buttons  d-flex justify-content-between">
+         <div>
+            <button class="btn btn-primary fs-5" (click)="navigateToAdd()" style="width: 200px; margin-right: 20px;">
+               Add Variants
+            </button>
+         </div>
+         <div>
+            <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+               routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">Archived Products</button>
+         </div>
+      </div>
+   </div>
    <div class="variant-product-result-container">
+      <ng-container *ngFor="let product of variantProducts">
+         <div class="col-sm-3">
+            <div class="product-card card-hover">
+               <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+               </div>
+               <div class="product-details">
+                  <div class="product-brand">{{product?.brand?.name}}</div>
+                  <div class="product-name fs-3">{{product?.name}}</div>
+                  <div class="product-mrpprice">Rs. {{product?.mrpPrice}} <span>MRP
+                        Price</span></div>
+                  <div class="product-offerprice">Rs. {{product?.offerPrice}} <span>Offer
+                        Price</span></div>
+                  <div class="product-stock">{{product?.stock}} products left</div>
+                  <div class="product-delivery">{{product?.shippingMethod}} Shipping</div>
+                  <div class="product-card-bottom">
+                     <div class="product-status-{{product?.isActive}}">
+                        {{product?.isActive ? 'Active' : 'Inactive'}}
+                     </div>
+                     <div class="card-edit-btn">
+                        <button (click)="navigateToUpdate(product?.prodid)" class="fs-5 cursor-pointer text-darker">
+                           Edit
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </ng-container>
       <ng-container *ngIf="variantCount == 0">
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>

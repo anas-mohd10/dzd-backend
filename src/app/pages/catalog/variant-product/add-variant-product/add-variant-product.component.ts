@@ -416,7 +416,6 @@ export class AddVariantProductComponent implements OnInit {
           } else if (res.errorCode == 0) {
             this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-            this.ngOnInit();
           }
         });
       }, 2000)

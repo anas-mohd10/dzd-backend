@@ -239,6 +239,12 @@ export class ProductCardComponent implements OnInit {
     this.Router.navigate([this.appRoute.variantProduct.ADD_VARIANT_PRODUCT], { queryParams: { id: this.prodid } })
   }
 
+  navigateToUpdate(id: any) {
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+    this.Router.navigate([this.appRoute.variantProduct.UPDATE_VARIANT_PRODUCT], { queryParams: { id: id } })
+  }
+
   onVariantReload() {
     this.variantProductform.get('name')?.setValue('')
     this.variantProductform.get('isActive')?.setValue('')

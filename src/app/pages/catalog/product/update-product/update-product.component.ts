@@ -394,9 +394,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onOptionsSelected() {
-    this.filtered = this.brandData.filter(
-      (t: { value: any }) => t.value == this.selected
-    );
+    this.filtered = this.brandData.filter((t: { value: any }) => t.value == this.selected);
   }
 
   addImage() {
