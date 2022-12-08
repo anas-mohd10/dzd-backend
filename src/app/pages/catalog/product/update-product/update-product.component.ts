@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
+import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -173,6 +173,16 @@ export class UpdateProductComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+
+    this.productForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.productForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.productForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.productForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.productForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.productForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   //Check whether the product is single or configurable

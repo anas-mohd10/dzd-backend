@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
+import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -77,6 +77,11 @@ export class AddProductComponent implements OnInit {
   videoFile: any = {}
   disableButton: boolean = false;
 
+  productfiles: any = []
+  thumbnailfile: any = ''
+  videofile: any = ''
+  thumbnail: any
+  productvideo: any
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -143,6 +148,16 @@ export class AddProductComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+
+    this.productForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.productForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.productForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.productForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.productForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.productForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   //Check whether the product is single or configurable
@@ -469,7 +484,6 @@ export class AddProductComponent implements OnInit {
         }
       }
     }
-
     return data
   }
 }

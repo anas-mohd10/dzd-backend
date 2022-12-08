@@ -66,10 +66,32 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title">Featured Collection?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                    formControlName="isFeatured">
+                    formControlName="isFeatured" (change)="checkFeatured($event.target)">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6" *ngIf="featured">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Visibility Type?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
+                    (change)="checkGrid($event.target)">
+                    <option value="grid" selected>Grid</option>
+                    <option value="slider">Slider</option>
+                  </select>
+                  <div class="fs-7 mt-3">Products will be visibile as selected type</div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6" *ngIf="grid">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Grid Count?</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="count">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                  </select>
+                  <div class="fs-7 mt-3">No. of products per row. Recommended are 2 or 3</div>
                 </div>
               </div>
               <div class="col-12 col-sm-6">

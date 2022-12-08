@@ -504,7 +504,7 @@
                     <div class="crop-image col-sm-6">
                       <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
                         [maintainAspectRatio]="true" [aspectRatio]="2 / 3" [cropperMaxWidth]="480"
-                        [cropperMaxHeight]="702" format="png" (imageCropped)="imageThumbnailCropped($event)"
+                        [cropperMaxHeight]="702" format="jpeg"  (imageCropped)="imageThumbnailCropped($event)"
                         (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
                         (loadImageFailed)="loadThumbnailImageFailed()">
                       </image-cropper>
