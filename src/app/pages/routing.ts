@@ -48,24 +48,6 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'attribute',
-        children: [
-          {
-            path: 'add',
-            loadChildren: () => import('./catalog/attritube/add-attribute/add-attribute.module').then((m) => m.AddAttributeModule),
-          },
-          {
-            path: '',
-            loadChildren: () => import('./catalog/attritube/attribute-list/attribute-list.module').then((m) => m.AttributeModule),
-          },
-          {
-            path: 'update',
-            loadChildren: () => import('./catalog/attritube/update-attribute/update-attribute.module').then((m) => m.UpdateAttributeModule),
-          },
-        ],
-        canActivate: [AuthenticationGuard]
-      },
-      {
         path: 'collection',
         children: [
           {

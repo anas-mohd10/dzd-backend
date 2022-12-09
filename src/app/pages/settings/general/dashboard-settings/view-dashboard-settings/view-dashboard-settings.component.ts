@@ -66,8 +66,6 @@ export class ViewDashboardSettingsComponent implements OnInit {
     this.HomeSettingsService.getHomeSettingsCount().subscribe((res: any) => {
       if (res?.result) {
         this.dashboardSettingsCount = res?.result
-        console.log(this.homeSettings);
-
       } else {
         this.dashboardSettingsCount = 0
       }
@@ -79,7 +77,6 @@ export class ViewDashboardSettingsComponent implements OnInit {
     moveItemInArray(this.result, event.previousIndex, event.currentIndex);
     this.isSave = true
   }
-
 
   saveButton() {
     this.data['slug'] = this.slug

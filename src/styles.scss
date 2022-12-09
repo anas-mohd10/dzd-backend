@@ -410,7 +410,7 @@ a.page-link.page-link-disabled {
   align-items: center;
   justify-content: center;
   display: flex;
-  border-radius: 50px;
+  border-radius: 6px;
 }
 
 .close-icon {
@@ -448,8 +448,8 @@ label {
 
 .uploads {
   position: relative;
-  height: 160px;
-  width: 160px;
+  height: 200px;
+  width: 200px;
   border-radius: 10px;
   border: none !important;
   outline: none !important;
@@ -459,10 +459,10 @@ label {
 .uploads .close-icon {
   cursor: pointer;
   position: absolute;
-  right: -15px;
-  top: -15px;
-  height: 30px;
-  width: 30px;
+  right: -25px;
+  top: -25px;
+  height: 35px;
+  width: 35px;
   background: #ffffff;
   border-radius: 10px;
   display: flex;

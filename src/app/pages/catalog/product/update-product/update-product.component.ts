@@ -8,7 +8,6 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
-import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 
@@ -103,7 +102,6 @@ export class UpdateProductComponent implements OnInit {
     private brandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
-    private attributeService: AttributeService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef
   ) { }
