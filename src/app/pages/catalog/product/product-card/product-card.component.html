@@ -74,12 +74,14 @@
                <div class="product-details">
                   <div class="product-brand">{{product?.brand?.name}}</div>
                   <div class="product-name fs-3">{{product?.name}}</div>
-                  <div class="product-mrpprice" *ngIf="product?.isSingle">Rs. {{product?.mrpPrice}} <span>MRP
-                        Price</span></div>
-                  <div class="product-offerprice" *ngIf="product?.isSingle">Rs. {{product?.offerPrice}} <span>Offer
-                        Price</span></div>
+                  <div class="product-price">
+                     <div class="product-offerprice" *ngIf="product?.isSingle">Rs. {{product?.offerPrice}}</div>
+                     <div class="product-mrpprice" *ngIf="product?.isSingle"
+                        [ngClass]="{'strike-price': product?.mrpPrice > product?.offerPrice}">Rs. {{product?.mrpPrice}}
+                     </div>
+                  </div>
                   <div class="product-stock" *ngIf="product?.isSingle">{{product?.stock}} products left</div>
-                  <div class="product-delivery">{{product?.shippingMethod}} Shipping</div>
+                  <div class="product-delivery" *ngIf="product?.isSingle">{{product?.shippingMethod}} Shipping</div>
                   <div class="product-card-bottom">
                      <div class="product-status-{{product?.isActive}}">
                         {{product?.isActive ? 'Active' : 'Inactive'}}
@@ -191,10 +193,6 @@
                Add Variants
             </button>
          </div>
-         <div>
-            <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
-               routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">Archived Products</button>
-         </div>
       </div>
    </div>
    <div class="variant-product-result-container">
@@ -206,10 +204,12 @@
                <div class="product-details">
                   <div class="product-brand">{{product?.brand?.name}}</div>
                   <div class="product-name fs-3">{{product?.name}}</div>
-                  <div class="product-mrpprice">Rs. {{product?.mrpPrice}} <span>MRP
-                        Price</span></div>
-                  <div class="product-offerprice">Rs. {{product?.offerPrice}} <span>Offer
-                        Price</span></div>
+                  <div class="product-price">
+                     <div class="product-offerprice">Rs. {{product?.offerPrice}}</div>
+                     <div class="product-mrpprice"
+                        [ngClass]="{'strike-price': product?.mrpPrice > product?.offerPrice}">
+                        Rs. {{product?.mrpPrice}}</div>
+                  </div>
                   <div class="product-stock">{{product?.stock}} products left</div>
                   <div class="product-delivery">{{product?.shippingMethod}} Shipping</div>
                   <div class="product-card-bottom">

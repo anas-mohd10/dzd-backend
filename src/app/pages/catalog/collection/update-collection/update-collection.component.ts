@@ -46,6 +46,8 @@ export class UpdateCollectionComponent implements OnInit {
   restore = new FormControl('false');
   isArchived: boolean;
   selectedProducts: any = []
+  featured: Boolean = false
+  grid: Boolean = false
 
   constructor(
     private collectionService: CollectionService,
@@ -75,6 +77,8 @@ export class UpdateCollectionComponent implements OnInit {
       isActive: ['true', Validators.required],
       isArchive: ['false', Validators.required],
       background: [''],
+      type: ['slider'],
+      count: ['0'],
       border: [''],
       radius: [''],
       color: [''],
@@ -121,6 +125,8 @@ export class UpdateCollectionComponent implements OnInit {
           this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
           this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
           this.collectionForm.get('isArchive')?.setValue(this.collectionData?.isArchive);
+          this.collectionForm.get('type')?.setValue(this.collectionData?.type);
+          this.collectionForm.get('count')?.setValue(this.collectionData?.count);
           this.collectionForm.get('background')?.setValue(this.collectionData?.style.background);
           this.collectionForm.get('border')?.setValue(this.collectionData?.style.border);
           this.collectionForm.get('radius')?.setValue(this.collectionData?.style.radius);
@@ -131,6 +137,12 @@ export class UpdateCollectionComponent implements OnInit {
           this.background = this.collectionData?.style.background
           this.border = this.collectionData?.style.border
           this.selectedProducts = this.collectionData?.products
+          if (this.collectionData?.isFeatured == true) {
+            this.featured = !this.featured
+          }
+          if (this.collectionData?.type == 'grid') {
+            this.grid = !this.grid
+          }
           if (this.collectionData.isArchive == true) {
             this.isArchived = true
           }
@@ -179,6 +191,18 @@ export class UpdateCollectionComponent implements OnInit {
       this.border = e.value
     } else if (type == "color") {
       this.color = e.value
+    }
+  }
+
+  checkFeatured(e: any) {
+    if (e.value == "true") {
+      this.featured = !this.featured
+    }
+  }
+
+  checkGrid(e: any) {
+    if (e.value == "grid") {
+      this.grid = !this.grid
     }
   }
 
@@ -235,6 +259,8 @@ export class UpdateCollectionComponent implements OnInit {
       filestring: this.croppedImage,
       filename: this.filename,
       products: this.selectedProducts,
+      type: this.collectionForm.get('type')?.value,
+      count: this.collectionForm.get('count')?.value,
       file: '',
       style: {
         background: this.collectionForm.get('background')?.value,

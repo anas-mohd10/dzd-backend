@@ -55,7 +55,7 @@
                   Configurable
                </ng-container>
             </div>
-            <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" /></div>
+            <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" /></div>
             <div class="product-details">
                <div class="product-brand">{{product?.brand?.name}}</div>
                <div class="product-name fs-3">{{product?.name}}</div>
@@ -74,7 +74,7 @@
                   </div>
                   <div class="card-edit-btn">
                      <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
-                        [queryParams]="{ product: product?.slug }" class="fs-5 cursor-pointer text-darker">
+                        [queryParams]="{ product: product?.prodid }" class="fs-5 cursor-pointer text-darker">
                         Edit
                      </button>
                   </div>

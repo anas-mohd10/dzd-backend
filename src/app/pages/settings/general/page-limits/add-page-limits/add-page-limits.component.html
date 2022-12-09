@@ -181,7 +181,7 @@
                                        <div *ngIf="product?._id != selectedProduct" class="clickable-card"
                                           (click)="selectedItem('product', product?._id)">
                                           <div class="list-card">
-                                             <div class="lidt-card-image"><img src="{{base}}/{{product?.file}}" alt=""
+                                             <div class="lidt-card-image"><img src="{{base}}/{{product?.thumbnail}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
                                              <div class="list-card-name fs-5 fw-bolder">{{product?.name}}</div>
                                           </div>
@@ -189,7 +189,7 @@
                                        <div *ngIf="product?._id == selectedProduct" class="clickable-card"
                                           (click)="selectedItem('product', product?._id)">
                                           <div class="list-card card-selected">
-                                             <div class="lidt-card-image"><img src="{{base}}/{{product?.file}}" alt=""
+                                             <div class="lidt-card-image"><img src="{{base}}/{{product?.thumbnail}}" alt=""
                                                    style="height: 40px; width: 40px; border-radius: 5px;"></div>
                                              <div class="list-card-name fs-5 fw-bolder">{{product?.name}}</div>
                                           </div>

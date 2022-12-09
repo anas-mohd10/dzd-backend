@@ -310,6 +310,7 @@ export class AddVariantProductComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+    this.cdr.markForCheck()
   }
 
   handleInputThumbnailChange(event: any) {
@@ -317,10 +318,13 @@ export class AddVariantProductComponent implements OnInit {
     this.thumbnailFilename = this.fileThumbnaildata.name
     this.imageThumbnailChangedEvent = event;
     this.loadThumbnailImage = true
+    this.cdr.markForCheck()
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+    setTimeout(() => {
+      this.croppedImage = event.base64;
+    }, 1500)
   }
 
   imageLoaded() {
@@ -341,7 +345,9 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   imageThumbnailCropped(event: ImageCroppedEvent) {
-    this.thumbnailImage = event.base64;
+    setTimeout(() => {
+      this.thumbnailImage = event.base64;
+    }, 1500)
   }
 
   thumbnailImageLoaded() {
@@ -409,6 +415,7 @@ export class AddVariantProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
+      this.toastr.info('Adding product...', '', { timeOut: 2000 })
       setTimeout(() => {
         this.VariantProductService.addVariantProduct(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {

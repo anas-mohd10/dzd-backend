@@ -41,6 +41,9 @@ export class AddCollectionComponent implements OnInit {
   base: any
   page: any = 1
   selectedProducts: any = []
+  featured: Boolean = false
+  grid: Boolean = false
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -67,6 +70,8 @@ export class AddCollectionComponent implements OnInit {
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
       isActive: ['true', Validators.required],
+      type: ['slider'],
+      count: ['0'],
       background: [''],
       border: [''],
       radius: [''],
@@ -134,6 +139,18 @@ export class AddCollectionComponent implements OnInit {
     this.loadImage = false
   }
 
+  checkFeatured(e: any) {
+    if (e.value == "true") {
+      this.featured = !this.featured
+    }
+  }
+
+  checkGrid(e: any) {
+    if (e.value == "grid") {
+      this.grid = !this.grid
+    }
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -175,6 +192,8 @@ export class AddCollectionComponent implements OnInit {
       isFeatured: this.collectionForm.get('isFeatured')?.value,
       isActive: this.collectionForm.get('isActive')?.value,
       isArchive: this.collectionForm.get('isArchive')?.value,
+      type: this.collectionForm.get('type')?.value,
+      count: this.collectionForm.get('count')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       products: this.selectedProducts,

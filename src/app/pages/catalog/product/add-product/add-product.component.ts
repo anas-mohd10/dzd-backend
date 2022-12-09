@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
+import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -77,6 +77,11 @@ export class AddProductComponent implements OnInit {
   videoFile: any = {}
   disableButton: boolean = false;
 
+  productfiles: any = []
+  thumbnailfile: any = ''
+  videofile: any = ''
+  thumbnail: any
+  productvideo: any
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -143,6 +148,16 @@ export class AddProductComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+
+    this.productForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.productForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.productForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.productForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.productForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.productForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   //Check whether the product is single or configurable
@@ -275,14 +290,11 @@ export class AddProductComponent implements OnInit {
       url: this.url,
       id: this.imageFiles.length
     })
-
     this.files.push({
       id: this.files.length,
       file: this.croppedImage,
       name: this.filename
     })
-
-
     this.croppedImage = ''
     this.filename = ''
     this.loadImage = false
@@ -305,6 +317,7 @@ export class AddProductComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+    this.cdr.markForCheck()
   }
 
   handleInputThumbnailChange(event: any) {
@@ -312,10 +325,13 @@ export class AddProductComponent implements OnInit {
     this.thumbnailFilename = this.fileThumbnaildata.name
     this.imageThumbnailChangedEvent = event;
     this.loadThumbnailImage = true
+    this.cdr.markForCheck()
   }
 
   imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+    setTimeout(() => {
+      this.croppedImage = event.base64;
+    }, 800)
   }
 
   imageLoaded() {
@@ -336,7 +352,9 @@ export class AddProductComponent implements OnInit {
   }
 
   imageThumbnailCropped(event: ImageCroppedEvent) {
-    this.thumbnailImage = event.base64;
+    setTimeout(() => {
+      this.thumbnailImage = event.base64;
+    }, 800)
   }
 
   thumbnailImageLoaded() {
@@ -361,10 +379,10 @@ export class AddProductComponent implements OnInit {
       let reader = new FileReader()
       reader.readAsDataURL(event.target.files[0])
       reader.onload = (e: any) => {
-        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 })
+        this.toastr.info('Video uploading in progress', '', { timeOut: 2000 })
         setTimeout(() => {
           this.video = e.target.result
-          this.toastr.success('Video Successfully Uploaded', '', { timeOut: 2000 })
+          this.toastr.success('Video successfully uploaded', '', { timeOut: 2000 })
           this.videoFile = {
             video: this.video,
             name: event.target.files[0].name
@@ -404,6 +422,7 @@ export class AddProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
+      this.toastr.info('Adding product...', '', { timeOut: 2000 })
       setTimeout(() => {
         this.productService.addProduct(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
@@ -465,7 +484,6 @@ export class AddProductComponent implements OnInit {
         }
       }
     }
-
     return data
   }
 }
