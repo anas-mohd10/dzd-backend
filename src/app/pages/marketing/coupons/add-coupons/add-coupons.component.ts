@@ -72,7 +72,7 @@ export class AddCouponsComponent implements OnInit {
     const date = new Date()
     this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
     this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
-    
+
     this.initForm();
     this.managePage();
     this.getProducts()
@@ -131,13 +131,13 @@ export class AddCouponsComponent implements OnInit {
   }
 
   getCollections() {
-    this.collectionService.getCollection().subscribe((res: any) => {
+    this.collectionService.getActiveCollection().subscribe((res: any) => {
       this.collectionsData = res?.result
     })
   }
 
   getCategories() {
-    this.categoryService.getCategory().subscribe((res: any) => {
+    this.categoryService.getActiveCategory().subscribe((res: any) => {
       this.categoriesData = res?.result
     })
   }

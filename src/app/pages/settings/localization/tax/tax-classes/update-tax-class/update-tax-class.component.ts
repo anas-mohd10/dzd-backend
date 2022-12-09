@@ -31,7 +31,8 @@ export class UpdateTaxClassComponent implements OnInit {
     private router: Router,
     private taxClassesService: TaxClassesService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private taxRulesService: TaxRulesService
   ) { }
 
   get tf() {
@@ -70,7 +71,7 @@ export class UpdateTaxClassComponent implements OnInit {
   }
 
   getTaxRules() {
-    this.taxClassesService.getTaxRulesName().subscribe((res: any) => {
+    this.taxRulesService.getActiveTaxRules().subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
           this.taxRuleNames = res?.result;

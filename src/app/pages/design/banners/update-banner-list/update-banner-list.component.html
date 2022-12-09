@@ -80,7 +80,6 @@
                            <div class="image-upload">
                               <input type="file" class="form-control fs-5" name="multi-files" accept="image/*"
                                  (change)="handleInputChange($event, 'web')"
-                                 onchange="document.getElementById('bannerFile').src = window.URL.createObjectURL(this.files[0])"
                                  style="height: 100px;" required>
                               <label class="fs-7 text-disabled">Please upload an banner with 1366px * 600px</label>
                               <div class="image-upload-div">

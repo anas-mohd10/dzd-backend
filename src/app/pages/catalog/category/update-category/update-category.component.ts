@@ -195,25 +195,27 @@ export class UpdateCategoryComponent implements OnInit {
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
+      this.cdr.markForCheck()
       for (let i = 0; i < res?.result.length; i++) {
-        if (res?.result[i].parent && !res?.result[i].root) {
-          this.categories.push(res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
-        }
-        if (!res?.result[i].parent && res?.result[i].root) {
-          this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
-        }
-        if (res?.result[i].parent && res?.result[i].root) {
-          if (res?.result[i].parent.refid._id != res?.result[i].root._id) {
-            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
-          } else if (res?.result[i].parent.refid._id == res?.result[i].root._id) {
+        if (res?.result[i].isActive == true && res?.result[i].isArchive == false) {
+          if (res?.result[i].parent && !res?.result[i].root) {
+            this.categories.push(res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
+          }
+          if (!res?.result[i].parent && res?.result[i].root) {
             this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
           }
-        }
-        if (!res?.result[i].parent && !res?.result[i].root) {
-          this.categories.push(res?.result[i].name);
+          if (res?.result[i].parent && res?.result[i].root) {
+            if (res?.result[i].parent.refid._id != res?.result[i].root._id) {
+              this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
+            } else if (res?.result[i].parent.refid._id == res?.result[i].root._id) {
+              this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
+            }
+          }
+          if (!res?.result[i].parent && !res?.result[i].root) {
+            this.categories.push(res?.result[i].name);
+          }
         }
       }
-      this.cdr.markForCheck()
     });
   }
 

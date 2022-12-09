@@ -135,7 +135,7 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   getCollections() {
-    this.collectionService.getCollection().subscribe((res: any) => {
+    this.collectionService.getActiveCollection().subscribe((res: any) => {
       this.collectionsData = res?.result
       this.cdr.markForCheck()
     })

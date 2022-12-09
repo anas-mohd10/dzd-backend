@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
@@ -28,7 +28,9 @@ export class AddTaxClassComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private taxClassesService: TaxClassesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
+    private taxRulesService:TaxRulesService
   ) { }
 
   get tf() {
@@ -65,9 +67,10 @@ export class AddTaxClassComponent implements OnInit {
   }
 
   getTaxRules() {
-    this.taxClassesService.getTaxRulesName().subscribe(
+    this.taxRulesService.getActiveTaxRules().subscribe(
       (res: any) => {
         this.taxRuleNames = res?.result;
+        this.cdr.markForCheck()
         for (let i = 0; i < this.taxRuleNames.length; i++) {
           this.taxClassForm.get('rules')?.setValue(this.taxRuleNames[i].name);
         }

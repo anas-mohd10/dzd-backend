@@ -21,6 +21,11 @@ export class TaxRulesService {
     return this.http.get(`${url}`);
   }
 
+  getActiveTaxRules(){
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.get_active_tax_rules);
+    return this.http.get(`${url}`);
+  }
+
   getTaxRulesBySlug(slug: any){
     const url = this.commonService.getFullUrl(this.taxRulesEndpoints.get_tax_rules_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);
