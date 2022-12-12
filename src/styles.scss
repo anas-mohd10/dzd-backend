@@ -302,41 +302,6 @@ a.page-link.page-link-disabled {
   margin: 20px 0;
 }
 
-.attribute-card {
-  height: 100px;
-  width: 100px;
-  position: relative;
-  border-radius: 10px;
-  background: #ffffff;
-  margin: 0 20px;
-}
-
-.attribute-card .attribute-image,
-.attribute-card .attribute-image img {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-  border-radius: 10px;
-}
-
-.attribute-card .close-icon {
-  position: absolute;
-  right: -15px;
-  top: -15px;
-  height: 30px;
-  width: 30px;
-  background: #f4f4f4;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.attr-images img {
-  border-radius: 5px;
-}
-
 .required::after {
   content: "*";
   position: relative;

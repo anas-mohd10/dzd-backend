@@ -219,9 +219,9 @@ export class AddCategoryComponent implements OnInit {
   }
 
   //Attribute section start
-  showAttributeSection() {
-    this.showAttributes = !this.showAttributes
-  }
+  // showAttributeSection() {
+  //   this.showAttributes = !this.showAttributes
+  // }
 
   handleAttributeType(e: any) {
     this.attributetype = e.value
@@ -328,6 +328,10 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
+  removeAttribute(id: any) {
+    this.attributes = this.attributes.filter((data: any) => data.id != id)
+  }
+
   handleAttrInputChange(event: any) {
     this.attrfiledata = <File>event.target.files[0];
     this.attrfilename = this.attrfiledata.name
@@ -379,7 +383,8 @@ export class AddCategoryComponent implements OnInit {
               type: type,
               isActive: status,
               isFiltered: filtered,
-              values: values
+              values: values,
+              id: this.attributes.length
             })
             let new_len = this.attributes.length
             if (new_len == (len + 1)) {
@@ -400,7 +405,6 @@ export class AddCategoryComponent implements OnInit {
         }
       }
     }
-    console.log(this.attributes);
   }
   //Attribute section end
 

@@ -5,8 +5,8 @@ import { CategoryComponent } from './category-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ArchivedCategoryComponent } from '../archived-category/archived-category.component';
-
 // import { WidgetsModule } from '../../_metronic/partials';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [CategoryComponent],
@@ -15,6 +15,7 @@ import { ArchivedCategoryComponent } from '../archived-category/archived-categor
     DataTablesModule,
     FormsModule,
     ReactiveFormsModule,
+    ImageCropperModule,
     RouterModule.forChild([
       {
         path: '',
