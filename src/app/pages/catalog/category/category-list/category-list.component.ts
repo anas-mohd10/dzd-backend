@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AttributeService } from 'src/app/includes/services/attribute.service';
+import { ToastService } from 'src/app/includes/services/toast.service';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { AppSettings } from 'src/app/config/constants';
 
 @Component({
   selector: 'app-category',
@@ -14,6 +18,7 @@ export class CategoryComponent implements OnInit {
   base: any
   categoryform: FormGroup
   categories: any = []
+  attributeform: FormGroup
 
   //Page and limit for query
   page: any = 1;
@@ -40,9 +45,36 @@ export class CategoryComponent implements OnInit {
   show: any;
   shifted: any
 
+  showAttributes: Boolean = false
+  categoryname: any;
+  attributeslength: any;
+  showModal: Boolean = false
+  catid: any;
+  attributevalues: any;
+
+  //Attrbiute variables
+  attributetype: any;
+  showColorPicker: Boolean = false
+  showTextInput: Boolean = false
+  showFileInput: Boolean = false
+  attributecolors: any = []
+  attributetexts: any = []
+  attributeimages: any = []
+  attributecroppped: string | null | undefined;
+  loadAttributeImage: Boolean = false
+  attrImageChange: Event | undefined
+  attrfilename: any = ''
+  attrfiledata: any = ''
+  showSaveButton: Boolean = false
+  attributes: any = []
+  attributerefid: any;
+
   constructor(private categoryService: CategoryService,
     private cdr: ChangeDetectorRef,
     private formBuilder: FormBuilder,
+    private AttributeService: AttributeService,
+    private ToastService: ToastService,
+    private FormBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +101,15 @@ export class CategoryComponent implements OnInit {
       isActive: [''],
       isFeatured: [''],
     });
+
+    this.attributeform = this.formBuilder.group({
+      attributeName: [''],
+      attributeType: [''],
+      attributeColor: [''],
+      attributeText: [''],
+      attributeStatus: ['true'],
+      attributeFiltered: ['false']
+    })
   }
 
   onReload() {
@@ -163,4 +204,352 @@ export class CategoryComponent implements OnInit {
     })
     this.isNext = true
   }
+
+  showAttributesContainer(catid: any, name: any) {
+    this.showAttributes = !this.showAttributes;
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+    this.categoryname = name
+    this.catid = catid
+
+    this.AttributeService.getAttributeByCategory(catid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.attributes = res?.result
+        this.attributeslength = this.attributes.length
+      } else {
+        this.ToastService.error(res?.message)
+      }
+      this.cdr.markForCheck()
+    })
+  }
+
+  hideAttributesContainer() {
+    this.showAttributes = !this.showAttributes;
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+  }
+
+  showEditModal(refid: any) {
+    this.attributerefid = refid
+    this.showModal = !this.showModal
+    // let bodyEl = document.querySelector('body');
+    // bodyEl?.classList.toggle('overflow-hidden')
+
+    this.AttributeService.getAttributeById(this.catid, refid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.attributevalues = res?.result
+        this.attributeform.get('attributeName')?.setValue(res?.result?.head?.name)
+        this.attributeform.get('attributeStatus')?.setValue(res?.result?.head?.isActive)
+        this.attributeform.get('attributeFiltered')?.setValue(res?.result?.head?.isFiltered)
+        this.attributeform.get('attributeType')?.setValue(res?.result?.head?.type)
+        switch (res?.result?.head?.type) {
+          case 'Color':
+            this.showColorPicker = true
+            for (let value of res?.result?.value) {
+              this.attributecolors.push({
+                id: this.attributecolors.length,
+                value: value.value,
+                refid: value.refid
+              })
+            }
+            this.cdr.markForCheck()
+            break
+          case 'Text':
+            this.showTextInput = true
+            for (let value of res?.result?.value) {
+              this.attributetexts.push({
+                id: this.attributetexts.length,
+                value: value.value,
+                refid: value.refid
+              })
+            }
+            this.cdr.markForCheck()
+            break
+          case 'File':
+            this.showFileInput = true
+            for (let value of res?.result?.value) {
+              this.attributeimages.push({
+                id: this.attributeimages.length,
+                value: environment.base + "/" + value.value,
+                refid: value.refid
+              })
+            }
+            this.cdr.markForCheck()
+            break
+        }
+      } else {
+        this.ToastService.error(res?.message)
+        this.cdr.markForCheck()
+      }
+    })
+  }
+
+  hideEditModal() {
+    this.showModal = !this.showModal
+    this.attributevalues = []
+    this.attributetexts = []
+    this.attributecolors = []
+    this.attributeimages = []
+    this.showColorPicker = false
+    this.showTextInput = false
+    this.showFileInput = false
+  }
+
+
+  //Attribute section start
+  showAttributeSection() {
+    this.showAttributes = !this.showAttributes
+  }
+
+  handleAttributeType(e: any) {
+    this.attributetype = e.value
+    switch (this.attributetype) {
+      case 'Color':
+        this.showColorPicker = true
+        this.showTextInput = false
+        this.showFileInput = false
+        this.attributetexts = []
+        this.attributeform.get('attributeText')?.setValue('')
+        this.attributeimages = []
+        break
+      case 'Text':
+        this.showColorPicker = false
+        this.showTextInput = true
+        this.showFileInput = false
+        this.attributecolors = []
+        this.attributeform.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        this.attributeimages = []
+        break
+      case 'File':
+        this.showColorPicker = false
+        this.showTextInput = false
+        this.showFileInput = true
+        this.attributetexts = []
+        this.attributeform.get('attributeText')?.setValue('')
+        this.attributecolors = []
+        this.attributeform.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        break
+    }
+  }
+
+  handleAttrributeValues(key: any, e: any) {
+    switch (key) {
+      case 'color':
+        this.attributecolors.push({
+          id: this.attributecolors.length,
+          value: e.value
+        })
+        break
+      case 'text':
+        if (e.value != '') {
+          if (!this.valueExists(e.value)) {
+            this.attributetexts.push({
+              id: this.attributetexts.length,
+              value: e.value
+            })
+            this.attributeform.get('attributeText')?.setValue('')
+          } else {
+            this.ToastService.error('Attribute text already exists')
+          }
+        } else {
+          this.ToastService.error('Attribute text cannot be null')
+        }
+        break
+      case 'file':
+        if (this.attributecroppped != '') {
+          if (!this.imageValueExists(this.attributecroppped)) {
+            this.attributeimages.push({
+              id: this.attributeimages.length,
+              value: this.attributecroppped,
+              name: this.attrfilename
+            })
+            this.attributecolors = ''
+            this.loadAttributeImage = false
+          }
+        }
+    }
+    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
+      this.showSaveButton = true
+    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
+      this.showSaveButton = false
+    }
+  }
+
+  valueExists(value: any) {
+    return this.attributetexts.some((check: any) => {
+      return check.value == value
+    })
+  }
+
+  imageValueExists(value: any) {
+    return this.attributeimages.some((check: any) => {
+      return check.value == value
+    })
+  }
+
+  removeAttributeValues(key: any, id: any) {
+    switch (key) {
+      case 'color':
+        for (let data of this.attributecolors) {
+          if (data?.id == id) {
+            if (data?.refid) {
+              this.AttributeService.deleteAttribute(data?.refid).subscribe((res: any) => {
+                if (res?.errorCode == 0) {
+                  // this.AttributeService.getAttributeById(this.catid, this.attributerefid).subscribe((res: any) => {
+                  //   if (res?.errorCode == 0) {
+                  //     this.attributevalues = res?.result
+                  //     this.attributeform.get('attributeName')?.setValue(res?.result?.head?.name)
+                  //     this.attributeform.get('attributeStatus')?.setValue(res?.result?.head?.isActive)
+                  //     this.attributeform.get('attributeFiltered')?.setValue(res?.result?.head?.isFiltered)
+                  //     this.attributeform.get('attributeType')?.setValue(res?.result?.head?.type)
+                  //     switch (res?.result?.head?.type) {
+                  //       case 'Color':
+                  //         this.showColorPicker = true
+                  //         for (let value of res?.result?.value) {
+                  //           this.attributecolors.push({
+                  //             id: this.attributecolors.length,
+                  //             value: value.value,
+                  //             refid: value.refid
+                  //           })
+                  //         }
+                  //         this.cdr.markForCheck()
+                  //         break
+                  //       case 'Text':
+                  //         this.showTextInput = true
+                  //         for (let value of res?.result?.value) {
+                  //           this.attributetexts.push({
+                  //             id: this.attributetexts.length,
+                  //             value: value.value,
+                  //             refid: value.refid
+                  //           })
+                  //         }
+                  //         this.cdr.markForCheck()
+                  //         break
+                  //       case 'File':
+                  //         this.showFileInput = true
+                  //         for (let value of res?.result?.value) {
+                  //           this.attributeimages.push({
+                  //             id: this.attributeimages.length,
+                  //             value: environment.base + "/" + value.value,
+                  //             refid: value.refid
+                  //           })
+                  //         }
+                  //         this.cdr.markForCheck()
+                  //         break
+                  //     }
+                  //   } else {
+                  //     this.ToastService.error(res?.message)
+                  //     this.cdr.markForCheck()
+                  //   }
+                  // })
+                }
+              })
+            }
+          }
+        }
+        this.attributecolors = this.attributecolors.filter((data: any) => data.id != id)
+        break
+      case 'text':
+        this.attributetexts = this.attributetexts.filter((data: any) => data.id != id)
+        break
+      case 'file':
+        this.attributeimages = this.attributeimages.filter((data: any) => data.id != id)
+        break
+    }
+    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
+      this.showSaveButton = true
+    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
+      this.showSaveButton = false
+    }
+  }
+
+  removeAttribute(id: any) {
+    this.attributes = this.attributes.filter((data: any) => data.id != id)
+  }
+
+  handleAttrInputChange(event: any) {
+    this.attrfiledata = <File>event.target.files[0];
+    this.attrfilename = this.attrfiledata.name
+    this.attrImageChange = event;
+    this.loadAttributeImage = true
+  }
+
+  attrImageCropped(event: ImageCroppedEvent) {
+    this.attributecroppped = event.base64;
+  }
+
+  attrImageLoaded() {
+    // show cropper
+  }
+
+  attrCropperReady() {
+    // cropper ready
+  }
+
+  loadAttrImageFailed() {
+    // show message
+  }
+
+  removeAttrImage() {
+    this.attributecroppped = ''
+    this.loadAttributeImage = false
+  }
+
+  saveAttribute() {
+    let values = []
+    switch (this.attributeform.get('attributeType')?.value) {
+      case 'Color':
+        values = this.attributecolors
+        break
+      case 'Text':
+        values = this.attributetexts
+        break
+      case 'File':
+        values = this.attributeimages
+        break
+    }
+
+    const data = {
+      name: this.attributeform.get('attributeName')?.value,
+      type: this.attributeform.get('attributeType')?.value,
+      isActive: this.attributeform.get('attributeStatus')?.value,
+      isFilter: this.attributeform.get('attributeFiltered')?.value,
+      values: values,
+      category: {
+        id: this.attributevalues?.head?.category?.id?._id,
+        refid: this.attributevalues?.head?.category?.id?.catid
+      },
+      attribute: {
+        id: this.attributevalues?.head?._id,
+        refid: this.attributevalues?.head?.refid
+      }
+    }
+
+    this.AttributeService.updateAttribute(data).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.AttributeService.getAttributeByCategory(res?.result?.category?.refid).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.attributes = res?.result
+            this.attributeslength = this.attributes.length
+          } else {
+            this.ToastService.error(res?.message)
+          }
+          this.cdr.markForCheck()
+        })
+        this.attributevalues = []
+        this.attributetexts = []
+        this.attributecolors = []
+        this.attributeimages = []
+        this.showColorPicker = false
+        this.showTextInput = false
+        this.showFileInput = false
+        this.showModal = !this.showModal;
+        this.cdr.markForCheck()
+      } else {
+        this.ToastService.error(res?.message)
+      }
+    })
+  }
+  //Attribute section end
+
 }

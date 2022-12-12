@@ -120,32 +120,111 @@
 }
 
 .attr-added-container {
-   .attribute-card {
-      .published {
-         i {
-            color: #229359;
-            font-size: 1.2rem;
+   .attr-cards.col-12 {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .attribute-card {
+         border: 0.0625rem solid #f0f0f0;
+         padding: 0.825rem;
+         border-radius: 15px;
+         width: 49%;
+
+         .attribute-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 0 1.625rem 0;
+
+            .attribute-details {
+               display: flex;
+               align-items: center;
+               justify-content: start;
+
+               .attribute-name,
+               .attribute-type {
+                  font-size: 1.4rem;
+                  color: #000000;
+                  margin: 0 1.875rem 0 0;
+
+                  span {
+                     font-weight: 600;
+                  }
+               }
+            }
+
+            .attribute-remove-button {
+               cursor: pointer;
+               color: #222222;
+            }
          }
 
-         span {
-            color: #000000;
-            margin: 0 0 0 0.625rem;
-            font-weight: 600;
-            font-size: 1.2rem;
-         }
-      }
+         .published {
+            i {
+               color: #229359;
+               font-size: 1.2rem;
+            }
 
-      .unpublished {
-         i {
-            color: #eb2b2b;
-            font-size: 1.2rem;
+            span {
+               color: #000000;
+               margin: 0 0 0 0.625rem;
+               font-weight: 600;
+               font-size: 1.2rem;
+            }
          }
 
-         span {
-            color: #000000;
-            margin: 0 0 0 0.625rem;
-            font-weight: 600;
-            font-size: 1.2rem;
+         .unpublished {
+            i {
+               color: #eb2b2b;
+               font-size: 1.2rem;
+            }
+
+            span {
+               color: #000000;
+               margin: 0 0 0 0.625rem;
+               font-weight: 600;
+               font-size: 1.2rem;
+            }
+         }
+
+         .attribute-card-values {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: start;
+            margin: 1.625rem 0;
+
+            .attribute-color {
+               height: 3.125rem;
+               width: 3.125rem;
+               margin: 0 0.625rem 0 0;
+               border-radius: 0.3125rem;
+            }
+
+            .attribute-text {
+               height: 50px;
+               width: 135px;
+               background: #00bdab;
+               margin: 10px 10px 0 0;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               border-radius: 10px;
+               color: #ffffff;
+            }
+
+            .attribute-image {
+               height: 70px;
+               width: 70px;
+               margin: 0 10px 0 0;
+
+               img {
+                  height: 100%;
+                  width: 100%;
+                  border-radius: 0.3125rem;
+               }
+            }
          }
       }
    }
