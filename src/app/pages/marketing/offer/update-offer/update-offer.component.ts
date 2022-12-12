@@ -1,3 +1,4 @@
+import { ProductService } from 'src/app/includes/services/product.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -37,7 +38,9 @@ export class UpdateOfferComponent implements OnInit {
   color: any
   offerStarted: boolean = false;
   image: string;
-  validDate: boolean = false;
+  validDate: boolean = true;
+  productsData: any;
+  products: []
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,7 +48,8 @@ export class UpdateOfferComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private offerService: OfferService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private productService : ProductService
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +58,7 @@ export class UpdateOfferComponent implements OnInit {
     this.initForm();
     this.managePage();
     this.getOffer();
+    this.getProducts()
   }
 
   initForm() {
@@ -62,6 +67,7 @@ export class UpdateOfferComponent implements OnInit {
       description: [''],
       fromDate: [''],
       lastDate: [''],
+      products:[],
       isFeatured: [''],
       isActive: [''],
       background: [''],
@@ -94,6 +100,17 @@ export class UpdateOfferComponent implements OnInit {
     } else if (type == "color") {
       this.color = e.value
     }
+  }
+
+  getProducts() {
+    this.productService.getActiveProduct().subscribe((res:any) => {
+      this.productsData = res?.result
+      this.cdr.markForCheck()
+    })
+  }
+
+  compareFn(item: any, selected: any) {
+    return item._id === selected;
   }
 
   handleInputChange(event: any) {
@@ -165,6 +182,7 @@ export class UpdateOfferComponent implements OnInit {
         this.offerForm.get('fontSize')?.setValue(this.offerData.style.text.fontSize);
         this.offerForm.get('fontWeight')?.setValue(this.offerData.style.text.fontWeight);
 
+        this.products = this.offerData.products
         this.color = this.offerData.style.text.color
         this.background = this.offerData.style.background
         this.border = this.offerData.style.border
@@ -172,11 +190,12 @@ export class UpdateOfferComponent implements OnInit {
     });
   }
 
-  validateDate(e: any) {
+  validateDate() {
     const today = new Date().toISOString()
     const fromDate = this.offerForm.get('fromDate')?.value
+    const lastDate = this.offerForm.get('lastDate')?.value
     if (this.offerStarted) {
-      if (e.value < fromDate || e.value < today) {
+      if (lastDate < fromDate || lastDate < today) {
         this.validDate = false
         this.toastr.error('inavlid date')
       }
@@ -185,10 +204,11 @@ export class UpdateOfferComponent implements OnInit {
       }
     }
     else {
-      if (e.value < today || e.value < fromDate) {
+      if (fromDate < today || fromDate > lastDate || lastDate < today) {
         this.validDate = false
         this.toastr.error('inavlid date')
-      } else {
+      }
+      else {
         this.validDate = true
       }
     }
@@ -222,6 +242,7 @@ export class UpdateOfferComponent implements OnInit {
       description: this.offerForm.get('description')?.value,
       fromDate: this.offerForm.get('fromDate')?.value,
       lastDate: this.offerForm.get('lastDate')?.value,
+      products: JSON.stringify(this.products),
       isFeatured: this.offerForm.get('isFeatured')?.value,
       isActive: this.offerForm.get('isActive')?.value,
       filestring: this.croppedImage,

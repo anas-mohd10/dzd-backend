@@ -1,3 +1,4 @@
+import { ProductService } from 'src/app/includes/services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,13 +32,17 @@ export class AddOfferComponent implements OnInit {
   color: any
   from_date: string;
   to_date: string;
+  productsData: any;
+  products: []
+  validDate: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private offerService: OfferService
+    private offerService: OfferService,
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +53,7 @@ export class AddOfferComponent implements OnInit {
 
     this.initForm();
     this.managePage();
+    this.getProducts()
   }
 
   initForm() {
@@ -59,6 +65,7 @@ export class AddOfferComponent implements OnInit {
       lastDate: ['', Validators.required],
       isFeatured: ['false'],
       isActive: ['true'],
+      products: [],
       background: [''],
       border: [''],
       radius: [''],
@@ -72,6 +79,18 @@ export class AddOfferComponent implements OnInit {
 
   get of() {
     return this.offerForm.controls;
+  }
+
+  dateValidation() {
+    const from = this.offerForm.get('fromDate')?.value
+    const to = this.offerForm.get('lastDate')?.value
+    if (from < this.from_date || from > to) {
+      this.toastr.error('invalid date')
+    } else if (to < this.to_date || to < from) {
+      this.toastr.error('invalid date')
+    } else {
+      this.validDate = true
+    }
   }
 
   managePage() {
@@ -115,6 +134,12 @@ export class AddOfferComponent implements OnInit {
     this.loadImage = false
   }
 
+  getProducts() {
+    this.productService.getActiveProduct().subscribe((res: any) => {
+      this.productsData = res?.result
+    })
+  }
+
   getColors(type: any, e: any) {
     if (type == "background") {
       this.background = e.value
@@ -142,14 +167,16 @@ export class AddOfferComponent implements OnInit {
 
     const payload = this.createPayload()
     if (payload) {
-      this.offerService.addOffer(payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-        }
-      });
+      if (this.validDate) {
+        this.offerService.addOffer(payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+          }
+        });
+      }
     }
   }
 
@@ -163,6 +190,7 @@ export class AddOfferComponent implements OnInit {
       isActive: this.offerForm.get('isActive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      products: JSON.stringify(this.products),
       style: {
         background: this.offerForm.get('background')?.value,
         border: this.offerForm.get('border')?.value,

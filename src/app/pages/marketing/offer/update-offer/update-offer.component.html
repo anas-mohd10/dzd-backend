@@ -46,16 +46,26 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">From Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="fromDate" />
+                  <input type="date" class="form-control fs-5" formControlName="fromDate"
+                  (change)="validateDate()" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Last Date</label>
                   <input type="date" class="form-control fs-5" formControlName="lastDate"
-                    (change)="validateDate($event.target)" />
+                    (change)="validateDate()" />
                 </div>
               </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                   <label class="fs-5 mb-3 form-title required">Products</label>
+                   <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
+                      placeholder="Select products applicable to coupon" [multiple]=true
+                      [ngModelOptions]="{standalone: true}" [compareWith]="compareFn">
+                   </ng-select>
+                </div>
+             </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title">Featured Offer?</label>

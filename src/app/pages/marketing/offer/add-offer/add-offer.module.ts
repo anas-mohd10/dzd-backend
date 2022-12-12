@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AddOfferComponent } from './add-offer.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ImageCropperModule } from 'ngx-image-cropper';
 
@@ -14,6 +15,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     DataTablesModule,
     ReactiveFormsModule,
     ImageCropperModule,
+    FormsModule,
+    NgSelectModule,
     RouterModule.forChild([
       {
         path: '',
@@ -22,4 +25,4 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ]),
   ],
 })
-export class AddOfferModule {}
+export class AddOfferModule { }
