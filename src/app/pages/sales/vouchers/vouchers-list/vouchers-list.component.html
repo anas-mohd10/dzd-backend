@@ -87,7 +87,7 @@
               <ng-container *ngIf="voucher?.isActive == false">Inactive</ng-container>
             </div>
             <div class="card-edit-btn voucher-edit-btn">
-              <button routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{ voucher: voucher?.slug }"
+              <button routerLink="{{ appRoute.vouchers.UPDATE_VOUCHERS_LIST }}" [queryParams]="{ voucher: voucher?.slug }"
                 class="fs-5 cursor-pointer text-darker">
                 Edit
               </button>
