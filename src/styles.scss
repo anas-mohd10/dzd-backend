@@ -2,6 +2,32 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.ng-select.ng-select-single .ng-select-container {
+  height: 40px !important;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  z-index: 1;
+  line-height: 40px !important;
+}
+
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-placeholder {
+  padding-bottom: 5px;
+  top: 0 !important;
+  padding-left: 3px;
+}
+
+.ng-select .ng-select-container {
+  cursor: default;
+  display: flex;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 40px !important;
+}
+
 .no-data-container {
   .no-data-image {
     img {

@@ -25,6 +25,7 @@ export class AddProductComponent implements OnInit {
 
   filedata: File;
   fileThumbnaildata: File
+  filebasicdata: File;
   type: any;
   isSingle: boolean = true;
 
@@ -49,12 +50,16 @@ export class AddProductComponent implements OnInit {
 
   croppedImage: string | null | undefined;
   thumbnailImage: string | null | undefined;
+  basicImage: string | null | undefined;
   loadImage: boolean;
   loadThumbnailImage: boolean;
+  loadBasicImage: boolean;
   imageChangedEvent: Event | undefined;
   imageThumbnailChangedEvent: Event | undefined;
   filename: any;
   thumbnailFilename: any
+  basicfilename: any
+  imageBasicChangedEvent: Event | undefined;
 
   //Styling variables
   background: any
@@ -82,6 +87,10 @@ export class AddProductComponent implements OnInit {
   videofile: any = ''
   thumbnail: any
   productvideo: any
+
+
+  selectedTax: any = ''
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -130,7 +139,7 @@ export class AddProductComponent implements OnInit {
       isArchive: ['false', Validators.required],
       returnable: ['false', Validators.required],
       returnDays: [''],
-      shippingMethod: ['', Validators.required],
+      shippingMethod: ['Unpaid', Validators.required],
       shippingCost: [''],
       value: ['', Validators.required],
       unit: ['', Validators.required],
@@ -328,6 +337,14 @@ export class AddProductComponent implements OnInit {
     this.cdr.markForCheck()
   }
 
+  handleInputBasicChange(event: any) {
+    this.filebasicdata = <File>event.target.files[0];
+    this.basicfilename = this.fileThumbnaildata.name
+    this.imageBasicChangedEvent = event;
+    this.loadBasicImage = true
+    this.cdr.markForCheck()
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     setTimeout(() => {
       this.croppedImage = event.base64;
@@ -372,6 +389,30 @@ export class AddProductComponent implements OnInit {
   removeThumbnailImage() {
     this.thumbnailImage = ''
     this.loadThumbnailImage = false
+  }
+
+
+  imageBasicCropped(event: ImageCroppedEvent) {
+    setTimeout(() => {
+      this.basicImage = event.base64;
+    }, 800)
+  }
+
+  basicImageLoaded() {
+    // show cropper
+  }
+
+  cropperBasicReady() {
+    // cropper ready
+  }
+
+  loadBasicImageFailed() {
+    // show message
+  }
+
+  removeBasicImage() {
+    this.basicImage = ''
+    this.loadBasicImage = false
   }
 
   videoUpload(event: any) {

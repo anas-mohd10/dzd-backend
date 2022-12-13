@@ -22,131 +22,191 @@
       </div>
     </div>
   </div>
+
   <!-- /Page Header -->
   <div class="row mt-10">
     <div class="col-sm-12 fs-5">
       <div class="card">
+        <ul class="category-tabs nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+              role="tab" aria-controls="home" aria-selected="true">Category Details</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+              role="tab" aria-controls="profile" aria-selected="false">Category
+              Attributes</button>
+          </li>
+        </ul>
         <div class="card-body">
           <form [formGroup]="categoryForm" (keydown.Enter)="$event.preventDefault()">
-            <div class="row">
-              <div class="col-12">
-                <h2 class="form-title" style="font-weight: 600;"><span>Category Details</span></h2>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Category Name</label>
-                  <input type="text" placeholder="Category name" class="form-control fs-5" formControlName="name"
-                    [ngClass]="{'is-invalid': (bf.name.touched || isSubmitted) && bf.name.errors?.required}" />
-                  <div class="fs-7 mt-3">A category name is required and recommended to be unique.</div>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Root Category</label>
-                  <select class="form-select" aria-label="-- select --" formControlName="isRoot"
-                    (change)="handleCheckBox($event.target)"
-                    [ngClass]="{ 'is-invalid': (bf.isRoot.touched || isSubmitted) && bf.isRoot.errors?.required}">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                  <div class="fs-7 mt-3">Kindly confirm whether this is a root category or not. </div>
-                </div>
-              </div>
-              <ng-container *ngIf="!isChecked">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required">Parent Category</label>
-                    <select class="form-select" aria-label="-- select --" formControlName="parent"
-                      [ngClass]="{'is-invalid':(bf.parent.touched || isSubmitted) && bf.parent.errors?.required}"
-                      (change)="getParent($event.target)">
-                      <option value="" disabled>-- Select parent category --</option>
-                      <option *ngFor="let category of categories" value="{{ category }}">{{ category }}</option>
-                    </select>
+            <div class="tab-content" id="myTabContent">
+              <div class="category-details-section tab-pane fade show active" id="home" role="tabpanel"
+                aria-labelledby="home-tab">
+                <div class="row">
+                  <div class="col-12">
+                    <h2 class="form-title" style="font-weight: 600;"><span>Category Details</span></h2>
                   </div>
-                </div>
-              </ng-container>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Status</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="isActive">
-                    <option value="false" selected>Inactive</option>
-                    <option value="true">Active</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Featured Category?</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="isFeatured">
-                    <option value="false" selected>No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Archive Category?</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="isArchive">
-                    <option value="false" selected>No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                </div>
-              </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3 required">Category Name</label>
+                      <input type="text" placeholder="Category name" class="form-control fs-5" formControlName="name"
+                        [ngClass]="{'is-invalid': (bf.name.touched || isSubmitted) && bf.name.errors?.required}" />
+                      <div class="fs-7 mt-3">A category name is required and recommended to be unique.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3 required">Root Category</label>
+                      <select class="form-select" aria-label="-- select --" formControlName="isRoot"
+                        (change)="handleCheckBox($event.target)"
+                        [ngClass]="{ 'is-invalid': (bf.isRoot.touched || isSubmitted) && bf.isRoot.errors?.required}">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                      <div class="fs-7 mt-3">Kindly confirm whether this is a root category or not. </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="!isChecked">
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3 required">Parent Category</label>
+                        <select class="form-select" aria-label="-- select --" formControlName="parent"
+                          [ngClass]="{'is-invalid':(bf.parent.touched || isSubmitted) && bf.parent.errors?.required}"
+                          (change)="getParent($event.target)">
+                          <option value="" disabled>-- Select parent category --</option>
+                          <option *ngFor="let category of categories" value="{{ category }}">{{ category }}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="isActive">
+                        <option value="false" selected>Inactive</option>
+                        <option value="true">Active</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Featured Category?</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="isFeatured">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Archive Category?</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="isArchive">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                    </div>
+                  </div>
 
-              <!-- Category styles start -->
-              <div class="col-12">
-                <h2 class="form-title" style="font-weight: 600;"><span>Category Styles</span></h2>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="background" (change)="getColors('background', $event.target)" />
-                  <span>{{background}}</span>
+                  <!-- Category styles start -->
+                  <div class="col-12">
+                    <h2 class="form-title" style="font-weight: 600;"><span>Category Styles</span></h2>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Background</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                        formControlName="background" (change)="getColors('background', $event.target)" />
+                      <span>{{background}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Border</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
+                        style="height: 50px;" (change)="getColors('border', $event.target)" />
+                      <span>{{border}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Border Radius</label>
+                      <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Color</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                        formControlName="color" (change)="getColors('color', $event.target)" />
+                      <span>{{color}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Font Weight</label>
+                      <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Font Size ( in px )</label>
+                      <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+                    </div>
+                  </div>
+                  <!-- Category styles end -->
+
+                  <div class="col-12">
+                    <div class="col-12">
+                      <h3 class="form-title required"><span>Media</span></h3>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <div class="image-upload">
+                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                          (change)="handleInputChange($event)" style="height: 100px;" required>
+                        <div class="image-upload-div">
+                          <div class="left-img">
+                            <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                          </div>
+                          <div class="right-text d-flex flex-column">
+                            <span class="right-text-title fs-4 fw-bolder">
+                              Click to upload
+                            </span>
+                            <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                              Upload up to 1 file
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf=" loadImage">
+                    <div class="col-12 preview-section">
+                      <div class="crop-image col-sm-6">
+                        <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                          [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                          (loadImageFailed)="loadImageFailed()">
+                        </image-cropper>
+                      </div>
+                      <div class="uploads uploaded col-sm-6">
+                        <div class="close-icon">
+                          <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                        </div>
+                        <img class="preview-img" id="previewImage" [src]="croppedImage">
+                      </div>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
-                    style="height: 50px;" (change)="getColors('border', $event.target)" />
-                  <span>{{border}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border Radius</label>
-                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Color</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="color" (change)="getColors('color', $event.target)" />
-                  <span>{{color}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Weight</label>
-                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Size ( in px )</label>
-                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
-                </div>
-              </div>
-              <!-- Category styles end -->
 
               <!-- Category attributes start -->
-              <div class="col-12 attributes-section">
+              <div class="attributes-section tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="col-12 d-flex justify-content-between align-items-center">
                   <h2 class="form-title" style="font-weight: 600;"><span>Category Attributes</span></h2>
                   <div class="add-attributes-button">
@@ -308,6 +368,16 @@
                               <span>Unpublished</span>
                             </div>
                           </ng-template>
+                          <div class="attribute-filetered published"
+                            *ngIf="attribute?.isFilter == true; else unfiletered">
+                            <i class="bi bi-sort-alpha-down" style="font-size: 2rem;"></i> <span>Filter Attribute</span>
+                          </div>
+                          <ng-template #unfiletered>
+                            <div class="attribute-status unpublished"><i class="bi bi-sort-alpha-down"
+                                style="font-size: 2rem;"></i>
+                              <span>Non filter Attribute</span>
+                            </div>
+                          </ng-template>
                           <div class="attribute-card-values">
                             <ng-container *ngFor="let value of attribute.values">
                               <div class="attribute-color" *ngIf="attribute?.type == 'Color'"
@@ -324,49 +394,8 @@
                 </div>
               </div>
               <!-- Category attributes end -->
-              <div class="col-12">
-                <div class="col-12">
-                  <h3 class="form-title required"><span>Media</span></h3>
-                </div>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="handleInputChange($event)" style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img">
-                        <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                      </div>
-                      <div class="right-text d-flex flex-column">
-                        <span class="right-text-title fs-4 fw-bolder">
-                          Click to upload
-                        </span>
-                        <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                          Upload up to 1 file
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <ng-container *ngIf=" loadImage">
-                <div class="col-12 preview-section">
-                  <div class="crop-image col-sm-6">
-                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
-                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                      (loadImageFailed)="loadImageFailed()">
-                    </image-cropper>
-                  </div>
-                  <div class="uploads uploaded col-sm-6">
-                    <div class="close-icon">
-                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                    </div>
-                    <img class="preview-img" id="previewImage" [src]="croppedImage">
-                  </div>
-                </div>
-              </ng-container>
-              <div class="col-12">
+
+              <div class="col-12 d-flex align-items-center justify-content-end" style="margin: 30px 0 0 0;">
                 <a routerLink="{{ appRoute.category.CATEGORY_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel

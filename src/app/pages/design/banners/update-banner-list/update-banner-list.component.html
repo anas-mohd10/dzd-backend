@@ -100,7 +100,7 @@
                               <div class="col-12 preview-section">
                                  <div class="crop-image col-sm-6">
                                     <image-cropper class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
-                                       [maintainAspectRatio]="true" [aspectRatio]="9 / 2" [cropperMaxWidth]="1366"
+                                       [maintainAspectRatio]="true" [aspectRatio]="8 / 4" [cropperMaxWidth]="1200"
                                        [cropperMaxHeight]="600" format="png" (imageCropped)="imageCroppedWeb($event)"
                                        (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
                                        (loadImageFailed)="loadImageWebFailed()">
@@ -144,7 +144,7 @@
                               <div class="col-12 preview-section">
                                  <div class="crop-image col-sm-6">
                                     <image-cropper class="crop-section" [imageChangedEvent]="imageMobileChangedEvent "
-                                       [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="375"
+                                       [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="600"
                                        [cropperMaxHeight]="300" format="png" (imageCropped)="imageCroppedMobile($event)"
                                        (imageLoaded)="imageMobileLoaded()" (cropperReady)="cropperMobileReady()"
                                        (loadImageFailed)="loadImageMobileFailed()">

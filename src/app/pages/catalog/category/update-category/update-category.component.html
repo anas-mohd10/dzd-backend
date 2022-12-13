@@ -25,187 +25,389 @@
   <div class="row mt-10">
     <div class="col-sm-12 fs-5">
       <div class="card">
-        <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="categoryForm">
-            <div class="row archieved-{{categoryValues?.isArchive}}">
-              <div class="col-12">
-                <h5 class="form-title fs-4"><span>Category Details</span></h5>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Category Name</label>
-                  <input type="text" placeholder="Category name" class="form-control fs-5" formControlName="name"
-                    [ngClass]="{
-                      'is-invalid':
-                      (bf.name.touched || isSubmitted) &&
-                      bf.name.errors?.required
-                    }" />
-                  <span class="text-danger error-msg fs-5" *ngIf="
-                      (bf.name.touched || isSubmitted) &&
-                      bf.name.errors?.required
-                    ">Category name is required</span>
-                  <div class="fs-7 mt-3">A category name is required and recommended to be unique.</div>
+        <ul class="category-tabs nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+              role="tab" aria-controls="home" aria-selected="true">Category Details</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+              role="tab" aria-controls="profile" aria-selected="false">Category
+              Attributes</button>
+          </li>
+        </ul>
+        <div class="card-body archieved-{{categoryValues?.isArchive}}">
+          <form [formGroup]=" categoryForm" (keydown.Enter)="$event.preventDefault()">
+            <div class="tab-content" id="myTabContent">
+              <div class="category-details-section tab-pane fade show active" id="home" role="tabpanel"
+                aria-labelledby="home-tab">
+                <div class="row">
+                  <div class="col-12">
+                    <h2 class="form-title" style="font-weight: 600;"><span>Category Details</span></h2>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3 required">Category Name</label>
+                      <input type="text" placeholder="Category name" class="form-control fs-5" formControlName="name"
+                        [ngClass]="{'is-invalid': (bf.name.touched || isSubmitted) && bf.name.errors?.required}" />
+                      <div class="fs-7 mt-3">A category name is required and recommended to be unique.</div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3 required">Root Category</label>
+                      <select class="form-select" aria-label="-- select --" formControlName="isRoot"
+                        (change)="handleCheckBox()"
+                        [ngClass]="{ 'is-invalid': (bf.isRoot.touched || isSubmitted) && bf.isRoot.errors?.required}">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                      <div class="fs-7 mt-3">Kindly confirm whether this is a root category or not. </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="!isChecked">
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3 required">Parent Category</label>
+                        <select class="form-select" aria-label="-- select --" formControlName="parent"
+                          [ngClass]="{'is-invalid':(bf.parent.touched || isSubmitted) && bf.parent.errors?.required}"
+                          (change)="getParent($event.target)">
+                          <option value="" disabled>-- Select parent category --</option>
+                          <option *ngFor="let category of categories" value="{{ category }}">{{ category }}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="isActive">
+                        <option value="false" selected>Inactive</option>
+                        <option value="true">Active</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Featured Category?</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="isFeatured">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Archive Category?</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="isArchive">
+                        <option value="false" selected>No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Category styles start -->
+                  <div class="col-12">
+                    <h2 class="form-title" style="font-weight: 600;"><span>Category Styles</span></h2>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Background</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                        formControlName="background" (change)="getColors('background', $event.target)" />
+                      <span>{{background}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Border</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
+                        style="height: 50px;" (change)="getColors('border', $event.target)" />
+                      <span>{{border}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Border Radius</label>
+                      <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Color</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                        formControlName="color" (change)="getColors('color', $event.target)" />
+                      <span>{{color}}</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Font Weight</label>
+                      <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Font Size ( in px )</label>
+                      <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+                    </div>
+                  </div>
+                  <!-- Category styles end -->
+
+                  <div class="col-12">
+                    <div class="col-12">
+                      <h3 class="form-title required"><span>Media</span></h3>
+                    </div>
+                    <div class="form-group col-sm-6">
+                      <div class="image-upload">
+                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                          (change)="handleInputChange($event)" style="height: 100px;" required>
+                        <div class="image-upload-div">
+                          <div class="left-img">
+                            <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                          </div>
+                          <div class="right-text d-flex flex-column">
+                            <span class="right-text-title fs-4 fw-bolder">
+                              Click to upload
+                            </span>
+                            <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                              Upload up to 1 file
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="uploaded-image col-sm-6 mt-5">
+                      <img src="{{img}}" alt="" style="width: 150px; height: 150px">
+                    </div>
+                  </div>
+                  <ng-container *ngIf=" loadImage">
+                    <div class="col-12 preview-section">
+                      <div class="crop-image col-sm-6">
+                        <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                          [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                          (loadImageFailed)="loadImageFailed()">
+                        </image-cropper>
+                      </div>
+                      <div class="uploads uploaded col-sm-6">
+                        <div class="close-icon">
+                          <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                        </div>
+                        <img class="preview-img" id="previewImage" [src]="croppedImage">
+                      </div>
+                    </div>
+                  </ng-container>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Root Category</label>
-                  <select class="form-select" aria-label="-- select --" formControlName="isRoot"
-                    (change)="handleCheckBox()" [ngClass]="{
-                      'is-invalid':
-                      (bf.isRoot.touched || isSubmitted) &&
-                      bf.isRoot.errors?.required
-                    }">
-                    <option value="check">-- Select an option --</option>
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                  <span class="text-danger error-msg fs-5" *ngIf="
-                  (bf.isRoot.touched || isSubmitted) &&
-                  bf.isRoot.errors?.required
-                ">Root category is required</span>
-                  <div class="fs-7 mt-3">Kindly confirm whether this is a root category or not. </div>
-                </div>
-              </div>
-              <ng-container *ngIf="!isChecked">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3">Parent Category</label>
-                    <select class="form-select" aria-label="-- select --" formControlName="parentId"
-                      (change)="getParent($event.target)">
-                      <option *ngFor="let category of categories" value="{{ category }}">
-                        {{ category }}
-                      </option>
-                    </select>
+
+              <!-- Category attributes start -->
+              <div class="attributes-section tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                  <h2 class="form-title" style="font-weight: 600;"><span>Category Attributes</span></h2>
+                  <div class="add-attributes-button">
+                    <!-- <button class="bg-primary btn text-white fs-5" (click)="showAttributeSection()">View
+                      Attributes</button> -->
                   </div>
                 </div>
-              </ng-container>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Status</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="isActive">
-                    <option value="false" selected>Inactive</option>
-                    <option value="true">Active</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Featured Category?</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="isFeatured">
-                    <option value="false" selected>No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Archive Category?</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="isArchive">
-                    <option value="false" selected>No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12">
-                <h5 class="form-title fs-4"><span>Category Styles</span></h5>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 80px;"
-                    formControlName="background" (change)="getColors('background', $event.target)" />
-                  <span>{{background}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 80px;"
-                    formControlName="border" (change)="getColors('border', $event.target)" />
-                  <span>{{border}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border Radius</label>
-                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Color</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="color" (change)="getColors('color', $event.target)" />
-                  <span>{{color}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Weight</label>
-                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Size ( in px )</label>
-                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="col-12">
-                  <h3 class="form-title required"><span>Media</span></h3>
-                </div>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload col-sm-6">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="handleInputChange($event)"
-                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                      style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset=""></div>
-                      <div class="right-text d-flex flex-column">
-                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                        <span class="right-text-note fs-7 text-gray-400">Upload up to 1 file</span>
+                <div class="attributes-container row">
+                  <div class="col-12 col-sm-6"> <!-- Attribute name-->
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Attribute Name</label>
+                      <input type="text" placeholder="Eg. Size" class="form-control fs-5"
+                        formControlName="attributeName" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Attribute Status?</label>
+                        <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                          formControlName="attributeStatus">
+                          <option value="false">Inactive</option>
+                          <option value="true">Active</option>
+                        </select>
                       </div>
                     </div>
                   </div>
-                  <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{img}}" alt="" style="width: 150px; height: 150px">
+                  <div class="col-sm-6">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Filtered Attribute?</label>
+                        <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                          formControlName="attributeFiltered">
+                          <option value="false">No</option>
+                          <option value="true">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6"> <!-- Attribute type-->
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Attribute Type</label>
+                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                        formControlName="attributeType" (change)="handleAttributeType($event.target)">
+                        <option value="" selected disabled>-- Select an attribute type --</option>
+                        <option value="Color">Color Picker</option>
+                        <option value="Text">Text</option>
+                        <option value="File">File</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6" *ngIf="showColorPicker"> <!-- Attribute color picker -->
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Attribute Color</label>
+                      <input type="color" placeholder="Attribute color" class="form-control fs-5" style="height: 50px;"
+                        formControlName="attributeColor" (change)="handleAttrributeValues('color', $event.target)" />
+                    </div>
+                    <div class="col-12 attr-color-preview" *ngIf="attributecolors.length > 0">
+                      <ng-container *ngFor="let color of attributecolors">
+                        <div class="attr-color-preview-div" [ngStyle]="{'background': color.value}">
+                          <div class="attr-color-remove" (click)="removeAttributeValues('color', color.id)"><i
+                              class="bi bi-x-lg"></i></div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6" *ngIf="showTextInput"> <!-- Attribute text values -->
+                    <div class="form-group">
+                      <label class="fs-5 mb-3">Attribute Text</label>
+                      <input type="text" placeholder="Eg. Large" class="form-control fs-5" style="height: 50px;"
+                        formControlName="attributeText"
+                        (keydown.Enter)="handleAttrributeValues('text', $event.target)" />
+                      <div class="fs-6 mt-3">*Press Enter to add attribute text</div>
+                    </div>
+                    <div class="col-12 attr-text-preview" *ngIf="attributetexts.length > 0">
+                      <ng-container *ngFor="let text of attributetexts">
+                        <div class="attr-text bg-primary text-white">
+                          <div class="attr-text-value">{{text.value}}</div>
+                          <div class="attr-text-remove-icon" (click)="removeAttributeValues('text', text.id)"><i
+                              class="bi bi-x-lg"></i></div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-12" *ngIf="showFileInput"> <!-- Attribute image values -->
+                    <div class="form-group col-sm-6">
+                      <div class="image-upload">
+                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                          (change)="handleAttrInputChange($event)" style="height: 100px;" required>
+                        <div class="image-upload-div">
+                          <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                              srcset=""></div>
+                          <div class="right-text d-flex flex-column">
+                            <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                            <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
+                              file</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-container *ngIf="loadAttributeImage">
+                      <div class="col-12 preview-section  d-flex align-items-center justify-content-center">
+                        <div class="crop-image col-sm-6">
+                          <image-cropper class="crop-section" [imageChangedEvent]="attrImageChange"
+                            [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                            [cropperMaxHeight]="1600" format="png" (imageCropped)="attrImageCropped($event)"
+                            (imageLoaded)="attrImageLoaded()" (cropperReady)="attrCropperReady()"
+                            (loadImageFailed)="loadAttrImageFailed()">
+                          </image-cropper>
+                        </div>
+                        <div class="uploads uploaded col-sm-6">
+                          <div class="close-icon">
+                            <i class="bi bi-x-lg text-white" (click)="removeAttrImage()"></i>
+                          </div>
+                          <img class="preview-img" id="previewImage" [src]="attributecroppped">
+                          <button class="btn btn-sm fs-5 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
+                            (click)="handleAttrributeValues('file', '')">Add Image</button>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="col-12 attr-image-preview">
+                      <ng-container *ngFor="let image of attributeimages">
+                        <div class="attr-image">
+                          <div class="attr-image-value"><img src="{{image.value}}" alt="attribute-image"></div>
+                          <div class="attr-image-remove-icon" (click)="removeAttributeValues('file', image.id)">
+                            <i class="bi bi-x-lg"></i>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="col-12 d-flex align-items-center justify-content-end save-attribute-btn"
+                    *ngIf="showSaveButton">
+                    <button class="btn bg-primary text-white fs-5" (click)="saveAttribute()">Save
+                      Attribute</button>
+                  </div>
+                  <div class="attr-added-container col-12" *ngIf="attributes.length > 0">
+                    <div class="col-12">
+                      <h2 class="form-title" style="font-weight: 600;">Added Attributes</h2>
+                    </div>
+                    <div class="attr-cards col-12">
+                      <ng-container *ngFor="let attribute of attributes">
+                        <div class="attribute-card col-sm-6">
+                          <div class="attribute-card-header">
+                            <div class="attribute-details">
+                              <div class="attribute-name">Name : <span>{{attribute?.name}}</span></div>
+                              <div class="attribute-type">Type : <span>{{attribute?.type}}</span></div>
+                            </div>
+                            <div class="attribute-remove-button" (click)="removeAttribute(attribute?.id)">
+                              Remove
+                            </div>
+                          </div>
+                          <div class="attribute-status published"
+                            *ngIf="attribute?.isActive == 'true' || true; else unpublished">
+                            <i class="bi bi-circle-fill"></i> <span>Published</span>
+                          </div>
+                          <ng-template #unpublished>
+                            <div class="attribute-status unpublished"><i class="bi bi-circle-fill"></i>
+                              <span>Unpublished</span>
+                            </div>
+                          </ng-template>
+                          <div class="attribute-filetered published"
+                            *ngIf="attribute?.isFiltered == 'true' || true; else unfiletered">
+                            <i class="bi bi-sort-alpha-down" style="font-size: 2rem;"></i> <span>Filter Attribute</span>
+                          </div>
+                          <ng-template #unfiletered>
+                            <div class="attribute-status unpublished"><i class="bi bi-sort-alpha-down"
+                                style="font-size: 2rem;"></i>
+                              <span>Non filter Attribute</span>
+                            </div>
+                          </ng-template>
+                          <div class="attribute-card-values">
+                            <ng-container *ngFor="let value of attribute.values">
+                              <div class="attribute-color" *ngIf="attribute?.type == 'Color'"
+                                [ngStyle]="{'background': value.value}"></div>
+                              <div class="attribute-text" *ngIf="attribute?.type == 'Text'">{{value?.value}}</div>
+                              <div class="attribute-image" *ngIf="attribute?.type == 'File'"><img src="{{value?.value}}"
+                                  alt="attribute"></div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
                   </div>
                 </div>
               </div>
-              <ng-container *ngIf=" loadImage">
-                <div class="col-12 preview-section">
-                  <div class="crop-image col-sm-6">
-                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
-                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                      (loadImageFailed)="loadImageFailed()">
-                    </image-cropper>
-                  </div>
-                  <div class="uploads uploaded col-sm-6">
-                    <div class="close-icon">
-                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                    </div>
-                    <img class="preview-img" id="previewImage" [src]="croppedImage">
-                  </div>
-                </div>
-              </ng-container>
-              <div class="col-12">
+              <!-- Category attributes end -->
+
+              <div class="col-12 d-flex align-items-center justify-content-end" style="margin: 30px 0 0 0;">
                 <a routerLink="{{ appRoute.category.CATEGORY_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">Update</button>
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="onSubmit()">
+                  Add
+                </button>
               </div>
             </div>
           </form>
+
           <div class="restore-container">
             <ng-container *ngIf="isArchived">
               <div class="col-12">
@@ -218,8 +420,8 @@
                 </div>
               </div>
               <div class="col-12">
-                <a routerLink="{{ appRoute.category.ARCHIVED_CATEGORY}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">
+                <a routerLink="{{ appRoute.category.ARCHIVED_CATEGORY}}"
+                  class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px"
@@ -227,6 +429,7 @@
               </div>
             </ng-container>
           </div>
+
         </div>
       </div>
     </div>

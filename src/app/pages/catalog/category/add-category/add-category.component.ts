@@ -54,6 +54,7 @@ export class AddCategoryComponent implements OnInit {
   showSaveButton: Boolean = false
   attributes: any = []
 
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -73,6 +74,7 @@ export class AddCategoryComponent implements OnInit {
     this.managePage();
     this.getCategory();
   }
+
 
   initForm() {
     this.categoryForm = this.formBuilder.group({

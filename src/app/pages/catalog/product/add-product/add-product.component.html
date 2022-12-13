@@ -503,8 +503,8 @@
                   <div class="col-12 preview-section" style="margin-top: 50px;">
                     <div class="crop-image col-sm-6">
                       <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="2 / 3" [cropperMaxWidth]="480"
-                        [cropperMaxHeight]="702" format="jpeg"  (imageCropped)="imageThumbnailCropped($event)"
+                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="500"
+                        [cropperMaxHeight]="500" format="jpeg" (imageCropped)="imageThumbnailCropped($event)"
                         (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
                         (loadImageFailed)="loadThumbnailImageFailed()">
                       </image-cropper>
@@ -518,8 +518,6 @@
                   </div>
                 </ng-container>
               </div>
-
-
               <div class="col-12">
                 <div class="col-12">
                   <h3 class="form-title"><span>Product Video</span></h3>
@@ -544,7 +542,6 @@
                 </div>
               </div>
             </div>
-
             <div class="col-12">
               <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                 style="width: 200px; margin-right: 20px;">Cancel</a>

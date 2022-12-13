@@ -85,8 +85,8 @@
             <ng-container *ngIf="category?.isActive == false">Inactive</ng-container>
           </div>
           <div class="card-edit-btn">
-            <button (click)="showAttributesContainer(category?.catid, category?.name)"
-              class=" fs-5 cursor-pointer bg-dark text-white text-darker">
+            <button (click)="showAttributesContainer(category?.catid, category?.name, category?.slug)"
+              class=" fs-5 cursor-pointer text-white text-darker" style="background: #0087bd;">
               Attributes
             </button>
           </div>
@@ -162,7 +162,7 @@
         </h4>
       </div>
       <div class="attributes-add">
-        <button class="btn-secondary btn btn-sm fs-5" style="width: 200px;">Add Attributes</button>
+        <button class="btn-secondary btn btn-sm fs-5" style="width: 200px;" (click)="navigateToUpdate()">Add Attributes</button>
       </div>
     </div>
     <div class="attributes-result-cards">

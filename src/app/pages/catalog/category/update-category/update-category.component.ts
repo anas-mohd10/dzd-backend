@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
+import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -7,6 +7,7 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { AttributeService } from 'src/app/includes/services/attribute.service';
 
 @Component({
   selector: 'app-update-category',
@@ -52,13 +53,31 @@ export class UpdateCategoryComponent implements OnInit {
   isArchived: boolean;
   catid: any;
 
+  //Attrbiute variables
+  showAttributes: Boolean = false
+  attributetype: any;
+  showColorPicker: Boolean = false
+  showTextInput: Boolean = false
+  showFileInput: Boolean = false
+  attributecolors: any = []
+  attributetexts: any = []
+  attributeimages: any = []
+  attributecroppped: string | null | undefined;
+  loadAttributeImage: Boolean = false
+  attrImageChange: Event | undefined
+  attrfilename: any = ''
+  attrfiledata: any = ''
+  showSaveButton: Boolean = false
+  attributes: any = []
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private CategoryService: CategoryService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private AttributeService: AttributeService
   ) { }
 
   get bf() {
@@ -90,13 +109,19 @@ export class UpdateCategoryComponent implements OnInit {
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
-      parentId: [''],
+      parent: [''],
       background: [''],
       border: [''],
       radius: [''],
       color: [''],
       fontSize: [''],
-      fontWeight: ['']
+      fontWeight: [''],
+      attributeName: [''],
+      attributeType: [''],
+      attributeColor: [''],
+      attributeText: [''],
+      attributeStatus: ['true'],
+      attributeFiltered: ['false']
     });
   }
 
@@ -161,6 +186,22 @@ export class UpdateCategoryComponent implements OnInit {
   getCategoryBySlug() {
     this.CategoryService.getCategoryBySlug(this.category).subscribe((res: any) => {
       this.categoryValues = res?.result[0];
+
+      this.AttributeService.getAttributeByCategory(this.categoryValues['catid']).subscribe((res: any) => {
+        for (let value of res?.result) {
+          this.attributes.push({
+            name: value?.name,
+            type: value?.type,
+            isActive: value?.isActive,
+            isFiltered: value?.isFilter,
+            values: value?.values,
+            id: this.attributes.length,
+            refid: value?.refid
+          })
+        }
+        this.cdr.markForCheck()        
+      })
+
       this.uploadedimg = this.categoryValues?.file;
       this.img = this.base + "/" + res?.result[0].file
       this.categoryForm.get('name')?.setValue(this.categoryValues.name);
@@ -243,6 +284,197 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
+  //Attribute section start
+  // showAttributeSection() {
+  //   this.showAttributes = !this.showAttributes
+  // }
+
+  handleAttributeType(e: any) {
+    this.attributetype = e.value
+    switch (this.attributetype) {
+      case 'Color':
+        this.showColorPicker = true
+        this.showTextInput = false
+        this.showFileInput = false
+        this.attributetexts = []
+        this.categoryForm.get('attributeText')?.setValue('')
+        this.attributeimages = []
+        break
+      case 'Text':
+        this.showColorPicker = false
+        this.showTextInput = true
+        this.showFileInput = false
+        this.attributecolors = []
+        this.categoryForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        this.attributeimages = []
+        break
+      case 'File':
+        this.showColorPicker = false
+        this.showTextInput = false
+        this.showFileInput = true
+        this.attributetexts = []
+        this.categoryForm.get('attributeText')?.setValue('')
+        this.attributecolors = []
+        this.categoryForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        break
+    }
+  }
+
+  handleAttrributeValues(key: any, e: any) {
+    switch (key) {
+      case 'color':
+        this.attributecolors.push({
+          id: this.attributecolors.length,
+          value: e.value
+        })
+        break
+      case 'text':
+        if (e.value != '') {
+          if (!this.valueExists(e.value)) {
+            this.attributetexts.push({
+              id: this.attributetexts.length,
+              value: e.value
+            })
+            this.categoryForm.get('attributeText')?.setValue('')
+          } else {
+            this.toastr.error('Attribute text already exists')
+          }
+        } else {
+          this.toastr.error('Attribute text cannot be null')
+        }
+        break
+      case 'file':
+        if (this.attributecroppped != '') {
+          if (!this.imageValueExists(this.attributecroppped)) {
+            this.attributeimages.push({
+              id: this.attributeimages.length,
+              value: this.attributecroppped,
+              name: this.attrfilename
+            })
+            this.attributecolors = ''
+            this.loadAttributeImage = false
+          }
+        }
+    }
+    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
+      this.showSaveButton = true
+    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
+      this.showSaveButton = false
+    }
+  }
+
+  valueExists(value: any) {
+    return this.attributetexts.some((check: any) => {
+      return check.value == value
+    })
+  }
+
+  imageValueExists(value: any) {
+    return this.attributeimages.some((check: any) => {
+      return check.value == value
+    })
+  }
+
+  removeAttributeValues(key: any, id: any) {
+    switch (key) {
+      case 'color':
+        this.attributecolors = this.attributecolors.filter((data: any) => data.id != id)
+        break
+      case 'text':
+        this.attributetexts = this.attributetexts.filter((data: any) => data.id != id)
+        break
+      case 'file':
+        this.attributeimages = this.attributeimages.filter((data: any) => data.id != id)
+        break
+    }
+    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
+      this.showSaveButton = true
+    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
+      this.showSaveButton = false
+    }
+  }
+
+  removeAttribute(id: any) {
+    this.attributes = this.attributes.filter((data: any) => data.id != id)
+  }
+
+  handleAttrInputChange(event: any) {
+    this.attrfiledata = <File>event.target.files[0];
+    this.attrfilename = this.attrfiledata.name
+    this.attrImageChange = event;
+    this.loadAttributeImage = true
+  }
+
+  attrImageCropped(event: ImageCroppedEvent) {
+    this.attributecroppped = event.base64;
+  }
+
+  attrImageLoaded() {
+    // show cropper
+  }
+
+  attrCropperReady() {
+    // cropper ready
+  }
+
+  loadAttrImageFailed() {
+    // show message
+  }
+
+  removeAttrImage() {
+    this.attributecroppped = ''
+    this.loadAttributeImage = false
+  }
+
+  saveAttribute() {
+    let name = this.categoryForm.get('attributeName')?.value
+    let type = this.attributetype
+    let status = this.categoryForm.get('attributeStatus')?.value
+    let filtered = this.categoryForm.get('attributeFiltered')?.value
+    let len = this.attributes.length
+    if (name) {
+      if (type) {
+        if (status) {
+          if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
+            let values = []
+            if (type == 'Color') {
+              values = this.attributecolors
+            } else if (type == 'Text') {
+              values = this.attributetexts
+            } else if (type == 'File') {
+              values = this.attributeimages
+            }
+            this.attributes.push({
+              name: name,
+              type: type,
+              isActive: status,
+              isFiltered: filtered,
+              values: values,
+              id: this.attributes.length
+            })
+            let new_len = this.attributes.length
+            if (new_len == (len + 1)) {
+              this.categoryForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+              this.categoryForm.get('attributeText')?.setValue('')
+              this.categoryForm.get('attributeName')?.setValue('')
+              this.categoryForm.get('attributeStatus')?.setValue('true')
+              this.categoryForm.get('attributeType')?.setValue('')
+              this.attributeimages = []
+              this.attributetexts = []
+              this.attributecolors = []
+              this.showSaveButton = false
+              this.showColorPicker = false
+              this.showTextInput = false
+              this.showFileInput = false
+            }
+          }
+        }
+      }
+    }
+  }
+  //Attribute section end
+
+
   //Update exsisting category
   updateBrand() {
     if (!this.categoryForm.valid) {
@@ -279,6 +511,7 @@ export class UpdateCategoryComponent implements OnInit {
       filename: this.filename,
       path: this.path,
       file: '',
+      attributes: this.attributes,
       style: {
         background: this.categoryForm.get('background')?.value,
         border: this.categoryForm.get('border')?.value,

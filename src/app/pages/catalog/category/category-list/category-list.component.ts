@@ -4,9 +4,11 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
-import { ToastService } from 'src/app/includes/services/toast.service';
+// import { ToastService } from 'src/app/includes/services/toast.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { AppSettings } from 'src/app/config/constants';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category',
@@ -68,13 +70,16 @@ export class CategoryComponent implements OnInit {
   showSaveButton: Boolean = false
   attributes: any = []
   attributerefid: any;
+  categoryslug: any;
 
   constructor(private categoryService: CategoryService,
     private cdr: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private AttributeService: AttributeService,
-    private ToastService: ToastService,
-    private FormBuilder: FormBuilder
+    private ToastrService: ToastrService,
+    private FormBuilder: FormBuilder,
+    private ActivatedRoute: ActivatedRoute,
+    private Router: Router
   ) { }
 
   ngOnInit(): void {
@@ -178,7 +183,6 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-
   setPages() {
     this.currpage = 1
     this.selectedpage = 1
@@ -205,19 +209,20 @@ export class CategoryComponent implements OnInit {
     this.isNext = true
   }
 
-  showAttributesContainer(catid: any, name: any) {
+  showAttributesContainer(catid: any, name: any, slug: any) {
     this.showAttributes = !this.showAttributes;
     let bodyEl = document.querySelector('body');
     bodyEl?.classList.toggle('overflow-hidden')
     this.categoryname = name
     this.catid = catid
+    this.categoryslug = slug
 
     this.AttributeService.getAttributeByCategory(catid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.attributes = res?.result
         this.attributeslength = this.attributes.length
       } else {
-        this.ToastService.error(res?.message)
+        this.ToastrService.error(res?.message)
       }
       this.cdr.markForCheck()
     })
@@ -278,7 +283,7 @@ export class CategoryComponent implements OnInit {
             break
         }
       } else {
-        this.ToastService.error(res?.message)
+        this.ToastrService.error(res?.message)
         this.cdr.markForCheck()
       }
     })
@@ -295,6 +300,11 @@ export class CategoryComponent implements OnInit {
     this.showFileInput = false
   }
 
+  navigateToUpdate() {
+    this.Router.navigate([this.appRoute.category.UPDATE_CATEGORY], { queryParams: { category: this.categoryslug } })
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+  }
 
   //Attribute section start
   showAttributeSection() {
@@ -349,10 +359,10 @@ export class CategoryComponent implements OnInit {
             })
             this.attributeform.get('attributeText')?.setValue('')
           } else {
-            this.ToastService.error('Attribute text already exists')
+            this.ToastrService.error('Attribute text already exists')
           }
         } else {
-          this.ToastService.error('Attribute text cannot be null')
+          this.ToastrService.error('Attribute text cannot be null')
         }
         break
       case 'file':
@@ -393,66 +403,30 @@ export class CategoryComponent implements OnInit {
         for (let data of this.attributecolors) {
           if (data?.id == id) {
             if (data?.refid) {
-              this.AttributeService.deleteAttribute(data?.refid).subscribe((res: any) => {
-                if (res?.errorCode == 0) {
-                  // this.AttributeService.getAttributeById(this.catid, this.attributerefid).subscribe((res: any) => {
-                  //   if (res?.errorCode == 0) {
-                  //     this.attributevalues = res?.result
-                  //     this.attributeform.get('attributeName')?.setValue(res?.result?.head?.name)
-                  //     this.attributeform.get('attributeStatus')?.setValue(res?.result?.head?.isActive)
-                  //     this.attributeform.get('attributeFiltered')?.setValue(res?.result?.head?.isFiltered)
-                  //     this.attributeform.get('attributeType')?.setValue(res?.result?.head?.type)
-                  //     switch (res?.result?.head?.type) {
-                  //       case 'Color':
-                  //         this.showColorPicker = true
-                  //         for (let value of res?.result?.value) {
-                  //           this.attributecolors.push({
-                  //             id: this.attributecolors.length,
-                  //             value: value.value,
-                  //             refid: value.refid
-                  //           })
-                  //         }
-                  //         this.cdr.markForCheck()
-                  //         break
-                  //       case 'Text':
-                  //         this.showTextInput = true
-                  //         for (let value of res?.result?.value) {
-                  //           this.attributetexts.push({
-                  //             id: this.attributetexts.length,
-                  //             value: value.value,
-                  //             refid: value.refid
-                  //           })
-                  //         }
-                  //         this.cdr.markForCheck()
-                  //         break
-                  //       case 'File':
-                  //         this.showFileInput = true
-                  //         for (let value of res?.result?.value) {
-                  //           this.attributeimages.push({
-                  //             id: this.attributeimages.length,
-                  //             value: environment.base + "/" + value.value,
-                  //             refid: value.refid
-                  //           })
-                  //         }
-                  //         this.cdr.markForCheck()
-                  //         break
-                  //     }
-                  //   } else {
-                  //     this.ToastService.error(res?.message)
-                  //     this.cdr.markForCheck()
-                  //   }
-                  // })
-                }
-              })
+              this.deleteAttributeValue(data?.refid)
             }
           }
         }
         this.attributecolors = this.attributecolors.filter((data: any) => data.id != id)
         break
       case 'text':
+        for (let data of this.attributetexts) {
+          if (data?.id == id) {
+            if (data?.refid) {
+              this.deleteAttributeValue(data?.refid)
+            }
+          }
+        }
         this.attributetexts = this.attributetexts.filter((data: any) => data.id != id)
         break
       case 'file':
+        for (let data of this.attributeimages) {
+          if (data?.id == id) {
+            if (data?.refid) {
+              this.deleteAttributeValue(data?.refid)
+            }
+          }
+        }
         this.attributeimages = this.attributeimages.filter((data: any) => data.id != id)
         break
     }
@@ -461,6 +435,14 @@ export class CategoryComponent implements OnInit {
     } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
       this.showSaveButton = false
     }
+  }
+
+  deleteAttributeValue(id: any) {
+    this.AttributeService.deleteAttribute(id).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ToastrService.success(res?.message)
+      }
+    })
   }
 
   removeAttribute(id: any) {
@@ -532,7 +514,7 @@ export class CategoryComponent implements OnInit {
             this.attributes = res?.result
             this.attributeslength = this.attributes.length
           } else {
-            this.ToastService.error(res?.message)
+            this.ToastrService.error(res?.message)
           }
           this.cdr.markForCheck()
         })
@@ -546,10 +528,9 @@ export class CategoryComponent implements OnInit {
         this.showModal = !this.showModal;
         this.cdr.markForCheck()
       } else {
-        this.ToastService.error(res?.message)
+        this.ToastrService.error(res?.message)
       }
     })
   }
   //Attribute section end
-
 }
