@@ -23,7 +23,7 @@ export class AddVouchersComponent implements OnInit {
   isSubmitted: boolean;
   appRoute = appRoutes;
 
-  dateInvalid: boolean = false;
+  dateValid: boolean = false;
   valueInvalid: boolean = false;
   discountInvalid: boolean = false
 
@@ -195,6 +195,24 @@ export class AddVouchersComponent implements OnInit {
   }
 
   checkDate() {
+    const today = new Date().toISOString()
+    const from = this.voucherForm.get('fromDate')?.value
+    const last = this.voucherForm.get('lastDate')?.value
+    if (last) {
+      if (from > last) {
+        this.toastr.error('invalid date')
+        this.dateValid = false
+      } else {
+        this.dateValid = true
+      }
+    } else {
+      if (from < today) {
+        this.toastr.error('invalid date')
+        this.dateValid = false
+      } else {
+        this.dateValid = true
+      }
+    }
   }
 
   checkValue() {
@@ -270,14 +288,20 @@ export class AddVouchersComponent implements OnInit {
       isActive: this.voucherForm.get('isActive')?.value,
     }
     if (!this.valueInvalid) {
-      this.vouchersService.addVoucher(data).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Voucher added successfully');
-          this.router.navigate([this.appRoute.vouchers.VOUCHERS_LIST]);
+      if (this.dateValid) {
+        this.vouchersService.addVoucher(data).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error('Something went wrong');
+          } else if (res.errorCode == 0) {
+            this.toastr.success('Voucher added successfully');
+            this.router.navigate([this.appRoute.vouchers.VOUCHERS_LIST]);
+          }
+        })
+      } else {
+        if (this.dateValid == false){
+          this.toastr.error('invalid date')
         }
-      })
+      }
     } else {
       if (this.valueInvalid == true) {
         this.toastr.error("Value should be between 0 and 100")
