@@ -4,6 +4,7 @@ import { HomeSettingsService } from 'src/app/includes/services/home.settings.ser
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
 
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-view-dashboard-settings',
   templateUrl: './view-dashboard-settings.component.html',
@@ -24,39 +25,21 @@ export class ViewDashboardSettingsComponent implements OnInit {
     positions: {
     }
   }
+  hoverarray: any = []
+  counter: any = 0
+  carausel_image: any
 
   constructor(
     private cdr: ChangeDetectorRef,
     private HomeSettingsService: HomeSettingsService,
-    private ToastrService: ToastrService
+    private ToastrService: ToastrService,
+    private http: HttpClientModule
   ) { }
 
   ngOnInit(): void {
     this.HomeSettingsService.getHomeSettings().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.homeSettings = res?.result
-        for (let data of this.homeSettings) {
-          let sorted_result = []
-          let unsorted_result = data?.positions
-          for (var key in unsorted_result) {
-            sorted_result.push([key, unsorted_result[key]]);
-          }
-          sorted_result.sort((a: any, b: any) => {
-            return a[1].value - b[1].value
-          })
-          sorted_result.forEach((data: any) => {
-            this.sorted_postions[data[0]] = data[1]
-          })
-          data.positions = this.sorted_postions
-        }
-        if (this.homeSettings.length > 0) {
-          this.positions = this.homeSettings[0].positions
-          for (let key of Object.keys(this.positions)) {
-            this.result.push(this.positions[key])
-          }
-        }
-        this.newResult = [...this.result]
-        this.slug = res?.result[0]?.slug
         this.cdr.markForCheck()
       } else {
         this.homeSettings = []
@@ -71,55 +54,98 @@ export class ViewDashboardSettingsComponent implements OnInit {
       }
       this.cdr.markForCheck()
     })
+
+    this.carauselEvent()
+  }
+
+  getId(type: any, title: any) {
+    for (let home of this.homeSettings) {
+      if (home.type == type) {
+        if (type == 'product' && home?.title?.text == title) {
+          this.hoverarray.push(home)
+        } else if (type != 'product') {
+          this.hoverarray.push(home)
+        }
+      }
+    }
+  }
+
+  removeId() {
+    this.hoverarray = []
+  }
+
+  carauselEvent() {
+    setInterval(() => {
+      for (let home of this.homeSettings) {
+        if (home['type'] == 'carausel') {
+          if ((this.counter + 1) == home['carausel_items'].length) {
+            this.carausel_image = home['carausel_items'][this.counter]['image']
+            this.counter = 0
+          } else {
+            this.carausel_image = home['carausel_items'][this.counter]['image']
+            this.counter += 1
+          }
+          this.cdr.markForCheck()
+        }
+      }
+    }, 800)
   }
 
   drop(event: any) {
-    moveItemInArray(this.result, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.homeSettings, event.previousIndex, event.currentIndex);
     this.isSave = true
   }
 
   saveButton() {
     this.data['slug'] = this.slug
-    for (let i = 0; i < this.result.length; i++) {
-      switch (this.result[i]['title']) {
-        case 'Carausel':
+    for (let i = 0; i < this.homeSettings.length; i++) {
+      console.log(i, this.homeSettings[i]['type']);
+
+      switch (this.homeSettings[i]['type']) {
+        case 'carausel':
           this.data['positions']['carausel'] = {
-            title: this.result[i]['title'],
             value: i
           }
           break
-        case 'Category':
+        case 'category':
           this.data['positions']['category'] = {
-            title: this.result[i]['title'],
+            text: this.homeSettings[i]['title']['text'],
             value: i
           }
           break
-        case 'Collection':
-          this.data['positions']['collection'] = {
-            title: this.result[i]['title'],
+        case 'deals-grid':
+          this.data['positions']['deals-grid'] = {
+            text: this.homeSettings[i]['title']['text'],
             value: i
           }
           break
-        case 'Banners':
-          this.data['positions']['banners'] = {
-            title: this.result[i]['title'],
+        case 'banner':
+          this.data['positions']['banner'] = {
             value: i
           }
           break
-        case 'Brands':
-          this.data['positions']['brands'] = {
-            title: this.result[i]['title'],
+        case 'brand':
+          this.data['positions']['brand'] = {
+            text: this.homeSettings[i]['title']['text'],
             value: i
           }
           break
-        case 'Products':
-          this.data['positions']['products'] = {
-            title: this.result[i]['title'],
+        case 'product':
+          this.data['positions']['product'] = {
+            text: this.homeSettings[i]['title']['text'],
+            value: i
+          }
+          break
+        case 'product-grid':
+          this.data['positions']['product-grid'] = {
+            text: this.homeSettings[i]['title']['text'],
             value: i
           }
           break
       }
     }
+    console.log(this.data);
+
     if (this.data) {
       this.HomeSettingsService.updateHomeSettings(this.data).subscribe((res: any) => {
         if (res?.errorCode == 0) {

@@ -8,6 +8,7 @@ export const environment = {
   // base: 'https://ccapi.previewbay.com',
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   base: 'http://localhost:3000',
   loginUrl: 'api',
 };
