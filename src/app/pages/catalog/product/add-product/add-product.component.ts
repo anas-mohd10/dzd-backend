@@ -10,6 +10,7 @@ import { TaxClassesService } from 'src/app/includes/services/tax-classes.service
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-add-product',
@@ -18,7 +19,7 @@ import { ProductHeadService } from 'src/app/includes/services/product.head.servi
 })
 
 export class AddProductComponent implements OnInit {
-  productForm: FormGroup;
+  productform: FormGroup;
   productheadform: FormGroup
   task = PageTasks.ADD;
   editMode = false;
@@ -104,6 +105,7 @@ export class AddProductComponent implements OnInit {
   headAdded: Boolean = false
 
   productHeadId: any
+  basicfile: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -120,7 +122,7 @@ export class AddProductComponent implements OnInit {
   ) { }
 
   get pf() {
-    return this.productForm.controls;
+    return this.productform.controls;
   }
 
   get hf() {
@@ -150,8 +152,8 @@ export class AddProductComponent implements OnInit {
   }
 
   initForm() {
-    this.productForm = this.formBuilder.group({
-      isSingle: ['true'],
+    this.productform = this.formBuilder.group({
+      name: ['', Validators.required],
       sku: ['', Validators.required],
       mrpPrice: [''],
       offerPrice: [''],
@@ -193,15 +195,15 @@ export class AddProductComponent implements OnInit {
       shippingCost: [''],
     })
 
-    this.productForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.productform.get('background')?.setValue(AppSettings.BACKGROUND)
     this.background = AppSettings.BACKGROUND
-    this.productForm.get('border')?.setValue(AppSettings.BORDER)
+    this.productform.get('border')?.setValue(AppSettings.BORDER)
     this.border = AppSettings.BORDER
-    this.productForm.get('color')?.setValue(AppSettings.COLOR)
+    this.productform.get('color')?.setValue(AppSettings.COLOR)
     this.color = AppSettings.COLOR
-    this.productForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.productForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.productForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
+    this.productform.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.productform.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.productform.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   //Check whether the product is single or configurable
@@ -272,9 +274,9 @@ export class AddProductComponent implements OnInit {
   tagInput(event: any) {
     let _value = event.value
     if (_value) {
-      if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
-        this.searchKeyowrds.push(this.productForm.get('searchKeywords')?.value);
-        this.productForm.get('searchKeywords')?.setValue('');
+      if (this.productform.get('searchKeywords')?.value != ' ' || '' || null) {
+        this.searchKeyowrds.push(this.productform.get('searchKeywords')?.value);
+        this.productform.get('searchKeywords')?.setValue('');
       }
     }
   }
@@ -297,7 +299,7 @@ export class AddProductComponent implements OnInit {
     } else {
       this.toastr.info('Product already added');
     }
-    this.productForm.get("relatedProducts")?.setValue('')
+    this.productform.get("relatedProducts")?.setValue('')
   }
 
   //Related product remove
@@ -509,13 +511,128 @@ export class AddProductComponent implements OnInit {
 
   updateProduct() { }
 
+
+  addProduct() {
+    if (!this.productform.valid) {
+      return;
+    }
+
+    const payload = this.createPayload()
+    if (payload) {
+      this.disableButton = true
+      this.toastr.info('Adding product...', '', { timeOut: 2000 })
+      setTimeout(() => {
+        this.productService.addProduct(payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+            this.ngOnInit();
+          }
+        });
+      }, 2000)
+    }
+  }
+
+  createPayload() {
+    const data = {
+      isSingle: this.productform.get('isSingle')?.value,
+      name: this.productform.get('name')?.value,
+      sku: this.productform.get('sku')?.value,
+      hsn: this.productform.get('hsn')?.value,
+      mrpPrice: this.productform.get('mrpPrice')?.value,
+      offerPrice: this.productform.get('offerPrice')?.value,
+      stock: this.productform.get('stock')?.value,
+      moq: this.productform.get('moq')?.value,
+      stockWarning: this.productform.get('stockWarning')?.value,
+      description: this.productform.get('description')?.value,
+      features: this.productform.get('features')?.value,
+      categories: this.selectedCategories,
+      brand: this.selectedBrand,
+      additionalbutton: this.productform.get('additionalbutton')?.value,
+      buttonredireturl: this.productform.get('buttonredireturl')?.value,
+      isActive: this.productform.get('isActive')?.value,
+      isArchive: this.productform.get('isArchive')?.value,
+      isFeatured: this.productform.get('isFeatured')?.value,
+      returnable: this.productform.get('returnable')?.value,
+      returnDays: this.productform.get('returnDays')?.value,
+      shippingMethod: this.productform.get('shippingMethod')?.value,
+      shippingCost: this.productform.get('shippingCost')?.value,
+      value: this.productform.get('value')?.value,
+      unit: this.productform.get('unit')?.value,
+      tax: this.productform.get('taxClassId')?.value,
+      cod: this.productform.get('cod')?.value,
+      codCharge: this.productform.get('codCharge')?.value,
+      searchKeywords: this.searchKeyowrds,
+      relatedProducts: this.selectedProducts,
+      position: this.productform.get('position')?.value,
+      files: this.files,
+      video: this.videoFile,
+      thumbFilename: this.thumbnailFilename,
+      thumbFilestring: this.thumbnailImage,
+      style: {
+        background: this.productform.get('background')?.value,
+        border: this.productform.get('border')?.value,
+        radius: this.productform.get('radius')?.value,
+        text: {
+          color: this.productform.get('color')?.value,
+          fontSize: this.productform.get('fontSize')?.value,
+          fontWeight: this.productform.get('fontWeight')?.value,
+        }
+      }
+    }
+    return data
+  }
+
+  //----- Product head management -----
   addHead() {
     if (!this.productheadform.valid) {
       this.toastr.error('Validation failed')
       return;
     }
+
+    const payload = this.createHeadPayload()
+    if (payload) {
+      this.ProductHeadService.addProductHead(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.headAdded = true
+          this.toastr.success(res?.message)
+          this.productHeadId = res?.result?.prodid
+          this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+        } else {
+          this.toastr.error(res?.message)
+        }
+      })
+    }
+  }
+
+  updateHead() {
+    if (!this.productheadform.valid) {
+      this.toastr.error('Validation failed')
+      return;
+    }
+
+    const payload = this.createHeadPayload()
+    if (payload) {
+      this.ProductHeadService.updateProductHead(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.headAdded = true
+          this.toastr.success(res?.message)
+          this.productHeadId = res?.result?.prodid
+          this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+        } else {
+          this.toastr.error(res?.message)
+        }
+      })
+    }
+  }
+
+  createHeadPayload() {
     let refids = []
     let refid = ''
+    let file: any
+
     for (let category of this.maincategories) {
       for (let _cat of this.selectedMainCategory) {
         if (category?._id == _cat) {
@@ -526,7 +643,17 @@ export class AddProductComponent implements OnInit {
         }
       }
     }
-    const data = {
+
+    if (this.basicfilename != '' && this.basicImage) {
+      file = {
+        file: this.basicImage,
+        name: this.basicfilename
+      }
+    } else {
+      file = this.basicfile
+    }
+
+    let data = {
       name: this.productheadform.get('name')?.value,
       hsn: this.productheadform.get('hsn')?.value,
       tax: this.selectedTax,
@@ -551,27 +678,14 @@ export class AddProductComponent implements OnInit {
         isPresent: this.productheadform.get('returnable')?.value,
         value: this.productheadform.get('returnDays')?.value
       },
-      file: {
-        file: this.basicImage,
-        name: this.basicfilename
-      }
+      file: file
     }
-    this.ProductHeadService.addProductHead(data).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.headAdded = true
-        this.toastr.success('Product head addedd successfully')
-        this.productHeadId = res?.result?.prodid
-        this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
-      }
-    })
-  }
 
-  updateHead() {
-
+    return data
   }
 
   getProductHead(id: any) {
-    this.ProductHeadService.getproductHead(this.productHeadId).subscribe((res: any) => {
+    this.ProductHeadService.getproductHead(id).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.productheadform.get('name')?.setValue(res?.result[0]?.name)
         this.productheadform.get('hsn')?.setValue(res?.result[0]?.hsn)
@@ -584,80 +698,8 @@ export class AddProductComponent implements OnInit {
         this.selectedMainCategory = res?.result[0]?.parentCategory['id']
         this.selectedDefaultCategory = res?.result[0]?.defaultCategory['id']
         this.selectedBrand = res?.result[0]?.brand
+        this.basicfile = environment.base + "/" + res?.result[0]?.file
       }
     })
-  }
-
-  addProduct() {
-    if (!this.productForm.valid) {
-      return;
-    }
-
-    const payload = this.createPayload()
-    if (payload) {
-      this.disableButton = true
-      this.toastr.info('Adding product...', '', { timeOut: 2000 })
-      setTimeout(() => {
-        this.productService.addProduct(payload).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
-          } else if (res.errorCode == 0) {
-            this.toastr.success(res?.message);
-            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-            this.ngOnInit();
-          }
-        });
-      }, 2000)
-    }
-  }
-
-  createPayload() {
-    const data = {
-      isSingle: this.productForm.get('isSingle')?.value,
-      name: this.productForm.get('name')?.value,
-      sku: this.productForm.get('sku')?.value,
-      hsn: this.productForm.get('hsn')?.value,
-      mrpPrice: this.productForm.get('mrpPrice')?.value,
-      offerPrice: this.productForm.get('offerPrice')?.value,
-      stock: this.productForm.get('stock')?.value,
-      moq: this.productForm.get('moq')?.value,
-      stockWarning: this.productForm.get('stockWarning')?.value,
-      description: this.productForm.get('description')?.value,
-      features: this.productForm.get('features')?.value,
-      categories: this.selectedCategories,
-      brand: this.selectedBrand,
-      additionalbutton: this.productForm.get('additionalbutton')?.value,
-      buttonredireturl: this.productForm.get('buttonredireturl')?.value,
-      isActive: this.productForm.get('isActive')?.value,
-      isArchive: this.productForm.get('isArchive')?.value,
-      isFeatured: this.productForm.get('isFeatured')?.value,
-      returnable: this.productForm.get('returnable')?.value,
-      returnDays: this.productForm.get('returnDays')?.value,
-      shippingMethod: this.productForm.get('shippingMethod')?.value,
-      shippingCost: this.productForm.get('shippingCost')?.value,
-      value: this.productForm.get('value')?.value,
-      unit: this.productForm.get('unit')?.value,
-      tax: this.productForm.get('taxClassId')?.value,
-      cod: this.productForm.get('cod')?.value,
-      codCharge: this.productForm.get('codCharge')?.value,
-      searchKeywords: this.searchKeyowrds,
-      relatedProducts: this.selectedProducts,
-      position: this.productForm.get('position')?.value,
-      files: this.files,
-      video: this.videoFile,
-      thumbFilename: this.thumbnailFilename,
-      thumbFilestring: this.thumbnailImage,
-      style: {
-        background: this.productForm.get('background')?.value,
-        border: this.productForm.get('border')?.value,
-        radius: this.productForm.get('radius')?.value,
-        text: {
-          color: this.productForm.get('color')?.value,
-          fontSize: this.productForm.get('fontSize')?.value,
-          fontWeight: this.productForm.get('fontWeight')?.value,
-        }
-      }
-    }
-    return data
   }
 }

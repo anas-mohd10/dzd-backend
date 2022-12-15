@@ -20,4 +20,9 @@ export class ProductHeadService {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head + "?id=" + id);
     return this.http.get(`${url}`);
   }
+
+  updateProductHead(data: any) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.update_product_head);
+    return this.http.put(`${url}`, data);
+  }
 }
