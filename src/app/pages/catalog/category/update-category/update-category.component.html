@@ -36,8 +36,8 @@
               Attributes</button>
           </li>
         </ul>
-        <div class="card-body archieved-{{categoryValues?.isArchive}}">
-          <form [formGroup]=" categoryForm" (keydown.Enter)="$event.preventDefault()">
+        <div class="card-body">
+          <form [formGroup]=" categoryForm" (keydown.Enter)="$event.preventDefault()" class="archieved-{{categoryValues?.isArchive}}">
             <div class="tab-content" id="myTabContent">
               <div class="category-details-section tab-pane fade show active" id="home" role="tabpanel"
                 aria-labelledby="home-tab">

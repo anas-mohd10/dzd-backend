@@ -209,7 +209,7 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
       this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
       this.categoryForm.get('isArchive')?.setValue(this.categoryValues.isArchive);
-      this.categoryForm.get('parentId')?.setValue(this.categoryValues.path);
+      this.categoryForm.get('parent')?.setValue(this.categoryValues.path);
       this.categoryForm.get('background')?.setValue(this.categoryValues.style.background);
       this.categoryForm.get('border')?.setValue(this.categoryValues.style.border);
       this.categoryForm.get('radius')?.setValue(this.categoryValues.style.radius);

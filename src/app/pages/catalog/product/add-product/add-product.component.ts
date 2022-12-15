@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ElementRef } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 
 @Component({
   selector: 'app-add-product',
@@ -18,6 +19,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 export class AddProductComponent implements OnInit {
   productForm: FormGroup;
+  productheadform: FormGroup
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
@@ -53,7 +55,7 @@ export class AddProductComponent implements OnInit {
   basicImage: string | null | undefined;
   loadImage: boolean;
   loadThumbnailImage: boolean;
-  loadBasicImage: boolean;
+  loadBasicImage: boolean = false;
   imageChangedEvent: Event | undefined;
   imageThumbnailChangedEvent: Event | undefined;
   filename: any;
@@ -67,7 +69,7 @@ export class AddProductComponent implements OnInit {
   color: any
 
   selectedCategories: any = []
-  selectedBrand: any = ''
+  selectedBrand: any
   selectedProducts: any = []
   imageFiles: any = []
   files: any = []
@@ -88,8 +90,20 @@ export class AddProductComponent implements OnInit {
   thumbnail: any
   productvideo: any
 
+  selectedTax: any
 
-  selectedTax: any = ''
+  //categories
+  maincategories: any = []
+  selectedMainCategory: any
+  subcategories: any = []
+  selectedSubCategory: any
+  showMainCategory: Boolean = false
+  parentCategory: any = []
+  subCategory: any = []
+  selectedDefaultCategory: any
+  headAdded: Boolean = false
+
+  productHeadId: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -100,11 +114,17 @@ export class AddProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private ProductHeadService: ProductHeadService,
+    private ElementRef: ElementRef
   ) { }
 
   get pf() {
     return this.productForm.controls;
+  }
+
+  get hf() {
+    return this.productheadform.controls;
   }
 
   ngOnInit(): void {
@@ -115,14 +135,24 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
+
+    this.categoryService.getMainCategories().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.maincategories = res?.result
+        this.cdr.markForCheck()
+      }
+    })
+
+    let slug = this.route.snapshot.queryParams.id || ''
+    if (slug != '') {
+      this.getProductHead(slug)
+    }
   }
 
   initForm() {
     this.productForm = this.formBuilder.group({
       isSingle: ['true'],
-      name: ['', Validators.required],
       sku: ['', Validators.required],
-      hsn: ['', Validators.required],
       mrpPrice: [''],
       offerPrice: [''],
       stock: [''],
@@ -137,15 +167,8 @@ export class AddProductComponent implements OnInit {
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
-      returnable: ['false', Validators.required],
-      returnDays: [''],
-      shippingMethod: ['Unpaid', Validators.required],
-      shippingCost: [''],
       value: ['', Validators.required],
       unit: ['', Validators.required],
-      taxClassId: ['', Validators.required],
-      cod: ['false', Validators.required],
-      codCharge: [''],
       searchKeywords: [],
       relatedProducts: [],
       position: [''],
@@ -157,6 +180,18 @@ export class AddProductComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+
+    this.productheadform = this.formBuilder.group({
+      name: ['', Validators.required],
+      hsn: ['', Validators.required],
+      tax: [''],
+      cod: ['false', Validators.required],
+      codCharge: [''],
+      returnable: ['false', Validators.required],
+      returnDays: [''],
+      shippingMethod: ['Unpaid', Validators.required],
+      shippingCost: [''],
+    })
 
     this.productForm.get('background')?.setValue(AppSettings.BACKGROUND)
     this.background = AppSettings.BACKGROUND
@@ -210,6 +245,26 @@ export class AddProductComponent implements OnInit {
     }
     if (this.cod == 'false') {
       this.isCod = false;
+    }
+  }
+
+  mainCategory() {
+    this.parentCategory = []
+    for (let _cat of this.maincategories) {
+      for (let cat of this.selectedMainCategory) {
+        if (_cat?._id == cat) {
+          this.parentCategory.push({
+            id: _cat?._id,
+            name: _cat?.name
+          })
+        }
+      }
+    }
+    if (this.parentCategory.length > 0) {
+      this.showMainCategory = true
+    } else {
+      this.selectedDefaultCategory = ''
+      this.showMainCategory = false
     }
   }
 
@@ -339,7 +394,7 @@ export class AddProductComponent implements OnInit {
 
   handleInputBasicChange(event: any) {
     this.filebasicdata = <File>event.target.files[0];
-    this.basicfilename = this.fileThumbnaildata.name
+    this.basicfilename = this.filebasicdata.name
     this.imageBasicChangedEvent = event;
     this.loadBasicImage = true
     this.cdr.markForCheck()
@@ -390,7 +445,6 @@ export class AddProductComponent implements OnInit {
     this.thumbnailImage = ''
     this.loadThumbnailImage = false
   }
-
 
   imageBasicCropped(event: ImageCroppedEvent) {
     setTimeout(() => {
@@ -454,6 +508,85 @@ export class AddProductComponent implements OnInit {
   }
 
   updateProduct() { }
+
+  addHead() {
+    if (!this.productheadform.valid) {
+      this.toastr.error('Validation failed')
+      return;
+    }
+    let refids = []
+    let refid = ''
+    for (let category of this.maincategories) {
+      for (let _cat of this.selectedMainCategory) {
+        if (category?._id == _cat) {
+          refids.push(category?.catid)
+        }
+        if (this.selectedDefaultCategory == category?._id) {
+          refid = category?.catid
+        }
+      }
+    }
+    const data = {
+      name: this.productheadform.get('name')?.value,
+      hsn: this.productheadform.get('hsn')?.value,
+      tax: this.selectedTax,
+      brand: this.selectedBrand,
+      parentCategory: {
+        id: this.selectedMainCategory,
+        refid: refids
+      },
+      defaultCategory: {
+        id: this.selectedDefaultCategory,
+        refid: refid
+      },
+      cod: {
+        isPresent: this.productheadform.get('cod')?.value,
+        value: this.productheadform.get('codCharge')?.value
+      },
+      shipping: {
+        method: this.productheadform.get('shippingMethod')?.value,
+        value: this.productheadform.get('shippingCost')?.value
+      },
+      return: {
+        isPresent: this.productheadform.get('returnable')?.value,
+        value: this.productheadform.get('returnDays')?.value
+      },
+      file: {
+        file: this.basicImage,
+        name: this.basicfilename
+      }
+    }
+    this.ProductHeadService.addProductHead(data).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.headAdded = true
+        this.toastr.success('Product head addedd successfully')
+        this.productHeadId = res?.result?.prodid
+        this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+      }
+    })
+  }
+
+  updateHead() {
+
+  }
+
+  getProductHead(id: any) {
+    this.ProductHeadService.getproductHead(this.productHeadId).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.productheadform.get('name')?.setValue(res?.result[0]?.name)
+        this.productheadform.get('hsn')?.setValue(res?.result[0]?.hsn)
+        this.productheadform.get('cod')?.setValue(res?.result[0]?.cod)
+        this.productheadform.get('codCharge')?.setValue(res?.result[0]?.codCharge)
+        this.productheadform.get('shippingMethod')?.setValue(res?.result[0]?.shippingMethod)
+        this.productheadform.get('shippingCost')?.setValue(res?.result[0]?.shippingCost)
+        this.productheadform.get('returnable')?.setValue(res?.result[0]?.returnable)
+        this.productheadform.get('returnDays')?.setValue(res?.result[0]?.returnDays)
+        this.selectedMainCategory = res?.result[0]?.parentCategory['id']
+        this.selectedDefaultCategory = res?.result[0]?.defaultCategory['id']
+        this.selectedBrand = res?.result[0]?.brand
+      }
+    })
+  }
 
   addProduct() {
     if (!this.productForm.valid) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
+import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -75,6 +75,15 @@ export class AddBrandComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+    this.brandForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.brandForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.brandForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.brandForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.brandForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.brandForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   managePage() {
