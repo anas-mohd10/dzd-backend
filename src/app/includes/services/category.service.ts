@@ -56,6 +56,11 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
+  getSubCategoriesbyId(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_sub_categories_by_id);
+    return this.http.post(`${url}`, data);
+  }
+
   archivedCategories(data: any, page: any) {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.archive_category + "?page=" + page);
     return this.http.post(`${url}`, data);

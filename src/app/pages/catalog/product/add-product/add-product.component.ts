@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { environment } from 'src/environments/environment.prod';
-
+import { AttributeService } from 'src/app/includes/services/attribute.service';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -106,6 +106,15 @@ export class AddProductComponent implements OnInit {
 
   productHeadId: any
   basicfile: any
+  isUnit: Boolean = false
+  producthhead: any
+  attributes: any = []
+  attrCardSelected: Boolean = false
+  selectedAttribute: any = []
+  attributesRefid: any = []
+  attributesId: any = []
+  showMedia: Boolean = false
+  showProduct: Boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
@@ -118,7 +127,8 @@ export class AddProductComponent implements OnInit {
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private ProductHeadService: ProductHeadService,
-    private ElementRef: ElementRef
+    private ElementRef: ElementRef,
+    private AttributeService: AttributeService
   ) { }
 
   get pf() {
@@ -137,28 +147,27 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
+    let slug = this.route.snapshot.queryParams.id || ''
 
     this.categoryService.getMainCategories().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.maincategories = res?.result
+        if (slug != '') {
+          this.getProductHead(slug)
+        }
         this.cdr.markForCheck()
       }
     })
-
-    let slug = this.route.snapshot.queryParams.id || ''
-    if (slug != '') {
-      this.getProductHead(slug)
-    }
   }
 
   initForm() {
     this.productform = this.formBuilder.group({
       name: ['', Validators.required],
       sku: ['', Validators.required],
-      mrpPrice: [''],
+      mrpPrice: ['', Validators.required],
       offerPrice: [''],
-      stock: [''],
-      moq: [''],
+      stock: ['', Validators.required],
+      moq: ['', Validators.required],
       stockWarning: [''],
       description: [''],
       features: [''],
@@ -206,7 +215,6 @@ export class AddProductComponent implements OnInit {
     this.productform.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
-  //Check whether the product is single or configurable
   handleProductType(event: any) {
     this.type = event.value;
     if (this.type == 'true') {
@@ -216,7 +224,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  //Check whether the product is returnable or not
   checkReturnable(event: any) {
     this.returnValue = event.value;
     if (this.returnValue == 'true') {
@@ -227,7 +234,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  //Check the shipping method
   checkShippingMethod(event: any) {
     console.log(event.value);
     this.method = event.value;
@@ -239,7 +245,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  //Check whether cod is available or not
   checkCod(event: any) {
     this.cod = event.value;
     if (this.cod == 'true') {
@@ -270,7 +275,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  //Search keywords input
   tagInput(event: any) {
     let _value = event.value
     if (_value) {
@@ -281,12 +285,10 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  //Search keywords remove
   tagRemove(value: any) {
     this.searchKeyowrds = this.searchKeyowrds.filter((_data: any) => _data != value)
   }
 
-  //Related products tag
   tagProductAdd(event: any) {
     let rProduct = event.value
     if (!this.relProductIds.includes(rProduct)) {
@@ -302,7 +304,6 @@ export class AddProductComponent implements OnInit {
     this.productform.get("relatedProducts")?.setValue('')
   }
 
-  //Related product remove
   tagProductRemove(_val: any) {
     this.relProductNames = this.relProductNames.filter((_data: any) => _data != _val)
     for (let i = 0; i < this.productsData.length; i++) {
@@ -490,6 +491,19 @@ export class AddProductComponent implements OnInit {
     }
   }
 
+  selectAttribute(id: any, refid: any) {
+    if (this.attributesRefid.includes(refid)) {
+      let index = this.attributesRefid.indexOf(refid)
+      if (index >= 0) {
+        this.attributesRefid.splice(index, 1)
+        this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != refid)
+      }
+    } else {
+      this.selectedAttribute.push({ id: id, refid: refid })
+      this.attributesRefid.push(refid)
+    }
+  }
+
   getColors(type: any, e: any) {
     if (type == "background") {
       this.background = e.value
@@ -498,6 +512,10 @@ export class AddProductComponent implements OnInit {
     } else if (type == "color") {
       this.color = e.value
     }
+  }
+
+  getUnit() {
+    this.isUnit = true
   }
 
   onSubmit() {
@@ -509,8 +527,9 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  updateProduct() { }
+  onSubmitAddMore() { }
 
+  updateProduct() { }
 
   addProduct() {
     if (!this.productform.valid) {
@@ -536,41 +555,27 @@ export class AddProductComponent implements OnInit {
   }
 
   createPayload() {
+    let categoryRefid = []
+    for (let category of this.subcategories) {
+      for (let _category of this.selectedSubCategory) {
+        if (category?._id == _category) {
+          categoryRefid.push(category.catid)
+        }
+      }
+    }
     const data = {
-      isSingle: this.productform.get('isSingle')?.value,
       name: this.productform.get('name')?.value,
       sku: this.productform.get('sku')?.value,
-      hsn: this.productform.get('hsn')?.value,
-      mrpPrice: this.productform.get('mrpPrice')?.value,
-      offerPrice: this.productform.get('offerPrice')?.value,
       stock: this.productform.get('stock')?.value,
       moq: this.productform.get('moq')?.value,
-      stockWarning: this.productform.get('stockWarning')?.value,
-      description: this.productform.get('description')?.value,
-      features: this.productform.get('features')?.value,
-      categories: this.selectedCategories,
-      brand: this.selectedBrand,
-      additionalbutton: this.productform.get('additionalbutton')?.value,
-      buttonredireturl: this.productform.get('buttonredireturl')?.value,
-      isActive: this.productform.get('isActive')?.value,
-      isArchive: this.productform.get('isArchive')?.value,
-      isFeatured: this.productform.get('isFeatured')?.value,
-      returnable: this.productform.get('returnable')?.value,
-      returnDays: this.productform.get('returnDays')?.value,
-      shippingMethod: this.productform.get('shippingMethod')?.value,
-      shippingCost: this.productform.get('shippingCost')?.value,
-      value: this.productform.get('value')?.value,
-      unit: this.productform.get('unit')?.value,
-      tax: this.productform.get('taxClassId')?.value,
-      cod: this.productform.get('cod')?.value,
-      codCharge: this.productform.get('codCharge')?.value,
-      searchKeywords: this.searchKeyowrds,
-      relatedProducts: this.selectedProducts,
-      position: this.productform.get('position')?.value,
-      files: this.files,
-      video: this.videoFile,
-      thumbFilename: this.thumbnailFilename,
-      thumbFilestring: this.thumbnailImage,
+      product: {
+        id: this.producthhead['_id'],
+        refid: this.producthhead['prodid'],
+      },
+      price: {
+        mrp: this.productform.get('mrpPrice')?.value,
+        offer: this.productform.get('offerPrice')?.value,
+      },
       style: {
         background: this.productform.get('background')?.value,
         border: this.productform.get('border')?.value,
@@ -580,7 +585,35 @@ export class AddProductComponent implements OnInit {
           fontSize: this.productform.get('fontSize')?.value,
           fontWeight: this.productform.get('fontWeight')?.value,
         }
-      }
+      },
+      unit: {
+        value: this.productform.get('value')?.value,
+        type: this.productform.get('unit')?.value,
+      },
+      details: {
+        description: this.productform.get('description')?.value,
+        features: this.productform.get('features')?.value,
+        additionalbutton: this.productform.get('additionalbutton')?.value,
+        buttonredireturl: this.productform.get('buttonredireturl')?.value,
+      },
+      category: {
+        id: this.selectedSubCategory,
+        refid: categoryRefid
+      },
+      attribute: {
+        id: this.attributesId,
+        refid: this.attributesRefid
+      },
+      stockWarning: this.productform.get('stockWarning')?.value,
+      isActive: this.productform.get('isActive')?.value,
+      isArchive: this.productform.get('isArchive')?.value,
+      isFeatured: this.productform.get('isFeatured')?.value,
+      searchKeywords: this.searchKeyowrds,
+      relatedProducts: this.selectedProducts,
+      files: this.files,
+      video: this.videoFile,
+      thumbFilename: this.thumbnailFilename,
+      thumbFilestring: this.thumbnailImage
     }
     return data
   }
@@ -596,10 +629,27 @@ export class AddProductComponent implements OnInit {
     if (payload) {
       this.ProductHeadService.addProductHead(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          this.headAdded = true
+          this.producthhead = res?.result
           this.toastr.success(res?.message)
           this.productHeadId = res?.result?.prodid
+          if (this.producthhead) {
+            this.categoryService.getSubCategoriesbyId(this.producthhead?.parentCategory).subscribe((res: any) => {
+              if (res?.errorCode == 0) {
+                this.subcategories = res?.result
+              }
+            })
+
+            this.AttributeService.getAttributeByCategory(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
+              if (res?.errorCode == 0) {
+                this.attributes = res?.result
+                this.cdr.markForCheck()
+              }
+            })
+          }
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+          this.headAdded = true
+          this.showProduct = true
+          this.cdr.markForCheck()
         } else {
           this.toastr.error(res?.message)
         }
@@ -618,9 +668,28 @@ export class AddProductComponent implements OnInit {
       this.ProductHeadService.updateProductHead(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.headAdded = true
+          this.showProduct = true
           this.toastr.success(res?.message)
+          this.producthhead = res?.result
           this.productHeadId = res?.result?.prodid
+          if (this.producthhead) {
+            this.categoryService.getSubCategoriesbyId(this.producthhead?.parentCategory).subscribe((res: any) => {
+              if (res?.errorCode == 0) {
+                this.subcategories = res?.result
+              }
+            })
+
+            this.AttributeService.getAttributeByCategory(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
+              if (res?.errorCode == 0) {
+                this.attributes = res?.result
+                this.cdr.markForCheck()
+              }
+            })
+          }
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+          this.headAdded = true
+          this.showProduct = true
+          this.cdr.markForCheck()
         } else {
           this.toastr.error(res?.message)
         }
@@ -689,16 +758,43 @@ export class AddProductComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.productheadform.get('name')?.setValue(res?.result[0]?.name)
         this.productheadform.get('hsn')?.setValue(res?.result[0]?.hsn)
-        this.productheadform.get('cod')?.setValue(res?.result[0]?.cod)
-        this.productheadform.get('codCharge')?.setValue(res?.result[0]?.codCharge)
-        this.productheadform.get('shippingMethod')?.setValue(res?.result[0]?.shippingMethod)
-        this.productheadform.get('shippingCost')?.setValue(res?.result[0]?.shippingCost)
-        this.productheadform.get('returnable')?.setValue(res?.result[0]?.returnable)
-        this.productheadform.get('returnDays')?.setValue(res?.result[0]?.returnDays)
+        this.productheadform.get('cod')?.setValue(res?.result[0]?.cod?.isPresent)
+        this.productheadform.get('codCharge')?.setValue(res?.result[0]?.cod?.value)
+        this.productheadform.get('shippingMethod')?.setValue(res?.result[0]?.shipping?.method)
+        this.productheadform.get('shippingCost')?.setValue(res?.result[0]?.shipping?.value)
+        this.productheadform.get('returnable')?.setValue(res?.result[0]?.return?.isPresent)
+        this.productheadform.get('returnDays')?.setValue(res?.result[0]?.return?.value)
         this.selectedMainCategory = res?.result[0]?.parentCategory['id']
+        this.producthhead = res?.result[0]
+        this.showMainCategory = true
+        for (let category of this.maincategories) {
+          for (let cat of res?.result[0]?.parentCategory['id']) {
+            if (cat == category?._id) {
+              this.parentCategory.push({
+                name: category?.name,
+                id: category?._id
+              })
+            }
+          }
+        }
         this.selectedDefaultCategory = res?.result[0]?.defaultCategory['id']
         this.selectedBrand = res?.result[0]?.brand
+        this.selectedTax = res?.result[0]?.tax
         this.basicfile = environment.base + "/" + res?.result[0]?.file
+        this.headAdded = true
+        this.showProduct = true
+        this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.subcategories = res?.result
+          }
+        })
+        this.AttributeService.getAttributeByCategory(res?.result[0]?.defaultCategory['refid']).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.attributes = res?.result
+            this.cdr.markForCheck()
+          }
+        })
+        this.cdr.markForCheck()
       }
     })
   }
