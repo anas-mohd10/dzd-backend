@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
+import { CategoryService } from 'src/app/includes/services/category.service';
+import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { VariantProductService } from 'src/app/includes/services/variant.product.service';
 import { environment } from 'src/environments/environment';
@@ -59,14 +61,22 @@ export class ProductCardComponent implements OnInit {
   variantTotalData: any;
   variantCount: any = 0
   prodid: any;
+  categories: any = [];
+
+  showFilter: Boolean = false
+  category: any;
+  inputText: any = 'name';
+  isUpdateModal: Boolean = false
+  sendId: any
 
   constructor(
     private productService: ProductService,
-    private VariantProductService: VariantProductService,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private Router: Router,
-    private ActivatedRoute: ActivatedRoute
+    private ActivatedRoute: ActivatedRoute,
+    private ProductHeadService: ProductHeadService,
+    private CategoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -76,7 +86,7 @@ export class ProductCardComponent implements OnInit {
     })
     this.initForm()
 
-    this.productService.searchProducts(this.productform.value, this.page).subscribe((res: any) => {
+    this.ProductHeadService.searchProductHead(this.productform.value, this.page).subscribe((res: any) => {
       this.products = res?.result?.data
       this.count = this.products.length
       this.totalcount = res?.result?.total_item
@@ -85,6 +95,13 @@ export class ProductCardComponent implements OnInit {
       this.setPages()
       this.cdr.markForCheck();
     });
+
+    this.CategoryService.getCategory().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.categories = res?.result
+        this.cdr.markForCheck();
+      }
+    })
   }
 
   initForm() {
@@ -92,6 +109,7 @@ export class ProductCardComponent implements OnInit {
       name: [''],
       isActive: [''],
       isFeatured: [''],
+      category: ['']
     });
 
     this.variantProductform = this.formBuilder.group({
@@ -120,12 +138,16 @@ export class ProductCardComponent implements OnInit {
     this.productform.get('name')?.setValue('')
     this.productform.get('isActive')?.setValue('')
     this.productform.get('isFeatured')?.setValue('')
+    this.productform.get('category')?.setValue('')
+    this.category = ''
     this.searchProduct()
   }
 
   searchProduct() {
     this.currpage = 1
-    this.productService.searchProducts(this.productform.value, this.page).subscribe((res: any) => {
+    let filters = { ...this.productform.value }
+    filters['category'] = this.category
+    this.ProductHeadService.searchProductHead(filters, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
         this.count = this.products.length
@@ -136,6 +158,10 @@ export class ProductCardComponent implements OnInit {
         this.isData = true
       }
     })
+  }
+
+  selectCategory(id: any) {
+    this.category = id
   }
 
   fetchProduct(page: any, limit: any) {
@@ -183,7 +209,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   getData(data: any, page: any, limit: any) {
-    this.productService.searchProducts(data, page).subscribe((res: any) => {
+    this.ProductHeadService.searchProductHead(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
         this.count = this.products.length
@@ -193,16 +219,26 @@ export class ProductCardComponent implements OnInit {
     this.isNext = true
   }
 
-  //Variants
+  //Variants product
   showVariantProducts(name: any, prodid: any) {
     this.showVariants = !this.showVariants;
     let bodyEl = document.querySelector('body');
     bodyEl?.classList.toggle('overflow-hidden')
     this.variantproduct = name
 
+    let query = { ...this.variantProductform.value }
+    query['product.refid'] = prodid
     this.prodid = prodid
-    this.VariantProductService.searchVariantProducts(prodid, this.page, this.variantProductform.value,).subscribe((res: any) => {
+    this.productService.searchProducts(query, this.page).subscribe((res: any) => {
       this.variantProducts = res?.result?.data
+      for (let _product of this.variantProducts) {
+        const diff = _product?.price?.mrp - _product.price?.offer
+        const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+        const message = {
+          text: `${percentage_off} % off`,
+        }
+        _product['message'] = message
+      }
       this.variantCount = this.variantProducts.length
       this.variantTotalCount = res?.result?.total_item
       this.variantLimit = res?.result?.items_per_page
@@ -236,10 +272,11 @@ export class ProductCardComponent implements OnInit {
   navigateToAdd() {
     let bodyEl = document.querySelector('body');
     bodyEl?.classList.toggle('overflow-hidden')
-    this.Router.navigate([this.appRoute.variantProduct.ADD_VARIANT_PRODUCT], { queryParams: { id: this.prodid } })
+    this.Router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: this.prodid } })
   }
 
   navigateToUpdate(id: any) {
+    this.inputText = "edit"
     let bodyEl = document.querySelector('body');
     bodyEl?.classList.toggle('overflow-hidden')
     this.Router.navigate([this.appRoute.variantProduct.UPDATE_VARIANT_PRODUCT], { queryParams: { id: id } })
@@ -256,4 +293,20 @@ export class ProductCardComponent implements OnInit {
 
   }
 
+  showFilters() {
+    this.showFilter = !this.showFilter
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+  }
+
+  hideFilters() {
+    this.showFilter = !this.showFilter
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+  }
+
+  openModal(id: any) {
+    this.isUpdateModal = true
+    this.sendId = id
+  }
 }

@@ -105,7 +105,7 @@ export class AddProductComponent implements OnInit {
   headAdded: Boolean = false
 
   productHeadId: any
-  basicfile: any
+  basicfile: any = ''
   isUnit: Boolean = false
   producthhead: any
   attributes: any = []
@@ -115,6 +115,8 @@ export class AddProductComponent implements OnInit {
   attributesId: any = []
   showMedia: Boolean = false
   showProduct: Boolean = false
+  slug: any;
+  productheadfile: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -147,13 +149,12 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
-    let slug = this.route.snapshot.queryParams.id || ''
-
+    this.slug = this.route.snapshot.queryParams.id || ''
     this.categoryService.getMainCategories().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.maincategories = res?.result
-        if (slug != '') {
-          this.getProductHead(slug)
+        if (this.slug != '') {
+          this.getProductHead(this.slug)
         }
         this.cdr.markForCheck()
       }
@@ -202,6 +203,8 @@ export class AddProductComponent implements OnInit {
       returnDays: [''],
       shippingMethod: ['Unpaid', Validators.required],
       shippingCost: [''],
+      isActive: ['true', Validators.required],
+      isArchive: ['false', Validators.required],
     })
 
     this.productform.get('background')?.setValue(AppSettings.BACKGROUND)
@@ -262,7 +265,8 @@ export class AddProductComponent implements OnInit {
         if (_cat?._id == cat) {
           this.parentCategory.push({
             id: _cat?._id,
-            name: _cat?.name
+            name: _cat?.name,
+            refid: _cat?.catid
           })
         }
       }
@@ -272,6 +276,14 @@ export class AddProductComponent implements OnInit {
     } else {
       this.selectedDefaultCategory = ''
       this.showMainCategory = false
+    }
+    for (let cat of this.parentCategory) {
+      this.categoryService.getSubCategoriesbyId(this.parentCategory[0]).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.subcategories = [...res?.result]
+          this.cdr.markForCheck()
+        }
+      })
     }
   }
 
@@ -527,7 +539,9 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  onSubmitAddMore() { }
+  onSubmitAddMore() {
+    this.productform.reset()
+  }
 
   updateProduct() { }
 
@@ -618,7 +632,28 @@ export class AddProductComponent implements OnInit {
     return data
   }
 
-  //----- Product head management -----
+  //<----- Product head management ----->
+  goToNextTab(e: any) {
+    switch (e) {
+      case 'product':
+        this.showProduct = true
+        this.showMedia = false
+        this.headAdded = true
+        window.scrollTo(0, 0);
+        break
+      case 'media':
+        this.showProduct = false
+        this.showMedia = true
+        this.headAdded = true
+        window.scrollTo(0, 0);
+        break
+    }
+  }
+
+  goToPreviousTab() {
+
+  }
+
   addHead() {
     if (!this.productheadform.valid) {
       this.toastr.error('Validation failed')
@@ -632,6 +667,8 @@ export class AddProductComponent implements OnInit {
           this.producthhead = res?.result
           this.toastr.success(res?.message)
           this.productHeadId = res?.result?.prodid
+          this.basicImage = ''
+          this.loadBasicImage = false
           if (this.producthhead) {
             this.categoryService.getSubCategoriesbyId(this.producthhead?.parentCategory).subscribe((res: any) => {
               if (res?.errorCode == 0) {
@@ -646,9 +683,9 @@ export class AddProductComponent implements OnInit {
               }
             })
           }
+
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
-          this.headAdded = true
-          this.showProduct = true
+          this.getProductHead(res?.result?.prodid)
           this.cdr.markForCheck()
         } else {
           this.toastr.error(res?.message)
@@ -667,8 +704,6 @@ export class AddProductComponent implements OnInit {
     if (payload) {
       this.ProductHeadService.updateProductHead(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          this.headAdded = true
-          this.showProduct = true
           this.toastr.success(res?.message)
           this.producthhead = res?.result
           this.productHeadId = res?.result?.prodid
@@ -687,8 +722,6 @@ export class AddProductComponent implements OnInit {
             })
           }
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
-          this.headAdded = true
-          this.showProduct = true
           this.cdr.markForCheck()
         } else {
           this.toastr.error(res?.message)
@@ -719,7 +752,7 @@ export class AddProductComponent implements OnInit {
         name: this.basicfilename
       }
     } else {
-      file = this.basicfile
+      file = this.productheadfile
     }
 
     let data = {
@@ -727,6 +760,8 @@ export class AddProductComponent implements OnInit {
       hsn: this.productheadform.get('hsn')?.value,
       tax: this.selectedTax,
       brand: this.selectedBrand,
+      isActive: this.productheadform.get('isActive')?.value,
+      isArchive: this.productheadform.get('isArchive')?.value,
       parentCategory: {
         id: this.selectedMainCategory,
         refid: refids
@@ -735,6 +770,7 @@ export class AddProductComponent implements OnInit {
         id: this.selectedDefaultCategory,
         refid: refid
       },
+      prodid: this.productHeadId,
       cod: {
         isPresent: this.productheadform.get('cod')?.value,
         value: this.productheadform.get('codCharge')?.value
@@ -764,6 +800,8 @@ export class AddProductComponent implements OnInit {
         this.productheadform.get('shippingCost')?.setValue(res?.result[0]?.shipping?.value)
         this.productheadform.get('returnable')?.setValue(res?.result[0]?.return?.isPresent)
         this.productheadform.get('returnDays')?.setValue(res?.result[0]?.return?.value)
+        this.productheadform.get('isActive')?.setValue(res?.result[0]?.isActive)
+        this.productheadform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
         this.selectedMainCategory = res?.result[0]?.parentCategory['id']
         this.producthhead = res?.result[0]
         this.showMainCategory = true
@@ -781,8 +819,7 @@ export class AddProductComponent implements OnInit {
         this.selectedBrand = res?.result[0]?.brand
         this.selectedTax = res?.result[0]?.tax
         this.basicfile = environment.base + "/" + res?.result[0]?.file
-        this.headAdded = true
-        this.showProduct = true
+        this.productheadfile = res?.result[0]?.file
         this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.subcategories = res?.result

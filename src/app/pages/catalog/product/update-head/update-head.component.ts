@@ -1,0 +1,297 @@
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ToastrService } from 'ngx-toastr';
+import { appRoutes } from 'src/app/config/routes';
+import { BrandService } from 'src/app/includes/services/brand.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
+import { ProductHeadService } from 'src/app/includes/services/product.head.service';
+import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
+import { environment } from 'src/environments/environment.prod';
+
+@Component({
+  selector: 'app-update-head',
+  templateUrl: './update-head.component.html',
+  styleUrls: ['./update-head.component.scss']
+})
+export class UpdateHeadComponent implements OnInit {
+  @Input() prodid: string;
+  productheadform: FormGroup
+  basicdetails: any = []
+  returnValue: string;
+  isReturn: boolean;
+  isShipping: boolean;
+  method: any;
+  cod: string;
+  isCod: boolean;
+  parentCategory: any = [];
+  selectedMainCategory: any = [];
+  maincategories: any = [];
+  showMainCategory: boolean;
+  selectedDefaultCategory: string;
+  subcategories: any[];
+  isSubmitted: boolean = false;
+  selectedTax: any
+  selectedBrand: any
+  basicImage: string | null | undefined;
+  loadBasicImage: boolean;
+  filebasicdata: File;
+  basicfilename: string;
+  imageBasicChangedEvent: any;
+  appRoute = appRoutes
+  basicfile: any = '';
+  brandData: any;
+  taxClassData: any;
+  basicrawfile: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private ProductHeadService: ProductHeadService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private CategoryService: CategoryService,
+    private ToastrService: ToastrService,
+    private BrandService: BrandService,
+    private TaxClassesService: TaxClassesService,
+    private Router: Router
+  ) { }
+
+  get hf() {
+    return this.productheadform.controls;
+  }
+
+  ngOnInit(): void {
+    this.initForm()
+
+    this.BrandService.getActiveBrands().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.brandData = res?.result;
+        this.ChangeDetectorRef.markForCheck()
+      }
+    });
+
+    this.CategoryService.getMainCategories().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.maincategories = res?.result
+        this.getProductHead()
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+
+    this.TaxClassesService.getTaxClasses().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.taxClassData = res?.result;
+        this.ChangeDetectorRef.markForCheck()
+      }
+    });
+  }
+
+  getProductHead() {
+    this.ProductHeadService.getproductHead(this.prodid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.basicdetails = res?.result[0]
+        this.basicrawfile = this.basicdetails?.file
+        this.basicfile = environment.base + "/" + this.basicdetails?.file
+        this.selectedBrand = this.basicdetails?.brand
+        this.selectedTax = this.basicdetails?.tax
+        this.selectedMainCategory = this.basicdetails?.parentCategory?.id
+        this.selectedDefaultCategory = this.basicdetails?.defaultCategory?.id
+        this.productheadform.get('name')?.setValue(this.basicdetails?.name)
+        this.productheadform.get('hsn')?.setValue(this.basicdetails?.hsn)
+        this.productheadform.get('cod')?.setValue(this.basicdetails?.cod?.isPresent)
+        this.productheadform.get('codCharge')?.setValue(this.basicdetails?.cod?.value)
+        this.productheadform.get('shippingMethod')?.setValue(this.basicdetails?.shipping?.method)
+        this.productheadform.get('shippingCost')?.setValue(this.basicdetails?.shipping?.value)
+        this.productheadform.get('returnable')?.setValue(this.basicdetails?.return?.isPresent)
+        this.productheadform.get('returnDays')?.setValue(this.basicdetails?.return?.value)
+        for (let category of this.maincategories) {
+          for (let cat of this.selectedMainCategory) {
+            if (cat == category?._id) {
+              this.parentCategory.push({ name: category?.name, id: category?._id })
+            }
+          }
+        }
+        this.showMainCategory = true
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  initForm() {
+    this.productheadform = this.formBuilder.group({
+      name: ['', Validators.required],
+      hsn: ['', Validators.required],
+      tax: [''],
+      cod: ['false', Validators.required],
+      codCharge: [''],
+      returnable: ['false', Validators.required],
+      returnDays: [''],
+      shippingMethod: ['Unpaid', Validators.required],
+      shippingCost: [''],
+    })
+  }
+
+  checkReturnable(event: any) {
+    this.returnValue = event.value;
+    if (this.returnValue == 'true') {
+      this.isReturn = true;
+    }
+    if (this.returnValue == 'false') {
+      this.isReturn = false;
+    }
+  }
+
+  checkShippingMethod(event: any) {
+    this.method = event.value;
+    if (this.method === 'Paid') {
+      this.isShipping = true;
+    }
+    if (this.method == 'Unpaid' || this.method == 'External') {
+      this.isShipping = false;
+    }
+  }
+
+  checkCod(event: any) {
+    this.cod = event.value;
+    if (this.cod == 'true') {
+      this.isCod = true;
+    }
+    if (this.cod == 'false') {
+      this.isCod = false;
+    }
+  }
+
+  mainCategory() {
+    this.parentCategory = []
+    for (let _cat of this.maincategories) {
+      for (let cat of this.selectedMainCategory) {
+        if (_cat?._id == cat) {
+          this.parentCategory.push({ id: _cat?._id, name: _cat?.name, refid: _cat?.catid })
+        }
+      }
+    }
+
+    if (this.parentCategory.length > 0) {
+      this.showMainCategory = true
+    } else {
+      this.selectedDefaultCategory = ''
+      this.showMainCategory = false
+    }
+
+    for (let cat of this.parentCategory) {
+      this.CategoryService.getSubCategoriesbyId(this.parentCategory[0]).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.subcategories = [...res?.result]
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }
+  }
+
+  handleInputBasicChange(event: any) {
+    this.filebasicdata = <File>event.target.files[0];
+    this.basicfilename = this.filebasicdata.name
+    this.imageBasicChangedEvent = event;
+    this.loadBasicImage = true
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  imageBasicCropped(event: ImageCroppedEvent) {
+    setTimeout(() => {
+      this.basicImage = event.base64;
+    }, 800)
+  }
+
+  basicImageLoaded() {
+    // show cropper
+  }
+
+  cropperBasicReady() {
+    // cropper ready
+  }
+
+  loadBasicImageFailed() {
+    // show message
+  }
+
+  removeBasicImage() {
+    this.basicImage = ''
+    this.loadBasicImage = false
+  }
+
+  hideEditModal() { }
+
+  onSubmit() {
+    if (!this.productheadform.valid) {
+      this.ToastrService.error('Validation failed')
+      return
+    }
+
+    const payload = this.createHeadPayload()
+    if (payload) {
+      this.ProductHeadService.updateProductHead(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          document.location.reload()
+        }
+      })
+    }
+  }
+
+  createHeadPayload() {
+    let refids = []
+    let refid = ''
+    let file: any
+
+    for (let category of this.maincategories) {
+      for (let _cat of this.selectedMainCategory) {
+        if (category?._id == _cat) {
+          refids.push(category?.catid)
+        }
+        if (this.selectedDefaultCategory == category?._id) {
+          refid = category?.catid
+        }
+      }
+    }
+
+    if (this.basicfilename != '' && this.basicImage) {
+      file = {
+        file: this.basicImage,
+        name: this.basicfilename
+      }
+    } else {
+      file = this.basicrawfile
+    }
+
+    let data = {
+      name: this.productheadform.get('name')?.value,
+      hsn: this.productheadform.get('hsn')?.value,
+      tax: this.selectedTax,
+      brand: this.selectedBrand,
+      parentCategory: {
+        id: this.selectedMainCategory,
+        refid: refids
+      },
+      defaultCategory: {
+        id: this.selectedDefaultCategory,
+        refid: refid
+      },
+      prodid: this.basicdetails?.prodid,
+      cod: {
+        isPresent: this.productheadform.get('cod')?.value,
+        value: this.productheadform.get('codCharge')?.value
+      },
+      shipping: {
+        method: this.productheadform.get('shippingMethod')?.value,
+        value: this.productheadform.get('shippingCost')?.value
+      },
+      return: {
+        isPresent: this.productheadform.get('returnable')?.value,
+        value: this.productheadform.get('returnDays')?.value
+      },
+      file: file
+    }
+
+    return data
+  }
+}

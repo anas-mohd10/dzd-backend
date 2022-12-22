@@ -29,10 +29,11 @@ import { ArchivedCategoryComponent } from './pages/catalog/category/archived-cat
 import { ArchivedProductComponent } from './pages/catalog/product/archived-product/archived-product.component';
 import { ArchivedCollectionComponent } from './pages/catalog/collection/archived-collection/archived-collection.component';
 import { ProductSuccessComponent } from './pages/catalog/product/product-success/product-success.component';
+import { UpdateHeadComponent } from './pages/catalog/product/update-head/update-head.component';
 
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent],
   imports: [
     DataTablesModule,
     BrowserModule,

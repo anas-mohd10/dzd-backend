@@ -16,8 +16,18 @@ export class ProductHeadService {
     return this.http.post(`${url}`, data);
   }
 
+  searchProductHead(data: any, page: any) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.search_product_head + "?page=" + page);
+    return this.http.post(`${url}`, data);
+  }
+
   getproductHead(id: any) {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head + "?id=" + id);
+    return this.http.get(`${url}`);
+  }
+
+  getAllProductHead() {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_heads);
     return this.http.get(`${url}`);
   }
 

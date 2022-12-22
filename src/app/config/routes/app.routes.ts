@@ -71,7 +71,7 @@ export const appRoutes = {
   variantProduct: {
     ADD_VARIANT_PRODUCT: `${app}${variantProductRoute}/add`,
     VARIANT_PRODUCT_LIST: `${app}${variantProductRoute}`,
-    UPDATE_VARIANT_PRODUCT: `${app}${variantProductRoute}/update`
+    UPDATE_VARIANT_PRODUCT: `${app}${variantProductRoute}/update`,
   },
   collection: {
     ADD_COLLECTION: `${app}${collectionRoute}/add`,

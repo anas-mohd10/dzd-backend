@@ -20,78 +20,38 @@
          </div>
       </div>
    </div>
-   <hr class="horizontal-line">
-   <div class="product-form-container">
-      <form [formGroup]="productform">
-         <div class="col-12 row" style="display: flex; align-items: flex-end;">
-            <div class="search-input col-sm-4">
-               <label class="fs-5">Search</label>
-               <input type="text" placeholder="Search for products here..." class="form-control fs-5"
-                  formControlName="name" (ngModelChange)="searchProduct()">
-            </div>
-            <div class="search-status col-sm-2">
-               <label class="fs-5">Status</label>
-               <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchProduct()">
-                  <option value="" disabled>Select an option</option>
-                  <option value=true>Active</option>
-                  <option value=false>Inactive</option>
-               </select>
-            </div>
-            <div class="search-featured col-sm-2">
-               <label class="fs-5 form-title">Featured</label>
-               <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchProduct()">
-                  <option value="" disabled>Select an option</option>
-                  <option value=true>Featured</option>
-                  <option value=false>Non featured</option>
-               </select>
-            </div>
-            <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
-                  style="outline: none; border: none;">Clear</button>
-            </div>
-         </div>
-      </form>
-   </div>
-   <hr class="horizontal-line">
    <div class="col-12 d-flex justify-content-between">
       <div class="total-count-container col-sm-3 bg-dark">
          <h4 class="text-white">Total {{totalcount ? totalcount : 0}} products</h4>
       </div>
-      <div>
+      <div class="left-buttons">
          <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
-            routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">Archived Products</button>
+            routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
+            Archived Products
+         </button>
+         <button class="btn btn-secondary cursor-pointer fs-5" style="margin: 0 0 0 10px;" (click)="showFilters()"><i
+               class="bi bi-sort-up" style="font-size: 1.6rem;"></i></button>
       </div>
    </div>
+
    <div class="product-card-container view-container col-12">
       <ng-container *ngFor="let product of products">
          <div class="col-sm-3">
             <div class="product-card card-hover">
-               <div class="product-type">
-                  {{product?.isSingle ? 'Single' : 'Configurable'}}
-               </div>
-               <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+               <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" />
                </div>
                <div class="product-details">
                   <div class="product-brand">{{product?.brand?.name}}</div>
                   <div class="product-name fs-3">{{product?.name}}</div>
-                  <div class="product-price">
-                     <div class="product-offerprice" *ngIf="product?.isSingle">Rs. {{product?.offerPrice}}</div>
-                     <div class="product-mrpprice" *ngIf="product?.isSingle"
-                        [ngClass]="{'strike-price': product?.mrpPrice > product?.offerPrice}">Rs. {{product?.mrpPrice}}
-                     </div>
+                  <div class="product-status-{{product?.isActive}}">
+                     {{product?.isActive ? 'Active' : 'Inactive'}}
                   </div>
-                  <div class="product-stock" *ngIf="product?.isSingle">{{product?.stock}} products left</div>
-                  <div class="product-delivery" *ngIf="product?.isSingle">{{product?.shippingMethod}} Shipping</div>
                   <div class="product-card-bottom">
-                     <div class="product-status-{{product?.isActive}}">
-                        {{product?.isActive ? 'Active' : 'Inactive'}}
-                     </div>
-                     <div class="view-variant-button" *ngIf="!product?.isSingle">
-                        <button (click)="showVariantProducts(product?.name, product?.prodid)">View Variants</button>
+                     <div class="view-variant-button">
+                        <button (click)="showVariantProducts(product?.name, product?.prodid)">View Products</button>
                      </div>
                      <div class="card-edit-btn">
-                        <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
-                           [queryParams]="{ product: product?.prodid }" class="fs-5 cursor-pointer text-darker">
+                        <button (click)="openModal(product?.prodid)" class="fs-5 cursor-pointer text-darker">
                            Edit
                         </button>
                      </div>
@@ -107,6 +67,7 @@
          </div>
       </ng-container>
    </div>
+
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
@@ -143,11 +104,11 @@
 <div class="variant-products-container" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
    <div class="variant-products-header">
       <div class="variant-products-header-left">
-         <span class="text-primary">{{variantproduct}}</span> Variant Products
+         Products under <span>{{variantproduct}}</span> product head
       </div>
       <div class="variant-products-header-right">
          <div class="close-button" (click)="hideVariantProducts()">
-            <i class="bi bi-x-circle"></i>
+            <i class="bi bi-x-lg"></i>
          </div>
       </div>
    </div>
@@ -190,32 +151,38 @@
       <div class="total-count-buttons  d-flex justify-content-between">
          <div>
             <button class="btn btn-primary fs-5" (click)="navigateToAdd()" style="width: 200px; margin-right: 20px;">
-               Add Variants
+               Add Products
             </button>
          </div>
       </div>
    </div>
-   <div class="variant-product-result-container">
+   <div class="variant-product-result-container row">
       <ng-container *ngFor="let product of variantProducts">
          <div class="col-sm-3">
             <div class="product-card card-hover">
                <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
                </div>
                <div class="product-details">
+                  <div class="product-status-{{product?.isActive}}">
+                     {{product?.isActive ? 'Active' : 'Inactive'}}
+                  </div>
+                  <div class="product-offer">
+                     {{product?.message?.text}}
+                  </div>
                   <div class="product-brand">{{product?.brand?.name}}</div>
                   <div class="product-name fs-3">{{product?.name}}</div>
                   <div class="product-price">
-                     <div class="product-offerprice">Rs. {{product?.offerPrice}}</div>
+                     <div class="product-offerprice">Rs. {{product?.price?.offer}}</div>
                      <div class="product-mrpprice"
-                        [ngClass]="{'strike-price': product?.mrpPrice > product?.offerPrice}">
-                        Rs. {{product?.mrpPrice}}</div>
+                        [ngClass]="{'strike-price': product?.price?.mrp > product?.price?.offer}">
+                        Rs. {{product?.price?.mrp}}</div>
+                  </div>
+                  <div class="product-rating">
+                     {{product?.rating}} <i class="bi bi-star-fill"></i>
                   </div>
                   <div class="product-stock">{{product?.stock}} products left</div>
-                  <div class="product-delivery">{{product?.shippingMethod}} Shipping</div>
+                  <div class="product-delivery">{{product?.product?.id?.shipping?.method}} Shipping</div>
                   <div class="product-card-bottom">
-                     <div class="product-status-{{product?.isActive}}">
-                        {{product?.isActive ? 'Active' : 'Inactive'}}
-                     </div>
                      <div class="card-edit-btn">
                         <button (click)="navigateToUpdate(product?.prodid)" class="fs-5 cursor-pointer text-darker">
                            Edit
@@ -231,10 +198,79 @@
             <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
             <h2>Sorry, we haven't found any data</h2>
             <button class="btn btn-primary fs-5" (click)="navigateToAdd()">
-               Add Variants
+               Add Products
             </button>
          </div>
       </ng-container>
    </div>
 </div>
 <!-- Variant products list container end-->
+
+<div class="filters-overlay" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }"></div>
+<div class="filters-container" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }">
+   <div class="filters-head">
+      <div class="filters-container-title">Filters </div>
+      <div class="filters-close-button">
+         <div class="close-button" (click)="hideFilters()">
+            <i class="bi bi-x-lg"></i>
+         </div>
+      </div>
+   </div>
+   <div class="filters">
+      <div class="product-form-container">
+         <form [formGroup]="productform">
+            <div class="col-12 row" style="display: flex; flex-direction: column;">
+               <div class="search-input col-12">
+                  <label class="fs-5">Search</label>
+                  <input type="text" placeholder="Search for products here..." class="form-control fs-5"
+                     formControlName="name" (ngModelChange)="searchProduct()">
+               </div>
+               <div class="search-category col-12">
+                  <label class="fs-5">Category</label>
+                  <div class="category-checkbox-container">
+                     <ng-container *ngFor="let category of categories">
+                        <div class="category-checkbox">
+                           <div class="form-check">
+                              <input type="radio" name="category_radio" id="" class="form-check-input"
+                                 (ngModelChange)="searchProduct()" (click)="selectCategory(category?.catid)" formControlName="category" />
+                              <!-- <input class="form-check-input" type="radio" value="" 
+                                 id="flexCheckDefault"
+                                 > -->
+                              <label class="form-check-label" for="flexCheckDefault">
+                                 {{category?.name}}
+                              </label>
+                           </div>
+                        </div>
+                     </ng-container>
+                  </div>
+               </div>
+               <div class="search-status col-12">
+                  <label class="fs-5">Status</label>
+                  <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchProduct()">
+                     <option value="" disabled>Select an option</option>
+                     <option value=true>Active</option>
+                     <option value=false>Inactive</option>
+                  </select>
+               </div>
+               <div class="search-featured col-12">
+                  <label class="fs-5 form-title">Featured</label>
+                  <select name="" id="" class="form-select fs-5" formControlName="isFeatured"
+                     (change)="searchProduct()">
+                     <option value="" disabled>Select an option</option>
+                     <option value=true>Featured</option>
+                     <option value=false>Non featured</option>
+                  </select>
+               </div>
+               <div class="search-submit col-12">
+                  <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+                     style="outline: none; border: none;">Clear Filters</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<ng-container *ngIf="isUpdateModal">
+   <app-update-head [prodid]='sendId'></app-update-head>
+</ng-container>

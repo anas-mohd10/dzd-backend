@@ -24,14 +24,14 @@
     <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
-          <nav>
+          <nav style="pointer-events: none;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link" [ngClass]="{'active': !headAdded}" id="nav-home-tab" data-bs-toggle="tab"
                 data-bs-target="#basic-details" type="button" role="tab" aria-controls="nav-home"
                 aria-selected="true">Basic Details</button>
-              <button class="nav-link" [ngClass]="{'active': headAdded && showProduct}" id="nav-profile-tab"
-                data-bs-toggle="tab" data-bs-target="#product-details" type="button" role="tab"
-                aria-controls="nav-profile" aria-selected="false">Product Details</button>
+              <button class="nav-link" [ngClass]="{'active': showProduct}" id="nav-profile-tab" data-bs-toggle="tab"
+                data-bs-target="#product-details" type="button" role="tab" aria-controls="nav-profile"
+                aria-selected="false">Product Details</button>
               <button class="nav-link" id="nav-contact-tab" [ngClass]="{'active': showMedia}" data-bs-toggle="tab"
                 data-bs-target="#media" type="button" role="tab" aria-controls="nav-contact"
                 aria-selected="false">Product Media</button>
@@ -67,7 +67,7 @@
                   </div>
                   <div class="col-12 col-sm-6 form-group">
                     <!-- Product brand-->
-                    <label class="fs-5 mb-3 required">Brand</label>
+                    <label class="fs-5 mb-3">Brand</label>
                     <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
                       [ngModelOptions]="{standalone: true}" placeholder="Select brand">
                     </ng-select>
@@ -150,6 +150,24 @@
                       </div>
                     </div>
                   </ng-container>
+                  <div class="col-12 col-sm-6 form-group">
+                    <label class="fs-5 mb-3">Active Product?</label>
+                    <select class="form-select" formControlName="isActive"
+                      [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
+                      <option value="Check" disabled>-- Select an option --</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </div>
+                  <div class="col-12 col-sm-6 form-group">
+                    <label class="fs-5 mb-3">Archive Product?</label>
+                    <select class="form-select" formControlName="isArchive"
+                      [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
+                      <option value="Check" disabled>-- Select an option --</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </div>
                   <div class="col-12">
                     <!-- Product image -->
                     <div class="col-12">
@@ -198,15 +216,15 @@
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
-                <button *ngIf="!headAdded" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                <button *ngIf="slug == ''" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
                   (click)="addHead()">Add</button>
-                <button *ngIf="headAdded" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                  (click)="updateHead()">Update</button>
+                <button *ngIf="slug != ''" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                  (click)="goToNextTab('product')">Next</button>
               </div>
             </div>
             <div class="tab-pane fade product-details-container"
-              [ngClass]="{'active': headAdded && showProduct, 'show': headAdded && showProduct}" id="product-details"
-              role="tabpanel" aria-labelledby="nav-profile-tab">
+              [ngClass]="{'active': showProduct, 'show': showProduct}" id="product-details" role="tabpanel"
+              aria-labelledby="nav-profile-tab">
               <form [formGroup]="productform" (keydown.Enter)="$event.preventDefault()">
                 <div class="row">
                   <h2 class="form-title">Product Details</h2>
@@ -275,7 +293,7 @@
                         </ng-container>
                       </div>
                       <ng-container *ngIf="attributes.length == 0">
-                        No attributes found, add attributes <span>here</span>
+                        <div style="font-size: 1.5rem; margin: 20px 0 0 0; font-weight: 600;">No attributes found</div>
                       </ng-container>
                     </div>
                   </div>
@@ -450,6 +468,12 @@
                   <!-- Product style details -->
                 </div>
               </form>
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
+                  (click)="goToPreviousTab()">Back</a>
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                  (click)="goToNextTab('media')">Next</button>
+              </div>
             </div>
             <div class="tab-pane fade product-media-container" [ngClass]="{'active': showMedia, 'show': showMedia}"
               id="media" role="tabpanel" aria-labelledby="nav-contact-tab">
