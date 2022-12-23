@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
@@ -279,7 +279,7 @@ export class ProductCardComponent implements OnInit {
     this.inputText = "edit"
     let bodyEl = document.querySelector('body');
     bodyEl?.classList.toggle('overflow-hidden')
-    this.Router.navigate([this.appRoute.variantProduct.UPDATE_VARIANT_PRODUCT], { queryParams: { id: id } })
+    this.Router.navigate([this.appRoute.product.UPDATE_PRODUCT], { queryParams: { id: id } })
   }
 
   onVariantReload() {

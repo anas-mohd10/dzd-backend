@@ -172,13 +172,16 @@
                   <div class="product-brand">{{product?.brand?.name}}</div>
                   <div class="product-name fs-3">{{product?.name}}</div>
                   <div class="product-price">
-                     <div class="product-offerprice">Rs. {{product?.price?.offer}}</div>
-                     <div class="product-mrpprice"
-                        [ngClass]="{'strike-price': product?.price?.mrp > product?.price?.offer}">
-                        Rs. {{product?.price?.mrp}}</div>
-                  </div>
-                  <div class="product-rating">
-                     {{product?.rating}} <i class="bi bi-star-fill"></i>
+                     <div class="d-flex">
+                        <div class="product-offerprice">Rs. {{product?.price?.offer}}</div>
+                        <div class="product-mrpprice"
+                           [ngClass]="{'strike-price': product?.price?.mrp > product?.price?.offer}">
+                           Rs. {{product?.price?.mrp}}</div>
+
+                     </div>
+                     <div class="product-rating">
+                        {{product?.rating}} <i class="bi bi-star-fill"></i>
+                     </div>
                   </div>
                   <div class="product-stock">{{product?.stock}} products left</div>
                   <div class="product-delivery">{{product?.product?.id?.shipping?.method}} Shipping</div>
@@ -232,10 +235,7 @@
                         <div class="category-checkbox">
                            <div class="form-check">
                               <input type="radio" name="category_radio" id="" class="form-check-input"
-                                 (ngModelChange)="searchProduct()" (click)="selectCategory(category?.catid)" formControlName="category" />
-                              <!-- <input class="form-check-input" type="radio" value="" 
-                                 id="flexCheckDefault"
-                                 > -->
+                                 (ngModelChange)="searchProduct()" (click)="selectCategory(category?.catid)" />
                               <label class="form-check-label" for="flexCheckDefault">
                                  {{category?.name}}
                               </label>

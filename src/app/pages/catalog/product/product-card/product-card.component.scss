@@ -268,6 +268,20 @@
 .variant-product-result-container {
    position: relative;
 
+   .card-edit-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 30%;
+
+      button {
+         background: #0087bd;
+         color: #ffffff;
+         width: 100%;
+         height: 30px;
+      }
+   }
+
    .product-card-container {
       display: flex;
       flex-wrap: wrap;
@@ -277,8 +291,7 @@
    .product-card {
       position: relative;
       margin: 10px 10px 10px 0;
-      height: 460px;
-      padding: 20px;
+      height: 320px;
       background: #ffffff;
       box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
       border-radius: 10px;
@@ -289,7 +302,7 @@
       .product-price {
          display: flex;
          align-items: center;
-         justify-content: start;
+         justify-content: space-between;
 
          .strike-price {
             text-decoration: line-through;
@@ -298,9 +311,8 @@
    }
 
    .product-image {
-      height: 200px;
-      width: 120px;
-      margin: 0 0 20px 0;
+      height: 60%;
+      width: 100%;
    }
 
    .product-image img {
@@ -311,7 +323,11 @@
    }
 
    .product-details {
+      height: 40%;
       width: 100%;
+      background: #f6f6f6;
+      border-radius: 15px 15px 0 0;
+      padding: 10px 20px;
    }
 
    .product-brand {
@@ -322,6 +338,12 @@
    .product-name {
       font-size: 1.2rem;
       font-weight: 600;
+      overflow: hidden;
+      -o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
    }
 
    .product-type {
@@ -366,8 +388,8 @@
       position: absolute;
       right: 0;
       top: 5%;
-      width: 30%;
-      height: 2.5rem;
+      width: 27%;
+      height: 2rem;
       background: #00bdab;
       color: #ffffff;
       padding: 0.3125rem;
@@ -384,8 +406,8 @@
       position: absolute;
       right: 0;
       top: 5%;
-      width: 30%;
-      height: 2.5rem;
+      width: 27%;
+      height: 2rem;
       background: #c64a54;
       color: #ffffff;
       padding: 0.3125rem;
@@ -402,9 +424,9 @@
       position: absolute;
       right: 0;
       font-size: 1.2rem;
-      top: calc(5% + 50px);
-      width: 30%;
-      height: 2.5rem;
+      top: calc(5% + 33px);
+      width: 27%;
+      height: 2rem;
       background: #7962a3;
       color: #ffffff;
       border-radius: 5px 0 0 5px;
@@ -415,7 +437,7 @@
    }
 
    .product-stock {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 500;
    }
 
@@ -446,17 +468,6 @@
          background: #39295b;
          color: #ffffff;
          border-radius: 5px;
-      }
-   }
-
-
-   .card-edit-btn {
-      margin: 10px 0;
-      width: 100%;
-
-      button {
-         width: 100%;
-         height: 40px;
       }
    }
 }

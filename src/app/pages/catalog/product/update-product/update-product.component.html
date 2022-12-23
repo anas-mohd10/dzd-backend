@@ -13,7 +13,7 @@
             <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{ product: productSlug }">
+            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{ product: prodid }">
               {{ editMode ? "Update Product" : "Add Product"
               }}</a>
           </li>
@@ -25,542 +25,403 @@
     <div class="col-sm-12 fs-5">
       <div class="card">
         <div class="card-body">
-          <form [formGroup]="productForm" (keydown.Enter)="$event.preventDefault()">
-            <div class="row archieved-{{productData?.isArchive}}">
-              <div class="col-12">
-                <h5 class="form-title fs-4"><span>Product Details</span></h5>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Product Type</label>
-                  <select class="form-select" formControlName="isSingle" (change)="handleProductType($event.target)"
-                    [ngClass]="{
-                    'is-invalid':
-                    (pf.isSingle.touched || isSubmitted) &&
-                    pf.isSingle.errors?.required
-                  }">
-                    c
-                    <option value="true">Single</option>
-                    <option value="false">Configurable</option>
-                  </select>
-                </div>
-              </div>
+          <nav style="pointer-events: none;">
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link" [ngClass]="{'active': showProduct}" id="nav-profile-tab" data-bs-toggle="tab"
+                data-bs-target="#product-details" type="button" role="tab" aria-controls="nav-profile"
+                aria-selected="false">Product Details</button>
+              <button class="nav-link" id="nav-contact-tab" [ngClass]="{'active': showMedia}" data-bs-toggle="tab"
+                data-bs-target="#media" type="button" role="tab" aria-controls="nav-contact"
+                aria-selected="false">Product Media</button>
+            </div>
+          </nav>
 
-              <!-- Name -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade product-details-container"
+              [ngClass]="{'active': showProduct, 'show': showProduct}" id="product-details" role="tabpanel"
+              aria-labelledby="nav-profile-tab">
+              <form [formGroup]="productform" (keydown.Enter)="$event.preventDefault()">
+                <div class="row">
+                  <h2 class="form-title">Product Details</h2>
+                  <!-- Product name -->
+                  <div class="col-12">
+                    <div class="col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Name</label>
+                      <input type="text" class="form-control fs-5" formControlName="name"
+                        placeholder="Eg. iPhone 14 Pro Max Gold 256GB" [ngClass]="{
                     'is-invalid': (pf.name.touched || isSubmitted) && pf.name.errors?.required}" />
-                </div>
-              </div>
-
-              <!-- Store Keeping Unit -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Store Keeping Unit</label>
-                  <input type="text" class="form-control fs-5" formControlName="sku" [ngClass]="{
-                    'is-invalid': (pf.sku.touched || isSubmitted) && pf.sku.errors?.required}" />
-                </div>
-              </div>
-
-              <!-- HSN Number -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">HSN No.</label>
-                  <input type="text" class="form-control fs-5" formControlName="hsn" [ngClass]="{
-                    'is-invalid':(pf.hsn.touched || isSubmitted) && pf.hsn.errors?.required}" />
-                </div>
-              </div>
-
-              <!-- MRP Price -->
-              <ng-container *ngIf="isSingle">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required">Price (MRP)</label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="mrpPrice" [ngClass]="{
+                    </div>
+                  </div>
+                  <!-- Product name -->
+                  <hr>
+                  <!-- Product price details -->
+                  <div class="row">
+                    <h3 class="form-subtitle">Price Details</h3>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Price (Maximum Retail Price)</label>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text">Rs.</span>
+                        <input type="number" class="form-control" formControlName="mrpPrice" [ngClass]="{
                       'is-invalid':(pf.mrpPrice.touched || isSubmitted) &&pf.mrpPrice.errors?.required}" />
-                      <span class="input-group-text">.00</span>
+                        <span class="input-group-text">.00</span>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Offer Price</label>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text">Rs.</span>
+                        <input type="number" class="form-control" formControlName="offerPrice" />
+                        <span class="input-group-text">.00</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </ng-container>
-
-              <!-- Offer Price -->
-              <ng-container *ngIf="isSingle">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3">Offer Price</label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="offerPrice" />
-                      <span class="input-group-text">.00</span>
+                  <!-- Product price details -->
+                  <hr>
+                  <!-- Product category, attributes details -->
+                  <div class="row">
+                    <h3 class="form-subtitle">Product Category and Attributes Details</h3>
+                    <div class="col-12">
+                      <div class=" col-sm-6 form-group">
+                        <label class="fs-5 mb-3">Product Category</label>
+                        <ng-select [items]="subcategories" bindLabel="name" bindValue="_id"
+                          [(ngModel)]="selectedSubCategory" placeholder="Select product category" [multiple]=true
+                          [ngModelOptions]="{standalone: true}" (change)="mainCategory()">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-12 form-group">
+                      <label class="fs-5 mb-3">Select product Attribute</label>
+                      <div class="attributes-container" *ngIf="attributes.length > 0">
+                        <ng-container *ngFor="let attribute of attributes">
+                          <div class="attribute-card" (click)="selectAttribute(attribute?.id, attribute?.refid)"
+                            [ngClass]="{'attr-selected': attributesRefid.includes(attribute?.refid)}">
+                            <div class="attribute-name">{{attribute?.name}}</div>
+                            <div class="attribute-values">
+                              <ng-container *ngFor="let value of attribute?.values">
+                                <div *ngIf="attribute?.type == 'Text'"
+                                  class="attr-value attr-text bg-primay text-white">{{value?.value}}</div>
+                                <div *ngIf="attribute?.type == 'Color'" class="attr-value attr-color"
+                                  [ngStyle]="{'background': value?.value}"></div>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </div>
+                      <ng-container *ngIf="attributes.length == 0">
+                        <div style="font-size: 1.5rem; margin: 20px 0 0 0; font-weight: 600;">No attributes found</div>
+                      </ng-container>
                     </div>
                   </div>
-                </div>
-              </ng-container>
-
-              <!-- Stock -->
-              <ng-container *ngIf="isSingle">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required">Stock</label>
-                    <input type="number" class="form-control fs-5" formControlName="stock" [ngClass]="{
+                  <!-- Product category, attributes details -->
+                  <hr>
+                  <!-- Product stock, moq details -->
+                  <div class="row">
+                    <h3 class="form-subtitle">Sku, Moq & Stock Details</h3>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Stock Keeping Unit</label>
+                      <input type="number" class="form-control fs-5" formControlName="sku" [ngClass]="{
+                    'is-invalid': (pf.sku.touched || isSubmitted) && pf.sku.errors?.required}" />
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Stock</label>
+                      <input type="number" class="form-control fs-5" formControlName="stock" [ngClass]="{
                     'is-invalid': (pf.stock.touched || isSubmitted) && pf.stock.errors?.required}" />
-                  </div>
-                </div>
-              </ng-container>
-
-              <!-- MOQ -->
-              <ng-container *ngIf="isSingle">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required">Minimum Order Quantity</label>
-                    <input type="text" class="form-control fs-5" formControlName="moq" [ngClass]="{
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Minimum Order Quantity</label>
+                      <input type="number" class="form-control fs-5" formControlName="moq" [ngClass]="{
                     'is-invalid':(pf.moq.touched || isSubmitted) && pf.moq.errors?.required}" />
-                  </div>
-                </div>
-              </ng-container>
-
-              <!-- Stock Warning -->
-              <ng-container *ngIf="isSingle">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3">Stock Warning</label>
-                    <input type="text" class="form-control fs-5" formControlName="stockWarning" />
-                  </div>
-                </div>
-              </ng-container>
-
-              <!-- Category -->
-              <div class="col-12 col-sm-6">
-                <label class="fs-5 mb-3 required">Category</label>
-                <ng-select [items]="categoryData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCategories"
-                  placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}"
-                  [compareWith]="compareFn">
-                </ng-select>
-              </div>
-
-              <!-- Brand -->
-              <div class="col-12 col-sm-6">
-                <label class="fs-5 mb-3 required">Brand</label>
-                <div class="brand-select">
-                  <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
-                    [ngModelOptions]="{standalone: true}" placeholder="Select brand" [compareWith]="compareFn">
-                  </ng-select>
-                </div>
-              </div>
-
-              <!-- Additional Button Text -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Additional Button Text</label>
-                  <input type="text" class="form-control fs-5" formControlName="additionalbutton" />
-                </div>
-              </div>
-
-              <!-- Button Redirect Url -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Button Redirect URL</label>
-                  <input type="text" class="form-control fs-5" formControlName="buttonredireturl" />
-                </div>
-              </div>
-
-              <!-- Shipping Method -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Shipping Method</label>
-                  <select class="form-select" formControlName="shippingMethod"
-                    (change)="checkShippingMethod($event.target)"
-                    [ngClass]="{'is-invalid': (pf.shippingMethod.touched || isSubmitted) && pf.shippingMethod.errors?.required}">
-                    <option value="Paid">Paid Shipping</option>
-                    <option value="Unpaid">Unpaid Shipping</option>
-                    <option value="External">External Shipping Service</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Shipping Cost -->
-              <ng-container *ngIf="isShipping">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required">Shipping Cost </label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="shippingCost" />
-                      <span class="input-group-text">.00</span>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Stock Warning</label>
+                      <input type="text" class="form-control fs-5" formControlName="stockWarning" />
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Additional Button Text</label>
+                      <input type="text" class="form-control fs-5" formControlName="additionalbutton" />
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Button Redirect URL</label>
+                      <input type="text" class="form-control fs-5" formControlName="buttonredireturl" />
                     </div>
                   </div>
-                </div>
-              </ng-container>
-
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Unit</label>
-                  <select class="form-select" formControlName="unit"
-                    [ngClass]="{'is-invalid': (pf.unit.touched || isSubmitted) && pf.unit.errors?.required}">
-                    <option value="Check" disabled>-- Select an option --</option>
-                    <option value="kg">Kilograms</option>
-                    <option value="gms">Grams</option>
-                    <option value="number">Number of</option>
-                    <option value="pack">Pack of</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Weight -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Value</label>
-                  <input type="text" class="form-control" formControlName="value"
-                    [ngClass]="{'is-invalid': (pf.value.touched || isSubmitted) && pf.value.errors?.required}">
-                </div>
-              </div>
-
-              <!-- Tax Class -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Tax Class</label>
-                  <select class="form-select" formControlName="taxClassId"
-                    [ngClass]="{'is-invalid': (pf.taxClassId.touched || isSubmitted) && pf.taxClassId.errors?.required}">
-                    <option value="example" disabled>-- Select a Tax Class --</option>
-                    <option *ngFor="let taxClass of taxClassData" value="{{ taxClass?._id }}">{{ taxClass?.name }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Search Keywords -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Search Keywords</label>
-                  <input class="form-control fs-5" formControlName="searchKeywords"
-                    (keyup.Enter)="tagInput($event.target)" />
-                  <div class="tag-inputs col-12">
-                    <ng-container *ngFor="let value of valueArray">
-                      <span class="tag-input bg-primary">
-                        <div class="tag-name">{{ value }}</div>
-                        <i class="bi bi-x" (click)="tagRemove(value)"></i>
-                      </span>
-                    </ng-container>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Related Products -->
-              <div class="col-12 col-sm-6">
-                <label class="fs-5 mb-3">Related Products</label>
-                <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
-                  placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}"
-                  [compareWith]="compareFn">
-                </ng-select>
-              </div>
-
-              <!-- Postion -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Position</label>
-                  <input type="text" class="form-control fs-5" formControlName="position" [ngClass]="{
-                    'is-invalid': (pf.position.touched || isSubmitted) && pf.position.errors?.required}" />
-                </div>
-              </div>
-
-              <!-- Featured Product -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Featured Product ?</label>
-                  <select class="form-select" formControlName="isFeatured"
-                    [ngClass]="{'is-invalid': (pf.isFeatured.touched || isSubmitted) && pf.isFeatured.errors?.required}">
-                    <option value="Check" disabled>-- Select an option --</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Featured Product -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Active Product?</label>
-                  <select class="form-select" formControlName="isActive"
-                    [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
-                    <option value="Check" disabled>-- Select an option --</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Archive Product?</label>
-                  <select class="form-select" formControlName="isArchive"
-                    [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
-                    <option value="Check" disabled>-- Select an option --</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">COD Available ?</label>
-                  <select class="form-select" formControlName="cod" (change)="checkCod($event.target)"
-                    [ngClass]="{ 'is-invalid': (pf.cod.touched || isSubmitted) && pf.cod.errors?.required}">
-                    <option value="Check" disabled>-- Select an option --</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- COD Charge -->
-              <ng-container *ngIf="isCod">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required"> COD Charge </label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">Rs.</span>
-                      <input type="text" class="form-control" formControlName="codCharge" />
-                      <span class="input-group-text">.00</span>
+                  <!-- Product stock, moq details -->
+                  <hr>
+                  <!-- Product stock, moq details -->
+                  <div class="row">
+                    <h3 class="form-subtitle">Unit and Value Details</h3>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Unit</label>
+                      <select class="form-select" formControlName="unit"
+                        [ngClass]="{'is-invalid': (pf.unit.touched || isSubmitted) && pf.unit.errors?.required}"
+                        aria-placeholder="Eg. Kilograms" (change)="getUnit()">
+                        <option value="" disabled>-- Select an unit value --</option>
+                        <option value="kg">Kilograms</option>
+                        <option value="gms">Grams</option>
+                        <option value="number">Number of</option>
+                        <option value="pack">Pack of</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group" *ngIf="isUnit">
+                      <label class="fs-5 mb-3 required">Value</label>
+                      <input type="number" class="form-control" formControlName="value"
+                        [ngClass]="{'is-invalid': (pf.value.touched || isSubmitted) && pf.value.errors?.required}">
                     </div>
                   </div>
-                </div>
-              </ng-container>
-
-              <!-- Returnable Product -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Returnable Product ?</label>
-                  <select class="form-select" formControlName="returnable" (change)="checkReturnable($event.target)"
-                    [ngClass]="{
-                    'is-invalid': (pf.returnable.touched || isSubmitted) && pf.returnable.errors?.required}">
-                    <option value="Check" disabled>-- Select an option --</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Return Days -->
-              <ng-container *ngIf="isReturn">
-                <div class="col-12 col-sm-6">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3 required">Return Days</label>
-                    <input type="text" class="form-control fs-5" formControlName="returnDays" />
-                  </div>
-                </div>
-              </ng-container>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <!-- Description -->
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label class="fs-5 mb-3">Description</label>
-                      <textarea class="form-control fs-5" formControlName="description" style="resize: none"
-                        id="productdescription" rows="3"></textarea>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <!-- Features -->
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label class="fs-5 mb-3">Features</label>
-                      <textarea class="form-control fs-5" formControlName="features" style="resize: none"
-                        id="featureddescription" rows="3"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <h5 class="form-title fs-4"><span>Product Styles</span></h5>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="background" (change)="getColors('background', $event.target)" />
-                  <span>{{background}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="border" (change)="getColors('border', $event.target)" />
-                  <span>{{border}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border Radius</label>
-                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Color</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="color" (change)="getColors('color', $event.target)" />
-                  <span>{{color}}</span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Weight</label>
-                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Size ( in px )</label>
-                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
-                </div>
-              </div>
-
-              <!-- Product image -->
-              <div class="col-12">
-                <div class="col-12">
-                  <h3 class="form-title required"><span>Product Image</span></h3>
-                </div>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="handleInputChange($event)" style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset="">
+                  <!-- Product stock, moq details -->
+                  <hr>
+                  <!-- Product additional details -->
+                  <div class="row">
+                    <h3 class="form-subtitle">Additional Details</h3>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Search Keywords</label>
+                      <input class="form-control fs-5" formControlName="searchKeywords"
+                        (keyup.Enter)="tagInput($event.target)" />
+                      <div class="tag-inputs" *ngIf="searchKeyowrds.length > 0">
+                        <ng-container *ngFor="let value of searchKeyowrds">
+                          <span class="tag-input bg-primary">
+                            <div class="tag-name fs-5">{{ value }}</div>
+                            <i class="bi bi-x" (click)="tagRemove(value)"></i>
+                          </span>
+                        </ng-container>
                       </div>
-                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                          up to 1
-                          file</span></div>
                     </div>
-                  </div>
-                </div>
-                <ng-container *ngIf=" loadImage">
-                  <div class="col-12 preview-section" style="margin-top: 50px;">
-                    <div class="crop-image col-sm-6">
-                      <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                        [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
-                        (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                        (loadImageFailed)="loadImageFailed()">
-                      </image-cropper>
+                    <div class="col-12 col-sm-6">
+                      <label class="fs-5 mb-3">Related Products</label>
+                      <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
+                        placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
+                      </ng-select>
                     </div>
-                    <div class="uploads uploaded col-sm-6">
-                      <div class="close-icon">
-                        <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                      </div>
-                      <img class="preview-img" id="previewImage" [src]="croppedImage">
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Featured Product?</label>
+                      <select class="form-select" formControlName="isFeatured"
+                        [ngClass]="{'is-invalid': (pf.isFeatured.touched || isSubmitted) && pf.isFeatured.errors?.required}">
+                        <option value="Check" disabled>-- Select an option --</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
                     </div>
-                  </div>
-                  <button class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="addImage()">Save</button>
-                </ng-container>
-                <div class="col-12" *ngIf="imageFiles.length != 0">
-                  <div class="products-image-container">
-                    <ng-container *ngFor="let image of imageFiles">
-                      <div class="products-image-card col-sm-3">
-                        <div class="products-image">
-                          <img class="product-preview" [src]="image?.url" alt="" srcset="">
-                        </div>
-                        <div class="products-delete-icon" (click)="removeFile(image?.id)">
-                          <i class="bi bi-x-lg"></i>
-                        </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Active Product?</label>
+                      <select class="form-select" formControlName="isActive"
+                        [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
+                        <option value="Check" disabled>-- Select an option --</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Archive Product?</label>
+                      <select class="form-select" formControlName="isArchive"
+                        [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
+                        <option value="Check" disabled>-- Select an option --</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 col-sm-6 form-group">
+                        <label class="fs-5 mb-3">Description</label>
+                        <textarea class="form-control fs-5" formControlName="description" style="resize: none"
+                          id="productdescription" rows="3"></textarea>
                       </div>
-                    </ng-container>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Product thumbnail image -->
-              <div class="col-12">
-                <div class="col-12">
-                  <h3 class="form-title required"><span>Thumbnail Image</span></h3>
-                </div>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="handleInputThumbnailChange($event)" style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset="">
-                      </div>
-                      <div class="right-text d-flex flex-column">
-                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                        <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
-                          file</span>
+                      <div class="col-12 col-sm-6 form-group">
+                        <label class="fs-5 mb-3">Features</label>
+                        <textarea class="form-control fs-5" formControlName="features" style="resize: none"
+                          id="featureddescription" rows="3"></textarea>
                       </div>
                     </div>
                   </div>
-                  <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{tp_img}}" alt="" style="width: 150px; height: 150px; object-fit: contain;">
-                  </div>
-                </div>
-                <ng-container *ngIf="loadThumbnailImage">
-                  <div class="col-12 preview-section" style="margin-top: 50px;">
-                    <div class="crop-image col-sm-6">
-                      <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="500"
-                        [cropperMaxHeight]="500" format="png" (imageCropped)="imageThumbnailCropped($event)"
-                        (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
-                        (loadImageFailed)="loadThumbnailImageFailed()">
-                      </image-cropper>
-                    </div>
-                    <div class="uploads uploaded col-sm-6">
-                      <div class="close-icon">
-                        <i class="bi bi-x-lg text-white" (click)="removeThumbnailImage()"></i>
+                  <!-- Product additional details -->
+                  <hr>
+                  <!-- Product style details -->
+                  <div class="row">
+                    <h3 class="form-subtitle">Product Style Details</h3>
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Background</label>
+                        <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                          formControlName="background" (change)="getColors('background', $event.target)" />
+                        <span>{{background}}</span>
                       </div>
-                      <img class="preview-img" id="previewImage" [src]="thumbnailImage">
                     </div>
-                  </div>
-                </ng-container>
-              </div>
-
-              <div class="col-12">
-                <div class="col-12">
-                  <h3 class="form-title"><span>Product Video</span></h3>
-                </div>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload">
-                    <input type="file" accept="video/*" class="form-control fs-5" name="image"
-                      (change)="videoUpload($event)" style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset="">
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Border</label>
+                        <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                          formControlName="border" (change)="getColors('border', $event.target)" />
+                        <span>{{border}}</span>
                       </div>
-                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                          up to 1
-                          file</span></div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Border Radius</label>
+                        <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Color</label>
+                        <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                          formControlName="color" (change)="getColors('color', $event.target)" />
+                        <span>{{color}}</span>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Font Weight</label>
+                        <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                      <div class="form-group">
+                        <label class="fs-5 mb-3">Font Size ( in px )</label>
+                        <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+                      </div>
                     </div>
                   </div>
+                  <!-- Product style details -->
                 </div>
-                <div class="video-player-container">
-                  <video *ngIf="video" [src]="video" controls height="200" autoplay></video>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">Cancel</a>
+              </form>
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
+                  (click)="goToPreviousTab()">Back</a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                  (click)="onSubmit()">Update</button>
-                <!-- <button *ngIf="showLoader" class="btn btn-primary btn-sm fs-5" type="button" disabled
-                  style="width: 200px">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  <span class="visually-hidden">Loading...</span>
-                </button> -->
+                  (click)="goToNextTab('media')">Next</button>
               </div>
             </div>
-          </form>
+            <div class="tab-pane fade product-media-container" [ngClass]="{'active': showMedia, 'show': showMedia}"
+              id="media" role="tabpanel" aria-labelledby="nav-contact-tab">
+              <div class="row">
+                <h2 class="form-title">Product Media</h2>
+                <div class="col-12">
+                  <h3 class="form-subtitle required">Product Images</h3>
+                  <div class="form-group col-sm-6">
+                    <div class="image-upload">
+                      <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        (change)="handleInputChange($event)" style="height: 100px;" required>
+                      <div class="image-upload-div">
+                        <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                            srcset="">
+                        </div>
+                        <div class="right-text d-flex flex-column">
+                          <span class="right-text-title fs-4 fw-bolder">
+                            Click to upload
+                          </span>
+                          <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                            Upload up to 1 file
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf=" loadImage">
+                    <div class="col-12 preview-section" style="margin-top: 50px;">
+                      <div class="crop-image col-sm-6">
+                        <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                          [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                          (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                          (loadImageFailed)="loadImageFailed()">
+                        </image-cropper>
+                      </div>
+                      <div class="uploads uploaded col-sm-6">
+                        <div class="close-icon">
+                          <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                        </div>
+                        <img class="preview-img" id="previewImage" [src]="croppedImage">
+                      </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="addImage()">Save</button>
+                  </ng-container>
+                  <div class="col-12" *ngIf="imageFiles.length != 0">
+                    <div class="products-image-container">
+                      <ng-container *ngFor="let image of imageFiles">
+                        <div class="products-image-card col-sm-3">
+                          <div class="products-image">
+                            <img class="product-preview" [src]="image?.url" alt="" srcset="">
+                          </div>
+                          <div class="products-delete-icon" (click)="removeFile(image?.id)">
+                            <i class="bi bi-x-lg"></i>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <h3 class="form-subtitle required">Thumbnail Image</h3>
+                  <div class="form-group col-sm-6">
+                    <div class="image-upload">
+                      <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        (change)="handleInputThumbnailChange($event)" style="height: 100px;" required>
+                      <div class="image-upload-div">
+                        <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                            srcset="">
+                        </div>
+                        <div class="right-text d-flex flex-column">
+                          <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                          <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
+                            file</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="loadThumbnailImage">
+                    <div class="col-12 preview-section" style="margin-top: 50px;">
+                      <div class="crop-image col-sm-6">
+                        <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
+                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="500"
+                          [cropperMaxHeight]="500" format="jpeg" (imageCropped)="imageThumbnailCropped($event)"
+                          (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
+                          (loadImageFailed)="loadThumbnailImageFailed()">
+                        </image-cropper>
+                      </div>
+                      <div class="uploads uploaded col-sm-6">
+                        <div class="close-icon">
+                          <i class="bi bi-x-lg text-white" (click)="removeThumbnailImage()"></i>
+                        </div>
+                        <img class="preview-img" id="previewImage" [src]="thumbnailImage">
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="col-12">
+                  <div class="col-12">
+                    <h3 class="form-subtitle">Product Video</h3>
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <div class="image-upload">
+                      <input type="file" accept="video/*" class="form-control fs-5" name="image"
+                        (change)="videoUpload($event)" style="height: 100px;" required>
+                      <div class="image-upload-div">
+                        <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                            srcset="">
+                        </div>
+                        <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click
+                            to
+                            upload</span> <span class="right-text-note fs-7 text-gray-400"
+                            style="font-weight: 500">Upload
+                            up to 1
+                            file</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="video-player-container">
+                    <video *ngIf="video" [src]="video" controls height="200" autoplay></video>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                  style="width: 200px; margin-right: 20px;">Cancel</a>
+                <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px; margin-right: 20px;"
+                  (click)="onSubmitAddMore()">Add More</button>
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                  (click)="onSubmit()">Add</button>
+              </div>
+            </div>
+          </div>
 
           <div class="restore-container">
             <ng-container *ngIf="isArchived">
