@@ -1,7 +1,7 @@
 <div class="product-page-container" [ngClass]="{'hide-product-page': showVariants}">
    <div class="page-header">
       <div class="page-title">
-         <h1 class="fw-bolder">Products</h1>
+         <h1 class="fw-bolder">Product Head</h1>
       </div>
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
@@ -10,7 +10,7 @@
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
                <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
+                  <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product Head </a>
                </li>
             </ul>
             <button class="btn btn-primary cursor-pointer fs-5" color="primary"
@@ -20,17 +20,15 @@
          </div>
       </div>
    </div>
+
    <div class="col-12 d-flex justify-content-between">
       <div class="total-count-container col-sm-3 bg-dark">
-         <h4 class="text-white">Total {{totalcount ? totalcount : 0}} products</h4>
+         <h4 class="text-white">Total {{totalcount ? totalcount : 0}} product head</h4>
       </div>
       <div class="left-buttons">
-         <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
-            routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
-            Archived Products
+         <button class="btn btn-secondary cursor-pointer fs-5" style="margin: 0 0 0 10px;" (click)="showFilters()">
+            <i class="bi bi-sort-up" style="font-size: 1.6rem;"></i>
          </button>
-         <button class="btn btn-secondary cursor-pointer fs-5" style="margin: 0 0 0 10px;" (click)="showFilters()"><i
-               class="bi bi-sort-up" style="font-size: 1.6rem;"></i></button>
       </div>
    </div>
 
@@ -41,8 +39,11 @@
                <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" />
                </div>
                <div class="product-details">
-                  <div class="product-brand">{{product?.brand?.name}}</div>
-                  <div class="product-name fs-3">{{product?.name}}</div>
+                  <div class="product-details-head">
+                     <div class="product-name fs-3">{{product?.name}}</div>
+                     <div class="product-brand" *ngIf="product?.brand"><img src="{{base}}/{{product?.brand?.file}}"
+                           alt=""></div>
+                  </div>
                   <div class="product-status-{{product?.isActive}}">
                      {{product?.isActive ? 'Active' : 'Inactive'}}
                   </div>
@@ -235,7 +236,7 @@
                         <div class="category-checkbox">
                            <div class="form-check">
                               <input type="radio" name="category_radio" id="" class="form-check-input"
-                                 (ngModelChange)="searchProduct()" (click)="selectCategory(category?.catid)" />
+                                 (click)="selectCategory(category?.catid)" />
                               <label class="form-check-label" for="flexCheckDefault">
                                  {{category?.name}}
                               </label>
@@ -250,15 +251,6 @@
                      <option value="" disabled>Select an option</option>
                      <option value=true>Active</option>
                      <option value=false>Inactive</option>
-                  </select>
-               </div>
-               <div class="search-featured col-12">
-                  <label class="fs-5 form-title">Featured</label>
-                  <select name="" id="" class="form-select fs-5" formControlName="isFeatured"
-                     (change)="searchProduct()">
-                     <option value="" disabled>Select an option</option>
-                     <option value=true>Featured</option>
-                     <option value=false>Non featured</option>
                   </select>
                </div>
                <div class="search-submit col-12">

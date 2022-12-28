@@ -66,18 +66,18 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'product',
+        path: '',
         children: [
           {
             path: '',
             loadChildren: () => import('./catalog/product/product-list/product-list.module').then((m) => m.ProductModule),
           },
           {
-            path: 'add',
+            path: 'product/add',
             loadChildren: () => import('./catalog/product/add-product/add-product.module').then((m) => m.AddProductModule),
           },
           {
-            path: 'update',
+            path: 'product/update',
             loadChildren: () => import('./catalog/product/update-product/update-product.module').then((m) => m.UpdateProductModule),
           },
         ],

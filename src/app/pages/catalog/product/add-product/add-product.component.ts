@@ -117,6 +117,7 @@ export class AddProductComponent implements OnInit {
   showProduct: Boolean = false
   slug: any;
   productheadfile: any;
+  defaultcategories: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -259,31 +260,27 @@ export class AddProductComponent implements OnInit {
   }
 
   mainCategory() {
-    this.parentCategory = []
-    for (let _cat of this.maincategories) {
-      for (let cat of this.selectedMainCategory) {
-        if (_cat?._id == cat) {
-          this.parentCategory.push({
-            id: _cat?._id,
-            name: _cat?.name,
-            refid: _cat?.catid
+    this.categoryService.getSubCategoriesbyId(this.selectedMainCategory).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.defaultcategories = [...res?.result]
+        this.appendMainCategory()
+        this.showMainCategory = true
+        this.cdr.markForCheck()
+      }
+    })
+  }
+
+  appendMainCategory() {
+    for (let _main of this.maincategories) {
+      for (let _sel of this.selectedMainCategory) {
+        if (_main?._id == _sel) {
+          this.defaultcategories.push({
+            _id: _main?._id,
+            name: _main?.name,
+            catid: _main?.catid
           })
         }
       }
-    }
-    if (this.parentCategory.length > 0) {
-      this.showMainCategory = true
-    } else {
-      this.selectedDefaultCategory = ''
-      this.showMainCategory = false
-    }
-    for (let cat of this.parentCategory) {
-      this.categoryService.getSubCategoriesbyId(this.parentCategory[0]).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.subcategories = [...res?.result]
-          this.cdr.markForCheck()
-        }
-      })
     }
   }
 
@@ -506,13 +503,16 @@ export class AddProductComponent implements OnInit {
   selectAttribute(id: any, refid: any) {
     if (this.attributesRefid.includes(refid)) {
       let index = this.attributesRefid.indexOf(refid)
+      let indexId = this.attributesId.indexOf(id)
       if (index >= 0) {
         this.attributesRefid.splice(index, 1)
+        this.attributesId.splice(indexId, 1)
         this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != refid)
       }
     } else {
       this.selectedAttribute.push({ id: id, refid: refid })
       this.attributesRefid.push(refid)
+      this.attributesId.push(id)
     }
   }
 
@@ -632,7 +632,6 @@ export class AddProductComponent implements OnInit {
     return data
   }
 
-  //<----- Product head management ----->
   goToNextTab(e: any) {
     switch (e) {
       case 'product':
@@ -650,8 +649,21 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  goToPreviousTab() {
-
+  goToPreviousTab(e: any) {
+    switch (e) {
+      case 'product':
+        this.showProduct = true
+        this.showMedia = false
+        this.headAdded = true
+        window.scrollTo(0, 0);
+        break
+      case 'basic':
+        this.showProduct = false
+        this.showMedia = false
+        this.headAdded = true
+        window.scrollTo(0, 0);
+        break
+    }
   }
 
   addHead() {
@@ -686,6 +698,7 @@ export class AddProductComponent implements OnInit {
 
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
           this.getProductHead(res?.result?.prodid)
+          this.slug = res?.result?.prodid
           this.cdr.markForCheck()
         } else {
           this.toastr.error(res?.message)
@@ -735,7 +748,7 @@ export class AddProductComponent implements OnInit {
     let refid = ''
     let file: any
 
-    for (let category of this.maincategories) {
+    for (let category of this.defaultcategories) {
       for (let _cat of this.selectedMainCategory) {
         if (category?._id == _cat) {
           refids.push(category?.catid)
@@ -820,7 +833,7 @@ export class AddProductComponent implements OnInit {
         this.selectedTax = res?.result[0]?.tax
         this.basicfile = environment.base + "/" + res?.result[0]?.file
         this.productheadfile = res?.result[0]?.file
-        this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory).subscribe((res: any) => {
+        this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory?.id).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.subcategories = res?.result
           }

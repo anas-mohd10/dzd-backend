@@ -44,6 +44,7 @@ export class UpdateHeadComponent implements OnInit {
   brandData: any;
   taxClassData: any;
   basicrawfile: any;
+  defaultcategories: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -104,14 +105,16 @@ export class UpdateHeadComponent implements OnInit {
         this.productheadform.get('shippingCost')?.setValue(this.basicdetails?.shipping?.value)
         this.productheadform.get('returnable')?.setValue(this.basicdetails?.return?.isPresent)
         this.productheadform.get('returnDays')?.setValue(this.basicdetails?.return?.value)
-        for (let category of this.maincategories) {
-          for (let cat of this.selectedMainCategory) {
-            if (cat == category?._id) {
-              this.parentCategory.push({ name: category?.name, id: category?._id })
-            }
+        this.productheadform.get('isActive')?.setValue(this.basicdetails?.isActive)
+        this.productheadform.get('isArchive')?.setValue(this.basicdetails?.isArchive)
+        this.CategoryService.getSubCategoriesbyId(this.basicdetails?.parentCategory?.id).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.defaultcategories = [...res?.result]
+            this.appendMainCategory()
+            this.showMainCategory = true
+            this.ChangeDetectorRef.markForCheck()
           }
-        }
-        this.showMainCategory = true
+        })
         this.ChangeDetectorRef.markForCheck()
       }
     })
@@ -128,6 +131,8 @@ export class UpdateHeadComponent implements OnInit {
       returnDays: [''],
       shippingMethod: ['Unpaid', Validators.required],
       shippingCost: [''],
+      isActive: ['true', Validators.required],
+      isArchive: ['false', Validators.required],
     })
   }
 
@@ -162,29 +167,27 @@ export class UpdateHeadComponent implements OnInit {
   }
 
   mainCategory() {
-    this.parentCategory = []
-    for (let _cat of this.maincategories) {
-      for (let cat of this.selectedMainCategory) {
-        if (_cat?._id == cat) {
-          this.parentCategory.push({ id: _cat?._id, name: _cat?.name, refid: _cat?.catid })
+    this.CategoryService.getSubCategoriesbyId(this.selectedMainCategory).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.defaultcategories = [...res?.result]
+        this.appendMainCategory()
+        this.showMainCategory = true
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  appendMainCategory() {
+    for (let _main of this.maincategories) {
+      for (let _sel of this.selectedMainCategory) {
+        if (_main?._id == _sel) {
+          this.defaultcategories.push({
+            _id: _main?._id,
+            name: _main?.name,
+            catid: _main?.catid
+          })
         }
       }
-    }
-
-    if (this.parentCategory.length > 0) {
-      this.showMainCategory = true
-    } else {
-      this.selectedDefaultCategory = ''
-      this.showMainCategory = false
-    }
-
-    for (let cat of this.parentCategory) {
-      this.CategoryService.getSubCategoriesbyId(this.parentCategory[0]).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.subcategories = [...res?.result]
-          this.ChangeDetectorRef.markForCheck()
-        }
-      })
     }
   }
 
@@ -219,7 +222,9 @@ export class UpdateHeadComponent implements OnInit {
     this.loadBasicImage = false
   }
 
-  hideEditModal() { }
+  hideEditModal() {
+    // document.location.reload()
+  }
 
   onSubmit() {
     if (!this.productheadform.valid) {
@@ -268,6 +273,8 @@ export class UpdateHeadComponent implements OnInit {
       hsn: this.productheadform.get('hsn')?.value,
       tax: this.selectedTax,
       brand: this.selectedBrand,
+      isActive: this.productheadform.get('isActive')?.value,
+      isArchive: this.productheadform.get('isArchive')?.value,
       parentCategory: {
         id: this.selectedMainCategory,
         refid: refids

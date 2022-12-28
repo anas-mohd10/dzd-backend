@@ -10,10 +10,10 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product Head</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{ product: prodid }">
+            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{ id: prodid }">
               {{ editMode ? "Update Product" : "Add Product"
               }}</a>
           </li>
@@ -85,7 +85,7 @@
                         <label class="fs-5 mb-3">Product Category</label>
                         <ng-select [items]="subcategories" bindLabel="name" bindValue="_id"
                           [(ngModel)]="selectedSubCategory" placeholder="Select product category" [multiple]=true
-                          [ngModelOptions]="{standalone: true}" (change)="mainCategory()">
+                          [ngModelOptions]="{standalone: true}">
                         </ng-select>
                       </div>
                     </div>
@@ -285,7 +285,7 @@
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
-                  (click)="goToPreviousTab()">Back</a>
+                  routerLink="{{appRoute.product.PRODUCT_LIST}}">Cancel</a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
                   (click)="goToNextTab('media')">Next</button>
               </div>
@@ -366,6 +366,9 @@
                         </div>
                       </div>
                     </div>
+                    <div class="uploaded-image col-sm-6 mt-5">
+                      <img src="{{img}}" alt="" style="width: 150px; height: 150px">
+                    </div>
                   </div>
                   <ng-container *ngIf="loadThumbnailImage">
                     <div class="col-12 preview-section" style="margin-top: 50px;">
@@ -406,6 +409,9 @@
                             file</span></div>
                       </div>
                     </div>
+                    <div class="video-player-container">
+                      <video *ngIf="vid" [src]="vid" controls height="200" autoplay></video>
+                    </div>
                   </div>
                   <div class="video-player-container">
                     <video *ngIf="video" [src]="video" controls height="200" autoplay></video>
@@ -413,12 +419,10 @@
                 </div>
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">Cancel</a>
-                <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px; margin-right: 20px;"
-                  (click)="onSubmitAddMore()">Add More</button>
+                <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
+                  (click)="goToPreviousTab('product')">Back</a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                  (click)="onSubmit()">Add</button>
+                  (click)="onSubmit()">Update</button>
               </div>
             </div>
           </div>
@@ -443,7 +447,6 @@
                 <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px"
                   (click)="restoreProduct()">Restore</button>
               </div>
-
             </ng-container>
           </div>
 

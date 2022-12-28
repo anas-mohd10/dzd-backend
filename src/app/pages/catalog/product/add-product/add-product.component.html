@@ -10,7 +10,7 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Products</a>
+            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product Head</a>
           </li>
           <li class="breadcrumb-item active fs-5">
             <a routerLink="{{ appRoute.product.ADD_PRODUCT}}">
@@ -82,7 +82,7 @@
                   </div>
                   <div class="col-12 col-sm-6 form-group" *ngIf="showMainCategory">
                     <label class="fs-5 mb-3 required">Default Category</label>
-                    <ng-select [items]="parentCategory" bindLabel="name" bindValue="id"
+                    <ng-select [items]="defaultcategories" bindLabel="name" bindValue="_id"
                       [(ngModel)]="selectedDefaultCategory" placeholder="Select default category" [multiple]=false
                       [ngModelOptions]="{standalone: true}">
                     </ng-select>
@@ -470,7 +470,7 @@
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
-                  (click)="goToPreviousTab()">Back</a>
+                  (click)="goToPreviousTab('basic')">Back</a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
                   (click)="goToNextTab('media')">Next</button>
               </div>
@@ -598,6 +598,8 @@
                 </div>
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
+                <a (click)="goToPreviousTab('product')" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                  style="width: 200px; margin-right: 20px;">Back</a>
                 <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
                 <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px; margin-right: 20px;"

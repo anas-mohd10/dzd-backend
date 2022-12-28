@@ -21,7 +21,7 @@ import { AttributeService } from 'src/app/includes/services/attribute.service';
 export class UpdateProductComponent implements OnInit {
   productform: FormGroup;
   productheadform: FormGroup
-  task = PageTasks.ADD;
+  task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
@@ -120,6 +120,8 @@ export class UpdateProductComponent implements OnInit {
   isArchived: Boolean = false
   restore: any
   prodid: any
+  img: string;
+  vid: any = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -141,7 +143,7 @@ export class UpdateProductComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this.task = this.route.snapshot.params.task || PageTasks.ADD;
+    this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.prodid = this.route.snapshot.queryParams.id || ''
 
     this.managePage();
@@ -156,10 +158,79 @@ export class UpdateProductComponent implements OnInit {
         this.cdr.markForCheck()
       }
     })
- 
+
     this.productService.getProductbyId({ prodid: this.prodid }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        
+        this.isUnit = true
+
+        this.productform.get('name')?.setValue(res?.result[0]?.name)
+
+        this.productform.get('mrpPrice')?.setValue(res?.result[0]?.price?.mrp)
+        this.productform.get('offerPrice')?.setValue(res?.result[0]?.price?.offer)
+
+        //Product Category and Attributes Details
+        this.categoryService.getSubCategoriesbyId(res?.result[0]?.product?.id?.parentCategory?.id).subscribe((res: any) => {
+          if (res?.errorCode == 0) this.subcategories = res?.result
+          this.cdr.markForCheck()
+        })
+        this.selectedSubCategory = res?.result[0]?.category?.id
+        this.AttributeService.getAttributeByCategory(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
+          if (res?.errorCode == 0) this.attributes = res?.result
+          this.cdr.markForCheck()
+        })
+        for (let attrId of res?.result[0]?.attribute?.id) {
+          this.attributesId.push(attrId)
+        }
+        for (let attrRefid of res?.result[0]?.attribute?.refid) {
+          this.attributesRefid.push(attrRefid)
+        }
+
+        //Sku, Moq & Stock Details
+        this.productform.get('sku')?.setValue(res?.result[0]?.sku)
+        this.productform.get('stock')?.setValue(res?.result[0]?.stock)
+        this.productform.get('moq')?.setValue(res?.result[0]?.moq)
+        this.productform.get('stockWarning')?.setValue(res?.result[0]?.stockWarning)
+        this.productform.get('additionalbutton')?.setValue(res?.result[0]?.details?.additionalbutton)
+        this.productform.get('buttonredireturl')?.setValue(res?.result[0]?.details?.buttonredireturl)
+
+        //Unit and Value Details
+        this.productform.get('unit')?.setValue(res?.result[0]?.unit?.type)
+        this.productform.get('value')?.setValue(res?.result[0]?.unit?.value)
+
+        //Additional Details
+        this.searchKeyowrds = res?.result[0]?.searchKeywords
+        this.selectedProducts = res?.result[0]?.relatedProducts
+        this.productform.get('isFeatured')?.setValue(res?.result[0]?.isFeatured)
+        this.productform.get('isActive')?.setValue(res?.result[0]?.isActive)
+        this.productform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
+        this.productform.get('description')?.setValue(res?.result[0]?.details?.description)
+        this.productform.get('features')?.setValue(res?.result[0]?.details?.features)
+
+        //Product Style Details
+        this.productform.get('background')?.setValue(res?.result[0]?.style?.background)
+        this.productform.get('border')?.setValue(res?.result[0]?.style?.border)
+        this.productform.get('radius')?.setValue(res?.result[0]?.style?.radius)
+        this.productform.get('color')?.setValue(res?.result[0]?.style?.text?.color)
+        this.productform.get('fontSize')?.setValue(res?.result[0]?.style?.text?.fontSize)
+        this.productform.get('fontWeight')?.setValue(res?.result[0]?.style?.text?.fontWeight)
+
+        this.img = environment.base + "/" + res?.result[0]?.thumbnail
+        this.vid = environment.base + "/" + res?.result[0]?.video
+        for (let file of res?.result[0]?.files) {
+          this.imageFiles.push({
+            fileString: '',
+            filename: '',
+            url: environment.base + "/" + file,
+            id: this.imageFiles.length
+          })
+
+          this.files.push({
+            url: file,
+            id: this.files.length
+          })
+        }
+
+        this.cdr.markForCheck()
       }
     })
   }
@@ -176,7 +247,6 @@ export class UpdateProductComponent implements OnInit {
       description: [''],
       features: [''],
       categories: [],
-      brandId: [''],
       additionalbutton: [''],
       buttonredireturl: [''],
       isActive: ['true', Validators.required],
@@ -205,35 +275,6 @@ export class UpdateProductComponent implements OnInit {
     this.productform.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
     this.productform.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
     this.productform.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
-  }
-
-  mainCategory() {
-    this.parentCategory = []
-    for (let _cat of this.maincategories) {
-      for (let cat of this.selectedMainCategory) {
-        if (_cat?._id == cat) {
-          this.parentCategory.push({
-            id: _cat?._id,
-            name: _cat?.name,
-            refid: _cat?.catid
-          })
-        }
-      }
-    }
-    if (this.parentCategory.length > 0) {
-      this.showMainCategory = true
-    } else {
-      this.selectedDefaultCategory = ''
-      this.showMainCategory = false
-    }
-    for (let cat of this.parentCategory) {
-      this.categoryService.getSubCategoriesbyId(this.parentCategory[0]).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.subcategories = [...res?.result]
-          this.cdr.markForCheck()
-        }
-      })
-    }
   }
 
   tagInput(event: any) {
@@ -400,13 +441,16 @@ export class UpdateProductComponent implements OnInit {
   selectAttribute(id: any, refid: any) {
     if (this.attributesRefid.includes(refid)) {
       let index = this.attributesRefid.indexOf(refid)
+      let indexId = this.attributesId.indexOf(id)
       if (index >= 0) {
         this.attributesRefid.splice(index, 1)
+        this.attributesId.splice(indexId, 1)
         this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != refid)
       }
     } else {
       this.selectedAttribute.push({ id: id, refid: refid })
       this.attributesRefid.push(refid)
+      this.attributesId.push(id)
     }
   }
 
@@ -433,13 +477,7 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  onSubmitAddMore() {
-    this.productform.reset()
-  }
-
-  updateProduct() { }
-
-  addProduct() {
+  updateProduct() {
     if (!this.productform.valid) {
       return;
     }
@@ -447,19 +485,21 @@ export class UpdateProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
-      this.toastr.info('Adding product...', '', { timeOut: 2000 })
+      this.toastr.info('Updating product...', '', { timeOut: 2000 })
       setTimeout(() => {
-        this.productService.addProduct(payload).subscribe((res: any) => {
+        this.productService.updateProduct(this.prodid, payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
           } else if (res.errorCode == 0) {
             this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-            this.ngOnInit();
           }
         });
       }, 2000)
     }
+  }
+
+  addProduct() {
   }
 
   createPayload() {
@@ -476,10 +516,6 @@ export class UpdateProductComponent implements OnInit {
       sku: this.productform.get('sku')?.value,
       stock: this.productform.get('stock')?.value,
       moq: this.productform.get('moq')?.value,
-      product: {
-        id: this.producthhead['_id'],
-        refid: this.producthhead['prodid'],
-      },
       price: {
         mrp: this.productform.get('mrpPrice')?.value,
         offer: this.productform.get('offerPrice')?.value,
@@ -521,7 +557,8 @@ export class UpdateProductComponent implements OnInit {
       files: this.files,
       video: this.videoFile,
       thumbFilename: this.thumbnailFilename,
-      thumbFilestring: this.thumbnailImage
+      thumbFilestring: this.thumbnailImage,
+      prodid: this.prodid
     }
     return data
   }
@@ -546,7 +583,20 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  goToPreviousTab() {
-
+  goToPreviousTab(e: any) {
+    switch (e) {
+      case 'product':
+        this.showProduct = true
+        this.showMedia = false
+        this.headAdded = true
+        window.scrollTo(0, 0);
+        break
+      case 'basic':
+        this.showProduct = false
+        this.showMedia = false
+        this.headAdded = true
+        window.scrollTo(0, 0);
+        break
+    }
   }
 }

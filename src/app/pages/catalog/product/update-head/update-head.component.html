@@ -2,7 +2,7 @@
 <div class="update-modal-container">
    <div class="modal-header">
       <div class="modal-title">Edit Basic Details</div>
-      <div class="modal-close-btn" (click)="hideEditModal()"><i class="bi bi-x-lg"></i></div>
+      <!-- <div class="modal-close-btn" (click)="hideEditModal()"><i class="bi bi-x-lg"></i></div> -->
    </div>
    <div class="modal-body">
       <div class="modal-form row col-12">
@@ -48,7 +48,7 @@
                </div>
                <div class="col-12 col-sm-6 form-group" *ngIf="showMainCategory">
                   <label class="fs-5 mb-3 required">Default Category</label>
-                  <ng-select [items]="parentCategory" bindLabel="name" bindValue="id"
+                  <ng-select [items]="defaultcategories" bindLabel="name" bindValue="_id"
                      [(ngModel)]="selectedDefaultCategory" placeholder="Select default category" [multiple]=false
                      [ngModelOptions]="{standalone: true}">
                   </ng-select>
@@ -116,6 +116,24 @@
                      </div>
                   </div>
                </ng-container>
+               <div class="col-12 col-sm-6 form-group">
+                  <label class="fs-5 mb-3">Active Product?</label>
+                  <select class="form-select" formControlName="isActive"
+                     [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
+                     <option value="Check" disabled>-- Select an option --</option>
+                     <option value="true">Yes</option>
+                     <option value="false">No</option>
+                  </select>
+               </div>
+               <div class="col-12 col-sm-6 form-group">
+                  <label class="fs-5 mb-3">Archive Product?</label>
+                  <select class="form-select" formControlName="isArchive"
+                     [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
+                     <option value="Check" disabled>-- Select an option --</option>
+                     <option value="true">Yes</option>
+                     <option value="false">No</option>
+                  </select>
+               </div>
                <div class="col-12">
                   <!-- Product image -->
                   <div class="col-12">
@@ -162,7 +180,7 @@
             </div>
          </form>
          <div class="col-12 d-flex align-items-center justify-content-end">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+            <a (click)="hideEditModal()" class=" btn btn-secondary btn-sm fs-5 text-dark"
                style="width: 200px; margin-right: 20px;">Cancel</a>
             <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
                (click)="onSubmit()">Update</button>

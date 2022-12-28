@@ -6,6 +6,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { ArchivedProductComponent } from '../archived-product/archived-product.component';
 import { ProductSuccessComponent } from '../product-success/product-success.component';
+import { AllProductsComponent } from '../all-products/all-products.component';
 // import { WidgetsModule } from '../../_metronic/partials';
 
 @NgModule({
@@ -15,7 +16,11 @@ import { ProductSuccessComponent } from '../product-success/product-success.comp
     DataTablesModule,
     RouterModule.forChild([
       {
-        path: '',
+        path: 'product',
+        component: AllProductsComponent,
+      },
+      {
+        path: 'product-head',
         component: ProductCardComponent,
       },
       {

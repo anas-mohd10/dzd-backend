@@ -63,7 +63,8 @@ export const appRoutes = {
   },
   product: {
     ADD_PRODUCT: `${app}${productRoute}/add`,
-    PRODUCT_LIST: `${app}${productRoute}`,
+    PRODUCT_LIST: `${app}/product-head`,
+    ALL_PRODUCTS: `${app}${productRoute}`,
     UPDATE_PRODUCT: `${app}${productRoute}/update`,
     ARCHIVED_PRODUCT: `${app}${productRoute}/archive`,
     PRODUCT_SUCCESS: `${app}${productRoute}/success`

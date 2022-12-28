@@ -108,7 +108,6 @@ export class ProductCardComponent implements OnInit {
     this.productform = this.formBuilder.group({
       name: [''],
       isActive: [''],
-      isFeatured: [''],
       category: ['']
     });
 
@@ -147,6 +146,7 @@ export class ProductCardComponent implements OnInit {
     this.currpage = 1
     let filters = { ...this.productform.value }
     filters['category'] = this.category
+    console.log(filters, 'search filters');
     this.ProductHeadService.searchProductHead(filters, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
@@ -162,6 +162,7 @@ export class ProductCardComponent implements OnInit {
 
   selectCategory(id: any) {
     this.category = id
+    this.searchProduct()
   }
 
   fetchProduct(page: any, limit: any) {

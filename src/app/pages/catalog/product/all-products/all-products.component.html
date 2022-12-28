@@ -1,0 +1,140 @@
+<div class="product-page-container">
+   <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder">Products</h1>
+      </div>
+      <div class="row align-items-center">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-5">
+                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+               </li>
+               <li class="breadcrumb-item active fs-5">
+                  <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
+               </li>
+            </ul>
+            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+               routerLink="{{ appRoute.product.ADD_PRODUCT }}" style="width: 200px">
+               Add Product
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-12 d-flex justify-content-between">
+      <div class="total-count-container col-sm-3 bg-dark">
+         <h4 class="text-white">Total {{totalcount ? totalcount : 0}} products</h4>
+      </div>
+      <div class="left-buttons">
+         <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+            routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
+            Archived Products
+         </button>
+         <button class="btn btn-secondary cursor-pointer fs-5" style="margin: 0 0 0 10px;" (click)="showFilters()">
+            <i class="bi bi-sort-up" style="font-size: 1.6rem;"></i>
+         </button>
+      </div>
+   </div>
+</div>
+
+<div class="variant-product-result-container row">
+   <ng-container *ngFor="let product of products">
+      <div class="col-sm-3">
+         <div class="product-card card-hover">
+            <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+            </div>
+            <div class="product-details">
+               <div class="product-status-{{product?.isActive}}">
+                  {{product?.isActive ? 'Active' : 'Inactive'}}
+               </div>
+               <div class="product-offer">
+                  {{product?.message?.text}}
+               </div>
+               <div class="product-brand">{{product?.brand?.name}}</div>
+               <div class="product-name fs-3">{{product?.name}}</div>
+               <div class="product-price">
+                  <div class="d-flex">
+                     <div class="product-offerprice">Rs. {{product?.price?.offer}}</div>
+                     <div class="product-mrpprice"
+                        [ngClass]="{'strike-price': product?.price?.mrp > product?.price?.offer}">
+                        Rs. {{product?.price?.mrp}}</div>
+
+                  </div>
+                  <div class="product-rating">
+                     {{product?.rating}} <i class="bi bi-star-fill"></i>
+                  </div>
+               </div>
+               <div class="product-stock">{{product?.stock}} products left</div>
+               <div class="product-delivery">{{product?.product?.id?.shipping?.method}} Shipping</div>
+               <div class="product-card-bottom">
+                  <div class="card-edit-btn">
+                     <button routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}"
+                        class="fs-5 cursor-pointer text-darker">
+                        Edit
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </ng-container>
+   <ng-container *ngIf="totalcount == 0">
+      <div class="no-data-container">
+         <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
+         <h2>Sorry, we haven't found any data</h2>
+      </div>
+   </ng-container>
+</div>
+
+<div class="filters-overlay" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }"></div>
+<div class="filters-container" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }">
+   <div class="filters-head">
+      <div class="filters-container-title">Filters </div>
+      <div class="filters-close-button">
+         <div class="close-button" (click)="hideFilters()">
+            <i class="bi bi-x-lg"></i>
+         </div>
+      </div>
+   </div>
+   <div class="filters">
+      <div class="product-form-container">
+         <form [formGroup]="productform">
+            <div class="col-12 row" style="display: flex; flex-direction: column;">
+               <div class="search-input col-12">
+                  <label class="fs-5">Search</label>
+                  <input type="text" placeholder="Search for products here..." class="form-control fs-5"
+                     formControlName="name" (ngModelChange)="searchProduct()">
+               </div>
+               <div class="search-category col-12">
+                  <label class="fs-5">Category</label>
+                  <div class="category-checkbox-container">
+                     <ng-container *ngFor="let category of categories">
+                        <div class="category-checkbox">
+                           <div class="form-check">
+                              <input type="radio" name="category_radio" id="" class="form-check-input"
+                                 (click)="selectCategory(category?.catid)" />
+                              <label class="form-check-label" for="flexCheckDefault">
+                                 {{category?.name}}
+                              </label>
+                           </div>
+                        </div>
+                     </ng-container>
+                  </div>
+               </div>
+               <div class="search-status col-12">
+                  <label class="fs-5">Status</label>
+                  <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchProduct()">
+                     <option value="" disabled>Select an option</option>
+                     <option value=true>Active</option>
+                     <option value=false>Inactive</option>
+                  </select>
+               </div>
+               <div class="search-submit col-12">
+                  <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+                     style="outline: none; border: none;">Clear Filters</button>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

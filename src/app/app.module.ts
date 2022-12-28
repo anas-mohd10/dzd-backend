@@ -30,10 +30,11 @@ import { ArchivedProductComponent } from './pages/catalog/product/archived-produ
 import { ArchivedCollectionComponent } from './pages/catalog/collection/archived-collection/archived-collection.component';
 import { ProductSuccessComponent } from './pages/catalog/product/product-success/product-success.component';
 import { UpdateHeadComponent } from './pages/catalog/product/update-head/update-head.component';
+import { AllProductsComponent } from './pages/catalog/product/all-products/all-products.component';
 
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent],
   imports: [
     DataTablesModule,
     BrowserModule,
