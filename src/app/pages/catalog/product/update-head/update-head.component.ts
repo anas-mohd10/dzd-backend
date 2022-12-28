@@ -45,6 +45,7 @@ export class UpdateHeadComponent implements OnInit {
   taxClassData: any;
   basicrawfile: any;
   defaultcategories: any[];
+  isClose: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,6 +57,12 @@ export class UpdateHeadComponent implements OnInit {
     private TaxClassesService: TaxClassesService,
     private Router: Router
   ) { }
+
+  @Output() close = new EventEmitter();
+
+  onAddressTypeChange() {
+    this.close.emit(this.isClose);
+  }
 
   get hf() {
     return this.productheadform.controls;
@@ -223,7 +230,9 @@ export class UpdateHeadComponent implements OnInit {
   }
 
   hideEditModal() {
-    // document.location.reload()
+    console.log("hide edit modal");
+
+    this.close.emit(this.isClose = true);
   }
 
   onSubmit() {

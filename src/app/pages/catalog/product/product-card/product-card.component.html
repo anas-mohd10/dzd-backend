@@ -264,5 +264,5 @@
 </div>
 
 <ng-container *ngIf="isUpdateModal">
-   <app-update-head [prodid]='sendId'></app-update-head>
+   <app-update-head (close)="closeEventHandler($event)" [prodid]='sendId'></app-update-head>
 </ng-container>

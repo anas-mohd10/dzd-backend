@@ -68,6 +68,7 @@ export class ProductCardComponent implements OnInit {
   inputText: any = 'name';
   isUpdateModal: Boolean = false
   sendId: any
+  isClose: any
 
   constructor(
     private productService: ProductService,
@@ -102,6 +103,13 @@ export class ProductCardComponent implements OnInit {
         this.cdr.markForCheck();
       }
     })
+  }
+
+  closeEventHandler($event: any) {
+    console.log($event);
+    this.isUpdateModal = false
+    this.isClose = $event
+    console.log(this.isClose), "close";
   }
 
   initForm() {
