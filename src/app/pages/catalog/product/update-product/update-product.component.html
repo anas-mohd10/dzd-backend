@@ -102,6 +102,9 @@
                                   class="attr-value attr-text bg-primay text-white">{{value?.value}}</div>
                                 <div *ngIf="attribute?.type == 'Color'" class="attr-value attr-color"
                                   [ngStyle]="{'background': value?.value}"></div>
+                                  <div *ngIf="attribute?.type == 'File'">
+                                    <img src="{{base}}/{{value?.value}}" alt="" srcset="" style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
+                                  </div>
                               </ng-container>
                             </div>
                           </div>

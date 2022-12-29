@@ -118,6 +118,7 @@ export class AddProductComponent implements OnInit {
   slug: any;
   productheadfile: any;
   defaultcategories: any = [];
+  base: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -144,6 +145,7 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.base = environment.base
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.managePage();
     this.getBrandDetail();
@@ -816,6 +818,14 @@ export class AddProductComponent implements OnInit {
         this.productheadform.get('isActive')?.setValue(res?.result[0]?.isActive)
         this.productheadform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
         this.selectedMainCategory = res?.result[0]?.parentCategory['id']
+        this.categoryService.getSubCategoriesbyId(this.selectedMainCategory).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.defaultcategories = [...res?.result]
+            this.appendMainCategory()
+            this.showMainCategory = true
+            this.cdr.markForCheck()
+          }
+        })
         this.producthhead = res?.result[0]
         this.showMainCategory = true
         for (let category of this.maincategories) {
@@ -833,11 +843,11 @@ export class AddProductComponent implements OnInit {
         this.selectedTax = res?.result[0]?.tax
         this.basicfile = environment.base + "/" + res?.result[0]?.file
         this.productheadfile = res?.result[0]?.file
-        this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory?.id).subscribe((res: any) => {
-          if (res?.errorCode == 0) {
-            this.subcategories = res?.result
-          }
-        })
+        // this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory?.id).subscribe((res: any) => {
+        //   if (res?.errorCode == 0) {
+        //     this.subcategories = res?.result
+        //   }
+        // })
         this.AttributeService.getAttributeByCategory(res?.result[0]?.defaultCategory['refid']).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.attributes = res?.result

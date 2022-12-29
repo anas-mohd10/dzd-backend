@@ -122,6 +122,7 @@ export class UpdateProductComponent implements OnInit {
   prodid: any
   img: string;
   vid: any = ''
+  base: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -142,7 +143,7 @@ export class UpdateProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
+    this.base = environment.base
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
     this.prodid = this.route.snapshot.queryParams.id || ''
 
@@ -174,6 +175,7 @@ export class UpdateProductComponent implements OnInit {
           this.cdr.markForCheck()
         })
         this.selectedSubCategory = res?.result[0]?.category?.id
+
         this.AttributeService.getAttributeByCategory(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
           if (res?.errorCode == 0) this.attributes = res?.result
           this.cdr.markForCheck()
@@ -600,3 +602,4 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 }
+  
