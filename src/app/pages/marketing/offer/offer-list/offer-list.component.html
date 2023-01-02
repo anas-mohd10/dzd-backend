@@ -85,22 +85,33 @@
     <ng-container *ngFor="let offer of offers">
       <div class="col-sm-6">
         <div class="offer-card card-hover editable-{{offer?.isEditable}}">
-          <div class="offer-details">
-            <div class="offer-image">
-              <img src='{{base}}/{{offer?.file}}' alt="offer image" srcset="" />
-            </div>
-            <div class="flex-1">
-              <div class="offer-name fs-3">{{offer?.name}}</div>
-              <div class="offer-featured-{{offer?.isFeatured}}">
-                <ng-container *ngIf="offer?.isFeatured == true">Featured</ng-container>
-                <ng-container *ngIf="offer?.isFeatured == false">Not Featured</ng-container>
+          <div class="offer-card-body">
+            <div class="offer-details">
+              <div class="inner-offer-details">
+                <div class="offer-image">
+                  <img src='{{base}}/{{offer?.file}}' alt="offer image" srcset="" />
+                </div>
+                <div class="offer-name-details">
+                  <div class="offer-name">{{offer?.name}}</div>
+                  <div class="offer-featured-{{offer?.isFeatured}}">
+                    <ng-container *ngIf="offer?.isFeatured == true">Featured</ng-container>
+                    <ng-container *ngIf="offer?.isFeatured == false">Not Featured</ng-container>
+                  </div>
+                </div>
               </div>
-              <div class="offer-from-date">From : <span>{{offer?.fromDate}}</span></div>
-              <div class="offer-last-date">To : <span>{{offer?.lastDate}}</span></div>
             </div>
-          </div>
-          <div class="flex-21">
-            <div class="offer-status-{{offer?.isActive}}">
+            <div class="offer-card-right">
+              <div class="inner-offer-card-right">
+                <div class="offer-discount">
+                  <span>
+                    <span *ngIf="offer?.type == 'Flat'">₹</span>
+                    {{offer?.value}}
+                  </span>
+                  {{offer?.type}} <span class="discount">Discount</span>
+                </div>
+              </div>
+            </div>
+            <div class="offer-status offer-status-{{offer?.isActive}}">
               <ng-container *ngIf="offer?.isActive == true">Active</ng-container>
               <ng-container *ngIf="offer?.isActive == false">Inactive</ng-container>
             </div>
@@ -109,6 +120,21 @@
                 class="fs-5 cursor-pointer text-darker">
                 Edit
               </button>
+            </div>
+          </div>
+          <div class="offer-date">
+            <div class="offer-from-date">
+              <div class="date-icon">
+                <i class="bi bi-calendar4-range"></i>
+              </div>
+              <span>{{offer?.fromDate}}</span>
+            </div>
+            <i class="bi bi-dot"></i>
+            <div class="offer-last-date">
+              <div class="date-icon">
+                <i class="bi bi-calendar4-range"></i>
+              </div>
+              <span>{{offer?.lastDate}}</span>
             </div>
           </div>
         </div>

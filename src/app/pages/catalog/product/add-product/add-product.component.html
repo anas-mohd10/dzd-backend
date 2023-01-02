@@ -288,7 +288,8 @@
                                 <div *ngIf="attribute?.type == 'Color'" class="attr-value attr-color"
                                   [ngStyle]="{'background': value?.value}"></div>
                                 <div *ngIf="attribute?.type == 'File'">
-                                  <img src="{{base}}/{{value?.value}}" alt="" srcset="" style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
+                                  <img src="{{base}}/{{value?.value}}" alt="" srcset=""
+                                    style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
                                 </div>
                               </ng-container>
                             </div>
@@ -605,9 +606,15 @@
                   style="width: 200px; margin-right: 20px;">Back</a>
                 <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
-                <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px; margin-right: 20px;">Add More</button>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                  (click)="onSubmit()">Add</button>
+                <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px; margin-right: 20px;">Add
+                  More</button>
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="onSubmit()"
+                  *ngIf="!submitting">Add</button>
+                <button class="btn btn-primary btn-sm fs-5" style="width: 200px" type="button" disabled
+                  *ngIf="submitting">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Submitting
+                </button>
               </div>
             </div>
           </div>

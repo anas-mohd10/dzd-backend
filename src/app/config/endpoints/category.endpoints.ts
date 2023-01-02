@@ -11,5 +11,6 @@ export const categoryEndpoints = {
   get_sub_categories: '/sub-categories',
   archive_category: '/categories/archive',
   restore_category: '/categories/restore',
-  get_sub_categories_by_id: '/sub-categories-id'
+  get_sub_categories_by_id: '/sub-categories-id',
+  all_sub_categories: '/all-sub-categories'
 }

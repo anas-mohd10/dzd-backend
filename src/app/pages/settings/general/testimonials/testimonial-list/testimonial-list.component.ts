@@ -1,6 +1,7 @@
-import { ChangeDetectorRef,Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-testimonial-list',
@@ -10,11 +11,13 @@ import { TestimonialService } from 'src/app/includes/services/testimonial.servic
 export class TestimonialListComponent implements OnInit {
   appRoute = appRoutes
   testimonialsData: any
+  base: any;
 
   constructor(private testimonialService: TestimonialService,
-    private cdr:ChangeDetectorRef) { }
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.getTestimonials()
   }
 

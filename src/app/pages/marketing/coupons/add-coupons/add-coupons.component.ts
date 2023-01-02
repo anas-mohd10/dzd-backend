@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ToastrService } from 'ngx-toastr';
-import { PageTasks } from 'src/app/config/constants';
+import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
@@ -89,7 +89,6 @@ export class AddCouponsComponent implements OnInit {
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
       file: [''],
-      maxDiscount: [''],
       minPurchase: [''],
       categories: [],
       products: [],
@@ -105,6 +104,16 @@ export class AddCouponsComponent implements OnInit {
     });
     this.couponForm.get('fromDate')?.setValue(this.from_date)
     this.couponForm.get('lastDate')?.setValue(this.to_date)
+
+    this.couponForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.couponForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.couponForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.couponForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.couponForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.couponForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   get cf() {
@@ -229,13 +238,12 @@ export class AddCouponsComponent implements OnInit {
         code: this.couponForm.get('code')?.value,
         fromDate: this.couponForm.get('fromDate')?.value,
         lastDate: this.couponForm.get('lastDate')?.value,
-        maxDiscount: this.couponForm.get('maxDiscount')?.value,
-        minDiscount: this.couponForm.get('minDiscount')?.value,
+        minPurchase: this.couponForm.get('minPurchase')?.value,
         value: this.couponForm.get('value')?.value,
         type: this.couponForm.get('type')?.value,
-        categories: JSON.stringify(this.categories),
-        products: JSON.stringify(this.products),
-        collections: JSON.stringify(this.collections),
+        categories: this.categories,
+        products: this.products,
+        collections: this.collections,
         filestring: this.croppedImage,
         filename: this.filename,
         isMultiple: this.couponForm.get('isMultiple')?.value,

@@ -9,7 +9,7 @@
 
    .product-card {
       margin: 10px 10px;
-      height: 380px;
+      height: 325px;
       padding: 20px;
       background: #ffffff;
       box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
@@ -43,15 +43,15 @@
 
    .product-image {
       width: 100%;
-      margin: 5px 0 20px 0;
+      // margin: 5px 0 20px 0;
       display: flex;
       align-items: center;
-      justify-content: center;
+      // justify-content: center;
    }
 
    .product-image img {
       height: 100%;
-      width: 75%;
+      width: 60%;
       object-fit: contain;
       border-radius: 10px;
    }
@@ -530,7 +530,7 @@
    top: 0;
    right: 0;
    height: 100%;
-   width: 25.5rem;
+   width: 30rem;
    background: #ffffff;
    z-index: 1000;
    opacity: 0;

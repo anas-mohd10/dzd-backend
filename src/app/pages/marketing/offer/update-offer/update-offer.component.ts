@@ -5,9 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
-import { OfferService } from 'src/app/includes/services/offer.service'; 3
+import { OfferService } from 'src/app/includes/services/offer.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { CollectionService } from 'src/app/includes/services/collection.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
 
 @Component({
   selector: 'app-update-offer',
@@ -39,8 +41,15 @@ export class UpdateOfferComponent implements OnInit {
   offerStarted: boolean = false;
   image: string;
   validDate: boolean = true;
-  productsData: any;
+
+  productsdata: any;
   products: []
+  categoriesdata: any = []
+  categories: any = []
+  collectionsdata: any = []
+  collections: any = []
+  isValidValue: boolean;
+  error_message: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,7 +58,9 @@ export class UpdateOfferComponent implements OnInit {
     private toastr: ToastrService,
     private offerService: OfferService,
     private cdr: ChangeDetectorRef,
-    private productService : ProductService
+    private productService: ProductService,
+    private CategoryService: CategoryService,
+    private CollectionService: CollectionService
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +69,21 @@ export class UpdateOfferComponent implements OnInit {
     this.initForm();
     this.managePage();
     this.getOffer();
-    this.getProducts()
+
+    this.productService.getActiveProduct().subscribe((res: any) => {
+      this.productsdata = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.CategoryService.getActiveCategory().subscribe((res: any) => {
+      this.categoriesdata = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.CollectionService.getActiveCollection().subscribe((res: any) => {
+      this.collectionsdata = res?.result
+      this.cdr.markForCheck()
+    })
   }
 
   initForm() {
@@ -67,7 +92,11 @@ export class UpdateOfferComponent implements OnInit {
       description: [''],
       fromDate: [''],
       lastDate: [''],
-      products:[],
+      categories: [],
+      type: ['', Validators.required],
+      value: ['', Validators.required],
+      products: [],
+      collections: [],
       isFeatured: [''],
       isActive: [''],
       background: [''],
@@ -78,6 +107,11 @@ export class UpdateOfferComponent implements OnInit {
       fontWeight: ['']
     });
   }
+
+  get of() {
+    return this.offerForm.controls;
+  }
+
 
   managePage() {
     switch (this.task) {
@@ -102,12 +136,20 @@ export class UpdateOfferComponent implements OnInit {
     }
   }
 
-  getProducts() {
-    this.productService.getActiveProduct().subscribe((res:any) => {
-      this.productsData = res?.result
-      this.cdr.markForCheck()
-    })
+  validateValue(_val: any) {
+    const type = this.offerForm.get('type')?.value
+    if (type == "%") {
+      if (_val.value <= 100) {
+        this.isValidValue = true
+      } else {
+        this.isValidValue = false
+        this.error_message = 'Invalid value, kindly check and re-enter the value.'
+      }
+    } else {
+      this.isValidValue = true
+    }
   }
+
 
   compareFn(item: any, selected: any) {
     return item._id === selected;
@@ -161,6 +203,8 @@ export class UpdateOfferComponent implements OnInit {
         this.offerForm.get('name')?.setValue(this.offerData.name);
         this.offerForm.get('description')?.setValue(this.offerData.description);
         this.offerForm.get('isActive')?.setValue(this.offerData.isActive);
+        this.offerForm.get('type')?.setValue(this.offerData.type);
+        this.offerForm.get('value')?.setValue(this.offerData.value);
         this.offerForm.get('isFeatured')?.setValue(this.offerData.isFeatured);
 
         const today = new Date().toISOString()
@@ -183,6 +227,8 @@ export class UpdateOfferComponent implements OnInit {
         this.offerForm.get('fontWeight')?.setValue(this.offerData.style.text.fontWeight);
 
         this.products = this.offerData.products
+        this.categories = this.offerData.categories
+        this.collections = this.offerData.collections
         this.color = this.offerData.style.text.color
         this.background = this.offerData.style.background
         this.border = this.offerData.style.border
@@ -242,7 +288,11 @@ export class UpdateOfferComponent implements OnInit {
       description: this.offerForm.get('description')?.value,
       fromDate: this.offerForm.get('fromDate')?.value,
       lastDate: this.offerForm.get('lastDate')?.value,
-      products: JSON.stringify(this.products),
+      value: this.offerForm.get('value')?.value,
+      type: this.offerForm.get('type')?.value,
+      categories: this.categories,
+      products: this.products,
+      collections: this.collections,
       isFeatured: this.offerForm.get('isFeatured')?.value,
       isActive: this.offerForm.get('isActive')?.value,
       filestring: this.croppedImage,

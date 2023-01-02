@@ -28,6 +28,7 @@ export class UpdateTestimonialComponent implements OnInit {
   imageChangedEvent: any;
   loadImage: boolean;
   base: string;
+  testdata: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,7 +78,7 @@ export class UpdateTestimonialComponent implements OnInit {
 
   getTestimonial() {
     this.testimonialService.getTestimonial(this.slug).subscribe((res: any) => {
-      this.data = res?.result[0]
+      this.testdata = res?.result[0]
       this.cdr.markForCheck()
       this.uploadedimg = this.base + "/" + res?.result[0].file
       this.testimonialForm.get("name")?.setValue(res?.result[0].name)
@@ -146,7 +147,7 @@ export class UpdateTestimonialComponent implements OnInit {
       file: ''
     }
     if (this.uploadedimg) {
-      data.file = this.uploadedimg
+      data.file = this.testdata?.file
     }
     this.testimonialService.updateTestimonial(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {

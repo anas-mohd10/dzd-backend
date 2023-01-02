@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PageTasks } from '../../../../config/constants';
+import { AppSettings, PageTasks } from '../../../../config/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
@@ -79,6 +79,16 @@ export class AddCollectionComponent implements OnInit {
       fontSize: [''],
       fontWeight: ['']
     });
+
+    this.collectionForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.collectionForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.collectionForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.collectionForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.collectionForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.collectionForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   get cf() {

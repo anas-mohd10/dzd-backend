@@ -22,21 +22,20 @@
    </div>
    <div class="testimonials-container">
       <ng-container *ngFor="let testimonial of testimonialsData">
-         <div class="testimonial-card {{testimonial?.isActive}}">
-            <div class="person">
-               <div class="person-image"><img src="http://localhost:3000/{{testimonial?.file}}" alt=""></div>
-               <div class=" person-name">{{testimonial?.name}}</div>
-            </div>
+         <div class="testimonial-card {{testimonial?.isActive}} card-hover">
             <div class="testimonial">
                <div class="person-message">{{testimonial?.message}}</div>
             </div>
-            <div class="person-profession">{{testimonial?.details?.profession}}</div>
-            <div class="person-details">
-               <div class="person-firm">{{testimonial?.details?.business}}</div>
-               <div class="person-place">{{testimonial?.details?.place}}</div>
+            <div class="person">
+               <div class="person-image"><img src="{{base}}/{{testimonial?.file}}" alt=""></div>
+               <div class=" person-name">{{testimonial?.name}} <div class="person-profession">
+                     {{testimonial?.profession}}</div>
+                  <div class="person-details">
+                     <div class="person-firm">{{testimonial?.business}}, {{testimonial?.place}}</div>
+                  </div>
+               </div>
             </div>
-            <button class="edit-btn btn btn-primary btn-sm fs-5 text-white"
-               style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; width: 200px;"
+            <button class="edit-btn btn btn-secondary btn-sm fs-5 text-dark"
                routerLink="{{ appRoute.testimonial.UPDATE_TESTIMONIAL}}"
                [queryParams]="{slug: testimonial?.slug}">Edit</button>
          </div>

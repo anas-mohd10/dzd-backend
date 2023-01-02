@@ -120,6 +120,8 @@ export class AddProductComponent implements OnInit {
   defaultcategories: any = [];
   base: string;
 
+  submitting: boolean = false
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -556,10 +558,12 @@ export class AddProductComponent implements OnInit {
     if (payload) {
       this.disableButton = true
       this.toastr.info('Adding product...', '', { timeOut: 2000 })
+      this.submitting = true
       setTimeout(() => {
         this.productService.addProduct(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
+            this.submitting = false
           } else if (res.errorCode == 0) {
             this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);

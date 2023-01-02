@@ -69,6 +69,7 @@ export class ProductCardComponent implements OnInit {
   isUpdateModal: Boolean = false
   sendId: any
   isClose: any
+  checkstatus: boolean = true;
 
   constructor(
     private productService: ProductService,
@@ -97,7 +98,7 @@ export class ProductCardComponent implements OnInit {
       this.cdr.markForCheck();
     });
 
-    this.CategoryService.getCategory().subscribe((res: any) => {
+    this.CategoryService.getMainCategories().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result
         this.cdr.markForCheck();
@@ -146,7 +147,9 @@ export class ProductCardComponent implements OnInit {
     this.productform.get('isActive')?.setValue('')
     this.productform.get('isFeatured')?.setValue('')
     this.productform.get('category')?.setValue('')
-    this.category = ''
+    const radio = document.querySelectorAll('#category')
+    console.log(radio.values);
+
     this.searchProduct()
   }
 
@@ -154,7 +157,6 @@ export class ProductCardComponent implements OnInit {
     this.currpage = 1
     let filters = { ...this.productform.value }
     filters['category'] = this.category
-    console.log(filters, 'search filters');
     this.ProductHeadService.searchProductHead(filters, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data

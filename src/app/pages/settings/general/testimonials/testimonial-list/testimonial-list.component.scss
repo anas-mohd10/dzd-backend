@@ -1,33 +1,46 @@
 .testimonials-container {
-   margin: 50px 0;
+   margin: 3.125rem 0;
    width: 100%;
    display: flex;
    flex-wrap: wrap;
 }
 
 .testimonial-card {
-   width: calc(50% - 20px);
-   margin: 10px 10px;
+   min-height: 20rem;
+   width: calc(33.33% - 1.25rem);
+   margin: 0.625rem 0.625rem;
    background: #ffffff;
-   box-shadow: 0 10px 35px rgb(0 0 0 / 10%);
-   border-radius: 10px;
-   padding: 20px 30px;
+   box-shadow: 0 0.625rem 2.1875rem rgb(0 0 0 / 10%);
+   border-radius: 0.625rem;
+   padding: 1.25rem 1.875rem;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+
+   .edit-btn {
+      position: absolute;
+      bottom: 2%;
+      right: 5%;
+      width: 100px;
+      border-radius: 50px;
+   }
 }
 
 .testimonial-card .person {
    display: flex;
    align-items: center;
-   height: 50px;
+   height: 6.125rem;
 }
 
 .testimonial-card .person-image img {
-   height: 50px;
-   width: 50px;
-   border-radius: 50px;
+   height: 3.125rem;
+   width: 3.125rem;
+   border-radius: 3.125rem;
 }
 
 .testimonial-card .person-name {
-   margin: 0 0 0 15px;
+   margin: 0 0 0 0.9375rem;
    font-size: 1.2rem;
    color: #000000;
    font-weight: 600;
@@ -38,6 +51,15 @@
    align-items: center;
    font-size: 1.1rem;
    font-weight: 600;
+
+   .person-firm {
+      overflow: hidden;
+      -o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+   }
 }
 
 .testimonial-card .person-profession {
@@ -46,20 +68,21 @@
 }
 
 .testimonial-card .person-place {
-   margin: 0 0 0 5px
+   margin: 0 0 0 0.3125rem
 }
 
 .testimonial-card .testimonial {
    display: flex;
    align-items: center;
-   margin: 20px 0;
+   margin: 1.25rem 0;
    font-size: 1.2rem;
 }
 
 .testimonials-container .false {
-   border: 1px solid #9c1313;
+   border: 0.0625rem solid #9c1313;
+   background: #ea202005;
 }
 
-.testimonial-card .edit-btn{
-   margin: 20px 0;
+.testimonial-card .edit-btn {
+   margin: 1.25rem 0;
 }

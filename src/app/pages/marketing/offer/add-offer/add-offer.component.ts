@@ -1,12 +1,14 @@
 import { ProductService } from 'src/app/includes/services/product.service';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { PageTasks } from 'src/app/config/constants';
+import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { CollectionService } from 'src/app/includes/services/collection.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -32,9 +34,17 @@ export class AddOfferComponent implements OnInit {
   color: any
   from_date: string;
   to_date: string;
-  productsData: any;
-  products: []
+
   validDate: boolean = true;
+
+  productsdata: any;
+  products: []
+  categoriesdata: any = []
+  categories: any = []
+  collectionsdata: any = []
+  collections: any = []
+  isValidValue: boolean;
+  error_message: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,7 +52,11 @@ export class AddOfferComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private offerService: OfferService,
-    private productService: ProductService
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef,
+    private CategoryService: CategoryService,
+    private CollectionService: CollectionService
+
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +67,21 @@ export class AddOfferComponent implements OnInit {
 
     this.initForm();
     this.managePage();
-    this.getProducts()
+
+    this.productService.getActiveProduct().subscribe((res: any) => {
+      this.productsdata = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.CategoryService.getActiveCategory().subscribe((res: any) => {
+      this.categoriesdata = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.CollectionService.getActiveCollection().subscribe((res: any) => {
+      this.collectionsdata = res?.result
+      this.cdr.markForCheck()
+    })
   }
 
   initForm() {
@@ -63,9 +91,13 @@ export class AddOfferComponent implements OnInit {
       description: ['', Validators.required],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
+      type: ['', Validators.required],
+      value: ['', Validators.required],
       isFeatured: ['false'],
       isActive: ['true'],
+      categories: [],
       products: [],
+      collections: [],
       background: [''],
       border: [''],
       radius: [''],
@@ -75,23 +107,33 @@ export class AddOfferComponent implements OnInit {
     });
     this.offerForm.get('fromDate')?.setValue(this.from_date)
     this.offerForm.get('lastDate')?.setValue(this.to_date)
+
+    this.offerForm.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.background = AppSettings.BACKGROUND
+    this.offerForm.get('border')?.setValue(AppSettings.BORDER)
+    this.border = AppSettings.BORDER
+    this.offerForm.get('color')?.setValue(AppSettings.COLOR)
+    this.color = AppSettings.COLOR
+    this.offerForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.offerForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.offerForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   get of() {
     return this.offerForm.controls;
   }
 
-  dateValidation() {
-    const from = this.offerForm.get('fromDate')?.value
-    const to = this.offerForm.get('lastDate')?.value
-    if (from < this.from_date || from > to) {
-      this.toastr.error('invalid date')
-    } else if (to < this.to_date || to < from) {
-      this.toastr.error('invalid date')
-    } else {
-      this.validDate = true
-    }
-  }
+  // dateValidation() {
+  //   const from = this.offerForm.get('fromDate')?.value
+  //   const to = this.offerForm.get('lastDate')?.value
+  //   if (from < this.from_date || from > to) {
+  //     this.toastr.error('invalid date')
+  //   } else if (to < this.to_date || to < from) {
+  //     this.toastr.error('invalid date')
+  //   } else {
+  //     this.validDate = true
+  //   }
+  // }
 
   managePage() {
     switch (this.task) {
@@ -103,6 +145,20 @@ export class AddOfferComponent implements OnInit {
         break;
       default:
         break;
+    }
+  }
+
+  validateValue(_val: any) {
+    const type = this.offerForm.get('type')?.value
+    if (type == "%") {
+      if (_val.value <= 100) {
+        this.isValidValue = true
+      } else {
+        this.isValidValue = false
+        this.error_message = 'Invalid value, kindly check and re-enter the value.'
+      }
+    } else {
+      this.isValidValue = true
     }
   }
 
@@ -134,12 +190,6 @@ export class AddOfferComponent implements OnInit {
     this.loadImage = false
   }
 
-  getProducts() {
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      this.productsData = res?.result
-    })
-  }
-
   getColors(type: any, e: any) {
     if (type == "background") {
       this.background = e.value
@@ -167,7 +217,7 @@ export class AddOfferComponent implements OnInit {
 
     const payload = this.createPayload()
     if (payload) {
-      if (this.validDate) {
+      if (this.isValidValue) {
         this.offerService.addOffer(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
@@ -190,7 +240,11 @@ export class AddOfferComponent implements OnInit {
       isActive: this.offerForm.get('isActive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      products: JSON.stringify(this.products),
+      value: this.offerForm.get('value')?.value,
+      type: this.offerForm.get('type')?.value,
+      categories: this.categories,
+      products: this.products,
+      collections: this.collections,
       style: {
         background: this.offerForm.get('background')?.value,
         border: this.offerForm.get('border')?.value,

@@ -105,6 +105,12 @@ export class CouponsListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.coupons = res?.result?.data
         for (let data of this.coupons) {
+          const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
+          if (data.lastDate > today) {
+            data.isEditable = true
+          } else {
+            data.isEditable = false
+          }
           data.fromDate = new Date(data.fromDate).toDateString()
           data.lastDate = new Date(data.lastDate).toDateString()
         }
@@ -182,6 +188,12 @@ export class CouponsListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.coupons = res?.result?.data
         for (let data of this.coupons) {
+          const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
+          if (data.lastDate > today) {
+            data.isEditable = true
+          } else {
+            data.isEditable = false
+          }
           data.fromDate = new Date(data.fromDate).toDateString()
           data.lastDate = new Date(data.lastDate).toDateString()
         }

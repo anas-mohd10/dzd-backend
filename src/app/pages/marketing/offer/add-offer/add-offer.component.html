@@ -52,8 +52,30 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Type</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
+                    [ngClass]="{
+                         'is-invalid': (of.type.touched || isSubmitted) && of.type.errors?.required}">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="%">%</option>
+                    <option value="Flat">Flat</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Value</label>
+                  <input type="number" min="0" class="form-control fs-5" formControlName="value"
+                    (change)="validateValue($event.target)" [ngClass]="{
+                    'is-invalid': (of.value.touched || isSubmitted) && of.value.errors?.required}" />
+                  <label class="fs-6 text-danger" *ngIf="!isValidValue">{{error_message}}</label>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">From Date</label>
-                  <input type="date" (change)="dateValidation()" class="form-control fs-5" formControlName="fromDate" [ngClass]="{
+                  <input type="date" class="form-control fs-5" formControlName="fromDate"
+                    [ngClass]="{
                       'is-invalid':
                         (of.fromDate.touched || isSubmitted) &&
                         of.fromDate.errors?.required
@@ -63,15 +85,33 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Last Date</label>
-                  <input type="date" (change)="dateValidation()" class="form-control fs-5" formControlName="lastDate"
+                  <input type="date" class="form-control fs-5" formControlName="lastDate"
                     [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Products</label>
-                  <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
+                  <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
                     placeholder="Select products applicable to coupon" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Categories</label>
+                  <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
+                    placeholder="Select categories applicable to offer" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Collections</label>
+                  <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
+                    placeholder="Select collections applicable to offer" [multiple]=true
                     [ngModelOptions]="{standalone: true}">
                   </ng-select>
                 </div>
@@ -178,7 +218,7 @@
                   </div>
                 </div>
               </ng-container>
-              <div class="col-12">
+              <div class="col-12 d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel

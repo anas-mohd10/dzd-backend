@@ -5,7 +5,6 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment.prod';
 
-
 @Component({
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
@@ -45,6 +44,7 @@ export class AllProductsComponent implements OnInit {
   categories: any;
   base: string;
 
+  loaded: boolean = false
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -74,10 +74,11 @@ export class AllProductsComponent implements OnInit {
         this.totaldata = Math.ceil(this.totalcount / this.limit)
         this.setPages()
         this.cdr.markForCheck();
+        this.loaded = true
       }
     })
 
-    this.CategoryService.getCategory().subscribe((res: any) => {
+    this.CategoryService.getAllSubcategories({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result
         this.cdr.markForCheck();
@@ -97,7 +98,6 @@ export class AllProductsComponent implements OnInit {
     this.currpage = 1
     let filters = { ...this.productform.value }
     filters['category'] = this.category
-    console.log(filters, 'search filters');
     this.ProductService.searchProducts(filters, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
@@ -115,6 +115,7 @@ export class AllProductsComponent implements OnInit {
         this.setPages()
         this.cdr.markForCheck();
         this.isData = true
+        this.loaded = true
       }
     })
   }
@@ -182,6 +183,7 @@ export class AllProductsComponent implements OnInit {
         }
         this.count = this.products.length
         this.cdr.markForCheck();
+        this.loaded = true
       }
     })
     this.isNext = true
