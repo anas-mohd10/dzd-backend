@@ -7,11 +7,11 @@
 }
 
 .order-status {
-   width: 160px;
+   width: 100px;
 }
 
 .placed {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: rgb(15, 93, 160);
    border-radius: 5px;
@@ -23,7 +23,7 @@
 }
 
 .accepted {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: rgb(25, 181, 80);
    border-radius: 5px;
@@ -35,7 +35,7 @@
 }
 
 .cancelled {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #9d0208;
    border-radius: 5px;
@@ -47,7 +47,7 @@
 }
 
 .packed {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #0285dc;
    border-radius: 5px;
@@ -59,7 +59,7 @@
 }
 
 .failed {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #d00000;
    border-radius: 5px;
@@ -71,7 +71,7 @@
 }
 
 .shipped {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #280637;
    border-radius: 5px;
@@ -83,7 +83,7 @@
 }
 
 .delivered {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #faa307;
    border-radius: 5px;
@@ -95,7 +95,7 @@
 }
 
 .partial {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #f48c06;
    border-radius: 5px;
@@ -107,7 +107,7 @@
 }
 
 .refunded {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: #03071e;
    border-radius: 5px;
@@ -119,7 +119,7 @@
 }
 
 .pending {
-   height: 30px;
+   // height: 30px;
    padding: 10px 30px;
    background: rgb(62, 57, 113);
    border-radius: 5px;

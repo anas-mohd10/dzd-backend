@@ -90,20 +90,20 @@
                            <td>{{ i + 1 }}</td>
                            <td>{{ order?.orderNo }}</td>
                            <td>
-                              {{ order?.orderDate }}
+                              {{ order?.orderDate }} <br> {{order?.orderTime}}
                            </td>
                            <td>
                               <span class="{{(order?.orderStatus).toLowerCase()}}">{{
                                  order?.orderStatus.toLowerCase() }}</span>
                            </td>
                            <td>
-                              {{ order?.customerId.firstname }}
+                              {{ order?.customerId.firstname }} <br> {{order?.customerId?.mobile}}
                            </td>
                            <td>
                               <h2>-</h2>
                            </td>
                            <td>
-                              {{order?.total}}
+                              Rs. {{order?.total}}
                            </td>
                            <td>
                               {{ order?.paymentMethod }}
@@ -111,8 +111,8 @@
                            <td>
                               <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
                                  routerLink="{{ appRoute.orders.UPDATE_PENDING_ORDER }}"
-                                 [queryParams]="{ order: order?.orderNo }">
-                                 <i class="bi bi-pen"></i> Edit
+                                 [queryParams]="{ order: order?.refid }">
+                                 <i class="bi bi-pen"></i>
                               </a>
                            </td>
                         </tr>

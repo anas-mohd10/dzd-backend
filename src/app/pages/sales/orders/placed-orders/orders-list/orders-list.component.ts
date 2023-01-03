@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.scss']
 })
-export class OrdersListComponent implements OnInit {
+export class OrdersListComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
@@ -25,6 +25,8 @@ export class OrdersListComponent implements OnInit {
   totalcount: Number = 0
   totalRevenue: Number = 0
   count: Number = 0
+  totalrevenues: any;
+  averagesales: any;
 
   constructor(
     private ordersService: OrdersService,
@@ -42,12 +44,14 @@ export class OrdersListComponent implements OnInit {
       processing: true,
     };
     this.ordersService.getOrders().subscribe((res: any) => {
-      this.orders = res?.result
+      this.orders = res?.result?.orders
       for (let order of this.orders) {
         order.orderDate = new Date(order.orderDate).toDateString()
       }
-      this.count = this.orders.length
-      this.isTable = true
+      this.count = res?.result?.total_orders
+      this.averagesales = res?.result?.average_sales
+      this.totalrevenues = res?.result?.total_revenue
+      this.dtTrigger.next()
       this.cdr.markForCheck()
     })
   }
@@ -81,13 +85,18 @@ export class OrdersListComponent implements OnInit {
   searchOrder() {
     this.ordersService.searchOrder(this.orderform.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.orders = res?.result?.data
+        this.orders = res?.result?.orders
         for (let order of this.orders) {
-          order.orderDate = new Date(order.orderDate).toDateString()
+          order.orderDate = new Date(order.orderDate).toLocaleString()
         }
+        this.dtTrigger.next();
         this.count = this.orders.length
         this.cdr.markForCheck();
       }
     })
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

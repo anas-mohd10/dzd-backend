@@ -1,11 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { CsvService } from 'src/app/includes/services/csv.service';
 import { CustomerReportService } from 'src/app/includes/services/customer.report.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-customer-report-list',
@@ -13,25 +14,27 @@ import { CustomersService } from 'src/app/includes/services/customers.service';
   styleUrls: ['./customer-report-list.component.scss']
 })
 
-export class CustomerReportListComponent implements OnInit {
+export class CustomerReportListComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
   public dtTrigger: Subject<any> = new Subject();
 
-  customerReportForm: FormGroup
+  customer: any = new FormControl('--Select an Customer--')
   appRoute = appRoutes
-  customersData: any
-  customerReportsData: any
+
+  customers: any
+  customerreports: any
+
   headers: any[] = ['Customer', 'Email', 'Mobile', 'Address', 'City', 'Pincode', 'State', 'Orders']
   name: String = "customer_report" + Date.now()
-
 
   constructor(
     private customersService: CustomersService,
     private formBuilder: FormBuilder,
     private csvService: CsvService,
-    private customerReportService: CustomerReportService
+    private customerReportService: CustomerReportService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
 
@@ -42,42 +45,51 @@ export class CustomerReportListComponent implements OnInit {
       pageLength: 10,
       processing: true,
     };
-    this.getCustomers()
-    this.getCustomerReportsData()
-    this.initForm()
-  }
 
-  initForm() {
-    this.customerReportForm = this.formBuilder.group({
-      fromDate: [''],
-      toDate: [''],
-      customerId: [''],
-    });
-  }
-
-  getCustomers() {
     this.customersService.getCustomers().subscribe((res: any) => {
-      this.customersData = res?.result
+      if (res?.errorCode == 0) {
+        this.customers = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
     })
-  }
 
-  getCustomerReportsData() {
     this.customerReportService.getCustomerReports().subscribe((res: any) => {
-      this.customerReportsData = res?.result
-      console.log(this.customerReportsData);
-
+      if (res?.errorCode == 0) {
+        this.customerreports = res?.result
+        this.ChangeDetectorRef.markForCheck()
+        this.dtTrigger.next();
+      }
     })
   }
 
-  checkToDate() { }
-
-  onSubmit() { }
+  filterReport() {
+    this.customerReportService.getCustomerReport({ _id: this.customer.value, isActive: true, isDelete: false }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.dtTrigger.unsubscribe();
+        this.customerreports = res?.result
+        this.ChangeDetectorRef.markForCheck()
+        this.dtTrigger.next();
+      }
+    })
+  }
 
   reloadPage() {
-    window.location.reload()
+    this.customer.setValue('--Select an Customer--')
+    this.customerReportService.getCustomerReports().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.dtTrigger.unsubscribe();
+        this.customerreports = res?.result
+        this.ChangeDetectorRef.markForCheck()
+        this.dtTrigger.next();
+      }
+    })
   }
 
   downloadCsvFile() {
-    this.csvService.csvDownload(this.headers, this.customerReportsData, this.name)
+    this.csvService.csvDownload(this.headers, this.customerreports, this.name)
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

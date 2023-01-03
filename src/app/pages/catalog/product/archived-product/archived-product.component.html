@@ -20,75 +20,78 @@
       </div>
    </div>
 
-   <hr class="horizontal-line">
    <!-- Form start -->
    <div class="category-form-container">
       <form [formGroup]="productform">
-         <div class="col-12 row" style="display: flex; align-items: flex-end;">
+         <div class="col-12 d-flex align-items-center justify-content-end">
             <div class="search-input col-sm-4">
-               <label class="fs-5">Search</label>
                <input type="text" placeholder="Search for products here..." class="form-control fs-5"
                   formControlName="name" (ngModelChange)="searchProduct()">
             </div>
-            <div class="search-submit col-sm-2">
+            <!-- <div class="search-submit col-sm-2" style="margin: 0 0 0 0.625rem;">
                <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
                   style="outline: none; border: none;">Clear</button>
-            </div>
+            </div> -->
          </div>
       </form>
    </div>
    <!-- Form end -->
-   <hr class="horizontal-line">
 
-   <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} archived products</h4>
+   <div class="col-12">
+      <div class="total-count-container col-sm-3 bg-dark">
+         <h4 class="text-white">Total {{totalcount ? totalcount : 0}} archived products</h4>
+      </div>
    </div>
 
-   <div class="product-card-container view-container">
+   <div class="variant-product-result-container row">
       <ng-container *ngFor="let product of products">
-         <div class="product-card card-hover">
-            <div class="product-type">
-               <ng-container *ngIf="product?.isSingle == true">
-                  Single
-               </ng-container>
-               <ng-container *ngIf="product?.isSingle == false">
-                  Configurable
-               </ng-container>
-            </div>
-            <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" /></div>
-            <div class="product-details">
-               <div class="product-brand">{{product?.brand?.name}}</div>
-               <div class="product-name fs-3">{{product?.name}}</div>
-               <div class="product-mrpprice">Rs. {{product?.mrpPrice}} <span>( MRP Price )</span></div>
-               <div class="product-offerprice">Rs. {{product?.offerPrice}} <span>( Offer Price )</span></div>
-               <div class="product-delivery">{{product?.shippingMethod}} shipping</div>
-               <div class="product-stock">{{product?.stock}} products left</div>
-               <div class="product-card-bottom">
+         <div class="col-sm-3">
+            <div class="product-card card-hover">
+               <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+               </div>
+               <div class="product-details">
                   <div class="product-status-{{product?.isActive}}">
-                     <ng-container *ngIf="product?.isActive == true">
-                        Active
-                     </ng-container>
-                     <ng-container *ngIf="product?.isActive == false">
-                        Inactive
-                     </ng-container>
+                     {{product?.isActive ? 'Active' : 'Inactive'}}
                   </div>
-                  <div class="card-edit-btn">
-                     <button routerLink="{{ appRoute.product.UPDATE_PRODUCT }}"
-                        [queryParams]="{ product: product?.prodid }" class="fs-5 cursor-pointer text-darker">
-                        Edit
-                     </button>
+                  <div class="product-offer">
+                     {{product?.message?.text}}
+                  </div>
+                  <div class="product-brand">{{product?.brand?.name}}</div>
+                  <div class="product-name fs-3">{{product?.name}}</div>
+                  <div class="product-price">
+                     <div class="d-flex">
+                        <div class="product-offerprice">Rs. {{product?.price?.offer}}</div>
+                        <div class="product-mrpprice"
+                           [ngClass]="{'strike-price': product?.price?.mrp > product?.price?.offer}">
+                           Rs. {{product?.price?.mrp}}</div>
+
+                     </div>
+                     <div class="product-rating">
+                        {{product?.rating}} <i class="bi bi-star-fill"></i>
+                     </div>
+                  </div>
+                  <div class="product-stock">{{product?.stock}} products left</div>
+                  <div class="product-delivery">{{product?.product?.id?.shipping?.method}} Shipping</div>
+                  <div class="product-card-bottom">
+                     <div class="card-edit-btn">
+                        <button routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}"
+                           class="fs-5 cursor-pointer text-darker">
+                           Edit
+                        </button>
+                     </div>
                   </div>
                </div>
             </div>
          </div>
       </ng-container>
-      <ng-container *ngIf="count == 0">
+      <ng-container *ngIf="totalcount == 0">
          <div class="no-data-container">
-            <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
+            <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
             <h2>Sorry, we haven't found any data</h2>
          </div>
       </ng-container>
    </div>
+
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">

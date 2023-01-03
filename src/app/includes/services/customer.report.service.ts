@@ -15,4 +15,9 @@ export class CustomerReportService {
     const url = this.commonService.getFullUrl(this.customerReportEndpoints.get_customer_report);
     return this.http.get(`${url}`);
   }
+
+  getCustomerReport(data: any) {
+    const url = this.commonService.getFullUrl(this.customerReportEndpoints.customer_report);
+    return this.http.post(`${url}`, data);
+  }
 }

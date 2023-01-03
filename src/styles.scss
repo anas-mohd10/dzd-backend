@@ -2,7 +2,13 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-
+.error-message.text-danger {
+  margin: 5px 0 0 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #EB133A08;
+  padding: 10px;
+}
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
   font-size: 1rem !important;

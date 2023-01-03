@@ -107,15 +107,15 @@ export class AddOrdersComponent implements OnInit {
   getAddress() {
     this.customerService.getCustomerBySlug(this.selectedCustomer).subscribe((res: any) => {
       this.customerId = res?.result[0]._id
-      this.orderForm.get("firstline")?.setValue(res?.result[0].address[0].firstline)
-      this.orderForm.get("secondline")?.setValue(res?.result[0].address[0].secondline)
-      this.orderForm.get("city")?.setValue(res?.result[0].address[0].city)
-      this.orderForm.get("area")?.setValue(res?.result[0].address[0].area)
-      this.orderForm.get("pincode")?.setValue(res?.result[0].address[0].pincode)
-      this.orderForm.get("lat")?.setValue(res?.result[0].address[0].lat)
-      this.orderForm.get("lng")?.setValue(res?.result[0].address[0].lng)
-      this.orderForm.get("state")?.setValue(res?.result[0].address[0].state)
-      this.orderForm.get("landmark")?.setValue(res?.result[0].address[0].landmark)
+      this.orderForm.get("firstline")?.setValue(res?.result[0].address.firstline)
+      this.orderForm.get("secondline")?.setValue(res?.result[0].address.secondline)
+      this.orderForm.get("city")?.setValue(res?.result[0].address.city)
+      this.orderForm.get("area")?.setValue(res?.result[0].address.area)
+      this.orderForm.get("pincode")?.setValue(res?.result[0].address.pincode)
+      this.orderForm.get("lat")?.setValue(res?.result[0].address.lat)
+      this.orderForm.get("lng")?.setValue(res?.result[0].address.lng)
+      this.orderForm.get("state")?.setValue(res?.result[0].address.state)
+      this.orderForm.get("landmark")?.setValue(res?.result[0].address.landmark)
     })
   }
 
@@ -177,9 +177,9 @@ export class AddOrdersComponent implements OnInit {
     if (data.products.length != 0) {
       this.orderService.addOrder(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
+          this.toastr.error(res?.message);
         } else if (res.errorCode == 0) {
-          this.toastr.success('Order placed successfully');
+          this.toastr.success(res?.message);
           this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
         }
       })

@@ -6,6 +6,7 @@ export const orderEndpoints = {
    get_active_order: '/orders/active',
    update_order: '/update-order',
    get_order_by_orderno: '/orders/number',
+   get_order_by_refid: '/orders/refid',
    get_order_count: '/orders/count',
    get_order_report: '/order-report',
    search_order: '/orders/search',

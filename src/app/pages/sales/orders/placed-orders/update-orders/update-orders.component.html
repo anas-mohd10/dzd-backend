@@ -27,7 +27,7 @@
          <div class="card card-flush py-4 flex-row-fluid">
             <div class="card-header">
                <div class="card-title">
-                  <h5>Order Details ({{orderNumber}})</h5>
+                  <h3>Order Details ({{orderNumber}})</h3>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -104,7 +104,7 @@
          <div class="card card-flush py-4 flex-row-fluid">
             <div class="card-header">
                <div class="card-title">
-                  <h5>Customer Details</h5>
+                  <h3>Customer Details</h3>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -181,7 +181,7 @@
          <div class="card card-flush py-4 flex-row-fluid">
             <div class="card-header">
                <div class="card-title">
-                  <h5>Other Details</h5>
+                  <h3>Other Details</h3>
                </div>
             </div>
             <div class="card-body pt-0">
@@ -266,19 +266,19 @@
                      <h3>Customer address</h3>
                   </div>
                </div>
-               <div class="card-body pt-0">
-                  {{order?.customerId?.address[0]?.firstline}},
-                  {{order?.customerId?.address[0]?.secondline}},
-                  {{order?.customerId?.address[0]?.area}}, {{order?.customerId?.address[0]?.landmark}},
-                  {{order?.customerId?.address[0]?.city}}, {{order?.customerId?.address[0]?.state}},
-                  {{order?.customerId?.address[0]?.pincode}}
+               <div class="card-body fs-5 pt-0">
+                  {{order?.address?.firstline}},
+                  {{order?.address?.secondline}},
+                  {{order?.address?.area}}, {{order?.address?.landmark}},
+                  {{order?.address?.city}}, {{order?.address?.state}},
+                  {{order?.address?.pincode}}
                </div>
                <div class="card-header">
                   <div class="card-title">
                      <h3>Shipping address</h3>
                   </div>
                </div>
-               <div class="card-body pt-0">
+               <div class="card-body fs-5 pt-0">
                   {{order?.address?.firstline}},
                   {{order?.address?.secondline}},
                   {{order?.address?.area}}, {{order?.address?.landmark}},
@@ -299,7 +299,7 @@
                <div class="table-responsive">
                   <table class="table align-middle table-row-dashed fs-5 gy-5 mb-0">
                      <thead>
-                        <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <tr class="text-start text-gray-400 fw-bolder fs-5 text-uppercase gs-0">
                            <th class="min-w-175px">Product</th>
                            <th class="min-w-100px text-end">SKU</th>
                            <th class="min-w-70px text-end">Qty</th>
@@ -312,7 +312,7 @@
                            <td>
                               <div class="d-flex align-items-center">
                                  <a class="symbol symbol-50px">
-                                    <img src="http://localhost:3000/{{product?.productId?.thumbnail}}" alt="" srcset="">
+                                    <img src="{{base}}/{{product?.productId?.thumbnail}}" alt="" srcset="">
                                  </a>
                                  <div class="ms-5">
                                     <a
@@ -323,26 +323,8 @@
                            </td>
                            <td class="text-end">{{product?.productId?.sku}}</td>
                            <td class="text-end">{{product?.quantity}}</td>
-                           <ng-container *ngIf="product?.offerPrice == 0">
-                              <td class="text-end">
-                                 {{product?.productId?.mrpPrice}}
-                              </td>
-                           </ng-container>
-                           <ng-container *ngIf="product?.offerPrice != 0">
-                              <td class="text-end">
-                                 {{product?.productId?.offerPrice}}
-                              </td>
-                           </ng-container>
-                           <ng-container *ngIf="product?.offerPrice == 0">
-                              <td class="text-end">
-                                 {{product?.quantity * product?.productId?.mrpPrice}}
-                              </td>
-                           </ng-container>
-                           <ng-container *ngIf="product?.offerPrice != 0">
-                              <td class="text-end">
-                                 {{product?.quantity * product?.productId?.offerPrice}}
-                              </td>
-                           </ng-container>
+                           <td class="text-end">{{product?.pricePerUnit}}</td>
+                           <td class="text-end">{{product?.priceAfterTax}}</td>
                         </tr>
                         <tr>
                            <td colspan="4" class="fs-4 fw-bolder text-dark text-end">Total</td>
@@ -406,16 +388,16 @@
                               <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                                  formControlName="orderStatus">
                                  <option value="disabled" disabled>-- Select an option --</option>
-                                 <option value="ACCEPTED" class="fs-7">Accepted</option>
-                                 <option value="PENDING" class="fs-7">Pending</option>
-                                 <option value="PLACED" selected class="fs-7">Placed</option>
-                                 <option value="PACKED" class="fs-7">Packed</option>
-                                 <option value="SHIPPED" class="fs-7">Shipped</option>
-                                 <option value="DELIVERED" class="fs-7">Delivered</option>
-                                 <option value="CANCELLED" class="fs-7">Cancelled</option>
-                                 <option value="FAILED" class="fs-7">Failed</option>
-                                 <option value="PARTIAL" class=" fs-7">Partial Refunded</option>
-                                 <option value="REFUNDED" class=" fs-7">Refunded</option>
+                                 <option value="ACCEPTED">Accepted</option>
+                                 <option value="PENDING">Pending</option>
+                                 <option value="PLACED">Placed</option>
+                                 <option value="PACKED">Packed</option>
+                                 <option value="SHIPPED">Shipped</option>
+                                 <option value="DELIVERED">Delivered</option>
+                                 <option value="CANCELLED">Cancelled</option>
+                                 <option value="FAILED">Failed</option>
+                                 <option value="PARTIAL">Partial Refunded</option>
+                                 <option value="REFUNDED">Refunded</option>
                               </select>
                            </div>
                         </div>

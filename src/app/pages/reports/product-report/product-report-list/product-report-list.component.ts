@@ -70,7 +70,7 @@ export class ProductReportListComponent implements OnInit {
   checkToDate() { }
 
   reloadPage() {
-    window.location.reload()
+    
   }
 
   onSubmit() { }

@@ -24,7 +24,7 @@ import { AllProductsComponent } from '../all-products/all-products.component';
         component: ProductCardComponent,
       },
       {
-        path: 'archive',
+        path: 'product/archive',
         component: ArchivedProductComponent
       },
       {

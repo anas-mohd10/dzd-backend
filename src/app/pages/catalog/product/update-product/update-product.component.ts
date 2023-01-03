@@ -118,11 +118,12 @@ export class UpdateProductComponent implements OnInit {
   slug: any;
   productheadfile: any;
   isArchived: Boolean = false
-  restore: any
+  restore = new FormControl('false')
   prodid: any
   img: string;
   vid: any = ''
   base: string;
+  submitting: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -207,6 +208,10 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
         this.productform.get('description')?.setValue(res?.result[0]?.details?.description)
         this.productform.get('features')?.setValue(res?.result[0]?.details?.features)
+
+        if (res?.result[0]?.isArchive == true) {
+          this.isArchived = true
+        }
 
         //Product Style Details
         this.productform.get('background')?.setValue(res?.result[0]?.style?.background)
@@ -487,12 +492,15 @@ export class UpdateProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
-      this.toastr.info('Updating product...', '', { timeOut: 2000 })
+      // this.toastr.info('Updating product...', '', { timeOut: 2000 })
+      this.submitting = true
       setTimeout(() => {
         this.productService.updateProduct(this.prodid, payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
-          } else if (res.errorCode == 0) {
+            this.submitting = false
+            this.cdr.markForCheck()
+          } else {
             this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
           }
@@ -565,7 +573,20 @@ export class UpdateProductComponent implements OnInit {
     return data
   }
 
-  restoreProduct() { }
+  restoreProduct() {
+    if (this.restore.value == 'true') {
+      this.productService.restoreProducts({ prodid: this.prodid }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
+        } else {
+          this.toastr.error(res?.message);
+        }
+      })
+    } else {
+      this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
+    }
+  }
 
   //<----- Product head management ----->
   goToNextTab(e: any) {
@@ -602,4 +623,3 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 }
-  

@@ -116,15 +116,15 @@ export class UpdateCustomersComponent implements OnInit {
       this.customersForm.get("isActive")?.setValue(this.customerData.isActive)
       this.customersForm.get("walletBalance")?.setValue(this.customerData.walletBalance)
       this.customersForm.get("isHome")?.setValue(this.customerData.isHome)
-      this.customersForm.get("firstline")?.setValue(this.customerData.address[0].firstline)
-      this.customersForm.get("secondline")?.setValue(this.customerData.address[0].secondline)
-      this.customersForm.get("area")?.setValue(this.customerData.address[0].area)
-      this.customersForm.get("landmark")?.setValue(this.customerData.address[0].landmark)
-      this.customersForm.get("city")?.setValue(this.customerData.address[0].city)
-      this.customersForm.get("pincode")?.setValue(this.customerData.address[0].pincode)
-      this.customersForm.get("lat")?.setValue(this.customerData.address[0].lat)
-      this.customersForm.get("lng")?.setValue(this.customerData.address[0].lng)
-      this.customersForm.get("state")?.setValue(this.customerData.address[0].state)
+      this.customersForm.get("firstline")?.setValue(this.customerData.address.firstline)
+      this.customersForm.get("secondline")?.setValue(this.customerData.address.secondline)
+      this.customersForm.get("area")?.setValue(this.customerData.address.area)
+      this.customersForm.get("landmark")?.setValue(this.customerData.address.landmark)
+      this.customersForm.get("city")?.setValue(this.customerData.address.city)
+      this.customersForm.get("pincode")?.setValue(this.customerData.address.pincode)
+      this.customersForm.get("lat")?.setValue(this.customerData.address.lat)
+      this.customersForm.get("lng")?.setValue(this.customerData.address.lng)
+      this.customersForm.get("state")?.setValue(this.customerData.address.state)
       this.cdr.markForCheck()
     })
   }
@@ -149,7 +149,7 @@ export class UpdateCustomersComponent implements OnInit {
       email: this.customersForm.get("email")?.value,
       mobile: this.customersForm.get("mobile")?.value,
       isHome: this.customersForm.get("isHome")?.value,
-      address: [{
+      address: {
         firstline: this.customersForm.get("firstline")?.value,
         secondline: this.customersForm.get("secondline")?.value,
         area: this.customersForm.get("area")?.value,
@@ -159,7 +159,7 @@ export class UpdateCustomersComponent implements OnInit {
         lat: this.customersForm.get("lat")?.value,
         lng: this.customersForm.get("lng")?.value,
         landmark: this.customersForm.get("landmark")?.value,
-      }],
+      },
       walletBalance: this.customersForm.get("walletBalance")?.value,
       isActive: this.customersForm.get("isActive")?.value,
     }

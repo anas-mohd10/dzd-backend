@@ -557,13 +557,14 @@ export class AddProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
-      this.toastr.info('Adding product...', '', { timeOut: 2000 })
+      // this.toastr.info('Adding product...', '', { timeOut: 2000 })
       this.submitting = true
       setTimeout(() => {
         this.productService.addProduct(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
             this.submitting = false
+            this.cdr.markForCheck()
           } else if (res.errorCode == 0) {
             this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);

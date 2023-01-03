@@ -10,6 +10,7 @@ import { CustomersService } from 'src/app/includes/services/customers.service';
   templateUrl: './customers-list.component.html',
   styleUrls: ['./customers-list.component.scss']
 })
+
 export class CustomersListComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: true })
   public dtElement: DataTableDirective;

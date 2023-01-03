@@ -56,6 +56,14 @@ export class ArchivedProductComponent implements OnInit {
 
     this.productService.archivedProducts(this.productform.value, this.page).subscribe((res: any) => {
       this.products = res?.result?.data
+      for (let _product of this.products) {
+        const diff = _product?.price?.mrp - _product.price?.offer
+        const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+        const message = {
+          text: `${percentage_off} % off`,
+        }
+        _product['message'] = message
+      }
       this.count = this.products.length
       this.totalcount = res?.result?.total_item
       this.limit = res?.result?.items_per_page
@@ -100,6 +108,14 @@ export class ArchivedProductComponent implements OnInit {
     this.productService.archivedProducts(this.productform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
+        for (let _product of this.products) {
+          const diff = _product?.price?.mrp - _product.price?.offer
+          const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+          const message = {
+            text: `${percentage_off} % off`,
+          }
+          _product['message'] = message
+        }
         this.count = this.products.length
         this.totalcount = res?.result?.total_item
         this.totaldata = Math.ceil(this.totalcount / this.limit)
@@ -158,6 +174,14 @@ export class ArchivedProductComponent implements OnInit {
     this.productService.archivedProducts(data, page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
+        for (let _product of this.products) {
+          const diff = _product?.price?.mrp - _product.price?.offer
+          const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+          const message = {
+            text: `${percentage_off} % off`,
+          }
+          _product['message'] = message
+        }
         this.count = this.products.length
         this.cdr.markForCheck();
       }

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-orders',
@@ -25,6 +26,7 @@ export class UpdateOrdersComponent implements OnInit {
   isSubmitted: boolean;
   price: any = 0
   slug: any
+  base: string;
 
   constructor(
     private orderService: OrdersService,
@@ -36,6 +38,7 @@ export class UpdateOrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm()
     this.managePage()
     this.slug = this.route.snapshot.queryParams.order || ''
@@ -64,9 +67,9 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getOrderDetails() {
-    this.orderService.getOrdersByNumber(this.slug).subscribe((res: any) => {
-      this.order = res?.result[0]
-      this.orderNumber = res?.result[0].orderNo
+    this.orderService.getOrdersByRefid(this.slug, {}).subscribe((res: any) => {
+      this.order = res?.result?.orders[0]
+      this.orderNumber = res?.result?.orders[0].refid
       this.productCount = this.order.product.length
       this.order.orderDate = new Date(this.order.orderDate).toDateString()
       this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)

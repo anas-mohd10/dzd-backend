@@ -36,6 +36,11 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
+  getOrdersByRefid(number: any, data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_by_refid + "?number=" + number);
+    return this.http.post(`${url}`, data)
+  }
+
   getOrderCount() {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_count);
     return this.http.get(`${url}`)

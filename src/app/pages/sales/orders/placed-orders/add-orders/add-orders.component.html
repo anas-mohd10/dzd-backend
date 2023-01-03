@@ -33,17 +33,8 @@
                      <div class="col-12">
                         <div class="form-group col-sm-6">
                            <label class="fs-5 mb-3 form-title required">Customer</label>
-                           <!-- <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="customer" (change)="getAddress()"
-                              [ngClass]="{ 'is-invalid': (of.customer.touched || isSubmitted) && of.customer.errors?.required}">
-                              <option value="disabled" disabled>-- Select an option --</option>
-                              <option *ngFor="let cust of activeCustomersData" value="{{[cust?._id, cust?.userid]}}">
-                                 {{cust?.firstname}}
-                              </option>
-                           </select> -->
-
                            <ng-select [items]="activeCustomersData" bindLabel="firstname" bindValue="userid"
-                              [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=true
+                              [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
                               [ngModelOptions]="{standalone: true}" (change)="getAddress()">
                            </ng-select>
                         </div>
@@ -150,6 +141,12 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
+                           <label class="fs-5 mb-3">GST No.</label>
+                           <input type="text" formControlName="gst" class="form-control fs-5">
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Coupon</label>
                            <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                               formControlName="coupon">
@@ -158,12 +155,6 @@
                                  {{coupon?.title}}
                               </option>
                            </select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">GST No.</label>
-                           <input type="text" formControlName="gst" class="form-control fs-5">
                         </div>
                      </div>
                      <div class="product-add-container" formArrayName="products">
@@ -176,9 +167,9 @@
                               Add Product
                            </button>
                         </div>
-                        <div class="col-12" *ngFor="let product of products().controls; let i=index" [formGroupName]="i"
+                        <div class="col-12 row align-items-end" *ngFor="let product of products().controls; let i=index" [formGroupName]="i"
                            style="margin-top: 40px">
-                           <div class="col-12 col-sm-6">
+                           <div class="col-sm-5">
                               <div class="form-group">
                                  <label class="fs-5 mb-3 form-title required">Product</label>
                                  <select class="form-select form-select-lg fs-5" aria-label=".form-select-lg"
@@ -190,21 +181,20 @@
                                  </select>
                               </div>
                            </div>
-                           <div class="col-12 col-sm-6">
+                           <div class="col-sm-5">
                               <label class="fs-5 mb-3 form-title required">Quantity</label>
                               <div class="form-group d-flex align-items-center">
-                                 <input type="text" class="form-control fs-5" id="quantity" formControlName="quantity">
+                                 <input type="number" class="form-control fs-5" id="quantity" formControlName="quantity">
                               </div>
                            </div>
-                           <div class="col-12">
+                           <div class="col-2">
                               <button type="button" (click)="removeQuantity(i)" class="btn btn-danger"
                                  style="width: 200px">Remove
                               </button>
                            </div>
-                           <hr style="height: 1px; width: 100%; background: #aaaaaa">
                         </div>
                      </div>
-                     <div class="col-12">
+                     <div class="col-12 d-flex align-items-center justify-content-end">
                         <a routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary btn-sm fs-5 text-dark"
                            style="width: 200px; margin-right: 20px;">
                            Cancel

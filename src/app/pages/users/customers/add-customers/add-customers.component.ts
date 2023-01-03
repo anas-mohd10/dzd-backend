@@ -122,7 +122,7 @@ export class AddCustomersComponent implements OnInit {
       email: this.customersForm.get("email")?.value,
       mobile: this.customersForm.get("mobile")?.value,
       isHome: this.customersForm.get("isHome")?.value,
-      address: [{
+      address: {
         firstline: this.customersForm.get("firstline")?.value,
         secondline: this.customersForm.get("secondline")?.value,
         area: this.customersForm.get("area")?.value,
@@ -132,7 +132,7 @@ export class AddCustomersComponent implements OnInit {
         lat: this.customersForm.get("lat")?.value,
         lng: this.customersForm.get("lng")?.value,
         landmark: this.customersForm.get("landmark")?.value,
-      }],
+      },
       walletBalance: this.customersForm.get("walletBalance")?.value,
       isActive: this.customersForm.get("isActive")?.value,
     }

@@ -36,7 +36,7 @@
             </div>
           </nav>
 
-          <div class="tab-content" id="nav-tabContent">
+          <div class="tab-content" id="nav-tabContent" [ngClass]="{'archived-content': isArchived}">
             <div class="tab-pane fade product-details-container"
               [ngClass]="{'active': showProduct, 'show': showProduct}" id="product-details" role="tabpanel"
               aria-labelledby="nav-profile-tab">
@@ -102,9 +102,10 @@
                                   class="attr-value attr-text bg-primay text-white">{{value?.value}}</div>
                                 <div *ngIf="attribute?.type == 'Color'" class="attr-value attr-color"
                                   [ngStyle]="{'background': value?.value}"></div>
-                                  <div *ngIf="attribute?.type == 'File'">
-                                    <img src="{{base}}/{{value?.value}}" alt="" srcset="" style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
-                                  </div>
+                                <div *ngIf="attribute?.type == 'File'">
+                                  <img src="{{base}}/{{value?.value}}" alt="" srcset=""
+                                    style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
+                                </div>
                               </ng-container>
                             </div>
                           </div>
@@ -424,15 +425,20 @@
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
                   (click)="goToPreviousTab('product')">Back</a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                  (click)="onSubmit()">Update</button>
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="onSubmit()"
+                  *ngIf="!submitting">Update</button>
+                <button class="btn btn-primary btn-sm fs-5" style="width: 200px" type="button" disabled
+                  *ngIf="submitting">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Submitting
+                </button>
               </div>
             </div>
           </div>
 
           <div class="restore-container">
             <ng-container *ngIf="isArchived">
-              <div class="col-12">
+              <div class="col-12 d-flex align-items-center justify-content-end">
                 <div class="form-group col-sm-6">
                   <label class="fs-5 mb-3">Restore Product?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" [formControl]="restore">
@@ -441,8 +447,7 @@
                   </select>
                 </div>
               </div>
-
-              <div class="col-12">
+              <div class="col-12 d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.product.ARCHIVED_PRODUCT}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
