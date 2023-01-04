@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './pending-orders-list.component.html',
   styleUrls: ['./pending-orders-list.component.scss']
 })
-export class PendingOrdersListComponent implements OnInit {
+export class PendingOrdersListComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
@@ -42,6 +42,7 @@ export class PendingOrdersListComponent implements OnInit {
       pageLength: 10,
       processing: true,
     };
+
     this.initForm()
 
     this.ordersService.getPendingOrders().subscribe((res: any) => {
@@ -52,6 +53,7 @@ export class PendingOrdersListComponent implements OnInit {
       this.count = this.orders.length
       this.isTable = true
       this.cdr.markForCheck()
+      this.dtTrigger.next()
     })
   }
 
@@ -75,26 +77,35 @@ export class PendingOrdersListComponent implements OnInit {
   }
 
   reloadPage() {
-    window.location.reload()
+    this.orderform.get('fdate')?.setValue('')
+    this.orderform.get('tdate')?.setValue('')
+    this.orderform.get('paymentMethod')?.setValue('')
+
+    this.ordersService.getPendingOrders().subscribe((res: any) => {
+      this.dtTrigger.unsubscribe()
+      this.orders = res?.result
+      for (let order of this.orders) {
+        order.orderDate = new Date(order.orderDate).toDateString()
+      }
+      this.cdr.markForCheck()
+      this.dtTrigger.next()
+    })
   }
 
   searchPendingOrder() {
     this.ordersService.searchPendingOrder(this.orderform.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
+        this.dtTrigger.unsubscribe()
         this.orders = res?.result?.data
         for (let order of this.orders) {
           order.orderDate = new Date(order.orderDate).toDateString()
         }
-        this.count = this.orders.length
         this.cdr.markForCheck();
+        this.dtTrigger.next()
       }
     })
   }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
+  
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }

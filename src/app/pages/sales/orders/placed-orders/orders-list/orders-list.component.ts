@@ -16,6 +16,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
   public dtTrigger: Subject<any> = new Subject();
+
   orderform: FormGroup;
   appRoute = appRoutes;
   orders: any;
@@ -43,6 +44,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       pageLength: 10,
       processing: true,
     };
+
     this.ordersService.getOrders().subscribe((res: any) => {
       this.orders = res?.result?.orders
       for (let order of this.orders) {
@@ -51,8 +53,8 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       this.count = res?.result?.total_orders
       this.averagesales = res?.result?.average_sales
       this.totalrevenues = res?.result?.total_revenue
-      this.dtTrigger.next()
       this.cdr.markForCheck()
+      this.dtTrigger.next()
     })
   }
 
@@ -79,21 +81,41 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   }
 
   onReload() {
-    window.location.reload()
+    this.orderform.get('fdate')?.setValue('')
+    this.orderform.get('tdate')?.setValue('')
+    this.orderform.get('paymentMethod')?.setValue('')
+    this.orderform.get('orderStatus')?.setValue('')
+
+    this.ordersService.getOrders().subscribe((res: any) => {
+      this.dtTrigger.unsubscribe()
+      this.orders = res?.result?.orders
+      for (let order of this.orders) {
+        order.orderDate = new Date(order.orderDate).toDateString()
+      }
+      this.cdr.markForCheck()
+      this.dtTrigger.next()
+    })
   }
 
   searchOrder() {
     this.ordersService.searchOrder(this.orderform.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.orders = res?.result?.orders
+        this.dtTrigger.unsubscribe()
+        this.orders = res?.result?.data
         for (let order of this.orders) {
           order.orderDate = new Date(order.orderDate).toLocaleString()
         }
-        this.dtTrigger.next();
-        this.count = this.orders.length
         this.cdr.markForCheck();
+        this.dtTrigger.next()
       }
     })
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.destroy()
+      this.dtTrigger.next();
+    });
   }
 
   ngOnDestroy(): void {

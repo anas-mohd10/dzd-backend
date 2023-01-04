@@ -109,6 +109,9 @@ export class UpdateHeadComponent implements OnInit {
         this.productheadform.get('cod')?.setValue(this.basicdetails?.cod?.isPresent)
         this.productheadform.get('codCharge')?.setValue(this.basicdetails?.cod?.value)
         this.productheadform.get('shippingMethod')?.setValue(this.basicdetails?.shipping?.method)
+        this.basicdetails?.shipping?.method == 'Paid' ? this.isShipping = true : this.isShipping = false
+        this.basicdetails?.return?.isPresent == true ? this.isReturn = true : this.isReturn = false
+        this.basicdetails?.cod?.isPresent == true ? this.isCod = true : this.isCod = false
         this.productheadform.get('shippingCost')?.setValue(this.basicdetails?.shipping?.value)
         this.productheadform.get('returnable')?.setValue(this.basicdetails?.return?.isPresent)
         this.productheadform.get('returnDays')?.setValue(this.basicdetails?.return?.value)
@@ -133,11 +136,11 @@ export class UpdateHeadComponent implements OnInit {
       hsn: ['', Validators.required],
       tax: [''],
       cod: ['false', Validators.required],
-      codCharge: [''],
+      codCharge: [0],
       returnable: ['false', Validators.required],
-      returnDays: [''],
+      returnDays: [0],
       shippingMethod: ['Unpaid', Validators.required],
-      shippingCost: [''],
+      shippingCost: [0],
       isActive: ['true', Validators.required],
       isArchive: ['false', Validators.required],
     })

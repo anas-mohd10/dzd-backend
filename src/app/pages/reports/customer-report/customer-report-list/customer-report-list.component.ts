@@ -20,11 +20,11 @@ export class CustomerReportListComponent implements OnDestroy, OnInit {
   public dtOptions: DataTables.Settings = {};
   public dtTrigger: Subject<any> = new Subject();
 
-  customer: any = new FormControl('--Select an Customer--')
   appRoute = appRoutes
 
   customers: any
   customerreports: any
+  customer: any;
 
   headers: any[] = ['Customer', 'Email', 'Mobile', 'Address', 'City', 'Pincode', 'State', 'Orders']
   name: String = "customer_report" + Date.now()
@@ -63,7 +63,7 @@ export class CustomerReportListComponent implements OnDestroy, OnInit {
   }
 
   filterReport() {
-    this.customerReportService.getCustomerReport({ _id: this.customer.value, isActive: true, isDelete: false }).subscribe((res: any) => {
+    this.customerReportService.getCustomerReport({ _id: this.customer, isActive: true, isDelete: false }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.dtTrigger.unsubscribe();
         this.customerreports = res?.result
@@ -74,7 +74,7 @@ export class CustomerReportListComponent implements OnDestroy, OnInit {
   }
 
   reloadPage() {
-    this.customer.setValue('--Select an Customer--')
+    this.customer = null
     this.customerReportService.getCustomerReports().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.dtTrigger.unsubscribe();

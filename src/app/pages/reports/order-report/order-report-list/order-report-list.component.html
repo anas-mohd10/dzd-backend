@@ -82,12 +82,11 @@
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-               <!-- <div style="display: none"> {{ordersReportsData.length}}</div> -->
                <div class="table-responsive">
-                  <table datatable [dtOptions]="dtOptions"
-                     class="datatable table table-borderless table-center table-row-dashed mb-0">
+                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                     class="table table-borderless table-center">
                      <thead class="thead mt-100">
-                        <tr class="fs-7 text-uppercase">
+                        <tr class="fs-5">
                            <th class="text-gray-400 col-md-2">Sl No.</th>
                            <th class="text-gray-400 col-md-2">Order No.</th>
                            <th class="text-gray-400 col-md-2">Order Date</th>
@@ -100,13 +99,13 @@
                            <th class="text-gray-400 col-md-2">Status</th>
                         </tr>
                      </thead>
-                     <tbody>
+                     <tbody class="fs-5">
                         <tr *ngFor="let data of ordersReportsData; let i = index">
                            <td>
                               <h2 class="table-avatar">{{ i + 1 }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{data?.ordernumber}}</h2>
+                              <h2 class="table-avatar">{{data?.ordernumber}}</h2>
                            </td>
                            <td>
                               <h2 class="table-avatar">{{data?.orderdate}}</h2>

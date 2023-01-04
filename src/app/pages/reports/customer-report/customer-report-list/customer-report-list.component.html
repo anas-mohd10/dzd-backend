@@ -19,17 +19,12 @@
       </div>
    </div>
    <div class="row col-12 d-flex justify-content-end align-items-end">
-      <div class="col-sm-2 align-items-center justify-content-evenly">
+      <div class="col-sm-2 align-items-center justify-content-evenly fs-5">
          <label class="col-sm-2 col-form-label">Customers</label>
-         <div class="form-group">
-            <select class="form-select form-select-lg fs-5" aria-label=".form-select-lg" [formControl]="customer"
-               (change)="filterReport()">
-               <option disabled>--Select an Customer--</option>
-               <option *ngFor="let customer of customers" value="{{customer?._id}}">
-                  {{customer?.firstname}}
-               </option>
-            </select>
-         </div>
+            <ng-select [items]="customers" bindLabel="firstname" bindValue="_id" [(ngModel)]="customer"
+            placeholder="--Select customer--" [multiple]=false [ngModelOptions]="{standalone: true}"
+            (change)="filterReport()">
+          </ng-select>
       </div>
       <div class="col-sm-2">
          <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark" style="width: 200px; margin-right: 20px;">
@@ -43,7 +38,7 @@
             <div class="card-body">
                <div class="table-responsive">
                   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                     class="datatable table table-borderless mb-0">
+                     class="table table-borderless table-center mb-0">
                      <thead class="thead mt-100">
                         <tr class="fs-5">
                            <th class="text-gray-400 col-md-2">Sl No.</th>

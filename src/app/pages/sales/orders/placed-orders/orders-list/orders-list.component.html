@@ -41,16 +41,15 @@
             </app-stats-widget5>
          </div>
       </div>
-      <hr class="horizontal-line">
       <form [formGroup]="orderform">
          <div class="col-12 row" style="display: flex; align-items: flex-end;">
             <div class="search-input col-sm-2">
                <label class="fs-5">From</label>
-               <input type="date" class="form-control fs-7" formControlName="fdate" (change)="searchOrder()">
+               <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()">
             </div>
             <div class="search-input col-sm-2">
                <label class="fs-5">To</label>
-               <input type="date" class="form-control fs-7" formControlName="tdate" (change)="searchOrder()">
+               <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
             </div>
             <div class="search-status col-sm-2">
                <label class="fs-5">Status</label>
@@ -70,12 +69,12 @@
                <label class="fs-5 form-title">Payment</label>
                <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
                   <option value="" disabled> Select An Option</option>
-                  <option value="COD" class="fs-7">COD</option>
-                  <option value="ONLINE" class="fs-7">Online</option>
-                  <option value="CASH" class="fs-7">Cash</option>
-                  <option value="UNPAID" class="fs-7">Unpaid</option>
-                  <option value="SPLIT" class="fs-7">Split</option>
-                  <option value="CARD" class="fs-7">Card</option>
+                  <option value="COD">COD</option>
+                  <option value="ONLINE">Online</option>
+                  <option value="CASH">Cash</option>
+                  <option value="UNPAID">Unpaid</option>
+                  <option value="SPLIT">Split</option>
+                  <option value="CARD">Card</option>
                </select>
             </div>
             <div class="search-submit col-sm-2">
@@ -84,20 +83,14 @@
             </div>
          </div>
       </form>
-      <hr class="horizontal-line">
    </div>
    <div class="row">
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-               <!-- <ng-container *ngIf="count == 0">
-                  <div class="no-data-container mb-10">
-                     <h2>Sorry, we haven't found any data</h2>
-                  </div>
-               </ng-container> -->
                <div class="table-responsive">
-                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                     class="datatable table table-borderless table-center table-row-dashed mb-0">
+                  <table id=DataTables_Table_0 datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                     class="table table-borderless table-striped table-center">
                      <thead>
                         <tr class="fs-5 text-gray-400">
                            <th scope="col" class="">Sl No</th>

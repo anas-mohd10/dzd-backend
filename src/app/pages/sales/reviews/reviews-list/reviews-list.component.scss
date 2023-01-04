@@ -4,11 +4,6 @@
    color: #ecbe09;
 }
 
-.review-product-names {
-   display: flex;
-   flex-direction: column;
-}
-
-.review-product-names h2{
-   line-height: 30px;
+table.table td h2.table-avatar, table.table td .table-avatar.h2 {
+   white-space: initial !important;
 }

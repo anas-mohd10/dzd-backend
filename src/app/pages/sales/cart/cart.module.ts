@@ -7,6 +7,7 @@ import { WidgetsModule } from 'src/app/shared/partials/content/widgets/widgets.m
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReactiveFormsModule,
     DataTablesModule,
     WidgetsModule,
+    NgSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

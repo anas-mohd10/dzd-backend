@@ -6,6 +6,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { CustomerReportListComponent } from './customer-report-list/customer-report-list.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CustomerReportListComponent } from './customer-report-list/customer-rep
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
+    NgSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

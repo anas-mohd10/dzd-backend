@@ -1,4 +1,4 @@
-import { ChangeDetectorRef,Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -74,6 +74,7 @@ export class OrderReportListComponent implements OnDestroy, OnInit {
     this.ordersService.getOrderReport().subscribe((res: any) => {
       this.ordersReportsData = res?.result
       this.cdr.markForCheck()
+      this.dtTrigger.next()
     })
   }
 
@@ -83,10 +84,6 @@ export class OrderReportListComponent implements OnDestroy, OnInit {
 
   onSubmit() {
     console.log(this.orderReportForm.value)
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
   }
 
   ngOnDestroy(): void {
