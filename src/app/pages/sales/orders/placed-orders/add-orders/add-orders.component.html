@@ -131,7 +131,7 @@
                               formControlName="paymentMethod"
                               [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
                               <option value="disabled" disabled>-- Select an option --</option>
-                              <option value="CASH">Cash</option>
+                              <option value="COD">Cash On Delivery</option>
                               <option value="SPLIT">Split</option>
                               <option value="CARD">Card</option>
                               <option value="UNPAID">Unpaid</option>
@@ -167,8 +167,8 @@
                               Add Product
                            </button>
                         </div>
-                        <div class="col-12 row align-items-end" *ngFor="let product of products().controls; let i=index" [formGroupName]="i"
-                           style="margin-top: 40px">
+                        <div class="col-12 row align-items-end" *ngFor="let product of products().controls; let i=index"
+                           [formGroupName]="i" style="margin-top: 40px">
                            <div class="col-sm-5">
                               <div class="form-group">
                                  <label class="fs-5 mb-3 form-title required">Product</label>
@@ -184,7 +184,8 @@
                            <div class="col-sm-5">
                               <label class="fs-5 mb-3 form-title required">Quantity</label>
                               <div class="form-group d-flex align-items-center">
-                                 <input type="number" class="form-control fs-5" id="quantity" formControlName="quantity">
+                                 <input type="number" class="form-control fs-5" id="quantity"
+                                    formControlName="quantity">
                               </div>
                            </div>
                            <div class="col-2">

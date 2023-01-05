@@ -69,9 +69,8 @@
                <label class="fs-5 form-title">Payment</label>
                <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
                   <option value="" disabled> Select An Option</option>
-                  <option value="COD">COD</option>
+                  <option value="COD">Cash On Delivery</option>
                   <option value="ONLINE">Online</option>
-                  <option value="CASH">Cash</option>
                   <option value="UNPAID">Unpaid</option>
                   <option value="SPLIT">Split</option>
                   <option value="CARD">Card</option>
@@ -90,7 +89,7 @@
             <div class="card-body">
                <div class="table-responsive">
                   <table id=DataTables_Table_0 datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                     class="table table-borderless table-striped table-center">
+                     class="table table-borderless table-center">
                      <thead>
                         <tr class="fs-5 text-gray-400">
                            <th scope="col" class="">Sl No</th>

@@ -25,7 +25,7 @@
       <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
-               <form (ngSubmit)="onSubmit()" [formGroup]="customersForm">
+               <form [formGroup]="customersForm">
                   <div class="row">
                      <div class="col-12">
                         <h5 class="form-title fs-4"><span>Customers Details</span></h5>
@@ -33,18 +33,11 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required">First Name</label>
-                           <input type="text" class="form-control fs-5" formControlName="firstname" [ngClass]="{
+                           <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
                               'is-invalid':
-                              (cf.firstname.touched || isSubmitted) &&
-                              cf.firstname.errors?.required
+                              (cf.name.touched || isSubmitted) &&
+                              cf.name.errors?.required
                             }" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title "> Last Name</label>
-                           <input type="text" class="form-control fs-5" formControlName="lastname" />
-
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -61,6 +54,16 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
+                           <label class="fs-5 mb-3 form-title required">Country Code</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="countryCode">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="+91">+91</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Mobile No.</label>
                            <input type="number" class="form-control fs-5" formControlName="mobile"
                               (change)="validateNumber($event.target)" [ngClass]="{
@@ -69,7 +72,8 @@
                               cf.mobile.errors?.required
                             }" />
                         </div>
-                        <div class="error-message text-danger" *ngIf="cf.mobile.errors?.pattern">Enter an valid 10 digit mobile number</div>
+                        <div class="error-message text-danger" *ngIf="cf.mobile.errors?.pattern">Enter an valid 10 digit
+                           mobile number</div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <label class="fs-5 mb-3 form-title">Wallet Balance</label>
@@ -94,21 +98,22 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-12">
+                     <div class="col-12 d-flex align-items-center justify-content-between">
                         <h5 class="form-title fs-4"><span>Address Details</span></h5>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required">Address Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="isHome" [ngClass]="{
+                              formControlName="type" [ngClass]="{
                                  'is-invalid':
-                                 (cf.isHome.touched || isSubmitted) &&
-                                 cf.isHome.errors?.required
+                                 (cf.type.touched || isSubmitted) &&
+                                 cf.type.errors?.required
                                }">
                               <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Home</option>
-                              <option value="false">Office</option>
+                              <option value="Home">Home</option>
+                              <option value="Work">Work</option>
+                              <option value="Other">Other</option>
                            </select>
                         </div>
                      </div>
@@ -197,12 +202,50 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-12">
+                     <div class="col-12 d-flex align-items-center justify-content-end">
+                        <button class="btn btn-sm bg-primary text-white fs-5" (click)="addAddress()">
+                           Save Address
+                        </button>
+                     </div>
+                     <div class="col-12" *ngIf="addresses.length > 0">
+                        <div class="col-12">
+                           <h5 class="form-title fs-4">Select Default Address</h5>
+                           <div class="fs-6">
+                              If none of them are selected, first address will be selected as default address
+                           </div>
+                        </div>
+                        <ng-container *ngFor="let address of addresses; let i =index">
+                           <div class="address-card col-12">
+                              <div class="form-check">
+                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="address"
+                                    (click)="selectAddress(i)">
+                                 <label class="form-check-label" for="address">
+                                    <div class="address-type">{{address?.type}}</div>
+                                    <div class="label-address">
+                                       {{address?.firstline}},
+                                       {{address?.secondline}}
+                                       <br>
+                                       {{address?.city}},
+                                       {{address?.landmark}},
+                                       <br>
+                                       {{address?.pincode}},
+                                       {{address?.state}}
+                                    </div>
+                                 </label>
+                              </div>
+                              <div class="delete-address" (click)="removeAddress(i)">
+                                 <i class="bi bi-x-lg"></i>
+                              </div>
+                           </div>
+                        </ng-container>
+                     </div>
+                     <div class="col-12 d-flex align-items-center justify-content-end">
                         <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
                            class="btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                           [ngClass]="{'disabled-button': !validBtn}" (click)="onSubmit()">
                            Add
                         </button>
                      </div>

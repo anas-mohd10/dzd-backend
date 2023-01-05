@@ -21,10 +21,10 @@
    <div class="row col-12 d-flex justify-content-end align-items-end">
       <div class="col-sm-2 align-items-center justify-content-evenly fs-5">
          <label class="col-sm-2 col-form-label">Customers</label>
-            <ng-select [items]="customers" bindLabel="firstname" bindValue="_id" [(ngModel)]="customer"
+         <ng-select [items]="customers" bindLabel="name" bindValue="_id" [(ngModel)]="customer"
             placeholder="--Select customer--" [multiple]=false [ngModelOptions]="{standalone: true}"
             (change)="filterReport()">
-          </ng-select>
+         </ng-select>
       </div>
       <div class="col-sm-2">
          <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark" style="width: 200px; margin-right: 20px;">
