@@ -34,12 +34,14 @@
                   <div class="layout-from">Valid from <span>{{layout?.validFrom}}</span></div>
                   <div class="layout-till">Valid to <span>{{layout?.validTo}}</span></div>
                   <div class="layout-grid-count">Grid count <span>{{layout?.gridCount}}</span></div>
-                  <div class="layout-type">{{layout?.type}} -
-                     <div class="layout-status" *ngIf="layout?.isActive">Active</div>
-                     <div class="layout-status" *ngIf="!layout?.isActive">Inactive</div>
+                  <div class="layout-type">{{layout?.type}}
+                     <div class="layout-status active" *ngIf="layout?.isActive">Active</div>
+                     <div class="layout-status inactive" *ngIf="!layout?.isActive">Inactive</div>
                   </div>
                   <div class="layout-edit-btn">
-                     <a [routerLink]="appRoute.layout.UPDATE_LAYOUT" [queryParams]="{layout: layout?.layid}">Edit</a>
+                     <button class="btn btn-sm bg-secondary text-dark fs-5" style="width: 100px; font-weight: 500;"
+                        [routerLink]="appRoute.layout.UPDATE_LAYOUT"
+                        [queryParams]="{layout: layout?.layid}">Edit</button>
                   </div>
                </div>
                <div class="layout-card-right">

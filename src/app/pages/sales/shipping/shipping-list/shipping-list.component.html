@@ -1,8 +1,7 @@
 <div class="offer-page-container">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder">Carriers</h1>
+      <h1 class="fw-bolder">Shipping</h1>
     </div>
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
@@ -11,41 +10,26 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.shipping.SHIPPING_LIST }}">Carriers</a>
+            <a routerLink="{{ appRoute.shipping.SHIPPING_LIST }}">Shipping</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-5" color="primary" routerLink="" style="width: 200px">
+        <!-- Add button start -->
+        <!-- <button class="btn btn-primary cursor-pointer fs-5" color="primary" routerLink="" style="width: 200px">
           Add Carrriers
-        </button>
+        </button> -->
+        <!-- Add button end -->
       </div>
     </div>
   </div>
-  <!-- Page Header -->
-
-  <!-- Table Start -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
-          <!-- <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
-              <div class="active-filter-container col-sm-3">
-                <label class="fs-5 mb-3 fw-bold">Active Offers</label>
-                <select
-                  class="form-select"
-                  aria-label="Active offers"
-                  formControlName="active"
-                  (change)="onChange()"
-                >
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-              </div>
-            </form> -->
-          <div class="table-responsive" *ngIf="displayTable">
-            <table datatable [dtOptions]="dtOptions"
-              class="datatable table table-borderless table-center table-row-dashed mb-0">
+          <div class="table-responsive">
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+              class="datatable table table-borderless table-center mb-0">
               <thead class="thead mt-100">
-                <tr class="fs-7 text-uppercase">
+                <tr class="fs-5">
                   <th class="text-gray-400">Sl No.</th>
                   <th class="text-gray-400">Name</th>
                   <th class="text-gray-400">Secret Key</th>
@@ -54,14 +38,20 @@
                   <th class="text-gray-400">Action</th>
                 </tr>
               </thead>
-              <tbody>
-
+              <tbody class="fs-5">
+                <tr *ngFor="let data of shippings; let i = index">
+                  <td>{{i+1}}</td>
+                  <td>{{data?.name}}</td>
+                  <td>{{data?.secretkey}}</td>
+                  <td>{{data?.url}}</td>
+                  <td>{{data?.status}}</td>
+                  <td>{{i+1}}</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Table Start -->
+  </div> -->
 </div>

@@ -20,7 +20,7 @@ export class PendingOrdersListComponent implements OnDestroy, OnInit {
 
   appRoute = appRoutes
   displayTable: boolean = false;
-  orders: any;
+  orders: any = [];
   orderCount: Number = 0
   totalRevenue: Number = 0
   orderform: FormGroup;

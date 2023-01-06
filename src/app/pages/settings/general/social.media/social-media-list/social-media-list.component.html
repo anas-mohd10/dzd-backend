@@ -15,17 +15,16 @@
             </ul>
             <button *ngIf="isData" class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary"
                style="width: 200px" routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
-               Add links
+               Add Links
             </button>
+            <button class="btn btn-primary btn-sm cursor-pointer fs-5" [queryParams]="{slug: socialMediaData[0]?.slug}"
+               *ngIf="!isData" color="primary" routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}"
+               style="width: 200px;">Edit Links</button>
          </div>
       </div>
    </div>
    <div class="row mt-10">
       <div style="display: none;">{{socialMediaData.length}}</div>
-      <div>
-        <button class="btn btn-primary btn-sm cursor-pointer fs-5" [queryParams]="{slug: socialMediaData[0]?.slug}" color="primary"
-        routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}" style="width: 100px; float: right;">Edit link</button>
-      </div>
       <div class="social-card">
          <div class="social-card-title">Facebook</div>
          <div class="social-card-link">
@@ -35,7 +34,6 @@
                [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
          </div>
       </div>
-      <div class="hr-card"></div>
       <div class="social-card">
          <div class="social-card-title">Instagram</div>
          <div class="social-card-link">
@@ -45,7 +43,6 @@
                [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
          </div>
       </div>
-      <div class="hr-card"></div>
       <div class="social-card">
          <div class="social-card-title">Linkedin</div>
          <div class="social-card-link">
@@ -55,7 +52,6 @@
                [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
          </div>
       </div>
-      <div class="hr-card"></div>
       <div class="social-card">
          <div class="social-card-title">Whatsapp</div>
          <div class="social-card-link">
@@ -65,7 +61,6 @@
                [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
          </div>
       </div>
-      <div class="hr-card"></div>
       <div class="social-card">
          <div class="social-card-title form-title">Twitter</div>
          <div class="social-card-link">
@@ -75,7 +70,6 @@
                [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
          </div>
       </div>
-      <div class="hr-card"></div>
       <div class="social-card">
          <div class="social-card-title form-title">Youtube</div>
          <div class="social-card-link">
@@ -85,7 +79,6 @@
                [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
          </div>
       </div>
-      <div class="hr-card"></div>
       <div class="social-card">
          <div class="social-card-title form-title">Behance</div>
          <div class="social-card-link">

@@ -67,7 +67,7 @@ export class AddBannerListComponent implements OnInit {
 
   initForm() {
     this.bannerForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       redirectURL: [''],

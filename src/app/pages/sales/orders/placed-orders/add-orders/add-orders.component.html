@@ -33,7 +33,7 @@
                      <div class="col-12">
                         <div class="form-group col-sm-6">
                            <label class="fs-5 mb-3 form-title required">Customer</label>
-                           <ng-select [items]="activeCustomersData" bindLabel="firstname" bindValue="userid"
+                           <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
                               [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
                               [ngModelOptions]="{standalone: true}" (change)="getAddress()">
                            </ng-select>

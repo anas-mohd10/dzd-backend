@@ -19,7 +19,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
 
   orderform: FormGroup;
   appRoute = appRoutes;
-  orders: any;
+  orders: any = [];
   base: any
   isTable: Boolean = false
   isDateValid: boolean = false;
@@ -45,7 +45,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       processing: true,
     };
 
-    this.ordersService.getOrders().subscribe((res: any) => {
+    this.ordersService.getOrders().subscribe((res: any) => {      
       this.orders = res?.result?.orders
       for (let order of this.orders) {
         order.orderDate = new Date(order.orderDate).toDateString()

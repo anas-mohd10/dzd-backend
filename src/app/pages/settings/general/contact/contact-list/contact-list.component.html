@@ -32,8 +32,10 @@
             <div class="contact-pincode fs-5">{{contact?.address[0]?.pincode}}</div>
             <br>
             <div class="edit-btn fs-5">
-               <a routerLink="{{ appRoute.contacts.UPDATE_CONTACTS_LIST }}" [queryParams]="{slug: contact?.slug}">Edit
-                  info</a>
+               <button class="btn btn-sm bg-secondary fs-5" style="font-weight: 500; border-radius: 50px;"
+                  routerLink="{{ appRoute.contacts.UPDATE_CONTACTS_LIST }}" [queryParams]="{slug: contact?.slug}">
+                  Edit info
+               </button>
             </div>
          </div>
       </ng-container>

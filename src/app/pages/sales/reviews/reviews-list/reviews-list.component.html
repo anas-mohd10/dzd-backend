@@ -20,23 +20,22 @@
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-               <div style="display: none"> {{reviewsData.length}}</div>
                <div class="table-responsive">
-                  <table datatable [dtOptions]="dtOptions"
-                     class="datatable table table-borderless table-center table-striped mb-0">
+                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                     class="datatable table table-borderless table-center mb-0">
                      <thead class="thead mt-100">
                         <tr class="fs-5">
-                           <th class="text-gray-400 col-md-2">Sl No.</th>
-                           <th class="text-gray-400 col-md-2">Order No.</th>
+                           <th class="text-gray-400">Sl No.</th>
+                           <th class="text-gray-400">Order No.</th>
                            <th class="text-gray-400 col-md-2">Product</th>
-                           <th class="text-gray-400 col-md-2">Rating</th>
-                           <th class="text-gray-400 col-md-2">Review</th>
-                           <th class="text-gray-400 col-md-2">Date</th>
-                           <th class="text-gray-400 col-md-2">Action</th>
+                           <th class="text-gray-400">Rating</th>
+                           <th class="text-gray-400">Review</th>
+                           <th class="text-gray-400">Date</th>
+                           <th class="text-gray-400">Action</th>
                         </tr>
                      </thead>
                      <tbody class="fs-5">
-                        <tr *ngFor="let review of reviewsData; let i = index">
+                        <tr *ngFor="let review of reviews; let i = index">
                            <td>
                               <h2 class="table-avatar">{{ i + 1 }}</h2>
                            </td>
@@ -47,7 +46,8 @@
                               <h2 class="table-avatar">{{review?.product?.id?.name}}</h2>
                            </td>
                            <td style="flex-wrap: wrap !important;">
-                              <h2 class="table-avatar fw-700" style="flex-wrap: wrap !important;">{{ review?.rating }}</h2>
+                              <h2 class="table-avatar fw-700" style="flex-wrap: wrap !important;">{{ review?.rating }}
+                              </h2>
                               <!-- <i class="bi bi-star-fill rating-icon"></i> -->
                            </td>
                            <td>

@@ -26,8 +26,8 @@
         <div class="faq-subject"> {{faq?.subject}}</div>
         <div class="faq-question"> {{faq?.question}}</div>
         <div class="faq-answer"> {{faq?.answer}}</div>
-        <button class="edit-btn btn btn-primary btn-sm fs-5 text-white"
-          style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; width: 200px;"
+        <button class="edit-btn btn btn-secondary btn-sm fs-5 text-dark"
+          style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
           routerLink="{{ appRoute.faq.UPDATE_FAQ }}" [queryParams]="{slug: faq?.slug}">Edit</button>
       </div>
     </ng-container>

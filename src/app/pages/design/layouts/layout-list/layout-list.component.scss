@@ -4,13 +4,13 @@
    margin: 10px 0 0 0;
    width: 100%;
 
-   .inactive-layout {
-      background: rgba(255, 0, 0, 0.08);
-   }
+   // .inactive-layout {
+   //    background: rgba(255, 0, 0, 0.08);
+   // }
 
-   .active-layout {
-      background: rgba(0, 255, 128, 0.08);
-   }
+   // .active-layout {
+   //    background: rgba(0, 255, 128, 0.08);
+   // }
 
    .editable-false {
       pointer-events: none;
@@ -36,6 +36,20 @@
 
 .layout-card-left {
    width: 40%;
+
+   .active {
+      color: #10aa7c;
+      background: #00bdab10;
+      padding: 0.625rem;
+      border-radius: 0.3125rem;
+   }
+
+   .inactive {
+      color: #aa1025;
+      background: #bd001910;
+      padding: 0.625rem;
+      border-radius: 0.3125rem;
+   }
 }
 
 .layout-card-right {

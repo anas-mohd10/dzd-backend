@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { appRoutes } from 'src/app/config/routes';
 import { ReviewService } from 'src/app/includes/services/review.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
 @Component({
   selector: 'app-reviews-list',
   templateUrl: './reviews-list.component.html',
@@ -18,25 +17,35 @@ export class ReviewsListComponent implements OnInit, OnDestroy {
   public dtTrigger: Subject<any> = new Subject();
 
   appRoute = appRoutes
-  reviewsData: any
+  reviews: any = []
   data: any
 
   constructor(
     private reviewService: ReviewService,
     private router: Router,
     private toastr: ToastrService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.getReviews()
+
+    this.dtOptions = {
+      pagingType: 'simple_numbers',
+      lengthMenu: [5, 10, 15],
+      pageLength: 10,
+      processing: true,
+    };
   }
 
   getReviews() {
     this.reviewService.getReviews().subscribe((res: any) => {
-      this.reviewsData = res?.result
-      for (let review of this.reviewsData) {
+      this.reviews = res?.result
+      for (let review of this.reviews) {
         review.created = new Date(review.created).toDateString()
       }
+      this.ChangeDetectorRef.markForCheck()
+      this.dtTrigger.next()
     })
   }
 
@@ -47,15 +56,12 @@ export class ReviewsListComponent implements OnInit, OnDestroy {
     }
     this.reviewService.updateReview(code, this.data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        window.location.reload()
+        this.toastr.success(res?.message);
+        document.location.reload()
       }
     })
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
   }
 
   ngOnDestroy(): void {

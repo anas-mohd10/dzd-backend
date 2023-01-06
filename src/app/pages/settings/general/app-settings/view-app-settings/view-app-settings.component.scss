@@ -3,20 +3,22 @@
 
    .row {
       .color-container {
-         width: 250px;
-         height: 80px;
-         border-radius: 8px;
+         width: 130px;
+         height: 130px;
+         border-radius: 65px;
+         margin: 0 0 20px 0;
       }
 
       .primary-color,
       .secondary-color {
-         font-size: 1.2rem;
+         font-size: 1.3rem;
          font-weight: 500;
       }
 
       .items-per-page,
       .font-family {
-         font-size: 1.2rem;
+         font-size: 1.3rem;
+         font-weight: 500;
       }
    }
 }

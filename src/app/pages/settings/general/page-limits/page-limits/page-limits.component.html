@@ -74,7 +74,7 @@
                <div class="page-settings-title fs-5">
                   Selected default collection
                </div>
-               <div class="page-settings-details">
+               <div class="page-settings-details" *ngIf="settings?.collections?.selecteditem">
                   <div class="page-settings-image">
                      <img src="{{base}}/{{settings?.collections?.selecteditem?.file}}" alt=""
                         style="height: 40px; width: 40px; border-radius: 5px;">
@@ -91,7 +91,7 @@
                <div class="page-settings-title fs-5">
                   Selected default product
                </div>
-               <div class="page-settings-details">
+               <div class="page-settings-details" *ngIf="settings?.products?.selecteditem">
                   <div class="page-settings-image">
                      <img src="{{base}}/{{settings?.products?.selecteditem?.thumbnail}}" alt=""
                         style="height: 40px; width: 40px; border-radius: 5px;">
