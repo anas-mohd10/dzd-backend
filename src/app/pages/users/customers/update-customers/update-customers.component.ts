@@ -188,8 +188,7 @@ export class UpdateCustomersComponent implements OnInit {
   getCustomerDetails() {
     this.customerService.getCustomerBySlug(this.slug).subscribe((res: any) => {
       this.customerData = res?.result[0]
-      this.customersForm.get("firstname")?.setValue(this.customerData.firstname)
-      this.customersForm.get("lastname")?.setValue(this.customerData.lastname)
+      this.customersForm.get("name")?.setValue(this.customerData.name)
       this.customersForm.get("mobile")?.setValue(this.customerData.mobile)
       this.customersForm.get("email")?.setValue(this.customerData.email)
       this.customersForm.get("countryCode")?.setValue(this.customerData.countryCode)

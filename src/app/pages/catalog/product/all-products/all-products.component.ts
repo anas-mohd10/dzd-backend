@@ -209,7 +209,7 @@ export class AllProductsComponent implements OnInit {
     this.productform.get('isActive')?.setValue('')
     this.productform.get('isFeatured')?.setValue('')
     this.productform.get('category')?.setValue('')
-    this.category = ''
+    
     this.searchProduct()
   }
 
