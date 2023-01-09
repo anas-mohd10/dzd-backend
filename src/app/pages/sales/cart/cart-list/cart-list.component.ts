@@ -63,8 +63,8 @@ export class CartListComponent implements OnInit, OnDestroy {
     this.cartService.getCarts().subscribe((res: any) => {
       this.carts = res?.result
       for (let cart of this.carts) {
-        cart.date = new Date(cart?.date).toLocaleString()
-        cart.purchasedDate = new Date(cart?.purchasedDate).toLocaleString()
+        cart.added = new Date(cart?.date?.added).toLocaleString()
+        cart.purchased = new Date(cart?.date?.purchased).toLocaleString()
       }
       this.cdr.markForCheck()
       this.dtTrigger.next();

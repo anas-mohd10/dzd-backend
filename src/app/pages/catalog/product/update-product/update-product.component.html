@@ -323,8 +323,8 @@
                     <div class="col-12 preview-section" style="margin-top: 50px;">
                       <div class="crop-image col-sm-6">
                         <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                          [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="2400"
+                          [cropperMaxHeight]="2400" format="png" (imageCropped)="imageCropped($event)"
                           (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
                           (loadImageFailed)="loadImageFailed()">
                         </image-cropper>
@@ -378,8 +378,8 @@
                     <div class="col-12 preview-section" style="margin-top: 50px;">
                       <div class="crop-image col-sm-6">
                         <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
-                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="500"
-                          [cropperMaxHeight]="500" format="jpeg" (imageCropped)="imageThumbnailCropped($event)"
+                          [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="2400"
+                          [cropperMaxHeight]="2400" format="jpeg" (imageCropped)="imageThumbnailCropped($event)"
                           (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
                           (loadImageFailed)="loadThumbnailImageFailed()">
                         </image-cropper>

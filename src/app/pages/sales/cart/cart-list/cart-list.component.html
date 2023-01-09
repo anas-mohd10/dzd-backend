@@ -31,7 +31,8 @@
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly fs-5">
           <label class="col-sm-2 form-title">Product</label>
           <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="product"
-            placeholder="--Select product--" [multiple]=false [ngModelOptions]="{standalone: true}" (change)="seachCart()">
+            placeholder="--Select product--" [multiple]=false [ngModelOptions]="{standalone: true}"
+            (change)="seachCart()">
           </ng-select>
         </div>
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
@@ -40,9 +41,8 @@
             <select class="form-select fs-5" [formControl]="status" (change)="seachCart()">
               <option value="" disabled>-- Select status --</option>
               <option value="Ordered">Ordered</option>
-              <option value="Unordered">Non Ordered</option>
+              <option value="Unordered">Unrdered</option>
               <option value="Deleted">Deleted</option>
-              <option value="Pending">Pending</option>
             </select>
           </div>
         </div>
@@ -81,16 +81,16 @@
                     <h2 class="table-avatar">{{ i + 1 }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.order }}</h2>
+                    <h2 class="table-avatar">{{ cart?.order?.id?.orderNo }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.customer }}</h2>
+                    <h2 class="table-avatar">{{ cart?.customer?.id?.name }} <br>{{ cart?.customer?.id?.mobile }}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.product }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{cart?.quantity}}</h2>
+                    <h2 class="table-avatar">{{cart?.products}}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.total }}</h2>
@@ -102,10 +102,10 @@
                     <h2 class="table-avatar">{{ cart?.status }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.date }}</h2>
+                    <h2 class="table-avatar">{{ cart?.added }}</h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{ cart?.purchasedDate }}</h2>
+                    <h2 class="table-avatar">{{ cart?.purchased }}</h2>
                   </td>
                 </tr>
               </tbody>
