@@ -92,15 +92,6 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Category</label>
-                           <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                              placeholder="Select categories applicable to coupon" [multiple]=true
-                              [ngModelOptions]="{standalone: true}">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
                            <label class="fs-5 mb-3 form-title required">Products</label>
                            <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
                               placeholder="Select products applicable to coupon" [multiple]=true
@@ -119,6 +110,15 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
+                           <label class="fs-5 mb-3 form-title required">Category</label>
+                           <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
+                              placeholder="Select categories applicable to coupon" [multiple]=true
+                              [ngModelOptions]="{standalone: true}">
+                           </ng-select>
+                        </div>
+                     </div>
+                     <!-- <div class="col-12 col-sm-6">
+                        <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Multiple use per user?</label>
                            <select class="form-select" formControlName="isMultiple" [ngClass]="{
                             'is-invalid':(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required}">
@@ -129,7 +129,7 @@
                               <option value="false">No</option>
                            </select>
                         </div>
-                     </div>
+                     </div> -->
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Active Coupon?</label>
@@ -139,6 +139,26 @@
                               <option value="true">Yes</option>
                               <option value="false">No</option>
                            </select>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3 form-title required">Coupon Type</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="couponType" [ngClass]="{
+                                 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="Limited">Limited</option>
+                              <option value="Unlimited">Unlimited</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3">No. of Coupons</label>
+                           <div class="input-group mb-3">
+                              <input type="number" class="form-control" formControlName="couponValue" />
+                           </div>
                         </div>
                      </div>
                      <div class="col-12">

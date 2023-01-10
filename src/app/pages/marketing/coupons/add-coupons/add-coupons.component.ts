@@ -99,7 +99,9 @@ export class AddCouponsComponent implements OnInit {
       color: [''],
       fontSize: [''],
       fontWeight: [''],
-      isMultiple: ['false', Validators.required],
+      // isMultiple: ['false', Validators.required],
+      couponType: ['', Validators.required],
+      couponValue: [0, Validators.required],
       isActive: ['true', Validators.required],
     });
     this.couponForm.get('fromDate')?.setValue(this.from_date)
@@ -244,9 +246,13 @@ export class AddCouponsComponent implements OnInit {
         categories: JSON.stringify(this.categories),
         products: JSON.stringify(this.products),
         collections: JSON.stringify(this.collections),
+        details: {
+          type: this.couponForm.get('couponType')?.value,
+          value: this.couponForm.get('couponValue')?.value,
+        },
         filestring: this.croppedImage,
         filename: this.filename,
-        isMultiple: this.couponForm.get('isMultiple')?.value,
+        // isMultiple: this.couponForm.get('isMultiple')?.value,
         isActive: this.couponForm.get('isActive')?.value,
         style: {
           background: this.couponForm.get('background')?.value,

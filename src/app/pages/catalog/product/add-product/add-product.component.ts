@@ -823,8 +823,10 @@ export class AddProductComponent implements OnInit {
         this.productheadform.get('isActive')?.setValue(res?.result[0]?.isActive)
         this.productheadform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
         this.selectedMainCategory = res?.result[0]?.parentCategory['id']
+
         this.categoryService.getSubCategoriesbyId(this.selectedMainCategory).subscribe((res: any) => {
           if (res?.errorCode == 0) {
+            this.subcategories = res?.result
             this.defaultcategories = [...res?.result]
             this.appendMainCategory()
             this.showMainCategory = true

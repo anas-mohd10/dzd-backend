@@ -255,6 +255,7 @@
    box-sizing: border-box;
    cursor: move;
    // background: white;
+   text-transform: capitalize;
    font-size: 14px;
 }
 
@@ -287,4 +288,13 @@
    display: flex;
    align-items: center;
    justify-content: flex-end;
+}
+
+.data-banner-card{
+
+   img{
+      border-radius: 10px;
+      width: 400px !important;
+      height: 200px !important;
+   }
 }
