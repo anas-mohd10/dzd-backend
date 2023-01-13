@@ -1,0 +1,1 @@
+export const states = ['Kerala', "Karnataka", 'Maharastra', 'Gujarat', 'Tamilnadu', 'Goa', 'West Bengal', 'Rajasthan', 'Manipur', 'Andhra Pradhesh', 'Uttar Pradhesh']

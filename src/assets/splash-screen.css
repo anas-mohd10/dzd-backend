@@ -13,7 +13,7 @@ body {
   justify-content: center;
   flex-direction: column;
   background-color: #f2f3f8;
-  font-family: Poppins, Helvetica, 'sans-serif';
+  font-family: Helvetica, 'sans-serif';
 }
 
 .splash-screen img {

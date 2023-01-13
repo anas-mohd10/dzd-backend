@@ -26,6 +26,11 @@ export class CouponsService {
     return this.http.get(`${url}`);
   }
 
+  getCouponsByProduct(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupons_product);
+    return this.http.post(`${url}`, data);
+  }
+
   getCouponBySlug(slug: any) {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_by_slug + "?slug=" + slug);
     return this.http.get(`${url}`);

@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -9,12 +9,14 @@ import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-add-orders',
   templateUrl: './add-orders.component.html',
   styleUrls: ['./add-orders.component.scss']
 })
+
 export class AddOrdersComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes
@@ -27,6 +29,17 @@ export class AddOrdersComponent implements OnInit {
   activeCoupons: any
   selectedCustomer: any
   customerId: any;
+  isProducts: boolean = false
+  isCartAdded: boolean = false
+
+  //Cart
+  product: any;
+  quantity: any = new FormControl(1, Validators.required);
+  coupon: any
+  productids: any = []
+
+  cart: any = []
+  base: string;
 
   constructor(
     private orderService: OrdersService,
@@ -41,6 +54,7 @@ export class AddOrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm()
     this.managePage()
     this.getActiveCustomers()
@@ -119,23 +133,91 @@ export class AddOrdersComponent implements OnInit {
     })
   }
 
-  products(): FormArray {
-    return this.orderForm.get("products") as FormArray
+  add() {
+    if (this.product) {
+      let productData: any
+      let cartLength = this.cart.length
+      this.productService.getProductById({ id: this.product }).subscribe((res: any) => {
+        productData = res?.result[0]
+        this.cart.push({
+          productId: this.product,
+          quantity: this.quantity?.value,
+          name: productData?.name,
+          refid: productData?.prodid,
+          id: this.cart.length,
+          image: productData?.thumbnail,
+          brand: productData?.product?.id?.brand?.name,
+          price: {
+            mrp: productData?.price?.mrp,
+            offer: productData?.price?.offer
+          }
+        })
+
+        if (!this.productids.includes(this.product)) {
+          this.productids.push(this.product)
+        }
+
+        if (this.productids.length > 0) {
+          this.getCoupons(this.productids)
+        }
+
+        this.isProducts = true
+
+        document.querySelector('.added-to-cart')?.classList.add('show-added')
+        let newCartLength = this.cart.length
+        if (newCartLength > cartLength) {
+          this.product = null
+        }
+
+        setTimeout(() => {
+          document.querySelector('.added-to-cart')?.classList.remove('show-added')
+        }, 2000)
+
+        this.cdr.markForCheck()
+      })
+    } else {
+      this.toastr.error('Add atleast one product to cart')
+    }
   }
 
-  newProduct(): FormGroup {
-    return this.formBuilder.group({
-      productId: '',
-      quantity: '',
+  getCoupons(data: any) {
+    this.couponsService.getCouponsByProduct({ products: data }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.activeCoupons = res?.result
+      }
     })
   }
 
-  addQuantity() {
-    this.products().push(this.newProduct());
+  removeQuantity(i: number) {
+    this.cart().removeAt(i);
   }
 
-  removeQuantity(i: number) {
-    this.products().removeAt(i);
+  removeQty(i: number) {
+    this.cart[i]['quantity'] = this.cart[i]['quantity'] - 1
+    if (this.cart[i]['quantity'] == 0) {
+      this.cart.splice(i, 1)
+    }
+
+    let products = []
+    for (let item of this.cart) {
+      products.push(item?.productId)
+    }
+    
+    if (this.cart.length == 0) {
+      this.isProducts = false
+    }
+    this.getCoupons(products)
+  }
+
+  removeProduct(i: number) {
+    this.cart.splice(i, 1)
+    if (this.cart.length == 0) {
+      this.isProducts = false
+    }
+  }
+
+  addOty(i: number) {
+    this.cart[i]['quantity'] = this.cart[i]['quantity'] + 1
   }
 
   onSubmit() {
@@ -169,12 +251,12 @@ export class AddOrdersComponent implements OnInit {
         lng: data.lng,
         landmark: data.landmark,
       },
-      couponId: data.coupon,
-      product: data.products,
+      couponId: this.coupon ? this.coupon : '',
+      product: this.cart,
       gst: data.gst,
       paymentMethod: data.paymentMethod
     }
-    if (data.products.length != 0) {
+    if (this.cart.length != 0) {
       this.orderService.addOrder(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error(res?.message);
@@ -184,7 +266,7 @@ export class AddOrdersComponent implements OnInit {
         }
       })
     } else {
-      this.toastr.error('Add atleast one product to place the order', 'Add product');
+      this.toastr.error('Add atleast one product to place the order');
     }
   }
 }

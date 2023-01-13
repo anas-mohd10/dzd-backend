@@ -2,6 +2,28 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.sm-thumbnail-image {
+  height: 100%;
+  width: 100%;
+}
+
+.btn-standard {
+  width: 150px !important;
+}
+
+.normal-text {
+  font-size: 1.25rem;
+}
+
+button.btn.btn-rounded {
+  border-radius: 50px;
+}
+
+.modal-title {
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+}
+
 .error-message.text-danger {
   margin: 5px 0 0 0;
   font-size: 1.1rem;

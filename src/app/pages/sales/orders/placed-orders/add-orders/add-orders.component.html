@@ -1,213 +1,260 @@
 <div class="content container-fluid">
-   <div class="page-header">
-      <div class="row align-items-center">
-         <div class="col">
-            <h3 class="page-title fw-bolder fs-2">
-               {{ editMode ? "Update Orders" : "Add Orders" }}
-            </h3>
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
-               </li>
-               <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST}}">
-                     {{ editMode ? "Update Orders" : "Add Orders"}}
-                  </a>
-               </li>
-            </ul>
-         </div>
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fw-bolder fs-2">
+          {{ editMode ? "Update Orders" : "Add Orders" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST}}">
+              {{ editMode ? "Update Orders" : "Add Orders"}}
+            </a>
+          </li>
+        </ul>
       </div>
-   </div>
-   <div class="row mt-10">
-      <div class="col-sm-12 fs-5">
-         <div class="card">
-            <div class="card-body">
-               <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
-                  <div class="row">
-                     <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Orders Details</span></h5>
-                     </div>
-                     <div class="col-12">
-                        <div class="form-group col-sm-6">
-                           <label class="fs-5 mb-3 form-title required">Customer</label>
-                           <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
-                              [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
-                              [ngModelOptions]="{standalone: true}" (change)="getAddress()">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Address Details</span></h5>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required"> Address Line 1</label>
-                           <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
+    </div>
+  </div>
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-5">
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="orderForm">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Orders Details</span></h5>
+              </div>
+              <div class="col-12">
+                <div class="form-group col-sm-6">
+                  <label class="fs-5 mb-3 form-title required">Customer</label>
+                  <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
+                    [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
+                    [ngModelOptions]="{standalone: true}" (change)="getAddress()">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Address Details</span></h5>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required"> Address Line 1</label>
+                  <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
                                  'is-invalid':
                                  (of.firstline.touched || isSubmitted) &&
                                  of.firstline.errors?.required
                                }" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3"> Address Line 2</label>
-                           <input type="text" class="form-control fs-5" formControlName="secondline" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3"> Area</label>
-                           <input type="text" class="form-control fs-5" formControlName="area" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required"> City</label>
-                           <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3"> Address Line 2</label>
+                  <input type="text" class="form-control fs-5" formControlName="secondline" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3"> Area</label>
+                  <input type="text" class="form-control fs-5" formControlName="area" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required"> City</label>
+                  <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
                                  'is-invalid':
                                  (of.city.touched || isSubmitted) &&
                                  of.city.errors?.required
                                }" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required"> Landmark</label>
-                           <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required"> Landmark</label>
+                  <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
                                  'is-invalid':
                                  (of.landmark.touched || isSubmitted) &&
                                  of.landmark.errors?.required
                                }" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required"> Pincode</label>
-                           <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required"> Pincode</label>
+                  <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                                  'is-invalid':
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
                                }" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title"> Latitude</label>
+                  <input type="text" class="form-control fs-5" formControlName="lat" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title"> Longitude</label>
+                  <input type="text" class="form-control fs-5" formControlName="lng" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">State</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                    formControlName="state">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Tamilnadu">Tamilnadu</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Maharastra">Maharastra</option>
+                    <option value="Gujarat">Gujarat</option>
+                  </select>
+                </div>
+              </div>
+              <div class="product-add-container">
+                <div class="col-12 d-flex align-items-center justify-content-between">
+                  <h5 class="form-title fs-4">
+                    <span>Cart</span>
+                  </h5>
+                  <button type="button" class="btn btn-primary btn-rounded btn-standard" data-bs-toggle="modal"
+                    data-bs-target="#cartModal">
+                    Add Products
+                  </button>
+                </div>
+                <div class="col-12">
+                  <ng-container *ngIf="cart.length == 0">
+                    <img src="../../../../../../assets/media/empty-cart.svg" style="height: 150px;" alt="">
+                    <div class="mt-10" style="font-size: 1.66rem; font-weight: 700;">Your cart is empty</div>
+                  </ng-container>
+                  <div class="cart-items">
+                    <ng-container *ngFor="let item of cart; let i=index">
+                      <div class="cart-item">
+                        <div class="cart-image">
+                          <img class="sm-thumbnail-image" src="{{base}}/{{item?.image}}" alt="Product">
                         </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title"> Latitude</label>
-                           <input type="text" class="form-control fs-5" formControlName="lat" />
+                        <div class="cart-details">
+                          <div class="cart-brand">{{item?.brand}}</div>
+                          <div class="cart-product">{{item?.name}}</div>
+                          <div class="cart-price">
+                            <span class="offer-price">₹ {{item?.price?.offer}}</span>
+                            <span class="mrp-price">₹ {{item?.price?.mrp}}</span>
+                          </div>
+                          <div class="cart-bottom">
+                            <div class="cart-remove">
+                              <button class="btn btn-rounded btn-secondary btn-standard" (click)="removeProduct(i)">Remove</button>
+                            </div>
+                            <div class="cart-quantity">
+                              <button class="qty-btn" (click)="removeQty(i)"><i class="bi bi-dash"></i></button>
+                              <div class="quantity">{{item?.quantity}}</div>
+                              <button class="qty-btn" (click)="addOty(i)"><i class="bi bi-plus"></i></button>
+                            </div>
+                          </div>
                         </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title"> Longitude</label>
-                           <input type="text" class="form-control fs-5" formControlName="lng" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">State</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                              formControlName="state">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="Kerala">Kerala</option>
-                              <option value="Karnataka">Karnataka</option>
-                              <option value="Tamilnadu">Tamilnadu</option>
-                              <option value="Goa">Goa</option>
-                              <option value="Maharastra">Maharastra</option>
-                              <option value="Gujarat">Gujarat</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Other Details</span></h5>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Payment Method</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                              formControlName="paymentMethod"
-                              [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
-                              <option value="disabled" disabled>-- Select an option --</option>
-                              <option value="COD">Cash On Delivery</option>
-                              <option value="SPLIT">Split</option>
-                              <option value="CARD">Card</option>
-                              <option value="UNPAID">Unpaid</option>
-                              <option value="ONLINE">Online</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">GST No.</label>
-                           <input type="text" formControlName="gst" class="form-control fs-5">
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Coupon</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                              formControlName="coupon">
-                              <option value="disabled" disabled>-- Select an option --</option>
-                              <option *ngFor="let coupon of activeCoupons" value="{{coupon?._id}}">
-                                 {{coupon?.title}}
-                              </option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="product-add-container" formArrayName="products">
-                        <div class="col-12 d-flex align-items-center justify-content-between">
-                           <h5 class="form-title fs-4">
-                              <span>Products Details</span>
-                           </h5>
-                           <button type="button" (click)="addQuantity()" class="btn btn-dark text-white"
-                              style="width: 200px">
-                              Add Product
-                           </button>
-                        </div>
-                        <div class="col-12 row align-items-end" *ngFor="let product of products().controls; let i=index"
-                           [formGroupName]="i" style="margin-top: 40px">
-                           <div class="col-sm-5">
-                              <div class="form-group">
-                                 <label class="fs-5 mb-3 form-title required">Product</label>
-                                 <select class="form-select form-select-lg fs-5" aria-label=".form-select-lg"
-                                    formControlName="productId">
-                                    <option value="disabled" disabled>-- Select an option --</option>
-                                    <option *ngFor="let prod of activeProducts" value="{{prod?._id}}">
-                                       {{prod?.name}}
-                                    </option>
-                                 </select>
-                              </div>
-                           </div>
-                           <div class="col-sm-5">
-                              <label class="fs-5 mb-3 form-title required">Quantity</label>
-                              <div class="form-group d-flex align-items-center">
-                                 <input type="number" class="form-control fs-5" id="quantity"
-                                    formControlName="quantity">
-                              </div>
-                           </div>
-                           <div class="col-2">
-                              <button type="button" (click)="removeQuantity(i)" class="btn btn-danger"
-                                 style="width: 200px">Remove
-                              </button>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-12 d-flex align-items-center justify-content-end">
-                        <a routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary btn-sm fs-5 text-dark"
-                           style="width: 200px; margin-right: 20px;">
-                           Cancel
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
-                           Submit
-                        </button>
-                     </div>
+                      </div>
+                    </ng-container>
                   </div>
-               </form>
+                </div>
+              </div>
+
+              <div class="col-12" *ngIf="isProducts">
+                <div class="fs-4 col-12">Apply Coupon</div>
+                <div class="col-6">
+                  <ng-select [items]="activeCoupons" bindLabel="title" bindValue="id" [(ngModel)]="coupon"
+                    placeholder="Apply coupon ( If applicable )" [multiple]=false [ngModelOptions]="{standalone: true}"
+                    style="font-size: 1.1rem;">
+                  </ng-select>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Other Details</span></h5>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Payment Method</label>
+                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                    formControlName="paymentMethod"
+                    [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
+                    <option value="disabled" disabled>-- Select an option --</option>
+                    <option value="COD">Cash On Delivery</option>
+                    <option value="SPLIT">Split</option>
+                    <option value="CARD">Card</option>
+                    <option value="UNPAID">Unpaid</option>
+                    <option value="ONLINE">Online</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">GST No.</label>
+                  <input type="text" formControlName="gst" class="form-control fs-5">
+                </div>
+              </div>
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <button routerLink="{{ appRoute.orders.ORDERS_LIST}}"
+                  class="btn btn-secondary btn-standard btn-rounded text-dark" style="margin-right: 20px;">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary btn-rounded btn-standard" (click)="onSubmit()">
+                  Place Order
+                </button>
+              </div>
             </div>
-         </div>
+          </form>
+        </div>
       </div>
-   </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="cartModalLabel">Add Products</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="normal-text">{{cart?.length}} products in cart</div>
+          <div class="col-12">
+            <label class="fs-5 mb-3 form-title required">Product</label>
+            <ng-select [items]="activeProducts" bindLabel="name" bindValue="_id" [(ngModel)]="product"
+              placeholder="Select product" [multiple]=false [ngModelOptions]="{standalone: true}"
+              style="font-size: 1.1rem;">
+            </ng-select>
+          </div>
+          <div class="col-12">
+            <label class="fs-5 mb-3 form-title required">Quantity</label>
+            <input type="number" class="form-control fs-5" id="quantity" [formControl]="quantity"
+              placeholder="Enter product quantity">
+          </div>
+        </div>
+
+        <div class="added-to-cart" [ngClass]="{'show-added': isCartAdded}">
+          <div class="cart-icon">
+            <i class="bi bi-cart-check"></i>
+          </div>
+          <div class="added-text">
+            Product added to cart
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-standard btn-rounded" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-standard btn-rounded" (click)="add()">Add to Cart</button>
+      </div>
+    </div>
+  </div>
 </div>

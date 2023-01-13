@@ -68,15 +68,8 @@ export class AddNotificationsComponent implements OnInit {
   //Active customers
   getCustomers() {
     this.customersService.getActiveCustomers().subscribe((res: any) => {
-      for (let cust of res?.result) {
-        this.customersdata = []
-        this.customersdata.push({
-          name: cust.firstname,
-          id: cust._id,
-          key: this.customersdata.length
-        })
-        this.cdr.markForCheck()
-      }
+      this.customersdata = res?.result
+      this.cdr.markForCheck()
     })
   }
 
@@ -187,9 +180,6 @@ export class AddNotificationsComponent implements OnInit {
       isAllCustomer: this.notificationForm.get('isAllCustomer')?.value,
       isActive: this.notificationForm.get('isActive')?.value,
     }
-
-    console.log(data);
-    
 
     this.notificationsService.addNotification(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
