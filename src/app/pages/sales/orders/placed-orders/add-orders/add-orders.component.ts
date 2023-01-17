@@ -40,6 +40,7 @@ export class AddOrdersComponent implements OnInit {
 
   cart: any = []
   base: string;
+  showTransactionId: boolean = false;
 
   constructor(
     private orderService: OrdersService,
@@ -76,6 +77,7 @@ export class AddOrdersComponent implements OnInit {
       lat: [''],
       lng: [''],
       coupon: [''],
+      transactionId: [''],
       products: this.formBuilder.array([]),
     });
   }
@@ -131,6 +133,17 @@ export class AddOrdersComponent implements OnInit {
       this.orderForm.get("state")?.setValue(res?.result[0].address.state)
       this.orderForm.get("landmark")?.setValue(res?.result[0].address.landmark)
     })
+  }
+
+  checkPaymentmethod(event: any) {
+    console.log(this.orderForm.get('paymentMethod')?.value);
+
+    const method = this.orderForm.get('paymentMethod')?.value
+    if (method == 'ONLINE') {
+      this.showTransactionId = true
+    } else {
+      this.showTransactionId = false
+    }
   }
 
   add() {
@@ -202,7 +215,7 @@ export class AddOrdersComponent implements OnInit {
     for (let item of this.cart) {
       products.push(item?.productId)
     }
-    
+
     if (this.cart.length == 0) {
       this.isProducts = false
     }
@@ -254,7 +267,8 @@ export class AddOrdersComponent implements OnInit {
       couponId: this.coupon ? this.coupon : '',
       product: this.cart,
       gst: data.gst,
-      paymentMethod: data.paymentMethod
+      paymentMethod: data.paymentMethod,
+      transactionId: data?.transactionId
     }
     if (this.cart.length != 0) {
       this.orderService.addOrder(payload).subscribe((res: any) => {

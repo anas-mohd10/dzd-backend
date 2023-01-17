@@ -151,7 +151,8 @@
                           </div>
                           <div class="cart-bottom">
                             <div class="cart-remove">
-                              <button class="btn btn-rounded btn-secondary btn-standard" (click)="removeProduct(i)">Remove</button>
+                              <button class="btn btn-rounded btn-secondary btn-standard"
+                                (click)="removeProduct(i)">Remove</button>
                             </div>
                             <div class="cart-quantity">
                               <button class="qty-btn" (click)="removeQty(i)"><i class="bi bi-dash"></i></button>
@@ -183,15 +184,19 @@
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Payment Method</label>
                   <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="paymentMethod"
+                    formControlName="paymentMethod" (change)="checkPaymentmethod($event.target)"
                     [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
-                    <option value="disabled" disabled>-- Select an option --</option>
+                    <option value="" disabled>-- Select an option --</option>
                     <option value="COD">Cash On Delivery</option>
-                    <option value="SPLIT">Split</option>
-                    <option value="CARD">Card</option>
                     <option value="UNPAID">Unpaid</option>
                     <option value="ONLINE">Online</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6" *ngIf="showTransactionId">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 required">Transaction ID</label>
+                  <input type="text" formControlName="transactionId" class="form-control fs-5">
                 </div>
               </div>
               <div class="col-12 col-sm-6">

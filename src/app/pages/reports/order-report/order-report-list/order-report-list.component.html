@@ -42,7 +42,7 @@
                   <option value="check" disabled>
                      -- Select An Option --
                   </option>
-                  <option *ngFor="let customer of customersData" value="{{customer?._id}}">{{customer?.firstname}}
+                  <option *ngFor="let customer of customersData" value="{{customer?._id}}">{{customer?.name}}
                   </option>
                </select>
             </div>
@@ -84,7 +84,7 @@
             <div class="card-body">
                <div class="table-responsive">
                   <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                     class="table table-borderless table-center">
+                     class="table table-bordered table-center">
                      <thead class="thead mt-100">
                         <tr class="fs-5">
                            <th class="text-gray-400 col-md-2">Sl No.</th>

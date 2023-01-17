@@ -323,26 +323,8 @@
                            </td>
                            <td class="text-end">{{product?.productId?.sku}}</td>
                            <td class="text-end">{{product?.quantity}}</td>
-                           <ng-container *ngIf="product?.offerPrice == 0">
-                              <td class="text-end">
-                                 {{product?.productId?.mrpPrice}}
-                              </td>
-                           </ng-container>
-                           <ng-container *ngIf="product?.offerPrice != 0">
-                              <td class="text-end">
-                                 {{product?.productId?.offerPrice}}
-                              </td>
-                           </ng-container>
-                           <ng-container *ngIf="product?.offerPrice == 0">
-                              <td class="text-end">
-                                 {{product?.quantity * product?.productId?.mrpPrice}}
-                              </td>
-                           </ng-container>
-                           <ng-container *ngIf="product?.offerPrice != 0">
-                              <td class="text-end">
-                                 {{product?.quantity * product?.productId?.offerPrice}}
-                              </td>
-                           </ng-container>
+                           <td class="text-end">{{product?.pricePerUnit}}</td>
+                           <td class="text-end">{{product?.priceAfterTax}}</td>
                         </tr>
                         <tr>
                            <td colspan="4" class="fs-4 fw-bolder text-dark text-end">Total</td>

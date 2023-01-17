@@ -20,10 +20,12 @@ export class ProductReportListComponent implements OnInit {
 
   productReportForm: FormGroup
   appRoute = appRoutes
-  productsData: any;
+  products: any;
   productsReportsData: any;
   headers: any[] = ['Product', 'Price', 'Order', 'Date', 'Quantity', 'Customer', 'Payment', 'Total']
   name: String = "product_report" + Date.now()
+
+  product: any
 
   constructor(
     private productService: ProductService,
@@ -40,40 +42,27 @@ export class ProductReportListComponent implements OnInit {
       pageLength: 10,
       processing: true,
     };
-    this.initForm()
-    this.getProducts()
-    this.getProductReports()
-  }
 
-  initForm() {
     this.productReportForm = this.formBuilder.group({
-      fromDate: [''],
-      toDate: [''],
-      product: [''],
+      from: [''],
+      to: [''],
     });
-  }
 
-  getProducts() {
     this.productService.getProduct().subscribe((res: any) => {
-      this.productsData = res?.result
+      this.products = res?.result
       this.cdr.markForCheck()
     })
-  }
 
-  getProductReports() {
     this.productReportService.getProductReport().subscribe((res: any) => {
       this.productsReportsData = res?.result
       this.cdr.markForCheck()
+      this.dtTrigger.next()
     })
   }
 
-  checkToDate() { }
+  filterReport(){}
 
-  reloadPage() {
-    
-  }
-
-  onSubmit() { }
+  clearFilters(){}
 
   downloadCsvFile() {
     this.csvService.csvDownload(this.headers, this.productsReportsData, this.name)
