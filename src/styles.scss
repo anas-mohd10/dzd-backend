@@ -7,17 +7,49 @@
   width: 100%;
 }
 
-.btn-standard {
-  width: 150px !important;
-}
-
 .normal-text {
   font-size: 1.25rem;
 }
 
-button.btn.btn-rounded {
-  border-radius: 50px;
+//Custom button style
+.btn-rounded {
+  border-radius: 50px !important;
 }
+
+.btn-standard {
+  height: 36px !important;
+  width: 150px !important;
+  font-size: 1.333rem !important;
+  color: #777777;
+}
+
+.btn-edit{
+  margin: 10px 0 0 0 !important;
+  background: #888888 !important;
+  color: #ffffff !important;
+
+  &:hover{
+    border: 1px solid #888888 !important;
+    background: #ffffff !important;
+    color: #888888 !important;
+  }
+}
+
+.btn-add{
+  background: #00bdab !important;
+  color: #ffffff !important;
+  padding: 10px 20px !important;
+  outline: none !important;
+  border: none !important;
+
+  &:hover{
+    border: 1px solid #00bdab !important;
+    background: #ffffff !important;
+    color: #00bdab !important;
+    padding: 9px 20px !important;
+  }
+}
+//Custom button style
 
 .modal-title {
   font-size: 1.6rem !important;

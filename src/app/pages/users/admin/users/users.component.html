@@ -27,9 +27,9 @@
                          <div style="display: none"> {{adminUsersData.length}}</div>
                          <div class="table-responsive" *ngIf="displayTable">
                               <table datatable [dtOptions]="dtOptions"
-                                   class="datatable table table-borderless table-row-dashed table-center mb-0">
+                                   class="datatable table table-bordered table-center mb-0">
                                    <thead class="thead mt-100">
-                                        <tr class="fs-7 text-uppercase">
+                                        <tr class="fs-5">
                                              <th class="text-gray-400 col-md-2">Sl No.</th>
                                              <th class="text-gray-400 col-md-2">Username</th>
                                              <th class="text-gray-400 col-md-2">Email</th>
@@ -37,7 +37,7 @@
                                              <th class="text-gray-400 col-md-2">Action</th>
                                         </tr>
                                    </thead>
-                                   <tbody>
+                                   <tbody class="fs-5">
                                         <tr *ngFor="let user of adminUsersData; let i = index">
                                              <td>
                                                   <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>

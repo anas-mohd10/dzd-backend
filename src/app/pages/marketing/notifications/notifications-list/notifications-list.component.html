@@ -27,7 +27,7 @@
                <div class="search-status col-sm-2">
                   <label class="fs-5">Type</label>
                   <select name="" id="" class="form-select fs-5" formControlName="type" (change)="searchNotification()">
-                     <option value="">Select an option</option>
+                     <option value="" disabled>-- Select an option --</option>
                      <option value="Instant">Instant</option>
                      <option value="Scheduled">Scheduled</option>
                   </select>
@@ -36,7 +36,7 @@
                   <label class="fs-5">Status</label>
                   <select name="" id="" class="form-select fs-5" formControlName="status"
                      (change)="searchNotification()">
-                     <option value="">Select an option</option>
+                     <option value="" disabled>-- Select an option --</option>
                      <option value="Sent">Sent</option>
                      <option value="Pending">Pending</option>
                   </select>
@@ -45,7 +45,7 @@
                   <label class="fs-5 form-title">Channel</label>
                   <select name="" id="" class="form-select fs-5" formControlName="channel"
                      (change)="searchNotification()">
-                     <option value="">Select an option</option>
+                     <option value="" disabled>-- Select an option --</option>
                      <option value="Push">Push notification</option>
                      <option value="Email">Email</option>
                      <option value="SMS">SMS</option>
@@ -80,20 +80,24 @@
                      <img src='{{base}}/{{notification?.file}}' alt="notification image" srcset="" />
                   </div>
                   <div class="notification-details-right">
-                     <div class="notification-name fs-3 fw-bolder">{{notification?.title}}</div>
-                     <div class="notification-type fs-5">{{notification?.type}} - {{notification?.channel}}</div>
-                     <div class="notification-status notification-{{notification?.status}} fs-5 fw-bolder">
-                        {{notification?.status}}</div>
+                     <div class="notification-title">{{notification?.title}}</div>
+                     <div class="notification-message">{{notification?.content}}</div>
+                     <div class="notification-type">{{notification?.type}} - {{notification?.channel}}</div>
+                     <div class="customers d-flex align-center justify-content-between">
+                      <div class="scheduled count"><i class="bi bi-person-badge"></i> Scheduled for {{notification?.customers.length}} users</div>
+                      <div class="sent count"><i class="bi bi-app-indicator"></i> Sent to {{notification?.total ? notification?.total : 0}} users</div>
+                     </div>
+                     <div class="notification-status">{{notification?.status}}</div>
                   </div>
                </div>
-               <div class="notifications-right">
+               <div class="notifications-right d-flex justify-content-center">
                   <div class="notification-timings fs-3 fw-bolder">
                      <div class="notification-date">{{notification?.scheduledDate}}</div>
                      <div class="notification-time">{{notification?.scheduledTime}}</div>
                   </div>
                   <div class="card-edit-btn" *ngIf="notification?.status != 'Sent'">
                      <button routerLink="{{ appRoute.notification.UPDATE_NOTIFICATION }}"
-                        [queryParams]="{ notification: notification?.code }" class="fs-5 cursor-pointer text-darker">
+                        [queryParams]="{ notification: notification?.refid }" class="fs-5 cursor-pointer text-darker">
                         Edit
                      </button>
                   </div>
