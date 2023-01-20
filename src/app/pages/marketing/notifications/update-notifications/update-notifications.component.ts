@@ -53,25 +53,13 @@ export class UpdateNotificationsComponent implements OnInit {
     this.base = environment.base
     this.initForm()
     this.managePage()
-    this.getCustomers()
     this.slug = this.route.snapshot.queryParams.notification || ''
-    this.getNotification()
-  }
 
-  //Active customers
-  getCustomers() {
     this.customersService.getActiveCustomers().subscribe((res: any) => {
-      for (let cust of res?.result) {
-        this.customersdata.push({
-          name: cust.firstname,
-          id: cust._id,
-          key: this.customersdata.length
-        })
-      }
+      this.customersdata = res?.result
+      this.cdr.markForCheck()
     })
-  }
 
-  getNotification() {
     this.notificationsService.getNotificationBySlug(this.slug).subscribe((res: any) => {
       this.notificationForm.get("title")?.setValue(res?.result[0].title)
       this.notificationForm.get("content")?.setValue(res?.result[0].content)
@@ -79,31 +67,28 @@ export class UpdateNotificationsComponent implements OnInit {
       this.notificationForm.get("type")?.setValue(res?.result[0].type)
       this.notificationForm.get("isActive")?.setValue(res?.result[0].isActive)
       this.notificationForm.get("status")?.setValue(res?.result[0].status)
-      this.notificationForm.get("isAllCustomer")?.setValue(JSON.stringify(res?.result[0].isAllCustomer))
+      this.notificationForm.get("isAllCustomer")?.setValue(JSON.stringify(res?.result[0].isAllCustomers))
+
+      if(!res?.result[0].isAllCustomers){
+        this.notificationForm.get('selectCustomer')?.setValue(res?.result[0].isAllCustomers)
+      }
+
       this.uploadedimg = res?.result[0].file
       this.img = this.base + "/" + res?.result[0].file
-      let type = res?.result[0].type
-      if (type == "Scheduled") {
+
+      if (res?.result[0].type == "Scheduled") {
         this.isScheduled = true
       }
-      if (res?.result[0].isAllCustomer == false) {
-        this.getCustomer = true
-        for (let data of res?.result[0].customer) {
-          this.customers.push({
-            key: data.key,
-            name: data.name,
-            id: data.id,
-          })
-        }
-        this.notificationForm.get("scheduledDate")?.setValue(JSON.stringify(new Date(res?.result[0].scheduledDate).toLocaleDateString()))
-        this.notificationForm.get("scheduledTime")?.setValue(res?.result[0].scheduledTime)
-        this.cdr.markForCheck()
-      }
-    })
-  }
 
-  compareFn(item: any, selected: any) {
-    return item._id === selected._id;
+      for(let customer of res?.result[0]?.customers){
+        this.customers.push(customer?.id?._id)
+      }
+
+      const date = new Date(res?.result[0].scheduledDate).toISOString().split('T')[0]
+      this.notificationForm.get("scheduledDate")?.setValue(date)
+      this.notificationForm.get("scheduledTime")?.setValue(res?.result[0].scheduledTime)
+      this.cdr.markForCheck()
+    })
   }
 
   selectcustomer(event: any) {
@@ -113,31 +98,11 @@ export class UpdateNotificationsComponent implements OnInit {
     } else {
       this.getCustomer = false
       this.customers = []
-      this.notificationForm.get("customer")?.setValue('')
     }
   }
 
-  customerInput(event: any) {
-    for (let cust of this.customersdata) {
-      if (cust.key == event.value) {
-        let check = this.customers.some((_data: any) => _data.key == event.value)
-        if (check == false) {
-          this.customers.push({
-            key: Number(event.value),
-            name: cust.name,
-            id: cust.id
-          })
-          this.notificationForm.get("customer")?.setValue('')
-        } else {
-          this.toastr.info("Customer already added")
-          this.notificationForm.get("customer")?.setValue('')
-        }
-      }
-    }
-  }
-
-  removeCustomer(value: any) {
-    this.customers = this.customers.filter((_data: any) => _data.key != value)
+  compareFn(item: any, selected: any) {
+    return item._id === selected._id;
   }
 
   checkType(event: any) {
@@ -165,7 +130,8 @@ export class UpdateNotificationsComponent implements OnInit {
       scheduledTime: [''],
       file: [''],
       customer: [''],
-      isAllCustomer: ['', Validators.required],
+      selectCustomer: [''],
+      isAllCustomer: [''],
       isActive: ['true', Validators.required],
       status: ['', Validators.required],
     });
@@ -200,15 +166,12 @@ export class UpdateNotificationsComponent implements OnInit {
   }
 
   imageLoaded() {
-    // show cropper
   }
 
   cropperReady() {
-    // cropper ready
   }
 
   loadImageFailed() {
-    // show message
   }
 
   removeImage() {
@@ -233,7 +196,8 @@ export class UpdateNotificationsComponent implements OnInit {
       this.toastr.error("Validation error")
       return;
     }
-    const data = {
+
+    let data = {
       title: this.notificationForm.get('title')?.value,
       channel: this.notificationForm.get('channel')?.value,
       type: this.notificationForm.get('type')?.value,
@@ -245,12 +209,13 @@ export class UpdateNotificationsComponent implements OnInit {
       customer: this.customers,
       isAllCustomer: this.notificationForm.get('isAllCustomer')?.value,
       isActive: this.notificationForm.get('isActive')?.value,
-      file: '',
-      status: this.notificationForm.get('status')?.value
+      file:  ''
     }
+
     if (this.uploadedimg) {
       data.file = this.uploadedimg
     }
+
     this.notificationsService.updateNotification(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error('Something went wrong');
@@ -260,4 +225,5 @@ export class UpdateNotificationsComponent implements OnInit {
       }
     })
   }
+
 }

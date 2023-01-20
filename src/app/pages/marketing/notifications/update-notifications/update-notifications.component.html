@@ -42,13 +42,13 @@
                            </div>
                            <div class="form-check mt-5">
                               <input class="form-check-input" type="radio" name="isAllCustomer" id="inlineRadio2"
-                                 value="false" (change)="selectcustomer($event.target)" formControlName="isAllCustomer"
+                                 value="false" (change)="selectcustomer($event.target)" formControlName="selectCustomer"
                                  [ngClass]="{
                                     'is-invalid': (nf.isAllCustomer.touched || isSubmitted) && nf.isAllCustomer.errors?.required}">
                               <label class="form-check-label fs-5" for="inlineRadio2">Select customers</label>
                            </div>
                            <div class="col-12 mt-10" *ngIf="getCustomer == true">
-                              <ng-select [items]="customersdata" bindLabel="name" [(ngModel)]="customers"
+                              <ng-select [items]="customersdata" bindLabel="name"  bindValue="_id" [(ngModel)]="customers"
                                  [ngModelOptions]="{standalone: true}" placeholder="Search customers" [multiple]="true"
                                  [closeOnSelect]="false" [hideSelected]="true" [compareWith]="compareFn">
                               </ng-select>
@@ -171,7 +171,7 @@
                            </div>
                         </div>
                      </ng-container>
-                     <div class="col-12">
+                     <div class="col-12 d-flex align-items-center justify-content-end">
                         <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}"
                            class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                            Cancel

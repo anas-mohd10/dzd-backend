@@ -62,6 +62,7 @@ export class AddOfferComponent implements OnInit {
   ngOnInit(): void {
     const get_date = new Date().getDate()
     const date = new Date()
+    
     this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
     this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
 

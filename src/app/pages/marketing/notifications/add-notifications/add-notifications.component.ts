@@ -18,7 +18,7 @@ export class AddNotificationsComponent implements OnInit {
     editable: true,
     spellcheck: true,
     placeholder: 'Enter notification content here',
-    // translate:this.translate,  
+    // translate:this.translate,
     height: '300px',
     minHeight: '300px',
     // width:'100%',
@@ -130,7 +130,8 @@ export class AddNotificationsComponent implements OnInit {
       scheduledTime: [''],
       file: [''],
       customer: [''],
-      isAllCustomer: ['', Validators.required],
+      selectCustomer: [''],
+      isAllCustomer: [''],
       isActive: ['true', Validators.required],
     });
   }
