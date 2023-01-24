@@ -144,10 +144,10 @@
                <div class="search-category col-12">
                   <label class="fs-5">Category</label>
                   <div class="category-checkbox-container">
-                     <ng-container *ngFor="let category of categories">
+                     <ng-container *ngFor="let category of categories; let i=index">
                         <div class="category-checkbox">
                            <div class="form-check">
-                              <input type="radio" name="category_radio" id="" class="form-check-input"
+                              <input type="radio" name="category_radio" id="{{i}}_category" class="form-check-input"
                                  (click)="selectCategory(category?.catid)" />
                               <label class="form-check-label" for="flexCheckDefault">
                                  {{category?.name}}

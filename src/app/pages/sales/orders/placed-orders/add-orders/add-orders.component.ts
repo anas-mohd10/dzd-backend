@@ -268,7 +268,9 @@ export class AddOrdersComponent implements OnInit {
       product: this.cart,
       gst: data.gst,
       paymentMethod: data.paymentMethod,
-      transactionId: data?.transactionId
+      payment: {
+        transactionId: data?.transactionId
+      }
     }
     if (this.cart.length != 0) {
       this.orderService.addOrder(payload).subscribe((res: any) => {
