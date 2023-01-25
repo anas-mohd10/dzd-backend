@@ -2,6 +2,10 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.btn-primary {
+  font-weight: 600 !important;
+}
+
 .sm-thumbnail-image {
   height: 100%;
   width: 100%;
@@ -26,32 +30,33 @@
   justify-content: center;
 }
 
-.btn-edit{
+.btn-edit {
   margin: 10px 0 0 0 !important;
   background: #888888 !important;
   color: #ffffff !important;
 
-  &:hover{
+  &:hover {
     border: 1px solid #888888 !important;
     background: #ffffff !important;
     color: #888888 !important;
   }
 }
 
-.btn-add{
+.btn-add {
   background: #00bdab !important;
   color: #ffffff !important;
   padding: 10px 20px !important;
   outline: none !important;
   border: none !important;
 
-  &:hover{
+  &:hover {
     border: 1px solid #00bdab !important;
     background: #ffffff !important;
     color: #00bdab !important;
     padding: 9px 20px !important;
   }
 }
+
 //Custom button style
 
 .modal-title {
@@ -133,7 +138,7 @@
 
   h4 {
     margin: 0;
-    font-weight: 500;
+    font-weight: 600;
   }
 }
 
