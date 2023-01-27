@@ -14,7 +14,6 @@ export class LoggedInGuard implements CanActivate {
   }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     if (localStorage.getItem(localstorageVariables.is_logged_in)) {
-      console.log(localStorage.getItem(localstorageVariables.is_logged_in));
       this.router.navigate([appRoutes.DASHBOARD]);
       return false;
     }

@@ -1,0 +1,29 @@
+.card {
+  .card-title {
+    font-size: 1.33rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 1.25rem;
+    color: #7E8299;
+  }
+
+  .card-body {
+    padding: 1.25rem 2rem 2rem 1.25rem;
+
+    .information-value {
+      font-size: 1.44rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.card-xl-stretch{
+  border-radius: 1.25rem;
+}
+
+
+.othersTitle {
+  padding: 1.25rem 0 1.25rem 1.25rem;
+  border-bottom: .0625rem solid #e7e7e7;
+}

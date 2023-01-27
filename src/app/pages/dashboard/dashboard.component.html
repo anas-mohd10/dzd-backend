@@ -1,0 +1,68 @@
+<div class="page-title">
+  <div class="fs-2 fw-bolder mb-lg-5">Overview</div>
+</div>
+<div class="row">
+  <div class="row">
+    <div class="col-lg-3">
+      <app-stats-widget5 svgIcon="./assets/media/icons/duotune/general/gen032.svg"
+        class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary"
+        title="{{data?.header?.vendors}}" description="Total Vendors">
+      </app-stats-widget5>
+    </div>
+    <div class="col-lg-3">
+      <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
+        class="card bg-dark card-xl-stretch mb-xl-8" color="dark" iconColor="white" title="{{data?.header?.orders}}"
+        description="Total Orders">
+      </app-stats-widget5>
+    </div>
+    <div class="col-lg-3">
+      <app-stats-widget5 svgIcon="./assets/media/icons/duotune/graphs/gra007.svg"
+        class="card bg-info card-xl-stretch mb-xl-8" color="info" iconColor="white" title="{{data?.header?.customers}}"
+        description="Total Customers">
+      </app-stats-widget5>
+    </div>
+    <div class="col-lg-3">
+      <app-stats-widget5 svgIcon="./assets/media/icons/duotune/graphs/gra007.svg"
+        class="card bg-primary card-xl-stretch mb-5 mb-xl-8" color="info" iconColor="white"
+        title="{{data?.header?.products}}" description="Total Products">
+      </app-stats-widget5>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card-xl-stretch mb-xl-5 bg-white">
+      <div class="fs-2 fw-bolder mb-lg-5 othersTitle">Other informations</div>
+      <div class="row">
+        <ng-container *ngFor="let info of data?.otherInformations">
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-title">{{info?.title}}</div>
+              <div class="card-body">
+                <div class="information-value">{{info?.value}}</div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-4">
+      <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
+        color="success" change="3,790.00 Rs" description="Last Month Sales">
+      </app-stats-widget4>
+    </div>
+    <div class="col-xl-4">
+      <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg"
+        class="card card-xl-stretch mb-5 mb-xl-8" color="primary" change="0.00 Rs" description="Last 7 Days Sales">
+      </app-stats-widget4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-8">
+      <app-mixed-widget11 class="card card-xl-stretch mb-xl-8" chartColor="info" chartHeight="200px">
+      </app-mixed-widget11>
+    </div>
+  </div>
+</div>

@@ -8,7 +8,7 @@ export const Routing: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import("./catalog/variant-product/dashboard/dashboard.module").then((m) => m.DashboardModule),
+        loadChildren: () => import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
         canActivate: [AuthenticationGuard]
       },
       {
@@ -326,4 +326,4 @@ export const Routing: Routes = [
   ],
   exports: [RouterModule],
 })
-export class RoutingModule { } 
+export class RoutingModule { }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { WidgetsModule } from '../../../../shared/partials';
+import { WidgetsModule } from '../../shared/partials';
 
 @NgModule({
   declarations: [DashboardComponent],
