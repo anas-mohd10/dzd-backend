@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { ReturnsService } from 'src/app/includes/services/returns.service';
 import { ToastrService } from 'ngx-toastr';
@@ -20,7 +20,8 @@ export class ReturnsListComponent implements OnDestroy, OnInit {
   returnsData: any
 
   constructor(
-    private returnsService: ReturnsService
+    private returnsService: ReturnsService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +36,10 @@ export class ReturnsListComponent implements OnDestroy, OnInit {
 
   getReturnsList() {
     this.returnsService.getReturnLists().subscribe((res: any) => {
-      this.returnsData = res?.result
+      if (res?.result == 0) {
+        this.returnsData = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
     })
   }
 

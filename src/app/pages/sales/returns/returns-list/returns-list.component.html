@@ -20,10 +20,9 @@
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-               <div style="display: none"> {{returnsData.length}}</div>
                <div class="table-responsive">
-                  <table datatable [dtOptions]="dtOptions"
-                     class="datatable table table-bdataless table-center table-row-dashed mb-0">
+                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                     class="datatable table table-center mb-0">
                      <thead class="thead mt-100">
                         <tr class="fs-7 text-uppercase">
                            <th class="text-gray-400 col-md-2">Sl No.</th>

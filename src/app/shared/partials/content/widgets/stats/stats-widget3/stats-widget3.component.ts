@@ -1,5 +1,6 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
+import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { getCSSVariableValue } from '../../../../../kt/_utils';
 
 @Component({
@@ -19,7 +20,22 @@ export class StatsWidget3Component implements OnInit {
   baseColor: string;
   lightColor: string;
 
-  constructor() {}
+  daysRevenue: any = []
+  days: any = []
+  revenues: any = []
+
+  constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) {
+    this.DashboardService.getDaysRevenue({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.daysRevenue = res?.result
+        for (let month of this.daysRevenue) {
+          this.days.push(month?.name.slice(0, 3))
+          this.revenues.push(month?.revenue)
+        }
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.height = 150;
@@ -27,6 +43,8 @@ export class StatsWidget3Component implements OnInit {
     this.baseColor = getCSSVariableValue('--bs-' + this.color);
     this.lightColor = getCSSVariableValue('--bs-light-' + this.color);
     this.chartOptions = getChartOptions(
+      this.days,
+      this.revenues,
       this.height,
       this.labelColor,
       this.baseColor,
@@ -36,6 +54,8 @@ export class StatsWidget3Component implements OnInit {
 }
 
 function getChartOptions(
+  days: any,
+  revenues: any,
   height: number,
   labelColor: string,
   baseColor: string,
@@ -45,7 +65,7 @@ function getChartOptions(
     series: [
       {
         name: 'Net Profit',
-        data: [30, 45, 32, 70, 40],
+        data: revenues,
       },
     ],
     chart: {
@@ -80,7 +100,7 @@ function getChartOptions(
       colors: [baseColor],
     },
     xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      categories: days,
       axisBorder: {
         show: false,
       },
@@ -109,7 +129,7 @@ function getChartOptions(
     },
     yaxis: {
       min: 0,
-      max: 80,
+      max: 50000,
       labels: {
         show: false,
         style: {

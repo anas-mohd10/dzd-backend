@@ -45,7 +45,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
       processing: true,
     };
 
-    this.ordersService.getOrders().subscribe((res: any) => {      
+    this.ordersService.getOrders().subscribe((res: any) => {
       this.orders = res?.result?.orders
       for (let order of this.orders) {
         order.orderDate = new Date(order.orderDate).toDateString()
@@ -103,7 +103,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
         this.dtTrigger.unsubscribe()
         this.orders = res?.result?.data
         for (let order of this.orders) {
-          order.orderDate = new Date(order.orderDate).toLocaleString()
+          order.orderDate = new Date(order.orderDate).toDateString()
         }
         this.cdr.markForCheck();
         this.dtTrigger.next()

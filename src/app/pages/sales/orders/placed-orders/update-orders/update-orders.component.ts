@@ -50,6 +50,11 @@ export class UpdateOrdersComponent implements OnInit {
       orderStatus: [''],
       trackingURL: [''],
       orderNote: [''],
+      paymentStatus: [''],
+      deliveryPerson: [''],
+      deliveryDate: [''],
+      outForDelivery: [''],
+      dateExpected: ['']
     });
   }
 
@@ -69,12 +74,13 @@ export class UpdateOrdersComponent implements OnInit {
   getOrderDetails() {
     this.orderService.getOrdersByRefid(this.slug, {}).subscribe((res: any) => {
       this.order = res?.result?.orders[0]
-      this.orderNumber = res?.result?.orders[0].refid
+      this.orderNumber = res?.result?.orders[0].orderNo
       this.productCount = this.order.product.length
       this.order.orderDate = new Date(this.order.orderDate).toDateString()
       this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
       this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
       this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
+      this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
       this.cdr.markForCheck()
     })
   }
@@ -92,11 +98,11 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    this.orderService.updateOrder(this.orderNumber, this.orderForm.value).subscribe((res: any) => {
+    this.orderService.updateOrder(this.slug, this.orderForm.value).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Order updated successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
       }
     })

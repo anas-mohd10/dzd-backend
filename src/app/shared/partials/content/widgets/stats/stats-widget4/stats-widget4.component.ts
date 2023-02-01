@@ -1,5 +1,6 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
+import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { getCSSVariableValue } from '../../../../../kt/_utils';
 
 @Component({
@@ -18,8 +19,22 @@ export class StatsWidget4Component implements OnInit {
   labelColor: string;
   baseColor: string;
   lightColor: string;
+  monthlyRevenue: any = [];
+  months: any = [];
+  revenues: any = []
 
-  constructor() {}
+  constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) {
+    this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.monthlyRevenue = res?.result
+        for (let month of this.monthlyRevenue) {
+          this.months.push(month?.name.slice(0, 3))
+          this.revenues.push(month?.revenue)
+        }
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.height = 150;
@@ -27,6 +42,8 @@ export class StatsWidget4Component implements OnInit {
     this.baseColor = getCSSVariableValue('--bs-' + this.color);
     this.lightColor = getCSSVariableValue('--bs-light-' + this.color);
     this.chartOptions = getChartOptions(
+      this.revenues,
+      this.months,
       this.height,
       this.labelColor,
       this.baseColor,
@@ -36,6 +53,8 @@ export class StatsWidget4Component implements OnInit {
 }
 
 function getChartOptions(
+  revenues: any,
+  months: any,
   height: number,
   labelColor: string,
   baseColor: string,
@@ -45,7 +64,7 @@ function getChartOptions(
     series: [
       {
         name: 'Net Profit',
-        data: [40, 40, 30, 30, 35, 35, 50],
+        data: revenues,
       },
     ],
     chart: {
@@ -80,7 +99,7 @@ function getChartOptions(
       colors: [baseColor],
     },
     xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+      categories: months,
       axisBorder: {
         show: false,
       },
@@ -109,7 +128,7 @@ function getChartOptions(
     },
     yaxis: {
       min: 0,
-      max: 60,
+      max: 100000,
       labels: {
         show: false,
         style: {
@@ -145,7 +164,7 @@ function getChartOptions(
       },
       y: {
         formatter: function (val) {
-          return '$' + val + ' thousands';
+          return '₹ ' + val;
         },
       },
     },

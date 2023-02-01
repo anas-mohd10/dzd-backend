@@ -1,126 +1,122 @@
 <div class="brand-page-container">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder">Pending Orders</h1>
-      </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.orders.PENDING_ORDERS_LIST }}">Pending Orders</a>
-               </li>
-            </ul>
-            <!-- <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Pending Orders</h1>
+    </div>
+    <div class="row align-items-center">
+      <div class="col d-flex flex-row justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.orders.PENDING_ORDERS_LIST }}">Pending Orders</a>
+          </li>
+        </ul>
+        <!-- <button class="btn btn-primary cursor-pointer fs-5" color="primary"
                routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}" style="width: 200px">
                Add Orders
             </button> -->
-         </div>
       </div>
-   </div>
-   <div class="top-form-container">
-      <form action="" [formGroup]="orderform">
-         <div class="row align-items-end">
-            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-               <label class="col-sm-2 col-form-label">From</label>
-               <div class="form-group">
-                  <input type="date" class="form-control" formControlName="fdate" id=""
-                     (change)="searchPendingOrder()">
-               </div>
-            </div>
-            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-               <label class="col-sm-2 col-form-label">To</label>
-               <div class="form-group">
-                  <input type="date" class="form-control" formControlName="tdate" id=""
-                     (change)="searchPendingOrder()">
-               </div>
-            </div>
-            <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-               <label class="col-sm-2 col-form-label">Payment</label>
-               <div class="form-group">
-                  <select class="form-select form-select-lg" aria-label=".form-select-lg"
-                     formControlName="paymentMethod" (change)="searchPendingOrder()">
-                     <option value="" disabled>Select an option</option>
-                     <option value="COD">COD</option>
-                     <option value="ONLINE">Online</option>
-                     <option value="CASH">Cash</option>
-                     <option value="UNPAID">Unpaid</option>
-                     <option value="SPLIT">Split</option>
-                  </select>
-               </div>
-            </div>
-            <div class="col-12 col-sm-2">
-               <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">
-                  Clear
-               </a>
-            </div>
-         </div>
-      </form>
-   </div>
-   <div class="row">
-      <div class="col-sm-12">
-         <div class="card card-table">
-            <div class="card-body">
-               <div class="table-responsive">
-                  <table id=DataTables_Table_0 datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                     class="table table-bordered table-center">
-                     <thead class="thead mt-100">
-                        <tr class="fs-5">
-                           <th class="text-gray-400 col-md-2">Sl No.</th>
-                           <th class="text-gray-400 col-md-2">Order No.</th>
-                           <th class="text-gray-400 col-md-2">Order Date</th>
-                           <th class="text-gray-400 col-md-2">Order Status</th>
-                           <th class="text-gray-400 col-md-2">Customer</th>
-                           <th class="text-gray-400 col-md-2">Vendor</th>
-                           <th class="text-gray-400 col-md-2">Grand Total</th>
-                           <th class="text-gray-400 col-md-2">Payment Method</th>
-                           <th class="text-gray-400 col-md-2">Action</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr *ngFor="let order of orders; let i = index" class="fs-5">
-                           <td>{{ i + 1 }}</td>
-                           <td>{{ order?.orderNo }}</td>
-                           <td>
-                              {{ order?.orderDate }} <br> {{order?.orderTime}}
-                           </td>
-                           <td>
-                              <span class="{{(order?.orderStatus).toLowerCase()}}">{{
-                                 order?.orderStatus.toLowerCase() }}</span>
-                           </td>
-                           <td>
-                              {{ order?.customerId.firstname }} <br> {{order?.customerId?.mobile}}
-                           </td>
-                           <td>
-                              <h2>-</h2>
-                           </td>
-                           <td>
-                              Rs. {{order?.total}}
-                           </td>
-                           <td>
-                              {{ order?.paymentMethod }}
-                           </td>
-                           <td>
-                              <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
-                                 routerLink="{{ appRoute.orders.UPDATE_PENDING_ORDER }}"
-                                 [queryParams]="{ order: order?.refid }">
-                                 <i class="bi bi-pen"></i>
-                              </a>
-                           </td>
-                        </tr>
-                        <ng-container *ngIf="count == 0">
-                           <div class="no-data-container mt-10">
-                              <span>-</span>
-                           </div>
-                        </ng-container>
-                     </tbody>
-                  </table>
-               </div>
-            </div>
-         </div>
+    </div>
+  </div>
+  <div class="top-form-container">
+    <form action="" [formGroup]="orderform">
+      <div class="row align-items-end">
+        <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+          <label class="col-sm-2 col-form-label">From</label>
+          <div class="form-group">
+            <input type="date" class="form-control" formControlName="fdate" id="" (change)="searchPendingOrder()">
+          </div>
+        </div>
+        <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+          <label class="col-sm-2 col-form-label">To</label>
+          <div class="form-group">
+            <input type="date" class="form-control" formControlName="tdate" id="" (change)="searchPendingOrder()">
+          </div>
+        </div>
+        <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
+          <label class="col-sm-2 col-form-label">Payment</label>
+          <div class="form-group">
+            <select class="form-select form-select-lg" aria-label=".form-select-lg" formControlName="paymentMethod"
+              (change)="searchPendingOrder()">
+              <option value="" disabled>Select an option</option>
+              <option value="COD">COD</option>
+              <option value="ONLINE">Online</option>
+              <option value="CASH">Cash</option>
+              <option value="UNPAID">Unpaid</option>
+              <option value="SPLIT">Split</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-sm-2">
+          <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+            Clear
+          </a>
+        </div>
       </div>
-   </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table id=DataTables_Table_0 datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+              class="table table-center">
+              <thead class="thead mt-100">
+                <tr class="fs-5">
+                  <th class="text-gray-400 col-md-2">Sl No.</th>
+                  <th class="text-gray-400 col-md-2">Order No.</th>
+                  <th class="text-gray-400 col-md-2">Order Date</th>
+                  <th class="text-gray-400 col-md-2">Order Status</th>
+                  <th class="text-gray-400 col-md-2">Customer</th>
+                  <th class="text-gray-400 col-md-2">Vendor</th>
+                  <th class="text-gray-400 col-md-2">Grand Total</th>
+                  <th class="text-gray-400 col-md-2">Payment Method</th>
+                  <th class="text-gray-400 col-md-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of orders; let i = index" class="fs-5">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ order?.orderNo }}</td>
+                  <td>
+                    {{ order?.orderDate }} <br> {{order?.orderTime}}
+                  </td>
+                  <td>
+                    <span class="{{(order?.orderStatus).toLowerCase()}}">
+                      {{ order?.orderStatus }}</span>
+                  </td>
+                  <td>
+                    {{ order?.customerId.firstname }} <br> {{order?.customerId?.mobile}}
+                  </td>
+                  <td>
+                    <h2>-</h2>
+                  </td>
+                  <td>
+                    Rs. {{order?.total}}
+                  </td>
+                  <td>
+                    {{ order?.paymentMethod }}
+                  </td>
+                  <td>
+                    <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
+                      routerLink="{{ appRoute.orders.UPDATE_PENDING_ORDER }}" [queryParams]="{ order: order?.refid }">
+                      <i class="bi bi-pen"></i>
+                    </a>
+                  </td>
+                </tr>
+                <ng-container *ngIf="count == 0">
+                  <div class="no-data-container mt-10">
+                    <span>-</span>
+                  </div>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

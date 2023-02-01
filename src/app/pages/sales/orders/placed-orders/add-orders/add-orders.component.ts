@@ -35,7 +35,7 @@ export class AddOrdersComponent implements OnInit {
   //Cart
   product: any;
   quantity: any = new FormControl(1, Validators.required);
-  coupon: any
+  coupon: any = ''
   productids: any = []
 
   cart: any = []
@@ -76,7 +76,6 @@ export class AddOrdersComponent implements OnInit {
       landmark: ['', Validators.required],
       lat: [''],
       lng: [''],
-      coupon: [''],
       transactionId: [''],
       products: this.formBuilder.array([]),
     });
@@ -272,6 +271,9 @@ export class AddOrdersComponent implements OnInit {
         transactionId: data?.transactionId
       }
     }
+
+    console.log(payload);
+
     if (this.cart.length != 0) {
       this.orderService.addOrder(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {

@@ -2,6 +2,50 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+//Datatable css
+table.dataTable thead td,
+table.dataTable thead th {
+  padding: 10px;
+  border-bottom: none !important;
+}
+
+table.dataTable.no-footer {
+  border-bottom: none !important;
+}
+
+.table.dataTable {
+  border-collapse: initial !important;
+  border: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  border: none !important;
+  border-radius: 50px;
+  background: #f6f6f6 !important;
+  color: #111111 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  color: #ffffff !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border: 1px solid #aaa;
+  border-radius: 3px !important;
+  padding: 5px;
+  background-color: initial;
+  margin-left: 3px;
+  outline: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  color: #ffffff !important;
+}
+
+//Datatable css
+
 .btn-primary {
   font-weight: 600 !important;
 }
@@ -23,7 +67,7 @@
 .btn-standard {
   height: 36px !important;
   width: 150px !important;
-  font-size: 1.333rem !important;
+  font-size: 1rem !important;
   color: #777777;
   display: flex;
   align-items: center;

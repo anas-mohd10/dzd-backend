@@ -5,8 +5,8 @@
   <div class="row">
     <div class="col-lg-3">
       <app-stats-widget5 svgIcon="./assets/media/icons/duotune/general/gen032.svg"
-        class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary"
-        title="{{data?.header?.vendors}}" description="Total Vendors">
+        class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="{{data?.header?.brands}}"
+        description="Total Brands">
       </app-stats-widget5>
     </div>
     <div class="col-lg-3">
@@ -30,8 +30,8 @@
   </div>
 
   <div class="col-12">
-    <div class="card-xl-stretch mb-xl-5 bg-white">
-      <div class="fs-2 fw-bolder mb-lg-5 othersTitle">Other informations</div>
+    <div class="fs-2 fw-bolder mb-lg-5">Other Informations</div>
+    <div class="card-xl-stretch mb-xl-5 bg-white pt-5">
       <div class="row">
         <ng-container *ngFor="let info of data?.otherInformations">
           <div class="col-lg-4">
@@ -47,22 +47,35 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mb-5">
     <div class="col-xl-4">
-      <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
-        color="success" change="3,790.00 Rs" description="Last Month Sales">
-      </app-stats-widget4>
+      <div class="stats5Months">
+        <div class="fs-2 fw-bolder mb-lg-5">Last {{monthlyRevenue.length}} month sales</div>
+        <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg"
+          class="card card-xl-stretch mb-xl-8" color="success" change="₹ {{monthlyRevenue[0]['revenue']}}"
+          description="{{monthlyRevenue[0]['name']}} sales">
+        </app-stats-widget4>
+      </div>
+      <div class="stats7Days">
+        <div class="fs-2 fw-bolder mb-lg-5">Last {{daysRevenue.length}} days sales</div>
+        <app-stats-widget3 svgIcon="./assets/media/icons/duotune/general/gen025.svg"
+          class="card card-xl-stretch mb-xl-8" color="success" title="Today Sales"
+          change="₹ {{daysRevenue[0]['revenue']}}">
+        </app-stats-widget3>
+      </div>
     </div>
-    <div class="col-xl-4">
-      <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg"
-        class="card card-xl-stretch mb-5 mb-xl-8" color="primary" change="0.00 Rs" description="Last 7 Days Sales">
-      </app-stats-widget4>
+    <div class="col-xl-8">
+      <div class="topSellingProducts  mb-lg-5">
+        <div class="fs-2 fw-bolder mb-lg-5">Top Selling Products</div>
+        <app-advance-tables-widget4></app-advance-tables-widget4>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xl-8">
-      <app-mixed-widget11 class="card card-xl-stretch mb-xl-8" chartColor="info" chartHeight="200px">
-      </app-mixed-widget11>
+
+  <div class="row mb-5">
+    <div class="newOrders">
+      <div class="fs-2 fw-bolder mb-lg-5">New Orders</div>
+      <app-advance-tables-widget9></app-advance-tables-widget9>
     </div>
   </div>
 </div>
