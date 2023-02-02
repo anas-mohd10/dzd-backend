@@ -149,6 +149,7 @@ export class AddOrdersComponent implements OnInit {
     if (this.product) {
       let productData: any
       let cartLength = this.cart.length
+
       this.productService.getProductById({ id: this.product }).subscribe((res: any) => {
         productData = res?.result[0]
         this.cart.push({
@@ -271,8 +272,6 @@ export class AddOrdersComponent implements OnInit {
         transactionId: data?.transactionId
       }
     }
-
-    console.log(payload);
 
     if (this.cart.length != 0) {
       this.orderService.addOrder(payload).subscribe((res: any) => {

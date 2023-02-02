@@ -129,7 +129,7 @@ function getChartOptions(
     },
     yaxis: {
       min: 0,
-      max: 50000,
+      max: 150000,
       labels: {
         show: false,
         style: {

@@ -10,6 +10,7 @@ export class DashboardComponent implements OnInit {
   data: any
   monthlyRevenue: any = [];
   daysRevenue: any = []
+  lastMonthRevenue: void;
   constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
     this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.monthlyRevenue = res?.result
+        this.lastMonthRevenue = this.monthlyRevenue[0]['revenue']
         this.ChangeDetectorRef.markForCheck()
       }
     })

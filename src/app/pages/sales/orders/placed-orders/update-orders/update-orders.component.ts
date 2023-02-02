@@ -81,6 +81,19 @@ export class UpdateOrdersComponent implements OnInit {
       this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
       this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
       this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
+
+      let dateExpected = ''
+      let outForDelivery = ''
+      let deliveryDate = ''
+      if (this.order?.delivery?.dateExpected) dateExpected = new Date(this.order?.delivery?.dateExpected).toISOString().split('T')[0];
+      if (this.order?.delivery?.outForDelivery) outForDelivery = new Date(this.order?.delivery?.outForDelivery).toISOString().split('T')[0];
+      if (this.order?.delivery?.deliveryDate) deliveryDate = new Date(this.order?.delivery?.deliveryDate).toISOString().split('T')[0];
+
+      this.orderForm.get("deliveryPerson")?.setValue(this.order?.delivery?.deliveryPerson)
+      this.orderForm.get("dateExpected")?.setValue(dateExpected)
+      this.orderForm.get("outForDelivery")?.setValue(outForDelivery)
+      this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
+
       this.cdr.markForCheck()
     })
   }

@@ -118,7 +118,9 @@
                   <td>-</td>
                   <td>Rs. {{order?.total}}</td>
                   <td>{{order?.paymentMethod}}</td>
-                  <td>{{order?.paymentStatus}}</td>
+                  <td><span
+                      class="paymentStatus {{order?.paymentStatus.toLowerCase()}} fs-6">{{order?.paymentStatus}}</span>
+                  </td>
                   <td>
                     <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
                       routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{ order: order?.refid }">

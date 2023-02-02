@@ -122,7 +122,7 @@
                 </div>
               </div>
               <div class="product-add-container">
-                <div class="col-12 d-flex align-items-center justify-content-between">
+                <div class="col-12 d-flex align-items-center justify-content-between" *ngIf="cart.length != 0">
                   <h5 class="form-title fs-3 text-dark fw-bolder">
                     <span>Cart</span>
                   </h5>
@@ -131,11 +131,19 @@
                     Add Products
                   </button>
                 </div>
+
                 <div class="col-12">
                   <ng-container *ngIf="cart.length == 0">
-                    <img src="../../../../../../assets/media/empty-cart.svg" style="height: 150px;" alt="">
-                    <div class="mt-10" style="font-size: 1.66rem; font-weight: 700;">Your cart is empty</div>
+                    <div class="emptyCart-container">
+                      <img src="../../../../../../assets/media/12.png" style="height: 250px;" alt="">
+                      <div class="mt-10" style="font-size: 1.66rem; font-weight: 700;">Empty cart</div>
+                      <button type="button" class="mt-5 btn btn-primary btn-rounded btn-standard" data-bs-toggle="modal"
+                        data-bs-target="#cartModal">
+                        Add Products
+                      </button>
+                    </div>
                   </ng-container>
+
                   <div class="cart-items">
                     <ng-container *ngFor="let item of cart; let i=index">
                       <div class="cart-item">
@@ -249,7 +257,7 @@
 
         <div class="added-to-cart" [ngClass]="{'show-added': isCartAdded}">
           <div class="cart-icon">
-            <i class="bi bi-cart-check"></i>
+            <img src="../../../../../../assets/media/11-dark.png" style="height: 250px;" alt="">
           </div>
           <div class="added-text">
             Product added to cart

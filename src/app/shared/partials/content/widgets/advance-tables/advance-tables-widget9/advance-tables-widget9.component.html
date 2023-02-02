@@ -11,13 +11,16 @@
       <div class="table-responsive">
         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
           <thead>
-            <tr class="text-left text-uppercase fw-bolder">
+            <tr class="text-left fs-5 text-gray-400">
               <th style="min-width: 120px">Order No.</th>
               <th style="min-width: 120px">Customer</th>
               <th style="min-width: 100px">Total</th>
               <th style="min-width: 100px">Order Date</th>
               <th style="min-width: 100px">Payment Method</th>
+              <th style="min-width: 100px">Payment Status</th>
               <th style="min-width: 100px">Order Status</th>
+              <th style="min-width: 100px">Expected Date</th>
+              <th style="min-width: 100px">Delivered Date</th>
             </tr>
           </thead>
           <tbody class="fs-5">
@@ -27,7 +30,12 @@
               <td>₹ {{order?.total}}</td>
               <td>{{order?.orderDate}}</td>
               <td>{{order?.paymentMethod}}</td>
+              <td>
+                <span class="paymentStatus {{order?.paymentStatus.toLowerCase()}}">{{order?.paymentStatus}}</span>
+              </td>
               <td> <span class="orderStatus {{order?.orderStatus.toLowerCase()}}">{{order?.orderStatus}}</span> </td>
+              <td>{{order?.delivery?.dateExpected ? order?.delivery?.dateExpected : '-'}}</td>
+              <td>{{order?.delivery?.deliveryDate ? order?.delivery?.deliveryDate : '-'}}</td>
             </tr>
           </tbody>
         </table>

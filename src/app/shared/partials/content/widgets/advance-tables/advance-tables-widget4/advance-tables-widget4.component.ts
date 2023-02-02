@@ -5,6 +5,7 @@ import { DashboardService } from 'src/app/includes/services/dashboard.service';
 @Component({
   selector: 'app-advance-tables-widget4',
   templateUrl: './advance-tables-widget4.component.html',
+  styleUrls: ['./advance-tables-widget4.component.scss'],
 })
 export class AdvanceTablesWidget4Component implements OnInit {
   products: any = []

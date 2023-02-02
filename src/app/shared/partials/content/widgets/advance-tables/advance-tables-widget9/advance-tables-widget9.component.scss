@@ -6,6 +6,7 @@
 
 .placed {
   background: #2f6fe580;
+  color: #ffffff !important;
 }
 
 .accepted {
@@ -14,20 +15,39 @@
 
 .delivered {
   background: #662fe580;
+  color: #ffffff !important;
 }
 
-.cancelled{
+.cancelled {
   background: #e52f2f80;
+  color: #ffffff !important;
 }
 
-.refunded{
+.refunded {
   background: #e52f8480;
+  color: #ffffff !important;
 }
 
-.packed{
+.packed {
   background: #2fd3e580;
 }
 
-.shipped{
+.shipped {
   background: #5177c880;
+  color: #ffffff !important;
+}
+
+.paymentStatus {
+  font-weight: 600;
+  padding: .625rem 1.25rem;
+  border-radius: .625rem;
+}
+
+.paid {
+  background: #2fe55c80;
+}
+
+.unpaid {
+  background: #e52f2f80;
+  color: #ffffff !important;
 }
