@@ -96,7 +96,8 @@ export const appRoutes = {
     UPDATE_TAX_RULES: `${app}${taxRulesRoute}/update`
   },
   shipping: {
-    SHIPPING_LIST: `${app}${shippingClassRoute}`
+    SHIPPING_LIST: `${app}${shippingClassRoute}`,
+    ADD_SHIPPING: `${app}${shippingClassRoute}/add`,
   },
   admin: {
     ADMIN_USERS: `${app}${adminUsersRoute}`,

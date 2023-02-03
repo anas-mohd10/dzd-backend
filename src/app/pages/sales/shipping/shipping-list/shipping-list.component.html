@@ -1,4 +1,4 @@
-<div class="offer-page-container">
+<div class="brand-page-container">
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder">Shipping</h1>
@@ -7,51 +7,15 @@
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.shipping.SHIPPING_LIST }}">Shipping</a>
+            <a routerLink="{{ appRoutes.shipping.SHIPPING_LIST }}">Shipping</a>
           </li>
         </ul>
-        <!-- Add button start -->
-        <!-- <button class="btn btn-primary cursor-pointer fs-5" color="primary" routerLink="" style="width: 200px">
-          Add Carrriers
-        </button> -->
-        <!-- Add button end -->
+        <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+          routerLink="{{ appRoutes.shipping.ADD_SHIPPING }}" style="width: 200px"> Add Shipping
+        </button>
       </div>
     </div>
   </div>
-  <!-- <div class="row">
-    <div class="col-sm-12">
-      <div class="card card-table">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-              class="datatable table table-borderless table-center mb-0">
-              <thead class="thead mt-100">
-                <tr class="fs-5">
-                  <th class="text-gray-400">Sl No.</th>
-                  <th class="text-gray-400">Name</th>
-                  <th class="text-gray-400">Secret Key</th>
-                  <th class="text-gray-400">Tracking URL</th>
-                  <th class="text-gray-400">Status</th>
-                  <th class="text-gray-400">Action</th>
-                </tr>
-              </thead>
-              <tbody class="fs-5">
-                <tr *ngFor="let data of shippings; let i = index">
-                  <td>{{i+1}}</td>
-                  <td>{{data?.name}}</td>
-                  <td>{{data?.secretkey}}</td>
-                  <td>{{data?.url}}</td>
-                  <td>{{data?.status}}</td>
-                  <td>{{i+1}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-</div>

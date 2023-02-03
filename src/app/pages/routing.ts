@@ -156,16 +156,6 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'shipping',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('./sales/shipping/shipping-list/shipping-list.module').then((m) => m.ShippingModule),
-          },
-        ],
-        canActivate: [AuthenticationGuard]
-      },
-      {
         path: 'admin-users',
         loadChildren: () => import('./users/admin/admin.module').then((m) => m.AdminModule),
         canActivate: [AuthenticationGuard]
@@ -289,20 +279,21 @@ export const Routing: Routes = [
         path: 'terms-conditions',
         loadChildren: () => import('./pages/terms-conditions/terms-conditions.module').then((m) => m.TermsConditionsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'page-limits',
         loadChildren: () => import('./settings/general/page-limits/page-limits.module').then((m) => m.PageLimitsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'app-settings',
         loadChildren: () => import('./settings/general/app-settings/app-settings.module').then((m) => m.AppSettingsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'home-settings',
         loadChildren: () => import('./settings/general/dashboard-settings/dashboard-settings.module').then((m) => m.DashboardSettingsModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'shipping',
+        loadChildren: () => import('./sales/shipping/shipping.module').then((m) => m.ShippingModule),
         canActivate: [AuthenticationGuard]
       },
     ]

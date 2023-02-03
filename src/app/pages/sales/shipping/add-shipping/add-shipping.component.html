@@ -1,1 +1,140 @@
-<p>add-shipping works!</p>
+<div class="content container-fluid">
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fw-bolder fs-2">
+          {{ editMode ? "Update Shipping" : "Add Shipping" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoutes.shipping.SHIPPING_LIST }}">Shipping</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoutes.shipping.ADD_SHIPPING }}">
+              {{editMode ? "Update Shipping" : "Add Shipping"}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="col-12">
+            <h3 class="form-title fw-bolder fs-4"><span>Shipping Details</span></h3>
+          </div>
+          <form [formGroup]="shippingform">
+            <div class="row">
+              <div class="col-6 form-group mb-5">
+                <label class="fs-5 mb-3 required">Name</label>
+                <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                  'is-invalid':(sf.name.touched || isSubmitted) &&sf.name.errors?.required}" />
+              </div>
+
+              <div class="col-6 form-group mb-5">
+                <label class="fs-5 mb-3 required">Delivery Taken Days</label>
+                <input type="number" class="form-control fs-5" formControlName="days" [ngClass]="{
+                  'is-invalid':(sf.days.touched || isSubmitted) &&sf.days.errors?.required}" />
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label class="fs-5 mb-3">Active Shipping?</label>
+                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isActive">
+                  <option value=false>No</option>
+                  <option value=true>Yes</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chargeModal">
+                  Add Charges
+                </button>
+
+                <div class="charges">
+
+                  <ng-container *ngFor="let charge of charges">
+                    <div class="charge-card">
+                      <div class="chargeWeight">
+                        <div class="chargeIcon"><img src="../../../../../assets/media/ecm006.svg" alt="Icon"></div>
+                        <div class="chargeValue">
+                          <div class="chargeTitle">From</div>
+                          <div class="chargeTitleValue">{{charge?.from}} grams</div>
+                        </div>
+                      </div>
+                      <div class="chargeWeight">
+                        <div class="chargeIcon"><img src="../../../../../assets/media/ecm006.svg" alt="Icon"></div>
+                        <div class="chargeValue">
+                          <div class="chargeTitle">To</div>
+                          <div class="chargeTitleValue">{{charge?.to}} grams</div>
+                        </div>
+                      </div>
+                      <div class="chargePrice">
+                        <div class="chargeTitle">Price</div>
+                        <div class="chargeTitleValue">₹ {{charge?.price}}</div>
+                      </div>
+                      <div class="chargeEdit">Remove</div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-12 form-group">
+                <label class="fs-5 mb-3">Transit Time </label>
+                <input type="text" class="form-control fs-5" formControlName="transitTime" />
+              </div>
+
+              <div class="col-12 form-group">
+                <label class="fs-5 mb-3">Tracking URL</label>
+                <input type="text" class="form-control fs-5" formControlName="url" />
+              </div>
+
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <a routerLink="{{ appRoutes.shipping.SHIPPING_LIST }}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                  Add
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="chargeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Shipping Charges</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 form-group">
+          <label class="fs-5 mb-3">From</label>
+          <input type="number" class="form-control fs-5" [formControl]="from" (change)="validateValue(1)" />
+        </div>
+        <div class="col-12 form-group">
+          <label class="fs-5 mb-3">To</label>
+          <input type="number" class="form-control fs-5" [formControl]="to" (change)="validateValue(2)" />
+        </div>
+        <div class="col-12 form-group">
+          <label class="fs-5 mb-3">Price</label>
+          <input type="number" class="form-control fs-5" [formControl]="price" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width: 150px">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="addData()" style="width: 150px">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
