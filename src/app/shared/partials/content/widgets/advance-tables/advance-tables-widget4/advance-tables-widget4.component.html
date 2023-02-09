@@ -33,6 +33,12 @@
               </td>
               <td>{{product?.reviews[0]?.count ? product?.reviews[0]?.count : 0}}</td>
             </tr>
+            <tr *ngIf="products.length == 0">
+              <div class="emptyImage">
+                <img src="../../../../../../../assets/media/5.png" alt="Image">
+              </div>
+              <div class="emptyNote">No data available</div>
+            </tr>
           </tbody>
         </table>
       </div>

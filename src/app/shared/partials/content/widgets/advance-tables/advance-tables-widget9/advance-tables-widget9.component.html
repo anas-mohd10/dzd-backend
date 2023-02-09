@@ -37,6 +37,12 @@
               <td>{{order?.delivery?.dateExpected ? order?.delivery?.dateExpected : '-'}}</td>
               <td>{{order?.delivery?.deliveryDate ? order?.delivery?.deliveryDate : '-'}}</td>
             </tr>
+            <tr *ngIf="orders.length == 0">
+              <div class="emptyImage">
+                <img src="../../../../../../../assets/media/5.png" alt="Image">
+              </div>
+              <div class="emptyNote">No data available</div>
+            </tr>
           </tbody>
         </table>
       </div>

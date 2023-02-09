@@ -163,14 +163,15 @@ export class AddShippingComponent implements OnInit {
       name: this.shippingform.get('name')?.value,
       details: {
         days: this.shippingform.get('days')?.value,
-        transistTime: this.shippingform.get('transistTime')?.value,
+        transitTime: this.shippingform.get('transitTime')?.value,
         url: this.shippingform.get('url')?.value,
         charges: this.charges
       },
       file: {
         data: this.croppedImage,
         name: this.filename
-      }
+      },
+      isActive: this.shippingform.get('isActive')?.value
     }
 
     return data

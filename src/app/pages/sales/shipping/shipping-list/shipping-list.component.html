@@ -34,24 +34,24 @@
               </div>
             </div>
             <div class="shippingCard-bottom">
-              <div class="shipping-transit cardItem">
-                <span class="cardlabel">Transit Time</span>
-                <span class="cardvalue">{{shipping?.details?.transistTime ? shipping?.details?.transistTime :
-                  '-'}}</span>
-              </div>
               <div class="shipping-url cardItem">
                 <span class="cardlabel">Tracking URL</span>
-                <span class="cardvalue">{{shipping?.details?.transistTime ? shipping?.details?.transistTime :
+                <span class="cardvalue">{{shipping?.details?.url ? shipping?.details?.url :
+                  '-'}}</span>
+              </div>
+              <div class="shipping-transit cardItem">
+                <span class="cardlabel">Transit Time</span>
+                <span class="cardvalue fs-5">{{shipping?.details?.transitTime ? shipping?.details?.transitTime :
                   '-'}}</span>
               </div>
             </div>
             <div class="card-edit-btn shippingEditBtn">
-              <button routerLink="{{ appRoutes.shipping.UPDATE_SHIPPING }}" [queryParams]="{ shipping: shipping?.slug }"
-                class="fs-5 cursor-pointer text-darker">
+              <button routerLink="{{ appRoutes.shipping.UPDATE_SHIPPING }}"
+                [queryParams]="{ shipping: shipping?.refid }" class="fs-5 cursor-pointer text-darker">
                 Edit
               </button>
             </div>
-            <div class="shipppingStatus" [ngClass]="{'inactive': shipping?.isActive}">
+            <div class="shipppingStatus" [ngClass]="{'inactive': !shipping?.isActive}">
               {{shipping?.isActive ? 'Active' : 'Inactive'}}
             </div>
           </div>

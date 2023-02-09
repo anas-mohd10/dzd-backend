@@ -1,0 +1,63 @@
+.charges {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1em;
+  
+    .charge-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem;
+      margin: 1.25rem 0;
+      box-shadow: 0 0 2.1875rem rgb(0 0 0 / 6%);
+      border-radius: .9375rem;
+      height: 12rem;
+  
+      .chargeWeight {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px 0;
+  
+        .chargeIcon {
+          margin: 0 10px 0 0;
+  
+          img {
+            width: 30px;
+            height: 30px;
+          }
+        }
+      }
+  
+      .chargeTitle {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #bbbbbb;
+      }
+  
+      .chargeTitleValue {
+        font-size: 1.333rem;
+        font-weight: 600;
+      }
+  
+      .chargeEdit {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+  
+  .preview-section {
+    display: flex;
+    margin: 50px 0 0 0 !important;
+  }
+  
+  .new-form-control {
+    border: none;
+    border-bottom: 1px solid #F4F4F4 !important;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: 0;
+    padding: 0.75rem 0;
+  }
+  

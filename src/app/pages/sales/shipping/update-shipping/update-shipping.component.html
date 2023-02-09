@@ -1,1 +1,196 @@
-<p>update-shipping works!</p>
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title fw-bolder fs-2">
+                    {{ editMode ? "Update Shipping" : "Add Shipping" }}
+                </h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-5">
+                        <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-5">
+                        <a routerLink="{{ appRoutes.shipping.SHIPPING_LIST }}">Shipping</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-5">
+                        <a routerLink="{{ appRoutes.shipping.ADD_SHIPPING }}">
+                            {{editMode ? "Update Shipping" : "Add Shipping"}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-10">
+        <div class="col-sm-12 fs-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-12">
+                        <h3 class="form-title fw-bolder fs-4"><span>Shipping Details</span></h3>
+                    </div>
+                    <form [formGroup]="shippingform">
+                        <div class="row">
+                            <div class="col-6 form-group mb-5">
+                                <label class="fs-5 mb-3 required">Name</label>
+                                <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                    'is-invalid':(sf.name.touched || isSubmitted) &&sf.name.errors?.required}" />
+                            </div>
+
+                            <div class="col-6 form-group mb-5">
+                                <label class="fs-5 mb-3 required">Delivery Taken Days</label>
+                                <input type="number" class="form-control fs-5" formControlName="days" [ngClass]="{
+                    'is-invalid':(sf.days.touched || isSubmitted) &&sf.days.errors?.required}" />
+                            </div>
+
+                            <div class="form-group col-sm-6">
+                                <label class="fs-5 mb-3">Active Shipping?</label>
+                                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                                    formControlName="isActive">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#chargeModal">
+                                    Add Charges
+                                </button>
+
+                                <div class="charges">
+                                    <ng-container *ngFor="let charge of charges">
+                                        <div class="charge-card">
+                                            <div class="weights">
+                                                <div class="chargeWeight">
+                                                    <div class="chargeIcon"><img
+                                                            src="../../../../../assets/media/ecm006.svg" alt="Icon">
+                                                    </div>
+                                                    <div class="chargeValue">
+                                                        <div class="chargeTitle">From</div>
+                                                        <div class="chargeTitleValue">{{charge?.from}} grams</div>
+                                                    </div>
+                                                </div>
+                                                <div class="chargeWeight">
+                                                    <div class="chargeIcon"><img
+                                                            src="../../../../../assets/media/ecm006.svg" alt="Icon">
+                                                    </div>
+                                                    <div class="chargeValue">
+                                                        <div class="chargeTitle">To</div>
+                                                        <div class="chargeTitleValue">{{charge?.to}} grams</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="chargePrice">
+                                                <div class="chargeTitle">Price</div>
+                                                <div class="chargeTitleValue">₹ {{charge?.price}}</div>
+                                            </div>
+                                            <div class="chargeEdit" (click)="removeData(charge?.id)">Remove</div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="col-12 form-group">
+                                <label class="fs-5 mb-3">Transit Time </label>
+                                <input type="text" class="form-control fs-5" formControlName="transitTime" />
+                            </div>
+
+                            <div class="col-12 form-group">
+                                <label class="fs-5 mb-3">Tracking URL</label>
+                                <input type="text" class="form-control fs-5" formControlName="url" />
+                            </div>
+
+                            <h3 class="form-title fw-bolder fs-4"><span>Shipping Logo</span></h3>
+                            <div class="col-6 form-group">
+                                <div class="image-upload">
+                                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                                        (change)="handleInputChange($event)" style="height: 100px;" required>
+                                    <div class="image-upload-div">
+                                        <div class="left-img">
+                                            <img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                                                srcset="">
+                                        </div>
+                                        <div class="right-text d-flex flex-column">
+                                            <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                                            <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                                                Upload up to 1 file
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="uploaded-image col-6 mt-5">
+                                    <img src="{{img}}" alt="" style="width: 150px; height: 150px">
+                                </div>
+                            </div>
+                            <ng-container *ngIf="loadImage">
+                                <div class="col-12 preview-section">
+                                    <div class="crop-image col-sm-6">
+                                        <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                                            [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                                            [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                                            (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                                            (loadImageFailed)="loadImageFailed()">
+                                        </image-cropper>
+                                    </div>
+                                    <div class="uploads uploaded col-sm-6">
+                                        <div class="close-icon">
+                                            <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                                        </div>
+                                        <img class="preview-img" id="previewImage" [src]="croppedImage">
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <div class="col-12 d-flex align-items-center justify-content-end">
+                                <a routerLink="{{ appRoutes.shipping.SHIPPING_LIST }}"
+                                    class=" btn btn-secondary btn-sm fs-5 text-dark"
+                                    style="width: 200px; margin-right: 20px;">
+                                    Cancel
+                                </a>
+                                <button type="submit" (click)="onSubmit()" class="btn btn-primary btn-sm fs-5"
+                                    style="width: 200px">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="chargeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Charges</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 form-group">
+                        <label class="fs-5 mb-3">From</label>
+                        <input type="number" class="form-control new-form-control" [formControl]="from"
+                            (change)="validateValue(1)" placeholder="Eg. 500" />
+                    </div>
+                    <div class="col-6 form-group">
+                        <label class="fs-5 mb-3">To</label>
+                        <input type="number" class="form-control new-form-control" [formControl]="to"
+                            (change)="validateValue(2)" placeholder="Eg. 1000" />
+                    </div>
+                </div>
+                <div class="col-12 form-group">
+                    <label class="fs-5 mb-3">Price</label>
+                    <input type="number" class="form-control new-form-control" [formControl]="price"
+                        placeholder="Eg. 200" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    style="width: 150px">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="addData()" style="width: 150px">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

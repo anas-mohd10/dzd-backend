@@ -2,6 +2,29 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.emptyImage {
+  height: 150px;
+  width: 150px;
+
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.emptyNote {
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #3F4254;
+}
+
 //Datatable css
 table.dataTable thead td,
 table.dataTable thead th {
@@ -364,6 +387,7 @@ a.page-link.page-link-disabled {
   padding: 5px;
   font-size: 1.1rem;
   margin: 0.5rem 0;
+  font-weight: 600;
 }
 
 
@@ -543,6 +567,8 @@ a.page-link.page-link-disabled {
   padding: 0 5px;
   color: rgb(235, 19, 58) !important;
   border-radius: 5px;
+  font-weight: 600;
+  font-size: 1rem !important;
 }
 
 //Form label

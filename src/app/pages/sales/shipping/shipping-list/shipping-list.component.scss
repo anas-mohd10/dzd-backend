@@ -1,4 +1,8 @@
 .shippingcards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1em;
+
   .shippingCard {
     width: 100%;
     height: auto;
@@ -16,8 +20,7 @@
 
     .shippingCard-bottom {
       display: flex;
-      align-items: center;
-      justify-content: start;
+      flex-direction: column;
       margin: 20px 0 0 0;
     }
 
@@ -50,6 +53,10 @@
       }
     }
 
+    .shipping-transit {
+      margin: 10px 0 0 0;
+    }
+
     .shippingEditBtn {
       position: absolute;
       bottom: 10px;
@@ -60,6 +67,22 @@
       position: absolute;
       top: 10px;
       right: 20px;
+      width: 150px;
+      border-radius: 5px;
+      outline: none;
+      border: none;
+      padding: 5px;
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+      background: #2c9c5e40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .inactive{
+      background: #b42a2a40;
     }
   }
 }
