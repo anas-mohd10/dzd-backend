@@ -18,4 +18,44 @@
         </button>
       </div>
     </div>
+    <div class="shipping-card-container view-container col-12">
+      <div class="shippingcards">
+        <ng-container *ngFor="let shipping of data">
+          <div class="shippingCard">
+            <div class="shippingCard-top">
+              <div class="shipping-image"><img src="{{base}}/{{shipping?.file}}" alt="Image"></div>
+              <div class="shipping-name cardItem">
+                <span class="cardlabel">Name</span>
+                <span class="cardvalue">{{shipping?.name}}</span>
+              </div>
+              <div class="shipping-time cardItem">
+                <span class="cardlabel">Delivery days</span>
+                <span class="cardvalue">{{shipping?.details?.days}}</span>
+              </div>
+            </div>
+            <div class="shippingCard-bottom">
+              <div class="shipping-transit cardItem">
+                <span class="cardlabel">Transit Time</span>
+                <span class="cardvalue">{{shipping?.details?.transistTime ? shipping?.details?.transistTime :
+                  '-'}}</span>
+              </div>
+              <div class="shipping-url cardItem">
+                <span class="cardlabel">Tracking URL</span>
+                <span class="cardvalue">{{shipping?.details?.transistTime ? shipping?.details?.transistTime :
+                  '-'}}</span>
+              </div>
+            </div>
+            <div class="card-edit-btn shippingEditBtn">
+              <button routerLink="{{ appRoutes.shipping.UPDATE_SHIPPING }}" [queryParams]="{ shipping: shipping?.slug }"
+                class="fs-5 cursor-pointer text-darker">
+                Edit
+              </button>
+            </div>
+            <div class="shipppingStatus" [ngClass]="{'inactive': shipping?.isActive}">
+              {{shipping?.isActive ? 'Active' : 'Inactive'}}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
   </div>

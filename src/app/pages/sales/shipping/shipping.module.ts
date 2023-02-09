@@ -8,6 +8,7 @@ import { UpdateShippingComponent } from './update-shipping/update-shipping.compo
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -18,10 +19,13 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     CommonModule,
     ShippingRoutingModule,
+    ImageCropperModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      progressAnimation: 'increasing'
+    })
   ]
 })
 export class ShippingModule { }

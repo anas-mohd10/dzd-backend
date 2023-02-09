@@ -98,6 +98,7 @@ export const appRoutes = {
   shipping: {
     SHIPPING_LIST: `${app}${shippingClassRoute}`,
     ADD_SHIPPING: `${app}${shippingClassRoute}/add`,
+    UPDATE_SHIPPING: `${app}${shippingClassRoute}/update`
   },
   admin: {
     ADMIN_USERS: `${app}${adminUsersRoute}`,

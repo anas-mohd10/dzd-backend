@@ -1,123 +1,123 @@
 <div class="content container-fluid">
-   <div class="page-header">
-      <div class="row align-items-center">
-         <div class="col">
-            <h3 class="page-title fw-bolder fs-2">
-               {{ editMode ? "Update Coupons" : "Add Coupons" }}
-            </h3>
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
-               </li>
-               <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
-                     {{ editMode ? "Update Coupons" : "Add Coupons"}}
-                  </a>
-               </li>
-            </ul>
-         </div>
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fw-bolder fs-2">
+          {{ editMode ? "Update Coupons" : "Add Coupons" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-5">
+            <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
+          </li>
+          <li class="breadcrumb-item active fs-5">
+            <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
+              {{ editMode ? "Update Coupons" : "Add Coupons"}}
+            </a>
+          </li>
+        </ul>
       </div>
-   </div>
-   <div class="row mt-10">
-      <div class="col-sm-12 fs-5">
-         <div class="card">
-            <div class="card-body">
-               <form (ngSubmit)="onSubmit()" [formGroup]="couponForm">
-                  <div class="row">
-                     <div style="display: none;">{{categoriesData.length}}</div>
-                     <div class="col-12">
-                        <h3 class="form-title"><span>Coupon Details</span></h3>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Title</label>
-                           <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
+    </div>
+  </div>
+  <div class="row mt-10">
+    <div class="col-sm-12 fs-5">
+      <div class="card">
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" [formGroup]="couponForm">
+            <div class="row">
+              <div style="display: none;">{{categoriesData.length}}</div>
+              <div class="col-12">
+                <h3 class="form-title"><span>Coupon Details</span></h3>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Title</label>
+                  <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Code</label>
-                           <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Code</label>
+                  <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Type</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="type" [ngClass]="{
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Type</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
+                    [ngClass]="{
                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="%">%</option>
-                              <option value="Flat">Flat</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Value</label>
-                           <input type="number" min="0" class="form-control fs-5" formControlName="value"
-                              (change)="validateValue($event.target)" [ngClass]="{
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="%">%</option>
+                    <option value="Flat">Flat</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Value</label>
+                  <input type="number" min="0" class="form-control fs-5" formControlName="value"
+                    (change)="validateValue($event.target)" [ngClass]="{
                             'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
-                           <label class="fs-6 text-danger" *ngIf="!isValidValue">{{error_message}}</label>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">From Date</label>
-                           <input type="date" class="form-control fs-5" formControlName="fromDate"
-                              [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Last Date</label>
-                           <input type="date" class="form-control fs-5" formControlName="lastDate"
-                              [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Minimum Purchase</label>
-                           <div class="input-group mb-3">
-                              <span class="input-group-text">Rs.</span>
-                              <input type="number" class="form-control" formControlName="minPurchase" />
-                              <span class="input-group-text">.00</span>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Products</label>
-                           <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                              placeholder="Select products applicable to coupon" [multiple]=true
-                              [ngModelOptions]="{standalone: true}">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Collection</label>
-                           <ng-select [items]="collectionsData" bindLabel="name" bindValue="_id"
-                              [(ngModel)]="collections" placeholder="Select collections applicable to coupon"
-                              [multiple]=true [ngModelOptions]="{standalone: true}">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Category</label>
-                           <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                              placeholder="Select categories applicable to coupon" [multiple]=true
-                              [ngModelOptions]="{standalone: true}">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <!-- <div class="col-12 col-sm-6">
+                  <label class="fs-6 text-danger" *ngIf="!isValidValue">{{error_message}}</label>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">From Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="fromDate"
+                    [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Last Date</label>
+                  <input type="date" class="form-control fs-5" formControlName="lastDate"
+                    [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Minimum Purchase</label>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">Rs.</span>
+                    <input type="number" class="form-control" formControlName="minPurchase" />
+                    <span class="input-group-text">.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Products</label>
+                  <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
+                    placeholder="Select products applicable to coupon" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Collection</label>
+                  <ng-select [items]="collectionsData" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
+                    placeholder="Select collections applicable to coupon" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Category</label>
+                  <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
+                    placeholder="Select categories applicable to coupon" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+              <!-- <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Multiple use per user?</label>
                            <select class="form-select" formControlName="isMultiple" [ngClass]="{
@@ -130,140 +130,134 @@
                            </select>
                         </div>
                      </div> -->
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Active Coupon?</label>
-                           <select class="form-select" formControlName="isActive" [ngClass]="{
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title">Active Coupon?</label>
+                  <select class="form-select" formControlName="isActive" [ngClass]="{
                             'is-invalid':(cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required}">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Yes</option>
-                              <option value="false">No</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Coupon Type</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="couponType" [ngClass]="{
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3 form-title required">Coupon Type</label>
+                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="couponType" [ngClass]="{
                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="LTD">Limited</option>
-                              <option value="UNLTD">Unlimited</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">No. of Coupons</label>
-                           <div class="input-group mb-3">
-                              <input type="number" class="form-control" formControlName="couponValue" />
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Coupon Styles</span></h5>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Background</label>
-                           <input type="color" placeholder="Category name" class="form-control fs-5"
-                              style="height: 50px;" formControlName="background"
-                              (change)="getColors('background', $event.target)" />
-                           <span>{{background}}</span>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Border</label>
-                           <input type="color" placeholder="Category name" class="form-control fs-5"
-                              formControlName="border" style="height: 50px;"
-                              (change)="getColors('border', $event.target)" />
-                           <span>{{border}}</span>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Border Radius</label>
-                           <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Color</label>
-                           <input type="color" placeholder="Category name" class="form-control fs-5"
-                              style="height: 50px;" formControlName="color"
-                              (change)="getColors('color', $event.target)" />
-                           <span>{{color}}</span>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Font Weight</label>
-                           <input type="number" placeholder="400" class="form-control fs-5"
-                              formControlName="fontWeight" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Font Size ( in px )</label>
-                           <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="col-12">
-                           <h3 class="form-title required"><span>Media</span></h3>
-                        </div>
-                        <div class="form-group">
-                           <div class="image-upload">
-                              <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                                 (change)="handleInputChange($event)"
-                                 onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
-                                 style="height: 100px;" required>
-                              <div class="image-upload-div">
-                                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
-                                       alt="" srcset=""></div>
-                                 <div class="right-text d-flex flex-column"><span
-                                       class="right-text-title fs-4 fw-bolder">Click to
-                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
-                                       style="font-weight: 500">Upload
-                                       up to 1
-                                       file</span></div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <ng-container *ngIf=" loadImage">
-                        <div class="col-12 preview-section">
-                           <div class="crop-image col-sm-6">
-                              <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                                 [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                                 [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
-                                 (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                                 (loadImageFailed)="loadImageFailed()">
-                              </image-cropper>
-                           </div>
-                           <div class="uploads uploaded col-sm-6">
-                              <div class="close-icon">
-                                 <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                              </div>
-                              <img class="preview-img" id="previewImage" [src]="croppedImage">
-                           </div>
-                        </div>
-                     </ng-container>
-                     <div class="col-12 d-flex align-items-center justify-content-end">
-                        <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}"
-                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
-                           Cancel
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
-                           Add
-                        </button>
-                     </div>
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="LTD">Limited</option>
+                    <option value="UNLTD">Unlimited</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">No. of Coupons</label>
+                  <div class="input-group mb-3">
+                    <input type="number" class="form-control" formControlName="couponValue" />
                   </div>
-               </form>
+                </div>
+              </div>
+              <div class="col-12">
+                <h5 class="form-title fs-4"><span>Coupon Styles</span></h5>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Background</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                    formControlName="background" (change)="getColors('background', $event.target)" />
+                  <span>{{background}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Border</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
+                    style="height: 50px;" (change)="getColors('border', $event.target)" />
+                  <span>{{border}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Border Radius</label>
+                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Color</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                    formControlName="color" (change)="getColors('color', $event.target)" />
+                  <span>{{color}}</span>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Font Weight</label>
+                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Font Size ( in px )</label>
+                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+                </div>
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="col-12">
+                  <h3 class="form-title required"><span>Media</span></h3>
+                </div>
+                <div class="form-group">
+                  <div class="image-upload">
+                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                      (change)="handleInputChange($event)"
+                      onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
+                      style="height: 100px;" required>
+                    <div class="image-upload-div">
+                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
+                          srcset=""></div>
+                      <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                          upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                          up to 1
+                          file</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf=" loadImage">
+                <div class="col-12 preview-section">
+                  <div class="crop-image col-sm-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
+                      (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                      (loadImageFailed)="loadImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-sm-6">
+                    <div class="close-icon">
+                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="croppedImage">
+                  </div>
+                </div>
+              </ng-container>
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                  style="width: 200px; margin-right: 20px;">
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                  Add
+                </button>
+              </div>
             </div>
-         </div>
+          </form>
+        </div>
       </div>
-   </div>
+    </div>
+  </div>
 </div>

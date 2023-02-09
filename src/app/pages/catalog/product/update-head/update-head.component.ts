@@ -265,9 +265,13 @@ export class UpdateHeadComponent implements OnInit {
         if (category?._id == _cat) {
           refids.push(category?.catid)
         }
-        if (this.selectedDefaultCategory == category?._id) {
-          refid = category?.catid
-        }
+      }
+    }
+
+
+    for (let category of this.defaultcategories) {
+      if (this.selectedDefaultCategory == category?._id) {
+        refid = category?.catid
       }
     }
 

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
+import { ExternalShippingService } from 'src/app/includes/services/external.shipping.service';
 
 @Component({
   selector: 'app-add-shipping',
@@ -14,15 +17,25 @@ export class AddShippingComponent implements OnInit {
   shippingform: any
   appRoutes = appRoutes
   charges: any = []
-  editMode: any = PageTasks.ADD
+  task = PageTasks.ADD;
+  editMode: boolean = false
   isSubmitted = false;
 
   from: any = new FormControl()
   to: any = new FormControl()
   price: any = new FormControl()
   isInvalid: boolean = false;
+  croppedImage: any;
+  loadImage: boolean;
+  filedata: File;
+  filename: string;
+  imageChangedEvent: any;
 
-  constructor(private toast: ToastrService) { }
+  constructor(
+    private Router: Router,
+    private toast: ToastrService,
+    private ExternalShippingService: ExternalShippingService
+  ) { }
 
   ngOnInit(): void {
     this.initForm()
@@ -62,14 +75,25 @@ export class AddShippingComponent implements OnInit {
   }
 
   addData() {
-    if (this.from?.value != null && this.to?.value != null) {
-      if (this.price?.value != null) {
-        this.charges.push({
-          id: this.charges.length,
-          from: this.from?.value,
-          to: this.to?.value,
-          price: this.price?.value
-        })
+    const fromWeight = this.from?.value
+    const toWeight = this.to?.value
+    const price = this.price?.value
+    const validWeight = this.from?.value < this.to?.value
+    if (fromWeight != null && toWeight != null) {
+      if (price != null) {
+        if (validWeight) {
+          this.charges.push({
+            id: this.charges.length,
+            from: this.from?.value,
+            to: this.to?.value,
+            price: this.price?.value
+          })
+          this.from?.setValue('')
+          this.to?.setValue('')
+          this.price?.setValue('')
+        } else {
+          this.toast.error('To value should be greater than from value')
+        }
       } else {
         this.toast.error('Price is required')
       }
@@ -78,6 +102,78 @@ export class AddShippingComponent implements OnInit {
     }
   }
 
-  onSubmit() { }
+  removeData(key: any) {
+    this.charges = this.charges.filter((data: any) => data.id != key)
+  }
+
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  imageLoaded() { }
+
+  cropperReady() { }
+
+  loadImageFailed() { }
+
+  removeImage() {
+    this.croppedImage = ''
+    this.loadImage = false
+  }
+
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.editMode) {
+      this.updateShipping();
+    } else {
+      this.addShipping();
+    }
+  }
+
+  updateShipping() { }
+
+  addShipping() {
+    if (!this.shippingform.valid) {
+      this.toast.error('Validation error, kindly check fields entered.')
+      return
+    }
+
+    const payload = this.createPayload()
+    if (payload) {
+      this.ExternalShippingService.addShipping(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toast.success(res?.message)
+          this.Router.navigateByUrl(appRoutes.shipping.SHIPPING_LIST)
+        } else {
+          this.toast.error(res?.message)
+        }
+      })
+    }
+  }
+
+  createPayload() {
+    let data = {
+      name: this.shippingform.get('name')?.value,
+      details: {
+        days: this.shippingform.get('days')?.value,
+        transistTime: this.shippingform.get('transistTime')?.value,
+        url: this.shippingform.get('url')?.value,
+        charges: this.charges
+      },
+      file: {
+        data: this.croppedImage,
+        name: this.filename
+      }
+    }
+
+    return data
+  }
 
 }

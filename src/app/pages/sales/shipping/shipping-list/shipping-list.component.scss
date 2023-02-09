@@ -1,0 +1,65 @@
+.shippingcards {
+  .shippingCard {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    background: #ffffff;
+    box-shadow: 0 0 2.1875rem rgb(0 0 0 / 6%);
+    border-radius: 20px;
+    position: relative;
+
+    .shippingCard-top {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+    }
+
+    .shippingCard-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      margin: 20px 0 0 0;
+    }
+
+    .cardItem {
+      display: flex;
+      flex-direction: column;
+      margin: 0 30px 0 0;
+
+      .cardlabel {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #BBBBBB;
+      }
+
+      .cardvalue {
+        font-size: 1.33rem;
+        font-weight: 600;
+      }
+    }
+
+    .shipping-image {
+      height: 150px;
+      width: 150px;
+      margin: 0 20px 0 0;
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 10px;
+      }
+    }
+
+    .shippingEditBtn {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+    }
+
+    .shipppingStatus {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+  }
+}
