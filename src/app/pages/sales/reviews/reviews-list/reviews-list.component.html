@@ -52,7 +52,10 @@
                     <h2 class="table-avatar fw-700" style="flex-wrap: wrap !important;">{{ review?.rating }} </h2>
                   </td>
                   <td>
-                    <h2 class="table-avatar">{{review?.message}}</h2>
+                    <h2 class="table-avatar review">
+                      <div class="reviewTitle">{{review?.title}} </div>
+                      <div class="reviewMessage">{{review?.message}}</div>
+                    </h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ review?.created }}</h2>

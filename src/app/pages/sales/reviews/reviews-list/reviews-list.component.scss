@@ -4,6 +4,22 @@
    color: #ecbe09;
 }
 
-table.table td h2.table-avatar, table.table td .table-avatar.h2 {
+table.table td h2.table-avatar,
+table.table td .table-avatar.h2 {
    white-space: initial !important;
+}
+
+.review {
+   flex-direction: column;
+   display: flex !important;
+   align-items: start !important;
+   justify-content: start !important;
+}
+
+.reviewTitle {
+   font-weight: 600;
+}
+
+.reviewMessage {
+   font-size: 1rem;
 }
