@@ -307,7 +307,7 @@
                 </tr>
                 <tr>
                   <td colspan="4" class="text-end">Cash On Delivery Cost</td>
-                  <td class="text-end">{{order?.codCost}}</td>
+                  <td class="text-end">{{order?.paymentMethod == 'ONLINE' ? 0 : order?.codCost}}</td>
                 </tr>
                 <tr>
                   <td colspan="4" class="text-end">Discount</td>
@@ -330,31 +330,51 @@
             <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
               <div class="row">
                 <div class="col-lg-6">
-                  <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
-                    <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
-                      <div class="card-header">
-                        <div class="card-title">
-                          <h3 class="fs-3 text-dark fw-bolder">Customer address</h3>
+                  <div class="col-12">
+                    <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
+                      <div class="card card-flush py-4 flex-row-fluid overflow-hidden" style="background: #f6f6f6;">
+                        <div class="card-header">
+                          <div class="card-title">
+                            <h3 class="fs-3 text-dark fw-bolder">Customer address</h3>
+                          </div>
+                        </div>
+                        <div class="card-body fs-5 pt-0">
+                          {{order?.address?.firstline}},
+                          {{order?.address?.secondline}},
+                          {{order?.address?.area}}, {{order?.address?.landmark}},
+                          {{order?.address?.city}}, {{order?.address?.state}},
+                          {{order?.address?.pincode}}
+                        </div>
+                        <div class="card-header">
+                          <div class="card-title">
+                            <h3 class="fs-3 text-dark fw-bolder">Shipping address</h3>
+                          </div>
+                        </div>
+                        <div class="card-body fs-5 pt-0">
+                          {{order?.address?.firstline}},
+                          {{order?.address?.secondline}},
+                          {{order?.address?.area}}, {{order?.address?.landmark}},
+                          {{order?.address?.city}}, {{order?.address?.state}},
+                          {{order?.address?.pincode}}
                         </div>
                       </div>
-                      <div class="card-body fs-5 pt-0">
-                        {{order?.address?.firstline}},
-                        {{order?.address?.secondline}},
-                        {{order?.address?.area}}, {{order?.address?.landmark}},
-                        {{order?.address?.city}}, {{order?.address?.state}},
-                        {{order?.address?.pincode}}
-                      </div>
-                      <div class="card-header">
-                        <div class="card-title">
-                          <h3 class="fs-3 text-dark fw-bolder">Shipping address</h3>
-                        </div>
-                      </div>
-                      <div class="card-body fs-5 pt-0">
-                        {{order?.address?.firstline}},
-                        {{order?.address?.secondline}},
-                        {{order?.address?.area}}, {{order?.address?.landmark}},
-                        {{order?.address?.city}}, {{order?.address?.state}},
-                        {{order?.address?.pincode}}
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="card-title">
+                      <h3 class="fs-3 text-dark fw-bolder">Payment Details</h3>
+                    </div>
+                    <div class="col-12 form-group">
+                      <label class="fs-5 mb-3 form-title">Order Id</label>
+                      <input type="text" class="form-control fs-5" formControlName="orderId" />
+                    </div>
+                    <div class="col-12 form-group">
+                      <label class="fs-5 mb-3 form-title">Transaction Id</label>
+                      <input type="text" class="form-control fs-5" formControlName="paymentId" />
+                    </div>
+                    <div class="col-12">
+                      <div class="alert alert-secondary fw-bolder" role="alert">
+                        Order Id is only in case of online payment ( payment gateway ) by customer
                       </div>
                     </div>
                   </div>

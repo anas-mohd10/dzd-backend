@@ -54,7 +54,9 @@ export class UpdateOrdersComponent implements OnInit {
       deliveryPerson: [''],
       deliveryDate: [''],
       outForDelivery: [''],
-      dateExpected: ['']
+      dateExpected: [''],
+      orderId: [''],
+      paymentId: [''],
     });
   }
 
@@ -81,6 +83,8 @@ export class UpdateOrdersComponent implements OnInit {
       this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
       this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
       this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
+      this.orderForm.get("orderId")?.setValue(this.order?.payment?.orderId)
+      this.orderForm.get("paymentId")?.setValue(this.order?.payment?.transactionId)
 
       let dateExpected = ''
       let outForDelivery = ''

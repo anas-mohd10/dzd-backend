@@ -11,6 +11,7 @@ export class AdvanceTablesWidget9Component implements OnInit {
   @Input() cssClass: '';
   appRoutes = appRoutes
   orders: any;
+  totalOrders: any = 0;
 
   constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) { }
 
@@ -18,6 +19,7 @@ export class AdvanceTablesWidget9Component implements OnInit {
     this.DashboardService.getNewOrders({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result
+        this.totalOrders = this.orders.length
         for (let order of this.orders) {
           order.orderDate = new Date(order?.orderDate).toDateString()
           if (order?.delivery?.dateExpected) order.delivery.dateExpected = new Date(order?.delivery?.dateExpected).toDateString()
