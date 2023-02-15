@@ -179,7 +179,7 @@ export class AddCollectionComponent implements OnInit {
 
   addCollection() {
     if (!this.collectionForm.valid) {
-      console.error("error");
+      this.toastr.error('Validation failed. Kindly try again with proper values.')
       return;
     }
 
@@ -187,9 +187,9 @@ export class AddCollectionComponent implements OnInit {
 
     this.collectionService.addCollection(payload).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.messaage);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Collection added successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
       }
     });

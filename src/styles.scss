@@ -2,6 +2,11 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.form-title {
+  font-weight: 600 !important;
+  margin: 1.875rem 0 0 0 !important;
+}
+
 .emptyImage {
   height: 150px;
   width: 150px;
@@ -877,8 +882,8 @@ table.table th {
 }
 
 .toast-message {
-  font-size: 1.1rem !important;
-  font-weight: normal !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
 }
 
 .toast-container .ngx-toastr {

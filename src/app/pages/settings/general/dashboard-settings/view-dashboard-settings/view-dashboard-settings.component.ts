@@ -144,8 +144,6 @@ export class ViewDashboardSettingsComponent implements OnInit {
           break
       }
     }
-    console.log(this.data);
-
     if (this.data) {
       this.HomeSettingsService.updateHomeSettings(this.data).subscribe((res: any) => {
         if (res?.errorCode == 0) {
