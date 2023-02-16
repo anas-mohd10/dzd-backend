@@ -1,4 +1,4 @@
-s<div class="content container-fluid">
+<div class="content container-fluid">
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
@@ -278,17 +278,23 @@ s<div class="content container-fluid">
                       <label class="fs-5 mb-3">Select product Attribute</label>
                       <div class="attributes-container" *ngIf="attributes.length > 0">
                         <ng-container *ngFor="let attribute of attributes">
-                          <div class="attribute-card" (click)="selectAttribute(attribute?.id, attribute?.refid)"
-                            [ngClass]="{'attr-selected': attributesRefid.includes(attribute?.refid)}">
+                          <div class="attribute-card">
                             <div class="attribute-name">{{attribute?.name}}</div>
                             <div class="attribute-values">
                               <ng-container *ngFor="let value of attribute?.values">
                                 <div *ngIf="attribute?.type == 'Text'"
-                                  class="attr-value attr-text bg-primay text-white">{{value?.value}}</div>
-                                <div *ngIf="attribute?.type == 'Color'" class="attr-value attr-color"
-                                  [ngStyle]="{'background': value?.value}"></div>
+                                  (click)="selectAttribute(attribute?.id, attribute?.refid, value?._id, value?.refid)"
+                                  [ngClass]="{'attr-selected': attributesValuesRefid.includes(value?.refid)}"
+                                  class="attr-value attr-text">
+                                  {{value?.value}}
+                                </div>
+                                <div *ngIf="attribute?.type == 'Color'"
+                                  (click)="selectAttribute(attribute?.id, attribute?.refid, value?._id, value?.refid)"
+                                  class="attr-value attr-color" [ngStyle]="{'background': value?.value}"></div>
                                 <div *ngIf="attribute?.type == 'File'">
-                                  <img src="{{base}}/{{value?.value}}" alt="" srcset=""
+                                  <img src="{{base}}/{{value?.value}}"
+                                    (click)="selectAttribute(attribute?.id, attribute?.refid, value?._id, value?.refid)"
+                                    alt="" srcset=""
                                     style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
                                 </div>
                               </ng-container>

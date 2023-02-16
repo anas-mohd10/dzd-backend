@@ -121,6 +121,8 @@ export class AddProductComponent implements OnInit {
   base: string;
 
   submitting: boolean = false
+  attributesValuesId: any = [];
+  attributesValuesRefid: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -504,19 +506,29 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  selectAttribute(id: any, refid: any) {
+  selectAttribute(id: any, refid: any, valueid: any, valuerefid: any) {
     if (this.attributesRefid.includes(refid)) {
       let index = this.attributesRefid.indexOf(refid)
       let indexId = this.attributesId.indexOf(id)
       if (index >= 0) {
         this.attributesRefid.splice(index, 1)
         this.attributesId.splice(indexId, 1)
-        this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != refid)
       }
     } else {
-      this.selectedAttribute.push({ id: id, refid: refid })
       this.attributesRefid.push(refid)
       this.attributesId.push(id)
+    }
+
+    if (this.attributesValuesRefid.includes(valuerefid)) {
+      let index = this.attributesValuesRefid.indexOf(valuerefid)
+      let indexId = this.attributesValuesId.indexOf(valueid)
+      if (index >= 0) {
+        this.attributesValuesRefid.splice(index, 1)
+        this.attributesValuesId.splice(indexId, 1)
+      }
+    } else {
+      this.attributesValuesRefid.push(valuerefid)
+      this.attributesValuesId.push(valueid)
     }
   }
 
@@ -622,8 +634,13 @@ export class AddProductComponent implements OnInit {
         refid: categoryRefid
       },
       attribute: {
-        id: this.attributesId,
-        refid: this.attributesRefid
+        heads: {
+          id: this.attributesId,
+          refid: this.attributesRefid
+        }, values: {
+          id: this.attributesValuesId,
+          refid: this.attributesValuesRefid
+        }
       },
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,

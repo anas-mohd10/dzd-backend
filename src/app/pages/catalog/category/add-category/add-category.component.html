@@ -368,16 +368,13 @@
                               <span>Unpublished</span>
                             </div>
                           </ng-template>
-                          <div class="attribute-filetered published"
-                            *ngIf="attribute?.isFilter == true; else unfiletered">
+                          <div class="attribute-filetered published" *ngIf="attribute?.isFilter == true">
                             <i class="bi bi-sort-alpha-down" style="font-size: 2rem;"></i> <span>Filter Attribute</span>
                           </div>
-                          <ng-template #unfiletered>
-                            <div class="attribute-status unpublished"><i class="bi bi-sort-alpha-down"
-                                style="font-size: 2rem;"></i>
-                              <span>Non filter Attribute</span>
-                            </div>
-                          </ng-template>
+                          <div class="attribute-status unpublished" *ngIf="attribute?.isFilter == true"><i
+                              class="bi bi-sort-alpha-down" style="font-size: 2rem;"></i>
+                            <span>Non filter Attribute</span>
+                          </div>
                           <div class="attribute-card-values">
                             <ng-container *ngFor="let value of attribute.values">
                               <div class="attribute-color" *ngIf="attribute?.type == 'Color'"

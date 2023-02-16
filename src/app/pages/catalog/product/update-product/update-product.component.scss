@@ -85,7 +85,6 @@ nav {
         border-radius: 0.625rem;
         padding: 0.925rem;
         transition: 0.33s all ease-in-out;
-        cursor: pointer;
         border: 1px solid #ffffff;
 
         .attribute-name {
@@ -97,10 +96,13 @@ nav {
         .attribute-values {
           display: flex;
           flex-wrap: wrap;
+          cursor: pointer;
+          font-weight: 600;
 
           .attr-text {
             width: calc(33% - 10px);
-            background: #dc602b;
+            background: #ffffff;
+            border: 1px solid #999999;
             margin: 10px 10px 0 0;
             display: flex;
             align-items: center;
@@ -109,18 +111,20 @@ nav {
             border-radius: 0.3125rem;
           }
 
+          .attr-selected {
+            border: 1px solid #00bdab;
+          }
+
           .attr-color {
-            height: 2.1875rem;
-            width: 2.1875rem;
+            height: 3.1875rem;
+            width: 3.1875rem;
             border-radius: 0.3125rem;
             margin: 0 10px 0 0;
           }
         }
       }
 
-      .attr-selected {
-        border: 1px solid #5b9be4;
-      }
+
     }
 
     hr {
@@ -138,7 +142,7 @@ nav {
   }
 }
 
-.archived-content{
+.archived-content {
   pointer-events: none;
   opacity: 0.5;
 }

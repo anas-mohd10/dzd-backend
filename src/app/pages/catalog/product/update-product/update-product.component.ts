@@ -124,6 +124,9 @@ export class UpdateProductComponent implements OnInit {
   vid: any = ''
   base: string;
   submitting: boolean;
+  isVideo: boolean;
+  attributesValuesId: any = [];
+  attributesValuesRefid: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -223,6 +226,7 @@ export class UpdateProductComponent implements OnInit {
 
         this.img = environment.base + "/" + res?.result[0]?.thumbnail
         this.vid = environment.base + "/" + res?.result[0]?.video
+        this.isVideo = res?.result[0]?.video ? true : false
         for (let file of res?.result[0]?.files) {
           this.imageFiles.push({
             fileString: '',
@@ -445,19 +449,31 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  selectAttribute(id: any, refid: any) {
+  selectAttribute(id: any, refid: any, valueid: any, valuerefid: any) {
     if (this.attributesRefid.includes(refid)) {
       let index = this.attributesRefid.indexOf(refid)
       let indexId = this.attributesId.indexOf(id)
       if (index >= 0) {
         this.attributesRefid.splice(index, 1)
         this.attributesId.splice(indexId, 1)
-        this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != refid)
       }
     } else {
-      this.selectedAttribute.push({ id: id, refid: refid })
       this.attributesRefid.push(refid)
       this.attributesId.push(id)
+    }
+
+    if (this.attributesValuesRefid.includes(valuerefid)) {
+      let index = this.attributesValuesRefid.indexOf(valuerefid)
+      let indexId = this.attributesValuesId.indexOf(valueid)
+      if (index >= 0) {
+        this.attributesValuesRefid.splice(index, 1)
+        this.attributesValuesId.splice(indexId, 1)
+        this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != valuerefid)
+      }
+    } else {
+      this.selectedAttribute.push({ id: valueid, refid: valuerefid })
+      this.attributesValuesRefid.push(refid)
+      this.attributesValuesId.push(id)
     }
   }
 
@@ -555,8 +571,13 @@ export class UpdateProductComponent implements OnInit {
         refid: categoryRefid
       },
       attribute: {
-        id: this.attributesId,
-        refid: this.attributesRefid
+        heads: {
+          id: this.attributesId,
+          refid: this.attributesRefid
+        }, values: {
+          id: this.attributesValuesId,
+          refid: this.attributesValuesRefid
+        }
       },
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,

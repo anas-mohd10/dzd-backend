@@ -85,7 +85,6 @@ nav {
         border-radius: 0.625rem;
         padding: 0.925rem;
         transition: 0.33s all ease-in-out;
-        cursor: pointer;
         border: 1px solid #ffffff;
 
         .attribute-name {
@@ -97,16 +96,23 @@ nav {
         .attribute-values {
           display: flex;
           flex-wrap: wrap;
+          cursor: pointer;
 
           .attr-text {
             width: calc(33% - 0.625rem);
-            background: #dc602b;
+            background: #ffffff;
+            border: 1px solid #999999;
             margin: 0.625rem 0.625rem 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0.3125rem;
             border-radius: 0.3125rem;
+            font-weight: 600;
+          }
+
+          .attr-selected {
+            border: 1px solid #00bdab;
           }
 
           .attr-color {
@@ -118,9 +124,6 @@ nav {
         }
       }
 
-      .attr-selected {
-        border: 1px solid #5b9be4;
-      }
     }
 
     hr {
