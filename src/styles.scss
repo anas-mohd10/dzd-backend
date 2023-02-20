@@ -2,6 +2,11 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+img.iconImage {
+  height: 35px;
+  width: 35px;
+}
+
 .form-title {
   font-weight: 600 !important;
   margin: 1.875rem 0 0 0 !important;
@@ -907,7 +912,7 @@ body {
 .mat-typography h4,
 .mat-typography h5,
 .mat-typography h6 {
-  font-family: 'Questrial', sans-serif !important;
+  font-family: 'Urbanist', sans-serif !important;
 }
 
 // @media (min-width: 1400px) {

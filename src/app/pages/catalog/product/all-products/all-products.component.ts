@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
@@ -46,6 +46,8 @@ export class AllProductsComponent implements OnInit {
 
   loaded: boolean = false
 
+  name: any = new FormControl('')
+
   constructor(
     private cdr: ChangeDetectorRef,
     private ProductService: ProductService,
@@ -56,6 +58,8 @@ export class AllProductsComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.base = environment.base
+
+    this.productform.value['name'] = this.name?.value
 
     this.ProductService.searchProducts(this.productform.value, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -88,7 +92,6 @@ export class AllProductsComponent implements OnInit {
 
   initForm() {
     this.productform = this.formBuilder.group({
-      name: [''],
       isActive: [''],
       category: ['']
     });
@@ -98,6 +101,7 @@ export class AllProductsComponent implements OnInit {
     this.currpage = 1
     let filters = { ...this.productform.value }
     filters['category'] = this.category
+    filters['name'] = this.name?.value
     this.ProductService.searchProducts(filters, this.page).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data

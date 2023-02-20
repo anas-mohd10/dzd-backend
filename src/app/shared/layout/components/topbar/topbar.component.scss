@@ -1,0 +1,56 @@
+.notifications {
+    position: relative;
+
+    .notificationIcon {
+        margin: 0 20px 0 0;
+        cursor: pointer;
+    }
+
+    .notificationContainer {
+        position: absolute;
+        top: calc(100% + 20px);
+        right: 20px;
+        height: 500px;
+        width: 400px;
+        background: #ffffff;
+        display: none;
+        border-radius: 20px;
+        box-shadow: 0 100px 130px 10px rgb(0 0 0 / 20%);
+        padding: 20px;
+
+        .notificationsTitle {
+            width: 100%;
+            margin: 0 0 10px 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .notificationsPagination {
+            display: flex;
+            align-items: center;
+            justify-content: end;
+
+            .pageNumber {
+                height: 30px;
+                width: 30px;
+                background: #f2f2f2;
+                color: #111111;
+                border-radius: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 0 0 10px;
+                cursor: pointer;
+            }
+
+            .activePage {
+                background: #00bdab;
+                color: #ffffff;
+            }
+        }
+    }
+
+    .showContainer {
+        display: block;
+    }
+}

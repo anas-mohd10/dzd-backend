@@ -13,7 +13,7 @@
                   <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
                </li>
                <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{coupon: slug}">
+                  <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
                      {{ editMode ? "Update Coupons" : "Add Coupons"}}
                   </a>
                </li>
@@ -29,28 +29,28 @@
                   <div class="row">
                      <div style="display: none;">{{categoriesData.length}}</div>
                      <div class="col-12">
-                        <h3 class="form-title"><span>Coupon Details</span></h3>
+                        <h2 class="form-title">Coupon Details</h2>
                      </div>
-                     <div class="col-12 col-sm-6">
+                     <div class=" col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Title</label>
+                           <label class="fs-5 mb-3 required">Title</label>
                            <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
-                            'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
+                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Code</label>
+                           <label class="fs-5 mb-3 required">Code</label>
                            <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
-                            'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
+                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Type</label>
+                           <label class="fs-5 mb-3 required">Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="type" [ngClass]="{
-                                 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
+                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="%">%</option>
                               <option value="Flat">Flat</option>
@@ -59,24 +59,24 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Value</label>
-                           <input type="number" class="form-control fs-5" formControlName="value" [ngClass]="{
-                            'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}"
-                              (change)="validateValue($event.target)" />
+                           <label class="fs-5 mb-3 required">Value</label>
+                           <input type="number" min="0" class="form-control fs-5" formControlName="value"
+                              (change)="validateValue($event.target)" [ngClass]="{
+                             'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
+                           <label class="fs-6 text-danger" *ngIf="!isValidValue">{{error_message}}</label>
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">From Date</label>
+                           <label class="fs-5 mb-3 required">From Date</label>
                            <input type="date" class="form-control fs-5" formControlName="fromDate"
                               [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Last Date</label>
+                           <label class="fs-5 mb-3 required">Last Date</label>
                            <input type="date" class="form-control fs-5" formControlName="lastDate"
-                              (change)="validateDate($event.target)"
                               [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
                         </div>
                      </div>
@@ -90,51 +90,41 @@
                            </div>
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Category</label>
-                           <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                              placeholder="Select categories applicable to coupon" [multiple]=true
-                              [ngModelOptions]="{standalone: true}" [compareWith]="compareFn">
-                           </ng-select>
+
+                     <div class="row" style="margin: 20px 0; padding: 0px;">
+                        <div class="col-4">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Products</label>
+                              <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
+                                 placeholder="Select products applicable to coupon" [multiple]=true
+                                 [ngModelOptions]="{standalone: true}">
+                              </ng-select>
+                           </div>
+                        </div>
+                        <div class="col-4">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Collection</label>
+                              <ng-select [items]="collectionsData" bindLabel="name" bindValue="_id"
+                                 [(ngModel)]="collections" placeholder="Select collections applicable to coupon"
+                                 [multiple]=true [ngModelOptions]="{standalone: true}">
+                              </ng-select>
+                           </div>
+                        </div>
+                        <div class="col-4">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Category</label>
+                              <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id"
+                                 [(ngModel)]="categories" placeholder="Select categories applicable to coupon"
+                                 [multiple]=true [ngModelOptions]="{standalone: true}">
+                              </ng-select>
+                           </div>
                         </div>
                      </div>
+
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Products</label>
-                           <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                              placeholder="Select products applicable to coupon" [multiple]=true
-                              [ngModelOptions]="{standalone: true}" [compareWith]="compareFn">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Collection</label>
-                           <ng-select [items]="collectionsData" bindLabel="name" bindValue="_id"
-                              [(ngModel)]="collections" placeholder="Select collections applicable to coupon"
-                              [multiple]=true [ngModelOptions]="{standalone: true}" [compareWith]="compareFn">
-                           </ng-select>
-                        </div>
-                     </div>
-                     <!-- <div class=" col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Multiple use per user?</label>
-                           <select class="form-select" formControlName="isMultiple" [ngClass]="{
-                            'is-invalid':(cf.isMultiple.touched || isSubmitted) && cf.isMultiple.errors?.required}">
-                              <option value="" disabled>
-                                 -- Select an option --
-                              </option>
-                              <option value="true">Yes</option>
-                              <option value="false">No</option>
-                           </select>
-                        </div>
-                     </div> -->
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Active Coupon?</label>
-                           <select class="form-select" formControlName="isActive" [ngClass]="{
-                            'is-invalid':(cf.isActive.touched || isSubmitted) && cf.isActive.errors?.required}">
+                           <label class="fs-5 mb-3">Active Coupon?</label>
+                           <select class="form-select" formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Yes</option>
                               <option value="false">No</option>
@@ -143,10 +133,21 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Coupon Type</label>
+                           <label class="fs-5 mb-3">Visible Coupon?</label>
+                           <select class="form-select" formControlName="isVisibility">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="true">Yes</option>
+                              <option value="false">No</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3 required">Coupon Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="couponType" [ngClass]="{
-                                 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
+                                  'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="LTD">Limited</option>
                               <option value="UNLTD">Unlimited</option>
@@ -162,7 +163,7 @@
                         </div>
                      </div>
                      <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Coupon Styles</span></h5>
+                        <h2 class="form-title">Coupon Styles</h2>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
@@ -212,10 +213,10 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="col-12">
-                           <h3 class="form-title required"><span>Media</span></h3>
+                           <h2 class="form-title">Media</h2>
                         </div>
-                        <div class="form-group col-12">
-                           <div class="image-upload col-sm-6">
+                        <div class="form-group">
+                           <div class="image-upload">
                               <input type="file" class="form-control fs-5" name="image" accept="image/*"
                                  (change)="handleInputChange($event)"
                                  onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
@@ -223,10 +224,12 @@
                               <div class="image-upload-div">
                                  <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
                                        alt="" srcset=""></div>
-                                 <div class="right-text d-flex flex-column">
-                                    <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                    <span class="right-text-note fs-7 text-gray-400">Upload up to 1 file</span>
-                                 </div>
+                                 <div class="right-text d-flex flex-column"><span
+                                       class="right-text-title fs-4 fw-bolder">Click to
+                                       upload</span> <span class="right-text-note fs-7 text-gray-400"
+                                       style="font-weight: 500">Upload
+                                       up to 1
+                                       file</span></div>
                               </div>
                            </div>
                            <div class="uploaded-image col-sm-6 mt-5">
@@ -252,14 +255,18 @@
                            </div>
                         </div>
                      </ng-container>
+                     <div class="col-12">
+                        <div class="alert alert-warning fs-5 fw-bolder" role="alert">Only visible coupons will be
+                           reflected in
+                           user app, other coupons can be used in admin dashboard.</div>
+                     </div>
                      <div class="col-12 d-flex align-items-center justify-content-end">
                         <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}"
-                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+                           class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
+                           style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
-                           Update
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">Update</button>
                      </div>
                   </div>
                </form>

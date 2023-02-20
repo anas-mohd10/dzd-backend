@@ -51,3 +51,28 @@
   background: #e52f2f80;
   color: #ffffff !important;
 }
+
+
+
+.CustomTooltip {
+  position: relative;
+  cursor: pointer;
+
+  .tooltiptext {
+    visibility: hidden;
+    width: 100%;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    position: absolute;
+    top: -35px;
+    left: 0;
+    z-index: 1;
+  }
+
+  &:hover .tooltiptext {
+    visibility: visible;
+  }
+}

@@ -4,4 +4,5 @@ export const invoiceSettingsEndpoints = {
    get_active_invoices: '/invoice-settings/active-invoices',
    get_invoice_by_slug: '/invoice-settings/get-invoice',
    update_invoice: '/invoice-settings/update-invoice ',
+   generate_invoice: '/generate-invoice'
 }

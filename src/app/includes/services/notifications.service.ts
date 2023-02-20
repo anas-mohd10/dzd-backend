@@ -55,4 +55,9 @@ export class NotificationsService {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.update_notification + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  latestNotifications(data: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.latest_notifications);
+    return this.http.post(`${url}`, data);
+  }
 }

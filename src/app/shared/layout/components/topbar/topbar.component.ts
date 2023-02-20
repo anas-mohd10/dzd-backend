@@ -13,9 +13,22 @@ export class TopbarComponent implements OnInit {
   toolbarButtonIconSizeClass = 'svg-icon-1';
   headerLeft: string = 'menu';
 
-  constructor(private layout: LayoutService) {}
+  isShowClicked: Boolean = false
+  pages: any = [1, 2, 3]
+  currentPage: any = this.pages[0]
+
+  constructor(private layout: LayoutService) { }
 
   ngOnInit(): void {
+    this.isShowClicked = false
     this.headerLeft = this.layout.getProp('header.left') as string;
+  }
+
+  toggleNotifications() {
+    this.isShowClicked = !this.isShowClicked
+  }
+
+  fetchNotifications(page: any) {
+    this.currentPage = page
   }
 }

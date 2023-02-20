@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
+import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
 
@@ -35,6 +36,7 @@ export class UpdateOrdersComponent implements OnInit {
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
+    private invoiceService: InvoiceSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -86,6 +88,12 @@ export class UpdateOrdersComponent implements OnInit {
       this.orderForm.get("orderId")?.setValue(this.order?.payment?.orderId)
       this.orderForm.get("paymentId")?.setValue(this.order?.payment?.transactionId)
 
+      for (let history of this.order.history) {
+        history['status'] = history?.status[0] + history?.status.slice(1).toLowerCase();
+        history['created']['type'] = history?.created?.type[0] + history?.created?.type.slice(1).toLowerCase();
+        history['date'] = new Date(history?.date).toDateString() + " " + new Date(history?.date).toLocaleTimeString()
+      }
+
       let dateExpected = ''
       let outForDelivery = ''
       let deliveryDate = ''
@@ -99,6 +107,12 @@ export class UpdateOrdersComponent implements OnInit {
       this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
 
       this.cdr.markForCheck()
+    })
+  }
+
+  generateInvoice() {
+    this.invoiceService.generateInvoice({}).subscribe((res: any) => {
+      console.log(res);
     })
   }
 

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NotificationsService } from './includes/services/notifications.service';
 
 declare const $: any;
 @Component({
@@ -9,7 +10,12 @@ declare const $: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  constructor() {
+
+  constructor(private NotificationsService: NotificationsService) {
+
+    this.NotificationsService.latestNotifications({ page: 1 }).subscribe((res: any) => {
+      console.log(res?.result);
+    })
   }
 
   ngOnInit() {
@@ -18,5 +24,8 @@ export class AppComponent implements OnInit {
         bFilter: false,
       });
     }
+
+    console.log('jhekjb');
+    
   }
 }

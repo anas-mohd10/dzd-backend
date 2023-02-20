@@ -3,7 +3,7 @@ import { appRoutes } from 'src/app/config/routes/app.routes';
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
 import { CartService } from 'src/app/includes/services/cart.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 
@@ -33,6 +33,10 @@ export class CartListComponent implements OnInit, OnDestroy {
 
   carts: any = []
   isTable: Boolean = false
+  user: any = ''
+
+  message: any = new FormControl('', Validators.required)
+  couponCode: any = new FormControl('', Validators.required)
 
   constructor(
     private cartService: CartService,
@@ -63,8 +67,7 @@ export class CartListComponent implements OnInit, OnDestroy {
     this.cartService.getCarts().subscribe((res: any) => {
       this.carts = res?.result
       for (let cart of this.carts) {
-        cart.date.added = new Date(cart?.date?.added).toLocaleString()
-        cart.date.purchased = new Date(cart?.date?.purchased).toLocaleString()
+        cart.date.added = new Date(cart?.date?.added).toDateString()
       }
       this.cdr.markForCheck()
       this.dtTrigger.next();
@@ -92,5 +95,9 @@ export class CartListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
+  }
+
+  getUser(user: any) {
+    this.user = user
   }
 }

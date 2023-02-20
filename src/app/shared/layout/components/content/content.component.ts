@@ -10,7 +10,7 @@ import { DrawerComponent } from '../../../kt/components';
 export class ContentComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.routingChanges();

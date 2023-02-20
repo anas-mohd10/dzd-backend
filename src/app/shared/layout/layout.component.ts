@@ -57,7 +57,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     this.contentContainerClasses = this.layout.getStringCSSClasses('contentContainer');
     this.asideCSSClasses = this.layout.getStringCSSClasses('aside');
     this.headerCSSClasses = this.layout.getStringCSSClasses('header');
-    this.headerHTMLAttributes = this.layout.getHTMLAttributes('headerMenu');
+    this.headerHTMLAttributes = this.layout.getHTMLAttributes('headerMenu');    
   }
 
   ngAfterViewInit(): void {

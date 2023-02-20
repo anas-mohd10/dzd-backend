@@ -25,4 +25,9 @@ export class InvoiceSettingsService {
     const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.update_invoice + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  generateInvoice(data: any) {
+    const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.generate_invoice);
+    return this.http.post(`${url}`, data);
+  }
 }

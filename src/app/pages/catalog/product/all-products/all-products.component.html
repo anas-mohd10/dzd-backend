@@ -22,12 +22,19 @@
     </div>
   </div>
 
+  <div class="col-12 d-flex align-items-center justify-content-end" style="margin: 40px 0;">
+    <div class="search-input col-6">
+      <input type="text" placeholder="Search for products here" class="form-control fs-5" [formControl]="name"
+        (ngModelChange)="searchProduct()">
+    </div>
+  </div>
+
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} products</h4>
     </div>
     <div class="left-buttons">
-      <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+      <button class="btn btn-secondary cursor-pointer fs-5 fw-bolder" color="primary"
         routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
         Archived Products
       </button>
@@ -89,7 +96,7 @@
     <ng-container *ngIf="totalcount == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
-        <h2>Sorry, we haven't found any data</h2>
+        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>
@@ -138,19 +145,13 @@
     <div class="product-form-container">
       <form [formGroup]="productform">
         <div class="col-12 row" style="display: flex; flex-direction: column;">
-          <div class="search-input col-12">
-            <label class="fs-5">Search</label>
-            <input type="text" placeholder="Search for products here..." class="form-control fs-5"
-              formControlName="name" (ngModelChange)="searchProduct()">
-          </div>
           <div class="search-category col-12">
             <label class="fs-5">Category</label>
             <div class="category-checkbox-container">
               <ng-container *ngFor="let category of categories; let i=index">
                 <div class="category-checkbox">
                   <div class="form-check">
-                    <input type="radio" name="category_radio" id="{{i}}_category" class="form-check-input"
-                      (click)="selectCategory(category?.catid)" />
+                    <input type="radio" name="category_radio" id="{{i}}_category" class="form-check-input" />
                     <label class="form-check-label" for="flexCheckDefault">
                       {{category?.name}}
                     </label>
@@ -161,15 +162,17 @@
           </div>
           <div class="search-status col-12">
             <label class="fs-5">Status</label>
-            <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchProduct()">
+            <select name="" id="" class="form-select fs-5" formControlName="isActive">
               <option value="" disabled>Select an option</option>
               <option value=true>Active</option>
               <option value=false>Inactive</option>
             </select>
           </div>
           <div class="search-submit col-12">
-            <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+            <button type="button" class="col-6 btn fs-5 text-dark fw-bolder" (click)="onReload()"
               style="outline: none; border: none;">Clear Filters</button>
+            <button type="button" class="col-6 btn fs-5 bg-primary text-white fw-bolder" (click)="searchProduct()"
+              style="outline: none; border: none;">Apply Filters</button>
           </div>
         </div>
       </form>

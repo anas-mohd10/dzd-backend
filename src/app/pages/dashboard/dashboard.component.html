@@ -1,5 +1,5 @@
 <div class="page-title">
-  <div class="fs-2 fw-bolder mb-lg-5">Overview</div>
+  <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-bar-chart fs-1 text-dark"></i> Overview</div>
 </div>
 <div class="row">
   <div class="row">
@@ -28,9 +28,8 @@
       </app-stats-widget5>
     </div>
   </div>
-
   <div class="page-title">
-    <div class="fs-2 fw-bolder mb-lg-5">Other Informations</div>
+    <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-bar-chart fs-1 text-dark"></i> Other Informations</div>
   </div>
   <div class="row mb-5">
     <ng-container *ngFor="let info of data?.otherInformations">
@@ -42,18 +41,27 @@
       </div>
     </ng-container>
   </div>
-
   <div class="row mb-5">
+    <div class="newOrders">
+      <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-basket fs-1 text-dark"></i> Latest Orders</div>
+      <app-advance-tables-widget9></app-advance-tables-widget9>
+    </div>
+  </div>
+  <div class="row mb-5 mt-10">
     <div class="col-xl-4">
       <div class="stats5Months" *ngIf="monthlyRevenue.length > 0">
-        <div class="fs-2 fw-bolder mb-lg-5">Last {{monthlyRevenue.length}} month sales</div>
+        <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-clipboard-data fs-1 text-dark"></i> Last
+          {{monthlyRevenue.length}}
+          month sales</div>
         <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg"
           class="card card-xl-stretch mb-xl-8" color="success" change="₹ {{monthlyRevenue[0]['revenue']}}"
           description="{{monthlyRevenue[0]['name']}} sales">
         </app-stats-widget4>
       </div>
       <div class="stats7Days" *ngIf="daysRevenue.length > 0">
-        <div class="fs-2 fw-bolder mb-lg-5">Last {{daysRevenue.length}} days sales</div>
+        <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-clipboard-data fs-1 text-dark"></i> Last
+          {{daysRevenue.length}}
+          days sales</div>
         <app-stats-widget3 svgIcon="./assets/media/icons/duotune/general/gen025.svg"
           class="card card-xl-stretch mb-xl-8" color="success" title="Today Sales"
           change="₹ {{daysRevenue[0]['revenue']}}">
@@ -62,16 +70,9 @@
     </div>
     <div class="col-xl-8">
       <div class="topSellingProducts  mb-lg-5">
-        <div class="fs-2 fw-bolder mb-lg-5">Top Selling Products</div>
+        <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-tags fs-1 text-dark"></i> Top Selling Products</div>
         <app-advance-tables-widget4></app-advance-tables-widget4>
       </div>
-    </div>
-  </div>
-
-  <div class="row mb-5">
-    <div class="newOrders">
-      <div class="fs-2 fw-bolder mb-lg-5">New Orders</div>
-      <app-advance-tables-widget9></app-advance-tables-widget9>
     </div>
   </div>
 </div>
