@@ -98,17 +98,16 @@
                             <div class="attribute-values">
                               <ng-container *ngFor="let value of attribute?.values">
                                 <div *ngIf="attribute?.type == 'Text'"
-                                  (click)="selectAttribute(attribute?.id, attribute?.refid, value?._id, value?.refid)"
-                                  [ngClass]="{'attr-selected': attributesValuesRefid.includes(value?.refid)}"
+                                  (click)="selectAttribute(attribute?.type, attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
                                   class="attr-value attr-text">
                                   {{value?.value}}
                                 </div>
                                 <div *ngIf="attribute?.type == 'Color'"
-                                  (click)="selectAttribute(attribute?.id, attribute?.refid, value?._id, value?.refid)"
+                                  (click)="selectAttribute(attribute?.type, attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
                                   class="attr-value attr-color" [ngStyle]="{'background': value?.value}"></div>
                                 <div *ngIf="attribute?.type == 'File'">
                                   <img src="{{base}}/{{value?.value}}"
-                                    (click)="selectAttribute(attribute?.id, attribute?.refid, value?._id, value?.refid)"
+                                    (click)="selectAttribute(attribute?.type,attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
                                     alt="" srcset=""
                                     style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
                                 </div>
@@ -117,6 +116,28 @@
                           </div>
                         </ng-container>
                       </div>
+
+                      <div class="selectedAttributesContainer">
+                        <h2 class="form-title fw-bolder" *ngIf="attributesValues.length > 0">Selected Attributes</h2>
+                        <div class="selectedAttributes" *ngIf="attributesValues.length > 0">
+                          <ng-container *ngFor="let selected of attributesValues; let i=index">
+                            <ng-container *ngIf="selected?.head?.type == 'Text'">
+                              <div class="attributeCard">
+                                <div class="attributeName">{{selected?.head?.name}}</div>
+                                <div class="textAttribute"> {{selected?.value?.name}}</div>
+                              </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="selected?.head?.type == 'Color'">
+                              <div class="attributeCard">
+                                <div class="attributeName">{{selected?.head?.name}}</div>
+                                <div class="colorAttribute" [ngStyle]="{'background': selected?.value?.name}"></div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                        </div>
+                      </div>
+
                       <ng-container *ngIf="attributes.length == 0">
                         <div style="font-size: 1.5rem; margin: 20px 0 0 0; font-weight: 600;">No attributes found</div>
                       </ng-container>

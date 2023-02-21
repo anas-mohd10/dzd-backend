@@ -152,21 +152,29 @@ nav {
 
     .attributeCard {
       background: #ffffff;
+      height: 90px;
       border-radius: 10px;
       box-shadow: 0 10px 35px rgb(0 0 0 / 6%);
       padding: 10px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: start;
 
       .attributeName {
-        font-size: 1.33rem;
+        font-size: 1.2rem;
         font-weight: 600;
       }
 
       .textAttribute {
         margin: 10px 0 0 0;
         font-size: 1.2rem;
+      }
+
+      .colorAttribute {
+        margin: 10px 0 0 0;
+        height: 35px;
+        width: 35px;
+        border-radius: 10px;
       }
     }
   }

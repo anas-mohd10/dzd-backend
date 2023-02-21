@@ -125,8 +125,9 @@ export class UpdateProductComponent implements OnInit {
   base: string;
   submitting: boolean;
   isVideo: boolean;
-  attributesValuesId: any = [];
-  attributesValuesRefid: any = [];
+
+  attributesValues: any = [];
+  selectedAttributesValues: any = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -184,11 +185,18 @@ export class UpdateProductComponent implements OnInit {
           if (res?.errorCode == 0) this.attributes = res?.result
           this.cdr.markForCheck()
         })
-        for (let attrId of res?.result[0]?.attribute?.id) {
-          this.attributesId.push(attrId)
-        }
-        for (let attrRefid of res?.result[0]?.attribute?.refid) {
-          this.attributesRefid.push(attrRefid)
+
+        if (res?.result[0]?.attributes.length > 0) {
+          for (let attribute of res?.result[0]?.attributes) {
+            this.attributesValues.push({
+              head: { name: attribute?.head?.id?.name, id: attribute?.head?.id?._id, refid: attribute?.head?.id?.refid, type: attribute?.head?.id?.type },
+              value: { name: attribute?.value?.id?.value, id: attribute?.value?.id?._id, refid: attribute?.value?.id?.refid }
+            })
+            this.selectedAttributesValues.push({
+              type: attribute?.head?.id?.name,
+              refid: attribute?.head?.id?.refid
+            })
+          }
         }
 
         //Sku, Moq & Stock Details
@@ -449,31 +457,21 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  selectAttribute(id: any, refid: any, valueid: any, valuerefid: any) {
-    if (this.attributesRefid.includes(refid)) {
-      let index = this.attributesRefid.indexOf(refid)
-      let indexId = this.attributesId.indexOf(id)
-      if (index >= 0) {
-        this.attributesRefid.splice(index, 1)
-        this.attributesId.splice(indexId, 1)
-      }
+  selectAttribute(attrType: any, type: any, id: any, refid: any, value: any, valueid: any, valuerefid: any) {
+    if (this.selectedAttributesValues.some((e: any) => e.type === type)) {
+      let index = this.attributesValues.findIndex((e: any) => e?.head?.name === type);
+      this.attributesValues.splice(index, 1)
+      this.attributesValues.splice(index, 0, {
+        head: { name: type, id: id, refid: refid, type: attrType },
+        value: { name: value, id: valueid, refid: valuerefid }
+      })
+      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
     } else {
-      this.attributesRefid.push(refid)
-      this.attributesId.push(id)
-    }
-
-    if (this.attributesValuesRefid.includes(valuerefid)) {
-      let index = this.attributesValuesRefid.indexOf(valuerefid)
-      let indexId = this.attributesValuesId.indexOf(valueid)
-      if (index >= 0) {
-        this.attributesValuesRefid.splice(index, 1)
-        this.attributesValuesId.splice(indexId, 1)
-        this.selectedAttribute = this.selectedAttribute.filter((data: any) => data['refid'] != valuerefid)
-      }
-    } else {
-      this.selectedAttribute.push({ id: valueid, refid: valuerefid })
-      this.attributesValuesRefid.push(refid)
-      this.attributesValuesId.push(id)
+      this.attributesValues.push({
+        head: { name: type, id: id, refid: refid, type: attrType },
+        value: { name: value, id: valueid, refid: valuerefid }
+      })
+      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
     }
   }
 
@@ -570,15 +568,7 @@ export class UpdateProductComponent implements OnInit {
         id: this.selectedSubCategory,
         refid: categoryRefid
       },
-      attribute: {
-        heads: {
-          id: this.attributesId,
-          refid: this.attributesRefid
-        }, values: {
-          id: this.attributesValuesId,
-          refid: this.attributesValuesRefid
-        }
-      },
+      attributes: this.attributesValues,
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,
       isArchive: this.productform.get('isArchive')?.value,

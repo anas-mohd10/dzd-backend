@@ -214,11 +214,11 @@
                 </div>
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class="fw-bolder btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
-                <button *ngIf="slug == ''" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                <button *ngIf="slug == ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
                   (click)="addHead()">Add</button>
-                <button *ngIf="slug != ''" type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                <button *ngIf="slug != ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
                   (click)="goToNextTab('product')">Next</button>
               </div>
             </div>
@@ -310,6 +310,13 @@
                               <div class="attributeCard">
                                 <div class="attributeName">{{selected?.head?.name}}</div>
                                 <div class="textAttribute"> {{selected?.value?.name}}</div>
+                              </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="selected?.head?.type == 'Color'">
+                              <div class="attributeCard">
+                                <div class="attributeName">{{selected?.head?.name}}</div>
+                                <div class="colorAttribute" [ngStyle]="{'background': selected?.value?.name}"></div>
                               </div>
                             </ng-container>
                           </ng-container>
@@ -492,9 +499,9 @@
                 </div>
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;"
+                <a class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;"
                   (click)="goToPreviousTab('basic')">Back</a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                <button type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
                   (click)="goToNextTab('media')">Next</button>
               </div>
             </div>
@@ -621,19 +628,20 @@
                 </div>
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a (click)="goToPreviousTab('product')" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                <a (click)="goToPreviousTab('product')" class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
                   style="width: 200px; margin-right: 20px;">Back</a>
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}"
+                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
                 <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px; margin-right: 20px;">Add
                   More</button>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="onSubmit()"
-                  *ngIf="!submitting">Add</button>
-                <button class="btn btn-primary btn-sm fs-5" style="width: 200px" type="button" disabled
+                <button type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
+                  (click)="onSubmit()">Add</button>
+                <!-- <button class="btn btn-primary btn-sm fs-5" style="width: 200px" type="button" disabled
                   *ngIf="submitting">
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                   Submitting
-                </button>
+                </button> -->
               </div>
             </div>
           </div>

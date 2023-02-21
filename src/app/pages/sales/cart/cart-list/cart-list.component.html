@@ -27,24 +27,6 @@
           </ng-select>
         </div>
       </div>
-      <div class="col-12 col-sm-2 align-items-center justify-content-evenly fs-5">
-        <label class="col-sm-2 form-title">Product</label>
-        <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="product"
-          placeholder="--Select product--" [multiple]=false [ngModelOptions]="{standalone: true}"
-          (change)="seachCart()">
-        </ng-select>
-      </div>
-      <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-        <label class="col-sm-2 form-title">Status</label>
-        <div class="form-group">
-          <select class="form-select fs-5" [formControl]="status" (change)="seachCart()">
-            <option value="" disabled>-- Select status --</option>
-            <option value="Ordered">Ordered</option>
-            <option value="Unordered">Unrdered</option>
-            <option value="Deleted">Deleted</option>
-          </select>
-        </div>
-      </div>
       <div class="col-12 col-sm-2">
         <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark" style="width: 200px; margin-right: 20px;">
           Clear
