@@ -22,6 +22,7 @@ import { HeaderMenuComponent } from './components/header/header-menu/header-menu
 import { DrawersModule, DropdownMenusModule, ModalsModule, EngagesModule } from '../partials';
 import { EngagesComponent } from "../partials/layout/engages/engages.component";
 import { NgHttpLoaderModule } from 'ng-http-loader';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -58,6 +59,9 @@ const routes: Routes = [
     NgbTooltipModule,
     NgHttpLoaderModule.forRoot(),
     TranslateModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     RouterModule,

@@ -14,6 +14,15 @@
             {{page}}</div>
         </ng-container>
       </div>
+      <div class="notificatins">
+        <ng-container *ngFor="let notification of notifications;let i=index">
+          <div class="notificationCard">
+            New order <span class="fw-bolder fs-6">{{notification?.orderNo}}</span> placed. Order amount is Rs. <span class="fw-bolder fs-6">{{notification?.total}}</span>.  <a routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}"
+              [queryParams]="{ order: notification?.refid }">Click
+              here</a> to view
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 

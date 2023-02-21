@@ -18,9 +18,6 @@
       </div>
     </div>
   </div>
-
-  <hr class="horizontal-line">
-
   <!-- Form start -->
   <div class="brand-form-container">
     <form [formGroup]="brandform">
@@ -54,15 +51,12 @@
     </form>
   </div>
   <!-- Form end -->
-
-  <hr class="horizontal-line">
-
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} brands</h4>
     </div>
     <div>
-      <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+      <button class="btn btn-secondary cursor-pointer fs-5 fw-bolder" color="primary"
         routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}" style="width: 200px">Archived Brands</button>
     </div>
   </div>
@@ -107,7 +101,7 @@
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-        <h2>Sorry, we haven't found any data</h2>
+        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
 

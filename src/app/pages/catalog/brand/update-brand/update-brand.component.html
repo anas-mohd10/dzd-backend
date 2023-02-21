@@ -27,7 +27,7 @@
           <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
             <div class="row archieved-{{brand?.isArchive}}">
               <div class="col-12">
-                <h3 class="form-title"><span>Brand Details</span></h3>
+                <h2 class="form-title">Brand Details</h2>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
@@ -72,7 +72,7 @@
                 </div>
               </div>
               <div class="col-12">
-                <h5 class="form-title fs-4"><span>Brand Styles</span></h5>
+                <h2 class="form-title fw-bolder">Brand Styles</h2>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
@@ -158,8 +158,8 @@
                   </div>
                 </div>
               </ng-container>
-              <div class="col-12">
-                <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+              <div class="col-12  d-flex align-items-center justify-content-end">
+                <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
@@ -169,7 +169,7 @@
           </form>
           <div class="restore-container">
             <ng-container *ngIf="isArchived">
-              <div class="col-12">
+              <div class="col-12  d-flex align-items-center justify-content-end">
                 <div class="form-group col-sm-6">
                   <label class="fs-5 mb-3">Restore Brand?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" [formControl]="restore">
@@ -179,11 +179,11 @@
                 </div>
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.brand.ARCHIVED_BRAND}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                <a routerLink="{{ appRoute.brand.ARCHIVED_BRAND}}" class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px"
+                <button type="submit" class="btn btn-dark btn-sm fs-5 fw-bolder" style="width: 200px"
                   (click)="restoreBrand()">Restore</button>
               </div>
             </ng-container>
