@@ -124,6 +124,9 @@ export class AddProductComponent implements OnInit {
   attributesValuesId: any = [];
   attributesValuesRefid: any = [];
 
+  attributesValues: any = []
+  selectedAttributesValues: any = []
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -506,29 +509,21 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  selectAttribute(id: any, refid: any, valueid: any, valuerefid: any) {
-    if (this.attributesRefid.includes(refid)) {
-      let index = this.attributesRefid.indexOf(refid)
-      let indexId = this.attributesId.indexOf(id)
-      if (index >= 0) {
-        this.attributesRefid.splice(index, 1)
-        this.attributesId.splice(indexId, 1)
-      }
+  selectAttribute(attrType: any, type: any, id: any, refid: any, value: any, valueid: any, valuerefid: any) {
+    if (this.selectedAttributesValues.some((e: any) => e.type === type)) {
+      let index = this.attributesValues.findIndex((e: any) => e?.head?.name === type);
+      this.attributesValues.splice(index, 1)
+      this.attributesValues.splice(index, 0, {
+        head: { name: type, id: id, refid: refid, type: attrType },
+        value: { name: value, id: valueid, refid: valuerefid }
+      })
+      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
     } else {
-      this.attributesRefid.push(refid)
-      this.attributesId.push(id)
-    }
-
-    if (this.attributesValuesRefid.includes(valuerefid)) {
-      let index = this.attributesValuesRefid.indexOf(valuerefid)
-      let indexId = this.attributesValuesId.indexOf(valueid)
-      if (index >= 0) {
-        this.attributesValuesRefid.splice(index, 1)
-        this.attributesValuesId.splice(indexId, 1)
-      }
-    } else {
-      this.attributesValuesRefid.push(valuerefid)
-      this.attributesValuesId.push(valueid)
+      this.attributesValues.push({
+        head: { name: type, id: id, refid: refid, type: attrType },
+        value: { name: value, id: valueid, refid: valuerefid }
+      })
+      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
     }
   }
 
@@ -633,15 +628,7 @@ export class AddProductComponent implements OnInit {
         id: this.selectedSubCategory,
         refid: categoryRefid
       },
-      attribute: {
-        heads: {
-          id: this.attributesId,
-          refid: this.attributesRefid
-        }, values: {
-          id: this.attributesValuesId,
-          refid: this.attributesValuesRefid
-        }
-      },
+      attributes: this.attributesValues,
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,
       isArchive: this.productform.get('isArchive')?.value,

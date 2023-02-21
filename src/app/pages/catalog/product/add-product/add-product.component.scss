@@ -140,3 +140,34 @@ nav {
     }
   }
 }
+
+.selectedAttributesContainer {
+  margin: 60px 0 30px 0;
+
+  .selectedAttributes {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
+    margin: 20px 0 0 0;
+
+    .attributeCard {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 10px 35px rgb(0 0 0 / 6%);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .attributeName {
+        font-size: 1.33rem;
+        font-weight: 600;
+      }
+
+      .textAttribute {
+        margin: 10px 0 0 0;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
