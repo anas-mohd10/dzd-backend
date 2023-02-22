@@ -24,19 +24,19 @@
     <div class="row order-cards">
       <div class="col-lg-3">
         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="{{count}}"
+          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="{{count}}"
           description="Total Orders">
         </app-stats-widget5>
       </div>
       <div class="col-lg-3">
         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin008.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
+          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary"
           title="Rs. {{totalrevenues}}" description="Total Revenue">
         </app-stats-widget5>
       </div>
       <div class="col-lg-3">
         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin001.svg"
-          class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
+          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary"
           title="Rs. {{averagesales}}" description="Average Sales">
         </app-stats-widget5>
       </div>
@@ -77,7 +77,7 @@
           </select>
         </div>
         <div class="search-submit col-sm-2">
-          <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+          <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
             style="outline: none; border: none;">Clear</button>
         </div>
       </div>
@@ -97,7 +97,6 @@
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
                   <th scope="col">Customer</th>
-                  <th scope="col">Vendor</th>
                   <th scope="col">Total</th>
                   <th scope="col">Payment Method</th>
                   <th scope="col">Payment Status</th>
@@ -115,7 +114,6 @@
                     </span>
                   </td>
                   <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td>
-                  <td>-</td>
                   <td>Rs. {{order?.total}}</td>
                   <td>{{order?.paymentMethod}}</td>
                   <td><span

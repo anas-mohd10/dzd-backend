@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-2">
+        <h3 class="page-title fs-2 fw-bolder">
           {{ editMode ? "Update Category" : "Add Category" }}
         </h3>
         <ul class="breadcrumb">
@@ -393,8 +393,8 @@
               <!-- Category attributes end -->
 
               <div class="col-12 d-flex align-items-center justify-content-end" style="margin: 30px 0 0 0;">
-                <a routerLink="{{ appRoute.category.CATEGORY_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">
+                <a routerLink="{{ appRoute.category.CATEGORY_LIST}}"
+                  class="fw-bolder btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="onSubmit()">

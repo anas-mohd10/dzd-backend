@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-2">
+        <h3 class="page-title fs-2 fw-bolder">
           {{ editMode ? "Update Category" : "Add Category" }}
         </h3>
         <ul class="breadcrumb">
@@ -37,7 +37,8 @@
           </li>
         </ul>
         <div class="card-body">
-          <form [formGroup]=" categoryForm" (keydown.Enter)="$event.preventDefault()" class="archieved-{{categoryValues?.isArchive}}">
+          <form [formGroup]=" categoryForm" (keydown.Enter)="$event.preventDefault()"
+            class="archieved-{{categoryValues?.isArchive}}">
             <div class="tab-content" id="myTabContent">
               <div class="category-details-section tab-pane fade show active" id="home" role="tabpanel"
                 aria-labelledby="home-tab">
@@ -421,7 +422,7 @@
               </div>
               <div class="col-12">
                 <a routerLink="{{ appRoute.category.ARCHIVED_CATEGORY}}"
-                  class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-dark btn-sm fs-5" style="width: 200px"

@@ -28,11 +28,11 @@
           <form [formGroup]="orderForm">
             <div class="row">
               <div class="col-12">
-                <h5 class="form-title fs-3 text-dark fw-bolder"><span>Orders Details</span></h5>
+                <h5 class="fs-3 text-dark fw-bolder">Orders Details</h5>
               </div>
               <div class="col-12">
                 <div class="form-group col-sm-6">
-                  <label class="fs-5 mb-3 form-title required">Customer</label>
+                  <label class="fs-5 mb-3 required">Customer</label>
                   <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
                     [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
                     [ngModelOptions]="{standalone: true}" (change)="getAddress()">
@@ -40,11 +40,11 @@
                 </div>
               </div>
               <div class="col-12">
-                <h5 class="form-title fs-3 text-dark fw-bolder"><span>Address Details</span></h5>
+                <h5 class="fs-3 text-dark fw-bolder">Address Details</h5>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required"> Address Line 1</label>
+                  <label class="fs-5 mb-3 required"> Address Line 1</label>
                   <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
                                  'is-invalid':
                                  (of.firstline.touched || isSubmitted) &&
@@ -66,7 +66,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required"> City</label>
+                  <label class="fs-5 mb-3 required"> City</label>
                   <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
                                  'is-invalid':
                                  (of.city.touched || isSubmitted) &&
@@ -76,7 +76,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required"> Landmark</label>
+                  <label class="fs-5 mb-3 required"> Landmark</label>
                   <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
                                  'is-invalid':
                                  (of.landmark.touched || isSubmitted) &&
@@ -86,7 +86,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required"> Pincode</label>
+                  <label class="fs-5 mb-3 required"> Pincode</label>
                   <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                                  'is-invalid':
                                  (of.pincode.touched || isSubmitted) &&
@@ -96,19 +96,19 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title"> Latitude</label>
+                  <label class="fs-5 mb-3"> Latitude</label>
                   <input type="text" class="form-control fs-5" formControlName="lat" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title"> Longitude</label>
+                  <label class="fs-5 mb-3"> Longitude</label>
                   <input type="text" class="form-control fs-5" formControlName="lng" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">State</label>
+                  <label class="fs-5 mb-3 required">State</label>
                   <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="state">
                     <option value="" disabled>-- Select an option --</option>
@@ -123,9 +123,7 @@
               </div>
               <div class="product-add-container">
                 <div class="col-12 d-flex align-items-center justify-content-between" *ngIf="cart.length != 0">
-                  <h5 class="form-title fs-3 text-dark fw-bolder">
-                    <span>Cart</span>
-                  </h5>
+                  <h5 class="fs-3 text-dark fw-bolder">Cart</h5>
                   <button type="button" class="btn btn-primary btn-rounded btn-standard" data-bs-toggle="modal"
                     data-bs-target="#cartModal">
                     Add Products
@@ -186,11 +184,11 @@
               </div>
 
               <div class="col-12">
-                <h5 class="form-title fs-3 text-dark fw-bolder"><span>Other Details</span></h5>
+                <h5 class="fs-3 text-dark fw-bolder">Other Details</h5>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Payment Method</label>
+                  <label class="fs-5 mb-3 required">Payment Method</label>
                   <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
                     formControlName="paymentMethod" (change)="checkPaymentmethod($event.target)"
                     [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
@@ -242,14 +240,14 @@
         <div class="row">
           <div class="normal-text">{{cart?.length}} products in cart</div>
           <div class="col-12">
-            <label class="fs-5 mb-3 form-title required">Product</label>
+            <label class="fs-5 mb-3 required">Product</label>
             <ng-select [items]="activeProducts" bindLabel="name" bindValue="_id" [(ngModel)]="product"
               placeholder="Select product" [multiple]=false [ngModelOptions]="{standalone: true}"
               style="font-size: 1.1rem;">
             </ng-select>
           </div>
           <div class="col-12">
-            <label class="fs-5 mb-3 form-title required">Quantity</label>
+            <label class="fs-5 mb-3 required">Quantity</label>
             <input type="number" class="form-control fs-5" id="quantity" [formControl]="quantity"
               placeholder="Enter product quantity">
           </div>

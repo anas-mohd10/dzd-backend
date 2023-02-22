@@ -21,9 +21,6 @@
       </div>
     </div>
   </div>
-  <!-- Page Header -->
-
-  <hr class="horizontal-line">
   <div class="offer-form-container">
     <form [formGroup]="offerform">
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
@@ -57,14 +54,12 @@
           <input type="date" class="form-control fs-5" formControlName="lastDate" (change)="searchOffer()">
         </div>
         <div class="search-submit col-sm-2">
-          <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+          <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
             style="outline: none; border: none;">Clear</button>
         </div>
       </div>
     </form>
   </div>
-  <hr class="horizontal-line">
-
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} offers</h4>
@@ -143,7 +138,7 @@
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-        <h2>Sorry, we haven't found any data</h2>
+        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>

@@ -19,7 +19,6 @@
             </button>
          </div>
       </div>
-      <hr class="horizontal-line">
       <!-- Form start -->
       <div class="notification-form-container">
          <form [formGroup]="notificationform">
@@ -52,14 +51,13 @@
                   </select>
                </div>
                <div class="search-submit col-sm-2">
-                  <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+                  <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
                      style="outline: none; border: none;">Clear</button>
                </div>
             </div>
          </form>
       </div>
       <!-- Form end -->
-      <hr class="horizontal-line">
       <div class="notifications-details col-12 row">
          <div class="total-count-container col-sm-3 bg-dark">
             <h4 class="text-white fw-bolder">{{alldata}} Total notifications</h4>
@@ -84,8 +82,10 @@
                      <div class="notification-message">{{notification?.content}}</div>
                      <div class="notification-type">{{notification?.type}} - {{notification?.channel}}</div>
                      <div class="customers d-flex align-center justify-content-between">
-                      <div class="scheduled count"><i class="bi bi-person-badge"></i> Scheduled for {{notification?.customers.length}} users</div>
-                      <div class="sent count"><i class="bi bi-app-indicator"></i> Sent to {{notification?.total ? notification?.total : 0}} users</div>
+                        <div class="scheduled count"><i class="bi bi-person-badge"></i> Scheduled for
+                           {{notification?.customers.length}} users</div>
+                        <div class="sent count"><i class="bi bi-app-indicator"></i> Sent to {{notification?.total ?
+                           notification?.total : 0}} users</div>
                      </div>
                      <div class="notification-status">{{notification?.status}}</div>
                   </div>
@@ -107,7 +107,7 @@
          <ng-container *ngIf="count == 0">
             <div class="no-data-container">
                <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-               <h2>Sorry, we haven't found any data</h2>
+               <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
             </div>
          </ng-container>
       </div>

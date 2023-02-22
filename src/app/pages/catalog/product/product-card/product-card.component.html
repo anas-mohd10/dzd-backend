@@ -139,7 +139,7 @@
                </select>
             </div>
             <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onVariantReload()"
+               <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onVariantReload()"
                   style="outline: none; border: none;">Clear</button>
             </div>
          </div>
@@ -200,10 +200,8 @@
       <ng-container *ngIf="variantCount == 0">
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
-            <h2>Sorry, we haven't found any data</h2>
-            <button class="btn btn-primary fs-5" (click)="navigateToAdd()">
-               Add Products
-            </button>
+            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
+            <button class="btn btn-primary fs-5" (click)="navigateToAdd()">Add Products</button>
          </div>
       </ng-container>
    </div>
@@ -254,7 +252,7 @@
                   </select>
                </div>
                <div class="search-submit col-12">
-                  <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+                  <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
                      style="outline: none; border: none;">Clear Filters</button>
                </div>
             </div>

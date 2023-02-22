@@ -1,15 +1,13 @@
 .brand-card-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 10px 0 0 0;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
 .brand-card {
-  // width: calc(50% - 20px);
-  margin: 10px 10px 10px 0;
-  height: 200px;
-  padding: 10px 30px;
+  height: 150px;
+  padding: 10px;
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
@@ -31,9 +29,16 @@
   justify-content: center;
 }
 
+.flex-21 {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .brand-image {
-  height: 120px;
-  width: 120px;
+  height: 70px;
+  width: 70px;
 }
 
 .brand-image img {
@@ -52,7 +57,6 @@
 }
 
 .brand-status-true {
-  width: 150px;
   background: #00bdab;
   color: #ffffff;
   padding: 5px;

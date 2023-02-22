@@ -45,7 +45,7 @@
         </select>
       </div>
       <div class="search-submit col-sm-2">
-        <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+        <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
           style="outline: none; border: none;">Clear</button>
       </div>
     </div>
@@ -55,7 +55,7 @@
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} categories</h4>
     </div>
     <div>
-      <button class="btn btn-secondary cursor-pointer fs-5" color="primary"
+      <button class="btn btn-secondary cursor-pointer fs-5 fw-bolder" color="primary"
         routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}" style="width: 200px">Archived Categories</button>
     </div>
   </div>
@@ -99,7 +99,7 @@
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-        <h2>Sorry, we haven't found any data</h2>
+        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>
@@ -159,7 +159,8 @@
         </h4>
       </div>
       <div class="attributes-add">
-        <button class="btn-secondary btn btn-sm fs-5" style="width: 200px;" (click)="navigateToUpdate()">Add Attributes</button>
+        <button class="btn-secondary btn btn-sm fs-5 fw-bolder" style="width: 200px;" (click)="navigateToUpdate()">Add
+          Attributes</button>
       </div>
     </div>
     <div class="attributes-result-cards">
@@ -170,7 +171,7 @@
               <div class="attribute-name">Name : <span>{{attribute?.name}}</span></div>
               <div class="attribute-type">Type : <span>{{attribute?.type}}</span></div>
             </div>
-            <div class="attribute-edit" (click)="showEditModal(attribute?.refid)">
+            <div class="attribute-edit fw-bolder" (click)="showEditModal(attribute?.refid)">
               Edit Attribute
             </div>
           </div>
@@ -207,7 +208,7 @@
     <ng-container *ngIf="attributeslength == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
-        <h2>Sorry, we haven't found any data</h2>
+        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>

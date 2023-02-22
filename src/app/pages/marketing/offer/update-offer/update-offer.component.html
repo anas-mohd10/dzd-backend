@@ -78,7 +78,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Products</label>
+                  <label class="fs-5 mb-3 form-title">Products</label>
                   <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
                     placeholder="Select products applicable to coupon" [multiple]=true
                     [ngModelOptions]="{standalone: true}" [compareWith]="compareFn">
@@ -87,7 +87,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Categories</label>
+                  <label class="fs-5 mb-3 form-title">Categories</label>
                   <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
                     placeholder="Select categories applicable to offer" [multiple]=true
                     [ngModelOptions]="{standalone: true}">
@@ -96,7 +96,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Collections</label>
+                  <label class="fs-5 mb-3 form-title">Collections</label>
                   <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
                     placeholder="Select collections applicable to offer" [multiple]=true
                     [ngModelOptions]="{standalone: true}">

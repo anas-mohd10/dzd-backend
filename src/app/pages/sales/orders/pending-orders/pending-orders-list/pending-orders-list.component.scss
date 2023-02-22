@@ -10,3 +10,18 @@
    padding: .625rem 1.25rem;
    border-radius: .625rem;
 }
+
+.paymentStatus {
+   font-weight: 600;
+   padding: .625rem 1.25rem;
+   border-radius: .625rem;
+}
+
+.paid {
+   background: #2fe55c80;
+}
+
+.unpaid {
+   background: #e52f2f80;
+   color: #ffffff !important;
+}

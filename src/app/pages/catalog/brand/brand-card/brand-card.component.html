@@ -18,7 +18,6 @@
       </div>
     </div>
   </div>
-  <!-- Form start -->
   <div class="brand-form-container">
     <form [formGroup]="brandform">
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
@@ -44,13 +43,12 @@
           </select>
         </div>
         <div class="search-submit col-sm-2">
-          <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+          <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
             style="outline: none; border: none;">Clear</button>
         </div>
       </div>
     </form>
   </div>
-  <!-- Form end -->
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} brands</h4>
@@ -60,15 +58,9 @@
         routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}" style="width: 200px">Archived Brands</button>
     </div>
   </div>
-
-  <!-- <div class="total-count-container col-sm-3" *ngIf="count != 0">
-    <h3>Total {{totalcount}} brands</h3>
-  </div> -->
-
-  <!-- Card start -->
   <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
-      <div class="col-sm-6">
+      <!-- <div class="col-sm-6"> -->
         <div class="brand-card card-hover">
           <div class="brand-details">
             <div class="brand-image">
@@ -95,19 +87,15 @@
             </div>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
     </ng-container>
-
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
         <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
-
   </div>
-  <!-- Card end -->
-  <!-- Pagination start -->
   <nav aria-label="Page navigation example" *ngIf="count != 0">
     <ul class="pagination-container">
       <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
@@ -136,5 +124,4 @@
       </div>
     </ul>
   </nav>
-  <!-- Pagination end -->
 </div>
