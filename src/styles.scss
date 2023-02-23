@@ -2,6 +2,10 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.page-title h1 {
+  margin: 0 !important;
+}
+
 img.iconImage {
   height: 35px;
   width: 35px;

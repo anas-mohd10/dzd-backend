@@ -5,7 +5,7 @@
             <h3 class="page-title fw-bolder fs-2">
                {{ editMode ? "Update App Settings" : "Add App Settings" }}
             </h3>
-            <ul class="breadcrumb">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -25,52 +25,86 @@
       <div class="col-sm-12 fs-5 mt-10">
          <div class="card">
             <div class="card-body">
-               <form [formGroup]="appsettingsform">
-                  <div class="row">
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 required">Primary Color</label>
-                           <input type="color" placeholder="App primary color" class="form-control fs-5"
-                              style="height: 50px;" formControlName="primaryColor" />
-                           <span>{{primary}}</span>
+               <form [formGroup]="form">
+                  <div class="col-12">
+                     <h2 class="form-title">Color Details</h2>
+                     <div class="row">
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Primary Color</label>
+                              <input type="color" placeholder="App primary color" class="form-control fs-5"
+                                 style="height: 50px;" formControlName="primary" />
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Secondary Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
+                                 style="height: 50px;" formControlName="secondary" />
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Label Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
+                                 style="height: 50px;" formControlName="label" />
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Star Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
+                                 style="height: 50px;" formControlName="star" />
+                           </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Text Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
+                                 style="height: 50px;" formControlName="text" />
+                           </div>
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 required">Secondary Color</label>
-                           <input type="color" placeholder="App secondary color" class="form-control fs-5"
-                              style="height: 50px;" formControlName="secondaryColor" />
-                           <span>{{secondary}}</span>
+                  </div>
+                  <div class="col-12">
+                     <h2 class="form-title">Additional Details</h2>
+                     <div class="row">
+                        <div class="col-12 col-sm-6">
+                           <div class="form-group">
+                              <label class="fs-5 mb-3">Items Per Page</label>
+                              <input type="number" placeholder="14" class="form-control fs-5"
+                                 formControlName="itemsPerPage" />
+                           </div>
                         </div>
                      </div>
+                  </div>
+                  <div class="col-12">
+                     <h2 class="form-title">Font Details</h2>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 required">Items Per Page</label>
-                           <input type="number" placeholder="14" class="form-control fs-5"
-                              formControlName="itemPerPage" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3">Font Family</label>
-                           <select formControlName="fontFamily" class="form-control fs-5">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="Poppins">Poppins</option>
-                              <option value="Sans serif">Sans serif</option>
-                              <option value="Roboto">Roboto</option>
+                           <label class="fs-5 mb-3">Font Family?</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="fontFamily">
+                              <option value="">-- Select an option --</option>
+                              <option value="Manrope">Manrope</option>
+                              <option value="GeogrotesqueCyr">GeogrotesqueCyr</option>
+                              <option value="BellMT">BellMT</option>
+                              <option value="BookAntiqua">BookAntiqua</option>
+                              <option value="Active">Active</option>
                            </select>
                         </div>
                      </div>
-                     <div class="col-12">
-                        <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
-                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
-                           Cancel
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                           (click)="onSubmit()">
-                           Update
-                        </button>
-                     </div>
+                  </div>
+                  <div class="col-12 d-flex align-items-center justify-content-end">
+                     <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
+                        class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
+                        style="width: 200px; margin-right: 20px;">
+                        Cancel
+                     </a>
+                     <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                        (click)="onSubmit()">
+                        Update
+                     </button>
                   </div>
                </form>
             </div>

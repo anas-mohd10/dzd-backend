@@ -5,7 +5,7 @@
       </div>
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -22,21 +22,21 @@
    <!-- Form start -->
    <div class="brand-form-container">
       <form [formGroup]="brandform">
-         <div class="col-12 row d-flex align-items-end justify-content-end">  
-            <div class="search-input col-sm-4"> 
-               <label class="fs-5">Search</label>
+         <div class="col-12 row d-flex align-items-end justify-content-start">
+            <div class="search-input col-sm-4" style="padding: 0;">
+               <!-- <label class="fs-5">Search</label> -->
                <input type="text" placeholder="Search for brands here..." class="form-control fs-5"
                   formControlName="name" (ngModelChange)="searchBrand()">
             </div>
             <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+               <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
                   style="outline: none; border: none;">Clear</button>
             </div>
          </div>
       </form>
    </div>
    <!-- Form end -->
-   
+
    <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} archived brands</h4>
    </div>
@@ -75,7 +75,7 @@
       <ng-container *ngIf="count == 0">
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-            <h2>Sorry, we haven't found any data</h2>
+            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
          </div>
       </ng-container>
 

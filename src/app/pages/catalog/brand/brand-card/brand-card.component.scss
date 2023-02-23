@@ -94,3 +94,8 @@
   font-weight: 600;
   font-size: 1.1rem;
 }
+
+input:focus,
+select:focus {
+  border: 1px solid #00bdab;
+}

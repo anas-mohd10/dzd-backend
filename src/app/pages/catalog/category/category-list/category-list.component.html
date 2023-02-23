@@ -5,8 +5,8 @@
       <h1 class="fw-bolder">Categories</h1>
     </div>
     <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+      <div class="col d-flex flex-row align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -22,24 +22,24 @@
     </div>
   </div>
   <form [formGroup]="categoryform">
-    <div class="col-12 row" style="display: flex; align-items: flex-end;">
-      <div class="search-input col-sm-4">
-        <label class="fs-5">Search</label>
+    <div class="col-12 row" style="display: flex; align-items: flex-start;">
+      <div class="search-input col-sm-4" style="padding: 0;">
+        <!-- <label class="fs-5">Search</label> -->
         <input type="text" placeholder="Search for category here..." class="form-control fs-5" formControlName="name"
           (ngModelChange)="searchCategory()">
       </div>
       <div class="search-status col-sm-2">
-        <label class="fs-5">Status</label>
+        <!-- <label class="fs-5">Status</label> -->
         <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchCategory()">
-          <option value="" disabled>Select an option</option>
+          <option value="" disabled>Category Status Filter</option>
           <option value=true>Active</option>
           <option value=false>Inactive</option>
         </select>
       </div>
       <div class="search-featured col-sm-2">
-        <label class="fs-5 form-title">Featured</label>
+        <!-- <label class="fs-5 form-title">Featured</label> -->
         <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchCategory()">
-          <option value="" disabled>Select an option</option>
+          <option value="" disabled>Featured Category Filter</option>
           <option value=true>Featured</option>
           <option value=false>Non featured</option>
         </select>

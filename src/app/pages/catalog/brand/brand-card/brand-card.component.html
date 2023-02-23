@@ -4,8 +4,8 @@
       <h1 class="fw-bolder">Brands</h1>
     </div>
     <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -20,24 +20,24 @@
   </div>
   <div class="brand-form-container">
     <form [formGroup]="brandform">
-      <div class="col-12 row" style="display: flex; align-items: flex-end;">
-        <div class="search-input col-sm-4">
-          <label class="fs-5">Search</label>
+      <div class="col-12 row" style="display: flex; align-items: flex-start;">
+        <div class="search-input col-sm-4" style="padding: 0;">
+          <!-- <label class="fs-5">Search</label> -->
           <input type="text" placeholder="Search for brands here..." class="form-control fs-5" formControlName="name"
             (ngModelChange)="searchBrand()">
         </div>
         <div class="search-status col-sm-2">
-          <label class="fs-5">Status</label>
+          <!-- <label class="fs-5">Status</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchBrand()">
-            <option value="" disabled>Select an option</option>
+            <option value="" disabled>Brand Status Filter</option>
             <option value=true>Active</option>
             <option value=false>Inactive</option>
           </select>
         </div>
         <div class="search-featured col-sm-2">
-          <label class="fs-5 form-title">Featured</label>
+          <!-- <label class="fs-5 form-title">Featured</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchBrand()">
-            <option value="" disabled>Select an option</option>
+            <option value="" disabled>Featured Brand Filter</option>
             <option value=true>Featured</option>
             <option value=false>Non featured</option>
           </select>
@@ -61,32 +61,32 @@
   <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
       <!-- <div class="col-sm-6"> -->
-        <div class="brand-card card-hover">
-          <div class="brand-details">
-            <div class="brand-image">
-              <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
-            </div>
-            <div class="flex-1">
-              <div class="brand-name fs-3">{{brand?.name}}</div>
-              <div class="brand-featured-{{brand?.isFeatured}}">
-                <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
-                <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
-              </div>
-            </div>
+      <div class="brand-card card-hover">
+        <div class="brand-details">
+          <div class="brand-image">
+            <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
           </div>
-          <div class="flex-21">
-            <div class="brand-status-{{brand?.isActive}}">
-              <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
-              <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
-            </div>
-            <div class="card-edit-btn">
-              <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-                class="fs-5 cursor-pointer text-darker">
-                Edit
-              </button>
+          <div class="flex-1">
+            <div class="brand-name fs-3">{{brand?.name}}</div>
+            <div class="brand-featured-{{brand?.isFeatured}}">
+              <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
+              <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
             </div>
           </div>
         </div>
+        <div class="flex-21">
+          <div class="brand-status-{{brand?.isActive}}">
+            <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
+            <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
+          </div>
+          <div class="card-edit-btn">
+            <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
+              class="fs-5 cursor-pointer text-darker">
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
       <!-- </div> -->
     </ng-container>
     <ng-container *ngIf="count == 0">

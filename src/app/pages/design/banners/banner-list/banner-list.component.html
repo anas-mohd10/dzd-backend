@@ -3,9 +3,9 @@
       <div class="page-title">
          <h1 class="fw-bolder">Banners</h1>
       </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+      <div class="row">
+         <div class="col d-flex align-items-start justify-content-between">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -20,46 +20,32 @@
          </div>
       </div>
    </div>
-   <div class="total-count-container mb-10 mt-10 col-sm-3 bg-dark" *ngIf="count != 0">
+   <div class="total-count-container col-sm-3 bg-dark" *ngIf="count != 0">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} banners</h4>
    </div>
    <!-- card container start -->
    <div class="banner-card-container view-container col-12">
       <ng-container *ngFor="let banner of banners">
-         <div class="col-sm-6">
-            <div class="banner-card card-hover editable-{{banner?.isEditable}}"
-               [ngClass]="{'inactive-banner': !banner?.isActive, 'active-banner': banner?.isActive}">
-               <div class="banner-card-left">
-                  <div class="banner-title">{{banner?.title}}</div>
-                  <div class="banner-from">Valid from <span>{{banner?.validFrom}}</span></div>
-                  <div class="banner-till">Valid to <span>{{banner?.validTo}}</span></div>
-                  <div class="banner-status active" *ngIf="banner?.isActive">Active</div>
-                  <div class="banner-status inactive" *ngIf="!banner?.isActive">Inactive</div>
-                  <div class="banner-edit-btn">
-                     <button class="btn btn-sm bg-secondary text-dark fs-5" style="width: 100px; font-weight: 500;"
-                        [routerLink]="appRoute.banner.UPDATE_BANNER"
-                        [queryParams]="{banner: banner?.bannerid}">Edit</button>
-                  </div>
+         <div class="banner-card card-hover editable-{{banner?.isEditable}}"
+            [ngClass]="{'inactive-banner': !banner?.isActive, 'active-banner': banner?.isActive}">
+            <div class="banner-card-left">
+               <div class="banner-title">{{banner?.title}}</div>
+               <div class="banner-from">Valid From <span>{{banner?.validFrom}}</span></div>
+               <div class="banner-till">Valid To <span>{{banner?.validTo}}</span></div>
+               <div class="banner-status active" *ngIf="banner?.isActive">Active</div>
+               <div class="banner-status inactive" *ngIf="!banner?.isActive">Inactive</div>
+               <div class="banner-edit-btn">
+                  <button class="btn btn-sm bg-secondary text-dark fs-5 fw-bolder"
+                     style="width: 100px; font-weight: 500;" [routerLink]="appRoute.banner.UPDATE_BANNER"
+                     [queryParams]="{banner: banner?.bannerid}">Edit</button>
                </div>
-               <div class="banner-card-right">
-                  <div class="banner-web-image">
-                     <img src="{{base}}/{{banner?.w_file}}" alt="web banner">
-                     <div class="banner-image-text fs-6"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                           fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                           <path
-                              d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                        </svg>Web banner</div>
-                  </div>
-                  <div class="banner-mobile-image">
-                     <img src="{{base}}/{{banner?.m_file}}" alt="mobile banner">
-                     <div class="banner-image-text fs-6"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                           fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                           <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                           <path
-                              d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                        </svg> Mobile banner</div>
-                  </div>
+            </div>
+            <div class="banner-card-right">
+               <div class="banner-web-image">
+                  <img src="{{base}}/{{banner?.w_file}}" alt="web banner">
+               </div>
+               <div class="banner-mobile-image">
+                  <img src="{{base}}/{{banner?.m_file}}" alt="mobile banner">
                </div>
             </div>
          </div>
@@ -67,7 +53,7 @@
       <ng-container *ngIf="count == 0">
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-            <h2>Sorry, we haven't found any data</h2>
+            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
          </div>
       </ng-container>
    </div>

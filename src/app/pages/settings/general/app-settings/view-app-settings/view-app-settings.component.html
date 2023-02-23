@@ -4,8 +4,8 @@
          <h1 class="fw-bolder">App Settings</h1>
       </div>
       <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content- between">
-            <ul class="breadcrumb">
+         <div class="col d-flex flex-row justify-content-between">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -27,37 +27,70 @@
    </div>
    <ng-container *ngIf="generalSettingsCount == 0">
       <div class="no-data-container" style="margin: 40px 0 0 0;">
-         <h2>Sorry, we haven't found any data</h2>
+         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
+         <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
    </ng-container>
    <div class="app-settings-container">
-      <div class="row">
-         <ng-container *ngFor="let data of generalSettings">
-            <div class="col-12 col-sm-6">
-               <div class="primary-color">
-                  <div class="color-container" [ngStyle]="{background: data?.primaryColor}">
-                  </div>
-                  <span> Primary color : {{data?.primaryColor}}</span>
+      <ng-container *ngFor="let data of generalSettings">
+         <div class="dataContainer">
+            <h2 class="form-title">Colors</h2>
+            <div class="colors">
+               <div class="colorCard">
+                  <div class="color-container" [ngStyle]="{background: data?.colors?.primary.split('FF')}"></div>
+                  <span class="fw-bolder colorDetails">
+                     <span class="colorType"> Primary color</span>
+                     <span class="colorCode">{{data?.colors?.primary}}</span>
+                  </span>
+               </div>
+               <div class="colorCard">
+                  <div class="color-container" [ngStyle]="{background: data?.colors?.secondary}"></div>
+                  <span class="fw-bolder colorDetails">
+                     <span class="colorType"> Secondary color</span>
+                     <span class="colorCode">{{data?.colors?.secondary}}</span>
+                  </span>
+               </div>
+               <div class="colorCard">
+                  <div class="color-container" [ngStyle]="{background: data?.colors?.label}"></div>
+                  <span class="fw-bolder colorDetails">
+                     <span class="colorType"> Label color</span>
+                     <span class="colorCode">{{data?.colors?.label}}</span>
+                  </span>
+               </div>
+               <div class="colorCard">
+                  <div class="color-container" [ngStyle]="{background: data?.colors?.text}"></div>
+                  <span class="fw-bolder colorDetails">
+                     <span class="colorType"> Text color</span>
+                     <span class="colorCode">{{data?.colors?.text}}</span>
+                  </span>
+               </div>
+               <div class="colorCard">
+                  <div class="color-container" [ngStyle]="{background: data?.colors?.star}"></div>
+                  <span class="fw-bolder colorDetails">
+                     <span class="colorType"> Star color</span>
+                     <span class="colorCode">{{data?.colors?.star}}</span>
+                  </span>
                </div>
             </div>
-            <div class="col-12 col-sm-6">
-               <div class="secondary-color">
-                  <div class="color-container" [ngStyle]="{background: data?.secondaryColor}">
-                  </div>
-                  <span>Secondary color : {{data?.secondaryColor}}</span>
+         </div>
+         <div class="dataContainer">
+            <h2 class="form-title">Additional Details</h2>
+            <div class="additinalDetails">
+               <div class="detailsCard fw-bolder">
+                  <div class="detailsTitle">Items per Page</div>
+                  <div class="detailsValue">{{data?.itemsPerPage ? data?.itemsPerPage : "0"}}</div>
                </div>
             </div>
-            <div class="col-12">
-               <div class="items-per-page">
-                  Items per page : {{data?.itemsPerPage ? data?.itemsPerPage : "0"}}
+         </div>
+         <div class="dataContainer">
+            <h2 class="form-title">Font Details</h2>
+            <div class="fontDetails">
+               <div class="detailsCard fw-bolder">
+                  <div class="detailsTitle">Font Family</div>
+                  <div class="detailsValue">{{data?.fonts?.family ? data?.fonts?.family : "0"}}</div>
                </div>
             </div>
-            <div class="col-12">
-               <div class="font-family">
-                  Font family used : {{data?.fontFamily ? data?.fontFamily : "-"}}
-               </div>
-            </div>
-         </ng-container>
-      </div>
+         </div>
+      </ng-container>
    </div>
 </div>

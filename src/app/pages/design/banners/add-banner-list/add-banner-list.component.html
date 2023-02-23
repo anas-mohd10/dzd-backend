@@ -5,7 +5,7 @@
             <h3 class="page-title fw-bolder fs-2">
                {{ editMode ? "Update Banners" : "Add Banners" }}
             </h3>
-            <ul class="breadcrumb">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -27,9 +27,7 @@
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="bannerForm" enctype="multipart/form-data">
                   <div class="row">
-                     <div class="col-12">
-                        <h3 class="form-title"><span>Banner Details</span></h3>
-                     </div>
+                     <h2 class="form-title">Banner Details</h2>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Title</label>
@@ -73,7 +71,7 @@
                      </div>
                      <div class="col-12">
                         <div class="col-12">
-                           <h3 class="form-title required"><span>Media</span></h3>
+                           <h2 class="form-title required">Media</h2>
                         </div>
                      </div>
                      <!-- Web banner starts -->
@@ -135,7 +133,7 @@
                                     <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
                                        Upload up to 1 file
                                     </span>
-                                 </div>   
+                                 </div>
                               </div>
                            </div>
                         </div>
@@ -160,9 +158,10 @@
                      </div>
                      <!-- Mobile banner ends -->
 
-                     <div class="col-12" style="margin-top: 50px;">
+                     <div class="col-12 d-flex align-items-center justify-content-end mt-20">
                         <a routerLink="{{ appRoute.banner.BANNER_LIST }}"
-                           class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+                           class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
+                           style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">

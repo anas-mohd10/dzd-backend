@@ -29,13 +29,13 @@ export class AppSettingsService {
     return this.http.get(`${url}`);
   }
 
-  getGeneralSetting(id: any) {
-    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_setting + "?id=" + id);
+  getGeneralSettingsbyId(id: any) {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_settings_by_id + "?id=" + id);
     return this.http.get(`${url}`);
   }
 
-  updateGeneralSettings(id: any, data: any) {
-    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.update_general_settings + "?id=" + id);
+  updateGeneralSettings(data: any) {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.update_general_settings);
     return this.http.put(`${url}`, data);
   }
 }

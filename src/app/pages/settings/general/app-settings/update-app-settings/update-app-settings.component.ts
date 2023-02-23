@@ -12,16 +12,13 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
   styleUrls: ['./update-app-settings.component.scss']
 })
 export class UpdateAppSettingsComponent implements OnInit {
-
   appRoute = appRoutes
-  slug: any
   task = PageTasks.UPDATE;
   editMode = true;
-  generalSetting: any
-  appsettingsform: FormGroup
+  data: any
+  form: FormGroup
   isSubmitted = false;
-  primary: any
-  secondary: any
+  refid: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,51 +31,57 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initform()
-    this.slug = this.ActivatedRoute.snapshot.queryParams.id || ''
+    this.refid = this.ActivatedRoute.snapshot.queryParams.id || ''
 
-    this.AppSettingsService.getGeneralSetting(this.slug).subscribe((res: any) => {
+    this.AppSettingsService.getGeneralSettingsbyId(this.refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.generalSetting = res?.result[0]
-        this.primary = res?.result[0]?.primaryColor || AppSettings.PRIMARY_COLOR
-        this.secondary = res?.result[0]?.secondaryColor || AppSettings.SECONDARY_COLOR
-        this.appsettingsform.get('primaryColor')?.setValue(res?.result[0]?.primaryColor)
-        this.appsettingsform.get('secondaryColor')?.setValue(res?.result[0]?.secondaryColor)
-        this.appsettingsform.get('primaryColor')?.setValue(res?.result[0]?.primaryColor)
-        this.appsettingsform.get('itemPerPage')?.setValue(res?.result[0]?.itemsPerPage)
+        this.data = res?.result
+        this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
+        this.form.get('secondary')?.setValue("#" + res?.result?.colors?.secondary.split('FF')[1])
+        this.form.get('star')?.setValue("#" + res?.result?.colors?.star.split('FF')[1])
+        this.form.get('label')?.setValue("#" + res?.result?.colors?.label.split('FF')[1])
+        this.form.get('text')?.setValue("#" + res?.result?.colors?.text.split('FF')[1])
+        this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
+        this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.cdr.markForCheck()
-      } else {
-
       }
     })
   }
 
   initform() {
-    this.appsettingsform = this.formBuilder.group({
-      primaryColor: ['', Validators.required],
-      secondaryColor: ['', Validators.required],
-      fontFamily: [''],
-      itemPerPage: ['', Validators.required]
+    this.form = this.formBuilder.group({
+      primary: ['', Validators.required],
+      secondary: ['', Validators.required],
+      star: ['', Validators.required],
+      label: ['', Validators.required],
+      text: ['', Validators.required],
+      itemsPerPage: ['', Validators.required],
+      fontFamily: ['', Validators.required]
     })
   }
 
   onSubmit() {
-    if (!this.appsettingsform.valid) {
+    if (!this.form.valid) {
+      this.toastr.error('Validation error occured');
       return
     }
 
     const data = {
-      primaryColor: this.appsettingsform.get('primaryColor')?.value,
-      secondaryColor: this.appsettingsform.get('secondaryColor')?.value,
-      fontFamily: this.appsettingsform.get('fontFamily')?.value,
-      itemsPerPage: this.appsettingsform.get('itemPerPage')?.value
+      colors: {
+        primary: this.form.get('primary')?.value,
+        secondary: this.form.get('secondary')?.value,
+      },
+      fonts: { family: this.form.get('fontFamily')?.value },
+      itemsPerPage: this.form.get('itemsPerPage')?.value,
+      refid: this.refid
     }
 
-    this.AppSettingsService.updateGeneralSettings(this.slug, data).subscribe((res: any) => {
+    this.AppSettingsService.updateGeneralSettings(data).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.toastr.success('Settings configured');
+        this.toastr.success(res?.message);
         this.Router.navigate([this.appRoute.appSettings.APP_SETTINGS_LIST])
       } else {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       }
     })
   }
