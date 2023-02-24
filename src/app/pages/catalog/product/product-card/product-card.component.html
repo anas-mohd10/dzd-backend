@@ -3,9 +3,9 @@
       <div class="page-title">
          <h1 class="fw-bolder">Product Head</h1>
       </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+      <div class="row">
+         <div class="col d-flex align-items-start justify-content-between">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -115,32 +115,32 @@
    </div>
    <div class="variant-product-filters col-12">
       <form [formGroup]="variantProductform">
-         <div class="col-12 row" style="display: flex; align-items: flex-end;">
-            <div class="search-input col-sm-4">
-               <label class="fs-5">Search</label>
+         <div class="row" style="display: flex; align-items: flex-start;">
+            <div class="search-input col-sm-4" style="padding: 0;">
+               <!-- <label class="fs-5">Search</label> -->
                <input type="text" placeholder="Search for products here..." class="form-control fs-5"
                   formControlName="name" (ngModelChange)="searchVariantProduct()">
             </div>
             <div class="search-status col-sm-2">
-               <label class="fs-5">Status</label>
+               <!-- <label class="fs-5">Status</label> -->
                <select name="" id="" class="form-select fs-5" formControlName="isActive"
                   (change)="searchVariantProduct()">
-                  <option value="" disabled>Select an option</option>
+                  <option value="" disabled>Product Status Filter</option>
                   <option value=true>Active</option>
                   <option value=false>Inactive</option>
                </select>
             </div>
             <div class="search-featured col-sm-2">
-               <label class="fs-5 form-title">Featured</label>
+               <!-- <label class="fs-5 form-title">Featured</label> -->
                <select class="form-select fs-5" formControlName="isFeatured" (change)="searchVariantProduct()">
-                  <option value="" disabled>Select an option</option>
+                  <option value="" disabled>Featured Product Status</option>
                   <option value=true>Featured</option>
                   <option value=false>Non featured</option>
                </select>
             </div>
             <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onVariantReload()"
-                  style="outline: none; border: none;">Clear</button>
+               <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark"
+                  (click)="onVariantReload()" style="outline: none; border: none;">Clear</button>
             </div>
          </div>
       </form>
@@ -201,7 +201,7 @@
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
             <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
-            <button class="btn btn-primary fs-5" (click)="navigateToAdd()">Add Products</button>
+            <!-- <button class="btn btn-primary fs-5" (click)="navigateToAdd()">Add Products</button> -->
          </div>
       </ng-container>
    </div>

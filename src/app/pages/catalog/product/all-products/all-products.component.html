@@ -4,9 +4,9 @@
     <div class="page-title">
       <h1 class="fw-bolder">Products</h1>
     </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <div class="col-12 d-flex align-items-center justify-content-end" style="margin: 40px 0;">
+  <div class="col-12 d-flex align-items-center justify-content-end">
     <div class="search-input col-6">
       <input type="text" placeholder="Search for products here" class="form-control fs-5" [formControl]="name"
         (ngModelChange)="searchProduct()">

@@ -70,6 +70,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       colors: {
         primary: this.form.get('primary')?.value,
         secondary: this.form.get('secondary')?.value,
+        star: this.form.get('star')?.value,
+        label: this.form.get('label')?.value,
+        text: this.form.get('text')?.value,
       },
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,

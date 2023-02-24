@@ -3,9 +3,9 @@
     <div class="page-title">
       <h1 class="fw-bolder">Collections</h1>
     </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -23,23 +23,23 @@
   <div class="collection-form-container">
     <form [formGroup]="collectionform">
       <div class="col-12 row" style="display: flex; align-items: flex-end;">
-        <div class="search-input col-sm-4">
-          <label class="fs-5">Search</label>
+        <div class="search-input col-sm-4" style="padding: 0;">
+          <!-- <label class="fs-5">Search</label> -->
           <input type="text" placeholder="Search for collections here..." class="form-control fs-5"
             formControlName="name" (ngModelChange)="searchCollection()">
         </div>
         <div class="search-status col-sm-2">
-          <label class="fs-5">Status</label>
+          <!-- <label class="fs-5">Status</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchCollection()">
-            <option value="" disabled>Select an option</option>
+            <option value="" disabled>Collection Status Filter</option>
             <option value=true>Active</option>
             <option value=false>Inactive</option>
           </select>
         </div>
         <div class="search-featured col-sm-2">
-          <label class="fs-5 form-title">Featured</label>
+          <!-- <label class="fs-5 form-title">Featured</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchCollection()">
-            <option value="" disabled>Select an option</option>
+            <option value="" disabled>Featured Collection Filter</option>
             <option value=true>Featured</option>
             <option value=false>Non featured</option>
           </select>

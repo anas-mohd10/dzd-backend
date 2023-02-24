@@ -3,9 +3,9 @@
       <div class="page-title">
          <h1 class="fw-bolder">Collections</h1>
       </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+      <div class="row">
+         <div class="col d-flex  align-items-start justify-content-between">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -19,30 +19,26 @@
          </div>
       </div>
    </div>
-   <hr class="horizontal-line">
    <div class="collection-form-container">
       <form [formGroup]="collectionform">
          <div class="col-12 row" style="display: flex; align-items: flex-end;">
-            <div class="search-input col-sm-4">
-               <label class="fs-5">Search</label>
+            <div class="search-input col-sm-4" style="padding: 0;">
+               <!-- <label class="fs-5">Search</label> -->
                <input type="text" placeholder="Search for collections here..." class="form-control fs-5"
                   formControlName="name" (ngModelChange)="searchCollection()">
             </div>
             <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fs-5 bg-secondary text-dark" (click)="onReload()"
+               <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
                   style="outline: none; border: none;">Clear</button>
             </div>
          </div>
       </form>
    </div>
-   <hr class="horizontal-line">
-
    <div class="col-12 d-flex justify-content-between">
       <div class="total-count-container col-sm-3 bg-dark">
          <h4 class="text-white">Total {{totalcount ? totalcount : 0}} collections</h4>
       </div>
    </div>
-
    <div class="collection-card-container view-container">
       <ng-container *ngFor="let collection of collections">
          <div class="collection-card card-hover">
