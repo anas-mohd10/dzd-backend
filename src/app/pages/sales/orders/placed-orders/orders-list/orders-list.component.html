@@ -3,9 +3,9 @@
     <div class="page-title">
       <h1 class="fw-bolder">Placed Orders</h1>
     </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -30,31 +30,32 @@
       </div>
       <div class="col-lg-3">
         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin008.svg"
-          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary"
-          title="Rs. {{totalrevenues}}" description="Total Revenue">
+          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{totalrevenues}}"
+          description="Total Revenue">
         </app-stats-widget5>
       </div>
       <div class="col-lg-3">
         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin001.svg"
-          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary"
-          title="Rs. {{averagesales}}" description="Average Sales">
+          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{averagesales}}"
+          description="Average Sales">
         </app-stats-widget5>
       </div>
     </div>
     <form [formGroup]="orderform">
-      <div class="col-12 row" style="display: flex; align-items: flex-end;">
+      <div class="row" style="display: flex; align-items: flex-end;">
         <div class="search-input col-sm-2">
           <label class="fs-5">From</label>
-          <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()">
+          <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
+            placeholder="From date">
         </div>
         <div class="search-input col-sm-2">
           <label class="fs-5">To</label>
           <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
         </div>
         <div class="search-status col-sm-2">
-          <label class="fs-5">Status</label>
+          <!-- <label class="fs-5">Status</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="orderStatus" (change)="searchOrder()">
-            <option value="" disabled>Select an option</option>
+            <option value="" disabled>Order Status Filter</option>
             <option value="PLACED">Placed</option>
             <option value="ACCEPTED">Accepted</option>
             <option value="CANCELLED">Cancelled</option>
@@ -66,9 +67,9 @@
           </select>
         </div>
         <div class="search-featured col-sm-2">
-          <label class="fs-5 form-title">Payment</label>
+          <!-- <label class="fs-5 form-title">Payment</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
-            <option value="" disabled> Select An Option</option>
+            <option value="" disabled> Payment Method Filter</option>
             <option value="COD">Cash On Delivery</option>
             <option value="ONLINE">Online</option>
             <option value="UNPAID">Unpaid</option>

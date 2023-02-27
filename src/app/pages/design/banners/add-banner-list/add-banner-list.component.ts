@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
 import { BannerService } from 'src/app/includes/services/banner.service';
@@ -7,6 +7,8 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { CollectionService } from 'src/app/includes/services/collection.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
 
 @Component({
   selector: 'app-add-banner-list',
@@ -44,6 +46,16 @@ export class AddBannerListComponent implements OnInit {
   to_date: string;
   from_date: string;
 
+  isGrid: boolean = false
+  categories: any = []
+  products: any = []
+  collections: any = []
+
+  collection: any
+  product: any
+  category: any
+  redirection: {};
+
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
@@ -51,7 +63,9 @@ export class AddBannerListComponent implements OnInit {
     private router: Router,
     private bannerService: BannerService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private CollectionService: CollectionService,
+    private CategoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -60,9 +74,29 @@ export class AddBannerListComponent implements OnInit {
     this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
     this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
 
+    this.CollectionService.getActiveCollection().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.collections = res?.result
+        this.cdr.markForCheck()
+      }
+    })
+
+    this.productService.getActiveProduct().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.products = res?.result
+        this.cdr.markForCheck()
+      }
+    })
+
+    this.CategoryService.getActiveCategory().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.categories = res?.result
+        this.cdr.markForCheck()
+      }
+    })
+
     this.initForm()
     this.managePage()
-    this.getProduct()
   }
 
   initForm() {
@@ -72,6 +106,7 @@ export class AddBannerListComponent implements OnInit {
       validTo: ['', Validators.required],
       redirectURL: [''],
       isActive: ['true', Validators.required],
+      type: ["1", Validators.required]
     });
     this.bannerForm.get('validFrom')?.setValue(this.from_date)
     this.bannerForm.get('validTo')?.setValue(this.to_date)
@@ -91,6 +126,46 @@ export class AddBannerListComponent implements OnInit {
         break;
       default:
         break;
+    }
+  }
+
+  redirectionValidation(type: any) {
+    if (type == 'category') {
+      this.product = null
+      this.bannerForm.get('redirectURL')?.setValue('')
+      this.collection = null
+
+      this.redirection = {
+        type: type,
+        category: this.category
+      }
+    } else if (type == 'collection') {
+      this.product = null
+      this.bannerForm.get('redirectURL')?.setValue('')
+      this.category = null
+
+      this.redirection = {
+        type: type,
+        collection: this.collection
+      }
+    } else if (type == 'product') {
+      this.bannerForm.get('redirectURL')?.setValue('')
+      this.category = null
+      this.collection = null
+
+      this.redirection = {
+        type: type,
+        product: this.product
+      }
+    } else {
+      this.product = null
+      this.category = null
+      this.collection = null
+
+      this.redirection = {
+        type: type,
+        external: this.bannerForm.get('redirectURL')?.value
+      }
     }
   }
 

@@ -3,9 +3,9 @@
     <div class="page-title">
       <h1 class="fw-bolder">Pending Orders</h1>
     </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -32,11 +32,11 @@
           </div>
         </div>
         <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-          <label class="fs-5">Payment</label>
+          <!-- <label class="fs-5">Payment</label> -->
           <div class="form-group">
             <select class="form-select form-select-lg" aria-label=".form-select-lg" formControlName="paymentMethod"
               (change)="searchPendingOrder()">
-              <option value="" disabled>Select an option</option>
+              <option value="" disabled>Payment Method Filter</option>
               <option value="COD">COD</option>
               <option value="ONLINE">Online</option>
               <option value="CASH">Cash</option>

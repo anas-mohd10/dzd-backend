@@ -54,12 +54,6 @@
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Redirection URL</label>
-                           <input type="text" class="form-control fs-5" formControlName="redirectURL" />
-                        </div>
-                     </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Active Banner?</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                               formControlName="isActive">
@@ -69,94 +63,70 @@
                            </select>
                         </div>
                      </div>
+                     <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 form-title">Banner Type</label>
+                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                              formControlName="type">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value=1> Single Banner</option>
+                              <option value=2> 2 Grid Banner</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="col-12">
+                           <h2 class="form-title">Redirection Details</h2>
+                        </div>
+                     </div>
+                     <div class="col-sm-6">
+                        <label class="fs-5 mb-3 form-title">Collection</label>
+                        <ng-select [items]="collections" bindLabel="name" bindValue="_id" [(ngModel)]="collection"
+                           placeholder="Select any collection" [multiple]=false [ngModelOptions]="{standalone: true}"
+                           style="font-size: 1.1rem;" (change)="redirectionValidation('collection')">
+                        </ng-select>
+                     </div>
+                     <div class="col-sm-6">
+                        <label class="fs-5 mb-3 form-title">Products</label>
+                        <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="product"
+                           placeholder="Select any product" [multiple]=false [ngModelOptions]="{standalone: true}"
+                           style="font-size: 1.1rem;" (change)="redirectionValidation('product')">
+                        </ng-select>
+                     </div>
+                     <div class="col-sm-6">
+                        <label class="fs-5 mb-3 form-title">Category</label>
+                        <ng-select [items]="categories" bindLabel="name" bindValue="_id" [(ngModel)]="category"
+                           placeholder="Select any category" [multiple]=false [ngModelOptions]="{standalone: true}"
+                           style="font-size: 1.1rem;" (change)="redirectionValidation('category')">
+                        </ng-select>
+                     </div>
+                     <div class="col-sm-6">
+                        <div class="form-group">
+                           <label class="fs-5 mb-3 form-title">Redirection URL</label>
+                           <input type="text" class="form-control fs-5" formControlName="redirectURL"
+                              (change)="redirectionValidation('external')" />
+                        </div>
+                     </div>
                      <div class="col-12">
                         <div class="col-12">
                            <h2 class="form-title required">Media</h2>
                         </div>
                      </div>
-                     <!-- Web banner starts -->
-                     <div class="web-banner-title col-sm-6">
-                        <div class="form-group">
-                           <div class="image-upload">
-                              <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                                 (change)="handleInputChange($event, 'web')" style="height: 100px;" required>
-                              <label class="fs-7 text-disabled">Please upload an banner with 1200px * 600px</label>
-                              <div class="image-upload-div">
-                                 <div class="left-img">
-                                    <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                                 </div>
-                                 <div class="right-text d-flex flex-column">
-                                    <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                    <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                                       Upload up to 1 file
-                                    </span>
-                                 </div>
 
-                              </div>
-                           </div>
-
+                     <div class="bannerUploadImages">
+                        <div class="uploadButton">
+                           <button type="button" class="btn btn-secondary fs-5 text-dark fw-bolder"
+                              data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                              Upload Web Banner
+                           </button>
                         </div>
-                        <ng-container *ngIf="webLoadImage">
-                           <div class="col-12 preview-section">
-                              <div class="crop-image col-sm-6">
-                                 <image-cropper class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
-                                    [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
-                                    [cropperMaxHeight]="2000" format="png" (imageCropped)="imageCroppedWeb($event)"
-                                    (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
-                                    (loadImageFailed)="loadImageWebFailed()">
-                                 </image-cropper>
-                              </div>
-                              <div class="uploads uploaded col-sm-6">
-                                 <div class="close-icon">
-                                    <i class="bi bi-x-lg text-white" (click)="removeImage('web')"></i>
-                                 </div>
-                                 <img class="preview-img" id="previewImage" [src]="web_file">
-                              </div>
-                           </div>
-                        </ng-container>
-                     </div>
-                     <!-- Web banner ends -->
-
-                     <!-- Mobile banner starts -->
-                     <div class="mobile-banner-title col-sm-6">
-                        <div class="form-group">
-                           <div class="image-upload">
-                              <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                                 (change)="handleInputChange($event, 'mobile')" style="height: 100px;" required>
-                              <label class="fs-7 text-disabled">Please upload a Mobile banner with 600px * 300px</label>
-                              <div class="image-upload-div">
-                                 <div class="left-img">
-                                    <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                                 </div>
-                                 <div class="right-text d-flex flex-column">
-                                    <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                    <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                                       Upload up to 1 file
-                                    </span>
-                                 </div>
-                              </div>
-                           </div>
+                        <div class="uploadButton">
+                           <button type="button" class="btn btn-secondary fs-5 text-dark fw-bolder"
+                              data-bs-toggle="modal" data-bs-target="#staticMobileBackdrop">
+                              Upload Mobile Banner
+                           </button>
                         </div>
-                        <ng-container *ngIf="mobileLoadImage">
-                           <div class="col-12 preview-section">
-                              <div class="crop-image col-sm-6">
-                                 <image-cropper class="crop-section" [imageChangedEvent]="imageMobileChangedEvent "
-                                    [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="600"
-                                    [cropperMaxHeight]="300" format="png" (imageCropped)="imageCroppedMobile($event)"
-                                    (imageLoaded)="imageMobileLoaded()" (cropperReady)="cropperMobileReady()"
-                                    (loadImageFailed)="loadImageMobileFailed()">
-                                 </image-cropper>
-                              </div>
-                              <div class="uploads uploaded col-sm-6">
-                                 <div class="close-icon">
-                                    <i class="bi bi-x-lg text-white" (click)="removeImage('mobile')"></i>
-                                 </div>
-                                 <img class="preview-img" id="previewImage" [src]="mobile_file">
-                              </div>
-                           </div>
-                        </ng-container>
                      </div>
-                     <!-- Mobile banner ends -->
 
                      <div class="col-12 d-flex align-items-center justify-content-end mt-20">
                         <a routerLink="{{ appRoute.banner.BANNER_LIST }}"
@@ -172,6 +142,123 @@
                   </div>
                </form>
             </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+   aria-labelledby="staticBackdropLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <!-- Web banner starts -->
+            <div class="web-banner-title col-12">
+               <div class="form-group">
+                  <div class="image-upload">
+                     <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        (change)="handleInputChange($event, 'web')" style="height: 100px;" required>
+                     <label class="fs-7 text-disabled">Please upload an banner with 1200px * 600px</label>
+                     <div class="image-upload-div">
+                        <div class="left-img">
+                           <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                        </div>
+                        <div class="right-text d-flex flex-column">
+                           <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                           <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                              Upload up to 1 file
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <ng-container *ngIf="webLoadImage">
+                  <div class="col-12 preview-section">
+                     <div class="crop-image col-sm-6">
+                        <image-cropper class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
+                           [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
+                           [cropperMaxHeight]="2000" format="png" (imageCropped)="imageCroppedWeb($event)"
+                           (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
+                           (loadImageFailed)="loadImageWebFailed()">
+                        </image-cropper>
+                     </div>
+                     <div class="uploads uploaded col-sm-6">
+                        <div class="close-icon">
+                           <i class="bi bi-x-lg text-white" (click)="removeImage('web')"></i>
+                        </div>
+                        <img class="preview-img" id="previewImage" [src]="web_file">
+                     </div>
+                  </div>
+               </ng-container>
+            </div>
+            <!-- Web banner ends -->
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="staticMobileBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+   aria-labelledby="staticBackdropLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         </div>
+         <div class="modal-body">
+            <!-- Mobile banner starts -->
+            <div class="mobile-banner-title col-sm-6">
+               <div class="form-group">
+                  <div class="image-upload">
+                     <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        (change)="handleInputChange($event, 'mobile')" style="height: 100px;" required>
+                     <label class="fs-7 text-disabled">Please upload a Mobile banner with 600px * 300px</label>
+                     <div class="image-upload-div">
+                        <div class="left-img">
+                           <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                        </div>
+                        <div class="right-text d-flex flex-column">
+                           <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                           <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                              Upload up to 1 file
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <ng-container *ngIf="mobileLoadImage">
+                  <div class="col-12 preview-section">
+                     <div class="crop-image col-sm-6">
+                        <image-cropper class="crop-section" [imageChangedEvent]="imageMobileChangedEvent "
+                           [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="600"
+                           [cropperMaxHeight]="300" format="png" (imageCropped)="imageCroppedMobile($event)"
+                           (imageLoaded)="imageMobileLoaded()" (cropperReady)="cropperMobileReady()"
+                           (loadImageFailed)="loadImageMobileFailed()">
+                        </image-cropper>
+                     </div>
+                     <div class="uploads uploaded col-sm-6">
+                        <div class="close-icon">
+                           <i class="bi bi-x-lg text-white" (click)="removeImage('mobile')"></i>
+                        </div>
+                        <img class="preview-img" id="previewImage" [src]="mobile_file">
+                     </div>
+                  </div>
+               </ng-container>
+            </div>
+            <!-- Mobile banner ends -->
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
          </div>
       </div>
    </div>

@@ -5,7 +5,8 @@
 // Desktop mode
 @include media-breakpoint-up(lg) {
 	.content {
-		padding: get($content-spacing, desktop) 0;
+		// padding: get($content-spacing, desktop) 0;
+		padding: 15px 0;
 
 		// Toolbar enabled and toolbar not fixed mode
 		.toolbar-enabled:not(.toolbar-fixed) & {

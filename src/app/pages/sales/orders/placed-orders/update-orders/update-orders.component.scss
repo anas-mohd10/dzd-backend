@@ -63,3 +63,33 @@
         }
     }
 }
+
+.page-title {
+    margin: 0;
+}
+
+td {
+    padding: 5px 0 !important;
+}
+
+.customerDetails {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.orderTopContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.card {
+    .card-body {
+        padding: 0 2rem 0.8rem 2rem;
+
+        .text-muted {
+            font-weight: 600;
+        }
+    }
+}

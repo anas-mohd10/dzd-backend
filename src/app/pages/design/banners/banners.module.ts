@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     BannersRoutingModule,
     DataTablesModule,
     FormsModule,
+    NgSelectModule,
     ImageCropperModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
