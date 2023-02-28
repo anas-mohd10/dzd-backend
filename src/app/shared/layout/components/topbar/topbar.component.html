@@ -1,12 +1,12 @@
 <div class="d-flex align-items-center" [ngClass]="toolbarButtonMarginClass" id="kt_header_user_menu_toggle">
 
-  <div class="notifications">
+  <div class="notifications" #container>
     <div class="notificationIcon">
       <img src="../../../../../assets/icons/notifications.svg" alt="Icon" class="iconImage"
         (click)="toggleNotifications()">
     </div>
 
-    <div class="notificationContainer" [ngClass]="{'showContainer': isShowClicked}">
+    <div class="notificationContainer" [ngClass]="{'showContainer': isShowClicked}" #dropdown>
       <div class="notificationsTitle">Latest Notifications</div>
       <div class="notificationsPagination">
         <ng-container *ngFor="let page of pages">
@@ -17,8 +17,9 @@
       <div class="notificatins">
         <ng-container *ngFor="let notification of notifications;let i=index">
           <div class="notificationCard">
-            New order <span class="fw-bolder fs-6">{{notification?.orderNo}}</span> placed. Order amount is Rs. <span class="fw-bolder fs-6">{{notification?.total}}</span>.  <a routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}"
-              [queryParams]="{ order: notification?.refid }">Click
+            New order <span class="fw-bolder fs-6">{{notification?.orderNo}}</span> placed. Order amount is Rs. <span
+              class="fw-bolder fs-6">{{notification?.total}}</span>. <a
+              routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{ order: notification?.refid }">Click
               here</a> to view
           </div>
         </ng-container>

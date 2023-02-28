@@ -56,6 +56,14 @@ export class AddBannerListComponent implements OnInit {
   category: any
   redirection: {};
 
+  aspectRatioWebWidth: any = 2
+  aspectRatioWebHeight: any = 1
+  aspectRatioMobileWidth: any = 6
+  aspectRatioMobileHeight: any = 3
+
+  previousBanners: any = []
+  bannerMedia: any = []
+
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
@@ -190,6 +198,39 @@ export class AddBannerListComponent implements OnInit {
     }
   }
 
+  addBanner() {
+    const type = this.bannerForm.get('type')?.value
+    if (type == "1") {
+      if (this.bannerMedia.length < 1) {
+        const prevLen = this.bannerMedia.length
+        this.bannerMedia.push({ w_file: this.web_file, w_name: this.w_name, m_file: this.mobile_file, m_name: this.m_name })
+        const newlen = this.bannerMedia.length
+        if ((prevLen + 1) == newlen) {
+          this.web_file = null
+          this.w_name = null
+          this.mobile_file = null
+          this.m_name = null
+        }
+      } else {
+        this.toastr.info('Maximum banner limit reached')
+      }
+    } else if (type == "2") {
+      if (this.bannerMedia.length < 2) {
+        const prevLen = this.bannerMedia.length
+        this.bannerMedia.push({ w_file: this.web_file, w_name: this.w_name, m_file: this.mobile_file, m_name: this.m_name })
+        const newlen = this.bannerMedia.length
+        if ((prevLen + 1) == newlen) {
+          this.web_file = null
+          this.w_name = null
+          this.mobile_file = null
+          this.m_name = null
+        }
+      } else {
+        this.toastr.info('Maximum banner limit reached')
+      }
+    }
+  }
+
   imageCroppedWeb(event: ImageCroppedEvent) {
     this.web_file = event.base64;
   }
@@ -199,27 +240,21 @@ export class AddBannerListComponent implements OnInit {
   }
 
   imageWebLoaded() {
-    // show cropper
   }
 
   cropperWebReady() {
-    // cropper ready
   }
 
   loadImageWebFailed() {
-    // show message
   }
 
   imageMobileLoaded() {
-    // show cropper
   }
 
   cropperMobileReady() {
-    // cropper ready
   }
 
   loadImageMobileFailed() {
-    // show message
   }
 
   removeImage(key: any) {
@@ -237,6 +272,8 @@ export class AddBannerListComponent implements OnInit {
     }
 
     const payload = this.createPayload()
+    console.log(payload);
+
     if (payload) {
       this.bannerService.addBaner(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
@@ -251,15 +288,19 @@ export class AddBannerListComponent implements OnInit {
 
   createPayload() {
     const data = {
+      type: this.bannerForm.get('type')?.value,
       title: this.bannerForm.get('title')?.value,
       validFrom: this.bannerForm.get('validFrom')?.value,
-      isActive: this.bannerForm.get('isActive')?.value,
-      redirectionUrl: this.bannerForm.get('redirectURL')?.value,
       validTo: this.bannerForm.get('validTo')?.value,
-      w_file: this.web_file,
-      w_name: this.w_name,
-      m_file: this.mobile_file,
-      m_name: this.m_name
+      isActive: this.bannerForm.get('isActive')?.value,
+      redirection: {
+        unit: '',
+        category: this.category ? this.category : '',
+        collection: this.collection ? this.collection : '',
+        product: this.product ? this.product : '',
+        external: this.bannerForm.get('redirectURL')?.value
+      },
+      file: this.bannerMedia
     }
 
     if (this.web_file != '' && this.mobile_file != '') {

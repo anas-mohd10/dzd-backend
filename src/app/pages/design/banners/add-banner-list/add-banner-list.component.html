@@ -128,6 +128,31 @@
                         </div>
                      </div>
 
+                     <!-- <div class="uploadedBanners" *ngIf="bannerMedia.length > 0">
+                        <ng-container *ngFor="let banner of bannerMedia">
+                           <div class="bannerImage">
+                              <img src="{{banner?.w_file}}" alt="Icon">
+                              <img src="{{banner?.m_file}}" alt="Icon">
+                           </div>
+                        </ng-container>
+                     </div> -->
+
+                     <div class="draftTitle fs-2 fw-bolder" *ngIf="web_file || mobile_file">
+                        Click confirm banners button to upload the banner
+                     </div>
+                     <div class="draftBanners" *ngIf="web_file || mobile_file">
+                        <img class="preview-img" id="previewImage" [src]="web_file">
+                        <img class="preview-img" id="previewImage" [src]="mobile_file">
+                     </div>
+
+                     <div class="uploadBtn d-flex align-items-center justify-content-end"
+                        *ngIf="web_file && mobile_file">
+                        <button type="submit" class="fw-bolder btn btn-info btn-sm fs-5" style="width: 200px"
+                           (click)="addBanner()">
+                           Confirm Banners
+                        </button>
+                     </div>
+
                      <div class="col-12 d-flex align-items-center justify-content-end mt-20">
                         <a routerLink="{{ appRoute.banner.BANNER_LIST }}"
                            class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
@@ -149,29 +174,24 @@
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-   <div class="modal-dialog">
+   <div class="modal-dialog modal-lg">
       <div class="modal-content">
          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload Web Banner</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body">
-            <!-- Web banner starts -->
             <div class="web-banner-title col-12">
                <div class="form-group">
                   <div class="image-upload">
                      <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                        (change)="handleInputChange($event, 'web')" style="height: 100px;" required>
-                     <label class="fs-7 text-disabled">Please upload an banner with 1200px * 600px</label>
+                        (change)="handleInputChange($event, 'web')" required>
                      <div class="image-upload-div">
                         <div class="left-img">
                            <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
                         </div>
                         <div class="right-text d-flex flex-column">
-                           <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                           <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                              Upload up to 1 file
-                           </span>
+                           <span class="right-text-title fs-4 fw-bolder">Select Files</span>
                         </div>
                      </div>
                   </div>
@@ -186,20 +206,19 @@
                            (loadImageFailed)="loadImageWebFailed()">
                         </image-cropper>
                      </div>
-                     <div class="uploads uploaded col-sm-6">
+                     <!-- <div class="uploads uploaded col-sm-6">
                         <div class="close-icon">
                            <i class="bi bi-x-lg text-white" (click)="removeImage('web')"></i>
                         </div>
                         <img class="preview-img" id="previewImage" [src]="web_file">
-                     </div>
+                     </div> -->
                   </div>
                </ng-container>
             </div>
-            <!-- Web banner ends -->
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
+            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Upload</button>
          </div>
       </div>
    </div>
@@ -208,29 +227,24 @@
 
 <div class="modal fade" id="staticMobileBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-   <div class="modal-dialog">
+   <div class="modal-dialog modal-lg">
       <div class="modal-content">
          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Upload Mobile Banner</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
          </div>
          <div class="modal-body">
-            <!-- Mobile banner starts -->
-            <div class="mobile-banner-title col-sm-6">
+            <div class="mobile-banner-title">
                <div class="form-group">
                   <div class="image-upload">
                      <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                        (change)="handleInputChange($event, 'mobile')" style="height: 100px;" required>
-                     <label class="fs-7 text-disabled">Please upload a Mobile banner with 600px * 300px</label>
+                        (change)="handleInputChange($event, 'mobile')" required>
                      <div class="image-upload-div">
                         <div class="left-img">
                            <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
                         </div>
                         <div class="right-text d-flex flex-column">
-                           <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                           <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                              Upload up to 1 file
-                           </span>
+                           <span class="right-text-title fs-4 fw-bolder">Select Files</span>
                         </div>
                      </div>
                   </div>
@@ -245,20 +259,32 @@
                            (loadImageFailed)="loadImageMobileFailed()">
                         </image-cropper>
                      </div>
-                     <div class="uploads uploaded col-sm-6">
+                     <!-- <div class="uploads uploaded col-sm-6">
                         <div class="close-icon">
                            <i class="bi bi-x-lg text-white" (click)="removeImage('mobile')"></i>
                         </div>
                         <img class="preview-img" id="previewImage" [src]="mobile_file">
-                     </div>
+                     </div> -->
                   </div>
                </ng-container>
             </div>
-            <!-- Mobile banner ends -->
+            <div class="dividerNote">Or</div>
+            <div class="previousBannersContainer">
+               <div class="previousBanners">
+                  <ng-container *ngFor="let banner of previousBanners">
+                     <div class="previousBannerCard">
+                        <img src="{{banner}}" alt="Banner">
+                     </div>
+                  </ng-container>
+                  <ng-container *ngIf="previousBanners.length == 0">
+                     <h5 class="fs-2 fw-bolder d-flex align-items-center justify-content-center">No banners found</h5>
+                  </ng-container>
+               </div>
+            </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Understood</button>
+            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Upload</button>
          </div>
       </div>
    </div>

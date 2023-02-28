@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { LayoutService } from '../../core/layout.service';
@@ -15,16 +15,27 @@ export class TopbarComponent implements OnInit {
   toolbarButtonIconSizeClass = 'svg-icon-1';
   headerLeft: string = 'menu';
 
+  @ViewChild('container') container: any;
+  @ViewChild('dropdown') dropdown: any;
+
   appRoutes = appRoutes
   isShowClicked: Boolean = false
   pages: any = [1, 2, 3]
   currentPage: any = this.pages[0]
   notifications: any = []
 
-  constructor(private layout: LayoutService, private NotificationsService: NotificationsService, private cdr: ChangeDetectorRef) { }
+  constructor(private layout: LayoutService, private NotificationsService: NotificationsService, private cdr: ChangeDetectorRef) {
+    document.addEventListener('click', this.offClickHandler.bind(this));
+  }
+
+  offClickHandler($event: any) {
+    if (!this.container.nativeElement.contains($event.target)) {
+      this.isShowClicked = false
+      document.querySelector('.notificationContainer')?.classList.remove('showContainer')
+    }
+  }
 
   ngOnInit(): void {
-    this.isShowClicked = false
     this.headerLeft = this.layout.getProp('header.left') as string;
 
     this.NotificationsService.latestNotifications({ page: this.currentPage }).subscribe((res: any) => {
