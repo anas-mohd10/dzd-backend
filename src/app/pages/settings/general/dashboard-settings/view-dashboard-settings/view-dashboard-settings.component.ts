@@ -58,13 +58,17 @@ export class ViewDashboardSettingsComponent implements OnInit {
     this.carauselEvent()
   }
 
-  getId(type: any, title: any) {
+  getId(type: any, title: any, index: any) {
     for (let home of this.homeSettings) {
       if (home.type == type) {
         if (type == 'product' && home?.title?.text == title) {
           this.hoverarray.push(home)
-        } else if (type != 'product') {
+        } else if (type != 'product' && type != 'banner') {
           this.hoverarray.push(home)
+        } else if (type == 'banner') {
+          if (this.homeSettings.indexOf(home) == index) {
+            this.hoverarray.push(this.homeSettings[index])
+          }
         }
       }
     }

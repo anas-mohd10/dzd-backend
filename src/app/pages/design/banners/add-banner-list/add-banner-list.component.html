@@ -67,13 +67,42 @@
                         <div class="form-group">
                            <label class="fs-5 form-title">Banner Type</label>
                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="type">
+                              formControlName="type" (change)="getBannerType($event.target)">
                               <option value="" disabled>-- Select an option --</option>
                               <option value=1> Single Banner</option>
                               <option value=2> 2 Grid Banner</option>
                            </select>
                         </div>
                      </div>
+
+                     <div class="col-12">
+                        <div class="col-12">
+                           <h2 class="form-title required">Media</h2>
+                        </div>
+                     </div>
+
+                     <div class="bannerUploadImages">
+                        <div class="uploadButton">
+                           <button type="button" class="btn btn-secondary fs-5 text-dark fw-bolder"
+                              data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                              Upload Web Banner
+                           </button>
+                        </div>
+                        <div class="uploadButton">
+                           <button type="button" class="btn btn-secondary fs-5 text-dark fw-bolder"
+                              data-bs-toggle="modal" data-bs-target="#staticMobileBackdrop">
+                              Upload Mobile Banner
+                           </button>
+                        </div>
+                     </div>
+                     <div class="draftTitle fs-2 fw-bolder" *ngIf="web_file || mobile_file">
+                        Click confirm banners button to upload the banner
+                     </div>
+                     <div class="draftBanners" *ngIf="web_file || mobile_file">
+                        <img class="preview-img" id="previewImage" [src]="web_file">
+                        <img class="preview-img" id="previewImage" [src]="mobile_file">
+                     </div>
+
                      <div class="col-12">
                         <div class="col-12">
                            <h2 class="form-title">Redirection Details</h2>
@@ -107,47 +136,10 @@
                               (change)="redirectionValidation('external')" />
                         </div>
                      </div>
-                     <div class="col-12">
-                        <div class="col-12">
-                           <h2 class="form-title required">Media</h2>
-                        </div>
-                     </div>
-
-                     <div class="bannerUploadImages">
-                        <div class="uploadButton">
-                           <button type="button" class="btn btn-secondary fs-5 text-dark fw-bolder"
-                              data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                              Upload Web Banner
-                           </button>
-                        </div>
-                        <div class="uploadButton">
-                           <button type="button" class="btn btn-secondary fs-5 text-dark fw-bolder"
-                              data-bs-toggle="modal" data-bs-target="#staticMobileBackdrop">
-                              Upload Mobile Banner
-                           </button>
-                        </div>
-                     </div>
-
-                     <!-- <div class="uploadedBanners" *ngIf="bannerMedia.length > 0">
-                        <ng-container *ngFor="let banner of bannerMedia">
-                           <div class="bannerImage">
-                              <img src="{{banner?.w_file}}" alt="Icon">
-                              <img src="{{banner?.m_file}}" alt="Icon">
-                           </div>
-                        </ng-container>
-                     </div> -->
-
-                     <div class="draftTitle fs-2 fw-bolder" *ngIf="web_file || mobile_file">
-                        Click confirm banners button to upload the banner
-                     </div>
-                     <div class="draftBanners" *ngIf="web_file || mobile_file">
-                        <img class="preview-img" id="previewImage" [src]="web_file">
-                        <img class="preview-img" id="previewImage" [src]="mobile_file">
-                     </div>
 
                      <div class="uploadBtn d-flex align-items-center justify-content-end"
                         *ngIf="web_file && mobile_file">
-                        <button type="submit" class="fw-bolder btn btn-info btn-sm fs-5" style="width: 200px"
+                        <button type="submit" class="fw-bolder btn btn-info btn-sm fs-5 mt-10" style="width: 200px"
                            (click)="addBanner()">
                            Confirm Banners
                         </button>
@@ -199,26 +191,26 @@
                <ng-container *ngIf="webLoadImage">
                   <div class="col-12 preview-section">
                      <div class="crop-image col-sm-6">
-                        <image-cropper class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
+                        <image-cropper *ngIf="!isGrid" class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
                            [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
                            [cropperMaxHeight]="2000" format="png" (imageCropped)="imageCroppedWeb($event)"
                            (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
                            (loadImageFailed)="loadImageWebFailed()">
                         </image-cropper>
+
+                        <image-cropper *ngIf="isGrid" class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
+                           [maintainAspectRatio]="true" [aspectRatio]="2 / 2" [cropperMaxWidth]="4000"
+                           [cropperMaxHeight]="4000" format="png" (imageCropped)="imageCroppedWeb($event)"
+                           (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
+                           (loadImageFailed)="loadImageWebFailed()">
+                        </image-cropper>
                      </div>
-                     <!-- <div class="uploads uploaded col-sm-6">
-                        <div class="close-icon">
-                           <i class="bi bi-x-lg text-white" (click)="removeImage('web')"></i>
-                        </div>
-                        <img class="preview-img" id="previewImage" [src]="web_file">
-                     </div> -->
                   </div>
                </ng-container>
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary">Upload</button>
+            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Continue</button>
          </div>
       </div>
    </div>
@@ -252,19 +244,20 @@
                <ng-container *ngIf="mobileLoadImage">
                   <div class="col-12 preview-section">
                      <div class="crop-image col-sm-6">
-                        <image-cropper class="crop-section" [imageChangedEvent]="imageMobileChangedEvent "
-                           [maintainAspectRatio]="true" [aspectRatio]="6 / 3" [cropperMaxWidth]="600"
-                           [cropperMaxHeight]="300" format="png" (imageCropped)="imageCroppedMobile($event)"
-                           (imageLoaded)="imageMobileLoaded()" (cropperReady)="cropperMobileReady()"
-                           (loadImageFailed)="loadImageMobileFailed()">
+                        <image-cropper *ngIf="!isGrid" class="crop-section"
+                           [imageChangedEvent]="imageMobileChangedEvent " [maintainAspectRatio]="true"
+                           [aspectRatio]="6 / 3" [cropperMaxWidth]="600" [cropperMaxHeight]="300" format="png"
+                           (imageCropped)="imageCroppedMobile($event)" (imageLoaded)="imageMobileLoaded()"
+                           (cropperReady)="cropperMobileReady()" (loadImageFailed)="loadImageMobileFailed()">
+                        </image-cropper>
+
+                        <image-cropper *ngIf="isGrid" class="crop-section"
+                           [imageChangedEvent]="imageMobileChangedEvent " [maintainAspectRatio]="true"
+                           [aspectRatio]="6 / 6" [cropperMaxWidth]="1000" [cropperMaxHeight]="1000" format="png"
+                           (imageCropped)="imageCroppedMobile($event)" (imageLoaded)="imageMobileLoaded()"
+                           (cropperReady)="cropperMobileReady()" (loadImageFailed)="loadImageMobileFailed()">
                         </image-cropper>
                      </div>
-                     <!-- <div class="uploads uploaded col-sm-6">
-                        <div class="close-icon">
-                           <i class="bi bi-x-lg text-white" (click)="removeImage('mobile')"></i>
-                        </div>
-                        <img class="preview-img" id="previewImage" [src]="mobile_file">
-                     </div> -->
                   </div>
                </ng-container>
             </div>
@@ -283,8 +276,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary">Upload</button>
+            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Continue</button>
          </div>
       </div>
    </div>

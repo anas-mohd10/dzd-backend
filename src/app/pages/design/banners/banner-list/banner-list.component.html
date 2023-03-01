@@ -41,12 +41,14 @@
                </div>
             </div>
             <div class="banner-card-right">
-               <div class="banner-web-image">
+               <!-- <div class="banner-web-image">
                   <img src="{{base}}/{{banner?.files?.web[0]}}" alt="web banner">
-               </div>
-               <div class="banner-mobile-image">
-                  <img src="{{base}}/{{banner?.files?.mobile[0]}}" alt="mobile banner">
-               </div>
+               </div> -->
+               <ng-container *ngFor="let banner of banner?.files?.mobile">
+                  <div class="banner-mobile-image">
+                     <img src="{{base}}/{{banner}}" alt="mobile banner">
+                  </div>
+               </ng-container>
             </div>
          </div>
       </ng-container>

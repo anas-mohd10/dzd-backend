@@ -35,8 +35,9 @@
          <img src="../../../../../../assets/media/screen_mockup.jpg" alt="">
          <div class="content-box">
             <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-               <div class="example-box" *ngFor="let data of homeSettings" cdkDrag
-                  (mouseenter)="getId(data?.type, data?.title?.text)" (mouseleave)="removeId()">{{data?.title?.text ?
+               <div class="example-box" *ngFor="let data of homeSettings; let i=index" cdkDrag
+                  (mouseenter)="getId(data?.type, data?.title?.text, i)" (mouseleave)="removeId()">
+                  {{data?.title?.text ?
                   data?.title?.text : data?.type}}</div>
             </div>
          </div>
@@ -84,7 +85,7 @@
                      </div>
                      <div class="data-banner" *ngIf="data?.type == 'banner'">
                         <ng-container *ngFor="let value of data?.banner_items">
-                           <div class="data-banner-card">
+                           <div class="data-banner-card mb-10" [ngClass]="{'data-card': data?.banner_items.length == 2}">
                               <div class="data-detail-img"><img src="{{value?.image}}" alt="deals"></div>
                            </div>
                         </ng-container>

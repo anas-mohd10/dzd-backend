@@ -58,8 +58,13 @@ export class AddBannerListComponent implements OnInit {
 
   aspectRatioWebWidth: any = 2
   aspectRatioWebHeight: any = 1
+  webWidth: any = 2000
+  webHeight: any = 1000
+
   aspectRatioMobileWidth: any = 6
   aspectRatioMobileHeight: any = 3
+  mobileWidth: any = 1500
+  mobileHeight: any = 750
 
   previousBanners: any = []
   bannerMedia: any = []
@@ -122,6 +127,14 @@ export class AddBannerListComponent implements OnInit {
 
   get hf() {
     return this.bannerForm.controls;
+  }
+
+  getBannerType(e: any) {
+    if (e.value == "1") {
+      this.isGrid = false
+    } else {
+      this.isGrid = true
+    }
   }
 
   managePage() {
@@ -203,13 +216,25 @@ export class AddBannerListComponent implements OnInit {
     if (type == "1") {
       if (this.bannerMedia.length < 1) {
         const prevLen = this.bannerMedia.length
-        this.bannerMedia.push({ w_file: this.web_file, w_name: this.w_name, m_file: this.mobile_file, m_name: this.m_name })
+        this.bannerMedia.push({
+          web: { file: this.w_file, name: this.w_name },
+          mobile: { file: this.m_file, name: this.m_name },
+          redirection: {
+            unit: '',
+            category: this.category ? this.category : '',
+            collection: this.collection ? this.collection : '',
+            product: this.product ? this.product : '',
+            external: this.bannerForm.get('redirectURL')?.value
+          },
+        })
         const newlen = this.bannerMedia.length
         if ((prevLen + 1) == newlen) {
           this.web_file = null
-          this.w_name = null
           this.mobile_file = null
+          this.w_name = null
           this.m_name = null
+          this.w_file = null
+          this.m_file = null
         }
       } else {
         this.toastr.info('Maximum banner limit reached')
@@ -217,13 +242,25 @@ export class AddBannerListComponent implements OnInit {
     } else if (type == "2") {
       if (this.bannerMedia.length < 2) {
         const prevLen = this.bannerMedia.length
-        this.bannerMedia.push({ w_file: this.web_file, w_name: this.w_name, m_file: this.mobile_file, m_name: this.m_name })
+        this.bannerMedia.push({
+          web: { file: this.w_file, name: this.w_name },
+          mobile: { file: this.m_file, name: this.m_name },
+          redirection: {
+            unit: '',
+            category: this.category ? this.category : '',
+            collection: this.collection ? this.collection : '',
+            product: this.product ? this.product : '',
+            external: this.bannerForm.get('redirectURL')?.value
+          },
+        })
         const newlen = this.bannerMedia.length
         if ((prevLen + 1) == newlen) {
           this.web_file = null
-          this.w_name = null
           this.mobile_file = null
+          this.w_name = null
           this.m_name = null
+          this.w_file = null
+          this.m_file = null
         }
       } else {
         this.toastr.info('Maximum banner limit reached')
@@ -272,8 +309,6 @@ export class AddBannerListComponent implements OnInit {
     }
 
     const payload = this.createPayload()
-    console.log(payload);
-
     if (payload) {
       this.bannerService.addBaner(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
