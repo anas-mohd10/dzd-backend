@@ -5,7 +5,7 @@
             <h3 class="page-title fw-bolder fs-2">
                {{ editMode ? "Update Customers" : "Add Customers" }}
             </h3>
-            <ul class="breadcrumb">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -28,7 +28,7 @@
                <form [formGroup]="customersForm">
                   <div class="row">
                      <div class="col-12">
-                        <h5 class="form-title fs-4"><span>Customers Details</span></h5>
+                        <h2 class="form-title">Customers Details</h2>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
@@ -112,7 +112,7 @@
                               <option value="" disabled>-- Select an option --</option>
                               <option value="Home">Home</option>
                               <option value="Work">Work</option>
-                              <option value="Office">Work</option>
+                              <option value="Other">Other</option>
                            </select>
                         </div>
                      </div>

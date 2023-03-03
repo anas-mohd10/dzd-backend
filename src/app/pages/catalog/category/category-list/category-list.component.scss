@@ -266,22 +266,21 @@
 
       .attribute-card-values {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 10px;
         margin: 1.625rem 0;
 
         .attribute-color {
-          height: 50px;
-          width: 50px;
+          height: 40px;
+          width: 100%;
           margin: 0 0.625rem 0 0;
-          border-radius: 0.3125rem;
+          border-radius: 10px;
         }
 
         .attribute-text {
           height: 40px;
-          width: 120px;
+          width: 100%;
           background: #00bdab;
-          margin: 10px 10px 0 0;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -464,4 +463,4 @@
 input:focus,
 select:focus {
   border: 1px solid #00bdab;
-}   
+}

@@ -5,7 +5,7 @@
         <h3 class="page-title fw-bolder fs-2">
           {{ editMode ? "Update Product" : "Add Product" }}
         </h3>
-        <ul class="breadcrumb">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -214,12 +214,13 @@
                 </div>
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}" class="fw-bolder btn btn-secondary btn-sm fs-5 text-dark"
+                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}"
+                  class="fw-bolder btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">Cancel</a>
-                <button *ngIf="slug == ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
-                  (click)="addHead()">Add</button>
-                <button *ngIf="slug != ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
-                  (click)="goToNextTab('product')">Next</button>
+                <button *ngIf="slug == ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder"
+                  style="width: 200px" (click)="addHead()">Add</button>
+                <button *ngIf="slug != ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder"
+                  style="width: 200px" (click)="goToNextTab('product')">Next</button>
               </div>
             </div>
             <div class="tab-pane fade product-details-container"
