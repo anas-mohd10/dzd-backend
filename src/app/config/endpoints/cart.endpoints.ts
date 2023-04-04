@@ -4,4 +4,5 @@ export const cartEndpoints = {
   search_carts: '/carts/search',
   get_active_carts: '/carts/active',
   get_cart_by_id: '/cart',
+  cart_notification: '/cart/notification'
 }

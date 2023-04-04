@@ -12,13 +12,13 @@ export class CartService {
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  getCarts() {
+  getCarts(data: any) {
     const url = this.commonService.getFullUrl(this.cartEndpoints.get_cart);
-    return this.http.get(`${url}`)
+    return this.http.post(`${url}`, data)
   }
 
-  searchCart(data: any) {
-    const url = this.commonService.getFullUrl(this.cartEndpoints.search_carts);
+  sendCartNotification(data: any) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.cart_notification);
     return this.http.post(`${url}`, data)
   }
 }

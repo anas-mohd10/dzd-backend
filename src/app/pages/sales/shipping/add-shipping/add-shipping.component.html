@@ -1,11 +1,11 @@
 <div class="content container-fluid">
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">{{ editMode ? "Update Shipping" : "Add Shipping" }}</h1>
+    </div>
     <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update Shipping" : "Add Shipping" }}
-        </h3>
-        <ul class="breadcrumb">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
           </li>
@@ -37,7 +37,7 @@
 
               <div class="col-6 form-group mb-5">
                 <label class="fs-5 mb-3 required">Delivery Taken Days</label>
-                <input type="number" class="form-control fs-5" formControlName="days" [ngClass]="{
+                <input type="number" class="form-control fs-5" formControlName="days" min="0" [ngClass]="{
                   'is-invalid':(sf.days.touched || isSubmitted) &&sf.days.errors?.required}" />
               </div>
 
@@ -93,7 +93,7 @@
                 <input type="text" class="form-control fs-5" formControlName="url" />
               </div>
 
-              <h3 class="form-title fw-bolder fs-4"><span>Shipping Logo</span></h3>
+              <h3 class="form-title fw-bolder fs-4 required"><span>Shipping Logo</span></h3>
 
               <div class="col-6 form-group">
                 <div class="image-upload">
@@ -161,12 +161,12 @@
           <div class="col-6 form-group">
             <label class="fs-5 mb-3">From</label>
             <input type="number" class="form-control new-form-control" [formControl]="from" (change)="validateValue(1)"
-              placeholder="Eg. 500" />
+              min="0" placeholder="Eg. 500" />
           </div>
           <div class="col-6 form-group">
             <label class="fs-5 mb-3">To</label>
             <input type="number" class="form-control new-form-control" [formControl]="to" (change)="validateValue(2)"
-              placeholder="Eg. 1000" />
+              min="0" placeholder="Eg. 1000" />
           </div>
         </div>
         <div class="col-12 form-group">

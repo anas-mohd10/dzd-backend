@@ -60,7 +60,7 @@ export class AddShippingComponent implements OnInit {
       case 1:
         const to = this.to?.value
         const from = this.from?.value
-        if (to < from) {
+        if (to < from || to) {
           this.isInvalid = true
         }
         break
@@ -79,26 +79,31 @@ export class AddShippingComponent implements OnInit {
     const toWeight = this.to?.value
     const price = this.price?.value
     const validWeight = this.from?.value < this.to?.value
-    if (fromWeight != null && toWeight != null) {
-      if (price != null) {
-        if (validWeight) {
-          this.charges.push({
-            id: this.charges.length,
-            from: this.from?.value,
-            to: this.to?.value,
-            price: this.price?.value
-          })
-          this.from?.setValue('')
-          this.to?.setValue('')
-          this.price?.setValue('')
+    console.log();
+    if (this.to?.value > 0 && this.from?.value > 0) {
+      if ((fromWeight != null && toWeight != null)) {
+        if (price != null) {
+          if (validWeight) {
+            this.charges.push({
+              id: this.charges.length,
+              from: this.from?.value,
+              to: this.to?.value,
+              price: this.price?.value
+            })
+            this.from?.setValue('')
+            this.to?.setValue('')
+            this.price?.setValue('')
+          } else {
+            this.toast.error('To value should be greater than from value')
+          }
         } else {
-          this.toast.error('To value should be greater than from value')
+          this.toast.error('Price is required')
         }
       } else {
-        this.toast.error('Price is required')
+        this.toast.error('From weight & to weight value required')
       }
     } else {
-      this.toast.error('From & To value required')
+      this.toast.error("Weight values can't be negative")
     }
   }
 
@@ -141,7 +146,11 @@ export class AddShippingComponent implements OnInit {
 
   addShipping() {
     if (!this.shippingform.valid) {
-      this.toast.error('Validation error, kindly check fields entered.')
+      return
+    }
+
+    if (this.shippingform.get('days')?.value < 0) {
+      this.toast.error("Days can't be negative")
       return
     }
 

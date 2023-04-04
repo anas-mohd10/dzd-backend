@@ -1,10 +1,10 @@
 <div class="content container-fluid">
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update Brand" : "Add Brand" }}</h1>
+    </div>
     <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update Brand" : "Add Brand" }}
-        </h3>
+      <div class="col d-flex align-items-start justify-content-between">
         <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>

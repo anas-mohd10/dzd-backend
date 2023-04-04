@@ -22,12 +22,10 @@
     <form [formGroup]="brandform">
       <div class="col-12 row" style="display: flex; align-items: flex-start;">
         <div class="search-input col-sm-4" style="padding: 0;">
-          <!-- <label class="fs-5">Search</label> -->
           <input type="text" placeholder="Search for brands here..." class="form-control fs-5" formControlName="name"
             (ngModelChange)="searchBrand()">
         </div>
         <div class="search-status col-sm-2">
-          <!-- <label class="fs-5">Status</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchBrand()">
             <option value="" disabled>Brand Status Filter</option>
             <option value=true>Active</option>
@@ -35,7 +33,6 @@
           </select>
         </div>
         <div class="search-featured col-sm-2">
-          <!-- <label class="fs-5 form-title">Featured</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchBrand()">
             <option value="" disabled>Featured Brand Filter</option>
             <option value=true>Featured</option>
@@ -60,7 +57,6 @@
   </div>
   <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
-      <!-- <div class="col-sm-6"> -->
       <div class="brand-card card-hover">
         <div class="brand-details">
           <div class="brand-image">
@@ -87,7 +83,6 @@
           </div>
         </div>
       </div>
-      <!-- </div> -->
     </ng-container>
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">

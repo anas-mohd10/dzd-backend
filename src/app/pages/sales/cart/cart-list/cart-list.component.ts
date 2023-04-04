@@ -6,6 +6,7 @@ import { CartService } from 'src/app/includes/services/cart.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart-list',
@@ -30,13 +31,13 @@ export class CartListComponent implements OnInit, OnDestroy {
   product: any
 
   status = new FormControl('')
-
+  isErrors: any = false
   carts: any = []
   isTable: Boolean = false
   user: any = ''
-
+  form: any
   message: any = new FormControl('', Validators.required)
-  couponCode: any = new FormControl('', Validators.required)
+  couponCode: any = new FormControl('')
 
   constructor(
     private cartService: CartService,
@@ -44,6 +45,7 @@ export class CartListComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private customerService: CustomersService,
     private cdr: ChangeDetectorRef,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -54,17 +56,12 @@ export class CartListComponent implements OnInit, OnDestroy {
       processing: true,
     };
 
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      this.products = res?.result
-      this.cdr.markForCheck()
-    })
-
     this.customerService.getActiveCustomers().subscribe((res: any) => {
       this.customers = res?.result
       this.cdr.markForCheck()
     })
 
-    this.cartService.getCarts().subscribe((res: any) => {
+    this.cartService.getCarts({}).subscribe((res: any) => {
       this.carts = res?.result
       for (let cart of this.carts) {
         cart.date.added = new Date(cart?.date?.added).toDateString()
@@ -72,22 +69,35 @@ export class CartListComponent implements OnInit, OnDestroy {
       this.cdr.markForCheck()
       this.dtTrigger.next();
     })
+
+    this.form = new FormGroup({
+      message: new FormControl('', Validators.required),
+      couponCode: new FormControl('', Validators.required)
+    })
   }
 
-  reloadPage() {
+  clearFilter() {
     this.customer = null
-    this.product = null
-    this.status?.setValue('')
+    this.customerService.getActiveCustomers().subscribe((res: any) => {
+      if (res?.errorCode == 0) { }
+      this.customers = res?.result
+      this.cdr.markForCheck()
+    })
+
+    this.cartService.getCarts({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.carts = res?.result
+        for (let cart of this.carts) {
+          cart.date.added = new Date(cart?.date?.added).toDateString()
+        }
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   seachCart() {
-    const body = {
-      customer: this.customer ? this.customer : '',
-      product: this.product ? this.product : '',
-      status: this.status?.value ? this.status?.value : ''
-    }
-
-    this.cartService.searchCart(body).subscribe((res: any) => {
+    let body = { customer: this.customer }
+    this.cartService.getCarts(body).subscribe((res: any) => {
       this.carts = res?.result
       this.cdr.markForCheck()
     })
@@ -99,5 +109,25 @@ export class CartListComponent implements OnInit, OnDestroy {
 
   getUser(user: any) {
     this.user = user
+  }
+
+  closeModal() {
+    this.form.reset()
+  }
+
+  sendPush() {
+    if (!this.form.valid) {
+      this.isErrors = true
+      return
+    }
+
+    let payload = { message: this.form.get('message')?.value, couponCode: this.form.get('couponCode')?.value }
+    this.cartService.sendCartNotification(payload).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.form.reset()
+      } else {
+        this.ToastrService.error('Coupon unavailable. Kindly add coupon')
+      }
+    })
   }
 }
