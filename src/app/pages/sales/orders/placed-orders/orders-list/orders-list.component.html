@@ -42,7 +42,7 @@
       </div>
     </div>
     <form [formGroup]="orderform">
-      <div class="row" style="display: flex; align-items: flex-end;">
+      <div class="row align-items-end justify-content-end">
         <div class="search-input col-sm-2">
           <label class="fs-5">From</label>
           <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
@@ -53,7 +53,6 @@
           <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
         </div>
         <div class="search-status col-sm-2">
-          <!-- <label class="fs-5">Status</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="orderStatus" (change)="searchOrder()">
             <option value="" disabled>Order Status Filter</option>
             <option value="PLACED">Placed</option>
@@ -67,7 +66,6 @@
           </select>
         </div>
         <div class="search-featured col-sm-2">
-          <!-- <label class="fs-5 form-title">Payment</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
             <option value="" disabled> Payment Method Filter</option>
             <option value="COD">Cash On Delivery</option>

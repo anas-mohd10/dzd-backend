@@ -179,6 +179,7 @@ export class UpdateCustomersComponent implements OnInit {
       if (defaultaddress == this.address) {
         this.address = {}
       }
+      this.toastr.info("Address deleted successfully");
       this.addresses.splice(id, 1)
     } else {
       this.toastr.error("Cannot remove this address, add more address to remove this.");

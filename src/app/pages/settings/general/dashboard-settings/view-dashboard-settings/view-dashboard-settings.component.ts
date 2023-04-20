@@ -103,8 +103,6 @@ export class ViewDashboardSettingsComponent implements OnInit {
   saveButton() {
     this.data['slug'] = this.slug
     for (let i = 0; i < this.homeSettings.length; i++) {
-      console.log(i, this.homeSettings[i]['type']);
-
       switch (this.homeSettings[i]['type']) {
         case 'carausel':
           this.data['positions']['carausel'] = {
@@ -151,7 +149,7 @@ export class ViewDashboardSettingsComponent implements OnInit {
     if (this.data) {
       this.HomeSettingsService.updateHomeSettings(this.data).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          document.location.reload()
+          this.ngOnInit()
           this.ToastrService.success(res?.message)
         } else {
           this.ToastrService.error(res?.message)

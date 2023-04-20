@@ -1,36 +1,46 @@
+$primaryColor: #00bdab;
+$whiteColor: #ffffff;
+$redColor: #ff000095;
+$blackColor: #000000;
+
 .address-card {
    margin: 0 10px 30px 0;
    display: flex;
-   align-items: center;
+   align-items: flex-start;
    justify-content: space-between;
-   background: #ffffff;
-   box-shadow: 0 10px 35px #00000015;
+   background: $whiteColor;
+   box-shadow: 0 0 15px 5px rgba($color: $blackColor, $alpha: 0.05);
    padding: 20px 10px;
    border-radius: 10px;
 
    .delete-address {
-      height: 40px;
-      width: 40px;
-      background: #ff000070;
+      height: 30px;
+      width: 30px;
+      background: $redColor;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #000000;
+      color: $blackColor;
       border-radius: 10px;
       cursor: pointer;
 
       i {
-         color: #ffffff !important;
+         color: $whiteColor !important;
       }
    }
 
    .form-check {
       display: flex !important;
-      align-items: center;
+      align-items: flex-start;
+      font-size: 1.1rem;
 
       .address-type {
-         font-size: 1.4rem;
+         background: $primaryColor;
+         color: $whiteColor;
          font-weight: 700;
+         padding: 2.5px 5px;
+         border-radius: 5px;
+         width: max-content;
       }
 
       .label-address {
@@ -46,4 +56,9 @@
 
 .page-title {
    margin: 0;
+}
+
+.form-check-input {
+   height: 1.3rem;
+   width: 1.3rem;
 }

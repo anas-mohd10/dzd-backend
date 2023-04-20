@@ -137,22 +137,22 @@ export class AddCustomersComponent implements OnInit {
                 this.customersForm.get("landmark")?.setValue('')
                 this.customersForm.get("type")?.setValue('')
               } else {
-                this.toastr.error('Address state required! 😔');
+                this.toastr.error('Address state required');
               }
             } else {
-              this.toastr.error('Address pincode required! 😔');
+              this.toastr.error('Address pincode required');
             }
           } else {
-            this.toastr.error('Address landmark required! 😔');
+            this.toastr.error('Address landmark required');
           }
         } else {
-          this.toastr.error('Address city required! 😔');
+          this.toastr.error('Address city required');
         }
       } else {
-        this.toastr.error('Address line 1 required! 😔');
+        this.toastr.error('Address line 1 required');
       }
     } else {
-      this.toastr.error('Address type required! 😔');
+      this.toastr.error('Address type required!');
     }
   }
 
@@ -182,6 +182,7 @@ export class AddCustomersComponent implements OnInit {
       this.address = {}
     }
     this.addresses.splice(id, 1)
+    this.toastr.info("Address deleted successfully");
     if (this.addresses.length > 0) {
       this.address = this.addresses[0]
     } else {

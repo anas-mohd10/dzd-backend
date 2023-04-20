@@ -77,13 +77,16 @@
           }
 
           .qty-btn {
-            height: 40px;
-            width: 40px;
+            height: 30px;
+            width: 30px;
             background: #666666;
             color: #ffffff;
             border: none;
             outline: none;
             border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             i {
               font-size: 1.66rem;
@@ -153,4 +156,66 @@
 
 .page-title {
   margin: 0;
+}
+
+.orderSummaryCard {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0 20px;
+  margin: 20px 0 0 0;
+  padding: 5px 0;
+
+  .productDetails {
+    flex: 1;
+
+    .orderProductName {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  }
+
+  .orderProductPrice {
+    margin: 20px 0 0 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+
+    span.offer-price {
+      font-size: 1.44rem;
+      font-weight: 600;
+      margin: 0 10px 0 0;
+    }
+
+    span.mrp-price {
+      text-decoration: line-through;
+      color: #AAAAAA;
+      font-weight: 600;
+    }
+  }
+
+  .productQuantity {
+    font-size: 1.2rem;
+  }
+
+  .orderTotal {
+    font-size: 1.44rem;
+    font-weight: 600;
+  }
+}
+
+
+.subTotal {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .subTotalTitle {
+    margin: 0 10px 0 0;
+  }
+
+  .subTotalAmount {
+    font-size: 1.44rem;
+    font-weight: 600;
+  }
 }

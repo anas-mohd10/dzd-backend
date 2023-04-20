@@ -38,6 +38,7 @@ export class CartListComponent implements OnInit, OnDestroy {
   form: any
   message: any = new FormControl('', Validators.required)
   couponCode: any = new FormControl('')
+  mobile: any
 
   constructor(
     private cartService: CartService,
@@ -72,6 +73,7 @@ export class CartListComponent implements OnInit, OnDestroy {
 
     this.form = new FormGroup({
       message: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
       couponCode: new FormControl('', Validators.required)
     })
   }
@@ -107,8 +109,9 @@ export class CartListComponent implements OnInit, OnDestroy {
     this.dtTrigger.unsubscribe();
   }
 
-  getUser(user: any) {
+  getUser(user: any, mobile: any) {
     this.user = user
+    this.mobile = mobile
   }
 
   closeModal() {
@@ -121,7 +124,7 @@ export class CartListComponent implements OnInit, OnDestroy {
       return
     }
 
-    let payload = { message: this.form.get('message')?.value, couponCode: this.form.get('couponCode')?.value }
+    let payload = { title: this.form.get('title')?.value, message: this.form.get('message')?.value, couponCode: this.form.get('couponCode')?.value, mobile: this.mobile, countryCode: "+91" }
     this.cartService.sendCartNotification(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.form.reset()

@@ -4,8 +4,8 @@
       <h1 class="fw-bolder">Product Report</h1>
     </div>
     <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -13,27 +13,27 @@
             <a routerLink="{{ appRoute.reports.PRODUCT_REPORT }}">Product Report</a>
           </li>
         </ul>
-        <button class="btn btn-dark cursor-pointer fs-5" color="text-white" style="width: 200px"
+        <button class="btn btn-dark btn-submit fs-5" color="text-white" style="width: 200px"
           (click)="downloadCsvFile()">Export</button>
       </div>
     </div>
   </div>
   <form action="" [formGroup]="productReportForm">
-    <div class="row align-items-end">
+    <div class="row align-items-end justify-content-end">
       <div class="col-12 col-sm-2 align-items-end justify-content-evenly">
-        <label class="col-sm-2 col-form-label">From</label>
+        <label class="fs-5">From</label>
         <div class="form-group">
           <input type="date" class="form-control fs-5" formControlName="from">
         </div>
       </div>
       <div class="col-12 col-sm-2 align-items-center justify-content-evenly">
-        <label class="col-sm-2 col-form-label">To</label>
+        <label class="fs-5">To</label>
         <div class="form-group">
           <input type="date" class="form-control fs-5" formControlName="to">
         </div>
       </div>
       <div class="col-12 col-sm-2 align-items-start justify-content-evenly fs-5">
-        <label class="col-sm-2 col-form-label">Products</label>
+        <label class="fs-5">Products</label>
         <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="product"
           placeholder="--Select product--" [multiple]=false [ngModelOptions]="{standalone: true}">
         </ng-select>
@@ -55,19 +55,18 @@
       <div class="card card-table">
         <div class="card-body">
           <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-              class="datatable table table-bordered table-center mb-0">
-              <thead class="thead mt-100">
-                <tr class="fs-5">
-                  <th class="text-gray-400 col-md-2">Sl No.</th>
-                  <th class="text-gray-400 col-md-2">Product Name</th>
-                  <th class="text-gray-400 col-md-2">Product Cost</th>
-                  <th class="text-gray-400 col-md-2">Order No.</th>
-                  <th class="text-gray-400 col-md-2">Order Date</th>
-                  <th class="text-gray-400 col-md-2">Quantity</th>
-                  <th class="text-gray-400 col-md-2">Customer</th>
-                  <th class="text-gray-400 col-md-2">Payment Method</th>
-                  <th class="text-gray-400 col-md-2">Total</th>
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-center">
+              <thead>
+                <tr class="fs-5 text-gray-400">
+                  <th class="col">Sl No.</th>
+                  <th class="col">Product Name</th>
+                  <th class="col">Product Cost</th>
+                  <th class="col">Order No.</th>
+                  <th class="col">Order Date</th>
+                  <th class="col">Quantity</th>
+                  <th class="col">Customer</th>
+                  <th class="col">Payment Method</th>
+                  <th class="col">Total</th>
                 </tr>
               </thead>
               <tbody class="fs-5">

@@ -7,8 +7,8 @@
 }
 
 img.iconImage {
-  height: 35px;
-  width: 35px;
+  height: 25px;
+  width: 25px;
 }
 
 .form-title {
@@ -83,7 +83,8 @@ table.dataTable.no-footer {
 
 //Datatable css
 
-.btn-primary {
+.btn-primary,
+.btn-dark, .btn-secondary {
   font-weight: 600 !important;
 }
 

@@ -87,7 +87,7 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required"> Pincode</label>
-                  <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
+                  <input type="number" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                                  'is-invalid':
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
@@ -97,13 +97,13 @@
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3"> Latitude</label>
-                  <input type="text" class="form-control fs-5" formControlName="lat" />
+                  <input type="number" class="form-control fs-5" formControlName="lat" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3"> Longitude</label>
-                  <input type="text" class="form-control fs-5" formControlName="lng" />
+                  <input type="number" class="form-control fs-5" formControlName="lng" />
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -133,8 +133,8 @@
                 <div class="col-12">
                   <ng-container *ngIf="cart.length == 0">
                     <div class="emptyCart-container">
-                      <img src="../../../../../../assets/media/12.png" style="height: 250px;" alt="">
-                      <div class="mt-10" style="font-size: 1.66rem; font-weight: 700;">Empty cart</div>
+                      <img src="../../../../../../assets/media/12.png" style="height: 150px;" alt="">
+                      <div class="mt-10" style="font-size: 1.4rem; font-weight: 700;">Empty cart</div>
                       <button type="button" class="mt-5 btn btn-primary btn-rounded btn-standard" data-bs-toggle="modal"
                         data-bs-target="#cartModal">
                         Add Products
@@ -152,8 +152,10 @@
                           <div class="cart-brand">{{item?.brand}}</div>
                           <div class="cart-product">{{item?.name}}</div>
                           <div class="cart-price">
-                            <span class="offer-price">₹ {{item?.price?.offer}}</span>
-                            <span class="mrp-price">₹ {{item?.price?.mrp}}</span>
+                            <span class="offer-price">₹ {{item?.price?.offer != item?.price?.mrp ? item?.price?.offer :
+                              (item?.price?.offer == item?.price?.mrp ? item?.price?.mrp : item?.price?.offer)}}</span>
+                            <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">₹
+                              {{item?.price?.mrp}}</span>
                           </div>
                           <div class="cart-bottom">
                             <div class="cart-remove">
@@ -173,8 +175,35 @@
                 </div>
               </div>
 
+              <div class="orderSummary" *ngIf="cart.length > 0">
+                <div class="col-12">
+                  <h5 class="fs-3 text-dark fw-bolder">Order Summary</h5>
+                  <ng-container *ngFor="let item of cart; let i=index">
+                    <div class="orderSummaryCard">
+                      <div class="orderSlNo">{{i+1}}</div>
+                      <div class="productDetails">
+                        <div class="orderProductName">{{item?.name}}</div>
+                        <div class="orderProductPrice">
+                          <span class="offer-price">₹ {{item?.price?.offer != item?.price?.mrp ? item?.price?.offer :
+                            (item?.price?.offer == item?.price?.mrp ? item?.price?.mrp : item?.price?.offer)}}</span>
+                          <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">₹
+                            {{item?.price?.mrp}}</span>
+                        </div>
+                       </div>
+                      <div class="productQuantity">x {{item?.quantity}}</div>
+                      <div class="orderTotal">₹ {{item?.total}}</div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="subTotal" *ngIf="subTotal > 0">
+                  <div class="subTotalTitle">Sub Total:</div>
+                  <div class="subTotalAmount">₹ {{subTotal}}</div>
+                </div>
+              </div>
+
               <div class="col-12" *ngIf="isProducts">
-                <div class="fs-4 col-12">Apply Coupon</div>
+                <label class="fs-5 mb-3">Apply Coupon</label>
                 <div class="col-6">
                   <ng-select [items]="activeCoupons" bindLabel="title" bindValue="id" [(ngModel)]="coupon"
                     placeholder="Apply coupon ( If applicable )" [multiple]=false [ngModelOptions]="{standalone: true}"

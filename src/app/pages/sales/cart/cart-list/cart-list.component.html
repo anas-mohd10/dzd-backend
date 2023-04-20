@@ -82,7 +82,7 @@
                   <td>
                     <img type="button" class="iconImage" data-bs-toggle="modal" data-bs-target="#notifyModal"
                       src="../../../../../assets/icons/sendToMobile.svg" alt="Icon"
-                      (click)="getUser(cart?.customer?.name)">
+                      (click)="getUser(cart?.customer?.name, cart?.customer?.mobile)">
                   </td>
                 </tr>
               </tbody>
@@ -103,6 +103,9 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="form">
+          <div class="pushCoupon col-12">
+            <input type="text" class="form-control" formControlName="title" placeholder="Type push title">
+          </div>
           <div class="pushMessage col-12">
             <textarea class="form-control" formControlName="message" cols="30" rows="5" autocomplete="off"
               placeholder="Type push message here"></textarea>

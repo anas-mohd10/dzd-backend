@@ -4,8 +4,8 @@
          <h1 class="fw-bolder">Customer Report</h1>
       </div>
       <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+         <div class="col d-flex align-items-start justify-content-between">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -20,7 +20,7 @@
    </div>
    <div class="row col-12 d-flex justify-content-end align-items-end">
       <div class="col-sm-2 align-items-center justify-content-evenly fs-5">
-         <label class="col-sm-2 col-form-label">Customers</label>
+         <label class="fs-5">Customers</label>
          <ng-select [items]="customers" bindLabel="name" bindValue="_id" [(ngModel)]="customer"
             placeholder="--Select customer--" [multiple]=false [ngModelOptions]="{standalone: true}"
             (change)="filterReport()">
@@ -37,18 +37,17 @@
          <div class="card card-table">
             <div class="card-body">
                <div class="table-responsive">
-                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                     class="table table-bordered table-center mb-0">
-                     <thead class="thead mt-100">
-                        <tr class="fs-5">
-                           <th class="text-gray-400 col-md-2">Sl No.</th>
-                           <th class="text-gray-400 col-md-2">Customer</th>
-                           <th class="text-gray-400 col-md-2">No. of orders</th>
-                           <th class="text-gray-400 col-md-2">Email</th>
-                           <th class="text-gray-400 col-md-2">Mobile</th>
-                           <th class="text-gray-400 col-md-2">City</th>
-                           <th class="text-gray-400 col-md-2">Pincode</th>
-                           <th class="text-gray-400 col-md-2">State</th>
+                  <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-center">
+                     <thead>
+                        <tr class="fs-5 text-gray-400">
+                           <th class="col">Sl No.</th>
+                           <th class="col">Customer</th>
+                           <th class="col">No. of orders</th>
+                           <th class="col">Email</th>
+                           <th class="col">Mobile</th>
+                           <th class="col">City</th>
+                           <th class="col">Pincode</th>
+                           <th class="col">State</th>
                         </tr>
                      </thead>
                      <tbody>

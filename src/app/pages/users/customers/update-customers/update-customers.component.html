@@ -161,7 +161,7 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required"> Pincode</label>
-                           <input type="text" class="form-control fs-5" formControlName="pincode" [ngClass]="{
+                           <input type="number" class="form-control fs-5" formControlName="pincode" [ngClass]="{
                               'is-invalid':
                               (cf.pincode.touched || isSubmitted) &&
                               cf.pincode.errors?.required
@@ -172,13 +172,13 @@
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title"> Latitude</label>
-                           <input type="text" class="form-control fs-5" formControlName="lat" />
+                           <input type="number" class="form-control fs-5" formControlName="lat" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title"> Longitude</label>
-                           <input type="text" class="form-control fs-5" formControlName="lng" />
+                           <input type="number" class="form-control fs-5" formControlName="lng" />
                         </div>
                      </div>
                      <div class="col-12 col-sm-6">
@@ -201,7 +201,7 @@
                         </div>
                      </div>
                      <div class="col-12 d-flex align-items-center justify-content-end">
-                        <button class="btn btn-sm bg-primary text-white fs-5" (click)="addAddress()">
+                        <button class="btn btn-primary btn-sm fs-5" (click)="addAddress()" style="width: 200px">
                            Save Address
                         </button>
                      </div>

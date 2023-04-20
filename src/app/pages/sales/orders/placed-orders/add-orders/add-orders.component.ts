@@ -40,6 +40,7 @@ export class AddOrdersComponent implements OnInit {
 
   cart: any = []
   base: string;
+  subTotal: any = 0
   showTransactionId: boolean = false;
 
   constructor(
@@ -135,8 +136,6 @@ export class AddOrdersComponent implements OnInit {
   }
 
   checkPaymentmethod(event: any) {
-    console.log(this.orderForm.get('paymentMethod')?.value);
-
     const method = this.orderForm.get('paymentMethod')?.value
     if (method == 'ONLINE') {
       this.showTransactionId = true
@@ -147,45 +146,33 @@ export class AddOrdersComponent implements OnInit {
 
   add() {
     if (this.product) {
-      let productData: any
       let cartLength = this.cart.length
-
       this.productService.getProductById({ id: this.product }).subscribe((res: any) => {
-        productData = res?.result[0]
+        let productData = res?.result[0]
+        let price = productData?.price
+        let total = (price?.mrp > price?.offer ? price?.offer : price?.mrp) * Number(this.quantity?.value)
         this.cart.push({
           productId: this.product,
           quantity: this.quantity?.value,
           name: productData?.name,
+          total: total,
           refid: productData?.prodid,
           id: this.cart.length,
           image: productData?.thumbnail,
           brand: productData?.product?.id?.brand?.name,
-          price: {
-            mrp: productData?.price?.mrp,
-            offer: productData?.price?.offer
-          }
+          price: { mrp: productData?.price?.mrp, offer: productData?.price?.offer }
         })
 
-        if (!this.productids.includes(this.product)) {
-          this.productids.push(this.product)
-        }
-
-        if (this.productids.length > 0) {
-          this.getCoupons(this.productids)
-        }
-
+        this.subTotal = this.subTotal + total
+        if (!this.productids.includes(this.product)) this.productids.push(this.product)
+        if (this.productids.length > 0) this.getCoupons(this.productids)
         this.isProducts = true
-
         document.querySelector('.added-to-cart')?.classList.add('show-added')
         let newCartLength = this.cart.length
-        if (newCartLength > cartLength) {
-          this.product = null
-        }
-
+        if (newCartLength > cartLength) this.product = null
         setTimeout(() => {
           document.querySelector('.added-to-cart')?.classList.remove('show-added')
         }, 2000)
-
         this.cdr.markForCheck()
       })
     } else {
@@ -207,30 +194,30 @@ export class AddOrdersComponent implements OnInit {
 
   removeQty(i: number) {
     this.cart[i]['quantity'] = this.cart[i]['quantity'] - 1
-    if (this.cart[i]['quantity'] == 0) {
-      this.cart.splice(i, 1)
-    }
+    this.cart[i]['total'] = this.cart[i]['total'] - (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
 
+    console.log(this.subTotal, this.cart[i]['total']);
+
+    this.subTotal = this.subTotal - (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
+    if (this.cart[i]['quantity'] == 0) this.cart.splice(i, 1)
     let products = []
-    for (let item of this.cart) {
-      products.push(item?.productId)
-    }
-
-    if (this.cart.length == 0) {
-      this.isProducts = false
-    }
+    for (let item of this.cart) products.push(item?.productId)
+    if (this.cart.length == 0) this.isProducts = false
     this.getCoupons(products)
   }
 
   removeProduct(i: number) {
     this.cart.splice(i, 1)
-    if (this.cart.length == 0) {
-      this.isProducts = false
-    }
+    if (this.cart.length == 0) this.isProducts = false
   }
 
   addOty(i: number) {
     this.cart[i]['quantity'] = this.cart[i]['quantity'] + 1
+    this.cart[i]['total'] = this.cart[i]['total'] + (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
+
+    console.log(this.subTotal, this.cart[i]['total']);
+
+    this.subTotal = this.subTotal + (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
   }
 
   onSubmit() {

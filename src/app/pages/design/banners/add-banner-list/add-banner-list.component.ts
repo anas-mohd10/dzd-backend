@@ -217,8 +217,8 @@ export class AddBannerListComponent implements OnInit {
       if (this.bannerMedia.length < 1) {
         const prevLen = this.bannerMedia.length
         this.bannerMedia.push({
-          web: { file: this.w_file, name: this.w_name },
-          mobile: { file: this.m_file, name: this.m_name },
+          web: { file: this.web_file, name: this.w_name },
+          mobile: { file: this.mobile_file, name: this.m_name },
           redirection: {
             unit: '',
             category: this.category ? this.category : '',
@@ -243,8 +243,8 @@ export class AddBannerListComponent implements OnInit {
       if (this.bannerMedia.length < 2) {
         const prevLen = this.bannerMedia.length
         this.bannerMedia.push({
-          web: { file: this.w_file, name: this.w_name },
-          mobile: { file: this.m_file, name: this.m_name },
+          web: { file: this.web_file, name: this.w_name },
+          mobile: { file: this.mobile_file, name: this.m_name },
           redirection: {
             unit: '',
             category: this.category ? this.category : '',
@@ -266,6 +266,8 @@ export class AddBannerListComponent implements OnInit {
         this.toastr.info('Maximum banner limit reached')
       }
     }
+
+    console.log(this.bannerMedia);
   }
 
   imageCroppedWeb(event: ImageCroppedEvent) {
