@@ -22,14 +22,12 @@
   </div>
   <div class="collection-form-container">
     <form [formGroup]="collectionform">
-      <div class="col-12 row" style="display: flex; align-items: flex-end;">
+      <div class="col-12 row align-items-end justify-content-end">
         <div class="search-input col-sm-4" style="padding: 0;">
-          <!-- <label class="fs-5">Search</label> -->
           <input type="text" placeholder="Search for collections here..." class="form-control fs-5"
             formControlName="name" (ngModelChange)="searchCollection()">
         </div>
         <div class="search-status col-sm-2">
-          <!-- <label class="fs-5">Status</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchCollection()">
             <option value="" disabled>Collection Status Filter</option>
             <option value=true>Active</option>
@@ -37,7 +35,6 @@
           </select>
         </div>
         <div class="search-featured col-sm-2">
-          <!-- <label class="fs-5 form-title">Featured</label> -->
           <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchCollection()">
             <option value="" disabled>Featured Collection Filter</option>
             <option value=true>Featured</option>
@@ -93,10 +90,11 @@
     <ng-container *ngIf="count == 0">
       <div class="no-data-container">
         <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-        <h2>Sorry, we haven't found any data</h2>
+        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
       </div>
     </ng-container>
   </div>
+
   <!-- Pagination start -->
   <nav aria-label="Page navigation example" *ngIf="count != 0">
     <ul class="pagination-container">

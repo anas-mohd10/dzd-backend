@@ -1,9 +1,9 @@
-.category-tabs{
+.category-tabs {
    margin: 3.125rem 0 0 0;
    padding: 0 2rem;
    font-size: 1.2rem;
 
-   .active{
+   .active {
       color: #000000;
    }
 }
@@ -130,13 +130,13 @@
 
 .attr-added-container {
    .attr-cards.col-12 {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
 
       .attribute-card {
-         box-shadow: 0 0px 36px 10px rgb(0 0 0 / 3%);
-         padding: 1.825rem;
+         border: 1px solid #E4E6EF;
+         padding: 15px;
          border-radius: 15px;
          width: 100%;
 
@@ -212,8 +212,8 @@
             }
 
             .attribute-text {
-               height: 50px;
-               width: 135px;
+               padding: 5px 10px;
+               width: max-content;
                background: #00bdab;
                margin: 10px 10px 0 0;
                display: flex;

@@ -199,11 +199,10 @@
     gap: 10px;
 
     .attribute-card {
-      box-shadow: 0 0 35px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid #E4E6EF;
       padding: 15px;
       border-radius: 0.9375rem;
       width: 100%;
-      // margin: 1.25rem 0 0 0;
 
       .attribute-card-header {
         display: flex;

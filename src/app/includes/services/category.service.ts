@@ -75,4 +75,9 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.restore_category);
     return this.http.post(`${url}`, data);
   }
+
+  categoryImages(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.category_images);
+    return this.http.post(`${url}`, data);
+  }
 }

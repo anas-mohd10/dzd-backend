@@ -33,7 +33,7 @@ export class UpdateCategoryComponent implements OnInit {
   previewImg: any;
   parentIdValue: string;
   uploadedimg: any;
-  croppedImage: string | null | undefined;
+  croppedImage: any;
   loadImage: boolean;
   imageChangedEvent: Event | undefined;
   filename: any;
@@ -43,7 +43,8 @@ export class UpdateCategoryComponent implements OnInit {
   path: any;
   base: any
   img: any
-
+  images: any = []
+  file: any
   //Styling variables
   background: any
   border: any
@@ -100,6 +101,13 @@ export class UpdateCategoryComponent implements OnInit {
     this.managePage();
     this.getCategory();
     this.getCategoryBySlug();
+
+    this.CategoryService.categoryImages({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.images = res?.result?.images
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   initForm() {
@@ -193,13 +201,13 @@ export class UpdateCategoryComponent implements OnInit {
             name: value?.name,
             type: value?.type,
             isActive: value?.isActive,
-            isFiltered: value?.isFilter,
+            isFilter: value?.isFilter,
             values: value?.values,
             id: this.attributes.length,
             refid: value?.refid
           })
         }
-        this.cdr.markForCheck()        
+        this.cdr.markForCheck()
       })
 
       this.uploadedimg = this.categoryValues?.file;
@@ -474,6 +482,9 @@ export class UpdateCategoryComponent implements OnInit {
   }
   //Attribute section end
 
+  selectImage(file: any) {
+    this.file = file
+  }
 
   //Update exsisting category
   updateBrand() {
@@ -510,7 +521,7 @@ export class UpdateCategoryComponent implements OnInit {
       filestring: this.croppedImage,
       filename: this.filename,
       path: this.path,
-      file: '',
+      file: this.file ? this.file : this.categoryValues?.file,
       attributes: this.attributes,
       style: {
         background: this.categoryForm.get('background')?.value,
@@ -523,9 +534,6 @@ export class UpdateCategoryComponent implements OnInit {
         }
       },
       catid: this.categoryValues.catid
-    }
-    if (this.uploadedimg != '') {
-      data.file = this.uploadedimg
     }
     if (data.isRoot == 'true') {
       delete data.root

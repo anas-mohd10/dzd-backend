@@ -22,14 +22,12 @@
     </div>
   </div>
   <form [formGroup]="categoryform">
-    <div class="col-12 row" style="display: flex; align-items: flex-start;">
+    <div class="col-12 row align-items-end justify-content-end">
       <div class="search-input col-sm-4" style="padding: 0;">
-        <!-- <label class="fs-5">Search</label> -->
         <input type="text" placeholder="Search for category here..." class="form-control fs-5" formControlName="name"
           (ngModelChange)="searchCategory()">
       </div>
       <div class="search-status col-sm-2">
-        <!-- <label class="fs-5">Status</label> -->
         <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchCategory()">
           <option value="" disabled>Category Status Filter</option>
           <option value=true>Active</option>
@@ -37,7 +35,6 @@
         </select>
       </div>
       <div class="search-featured col-sm-2">
-        <!-- <label class="fs-5 form-title">Featured</label> -->
         <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchCategory()">
           <option value="" disabled>Featured Category Filter</option>
           <option value=true>Featured</option>

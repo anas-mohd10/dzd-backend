@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-add-category',
@@ -25,13 +26,15 @@ export class AddCategoryComponent implements OnInit {
   splitCategory: any;
   root: any = '';
   parent: any = '';
-  croppedImage: string | null | undefined;
+  croppedImage: any;
   loadImage: boolean;
   imageChangedEvent: Event | undefined;
   filename: any;
   path: any;
   catid: any;
-
+  images: any = []
+  file: any
+  base: any;
   //Styling variables
   background: any
   border: any
@@ -69,12 +72,19 @@ export class AddCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.managePage();
     this.getCategory();
-  }
 
+    this.CategoryService.categoryImages({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.images = res?.result?.images
+        this.cdr.markForCheck()
+      }
+    })
+  }
 
   initForm() {
     this.categoryForm = this.formBuilder.group({
@@ -410,6 +420,11 @@ export class AddCategoryComponent implements OnInit {
   }
   //Attribute section end
 
+
+  selectImage(file: any) {
+    this.file = file
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -453,6 +468,7 @@ export class AddCategoryComponent implements OnInit {
       isArchive: this.categoryForm.get('isArchive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      file: this.file,
       path: this.path,
       attributes: this.attributes,
       style: {
