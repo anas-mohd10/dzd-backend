@@ -52,6 +52,8 @@ export class AddAppSettingsComponent implements OnInit {
       secondary: ['', Validators.required],
       star: ['', Validators.required],
       label: ['', Validators.required],
+      toastError: ['', Validators.required],
+      toastSuccess: ['', Validators.required],
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required]
@@ -71,6 +73,10 @@ export class AddAppSettingsComponent implements OnInit {
         star: this.appsettingsform.get('star')?.value,
         label: this.appsettingsform.get('label')?.value,
         text: this.appsettingsform.get('text')?.value,
+      },
+      toast: {
+        success: this.appsettingsform.get('toastSuccess')?.value,
+        error: this.appsettingsform.get('toastError')?.value,
       },
       fonts: { family: this.appsettingsform.get('fontFamily')?.value },
       itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value

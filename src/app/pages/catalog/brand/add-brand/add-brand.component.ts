@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-add-brand',
@@ -26,21 +27,24 @@ export class AddBrandComponent implements OnInit {
   previewURL: any;
   uploadedImg: boolean = false;
   imageChangedEvent: any = '';
-  croppedImage: any = '';
+  croppedImage: any;
   filename: any
   loadImage: boolean = false;
-
+  images: any = []
   //Styling variables
   background: any
   border: any
   color: any
+  base: any
+  file: any
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private BrandService: BrandService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   get bf() {
@@ -55,6 +59,7 @@ export class AddBrandComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.base = environment.base
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.params = this.route.snapshot;
@@ -84,6 +89,13 @@ export class AddBrandComponent implements OnInit {
     this.brandForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
     this.brandForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
     this.brandForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
+
+    this.BrandService.getBrandImages({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.images = res?.result?.images
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   managePage() {
@@ -112,6 +124,7 @@ export class AddBrandComponent implements OnInit {
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
+    this.file = null
   }
 
   imageLoaded() {
@@ -141,6 +154,10 @@ export class AddBrandComponent implements OnInit {
     }
   }
 
+  selectImage(file: any) {
+    this.file = file
+  }
+
   //Update exsisting brand
   updateBrand() { }
 
@@ -151,13 +168,17 @@ export class AddBrandComponent implements OnInit {
     }
 
     const payload = this.createPayload()
+
+    console.log(payload);
+
+
     if (payload) {
       if (payload.filestring != '') {
         this.BrandService.addBrand(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
-            this.toastr.error('Something went wrong');
+            this.toastr.error(res?.message);
           } else if (res.errorCode == 0) {
-            this.toastr.success('Brand added successfully');
+            this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.brand.BRAND_LIST]);
           }
         });
@@ -166,7 +187,7 @@ export class AddBrandComponent implements OnInit {
         this.toastr.error('Something went wrong');
       }
     } else {
-      this.toastr.error('Brand add failed');
+      this.toastr.error("Couldn't add brand");
     }
   }
 
@@ -178,6 +199,7 @@ export class AddBrandComponent implements OnInit {
       isArchive: this.brandForm.get("isArchive")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      file: this.file,
       style: {
         background: this.brandForm.get('background')?.value,
         border: this.brandForm.get('border')?.value,

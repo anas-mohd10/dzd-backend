@@ -28,6 +28,8 @@ export class ViewAppSettingsComponent implements OnInit {
         this.generalSettings[0]['colors']['label'] = '#' + this.generalSettings[0]['colors']['label'].split('FF')[1]
         this.generalSettings[0]['colors']['text'] = '#' + this.generalSettings[0]['colors']['text'].split('FF')[1]
         this.generalSettings[0]['colors']['star'] = '#' + this.generalSettings[0]['colors']['star'].split('FF')[1]
+        this.generalSettings[0]['toast']['success'] = '#' + this.generalSettings[0]['toast']['success'].split('FF')[1]
+        this.generalSettings[0]['toast']['error'] = '#' + this.generalSettings[0]['toast']['error'].split('FF')[1]
         this.slug = res?.result[0]?.refid
         this.cdr.markForCheck()
       } else {

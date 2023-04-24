@@ -60,4 +60,9 @@ export class BrandService {
     const url = this.commonService.getFullUrl(this.brandEndpoints.restore_brand);
     return this.http.post(`${url}`, query);
   }
+
+  getBrandImages(data: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.brand_images);
+    return this.http.post(`${url}`, data);
+  }
 }

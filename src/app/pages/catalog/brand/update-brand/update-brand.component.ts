@@ -24,16 +24,18 @@ export class UpdateBrandComponent implements OnInit {
   brand: any;
   uploadedimg: any;
   imageChangedEvent: any = '';
-  croppedImage: any = '';
+  croppedImage: any;
   loadImage: boolean;
   filename: string;
   base: any
+  file: any
   img: any;
   //Styling variables
   background: any
   border: any
   color: any
   isArchived: any
+  images: any = []
 
   restore = new FormControl('false');
 
@@ -58,6 +60,13 @@ export class UpdateBrandComponent implements OnInit {
     this.slug = this.route.snapshot.queryParams.brand || '';
     this.managePage();
     this.getBrand();
+
+    this.brandService.getBrandImages({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.images = res?.result?.images
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   initForm() {
@@ -154,6 +163,10 @@ export class UpdateBrandComponent implements OnInit {
     }
   }
 
+  selectImage(file: any) {
+    this.file = file
+  }
+
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -182,7 +195,7 @@ export class UpdateBrandComponent implements OnInit {
         }
       });
     } else {
-      this.toastr.success("Brand update failed");
+      this.toastr.success("Couldn't update brand");
     }
   }
 
@@ -194,7 +207,7 @@ export class UpdateBrandComponent implements OnInit {
       isArchive: this.brandForm.get("isArchive")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
-      file: '',
+      file: this.file ? this.file : this.brand?.file,
       style: {
         background: this.brandForm.get('background')?.value,
         border: this.brandForm.get('border')?.value,
@@ -206,10 +219,6 @@ export class UpdateBrandComponent implements OnInit {
         }
       },
       brandid: this.brand.brandid
-    }
-
-    if (this.uploadedimg != '') {
-      data.file = this.brand?.file;
     }
     return data
   }

@@ -2,6 +2,49 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+
+.imageSelectionContainer {
+  margin: 0 0 30px 0;
+
+  .seperator {
+      font-size: 14px;
+  }
+
+  .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 30px 0;
+  }
+
+  .postedImages {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 20px;
+
+      .postedImage {
+          background: #ffffff;
+          border: 1px solid #E4E6EF;
+          border-radius: 15px;
+          padding: 10px;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          input {
+              position: absolute;
+              top: 10%;
+              left: 10%;
+          }
+
+          img {
+              height: auto;
+              width: 80%;
+          }
+      }
+  }
+}
+
 .page-title h1 {
   margin: 0 !important;
 }

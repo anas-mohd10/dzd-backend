@@ -27,33 +27,5 @@ export class HttpInterceptor implements HttpInterceptor {
       }
     });
     return next.handle(request)
-    // return next.handle(request).pipe(
-    // tap((evt) => {
-    //   if (evt instanceof HttpResponse) {
-    //     return of(evt);
-    //   }
-    // }),
-    // catchError(err => {
-    //   if (err instanceof HttpErrorResponse) {
-    //     switch (err.status) {
-    //       case 400:
-    //         return throwError(err);
-    //       case 401:
-    //         this.toast.error('Token has expired');
-    //         this.authService.logout();
-    //         break;
-    //       case 403:
-    //         this.authService.logout();
-    //         break;
-    //       case 422:
-    //         return throwError(err);
-    //       default:
-    //         return throwError(err);
-    //     }
-    //   } else {
-    //     return throwError(err);
-    //   }
-    // })
-    // );
   }
 }

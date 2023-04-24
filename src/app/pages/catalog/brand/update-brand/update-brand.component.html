@@ -1,11 +1,11 @@
 <div class="content container-fluid">
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update Brand" : "Add Brand" }}</h1>
+    </div>
     <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fs-1 fw-bolder">
-          {{ editMode ? "Update Brand" : "Add Brand" }}
-        </h3>
-        <ul class="breadcrumb">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -13,8 +13,8 @@
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: slug }">
-              {{ editMode ? "Update Brand" : "Add Brand" }}</a>
+            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{'brand': slug}">
+              {{editMode ? "Update Brand" : "Add Brand"}}</a>
           </li>
         </ul>
       </div>
@@ -136,7 +136,7 @@
                     </div>
                   </div>
                   <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{img}}" alt="" style="width: 150px; height: 150px">
+                    <img src="{{img}}" alt="" style="width: 100px; height: 100px">
                   </div>
                 </div>
               </div>
@@ -158,9 +158,26 @@
                   </div>
                 </div>
               </ng-container>
+
+
+              <div class="imageSelectionContainer">
+                <div class="seperator">Or </div>
+                <div class="title">Select an existing image</div>
+                <ng-container *ngIf="images.length == 0">No images available</ng-container>
+                <div class="postedImages">
+                  <ng-container *ngFor="let image of images; let i =index">
+                    <div class="postedImage">
+                      <input type="radio" id="image" name="image" (click)="selectImage(image)">
+                      <img src="{{base}}/{{image}}" alt="">
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+
               <div class="col-12  d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
-                  style="width: 200px; margin-right: 20px;">
+                <a routerLink="{{ appRoute.brand.BRAND_LIST}}"
+                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">Update</button>
@@ -179,8 +196,8 @@
                 </div>
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.brand.ARCHIVED_BRAND}}" class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
-                  style="width: 200px; margin-right: 20px;">
+                <a routerLink="{{ appRoute.brand.ARCHIVED_BRAND}}"
+                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-dark btn-sm fs-5 fw-bolder" style="width: 200px"

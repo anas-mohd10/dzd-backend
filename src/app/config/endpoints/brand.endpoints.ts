@@ -8,5 +8,6 @@ export const brandEndpoints = {
   //Filter APIs
   search_brand: '/brands/search',
   archive_brand: '/brands/archive',
-  restore_brand: '/brands/restore'
+  restore_brand: '/brands/restore',
+  brand_images: '/brands/images'
 }

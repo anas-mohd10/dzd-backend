@@ -3,7 +3,7 @@
     <div class="page-title">
       <h1 class="fw-bolder">Brands</h1>
     </div>
-    <div class="row align-items-center">
+    <div class="row">
       <div class="col d-flex align-items-start justify-content-between">
         <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
@@ -20,7 +20,7 @@
   </div>
   <div class="brand-form-container">
     <form [formGroup]="brandform">
-      <div class="col-12 row" style="display: flex; align-items: flex-start;">
+      <div class="col-12 row align-items-end justify-content-end">
         <div class="search-input col-sm-4" style="padding: 0;">
           <input type="text" placeholder="Search for brands here..." class="form-control fs-5" formControlName="name"
             (ngModelChange)="searchBrand()">
