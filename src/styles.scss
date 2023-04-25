@@ -6,42 +6,87 @@
 .imageSelectionContainer {
   margin: 0 0 30px 0;
 
+  .scrollImagesContainer {
+    border-radius: 20px;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding: 20px;
+    border: 1px solid #E4E6EF;
+
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #00bdab;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #00bdab;
+    }
+
+    .loadMoreButton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0 0 0;
+
+      button {
+        outline: none;
+        border: 1px solid #E4E6EF;
+        background: transparent;
+        padding: 5px 10px;
+        text-transform: uppercase;
+        color: #111111;
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+  }
+
   .seperator {
-      font-size: 14px;
+    font-size: 18px;
+    font-weight: 600;
   }
 
   .title {
-      font-size: 18px;
-      font-weight: 600;
-      margin: 30px 0;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 30px 0;
   }
 
   .postedImages {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 20px;
 
-      .postedImage {
-          background: #ffffff;
-          border: 1px solid #E4E6EF;
-          border-radius: 15px;
-          padding: 10px;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+    .postedImage {
+      background: #ffffff;
+      border: 1px solid #E4E6EF;
+      border-radius: 15px;
+      padding: 10px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-          input {
-              position: absolute;
-              top: 10%;
-              left: 10%;
-          }
-
-          img {
-              height: auto;
-              width: 80%;
-          }
+      input {
+        position: absolute;
+        top: 10%;
+        left: 10%;
       }
+
+      img {
+        height: auto;
+        width: 80%;
+      }
+    }
   }
 }
 
@@ -127,7 +172,8 @@ table.dataTable.no-footer {
 //Datatable css
 
 .btn-primary,
-.btn-dark, .btn-secondary {
+.btn-dark,
+.btn-secondary {
   font-weight: 600 !important;
 }
 

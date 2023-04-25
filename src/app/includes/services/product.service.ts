@@ -75,4 +75,14 @@ export class ProductService {
     const url = this.commonService.getFullUrl(this.productEndpoints.update_product + "?slug=" + slug);
     return this.http.put(`${url}`, data);
   }
+
+  productImages(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.product_images);
+    return this.http.post(`${url}`, query);
+  }
+
+  productThumbnailImages(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.thumbnail_images);
+    return this.http.post(`${url}`, query);
+  }
 }

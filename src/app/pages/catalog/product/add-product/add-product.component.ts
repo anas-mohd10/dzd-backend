@@ -127,6 +127,15 @@ export class AddProductComponent implements OnInit {
   attributesValues: any = []
   selectedAttributesValues: any = []
 
+  productImages: any = []
+  productFile: any = []
+  productImagesLastPage: boolean = false
+  thumbnailImages: any = []
+  thumbnailFile: any
+  thumbnailImagesLastPage: boolean = false
+  productImagePage: any = 1
+  thumbnailImagePage: any = 1
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -166,6 +175,54 @@ export class AddProductComponent implements OnInit {
         if (this.slug != '') {
           this.getProductHead(this.slug)
         }
+        this.cdr.markForCheck()
+      }
+    })
+
+    this.productService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.productImages = res?.result?.images
+        this.productImagesLastPage = res?.result?.isLastPage
+        this.cdr.markForCheck()
+      }
+    })
+
+    this.productService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.thumbnailImages = res?.result?.images
+        this.thumbnailImagesLastPage = res?.result?.isLastPage
+        this.cdr.markForCheck()
+      }
+    })
+  }
+
+  selectProductImage(file: any) {
+    this.productFile.push(file)
+    this.croppedImage = null
+  }
+
+  selectThumbnailImage(file: any) {
+    this.thumbnailFile = file
+    this.thumbnailImage = null
+  }
+
+  loadMoreProductImages() {
+    this.productImagePage = this.productImagePage + 1
+    this.productService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.productImages = [...this.productImages, ...res?.result?.images]
+        this.productImagesLastPage = res?.result?.isLastPage
+        this.cdr.markForCheck()
+      }
+    })
+  }
+
+  loadMoreThumbnailImages() {
+    this.thumbnailImagePage = this.thumbnailImagePage + 1
+    this.productService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.thumbnailImages = [...this.thumbnailImages, ...res?.result?.images]
+        this.thumbnailImagesLastPage = res?.result?.isLastPage
         this.cdr.markForCheck()
       }
     })

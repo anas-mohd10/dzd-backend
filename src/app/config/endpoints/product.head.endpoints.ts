@@ -4,4 +4,5 @@ export const productHeadEndpoints = {
    product_heads: '/product-head',
    search_product_head: '/search',
    update_product_head: '/update-product-head',
+   product_head_images: '/products/head-images'
 }

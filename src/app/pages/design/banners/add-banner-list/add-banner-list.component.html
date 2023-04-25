@@ -99,8 +99,10 @@
                         Click confirm banners button to upload the banner
                      </div>
                      <div class="draftBanners" *ngIf="web_file || mobile_file">
-                        <img class="preview-img" id="previewImage" [src]="web_file">
-                        <img class="preview-img" id="previewImage" [src]="mobile_file">
+                        <img class="preview-img" id="previewImage"
+                           [src]="web_file ? web_file : '../../../../../assets/media/preview-image.png'">
+                        <img class="preview-img" id="previewImage"
+                           [src]="mobile_file ? mobile_file : '../../../../../assets/media/preview-image.png'">
                      </div>
 
                      <div class="col-12">

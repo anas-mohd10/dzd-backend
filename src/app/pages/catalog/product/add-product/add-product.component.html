@@ -26,14 +26,14 @@
         <div class="card-body">
           <nav style="pointer-events: none;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <button class="nav-link" [ngClass]="{'active': !headAdded}" id="nav-home-tab" data-bs-toggle="tab"
-                data-bs-target="#basic-details" type="button" role="tab" aria-controls="nav-home"
+              <button class="nav-link fw-bolder" [ngClass]="{'active': !headAdded}" id="nav-home-tab"
+                data-bs-toggle="tab" data-bs-target="#basic-details" type="button" role="tab" aria-controls="nav-home"
                 aria-selected="true">Basic Details</button>
-              <button class="nav-link" [ngClass]="{'active': showProduct}" id="nav-profile-tab" data-bs-toggle="tab"
-                data-bs-target="#product-details" type="button" role="tab" aria-controls="nav-profile"
-                aria-selected="false">Product Details</button>
-              <button class="nav-link" id="nav-contact-tab" [ngClass]="{'active': showMedia}" data-bs-toggle="tab"
-                data-bs-target="#media" type="button" role="tab" aria-controls="nav-contact"
+              <button class="nav-link fw-bolder" [ngClass]="{'active': showProduct}" id="nav-profile-tab"
+                data-bs-toggle="tab" data-bs-target="#product-details" type="button" role="tab"
+                aria-controls="nav-profile" aria-selected="false">Product Details</button>
+              <button class="nav-link fw-bolder" id="nav-contact-tab" [ngClass]="{'active': showMedia}"
+                data-bs-toggle="tab" data-bs-target="#media" type="button" role="tab" aria-controls="nav-contact"
                 aria-selected="false">Product Media</button>
             </div>
           </nav>
@@ -511,7 +511,7 @@
               <div class="row">
                 <h2 class="form-title">Product Media</h2>
                 <div class="col-12">
-                  <h3 class="form-subtitle required">Product Images</h3>
+                  <h3 class="form-subtitle required fw-bolder">Product Images</h3>
                   <div class="form-group col-sm-6">
                     <div class="image-upload">
                       <input type="file" class="form-control fs-5" name="image" accept="image/*"
@@ -565,8 +565,28 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="imageSelectionContainer">
+                  <div class="seperator">Or </div>
+                  <div class="title">Select an existing image</div>
+                  <ng-container *ngIf="productImages.length == 0">No images available</ng-container>
+                  <div class="scrollImagesContainer">
+                    <div class="postedImages">
+                      <ng-container *ngFor="let image of productImages; let i =index">
+                        <div class="postedImage">
+                          <input type="radio" id="image" name="image" (click)="selectProductImage(image)">
+                          <img src="{{base}}/{{image}}" alt="Product">
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="loadMoreButton">
+                      <button *ngIf="!productImagesLastPage" (click)="loadMoreProductImages()">Load more</button>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-12">
-                  <h3 class="form-subtitle required">Thumbnail Image</h3>
+                  <h3 class="form-subtitle required fw-bolder">Thumbnail Image</h3>
                   <div class="form-group col-sm-6">
                     <div class="image-upload">
                       <input type="file" class="form-control fs-5" name="image" accept="image/*"
@@ -602,9 +622,29 @@
                     </div>
                   </ng-container>
                 </div>
+
+                <div class="imageSelectionContainer">
+                  <div class="seperator">Or </div>
+                  <div class="title">Select an existing image</div>
+                  <ng-container *ngIf="thumbnailImages.length == 0">No images available</ng-container>
+                  <div class="scrollImagesContainer">
+                    <div class="postedImages">
+                      <ng-container *ngFor="let image of thumbnailImages; let i =index">
+                        <div class="postedImage">
+                          <input type="radio" id="image" name="image" (click)="selectThumbnailImage(image)">
+                          <img src="{{base}}/{{image}}" alt="Product">
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="loadMoreButton">
+                      <button *ngIf="!thumbnailImagesLastPage" (click)="loadMoreThumbnailImages()">Load more</button>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-12">
                   <div class="col-12">
-                    <h3 class="form-subtitle">Product Video</h3>
+                    <h3 class="form-subtitle fw-bolder">Product Video</h3>
                   </div>
                   <div class="form-group col-sm-6">
                     <div class="image-upload">
@@ -638,11 +678,6 @@
                   More</button>
                 <button type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder" style="width: 200px"
                   (click)="onSubmit()">Add</button>
-                <!-- <button class="btn btn-primary btn-sm fs-5" style="width: 200px" type="button" disabled
-                  *ngIf="submitting">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  Submitting
-                </button> -->
               </div>
             </div>
           </div>

@@ -64,7 +64,7 @@
       <ng-container *ngIf="count == 0">
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-            <h2>Sorry, we haven't found any data</h2>
+            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
          </div>
       </ng-container>
    </div>
@@ -99,7 +99,6 @@
    </nav>
 </div>
 
-<!-- Variant products list container start-->
 <div class="variant-products-overlay" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
 </div>
 <div class="variant-products-container" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
@@ -115,14 +114,12 @@
    </div>
    <div class="variant-product-filters col-12">
       <form [formGroup]="variantProductform">
-         <div class="row" style="display: flex; align-items: flex-start;">
+         <div class="row align-items-end justify-content-end">
             <div class="search-input col-sm-4" style="padding: 0;">
-               <!-- <label class="fs-5">Search</label> -->
                <input type="text" placeholder="Search for products here..." class="form-control fs-5"
                   formControlName="name" (ngModelChange)="searchVariantProduct()">
             </div>
             <div class="search-status col-sm-2">
-               <!-- <label class="fs-5">Status</label> -->
                <select name="" id="" class="form-select fs-5" formControlName="isActive"
                   (change)="searchVariantProduct()">
                   <option value="" disabled>Product Status Filter</option>
@@ -131,7 +128,6 @@
                </select>
             </div>
             <div class="search-featured col-sm-2">
-               <!-- <label class="fs-5 form-title">Featured</label> -->
                <select class="form-select fs-5" formControlName="isFeatured" (change)="searchVariantProduct()">
                   <option value="" disabled>Featured Product Status</option>
                   <option value=true>Featured</option>
@@ -201,12 +197,10 @@
          <div class="no-data-container">
             <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
             <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
-            <!-- <button class="btn btn-primary fs-5" (click)="navigateToAdd()">Add Products</button> -->
          </div>
       </ng-container>
    </div>
 </div>
-<!-- Variant products list container end-->
 
 <div class="filters-overlay" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }"></div>
 <div class="filters-container" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }">
@@ -242,6 +236,9 @@
                         </div>
                      </ng-container>
                   </div>
+                  <ng-container *ngIf="categories.length == 0">
+                     No categories found
+                  </ng-container>
                </div>
                <div class="search-status col-12">
                   <label class="fs-5">Status</label>

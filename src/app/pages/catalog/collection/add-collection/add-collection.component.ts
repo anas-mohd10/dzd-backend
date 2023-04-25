@@ -30,7 +30,7 @@ export class AddCollectionComponent implements OnInit {
   isSubmitted: boolean;
   isAllSelected: Boolean = false
   isChecked: Boolean = false
-  croppedImage: any = '';
+  croppedImage: any;
   imageChangedEvent: any;
   filename: any;
   loadImage: boolean;
@@ -43,6 +43,9 @@ export class AddCollectionComponent implements OnInit {
   selectedProducts: any = []
   featured: Boolean = false
   grid: Boolean = false
+
+  images: any = []
+  file: any
 
   constructor(
     private collectionService: CollectionService,
@@ -59,6 +62,13 @@ export class AddCollectionComponent implements OnInit {
     this.managePage();
     this.initForm();
     this.getProduct();
+
+    this.collectionService.collectionImages({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.images = res?.result?.images
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   initForm() {
@@ -177,6 +187,10 @@ export class AddCollectionComponent implements OnInit {
     this.loadImage = true
   }
 
+  selectImage(file: any) {
+    this.file = file
+  }
+
   addCollection() {
     if (!this.collectionForm.valid) {
       this.toastr.error('Validation failed. Kindly try again with proper values.')
@@ -206,6 +220,7 @@ export class AddCollectionComponent implements OnInit {
       count: this.collectionForm.get('count')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      file: this.file,
       products: this.selectedProducts,
       style: {
         background: this.collectionForm.get('background')?.value,

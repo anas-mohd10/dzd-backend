@@ -12,5 +12,7 @@ export const productEndpoints = {
     get_products_count: '/products/count',
     archive_product: '/products/archive',
     restore_product: '/products/restore',
-    product_by_prodid: '/products/prodid'
+    product_by_prodid: '/products/prodid',
+    thumbnail_images: '/products/thumbnail-images',
+    product_images: '/products/product-images'
 }

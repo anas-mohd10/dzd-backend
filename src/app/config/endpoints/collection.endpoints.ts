@@ -10,4 +10,5 @@ export const collectionEndpoints = {
     search_collection: '/collections/search',
     archive_collection: '/collections/archive',
     restore_collection: '/collections/restore',
+    collection_images: '/collections/images'
 }

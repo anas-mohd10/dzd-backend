@@ -48,6 +48,8 @@ export class UpdateCollectionComponent implements OnInit {
   selectedProducts: any = []
   featured: Boolean = false
   grid: Boolean = false
+  images: any = []
+  file: any
 
   constructor(
     private collectionService: CollectionService,
@@ -66,6 +68,13 @@ export class UpdateCollectionComponent implements OnInit {
     this.getProduct();
     this.getCollection()
     this.base = environment.base
+
+    this.collectionService.collectionImages({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.images = res?.result?.images
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   initForm() {
@@ -137,15 +146,9 @@ export class UpdateCollectionComponent implements OnInit {
           this.background = this.collectionData?.style.background
           this.border = this.collectionData?.style.border
           this.selectedProducts = this.collectionData?.products
-          if (this.collectionData?.isFeatured == true) {
-            this.featured = !this.featured
-          }
-          if (this.collectionData?.type == 'grid') {
-            this.grid = !this.grid
-          }
-          if (this.collectionData.isArchive == true) {
-            this.isArchived = true
-          }
+          if (this.collectionData?.isFeatured == true) this.featured = !this.featured
+          if (this.collectionData?.type == 'grid') this.grid = !this.grid
+          if (this.collectionData.isArchive == true) this.isArchived = true
           this.cdr.markForCheck()
           break
       }
@@ -168,15 +171,12 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   imageLoaded() {
-    // show cropper
   }
 
   cropperReady() {
-    // cropper ready
   }
 
   loadImageFailed() {
-    // show message
   }
 
   removeImage() {
@@ -215,6 +215,10 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
+  selectImage(file: any) {
+    this.file = file
+  }
+
   addCollection() { }
 
   updateCollection() {
@@ -223,15 +227,16 @@ export class UpdateCollectionComponent implements OnInit {
     }
 
     const payload = this.createPayload()
-
-    this.collectionService.updateCollection(this.collectionData?.colid, payload).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Collection Added Successfully');
-        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-      }
-    });
+    if (payload) {
+      this.collectionService.updateCollection(this.collectionData?.colid, payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error('Something Went Wrong');
+        } else if (res.errorCode == 0) {
+          this.toastr.success('Collection Added Successfully');
+          this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+        }
+      });
+    }
   }
 
   restoreCollection() {
@@ -261,7 +266,7 @@ export class UpdateCollectionComponent implements OnInit {
       products: this.selectedProducts,
       type: this.collectionForm.get('type')?.value,
       count: this.collectionForm.get('count')?.value,
-      file: '',
+      file: this.file ? this.file : this.collectionData?.file,
       style: {
         background: this.collectionForm.get('background')?.value,
         border: this.collectionForm.get('border')?.value,
@@ -273,9 +278,6 @@ export class UpdateCollectionComponent implements OnInit {
         }
       },
       colid: this.collectionData?.colid
-    }
-    if (this.uploadedimg != '') {
-      data.file = this.uploadedimg
     }
 
     return data

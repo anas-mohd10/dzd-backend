@@ -35,4 +35,9 @@ export class ProductHeadService {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.update_product_head);
     return this.http.put(`${url}`, data);
   }
+
+  productHeadImages(data: any) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head_images);
+    return this.http.post(`${url}`, data);
+  }
 }

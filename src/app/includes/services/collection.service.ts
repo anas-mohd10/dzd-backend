@@ -60,4 +60,9 @@ export class CollectionService {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.restore_collection);
     return this.http.post(`${url}`, data);
   }
+
+  collectionImages(data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.collection_images);
+    return this.http.post(`${url}`, data);
+  }
 }
