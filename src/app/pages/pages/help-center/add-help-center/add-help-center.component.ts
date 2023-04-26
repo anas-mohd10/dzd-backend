@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
-
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-add-help-center',
@@ -22,12 +22,40 @@ export class AddHelpCenterComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   isSubmitted: boolean;
-  len: any
+  isData: Boolean = false
   isHidden: Boolean = true
   slug: any;
 
-  constructor(private helpcenterService: HelpCenterService, private formBuilder: FormBuilder, private router: Router,
-    private toastr: ToastrService) { }
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter help center description here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
+      { class: 'manrope', name: 'Manrope' },
+    ]
+  };
+
+  constructor(
+    private helpcenterService: HelpCenterService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.initForm()
@@ -62,16 +90,20 @@ export class AddHelpCenterComponent implements OnInit {
 
   getAbout() {
     this.helpcenterService.getHelpCenter().subscribe((res: any) => {
-      this.len = res?.result.length
-      this.slug = res?.result[0].slug
-      this.helpcenterForm.get("description")?.setValue(res?.result[0].description)
-      this.helpcenterForm.get("phone")?.setValue(res?.result[0].phone)
-      this.helpcenterForm.get("email")?.setValue(res?.result[0].email)
+      if (res?.errorCode == 0) {
+        this.isData = res?.result.length > 0 ? true : false
+        this.slug = res?.result[0].slug
+        this.helpcenterForm.get("description")?.setValue(res?.result[0].description)
+        this.helpcenterForm.get("phone")?.setValue(res?.result[0].phone)
+        this.helpcenterForm.get("email")?.setValue(res?.result[0].email)
+      }
     })
   }
 
   reloadPage() {
-    window.location.reload()
+    this.isSubmitted = false
+    this.isHidden = true
+    this.ngOnInit()
   }
 
   showButton() {
@@ -83,7 +115,7 @@ export class AddHelpCenterComponent implements OnInit {
       console.error("Validation error")
       return;
     }
-    if (this.len == 0) {
+    if (!this.isData) {
       this.helpcenterService.createHelpCenter(this.helpcenterForm.value).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error('Something went wrong');

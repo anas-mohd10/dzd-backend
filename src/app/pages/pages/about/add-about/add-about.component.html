@@ -5,7 +5,7 @@
       </div>
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -24,10 +24,12 @@
                   <div class="col-12">
                      <form [formGroup]="aboutForm">
                         <div class="form-group">
-                           <textarea class="form-control fs-5 about-textarea" name="" id="" cols="30"
-                              formControlName="description" rows="10"
-                              [ngClass]="{'is-invalid': (af.description.touched || isSubmitted) && af.description.errors?.required}"
-                              (click)="showButton()"></textarea>
+                           <angular-editor class="form-control fs-5 about-textarea" formControlName="description"
+                              [config]="editorConfig" (click)="showButton()"></angular-editor>
+                           <div class="errorMessage"
+                              *ngIf="(af.description.touched || isSubmitted) && af.description.errors?.required">
+                              About is required
+                           </div>
                         </div>
                         <ng-container *ngIf="!isHidden">
                            <div class="col-12 d-flex justify-content-end">

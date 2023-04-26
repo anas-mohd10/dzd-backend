@@ -440,6 +440,8 @@
                         <label class="fs-5 mb-3">Description</label>
                         <textarea class="form-control fs-5" formControlName="description" style="resize: none"
                           id="productdescription" rows="3"></textarea>
+                        <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
+                        <ngx-editor [editor]="editor" formControlName="description"></ngx-editor> -->
                       </div>
                       <div class="col-12 col-sm-6 form-group">
                         <label class="fs-5 mb-3">Features</label>
@@ -574,7 +576,7 @@
                     <div class="postedImages">
                       <ng-container *ngFor="let image of productImages; let i =index">
                         <div class="postedImage">
-                          <input type="radio" id="image" name="image" (click)="selectProductImage(image)">
+                          <input type="checkbox" id="image" name="name" (click)="selectProductImage(image)">
                           <img src="{{base}}/{{image}}" alt="Product">
                         </div>
                       </ng-container>

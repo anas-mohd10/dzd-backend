@@ -6,7 +6,7 @@ import { AddAboutComponent } from './add-about/add-about.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
     AboutRoutingModule,
     DataTablesModule,
     FormsModule,
+    AngularEditorModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

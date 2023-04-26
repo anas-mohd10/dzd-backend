@@ -5,7 +5,7 @@
       </div>
       <div class="row align-items-center">
          <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -24,10 +24,13 @@
                   <div class="col-12">
                      <form [formGroup]="helpcenterForm">
                         <div class="form-group">
-                           <textarea class="form-control fs-5 about-textarea" name="" id="" cols="30"
-                              formControlName="description" rows="10"
-                              [ngClass]="{'is-invalid': (hf.description.touched || isSubmitted) && hf.description.errors?.required}"
-                              (click)="showButton()"></textarea>
+                           <label class="fs-5 mb-3 form-title required">Description</label>
+                           <angular-editor class="form-control fs-5 about-textarea" formControlName="description"
+                              [config]="editorConfig" (click)="showButton()"></angular-editor>
+                           <div class="errorMessage"
+                              *ngIf="(hf.description.touched || isSubmitted) && hf.description.errors?.required">
+                              Help center is required
+                           </div>
                         </div>
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
@@ -36,7 +39,8 @@
                                  [ngClass]="{'is-invalid': (hf.phone.touched || isSubmitted) && hf.phone.errors?.required}"
                                  (click)="showButton()" />
                            </div>
-                           <div class="text-danger" *ngIf="hf.phone.errors?.pattern">Please Enter Valid Phone Number</div>
+                           <div class="text-danger" *ngIf="hf.phone.errors?.pattern">Please Enter Valid Phone Number
+                           </div>
                         </div>
                         <div class="col-12 col-sm-6">
                            <div class="form-group">

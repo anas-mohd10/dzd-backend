@@ -3,6 +3,18 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 
+.angular-editor-textarea {
+  height: 350px !important;
+  min-height: 350px !important;
+}
+
+.angular-editor-textarea {
+  &:focus {
+    border: 1px solid #dddddd !important;
+    outline: none !important;
+  }
+}
+
 .imageSelectionContainer {
   margin: 0 0 30px 0;
 

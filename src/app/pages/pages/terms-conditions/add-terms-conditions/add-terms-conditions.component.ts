@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { TermsConditionsService } from 'src/app/includes/services/terms-conditions.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-add-terms-conditions',
@@ -21,9 +20,34 @@ export class AddTermsConditionsComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   isSubmitted: boolean;
-  len: any
+  isData: Boolean = false
   isHidden: Boolean = true
   slug: any;
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter terms and conditions here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
+      { class: 'manrope', name: 'Manrope' },
+    ]
+  };
+
 
   constructor(private termsconditionsService: TermsConditionsService, private formBuilder: FormBuilder, private router: Router,
     private toastr: ToastrService) { }
@@ -59,14 +83,17 @@ export class AddTermsConditionsComponent implements OnInit {
 
   getAbout() {
     this.termsconditionsService.getTermsConditions().subscribe((res: any) => {
-      this.len = res?.result.length
-      this.slug = res?.result[0].slug
-      this.termsconditionsForm.get("description")?.setValue(res?.result[0].description)
+      this.isData = res?.result.length > 0 ? true : false
+      let data = res?.result[0]
+      this.slug = data?.slug
+      this.termsconditionsForm.get("description")?.setValue(data?.description)
     })
   }
 
   reloadPage() {
-    window.location.reload()
+    this.isSubmitted = false
+    this.isHidden = true
+    this.ngOnInit()
   }
 
   showButton() {
@@ -75,28 +102,28 @@ export class AddTermsConditionsComponent implements OnInit {
 
   onSubmit() {
     if (!this.termsconditionsForm.valid) {
-      console.error("Validation error")
+      this.isSubmitted = true
       return;
     }
-    if (this.len == 0) {
+
+    if (!this.isData) {
       this.termsconditionsService.createTermsConditions(this.termsconditionsForm.value).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Terms and conditions added successfully');
-          this.router.navigate([this.appRoute.termsconditions.TERMSCONDITIONS]);
-          window.location.reload()
-        }
+        this.afterResult(res?.errorCode, res?.message)
       })
     } else {
       this.termsconditionsService.updateTermsConditions(this.slug, this.termsconditionsForm.value).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Terms and conditions added successfully');
-          window.location.reload()
-        }
+        this.afterResult(res?.errorCode, res?.message)
       })
+    }
+  }
+
+  afterResult(errorcode: any, message: any) {
+    if (errorcode != 0) {
+      this.toastr.error(message);
+    } else if (errorcode == 0) {
+      this.toastr.success(message);
+      this.isHidden = true
+      this.ngOnInit()
     }
   }
 

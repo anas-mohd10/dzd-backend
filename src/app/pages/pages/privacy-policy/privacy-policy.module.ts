@@ -6,8 +6,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { AddPrivacyPolicyComponent } from './add-privacy-policy/add-privacy-policy.component';
-
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 @NgModule({
   declarations: [
     AddPrivacyPolicyComponent
@@ -17,6 +16,7 @@ import { AddPrivacyPolicyComponent } from './add-privacy-policy/add-privacy-poli
     PrivacyPolicyRoutingModule,
     DataTablesModule,
     FormsModule,
+    AngularEditorModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

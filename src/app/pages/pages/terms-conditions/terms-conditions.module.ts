@@ -6,7 +6,7 @@ import { AddTermsConditionsComponent } from './add-terms-conditions/add-terms-co
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -18,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
     DataTablesModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

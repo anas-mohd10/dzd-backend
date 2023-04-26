@@ -10,7 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxTextEditorModule } from 'ngx-text-editor';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,6 @@ import { NgxTextEditorModule } from 'ngx-text-editor';
     ImageCropperModule,
     NgSelectModule,
     ReactiveFormsModule,
-    NgxTextEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

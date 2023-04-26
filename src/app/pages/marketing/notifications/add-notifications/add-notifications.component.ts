@@ -14,21 +14,6 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   styleUrls: ['./add-notifications.component.scss']
 })
 export class AddNotificationsComponent implements OnInit {
-  public config: any = {
-    editable: true,
-    spellcheck: true,
-    placeholder: 'Enter notification content here',
-    // translate:this.translate,
-    height: '300px',
-    minHeight: '300px',
-    // width:'100%',
-    // minWidth: '100%',
-    enableToolbar: true,
-    showToolbar: true,
-    // imageEndPoint: this.imageEndPoint,
-    toolbar: [],
-    resizer: 'stack'
-  };
   notificationForm: FormGroup;
   task = PageTasks.ADD;
   editMode = false;
@@ -41,13 +26,10 @@ export class AddNotificationsComponent implements OnInit {
   invalidDate: Boolean = false
   invalidTime: Boolean = false
   isScheduled: Boolean = false
-
   croppedImage: string | null | undefined;
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
-
-  htmlContent: any
 
   constructor(
     private notificationsService: NotificationsService,

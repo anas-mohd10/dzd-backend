@@ -31,7 +31,7 @@ import { ArchivedCollectionComponent } from './pages/catalog/collection/archived
 import { ProductSuccessComponent } from './pages/catalog/product/product-success/product-success.component';
 import { UpdateHeadComponent } from './pages/catalog/product/update-head/update-head.component';
 import { AllProductsComponent } from './pages/catalog/product/all-products/all-products.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent],
@@ -51,6 +51,7 @@ import { AllProductsComponent } from './pages/catalog/product/all-products/all-p
     NgSelectModule,
     LayoutModule,
     FormsModule,
+    FontAwesomeModule,
     ReactiveFormsModule,
     ImageCropperModule
   ],

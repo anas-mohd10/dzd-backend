@@ -48,9 +48,10 @@
                               <label class="form-check-label fs-5" for="inlineRadio2">Select customers</label>
                            </div>
                            <div class="col-12 mt-10" *ngIf="getCustomer == true">
-                              <ng-select [items]="customersdata" bindLabel="name" bindValue="_id" [(ngModel)]="customers"
-                                 [ngModelOptions]="{standalone: true}" placeholder="Search customers" [multiple]="true"
-                                 [closeOnSelect]="false" [hideSelected]="true">
+                              <ng-select [items]="customersdata" bindLabel="name" bindValue="_id"
+                                 [(ngModel)]="customers" [ngModelOptions]="{standalone: true}"
+                                 placeholder="Search customers" [multiple]="true" [closeOnSelect]="false"
+                                 [hideSelected]="true">
                               </ng-select>
                            </div>
                         </div>
@@ -103,10 +104,6 @@
                            <textarea class=" form-control fs-5" formControlName="content" style="resize: none"
                               id="content" rows="5"
                               [ngClass]="{'is-invalid':(nf.content.touched || isSubmitted) && nf.content.errors?.required}"></textarea>
-                           <!-- <div class="NgxEditor__Wrapper">
-                              <ngx-text-editor [spellcheck]="true"
-                                 [(ngModel)]="htmlContent" [config]="config"></ngx-text-editor>
-                           </div> -->
                         </div>
                      </div>
                      <div class="col-12">

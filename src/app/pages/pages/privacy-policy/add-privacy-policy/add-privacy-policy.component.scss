@@ -1,5 +1,11 @@
-.about-textarea{
+.about-textarea {
    width: 100%;
    resize: none;
-   height: 600px;
+}
+
+.errorMessage {
+   margin: 20px 0;
+   color: #d81b1b;
+   font-size: 16px;
+   font-weight: 600;
 }

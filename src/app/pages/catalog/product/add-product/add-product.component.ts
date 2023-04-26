@@ -204,6 +204,7 @@ export class AddProductComponent implements OnInit {
   selectThumbnailImage(file: any) {
     this.thumbnailFile = file
     this.thumbnailImage = null
+    this.thumbnailFilename = null
   }
 
   loadMoreProductImages() {
@@ -686,6 +687,7 @@ export class AddProductComponent implements OnInit {
         refid: categoryRefid
       },
       attributes: this.attributesValues,
+      productFiles: this.productFile,
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,
       isArchive: this.productform.get('isArchive')?.value,
@@ -695,7 +697,8 @@ export class AddProductComponent implements OnInit {
       files: this.files,
       video: this.videoFile,
       thumbFilename: this.thumbnailFilename,
-      thumbFilestring: this.thumbnailImage
+      thumbFilestring: this.thumbnailImage,
+      thumbnail: this.thumbnailFile
     }
     return data
   }
