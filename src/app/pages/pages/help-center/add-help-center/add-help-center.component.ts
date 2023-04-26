@@ -112,28 +112,27 @@ export class AddHelpCenterComponent implements OnInit {
 
   onSubmit() {
     if (!this.helpcenterForm.valid) {
-      console.error("Validation error")
+      this.isSubmitted = true
       return;
     }
     if (!this.isData) {
       this.helpcenterService.createHelpCenter(this.helpcenterForm.value).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Help request added successfully');
-          this.router.navigate([this.appRoute.helpcenter.HELPCENTER]);
-          window.location.reload()
-        }
+        this.afterResult(res?.errorCode, res?.message)
       })
     } else {
       this.helpcenterService.updateHelpCenter(this.slug, this.helpcenterForm.value).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Help request added successfully');
-          window.location.reload()
-        }
+        this.afterResult(res?.errorCode, res?.message)
       })
+    }
+  }
+
+  afterResult(errorcode: any, message: any) {
+    if (errorcode != 0) {
+      this.toastr.error(message);
+    } else if (errorcode == 0) {
+      this.toastr.success(message);
+      this.isHidden = true
+      this.ngOnInit()
     }
   }
 

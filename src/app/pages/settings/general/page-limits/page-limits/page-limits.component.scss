@@ -1,22 +1,23 @@
-.page-settings-container{
+.page-settings-container {
    margin: 50px 0 0 0;
 }
 
 .page-settings-view-card {
-   display: flex;
-   flex-wrap: wrap;
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   gap: 10px;
    width: 100%;
 }
 
 .page-settings {
-   width: 48%;
+   width: 100%;
    align-items: center;
    justify-content: flex-start;
-  margin: 10px 4px;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #efefef;
-  border-radius: 10px;
+   margin: 10px 4px;
+   padding: 20px;
+   background: #ffffff;
+   border: 1px solid #efefef;
+   border-radius: 10px;
 }
 
 .page-settings-details {
@@ -26,11 +27,11 @@
    align-items: center;
 }
 
-.page-settings-title{
+.page-settings-title {
    margin: 20px 0 10px 0;
 }
 
-.page-settings-name{
+.page-settings-name {
    margin: 0 0 0 10px;
    font-size: 1.4rem !important;
    font-weight: 700 !important;

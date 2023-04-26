@@ -5,8 +5,8 @@
       <h1 class="fw-bolder">Tax Rules</h1>
     </div>
     <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
+  <!-- Page Header -->
 
   <!-- Table start -->
   <div class="row">
@@ -30,9 +30,9 @@
         <div class="card-body">
           <div class="table-responsive" *ngIf="displayTable">
             <table datatable [dtOptions]="dtOptions"
-              class="datatable table table-borderless table-center table-row-dashed mb-0">
+              class="table table-center">
               <thead class="thead">
-                <tr class="fs-7 text-uppercase">
+                <tr class="fs-5">
                   <th class="text-gray-400 col-md-2">Sl No.</th>
                   <th class="text-gray-400 col-md-2">Tax Type</th>
                   <th class="text-gray-400 col-md-2">Name</th>

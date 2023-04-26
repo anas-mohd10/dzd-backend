@@ -1,12 +1,11 @@
 <div class="content container-fluid">
-  <!-- Page Header -->
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update tax class" : "Add tax class" }}</h1>
+    </div>
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fw-bolder">
-          {{ editMode ? "Update Tax Class" : "Add Tax Class" }}
-        </h3>
-        <ul class="breadcrumb">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -14,15 +13,12 @@
             <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
           </li>
           <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">{{
-              editMode ? "Update Tax Class" : "Add Tax Class"
-              }}</a>
+            <a routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">{{editMode ? "Update Tax Class" : "Add Tax Class"}}</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
   <div class="row mt-10">
     <div class="col-sm-12 fs-5">
       <div class="card">
@@ -44,7 +40,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Description</label>
+                  <label class="fs-5 mb-3 form-title">Description</label>
                   <input type="text" class="form-control fs-5" formControlName="description" />
                 </div>
               </div>
@@ -84,7 +80,7 @@
                   </ng-container>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 d-flex justify-content-end">
                 <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel

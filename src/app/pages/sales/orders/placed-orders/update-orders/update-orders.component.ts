@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -8,6 +8,8 @@ import { appRoutes } from 'src/app/config/routes';
 import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
+import { jsPDF } from "jspdf";
+
 
 @Component({
   selector: 'app-update-orders',
@@ -28,6 +30,8 @@ export class UpdateOrdersComponent implements OnInit {
   price: any = 0
   slug: any
   base: string;
+
+  @ViewChild("productDetails", { static: true }) productDetails: ElementRef;
 
   constructor(
     private orderService: OrdersService,
@@ -111,9 +115,9 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   generateInvoice() {
-    this.invoiceService.generateInvoice({}).subscribe((res: any) => {
-      console.log(res);
-    })
+    const data = this.productDetails.nativeElement
+    const doc: jsPDF = new jsPDF("p", "mm", "a4");
+    doc.html(data, { callback: (doc) => { doc.output("dataurlnewwindow") } });
   }
 
   onSubmit() {

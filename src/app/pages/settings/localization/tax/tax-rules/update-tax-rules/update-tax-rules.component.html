@@ -1,12 +1,12 @@
 <div class="content container-fluid">
   <!-- Page Header -->
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update tax rules" : "Add tax rules" }}</h1>
+    </div>
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fs-1 fw-bolder">
-          {{ editMode ? "Update Tax Rules" : "Add Tax Rules" }}
-        </h3>
-        <ul class="breadcrumb">
+        <ul class="breadcrumb fw-bolder">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
+  <!-- Page Header -->
   <div class="row mt-10">
     <div class="col-sm-12 fs-5">
       <div class="card">
@@ -67,7 +67,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 d-flex justify-content-end">
                 <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel

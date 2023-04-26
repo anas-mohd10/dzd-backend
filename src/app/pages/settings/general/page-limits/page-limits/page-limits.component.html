@@ -4,8 +4,8 @@
          <h1 class="fw-bolder">Page Limits</h1>
       </div>
       <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
+         <div class="col d-flex align-items-start justify-content-between">
+            <ul class="breadcrumb fw-bolder">
                <li class="breadcrumb-item fs-5">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
@@ -40,7 +40,7 @@
                <div class="page-settings-title fs-5">
                   Selected default brand
                </div>
-               <div class="page-settings-details">
+               <div class="page-settings-details" *ngIf="settings?.brands?.selecteditem">
                   <div class="page-settings-image">
                      <img src="{{base}}/{{settings?.brands?.selecteditem?.file}}" alt=""
                         style="height: 40px; width: 40px; border-radius: 5px;">
@@ -49,6 +49,9 @@
                      {{settings?.brands?.selecteditem?.name}}
                   </div>
                </div>
+               <ng-container *ngIf="!settings?.brands?.selecteditem">
+                  <div>No brand selected</div>
+               </ng-container>
             </div>
             <div class="page-settings">
                <div class="page-settings-limit fs-5">
@@ -57,7 +60,7 @@
                <div class="page-settings-title fs-5">
                   Selected default category
                </div>
-               <div class="page-settings-details">
+               <div class="page-settings-details" *ngIf="settings?.categories?.selecteditem">
                   <div class="page-settings-image">
                      <img src="{{base}}/{{settings?.categories?.selecteditem?.file}}" alt=""
                         style="height: 40px; width: 40px; border-radius: 5px;">
@@ -66,6 +69,9 @@
                      {{settings?.categories?.selecteditem?.name}}
                   </div>
                </div>
+               <ng-container *ngIf="!settings?.categories?.selecteditem">
+                  <div>No category selected</div>
+               </ng-container>
             </div>
             <div class="page-settings">
                <div class="page-settings-limit fs-5">
@@ -83,6 +89,9 @@
                      {{settings?.collections?.selecteditem?.name}}
                   </div>
                </div>
+               <ng-container *ngIf="!settings?.collections?.selecteditem">
+                  <div>No collections selected</div>
+               </ng-container>
             </div>
             <div class="page-settings">
                <div class="page-settings-limit fs-5">
@@ -100,6 +109,9 @@
                      {{settings?.products?.selecteditem?.name}}
                   </div>
                </div>
+               <ng-container *ngIf="!settings?.products?.selecteditem">
+                  <div>No products selected</div>
+               </ng-container>
             </div>
          </div>
       </ng-container>
