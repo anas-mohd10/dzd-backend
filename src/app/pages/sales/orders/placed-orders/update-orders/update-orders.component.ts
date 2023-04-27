@@ -9,6 +9,7 @@ import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settin
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
 import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class UpdateOrdersComponent implements OnInit {
   base: string;
 
   @ViewChild("productDetails", { static: true }) productDetails: ElementRef;
+  @ViewChild("shippingAddress", { static: true }) shippingAddress: ElementRef;
 
   constructor(
     private orderService: OrdersService,
@@ -115,9 +117,11 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   generateInvoice() {
-    const data = this.productDetails.nativeElement
-    const doc: jsPDF = new jsPDF("p", "mm", "a4");
-    doc.html(data, { callback: (doc) => { doc.output("dataurlnewwindow") } });
+
+  }
+
+  generateShippingDetails() {
+
   }
 
   onSubmit() {

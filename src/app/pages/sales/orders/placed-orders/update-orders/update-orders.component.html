@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="topButtons d-flex align-items-center justify-content-end">
-    <div class="printButton bg-primary">
+    <div class="printButton bg-primary" (click)="generateShippingDetails()">
       <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
     </div>
     <div class="printButton bg-primary" (click)="generateInvoice()">
@@ -263,11 +263,6 @@
                       <label class="fs-5 mb-3">Transaction ID</label>
                       <input type="text" class="form-control fs-5" formControlName="paymentId" />
                     </div>
-                    <!-- <div class="col-12">
-                      <div class="alert alert-info fw-bolder" role="alert">
-                        Order ID will be present for online payment from customer app.
-                      </div>
-                    </div> -->
                   </div>
                 </div>
 
@@ -361,7 +356,7 @@
     </div>
 
     <!-- Product details -->
-    <div class="row mt-10" id="productDetails">
+    <div class="row mt-10" id="productDetails" #productDetails>
       <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
         <div class="card-header">
           <div class="card-title">
@@ -447,7 +442,7 @@
       </div>
     </div>
     <!-- Product details -->
-    
+
     <!-- Order history section-->
     <div class="row mt-10">
       <div class="col-sm-12 fs-5">
