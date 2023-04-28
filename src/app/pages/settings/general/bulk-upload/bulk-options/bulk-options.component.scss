@@ -1,0 +1,79 @@
+$white: #ffffff;
+$border: #E4E6EF;
+$text: #333333;
+$primary: #00bdab;
+$primaryLight: #00bdab30;
+$primaryMedium: #00bdab50;
+
+.bulkOptionsContainer {
+
+    .uploadOptions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+
+        .mediaUploadOptions,
+        .fileUploadOptions {
+            margin: 0 0 30px 0;
+            padding: 10px;
+            background: $white;
+            border: 1px solid $border;
+            border-radius: 10px;
+
+            .bulkOptions {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+
+                .bulkOptionButton {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border: 1px solid $border;
+                    padding: 20px;
+                    border-radius: 10px;
+                    background: $primaryLight;
+                    cursor: pointer;
+
+                    .bulkOption {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: $text;
+                    }
+
+                    .image {
+                        img {
+                            height: 30px;
+                            width: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.text {
+    font-size: 16px;
+}
+
+.noHistory {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .image {
+        margin: 0 10px 0 0;
+
+        img {
+            height: 80px;
+            width: auto;
+        }
+    }
+
+    .text {
+        font-size: 16px;
+        font-weight: 600;
+        color: $text;
+    }
+}

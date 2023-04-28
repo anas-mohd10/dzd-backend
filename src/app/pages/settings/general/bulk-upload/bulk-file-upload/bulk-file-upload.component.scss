@@ -1,0 +1,42 @@
+$white: #ffffff;
+$border: #E4E6EF;
+$text: #333333;
+$primary: #00bdab;
+$primaryLight: #00bdab30;
+$primaryMedium: #00bdab50;
+
+
+.bulkMediaContainer {
+    .bulkUploadHeader {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        .backButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background: $white;
+            border: 1px solid $border;
+            border-radius: 10px;
+            margin: 0 20px 0 0;
+            cursor: pointer;
+
+            img {
+                height: 30px;
+                width: 30px;
+            }
+        }
+
+        .bulkUploadTitle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            h2 {
+                margin: 0;
+            }
+        }
+    }
+}
