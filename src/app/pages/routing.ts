@@ -295,6 +295,10 @@ export const Routing: Routes = [
         path: 'shipping',
         loadChildren: () => import('./sales/shipping/shipping.module').then((m) => m.ShippingModule),
         canActivate: [AuthenticationGuard]
+      }, {
+        path: 'bulk-upload',
+        loadChildren: () => import('./settings/general/bulk-upload/bulk-upload.module').then((m) => m.BulkUploadModule),
+        canActivate: [AuthenticationGuard]
       },
     ]
   },
