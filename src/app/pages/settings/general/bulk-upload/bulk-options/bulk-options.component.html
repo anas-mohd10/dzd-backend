@@ -79,5 +79,17 @@
                 <div class="text">No history found</div>
             </div>
         </ng-container>
+
+        <div class="historyContainer" *ngIf="history.length > 0">
+            <ng-container *ngFor="let data of history; let i = index">
+                <div class="historyCard">
+                    <div class="historyDetails">
+                        <div class="historyType">{{data?.type}}</div>
+                        <div class="historyFile">{{data?.name}} <span (click)="downloadFile(data?.path, data?.name)">Download File</span> </div>
+                    </div>
+                    <div class="historyDate">{{data?.date}}</div>
+                </div>
+            </ng-container>
+        </div>
     </div>
 </div>

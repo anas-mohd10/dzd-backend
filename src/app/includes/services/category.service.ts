@@ -80,4 +80,9 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.category_images);
     return this.http.post(`${url}`, data);
   }
+
+  bulkFileUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.category_bulk_file_upload);
+    return this.http.post(`${url}`, data);
+  }
 }

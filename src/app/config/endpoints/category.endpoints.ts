@@ -13,5 +13,6 @@ export const categoryEndpoints = {
   restore_category: '/categories/restore',
   get_sub_categories_by_id: '/sub-categories-id',
   all_sub_categories: '/all-sub-categories',
-  category_images: '/categories/images'
+  category_images: '/categories/images',
+  category_bulk_file_upload: '/categories/bulk-file-upload'
 }

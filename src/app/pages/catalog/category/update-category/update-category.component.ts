@@ -218,26 +218,22 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
       this.categoryForm.get('isArchive')?.setValue(this.categoryValues.isArchive);
       this.categoryForm.get('parent')?.setValue(this.categoryValues.path);
-      this.categoryForm.get('background')?.setValue(this.categoryValues.style.background);
-      this.categoryForm.get('border')?.setValue(this.categoryValues.style.border);
-      this.categoryForm.get('radius')?.setValue(this.categoryValues.style.radius);
-      this.categoryForm.get('color')?.setValue(this.categoryValues.style.text.color);
-      this.categoryForm.get('fontWeight')?.setValue(this.categoryValues.style.text.fontWeight);
-      this.categoryForm.get('fontSize')?.setValue(this.categoryValues.style.text.fontSize);
-      this.border = this.categoryValues.style.border
-      this.background = this.categoryValues.style.background
-      this.color = this.categoryValues.style.text.color
+      this.categoryForm.get('background')?.setValue(this.categoryValues.style?.background);
+      this.categoryForm.get('border')?.setValue(this.categoryValues.style?.border);
+      this.categoryForm.get('radius')?.setValue(this.categoryValues.style?.radius);
+      this.categoryForm.get('color')?.setValue(this.categoryValues.style?.text?.color);
+      this.categoryForm.get('fontWeight')?.setValue(this.categoryValues.style?.text?.fontWeight);
+      this.categoryForm.get('fontSize')?.setValue(this.categoryValues.style?.text?.fontSize);
+      this.border = this.categoryValues.style?.border
+      this.background = this.categoryValues.style?.background
+      this.color = this.categoryValues.style?.text.color
       this.parent = this.categoryValues?.parent?.refid?._id
       this.catid = this.categoryValues?.parent?.catid
       this.root = this.categoryValues?.root?._id
       this.path = this.categoryValues?.path
+      if (this.categoryValues.isRoot == true) this.isChecked = true;
+      if (this.categoryValues.isArchive == true) this.isArchived = true
       this.cdr.markForCheck()
-      if (this.categoryValues.isRoot == true) {
-        this.isChecked = true;
-      }
-      if (this.categoryValues.isArchive == true) {
-        this.isArchived = true
-      }
     });
   }
 

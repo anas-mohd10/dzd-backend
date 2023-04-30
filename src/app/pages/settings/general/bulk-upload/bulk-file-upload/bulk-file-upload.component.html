@@ -7,4 +7,46 @@
             <h2 class="fw-bolder">{{pageTitle}}</h2>
         </div>
     </div>
+
+    <ng-container *ngIf="!isTriggered">
+        <div class="bulkUploadContainer">
+            <div class="bulkUploadInput">
+                <input type="file" accept=".csv" (change)="fileUpload($event.target)">
+                <div class="bulkUploadMask">
+                    <img src="../../../../../../assets/media/svg/files/upload.svg" alt="Upload">
+                    <p>Drop your files here or <span>Browse</span></p>
+                </div>
+            </div>
+
+            <ng-container *ngIf="isUploaded">
+                <div class="previewContainer">
+                    <div class="uploadedTitle">Processed File</div>
+                    <div class="uploadedFileContainer">
+                        <div class="fileDetails">
+                            <div class="fileName">{{filename}}</div>
+                            <div class="fileSize">{{filesize}} KB</div>
+                        </div>
+                        <div class="removeContainer" (click)="removeFileUpload()">Remove</div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isTriggered">
+        <div class="processingContainer">
+            <img src="../../../../../../assets/media/illustrations/dozzy-1/9.png" alt="Processing">
+            <div class="processingText">
+                <h1>Processing...</h1>
+                <p>Please wait, this may take upto minutes</p>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="isUploaded || isTriggered">
+        <div class="buttonsContainer">
+            <div class="cancelButton" (click)="navigateBack()">Cancel</div>
+            <div class="uploadButton" (click)="bulkUpload()">Upload</div>
+        </div>
+    </ng-container>
 </div>

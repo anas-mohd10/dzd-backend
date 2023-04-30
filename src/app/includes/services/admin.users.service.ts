@@ -25,6 +25,11 @@ export class AdminUsersService {
     return this.http.post(`${url}`, data)
   }
 
+  getAdminDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.admin_details);
+    return this.http.post(`${url}`, data)
+  }
+
   addAdminUsers(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.register_admin);
     return this.http.post(`${url}`, data)

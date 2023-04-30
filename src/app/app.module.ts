@@ -43,7 +43,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     ClipboardModule,
     NgMultiSelectDropDownModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
