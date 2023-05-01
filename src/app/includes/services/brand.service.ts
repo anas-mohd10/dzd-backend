@@ -70,4 +70,9 @@ export class BrandService {
     const url = this.commonService.getFullUrl(this.brandEndpoints.brands_bulk_file_upload);
     return this.http.post(`${url}`, data);
   }
+
+  bulkImageUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.brands_bulk_image_upload);
+    return this.http.post(`${url}`, data);
+  }
 }

@@ -10,5 +10,6 @@ export const brandEndpoints = {
   archive_brand: '/brands/archive',
   restore_brand: '/brands/restore',
   brand_images: '/brands/images',
-  brands_bulk_file_upload: '/brands/bulk-file-upload'
+  brands_bulk_file_upload: '/brands/bulk-file-upload',
+  brands_bulk_image_upload: '/brands/bulk-image-upload'
 }

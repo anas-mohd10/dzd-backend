@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { BrandService } from 'src/app/includes/services/brand.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
 
 @Component({
   selector: 'app-bulk-media-upload',
@@ -9,9 +12,18 @@ import { ActivatedRoute } from '@angular/router';
 export class BulkMediaUploadComponent implements OnInit {
   pageTitle: any
   pageType: any
+  images: any = []
+  isUploaded: Boolean = false
+  filename: any;
+  filesize: any;
+  filestring: any;
+  isTriggered: boolean = false;
 
   constructor(
-    private ActivatedRoute: ActivatedRoute
+    private ActivatedRoute: ActivatedRoute,
+    private BrandService: BrandService,
+    private ToastrService: ToastrService,
+    private CategoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +41,53 @@ export class BulkMediaUploadComponent implements OnInit {
       case 'product':
         this.pageTitle = 'Product Media Bulk Upload'
         break
+    }
+  }
+
+  fileUpload(event: any) {
+    let files = event.files
+    this.filestring = files
+    for (let file of Object.keys(files)) {
+      this.images.push(files[file])
+    }
+
+    this.isUploaded = true
+  }
+
+  removeFileUpload() {
+  }
+
+  bulkUpload() {
+    let formdata = new FormData()
+    formdata.append("files", JSON.stringify(this.images))
+    switch (this.pageType) {
+      case 'category':
+        this.isTriggered = true
+        this.CategoryService.bulkFileUpload(formdata).subscribe((res: any) => {
+          this.getResults(res?.errorCode, res?.message)
+        })
+        break
+      case 'brand':
+        this.isTriggered = true
+        this.BrandService.bulkImageUpload(formdata).subscribe((res: any) => {
+          this.getResults(res?.errorCode, res?.message)
+        })
+        break
+      case 'collection':
+        break
+      case 'product':
+        break
+    }
+  }
+
+  getResults(errorCode: any, message: any) {
+    if (errorCode == 0) {
+      this.isTriggered = false
+      window.history.back()
+      this.ToastrService.success(message)
+    } else {
+      this.isTriggered = false
+      this.ToastrService.error(message)
     }
   }
 

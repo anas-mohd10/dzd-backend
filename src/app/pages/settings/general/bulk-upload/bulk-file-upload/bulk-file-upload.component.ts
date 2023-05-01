@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 
-
 @Component({
   selector: 'app-bulk-file-upload',
   templateUrl: './bulk-file-upload.component.html',
@@ -45,21 +44,21 @@ export class BulkFileUploadComponent implements OnInit {
     }
   }
 
-  fileUpload(event: any){
+  fileUpload(event: any) {
     this.filedata = event.files[0]
     this.filename = this.filedata.name
-    this.filesize = this.filedata.size/1024
+    this.filesize = this.filedata.size / 1024
 
     const reader = new FileReader();
     reader.readAsDataURL(this.filedata);
     reader.onload = () => {
-        this.filestring = reader.result
+      this.filestring = reader.result
     };
 
-    if(this.filedata) this.isUploaded = true
+    if (this.filedata) this.isUploaded = true
   }
 
-  removeFileUpload(){
+  removeFileUpload() {
     this.filedata = null
     this.isUploaded = false
   }
@@ -68,7 +67,7 @@ export class BulkFileUploadComponent implements OnInit {
     window.history.back()
   }
 
-  bulkUpload(){
+  bulkUpload() {
     let formdata = new FormData()
     formdata.append("file", this.filedata)
     switch (this.pageType) {
@@ -91,12 +90,12 @@ export class BulkFileUploadComponent implements OnInit {
     }
   }
 
-  getResults(errorCode: any, message: any){
-    if(errorCode == 0){ 
+  getResults(errorCode: any, message: any) {
+    if (errorCode == 0) {
       this.isTriggered = false
       window.history.back()
       this.ToastrService.success(message)
-    }else{
+    } else {
       this.isTriggered = false
       this.ToastrService.error(message)
     }
