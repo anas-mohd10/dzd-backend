@@ -12,6 +12,8 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -136,6 +138,30 @@ export class AddProductComponent implements OnInit {
   productImagePage: any = 1
   thumbnailImagePage: any = 1
 
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter product description / features here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
+      { class: 'manrope', name: 'Manrope' },
+    ]
+  };
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -240,6 +266,7 @@ export class AddProductComponent implements OnInit {
       stockWarning: [''],
       description: [''],
       features: [''],
+      longDescription: [''],
       categories: [],
       brandId: [''],
       additionalbutton: [''],
@@ -678,6 +705,7 @@ export class AddProductComponent implements OnInit {
       },
       details: {
         description: this.productform.get('description')?.value,
+        longDescription: this.productform.get('longDescription')?.value,
         features: this.productform.get('features')?.value,
         additionalbutton: this.productform.get('additionalbutton')?.value,
         buttonredireturl: this.productform.get('buttonredireturl')?.value,

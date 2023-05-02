@@ -12,7 +12,7 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 export class BulkMediaUploadComponent implements OnInit {
   pageTitle: any
   pageType: any
-  images: any = []
+  images: Array<File> = []
   isUploaded: Boolean = false
   filename: any;
   filesize: any;
@@ -45,13 +45,8 @@ export class BulkMediaUploadComponent implements OnInit {
   }
 
   fileUpload(event: any) {
-    let files = event.files
-    this.filestring = files
-    for (let file of Object.keys(files)) {
-      this.images.push(files[file])
-    }
-
-    this.isUploaded = true
+    this.images = <Array<File>>event.files;
+    this.isUploaded = true    
   }
 
   removeFileUpload() {
@@ -59,7 +54,8 @@ export class BulkMediaUploadComponent implements OnInit {
 
   bulkUpload() {
     let formdata = new FormData()
-    formdata.append("files", JSON.stringify(this.images))
+    for(let file of this.images) formdata.append("file", file)
+
     switch (this.pageType) {
       case 'category':
         this.isTriggered = true

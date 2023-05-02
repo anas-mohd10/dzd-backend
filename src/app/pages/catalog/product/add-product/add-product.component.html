@@ -436,17 +436,20 @@
                       </select>
                     </div>
                     <div class="row">
-                      <div class="col-12 col-sm-6 form-group">
+                      <div class="col-12 form-group">
                         <label class="fs-5 mb-3">Description</label>
-                        <textarea class="form-control fs-5" formControlName="description" style="resize: none"
-                          id="productdescription" rows="3"></textarea>
-                        <!-- <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"></ngx-editor-menu>
-                        <ngx-editor [editor]="editor" formControlName="description"></ngx-editor> -->
+                          <angular-editor class="form-control fs-5 about-textarea" formControlName="description"
+                          [config]="editorConfig"></angular-editor>
                       </div>
-                      <div class="col-12 col-sm-6 form-group">
+                      <div class="col-12 form-group">
+                        <label class="fs-5 mb-3">Long Description</label>
+                          <angular-editor class="form-control fs-5 about-textarea" formControlName="longDescription"
+                          [config]="editorConfig"></angular-editor>
+                      </div>
+                      <div class="col-12 form-group">
                         <label class="fs-5 mb-3">Features</label>
-                        <textarea class="form-control fs-5" formControlName="features" style="resize: none"
-                          id="featureddescription" rows="3"></textarea>
+                          <angular-editor class="form-control fs-5 about-textarea" formControlName="features"
+                          [config]="editorConfig"></angular-editor>
                       </div>
                     </div>
                   </div>

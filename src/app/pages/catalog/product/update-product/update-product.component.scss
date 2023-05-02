@@ -5,6 +5,11 @@
   object-fit: cover;
 }
 
+.about-textarea {
+  width: 100%;
+  resize: none;
+}
+
 .products-image-container {
   flex-wrap: wrap;
   display: flex;

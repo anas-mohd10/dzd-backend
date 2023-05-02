@@ -12,6 +12,8 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
@@ -129,6 +131,30 @@ export class UpdateProductComponent implements OnInit {
   attributesValues: any = [];
   selectedAttributesValues: any = [];
 
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter product description / features here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
+      { class: 'manrope', name: 'Manrope' },
+    ]
+  };
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -218,6 +244,7 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('isActive')?.setValue(res?.result[0]?.isActive)
         this.productform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
         this.productform.get('description')?.setValue(res?.result[0]?.details?.description)
+        this.productform.get('longDescription')?.setValue(res?.result[0]?.details?.longDescription)
         this.productform.get('features')?.setValue(res?.result[0]?.details?.features)
 
         if (res?.result[0]?.isArchive == true) {
@@ -265,6 +292,7 @@ export class UpdateProductComponent implements OnInit {
       stockWarning: [''],
       description: [''],
       features: [''],
+      longDescription: [''],
       categories: [],
       additionalbutton: [''],
       buttonredireturl: [''],
@@ -560,6 +588,7 @@ export class UpdateProductComponent implements OnInit {
       },
       details: {
         description: this.productform.get('description')?.value,
+        longDescription: this.productform.get('longDescription')?.value,
         features: this.productform.get('features')?.value,
         additionalbutton: this.productform.get('additionalbutton')?.value,
         buttonredireturl: this.productform.get('buttonredireturl')?.value,
