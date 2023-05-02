@@ -59,7 +59,7 @@ export class BulkMediaUploadComponent implements OnInit {
     switch (this.pageType) {
       case 'category':
         this.isTriggered = true
-        this.CategoryService.bulkFileUpload(formdata).subscribe((res: any) => {
+        this.CategoryService.bulkMediaUpload(formdata).subscribe((res: any) => {
           this.getResults(res?.errorCode, res?.message)
         })
         break

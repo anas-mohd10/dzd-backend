@@ -85,4 +85,9 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.category_bulk_file_upload);
     return this.http.post(`${url}`, data);
   }
+
+  bulkMediaUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.categories_bulk_image_upload);
+    return this.http.post(`${url}`, data);
+  }
 }
