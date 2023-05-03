@@ -114,22 +114,24 @@ $primaryMedium: #00bdab50;
                 background: $white;
                 padding: 15px;
                 border-radius: 10px;
-                box-shadow:  0 0 15px 5px rgba($color: $primaryLight, $alpha: 0.05);
+                box-shadow: 0 0 15px 5px rgba($color: $primaryLight, $alpha: 0.05);
+                font-size: 18px;
+                font-weight: 600;
 
-                .fileDetails{
-                    .fileName{
-                        font-size: 18px;
+                .fileDetails {
+                    .fileName {
+                        font-size: 16px;
                         font-weight: 600;
                         color: $text;
                     }
 
-                    .fileSize{
+                    .fileSize {
                         font-size: 14px;
                         margin: 10px 0 0 0;
                     }
                 }
 
-                .removeContainer{
+                .removeContainer {
                     font-size: 14px;
                     font-weight: 600;
                     color: $text;
@@ -137,10 +139,10 @@ $primaryMedium: #00bdab50;
                 }
             }
         }
-        
+
     }
 
-    .processingContainer{
+    .processingContainer {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -148,18 +150,18 @@ $primaryMedium: #00bdab50;
         width: 100%;
         height: 400px;
 
-        img{
+        img {
             width: 300px;
             height: auto;
         }
 
-        .processingText{
-            h1{
+        .processingText {
+            h1 {
                 font-weight: 600;
                 margin: 0;
             }
 
-            p{
+            p {
                 font-size: 18px;
                 font-weight: 600;
             }

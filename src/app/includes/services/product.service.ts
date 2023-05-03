@@ -85,4 +85,20 @@ export class ProductService {
     const url = this.commonService.getFullUrl(this.productEndpoints.thumbnail_images);
     return this.http.post(`${url}`, query);
   }
+
+  bulkFileUpload(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.products_bulk_file_upload);
+    return this.http.post(`${url}`, query);
+  }
+
+  bulkMediaUpload(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.products_bulk_image_upload);
+    return this.http.post(`${url}`, query);
+  }
+
+  bulkThumbnailUpload(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.products_bulk_thumbnail_upload);
+    return this.http.post(`${url}`, query);
+  }
+
 }

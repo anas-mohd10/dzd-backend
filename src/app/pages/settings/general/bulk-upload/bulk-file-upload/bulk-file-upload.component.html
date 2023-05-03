@@ -1,10 +1,16 @@
 <div class="bulkMediaContainer">
     <div class="bulkUploadHeader">
-        <div class="backButton" (click)="navigateBack()">
-            <img src="../../../../../../assets/icons/chevron-back.png" alt="Icon">
+        <div class="bulkHeaderLeft">
+            <div class="backButton" (click)="navigateBack()">
+                <img src="../../../../../../assets/icons/chevron-back.png" alt="Icon">
+            </div>
+            <div class="bulkUploadTitle">
+                <h2 class="fw-bolder">{{pageTitle}}</h2>
+            </div>
         </div>
-        <div class="bulkUploadTitle">
-            <h2 class="fw-bolder">{{pageTitle}}</h2>
+        <div class="bulkHeaderRight">
+            <i class="bi bi-question-circle"></i>
+            Upload Guide
         </div>
     </div>
 
@@ -15,18 +21,31 @@
                 <div class="bulkUploadMask">
                     <img src="../../../../../../assets/media/svg/files/upload.svg" alt="Upload">
                     <p>Drop your files here or <span>Browse</span></p>
+                    <p class="note">Accepts csv file</p>
                 </div>
             </div>
 
             <ng-container *ngIf="isUploaded">
-                <div class="previewContainer">
-                    <div class="uploadedTitle">Processed File</div>
-                    <div class="uploadedFileContainer">
-                        <div class="fileDetails">
-                            <div class="fileName">{{filename}}</div>
-                            <div class="fileSize">{{filesize}} KB</div>
+                <div class="afterUploadContainer">
+                    <div class="previewContainer">
+                        <div class="uploadedTitle">Processed File</div>
+                        <div class="uploadedFileContainer">
+                            <div class="fileDetails">
+                                <div class="fileName">{{filename}}</div>
+                                <div class="fileSize">{{filesize}} KB</div>
+                            </div>
+                            <div class="removeContainer" (click)="removeFileUpload()">
+                                <i class="bi bi-x-lg"></i>
+                            </div>
                         </div>
-                        <div class="removeContainer" (click)="removeFileUpload()">Remove</div>
+                        <div class="validationContainer">
+                            <div class="validationMessage errorValidation" *ngIf="!isValidFile">
+                                Validation failed
+                            </div>
+                            <div class="validationReason" *ngIf="!isValidFile">
+                                <i class="bi bi-exclamation-lg"></i> Reason : File size is more than 5 Mb
+                            </div>
+                        </div>
                     </div>
                 </div>
             </ng-container>

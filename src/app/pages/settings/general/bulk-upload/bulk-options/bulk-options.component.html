@@ -27,6 +27,13 @@
                     </div>
                 </div>
                 <div class="bulkOptionButton" routerLink="/app/bulk-upload/media"
+                    [queryParams]="{'type': 'product-thumbnails'}">
+                    <div class="bulkOption">Product Thumbnails</div>
+                    <div class="image">
+                        <img src="../../../../../../assets/icons/chevron-right.png" alt="Icon">
+                    </div>
+                </div>
+                <div class="bulkOptionButton" routerLink="/app/bulk-upload/media"
                     [queryParams]="{'type': 'collection'}">
                     <div class="bulkOption">Collection</div>
                     <div class="image">
@@ -64,6 +71,12 @@
                         <img src="../../../../../../assets/icons/chevron-right.png" alt="Icon">
                     </div>
                 </div>
+                <div class="bulkOptionButton" routerLink="/app/bulk-upload/file" [queryParams]="{'type': 'users'}">
+                    <div class="bulkOption">Users</div>
+                    <div class="image">
+                        <img src="../../../../../../assets/icons/chevron-right.png" alt="Icon">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -85,7 +98,8 @@
                 <div class="historyCard">
                     <div class="historyDetails">
                         <div class="historyType">{{data?.type}}</div>
-                        <div class="historyFile">{{data?.name}} <span (click)="downloadFile(data?.path, data?.name)">Download File</span> </div>
+                        <div class="historyFile">{{data?.name}} <span
+                                (click)="downloadFile(data?.path, data?.name)">Download File</span> </div>
                     </div>
                     <div class="historyDate">{{data?.date}}</div>
                 </div>

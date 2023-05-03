@@ -20,13 +20,11 @@
 
             <ng-container *ngIf="isUploaded">
                 <div class="previewContainer">
-                    <div class="uploadedTitle">Processed File</div>
+                    <div class="uploadedTitle">Processed Images</div>
                     <div class="uploadedFileContainer">
                         <div class="fileDetails">
-                            <div class="fileName">{{filename}}</div>
-                            <div class="fileSize">{{filesize}} KB</div>
+                            <div class="fileName">No. of images : {{images.length}}</div>
                         </div>
-                        <div class="removeContainer" (click)="removeFileUpload()">Remove</div>
                     </div>
                 </div>
             </ng-container>

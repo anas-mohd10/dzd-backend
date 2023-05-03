@@ -2,6 +2,8 @@ $white: #ffffff;
 $border: #E4E6EF;
 $text: #333333;
 $primary: #00bdab;
+$success: #00bd7e;
+$error: #da4a4a;
 $primaryLight: #00bdab30;
 $primaryMedium: #00bdab50;
 
@@ -10,46 +12,63 @@ $primaryMedium: #00bdab50;
     .bulkUploadHeader {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: space-between;
 
-        .backButton {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            background: $white;
-            border: 1px solid $border;
-            border-radius: 10px;
-            margin: 0 20px 0 0;
-            cursor: pointer;
-
-            img {
-                height: 30px;
-                width: 30px;
-            }
-        }
-
-        .bulkUploadTitle {
+        .bulkHeaderLeft {
             display: flex;
             align-items: center;
             justify-content: flex-start;
 
-            h2 {
-                margin: 0;
+            .backButton {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+                background: $white;
+                border: 1px solid $border;
+                border-radius: 10px;
+                margin: 0 20px 0 0;
+                cursor: pointer;
+
+                img {
+                    height: 30px;
+                    width: 30px;
+                }
             }
+
+            .bulkUploadTitle {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                h2 {
+                    margin: 0;
+                }
+            }
+        }
+
+        .bulkHeaderRight {
+            cursor: pointer;
+
+            i {
+                color: $text;
+                font-size: 16px;
+                margin: 0 5px 0 0;
+            }
+
+            font-size: 16px;
+            font-weight: 600;
+            color: $text;
         }
     }
 
     .bulkUploadContainer {
         margin: 30px 0 0 0;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
 
         .bulkUploadInput {
             position: relative;
             height: 300px;
-            width: 300px;
+            width: 100%;
 
             input {
                 height: 100%;
@@ -81,7 +100,7 @@ $primaryMedium: #00bdab50;
                 }
 
                 p {
-                    margin: 20px 0 0 0;
+                    margin: 0;
                     font-size: 20px;
                     text-align: center;
                     font-weight: 600;
@@ -92,55 +111,95 @@ $primaryMedium: #00bdab50;
                     }
                 }
 
+                .note {
+                    font-size: 14px;
+                }
+
             }
         }
 
-        .previewContainer {
-            margin: 0 0 0 30px;
-            width: calc(100% - 330px);
+        .afterUploadContainer {
+            margin: 30px 0 0 0;
+            width: 100%;
 
-            .uploadedTitle {
-                font-size: 20px;
-                font-weight: 600;
-                color: $text;
-            }
+            .previewContainer {
 
-            .uploadedFileContainer {
-                margin: 15px 0 0 0;
-                display: flex;
-                display: flex;
-                align-items: flex-start;
-                justify-content: space-between;
-                background: $white;
-                padding: 15px;
-                border-radius: 10px;
-                box-shadow:  0 0 15px 5px rgba($color: $primaryLight, $alpha: 0.05);
+                .validationContainer {
+                    margin: 20px 0;
 
-                .fileDetails{
-                    .fileName{
-                        font-size: 18px;
+                    .validationMessage {
+                        font-size: 16px;
                         font-weight: 600;
-                        color: $text;
+                        background: $success;
+                        width: max-content;
+                        padding: 5px 8px;
+                        border-radius: 30px;
+                        color: $white;
+                        margin: 0 0 10px 0;
                     }
 
-                    .fileSize{
-                        font-size: 14px;
-                        margin: 10px 0 0 0;
+                    .errorValidation {
+                        background: $error;
+                    }
+
+                    .validationReason {
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: $error;
+
+                        i {
+                            color: $error;
+                        }
                     }
                 }
 
-                .removeContainer{
-                    font-size: 14px;
+                .uploadedTitle {
+                    font-size: 20px;
                     font-weight: 600;
                     color: $text;
-                    cursor: pointer;
+                }
+
+                .uploadedFileContainer {
+                    margin: 15px 0 0 0;
+                    display: flex;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    background: $white;
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 15px 5px rgba($color: $primaryLight, $alpha: 0.05);
+
+                    .fileDetails {
+                        .fileName {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: $text;
+                        }
+
+                        .fileSize {
+                            font-size: 14px;
+                            margin: 10px 0 0 0;
+                        }
+                    }
+
+                    .removeContainer {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: $text;
+                        cursor: pointer;
+
+                        i {
+                            color: $text;
+                        }
+                    }
                 }
             }
         }
-        
+
     }
 
-    .processingContainer{
+    .processingContainer {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -148,18 +207,18 @@ $primaryMedium: #00bdab50;
         width: 100%;
         height: 400px;
 
-        img{
+        img {
             width: 300px;
             height: auto;
         }
 
-        .processingText{
-            h1{
+        .processingText {
+            h1 {
                 font-weight: 600;
                 margin: 0;
             }
 
-            p{
+            p {
                 font-size: 18px;
                 font-weight: 600;
             }

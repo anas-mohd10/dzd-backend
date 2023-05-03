@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
-
+import { ProductService } from 'src/app/includes/services/product.service';
 @Component({
   selector: 'app-bulk-file-upload',
   templateUrl: './bulk-file-upload.component.html',
@@ -18,12 +18,14 @@ export class BulkFileUploadComponent implements OnInit {
   filesize: any;
   filestring: any;
   isTriggered: boolean = false;
+  isValidFile: boolean = true
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private BrandService: BrandService,
     private ToastrService: ToastrService,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private ProductService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +43,9 @@ export class BulkFileUploadComponent implements OnInit {
       case 'product':
         this.pageTitle = 'Product File Bulk Upload'
         break
+      case 'users':
+        this.pageTitle = 'Users File Bulk Upload'
+        break
     }
   }
 
@@ -55,12 +60,14 @@ export class BulkFileUploadComponent implements OnInit {
       this.filestring = reader.result
     };
 
+    if (this.filesize > 5) this.isValidFile = false
     if (this.filedata) this.isUploaded = true
   }
 
   removeFileUpload() {
     this.filedata = null
     this.isUploaded = false
+    this.isValidFile = true
   }
 
   navigateBack() {
@@ -70,23 +77,30 @@ export class BulkFileUploadComponent implements OnInit {
   bulkUpload() {
     let formdata = new FormData()
     formdata.append("file", this.filedata)
-    switch (this.pageType) {
-      case 'category':
-        this.isTriggered = true
-        this.CategoryService.bulkFileUpload(formdata).subscribe((res: any) => {
-          this.getResults(res?.errorCode, res?.message)
-        })
-        break
-      case 'brand':
-        this.isTriggered = true
-        this.BrandService.bulkFileUpload(formdata).subscribe((res: any) => {
-          this.getResults(res?.errorCode, res?.message)
-        })
-        break
-      case 'collection':
-        break
-      case 'product':
-        break
+    if (this.isValidFile) {
+      switch (this.pageType) {
+        case 'category':
+          this.isTriggered = true
+          this.CategoryService.bulkFileUpload(formdata).subscribe((res: any) => {
+            this.getResults(res?.errorCode, res?.message)
+          })
+          break
+        case 'brand':
+          this.isTriggered = true
+          this.BrandService.bulkFileUpload(formdata).subscribe((res: any) => {
+            this.getResults(res?.errorCode, res?.message)
+          })
+          break
+        case 'collection':
+          break
+        case 'product':
+          this.ProductService.bulkFileUpload(formdata).subscribe((res: any) => {
+            this.getResults(res?.errorCode, res?.message)
+          })
+          break
+        case 'users':
+          break
+      }
     }
   }
 
