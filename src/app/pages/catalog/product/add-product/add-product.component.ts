@@ -149,7 +149,7 @@ export class AddProductComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter product description / features here',
+    placeholder: 'Type here',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
@@ -159,6 +159,7 @@ export class AddProductComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
+      { class: 'urbanist', name: 'Urbanist' },
     ]
   };
 
@@ -263,6 +264,7 @@ export class AddProductComponent implements OnInit {
       offerPrice: [''],
       stock: ['', Validators.required],
       moq: ['', Validators.required],
+      maxOrderQuantity: ['', Validators.required],
       stockWarning: [''],
       description: [''],
       features: [''],
@@ -274,6 +276,7 @@ export class AddProductComponent implements OnInit {
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
+      isVisible: ['true', Validators.required],
       value: ['', Validators.required],
       unit: ['', Validators.required],
       searchKeywords: [],
@@ -681,6 +684,7 @@ export class AddProductComponent implements OnInit {
       sku: this.productform.get('sku')?.value,
       stock: this.productform.get('stock')?.value,
       moq: this.productform.get('moq')?.value,
+      maxOrderQuantity: this.productform.get('maxOrderQuantity')?.value,
       product: {
         id: this.producthhead['_id'],
         refid: this.producthhead['prodid'],
@@ -720,6 +724,7 @@ export class AddProductComponent implements OnInit {
       isActive: this.productform.get('isActive')?.value,
       isArchive: this.productform.get('isArchive')?.value,
       isFeatured: this.productform.get('isFeatured')?.value,
+      isVisible: this.productform.get("isVisible")?.value,
       searchKeywords: this.searchKeyowrds,
       relatedProducts: this.selectedProducts,
       files: this.files,
@@ -942,11 +947,6 @@ export class AddProductComponent implements OnInit {
         this.selectedTax = res?.result[0]?.tax
         this.basicfile = environment.base + "/" + res?.result[0]?.file
         this.productheadfile = res?.result[0]?.file
-        // this.categoryService.getSubCategoriesbyId(res?.result[0]?.parentCategory?.id).subscribe((res: any) => {
-        //   if (res?.errorCode == 0) {
-        //     this.subcategories = res?.result
-        //   }
-        // })
         this.AttributeService.getAttributeByCategory(res?.result[0]?.defaultCategory['refid']).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.attributes = res?.result

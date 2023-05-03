@@ -142,7 +142,7 @@ export class UpdateProductComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter product description / features here',
+    placeholder: 'Type here',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
@@ -152,6 +152,7 @@ export class UpdateProductComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
+      { class: 'urbanist', name: 'Urbanist' },
     ]
   };
 
@@ -229,6 +230,7 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('sku')?.setValue(res?.result[0]?.sku)
         this.productform.get('stock')?.setValue(res?.result[0]?.stock)
         this.productform.get('moq')?.setValue(res?.result[0]?.moq)
+        this.productform.get('maxOrderQuantity')?.setValue(res?.result[0]?.maxOrderQuantity)
         this.productform.get('stockWarning')?.setValue(res?.result[0]?.stockWarning)
         this.productform.get('additionalbutton')?.setValue(res?.result[0]?.details?.additionalbutton)
         this.productform.get('buttonredireturl')?.setValue(res?.result[0]?.details?.buttonredireturl)
@@ -242,6 +244,7 @@ export class UpdateProductComponent implements OnInit {
         this.selectedProducts = res?.result[0]?.relatedProducts
         this.productform.get('isFeatured')?.setValue(res?.result[0]?.isFeatured)
         this.productform.get('isActive')?.setValue(res?.result[0]?.isActive)
+        this.productform.get('isVisible')?.setValue(res?.result[0]?.isVisible)
         this.productform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
         this.productform.get('description')?.setValue(res?.result[0]?.details?.description)
         this.productform.get('longDescription')?.setValue(res?.result[0]?.details?.longDescription)
@@ -289,6 +292,7 @@ export class UpdateProductComponent implements OnInit {
       offerPrice: [''],
       stock: ['', Validators.required],
       moq: ['', Validators.required],
+      maxOrderQuantity: ['', Validators.required],
       stockWarning: [''],
       description: [''],
       features: [''],
@@ -297,6 +301,7 @@ export class UpdateProductComponent implements OnInit {
       additionalbutton: [''],
       buttonredireturl: [''],
       isActive: ['true', Validators.required],
+      isVisible: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
       value: ['', Validators.required],
@@ -534,7 +539,6 @@ export class UpdateProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
-      // this.toastr.info('Updating product...', '', { timeOut: 2000 })
       this.submitting = true
       setTimeout(() => {
         this.productService.updateProduct(this.prodid, payload).subscribe((res: any) => {
@@ -563,11 +567,13 @@ export class UpdateProductComponent implements OnInit {
         }
       }
     }
+
     const data = {
       name: this.productform.get('name')?.value,
       sku: this.productform.get('sku')?.value,
       stock: this.productform.get('stock')?.value,
       moq: this.productform.get('moq')?.value,
+      maxOrderQuantity: this.productform.get('maxOrderQuantity')?.value,
       price: {
         mrp: this.productform.get('mrpPrice')?.value,
         offer: this.productform.get('offerPrice')?.value,
@@ -601,6 +607,7 @@ export class UpdateProductComponent implements OnInit {
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,
       isArchive: this.productform.get('isArchive')?.value,
+      isVisible: this.productform.get('isVisible')?.value,
       isFeatured: this.productform.get('isFeatured')?.value,
       searchKeywords: this.searchKeyowrds,
       relatedProducts: this.selectedProducts,

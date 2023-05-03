@@ -91,6 +91,11 @@
                     </div>
                     <div class="col-12 form-group">
                       <label class="fs-5 mb-3">Select product Attribute</label>
+
+                      <ng-container *ngIf="attributes.length == 0">
+                        <div style="font-size: 1.5rem; margin: 20px 0 0 0; font-weight: 600;">No attributes found</div>
+                      </ng-container>
+
                       <div class="attributes-container" *ngIf="attributes.length > 0">
                         <ng-container *ngFor="let attribute of attributes">
                           <div class="attribute-card">
@@ -137,10 +142,6 @@
                           </ng-container>
                         </div>
                       </div>
-
-                      <ng-container *ngIf="attributes.length == 0">
-                        <div style="font-size: 1.5rem; margin: 20px 0 0 0; font-weight: 600;">No attributes found</div>
-                      </ng-container>
                     </div>
                   </div>
                   <!-- Product category, attributes details -->
@@ -162,6 +163,11 @@
                       <label class="fs-5 mb-3 required">Minimum Order Quantity</label>
                       <input type="number" class="form-control fs-5" formControlName="moq" [ngClass]="{
                     'is-invalid':(pf.moq.touched || isSubmitted) && pf.moq.errors?.required}" />
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3 required">Maximum Order Quantity</label>
+                      <input type="number" class="form-control fs-5" formControlName="maxOrderQuantity" [ngClass]="{
+                      'is-invalid':(pf.maxOrderQuantity.touched || isSubmitted) && pf.maxOrderQuantity.errors?.required}" />
                     </div>
                     <div class="col-12 col-sm-6 form-group">
                       <label class="fs-5 mb-3">Stock Warning</label>
@@ -187,10 +193,10 @@
                         [ngClass]="{'is-invalid': (pf.unit.touched || isSubmitted) && pf.unit.errors?.required}"
                         aria-placeholder="Eg. Kilograms" (change)="getUnit()">
                         <option value="" disabled>-- Select an unit value --</option>
-                        <option value="kg">Kilograms</option>
-                        <option value="gms">Grams</option>
-                        <option value="number">Number of</option>
-                        <option value="pack">Pack of</option>
+                        <option value="Kg">Kilograms</option>
+                        <option value="Grams">Grams</option>
+                        <option value="Number of">Number of</option>
+                        <option value="Pack of">Pack of</option>
                       </select>
                     </div>
                     <div class="col-12 col-sm-6 form-group" *ngIf="isUnit">
@@ -240,6 +246,16 @@
                         <option value="true">Yes</option>
                         <option value="false">No</option>
                       </select>
+                    </div>
+                    <div class="col-12 col-sm-6 form-group">
+                      <label class="fs-5 mb-3">Visible Product?</label>
+                      <select class="form-select" formControlName="isVisible"
+                        [ngClass]="{'is-invalid': (pf.isVisible.touched || isSubmitted) && pf.isVisible.errors?.required}">
+                        <option value="Check" disabled>-- Select an option --</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
+                      <div class="fs-7 mt-3">Visibilty is used to show / hide product in product listing</div>
                     </div>
                     <div class="col-12 col-sm-6 form-group">
                       <label class="fs-5 mb-3">Archive Product?</label>

@@ -63,6 +63,12 @@
             <div class="product-offer" *ngIf="product?.price?.offer != product?.price?.mrp">
               {{product?.message?.text}}
             </div>
+            <div class="product-out-stock" *ngIf="product?.stock == 0">
+              Out of Stock
+            </div>
+            <div class="product-limited-stock" *ngIf="product?.stock < 5">
+              Limited stock
+            </div>
             <div class="product-brand">{{product?.brand?.name}}</div>
             <div class="product-name fs-3">{{product?.name}}</div>
             <div class="product-price">
@@ -79,8 +85,7 @@
                 {{product?.rating}} <i class="bi bi-star-fill"></i>
               </div>
             </div>
-            <div class="product-stock">{{product?.stock}} products left</div>
-            <div class="product-delivery">{{product?.product?.id?.shipping?.method}} Shipping</div>
+            <div class="product-stock" *ngIf="product?.stock > 5">{{product?.stock}} left in stock</div>
             <div class="product-card-bottom">
               <div class="card-edit-btn">
                 <button routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}"
