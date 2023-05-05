@@ -68,6 +68,7 @@ export class AddBannerListComponent implements OnInit {
 
   previousBanners: any = []
   bannerMedia: any = []
+  bannerType: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -129,12 +130,8 @@ export class AddBannerListComponent implements OnInit {
     return this.bannerForm.controls;
   }
 
-  getBannerType(e: any) {
-    if (e.value == "1") {
-      this.isGrid = false
-    } else {
-      this.isGrid = true
-    }
+  getBannerType(type: any) {
+    this.bannerType = type
   }
 
   managePage() {
@@ -212,62 +209,41 @@ export class AddBannerListComponent implements OnInit {
   }
 
   addBanner() {
-    const type = this.bannerForm.get('type')?.value
-    if (type == "1") {
-      if (this.bannerMedia.length < 1) {
-        const prevLen = this.bannerMedia.length
-        this.bannerMedia.push({
-          web: { file: this.web_file, name: this.w_name },
-          mobile: { file: this.mobile_file, name: this.m_name },
-          redirection: {
-            unit: '',
-            category: this.category ? this.category : '',
-            collection: this.collection ? this.collection : '',
-            product: this.product ? this.product : '',
-            external: this.bannerForm.get('redirectURL')?.value
-          },
-        })
-        const newlen = this.bannerMedia.length
-        if ((prevLen + 1) == newlen) {
-          this.web_file = null
-          this.mobile_file = null
-          this.w_name = null
-          this.m_name = null
-          this.w_file = null
-          this.m_file = null
+    let oldLength = this.bannerMedia.length
+    switch (this.bannerType) {
+      case 1:
+        if (this.bannerType < 1) {
+          this.bannerMedia.push({
+            web: { file: this.web_file, name: this.w_name },
+            mobile: { file: this.mobile_file, name: this.m_name },
+            redirection: {
+              unit: '',
+              category: this.category ? this.category : '',
+              collection: this.collection ? this.collection : '',
+              product: this.product ? this.product : '',
+              external: this.bannerForm.get('redirectURL')?.value
+            },
+          })
+          let newLength = this.bannerMedia.length
+          if ((oldLength + 1) == newLength) {
+            this.web_file = null
+            this.mobile_file = null
+            this.w_name = null
+            this.m_name = null
+            this.w_file = null
+            this.m_file = null
+          }
         }
-      } else {
-        this.toastr.info('Maximum banner limit reached')
-      }
-    } else if (type == "2") {
-      if (this.bannerMedia.length < 2) {
-        const prevLen = this.bannerMedia.length
-        this.bannerMedia.push({
-          web: { file: this.web_file, name: this.w_name },
-          mobile: { file: this.mobile_file, name: this.m_name },
-          redirection: {
-            unit: '',
-            category: this.category ? this.category : '',
-            collection: this.collection ? this.collection : '',
-            product: this.product ? this.product : '',
-            external: this.bannerForm.get('redirectURL')?.value
-          },
-        })
-        const newlen = this.bannerMedia.length
-        if ((prevLen + 1) == newlen) {
-          this.web_file = null
-          this.mobile_file = null
-          this.w_name = null
-          this.m_name = null
-          this.w_file = null
-          this.m_file = null
-        }
-      } else {
-        this.toastr.info('Maximum banner limit reached')
-      }
+        break
+      case 2:
+        break
+      case 3:
+        break
+      case 4:
+        break
+      default:
+        break
     }
-
-    console.log(this.bannerMedia);
   }
 
   imageCroppedWeb(event: ImageCroppedEvent) {

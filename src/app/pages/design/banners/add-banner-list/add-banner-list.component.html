@@ -25,7 +25,7 @@
       <div class="col-sm-12 fs-5">
          <div class="card">
             <div class="card-body">
-               <form (ngSubmit)="onSubmit()" [formGroup]="bannerForm" enctype="multipart/form-data">
+               <form [formGroup]="bannerForm" enctype="multipart/form-data">
                   <div class="row">
                      <h2 class="form-title">Banner Details</h2>
                      <div class="col-12 col-sm-6">
@@ -38,6 +38,7 @@
                             }" />
                         </div>
                      </div>
+
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required">Valid From</label>
@@ -45,6 +46,7 @@
                               [ngClass]="{'is-invalid': (hf.validFrom.touched || isSubmitted) &&  hf.validFrom.errors?.required}" />
                         </div>
                      </div>
+
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title required">Valid To</label>
@@ -52,6 +54,7 @@
                               [ngClass]="{ 'is-invalid': (hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required }" />
                         </div>
                      </div>
+
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 mb-3 form-title">Active Banner?</label>
@@ -63,15 +66,40 @@
                            </select>
                         </div>
                      </div>
+
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
                            <label class="fs-5 form-title">Banner Type</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="type" (change)="getBannerType($event.target)">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value=1> Single Banner</option>
-                              <option value=2> 2 Grid Banner</option>
-                           </select>
+                           <div class="d-flex align-items-center justify-content-start" style="margin: 20px 0 0 0;">
+                              <div class="form-check" style="margin: 0 10px 0 0;">
+                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault1" (click)="getBannerType(1)">
+                                 <label class="form-check-label" for="flexRadioDefault1" style="margin: 0;">
+                                    Full width
+                                 </label>
+                              </div>
+                              <div class="form-check" style="margin: 0 10px 0 0;">
+                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault2" (click)="getBannerType(2)">
+                                 <label class="form-check-label" for="flexRadioDefault2" style="margin: 0;">
+                                    Half width
+                                 </label>
+                              </div>
+                              <div class="form-check" style="margin: 0 10px 0 0;">
+                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault2" (click)="getBannerType(3)">
+                                 <label class="form-check-label" for="flexRadioDefault2" style="margin: 0;">
+                                    1/3 grid
+                                 </label>
+                              </div>
+                              <div class="form-check" style="margin: 0 10px 0 0;">
+                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                    id="flexRadioDefault2" (click)="getBannerType(4)">
+                                 <label class="form-check-label" for="flexRadioDefault2" style="margin: 0;">
+                                    Quarter grid
+                                 </label>
+                              </div>
+                           </div>
                         </div>
                      </div>
 
@@ -95,6 +123,8 @@
                            </button>
                         </div>
                      </div>
+
+
                      <div class="draftTitle fs-2 fw-bolder" *ngIf="web_file || mobile_file">
                         Click confirm banners button to upload the banner
                      </div>
@@ -105,47 +135,13 @@
                            [src]="mobile_file ? mobile_file : '../../../../../assets/media/preview-image.png'">
                      </div>
 
-                     <div class="col-12">
-                        <div class="col-12">
-                           <h2 class="form-title">Redirection Details</h2>
-                        </div>
-                     </div>
-                     <div class="col-sm-6">
-                        <label class="fs-5 mb-3 form-title">Collection</label>
-                        <ng-select [items]="collections" bindLabel="name" bindValue="_id" [(ngModel)]="collection"
-                           placeholder="Select any collection" [multiple]=false [ngModelOptions]="{standalone: true}"
-                           style="font-size: 1.1rem;" (change)="redirectionValidation('collection')">
-                        </ng-select>
-                     </div>
-                     <div class="col-sm-6">
-                        <label class="fs-5 mb-3 form-title">Products</label>
-                        <ng-select [items]="products" bindLabel="name" bindValue="_id" [(ngModel)]="product"
-                           placeholder="Select any product" [multiple]=false [ngModelOptions]="{standalone: true}"
-                           style="font-size: 1.1rem;" (change)="redirectionValidation('product')">
-                        </ng-select>
-                     </div>
-                     <div class="col-sm-6">
-                        <label class="fs-5 mb-3 form-title">Category</label>
-                        <ng-select [items]="categories" bindLabel="name" bindValue="_id" [(ngModel)]="category"
-                           placeholder="Select any category" [multiple]=false [ngModelOptions]="{standalone: true}"
-                           style="font-size: 1.1rem;" (change)="redirectionValidation('category')">
-                        </ng-select>
-                     </div>
-                     <div class="col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Redirection URL</label>
-                           <input type="text" class="form-control fs-5" formControlName="redirectURL"
-                              (change)="redirectionValidation('external')" />
-                        </div>
-                     </div>
-
-                     <div class="uploadBtn d-flex align-items-center justify-content-end"
+                     <!-- <div class="uploadBtn d-flex align-items-center justify-content-end"
                         *ngIf="web_file && mobile_file">
-                        <button type="submit" class="fw-bolder btn btn-info btn-sm fs-5 mt-10" style="width: 200px"
+                        <button type="submit" class="fw-bolder btn btn-secondary btn-sm fs-5 mt-10" style="width: 200px"
                            (click)="addBanner()">
                            Confirm Banners
                         </button>
-                     </div>
+                     </div> -->
 
                      <div class="col-12 d-flex align-items-center justify-content-end mt-20">
                         <a routerLink="{{ appRoute.banner.BANNER_LIST }}"
@@ -153,7 +149,8 @@
                            style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                           (click)="onSubmit()">
                            Add
                         </button>
                      </div>
@@ -209,6 +206,21 @@
                   </div>
                </ng-container>
             </div>
+
+            <div class="dividerNote">Or</div>
+            <div class="previousBannersContainer">
+               <div class="previousBanners">
+                  <ng-container *ngFor="let banner of previousBanners">
+                     <div class="previousBannerCard">
+                        <img src="{{banner}}" alt="Banner">
+                     </div>
+                  </ng-container>
+                  <ng-container *ngIf="previousBanners.length == 0">
+                     <h5 class="fs-2 fw-bolder d-flex align-items-center justify-content-center">No banners found</h5>
+                  </ng-container>
+               </div>
+            </div>
+
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Continue</button>

@@ -60,6 +60,7 @@
    grid-template-columns: repeat(2, 1fr);
    gap: 10px;
    width: max-content;
+   margin: 10px 0 0 0;
 }
 
 .dividerNote {
@@ -108,5 +109,13 @@
 #previewImage,
 #bannerFile,
 #mobileBannerFile {
-   width: 50% !important;
+   width: 400px !important;
+   height: 200px !important;
+   object-fit: cover;
+}
+
+.uploadButton {
+   button {
+      border-radius: 50px !important;
+   }
 }
