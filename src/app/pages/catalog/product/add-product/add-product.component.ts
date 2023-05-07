@@ -159,7 +159,7 @@ export class AddProductComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
-      { class: 'urbanist', name: 'Urbanist' },
+      { class: 'Manrope', name: 'Manrope' },
     ]
   };
 
