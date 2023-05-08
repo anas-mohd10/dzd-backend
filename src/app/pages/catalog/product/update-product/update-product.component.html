@@ -188,7 +188,7 @@
                   <div class="row">
                     <h3 class="form-subtitle">Unit and Value Details</h3>
                     <div class="col-12 col-sm-6 form-group">
-                      <label class="fs-5 mb-3 required">Unit</label>
+                      <label class="fs-5 mb-3">Unit</label>
                       <select class="form-select" formControlName="unit"
                         [ngClass]="{'is-invalid': (pf.unit.touched || isSubmitted) && pf.unit.errors?.required}"
                         aria-placeholder="Eg. Kilograms" (change)="getUnit()">
@@ -200,7 +200,7 @@
                       </select>
                     </div>
                     <div class="col-12 col-sm-6 form-group" *ngIf="isUnit">
-                      <label class="fs-5 mb-3 required">Value</label>
+                      <label class="fs-5 mb-3">Value</label>
                       <input type="number" class="form-control" formControlName="value"
                         [ngClass]="{'is-invalid': (pf.value.touched || isSubmitted) && pf.value.errors?.required}">
                     </div>

@@ -163,6 +163,12 @@ export class AddProductComponent implements OnInit {
     ]
   };
 
+  is360Enabled: boolean = false
+  objFile: any
+  objFilename: any
+  isValidObjFile: boolean = true;
+  showObjFile: boolean = false
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -277,8 +283,8 @@ export class AddProductComponent implements OnInit {
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
       isVisible: ['true', Validators.required],
-      value: ['', Validators.required],
-      unit: ['', Validators.required],
+      value: [''],
+      unit: [''],
       searchKeywords: [],
       relatedProducts: [],
       position: [''],
@@ -642,6 +648,27 @@ export class AddProductComponent implements OnInit {
     this.productform.reset()
   }
 
+  check360(event: any) {
+    if (event.value) this.is360Enabled = !this.is360Enabled
+  }
+
+  objUpload(event: any) {
+    if (event) {
+      const file = <File>event.target.files[0];
+      const filename = file.name
+      this.objFilename = filename
+      const extension = filename.slice((Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
+      if (extension == 'obj') {
+        this.objFile = file
+        this.isValidObjFile = true
+        this.showObjFile = true
+      } else {
+        this.isValidObjFile = false
+        this.showObjFile = false
+      }
+    }
+  }
+
   updateProduct() { }
 
   addProduct() {
@@ -717,6 +744,10 @@ export class AddProductComponent implements OnInit {
       category: {
         id: this.selectedSubCategory,
         refid: categoryRefid
+      },
+      panorama: {
+        isEnabled: this.is360Enabled,
+        file: this.objFile ? this.objFile : null
       },
       attributes: this.attributesValues,
       productFiles: this.productFile,

@@ -26,22 +26,22 @@
     border: 1px solid #E4E6EF;
 
 
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
+    // &::-webkit-scrollbar {
+    //   width: 5px;
+    // }
 
-    &::-webkit-scrollbar-track {
-      border-radius: 10px;
-    }
+    // &::-webkit-scrollbar-track {
+    //   border-radius: 10px;
+    // }
 
-    &::-webkit-scrollbar-thumb {
-      background: #00bdab;
-      border-radius: 10px;
-    }
+    // &::-webkit-scrollbar-thumb {
+    //   background: #00bdab;
+    //   border-radius: 10px;
+    // }
 
-    &::-webkit-scrollbar-thumb:hover {
-      background: #00bdab;
-    }
+    // &::-webkit-scrollbar-thumb:hover {
+    //   background: #00bdab;
+    // }
 
     .loadMoreButton {
       display: flex;
@@ -1018,7 +1018,7 @@ body {
 .mat-typography h4,
 .mat-typography h5,
 .mat-typography h6 {
-  font-family: 'Catamaran', sans-serif !important;
+  font-family: "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
   // font-family: 'Outfit', sans-serif !important;
 }
 
