@@ -300,6 +300,7 @@ export class AddProductComponent implements OnInit {
     this.productheadform = this.formBuilder.group({
       name: ['', Validators.required],
       hsn: ['', Validators.required],
+      sku: ['', Validators.required],
       tax: [''],
       cod: ['false', Validators.required],
       codCharge: [0],
@@ -906,6 +907,7 @@ export class AddProductComponent implements OnInit {
     let data = {
       name: this.productheadform.get('name')?.value,
       hsn: this.productheadform.get('hsn')?.value,
+      sku: this.productheadform.get('sku')?.value,
       tax: this.selectedTax,
       brand: this.selectedBrand,
       isActive: this.productheadform.get('isActive')?.value,

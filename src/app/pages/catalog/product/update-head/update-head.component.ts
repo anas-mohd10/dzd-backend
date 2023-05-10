@@ -106,6 +106,7 @@ export class UpdateHeadComponent implements OnInit {
         this.selectedDefaultCategory = this.basicdetails?.defaultCategory?.id
         this.productheadform.get('name')?.setValue(this.basicdetails?.name)
         this.productheadform.get('hsn')?.setValue(this.basicdetails?.hsn)
+        this.productheadform.get('sku')?.setValue(this.basicdetails?.sku)
         this.productheadform.get('cod')?.setValue(this.basicdetails?.cod?.isPresent)
         this.productheadform.get('codCharge')?.setValue(this.basicdetails?.cod?.value)
         this.productheadform.get('shippingMethod')?.setValue(this.basicdetails?.shipping?.method)
@@ -134,6 +135,7 @@ export class UpdateHeadComponent implements OnInit {
     this.productheadform = this.formBuilder.group({
       name: ['', Validators.required],
       hsn: ['', Validators.required],
+      sku: ['', Validators.required],
       tax: [''],
       cod: ['false', Validators.required],
       codCharge: [0],

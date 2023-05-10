@@ -10,17 +10,20 @@
             <div class="row">
                <h2 class="form-title">Basic Details</h2>
                <div class="col-12 col-sm-6 form-group">
-                  <!-- Product name-->
                   <label class="fs-5 mb-3 required">Name</label>
                   <input type="text" class="form-control fs-5" placeholder="Eg. iPhone 14 Pro Max"
                      formControlName="name" [ngClass]="{
                 'is-invalid': (hf.name.touched || isSubmitted) && hf.name.errors?.required}" />
                </div>
                <div class="col-12 col-sm-6 form-group">
-                  <!-- Product hsn-->
                   <label class="fs-5 mb-3 required">HSN</label>
                   <input type="text" class="form-control fs-5" formControlName="hsn" [ngClass]="{
                 'is-invalid': (hf.hsn.touched || isSubmitted) && hf.hsn.errors?.required}" />
+               </div>
+               <div class="col-12 col-sm-6 form-group">
+                  <label class="fs-5 mb-3 required">SKU</label>
+                  <input type="text" class="form-control fs-5" formControlName="sku" [ngClass]="{
+                'is-invalid': (hf.sku.touched || isSubmitted) && hf.sku.errors?.required}" />
                </div>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product tax-->
@@ -149,7 +152,8 @@
                            </div>
                            <div class="right-text d-flex flex-column">
                               <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                              <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
+                              <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to
+                                 1
                                  file</span>
                            </div>
                         </div>

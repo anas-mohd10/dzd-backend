@@ -19,6 +19,9 @@ export class UpdateAppSettingsComponent implements OnInit {
   form: FormGroup
   isSubmitted = false;
   refid: any;
+  currency: any
+
+  currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED']
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,6 +67,10 @@ export class UpdateAppSettingsComponent implements OnInit {
     })
   }
 
+  currencyInput(data: any) {
+    this.currency = data
+  }
+
   onSubmit() {
     if (!this.form.valid) {
       this.toastr.error('Validation error occured');
@@ -84,7 +91,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       },
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
-      refid: this.refid
+      refid: this.refid,
+      currency: this.currency
     }
 
     this.AppSettingsService.updateGeneralSettings(data).subscribe((res: any) => {
