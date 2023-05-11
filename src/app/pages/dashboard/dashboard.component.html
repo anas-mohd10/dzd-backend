@@ -1,5 +1,5 @@
 <div class="page-title">
-  <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-bar-chart fs-1 text-dark"></i> Overview</div>
+  <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-receipt fs-1 text-dark"></i> Overview</div>
 </div>
 <div class="row">
   <div class="row">
@@ -29,13 +29,13 @@
     </div>
   </div>
   <div class="page-title">
-    <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-bar-chart fs-1 text-dark"></i> Other Informations</div>
+    <div class="fs-2 fw-bolder mb-lg-5"><i class="bi bi-stack fs-1 text-dark"></i> Other Informations</div>
   </div>
   <div class="row mb-5">
     <ng-container *ngFor="let info of data?.otherInformations">
       <div class="col-lg-3">
         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/general/gen032.svg"
-          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="{{info?.value}}"
+          class="card bg-white card-xl-stretch mb-xl-5 hoverable" color="white" iconColor="primary" title="{{info?.value}}"
           description="{{info?.title}}">
         </app-stats-widget5>
       </div>

@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { CollectionService } from "src/app/includes/services/collection.service";
+
 @Component({
   selector: 'app-bulk-file-upload',
   templateUrl: './bulk-file-upload.component.html',
@@ -25,7 +27,8 @@ export class BulkFileUploadComponent implements OnInit {
     private BrandService: BrandService,
     private ToastrService: ToastrService,
     private CategoryService: CategoryService,
-    private ProductService: ProductService
+    private ProductService: ProductService,
+    private CollectionService: CollectionService
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +95,10 @@ export class BulkFileUploadComponent implements OnInit {
           })
           break
         case 'collection':
+          this.isTriggered = true
+          this.CollectionService.bulkFileUpload(formdata).subscribe((res: any) => {
+            this.getResults(res?.errorCode, res?.message)
+          })
           break
         case 'product':
           this.ProductService.bulkFileUpload(formdata).subscribe((res: any) => {

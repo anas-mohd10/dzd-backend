@@ -65,4 +65,14 @@ export class CollectionService {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.collection_images);
     return this.http.post(`${url}`, data);
   }
+
+  bulkFileUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.collection_bulk_file_upload);
+    return this.http.post(`${url}`, data);
+  }
+
+  bulkMediaUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.collection_bulk_image_upload);
+    return this.http.post(`${url}`, data);
+  }
 }
