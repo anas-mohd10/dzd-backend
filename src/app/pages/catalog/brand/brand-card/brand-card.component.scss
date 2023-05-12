@@ -11,9 +11,21 @@
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+  .brandCardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brandCardBottom {
+    font-size: 14px;
+    margin: 10px 0 0 0;
+
+    span {
+      font-weight: 700;
+    }
+  }
 }
 
 .brand-details {

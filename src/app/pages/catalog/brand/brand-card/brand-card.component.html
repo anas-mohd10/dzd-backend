@@ -58,28 +58,38 @@
   <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
       <div class="brand-card card-hover">
-        <div class="brand-details">
-          <div class="brand-image">
-            <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+        <div class="brandCardTop">
+          <div class="brand-details">
+            <div class="brand-image">
+              <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+            </div>
+            <div class="flex-1">
+              <div class="brand-name fs-3">{{brand?.name}}</div>
+              <div class="brand-featured-{{brand?.isFeatured}}">
+                <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
+                <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
+              </div>
+            </div>
           </div>
-          <div class="flex-1">
-            <div class="brand-name fs-3">{{brand?.name}}</div>
-            <div class="brand-featured-{{brand?.isFeatured}}">
-              <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
-              <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
+          <div class="flex-21">
+            <div class="brand-status-{{brand?.isActive}}">
+              <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
+              <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
+            </div>
+            <div class="card-edit-btn">
+              <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
+                class="fs-5 cursor-pointer text-darker">
+                Edit
+              </button>
             </div>
           </div>
         </div>
-        <div class="flex-21">
-          <div class="brand-status-{{brand?.isActive}}">
-            <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
-            <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
+        <div class="brandCardBottom">
+          <div class="createdDate">
+            <span>Created on </span> {{brand?.createdAt}}
           </div>
-          <div class="card-edit-btn">
-            <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-              class="fs-5 cursor-pointer text-darker">
-              Edit
-            </button>
+          <div class="updatedDate">
+            <span>Updated on </span> {{brand?.updatedAt}}
           </div>
         </div>
       </div>

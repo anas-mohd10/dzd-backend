@@ -8,7 +8,7 @@
                 <h2 class="fw-bolder">{{pageTitle}}</h2>
             </div>
         </div>
-        <div class="bulkHeaderRight">
+        <div class="bulkHeaderRight" data-bs-toggle="modal" data-bs-target="#exampleModal">
             <i class="bi bi-question-circle"></i>
             Upload Guide
         </div>
@@ -19,9 +19,11 @@
             <div class="bulkUploadInput">
                 <input type="file" accept=".csv" (change)="fileUpload($event.target)">
                 <div class="bulkUploadMask">
-                    <img src="../../../../../../assets/media/svg/files/upload.svg" alt="Upload">
-                    <p>Drop your files here or <span>Browse</span></p>
-                    <p class="note">Accepts csv file</p>
+                    <img src="../../../../../../assets/media/file-upload.gif" alt="Upload">
+                    <div class="uploadText">
+                        <p>Drop your files here or <span>Browse</span></p>
+                        <p class="note">Accepts csv file</p>
+                    </div>
                 </div>
             </div>
 
@@ -68,4 +70,20 @@
             <div class="uploadButton" (click)="bulkUpload()">Upload</div>
         </div>
     </ng-container>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Bulk Upload Guide</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+        </div>
+    </div>
 </div>

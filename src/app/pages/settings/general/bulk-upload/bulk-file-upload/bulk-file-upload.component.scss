@@ -88,31 +88,38 @@ $primaryMedium: #00bdab50;
                 pointer-events: none;
                 display: flex;
                 align-items: center;
-                flex-direction: column;
-                justify-content: center;
+                // justify-content: center;
                 border-radius: 20px;
                 padding: 30px;
                 cursor: pointer;
 
                 img {
-                    height: 50%;
-                    width: 50%;
+                    height: 100%;
+                    width: auto;
                 }
 
-                p {
-                    margin: 0;
-                    font-size: 20px;
-                    text-align: center;
-                    font-weight: 600;
-                    line-height: 30px;
+                .uploadText {
+                    display: flex;
+                    align-items: start;
+                    justify-content: start;
+                    flex-direction: column;
 
-                    span {
-                        color: $primary;
+                    p {
+                        margin: 0;
+                        font-size: 22px;
+                        text-align: center;
+                        font-weight: 700;
+                        line-height: 30px;
+
+                        span {
+                            color: $primary;
+                        }
                     }
-                }
 
-                .note {
-                    font-size: 14px;
+                    .note {
+                        font-size: 16px;
+                        font-weight: 500;
+                    }
                 }
 
             }

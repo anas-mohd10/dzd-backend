@@ -55,6 +55,10 @@ export class BrandCardComponent implements OnInit {
 
     this.brandService.searchBrand(this.brandform.value, this.page).subscribe((res: any) => {
       this.brands = res?.result?.data
+      for (let brand of this.brands) {
+        brand.createdAt = new Date(brand.createdAt).toDateString()
+        brand.updatedAt = new Date(brand.updatedAt).toDateString()
+      }
       this.count = this.brands.length
       this.totalcount = res?.result?.total_item
       this.limit = res?.result?.items_per_page
