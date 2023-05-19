@@ -79,10 +79,13 @@ $primaryMedium: #00bdab50;
 }
 
 .historyContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
     .historyCard {
         padding: 10px;
         background: $white;
-        margin: 10px 0;
         border-radius: 10px;
         border: 1px solid $border;
         display: flex;
@@ -101,7 +104,7 @@ $primaryMedium: #00bdab50;
         }
 
         .historyFile {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
         }
     }
