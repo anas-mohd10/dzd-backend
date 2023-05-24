@@ -128,6 +128,12 @@
    }
 }
 
+#previewBanner{
+  width: 400px ;
+  height: 200px ;
+  object-fit: cover;
+}
+
 .attr-added-container {
    .attr-cards.col-12 {
       display: grid;

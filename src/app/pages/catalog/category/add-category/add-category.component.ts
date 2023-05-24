@@ -56,6 +56,11 @@ export class AddCategoryComponent implements OnInit {
   attrfiledata: any = ''
   showSaveButton: Boolean = false
   attributes: any = []
+  bannerFiledata: File;
+  bannerFilename: any;
+  bannerChangedEvent: any = '';
+  loadBanner: boolean;
+  croppedBanner: any;
 
 
   constructor(
@@ -199,8 +204,19 @@ export class AddCategoryComponent implements OnInit {
     this.loadImage = true
   }
 
+  bannerFile(event:any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
   }
 
   imageLoaded() {
@@ -219,6 +235,12 @@ export class AddCategoryComponent implements OnInit {
     this.croppedImage = ''
     this.loadImage = false
   }
+
+  removeBanner() {
+    this.croppedBanner = ''
+    this.loadBanner = false
+  }
+
 
   getColors(type: any, e: any) {
     if (type == "background") {
@@ -468,6 +490,8 @@ export class AddCategoryComponent implements OnInit {
       isArchive: this.categoryForm.get('isArchive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      bannerstring: this.croppedBanner,
+      bannername: this.bannerFilename,
       file: this.file,
       path: this.path,
       attributes: this.attributes,
