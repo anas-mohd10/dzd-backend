@@ -1,0 +1,77 @@
+.profilePageContainer {
+
+    .accountHeader {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin: 50px 0 0 0;
+
+        .accountPicture {
+            i {
+                font-size: 4.25rem;
+            }
+        }
+
+        .accountDetails {
+            margin: 0 0 0 20px;
+
+            .accountName {
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .accountEmail,
+            .accountMobile {
+                font-size: 14px;
+                margin: 5px 0;
+                font-weight: 500;
+            }
+
+            .accountCreated {
+                font-size: 13px;
+                color: #999999;
+            }
+        }
+    }
+
+    .accountActivities {
+        nav {
+            margin: 40px 0 0 0;
+        }
+
+        .tab-content {
+            margin: 40px 0 0 0;
+
+            .formContainer {
+
+                .editForm {
+
+                    form {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 10px;
+
+                        input {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .formButtons {
+                        margin: 30px 0 0 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+
+                        button {
+                            width: 150px;
+                        }
+
+                        .btn-secondary {
+                            margin: 0 10px 0 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

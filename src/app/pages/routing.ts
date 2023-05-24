@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthenticationGuard } from '../core/auth/authentication.guard';
+import { MyAccountComponent } from './my-account/my-account.component';
 
 export const Routing: Routes = [
   {
@@ -298,6 +299,10 @@ export const Routing: Routes = [
       }, {
         path: 'bulk-upload',
         loadChildren: () => import('./settings/general/bulk-upload/bulk-upload.module').then((m) => m.BulkUploadModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'my-account',
+        component: MyAccountComponent,
         canActivate: [AuthenticationGuard]
       },
     ]

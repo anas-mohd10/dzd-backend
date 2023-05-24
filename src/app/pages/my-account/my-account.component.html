@@ -1,0 +1,70 @@
+<div class="profilePageContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">My Account</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.account.MY_ACCOUNT }}">My Account</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="accountHeader">
+        <div class="accountPicture">
+            <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="accountDetails">
+            <div class="accountName">{{adminDetails?.firstname}} {{adminDetails?.lastname}}</div>
+            <div class="accountEmail">{{adminDetails?.email}}</div>
+            <div class="accountMobile">{{adminDetails?.countryCode}} {{adminDetails?.mobile}}</div>
+            <div class="accountCreated">Account created on {{adminDetails?.createdAt}}</div>
+        </div>
+    </div>
+    <div class="accountActivities">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#basic-details"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Edit Details</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#product-details"
+                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">My Activity
+                </button>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade basic-details-container formContainer active show" id="basic-details"
+                role="tabpanel" aria-labelledby="nav-home-tab">
+
+                <div class="editForm">
+                    <form [formGroup]="form">
+                        <input type="email" class="form-control" formControlName="firstname"
+                            placeholder="Enter your first name" (click)="touchAction(true)">
+                        <input type="email" class="form-control" formControlName="lastname"
+                            placeholder="Enter your last name" (click)="touchAction(true)">
+                        <input type="email" class="form-control" formControlName="countryCode"
+                            placeholder="Enter your country code" (click)="touchAction(true)">
+                        <input type="email" class="form-control" formControlName="mobile"
+                            placeholder="Enter your mobile number" (click)="touchAction(true)">
+                    </form>
+
+                    <div class="formButtons" *ngIf="isTouched">
+                        <button type="button" class="btn btn-secondary" (click)="touchAction(false)">Cancel</button>
+                        <button type="button" class="btn btn-primary" (click)="editDetails()">Update</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade basic-details-container" id="product-details" role="tabpanel"
+                aria-labelledby="nav-home-tab">
+                My activity
+            </div>
+        </div>
+    </div>
+</div>

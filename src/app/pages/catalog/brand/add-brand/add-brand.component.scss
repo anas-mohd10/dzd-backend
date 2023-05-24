@@ -1,5 +1,24 @@
-#previewBanner{
-  width: 400px ;
-  height: 200px ;
+#previewBanner {
+  width: 400px;
+  height: 200px;
   object-fit: cover;
+}
+
+
+
+
+.preview-section {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 10px;
+
+  .bannerUpload {
+    position: relative;
+
+    .closeIcon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
 }

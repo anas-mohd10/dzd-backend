@@ -1,3 +1,5 @@
+import { environment } from "src/environments/environment.prod";
+
 const app = '/app';
 const dashboardRoute = '/dashboard';
 const catalogRoute = '/catalog';
@@ -39,9 +41,10 @@ const termsconditionsRoute = "/terms-conditions"
 const pageLimitsRoutes = "/page-limits"
 const generalSettingsRoutes = "/app-settings"
 const dashboardSettings = "/home-settings"
+const myAccount = '/my-account'
 
 export const appRoutes = {
-  BASE: "http://localhost:3000/",
+  BASE: environment.base + "/",
   DASHBOARD: `${app}${dashboardRoute}`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
@@ -214,5 +217,8 @@ export const appRoutes = {
     DASHBOARD_SETTINGS_LIST: `${app}${dashboardSettings}`,
     ADD_DASHBOARD_SETTINGS: `${app}${dashboardSettings}/add`,
     UPDATE_DASHBOARD_SETTINGS: `${app}${dashboardSettings}/update`,
+  },
+  account: {
+    MY_ACCOUNT: `${app}${myAccount}`
   }
 };

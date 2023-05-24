@@ -32,9 +32,10 @@ import { ProductSuccessComponent } from './pages/catalog/product/product-success
 import { UpdateHeadComponent } from './pages/catalog/product/update-head/update-head.component';
 import { AllProductsComponent } from './pages/catalog/product/all-products/all-products.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MyAccountComponent } from './pages/my-account/my-account.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent, MyAccountComponent],
   imports: [
     DataTablesModule,
     BrowserModule,
