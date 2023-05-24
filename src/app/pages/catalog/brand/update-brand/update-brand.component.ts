@@ -38,6 +38,12 @@ export class UpdateBrandComponent implements OnInit {
   images: any = []
 
   restore = new FormControl('false');
+  bannerFiledata: File;
+  bannerFilename: string;
+  bannerChangedEvent: any = '';
+  loadBanner: boolean = false;
+  bannerimg: any;
+  croppedBanner : any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -104,8 +110,19 @@ export class UpdateBrandComponent implements OnInit {
     this.loadImage = true
   }
 
+  bannerFile(event : any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
   }
 
   imageLoaded() {
@@ -125,12 +142,18 @@ export class UpdateBrandComponent implements OnInit {
     this.loadImage = false
   }
 
+  removeBanner() {
+    this.croppedBanner = ''
+    this.loadBanner = false
+  }
+
   getBrand() {
     this.brandService.getBrandBySlug(this.slug).subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
           this.brand = res?.result[0];
           this.img = this.base + "/" + res?.result[0].file
+          this.bannerimg = this.base + "/" + res?.result[0].banner
           this.brandForm.get('name')?.setValue(this.brand.name);
           this.brandForm.get('isActive')?.setValue(this.brand.isActive);
           this.brandForm.get('isArchive')?.setValue(this.brand.isArchive);
@@ -207,6 +230,9 @@ export class UpdateBrandComponent implements OnInit {
       isArchive: this.brandForm.get("isArchive")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      bannerstring :  this.croppedBanner,
+      bannername : this.bannerFilename,
+      banner : this.brand?.banner,
       file: this.file ? this.file : this.brand?.file,
       style: {
         background: this.brandForm.get('background')?.value,

@@ -22,14 +22,19 @@ export class AddBrandComponent implements OnInit {
   isSubmitted = false;
   params: any;
   filedata: File;
+  bannerFiledata : File
   status: boolean;
   imageArray: any;
   previewURL: any;
   uploadedImg: boolean = false;
   imageChangedEvent: any = '';
+  bannerChangedEvent: any = '';
   croppedImage: any;
+  croppedBanner : any
   filename: any
+  bannerFilename : any
   loadImage: boolean = false;
+  loadBanner: boolean = false;
   images: any = []
   //Styling variables
   background: any
@@ -56,6 +61,13 @@ export class AddBrandComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+  }
+
+  bannerFile(event:any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
   }
 
   ngOnInit(): void {
@@ -127,6 +139,11 @@ export class AddBrandComponent implements OnInit {
     this.file = null
   }
 
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
+    // this.file = null
+  }
+
   imageLoaded() {
     // show cropper
   }
@@ -142,6 +159,11 @@ export class AddBrandComponent implements OnInit {
   removeImage() {
     this.croppedImage = ''
     this.loadImage = false
+  }
+
+  removebanner() {
+    this.croppedBanner = ''
+    this.loadBanner = false
   }
 
   getColors(type: any, e: any) {
@@ -199,6 +221,8 @@ export class AddBrandComponent implements OnInit {
       isArchive: this.brandForm.get("isArchive")?.value,
       filestring: this.croppedImage,
       filename: this.filename,
+      bannerstring: this.croppedBanner,
+      bannername: this.bannerFilename,
       file: this.file,
       style: {
         background: this.brandForm.get('background')?.value,

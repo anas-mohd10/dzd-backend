@@ -51,6 +51,13 @@ export class UpdateCollectionComponent implements OnInit {
   images: any = []
   file: any
 
+  bannerFiledata: File;
+  bannerFilename: string;
+  bannerChangedEvent: any = '';
+  loadBanner: boolean = false;
+  bannerimg: any;
+  croppedBanner : any
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -129,6 +136,7 @@ export class UpdateCollectionComponent implements OnInit {
         case 0:
           this.collectionData = res?.result[0];
           this.uploadedimg = this.collectionData?.file
+          this.bannerimg = this.base + "/" + res?.result[0].banner
           this.collectionForm.get('name')?.setValue(this.collectionData?.name);
           this.collectionForm.get('subname')?.setValue(this.collectionData?.subname);
           this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
@@ -166,8 +174,19 @@ export class UpdateCollectionComponent implements OnInit {
     this.loadImage = true
   }
 
+  bannerFile(event : any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+  }
+
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
   }
 
   imageLoaded() {
@@ -182,6 +201,11 @@ export class UpdateCollectionComponent implements OnInit {
   removeImage() {
     this.croppedImage = ''
     this.loadImage = false
+  }
+
+  removeBanner() {
+    this.croppedBanner = ''
+    this.loadBanner = false
   }
 
   getColors(type: any, e: any) {
@@ -267,6 +291,9 @@ export class UpdateCollectionComponent implements OnInit {
       type: this.collectionForm.get('type')?.value,
       count: this.collectionForm.get('count')?.value,
       file: this.file ? this.file : this.collectionData?.file,
+      bannerstring :  this.croppedBanner,
+      bannername : this.bannerFilename,
+      banner : this.collectionData?.banner,
       style: {
         background: this.collectionForm.get('background')?.value,
         border: this.collectionForm.get('border')?.value,

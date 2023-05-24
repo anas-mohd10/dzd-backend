@@ -22,6 +22,7 @@
     "@angular/router": "~12.1.2",
     "@fortawesome/angular-fontawesome": "^0.9.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@kolkov/angular-editor": "^1.0.0",
     "@mobiscroll/angular-lite": "^4.10.9",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0-beta.2",

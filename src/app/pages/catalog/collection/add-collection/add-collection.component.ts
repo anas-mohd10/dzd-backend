@@ -47,6 +47,12 @@ export class AddCollectionComponent implements OnInit {
   images: any = []
   file: any
 
+  bannerFiledata: File;
+  bannerFilename: any;
+  bannerChangedEvent: any = '';
+  loadBanner: boolean;
+  croppedBanner: any;
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -142,6 +148,10 @@ export class AddCollectionComponent implements OnInit {
     this.croppedImage = event.base64;
   }
 
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
+  }
+
   imageLoaded() {
     // show cropper
   }
@@ -157,6 +167,11 @@ export class AddCollectionComponent implements OnInit {
   removeImage() {
     this.croppedImage = ''
     this.loadImage = false
+  }
+
+  removeBanner() {
+    this.croppedBanner = ''
+    this.loadBanner = false
   }
 
   checkFeatured(e: any) {
@@ -185,6 +200,13 @@ export class AddCollectionComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+  }
+
+  bannerFile(event:any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
   }
 
   selectImage(file: any) {
@@ -221,6 +243,8 @@ export class AddCollectionComponent implements OnInit {
       filestring: this.croppedImage,
       filename: this.filename,
       file: this.file,
+      bannerstring: this.croppedBanner,
+      bannername: this.bannerFilename,
       products: this.selectedProducts,
       style: {
         background: this.collectionForm.get('background')?.value,
