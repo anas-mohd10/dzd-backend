@@ -70,7 +70,7 @@
             display: flex;
             align-items: center;
             flex-grow: 1;
-            font-size: 1.14rem;
+            font-size: 14px;
             color: #000000;
             font-weight: 500 !important;
         }
@@ -132,16 +132,18 @@
     @each $breakpoint in map-keys($grid-breakpoints) {
         $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-        @if $infix and $direction == down {
-            $infix: $infix + "-" + $direction;
+        @if $infix and $direction ==down {
+            $infix: $infix +"-"+$direction;
         }
 
         @include media-breakpoint-direction($direction, $breakpoint) {
+
             // Accordion arrow
             .menu-item.menu#{$infix}-accordion {
+
                 &.showing:not(.menu-dropdown),
                 &.show:not(.hiding):not(.menu-dropdown) {
-                    > .menu-link {
+                    >.menu-link {
                         .menu-arrow:after {
                             @include menu-link-arrow-rotate(90deg, -90deg);
                         }
@@ -158,21 +160,23 @@
                 z-index: get($menu, dropdown, z-index);
 
                 // Dropdown show
-                .show.menu-dropdown > &,
+                .show.menu-dropdown>&,
                 &.menu.show,
                 &.show[data-popper-placement] {
                     display: flex;
 
                     // Animation
-                    @if (get($menu, dropdown, animation) == true) {
+                    @if (get($menu, dropdown, animation)==true) {
                         // Move up
-                        animation: menu-sub-dropdown-animation-fade-in #{get($menu, dropdown, animation-speed)} ease 1, menu-sub-dropdown-animation-move-up #{get($menu, dropdown, animation-speed)} ease 1;
+                        animation: menu-sub-dropdown-animation-fade-in #{get($menu, dropdown, animation-speed)} ease 1,
+                        menu-sub-dropdown-animation-move-up #{get($menu, dropdown, animation-speed)} ease 1;
 
                         // Move down
                         &[data-popper-placement="top"],
                         &[data-popper-placement="top-start"],
                         &[data-popper-placement="top-end"] {
-                            animation: menu-sub-dropdown-animation-fade-in #{get($menu, dropdown, animation-speed)} ease 1, menu-sub-dropdown-animation-move-down #{get($menu, dropdown, animation-speed)} ease 1;
+                            animation: menu-sub-dropdown-animation-fade-in #{get($menu, dropdown, animation-speed)} ease 1,
+                            menu-sub-dropdown-animation-move-down #{get($menu, dropdown, animation-speed)} ease 1;
                         }
                     }
                 }
@@ -182,7 +186,7 @@
             .menu-sub#{$infix}-accordion {
                 display: none;
 
-                .show:not(.menu-dropdown) > &,
+                .show:not(.menu-dropdown)>&,
                 &.show {
                     display: flex;
                 }
@@ -195,9 +199,10 @@
 
             // Reset link left & right paddings of level 1 menu links
             .menu#{$infix}-fit {
-                > .menu-item {
-                    > .menu-content,
-                    > .menu-link {
+                >.menu-item {
+
+                    >.menu-content,
+                    >.menu-link {
                         padding-left: 0 !important;
                         padding-right: 0 !important;
                     }
@@ -212,11 +217,11 @@
             .menu#{$infix}-row {
                 flex-direction: row;
 
-                > .menu-item {
+                >.menu-item {
                     display: flex;
                     align-items: center;
 
-                    > .menu-link {
+                    >.menu-link {
                         .menu-arrow:after {
                             @include menu-link-arrow-rotate(90deg, -90deg);
                         }
@@ -253,16 +258,31 @@
 
 // Menu animations
 @keyframes menu-sub-dropdown-animation-fade-in {
-    from   { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes menu-sub-dropdown-animation-move-up {
-    from   { margin-top: #{get($menu, dropdown, animation-move-offset)} }
-    to { margin-top: 0 }
+    from {
+        margin-top: #{get($menu, dropdown, animation-move-offset)}
+    }
+
+    to {
+        margin-top: 0
+    }
 }
 
 @keyframes menu-sub-dropdown-animation-move-down {
-    from   { margin-bottom: #{get($menu, dropdown, animation-move-offset)} }
-    to { margin-bottom: 0 }
+    from {
+        margin-bottom: #{get($menu, dropdown, animation-move-offset)}
+    }
+
+    to {
+        margin-bottom: 0
+    }
 }

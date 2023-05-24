@@ -3,6 +3,10 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 
+.menu-state-title-primary .menu-item .menu-link.active {
+  background: #00bdab20 !important;
+}
+
 .angular-editor-textarea {
   height: 350px !important;
   min-height: 350px !important;
@@ -1009,7 +1013,6 @@ body {
   height: 100%;
 }
 
-
 .mat-typography,
 .mat-typography h1,
 .mat-typography h2,
@@ -1017,17 +1020,5 @@ body {
 .mat-typography h4,
 .mat-typography h5,
 .mat-typography h6 {
-  font-family: 'Urbanist', "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family: 'Manrope', "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
-
-// @media (min-width: 1400px) {
-
-//   .container-xxl,
-//   .container-xl,
-//   .container-lg,
-//   .container-md,
-//   .container-sm,
-//   .container {
-//     max-width: max-content;
-//   }
-// }

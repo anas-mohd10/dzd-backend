@@ -10,7 +10,7 @@
       <div class="table-responsive">
         <table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
           <thead>
-            <tr class="text-left fs-5 text-gray-400">
+            <tr class="text-left fs-6 text-gray-400">
               <th style="min-width: 250px" class="pl-7">
                 <span class="text-dark-75">Products</span>
               </th>
@@ -21,7 +21,7 @@
               <th style="min-width: 80px">Reviews</th>
             </tr>
           </thead>
-          <tbody class="fs-5">
+          <tbody class="fs-6">
             <tr *ngFor="let product of products">
               <td class="productName"><span routerLink="{{appRoutes.product.UPDATE_PRODUCT}}"
                   [queryParams]="{'id': product?.prodid}">{{product?.name}}</span></td>

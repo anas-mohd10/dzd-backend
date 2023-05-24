@@ -1,7 +1,11 @@
 .orderStatus {
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
-  padding: .625rem 1.25rem;
-  border-radius: .625rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.625rem;
+  width: 100%;
+  display: flex;
 }
 
 .placed {
@@ -38,9 +42,13 @@
 }
 
 .paymentStatus {
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
-  padding: .625rem 1.25rem;
-  border-radius: .625rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.625rem;
+  width: 100%;
+  display: flex;
 }
 
 .paid {

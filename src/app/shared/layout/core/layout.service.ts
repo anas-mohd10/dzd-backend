@@ -75,7 +75,7 @@ export class LayoutService {
   // scope list of body css variables
   private cssVariables: ILayoutCSSVariables;
 
-  constructor() {}
+  constructor() { }
 
   initConfig(): void {
     const configFromLocalStorage = localStorage.getItem(

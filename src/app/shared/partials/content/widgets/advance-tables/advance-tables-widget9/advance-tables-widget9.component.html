@@ -11,7 +11,7 @@
       <div class="table-responsive">
         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
           <thead>
-            <tr class="text-left fs-5 text-gray-400">
+            <tr class="text-left fs-6 text-gray-400">
               <th style="min-width: 120px">Order No.</th>
               <th style="min-width: 120px">Customer</th>
               <th style="min-width: 100px">Total</th>
@@ -23,7 +23,7 @@
               <th style="min-width: 100px">Action</th>
             </tr>
           </thead>
-          <tbody class="fs-5">
+          <tbody class="fs-6">
             <tr *ngFor="let order of orders">
               <td>{{order?.orderNo}}</td>
               <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td>

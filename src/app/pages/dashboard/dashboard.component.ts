@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DashboardService } from 'src/app/includes/services/dashboard.service';
-
+import { AuthService } from 'src/app/includes/services/auth.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -11,9 +11,16 @@ export class DashboardComponent implements OnInit {
   monthlyRevenue: any = [];
   daysRevenue: any = []
   lastMonthRevenue: void;
-  constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) { }
+  userData: any
+  constructor(
+    private DashboardService: DashboardService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AuthService: AuthService
+  ) { }
 
   ngOnInit(): void {
+    this.userData = this.AuthService.getCurrentUser();
+
     this.DashboardService.getDashboard({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.data = res?.result
