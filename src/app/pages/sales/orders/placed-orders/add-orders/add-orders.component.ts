@@ -78,6 +78,7 @@ export class AddOrdersComponent implements OnInit {
       lat: [''],
       lng: [''],
       transactionId: [''],
+      additionalCharge: [''],
       products: this.formBuilder.array([]),
     });
   }
@@ -257,7 +258,8 @@ export class AddOrdersComponent implements OnInit {
       paymentMethod: data.paymentMethod,
       payment: {
         transactionId: data?.transactionId
-      }
+      },
+      additionalCharge: data.additionalCharge
     }
 
     if (this.cart.length != 0) {

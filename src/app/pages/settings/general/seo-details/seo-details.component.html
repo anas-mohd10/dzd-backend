@@ -1,0 +1,112 @@
+<div class="seoDetailsContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Search Engine Optimization</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.seo.SEO_DETAILS}}">SEO</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttonContainer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Add SEO Details
+        </button>
+    </div>
+
+    <div class="seoCards">
+        <ng-container *ngFor="let item of data; let i = index">
+            <div class="seoCard">
+                {{i+1}}
+                <div class="page">{{item?.page}}</div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add SEO Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form">
+                    <div class="mb-3 row">
+                        <label for="url" class="col-sm-2 col-form-label required">Page</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" aria-label="Default select example" formControlName="page"
+                                [ngClass]="{
+                                'is-invalid':
+                                (fc.page.touched || !isValid) &&
+                                fc.page.errors?.required
+                              }">
+                                <option selected disabled>Select a page</option>
+                                <option value="HOME">Home</option>
+                                <option value="ABOUT">About</option>
+                                <option value="CONTACT">Contact</option>
+                                <option value="TERMS">Terms</option>
+                                <option value="PRIVACY">Privacy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="url" class="col-sm-2 col-form-label required">Meta URL</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="url" class="form-control" formControlName="url" [ngClass]="{
+                                'is-invalid':
+                                (fc.url.touched || !isValid) &&
+                                fc.url.errors?.required
+                              }">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="title" class="col-sm-2 col-form-label required">Meta Title</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="title" class="form-control" formControlName="title" [ngClass]="{
+                                'is-invalid':
+                                (fc.title.touched || !isValid) &&
+                                fc.title.errors?.required
+                              }">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="keywords" class="col-sm-2 col-form-label required">Meta Keywords</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="keywords" class="form-control" formControlName="keywords" [ngClass]="{
+                                'is-invalid':
+                                (fc.keywords.touched || !isValid) &&
+                                fc.keywords.errors?.required
+                              }">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="description" class="col-sm-2 col-form-label required">Meta Description</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                formControlName="description" [ngClass]="{
+                                    'is-invalid':
+                                    (fc.description.touched || !isValid) &&
+                                    fc.description.errors?.required
+                                  }"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                <button type="button" class="btn btn-primary" (click)="addSeoDetails()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

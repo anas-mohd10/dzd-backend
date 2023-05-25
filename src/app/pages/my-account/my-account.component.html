@@ -1,7 +1,7 @@
 <div class="profilePageContainer">
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">My Account</h1>
+            <h1 class="fw-bolder">Account Overview</h1>
         </div>
         <div class="row">
             <div class="col d-flex align-items-start justify-content-between">
@@ -17,53 +17,172 @@
         </div>
     </div>
     <div class="accountHeader">
-        <div class="accountPicture">
-            <i class="bi bi-person-circle"></i>
+        <div class="accountDetailsHeader">
+            <div class="accountPicture">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <div class="accountDetails">
+                <div class="accountName">{{adminDetails?.firstname}} {{adminDetails?.lastname}}</div>
+                <div class="accountEmail">{{adminDetails?.email}}</div>
+                <div class="accountMobile">{{adminDetails?.countryCode}} {{adminDetails?.mobile}}</div>
+                <div class="accountCreated">Account created on {{adminDetails?.createdAt}}</div>
+            </div>
         </div>
-        <div class="accountDetails">
-            <div class="accountName">{{adminDetails?.firstname}} {{adminDetails?.lastname}}</div>
-            <div class="accountEmail">{{adminDetails?.email}}</div>
-            <div class="accountMobile">{{adminDetails?.countryCode}} {{adminDetails?.mobile}}</div>
-            <div class="accountCreated">Account created on {{adminDetails?.createdAt}}</div>
-        </div>
-    </div>
-    <div class="accountActivities">
+
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#basic-details"
-                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Edit Details</button>
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#overview"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Overview</button>
+                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#edit-details"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Settings</button>
                 <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#product-details"
                     type="button" role="tab" aria-controls="nav-profile" aria-selected="false">My Activity
                 </button>
             </div>
         </nav>
-
+    </div>
+    <div class="accountActivities">
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade basic-details-container formContainer active show" id="basic-details"
-                role="tabpanel" aria-labelledby="nav-home-tab">
-
-                <div class="editForm">
-                    <form [formGroup]="form">
-                        <input type="email" class="form-control" formControlName="firstname"
-                            placeholder="Enter your first name" (click)="touchAction(true)">
-                        <input type="email" class="form-control" formControlName="lastname"
-                            placeholder="Enter your last name" (click)="touchAction(true)">
-                        <input type="email" class="form-control" formControlName="countryCode"
-                            placeholder="Enter your country code" (click)="touchAction(true)">
-                        <input type="email" class="form-control" formControlName="mobile"
-                            placeholder="Enter your mobile number" (click)="touchAction(true)">
-                    </form>
-
-                    <div class="formButtons" *ngIf="isTouched">
-                        <button type="button" class="btn btn-secondary" (click)="touchAction(false)">Cancel</button>
-                        <button type="button" class="btn btn-primary" (click)="editDetails()">Update</button>
+            <div class="tab-pane fade basic-details-container active show" id="overview" role="tabpanel"
+                aria-labelledby="nav-home-tab">
+                <div class="profileDetails">
+                    <div class="tabHeader">
+                        <div class="tabTitle">Profile Details</div>
+                    </div>
+                    <div class="profileDetailsContainer">
+                        <div class="profileDetailsTitles">
+                            <div class="profileText">
+                                Username
+                            </div>
+                            <div class="profileText">
+                                First Name
+                            </div>
+                            <div class="profileText">
+                                Last Name
+                            </div>
+                            <div class="profileText">
+                                Email Address
+                            </div>
+                            <div class="profileText">
+                                Country Code
+                            </div>
+                            <div class="profileText">
+                                Mobile Number
+                            </div>
+                        </div>
+                        <div class="profileDetailsValue">
+                            <div class="profileText">
+                                {{adminDetails?.username ? adminDetails?.username : '-'}}
+                            </div>
+                            <div class="profileText">
+                                {{adminDetails?.firstname ? adminDetails?.firstname : '-'}}
+                            </div>
+                            <div class="profileText">
+                                {{adminDetails?.lastname ? adminDetails?.lastname : '-'}}
+                            </div>
+                            <div class="profileText">
+                                {{adminDetails?.email ? adminDetails?.email : '-'}}
+                            </div>
+                            <div class="profileText">
+                                {{adminDetails?.countryCode ? adminDetails?.countryCode : '-'}}
+                            </div>
+                            <div class="profileText">
+                                {{adminDetails?.mobile ? adminDetails?.mobile : '-'}}
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="tab-pane fade basic-details-container formContainer" id="edit-details" role="tabpanel"
+                aria-labelledby="nav-home-tab">
+                <div class="tabHeader">
+                    <div class="tabTitle">Edit Details</div>
+                </div>
+                <div class="editForm">
+                    <form [formGroup]="form">
 
+                        <div class="profileText">
+                            <div class="title required">First Name</div>
+                            <input type="email" class="form-control" formControlName="firstname"
+                                placeholder="Enter your first name" (click)="touchAction(true)">
+                        </div>
+
+                        <div class="profileText">
+                            <div class="title">Last Name</div>
+                            <input type="email" class="form-control" formControlName="lastname"
+                                placeholder="Enter your last name" (click)="touchAction(true)">
+                        </div>
+
+                        <div class="profileText">
+                            <div class="title">Country Code</div>
+                            <input type="email" class="form-control" formControlName="countryCode"
+                                placeholder="Enter your country code" (click)="touchAction(true)">
+                        </div>
+
+                        <div class="profileText">
+                            <div class="title">Mobile Number</div>
+                            <input type="email" class="form-control" formControlName="mobile"
+                                placeholder="Enter mobile number" (click)="touchAction(true)">
+                        </div>
+                    </form>
+                </div>
+                <div class="formButtons" *ngIf="isTouched">
+                    <button type="button" class="btn btn-secondary" (click)="touchAction(false)">Discard</button>
+                    <button type="button" class="btn btn-primary" (click)="editDetails()">Save Changes</button>
+                </div>
+
+                <div class="tabHeader">
+                    <div class="tabTitle">Sign-in Method</div>
+                </div>
+
+                <div class="signInMethod">
+                    <div class="signInMethodLeft">
+                        <div class="signInMethodText">
+                            Email Address
+                        </div>
+                        <div class="signInMethodText">
+                            Password
+                        </div>
+                    </div>
+                    <div class="signInMethodRight">
+                        <div class="signInMethodText">
+                            {{adminDetails?.email ? adminDetails?.email : '-'}}
+                        </div>
+                        <div class="signInMethodText">
+                            <button *ngIf="!isResetPassword" type="button" class="btn btn-secondary"
+                                (click)="resetPassword(true)">Reset
+                                Password</button>
+                            <div class="passwordContainer" *ngIf="isResetPassword">
+                                <div class="passwordFields">
+                                    <div class="profileText">
+                                        <div class="title">Current Password</div>
+                                        <input type="email" class="form-control" formControlName="oldPassword">
+                                    </div>
+                                    <div class="profileText">
+                                        <div class="title">New Password</div>
+                                        <input type="email" class="form-control" formControlName="password">
+                                    </div>
+                                    <div class="profileText">
+                                        <div class="title">Confirm New Password</div>
+                                        <input type="email" class="form-control" formControlName="confirmPassword">
+                                    </div>
+                                </div>
+                                <div class="passwordButtons">
+                                    <button type="button" class="btn btn-secondary"
+                                        (click)="resetPassword(false)">Cancel</button>
+                                    <button type="button" class="btn btn-primary" (click)="changePassword()">Save
+                                        Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="tab-pane fade basic-details-container" id="product-details" role="tabpanel"
                 aria-labelledby="nav-home-tab">
-                My activity
+                <div class="tabHeader">
+                    <div class="tabTitle">My Activity</div>
+                </div>
             </div>
         </div>
     </div>

@@ -42,6 +42,7 @@ const pageLimitsRoutes = "/page-limits"
 const generalSettingsRoutes = "/app-settings"
 const dashboardSettings = "/home-settings"
 const myAccount = '/my-account'
+const seoDetails = '/seo-details'
 
 export const appRoutes = {
   BASE: environment.base + "/",
@@ -220,5 +221,8 @@ export const appRoutes = {
   },
   account: {
     MY_ACCOUNT: `${app}${myAccount}`
+  },
+  seo: {
+    SEO_DETAILS: `${app}${seoDetails}`
   }
 };

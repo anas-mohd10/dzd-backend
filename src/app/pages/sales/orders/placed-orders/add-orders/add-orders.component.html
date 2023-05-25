@@ -27,9 +27,7 @@
         <div class="card-body">
           <form [formGroup]="orderForm">
             <div class="row">
-              <div class="col-12">
-                <h5 class="fs-3 text-dark fw-bolder">Orders Details</h5>
-              </div>
+              <h5 class="fs-3 text-dark fw-bolder">Orders Details</h5>
               <div class="col-12">
                 <div class="form-group col-sm-6">
                   <label class="fs-5 mb-3 required">Customer</label>
@@ -39,32 +37,28 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="col-12">
-                <h5 class="fs-3 text-dark fw-bolder">Address Details</h5>
-              </div>
-              <div class="col-12 col-sm-6">
+              <h5 class="fs-3 text-dark fw-bolder">Address Details</h5>
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required"> Address Line 1</label>
-                  <input type="text" class="form-control fs-5" formControlName="firstline" [ngClass]="{
-                                 'is-invalid':
-                                 (of.firstline.touched || isSubmitted) &&
-                                 of.firstline.errors?.required
-                               }" />
+                  <input type="text" class="form-control fs-5" formControlName="firstline"
+                    [ngClass]="{'is-invalid': (of.firstline.touched || isSubmitted) &&  of.firstline.errors?.required }" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3"> Address Line 2</label>
                   <input type="text" class="form-control fs-5" formControlName="secondline" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3"> Area</label>
                   <input type="text" class="form-control fs-5" formControlName="area" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required"> City</label>
                   <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
@@ -74,7 +68,7 @@
                                }" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required"> Landmark</label>
                   <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
@@ -84,7 +78,7 @@
                                }" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required"> Pincode</label>
                   <input type="number" class="form-control fs-5" formControlName="pincode" [ngClass]="{
@@ -94,13 +88,13 @@
                                }" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3"> Latitude</label>
                   <input type="number" class="form-control fs-5" formControlName="lat" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3"> Longitude</label>
                   <input type="number" class="form-control fs-5" formControlName="lng" />
@@ -189,7 +183,7 @@
                           <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">₹
                             {{item?.price?.mrp}}</span>
                         </div>
-                       </div>
+                      </div>
                       <div class="productQuantity">x {{item?.quantity}}</div>
                       <div class="orderTotal">₹ {{item?.total}}</div>
                     </div>
@@ -212,10 +206,9 @@
                 </div>
               </div>
 
-              <div class="col-12">
-                <h5 class="fs-3 text-dark fw-bolder">Other Details</h5>
-              </div>
-              <div class="col-12 col-sm-6">
+
+              <h5 class="fs-3 text-dark fw-bolder">Other Details</h5>
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Payment Method</label>
                   <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
@@ -228,24 +221,30 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6" *ngIf="showTransactionId">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="fs-5 mb-3">Additional Charge</label>
+                  <input type="text" formControlName="additionalCharge" class="form-control fs-5">
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="showTransactionId">
                 <div class="form-group">
                   <label class="fs-5 mb-3 required">Transaction ID</label>
                   <input type="text" formControlName="transactionId" class="form-control fs-5">
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">GST No.</label>
                   <input type="text" formControlName="gst" class="form-control fs-5">
                 </div>
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <button routerLink="{{ appRoute.orders.ORDERS_LIST}}"
-                  class="btn btn-secondary btn-standard btn-rounded text-dark" style="margin-right: 20px;">
+                <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary text-dark"
+                  style="margin-right: 20px;">
                   Cancel
                 </button>
-                <button type="submit" class="btn btn-primary btn-rounded btn-standard" (click)="onSubmit()">
+                <button type="submit" class="btn btn-primary" (click)="onSubmit()">
                   Place Order
                 </button>
               </div>

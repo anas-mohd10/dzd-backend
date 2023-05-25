@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
@@ -14,6 +14,13 @@ export class MyAccountComponent implements OnInit {
   form: FormGroup
   isValid: boolean = true
   isTouched: boolean = false
+  isResetPassword: boolean = false
+  @ViewChild('username') username: ElementRef;
+  @ViewChild('email') email: ElementRef;
+
+  oldPassword: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
+  password: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
+  confirmPassword: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
 
   constructor(
     private AdminUsersService: AdminUsersService,
@@ -53,6 +60,24 @@ export class MyAccountComponent implements OnInit {
         this.isTouched = true
         break
     }
+  }
+
+  resetPassword(action: any) {
+    switch (action) {
+      case true:
+        this.isResetPassword = true
+        break
+      case false:
+        this.isResetPassword = false
+        break
+      default:
+        this.isResetPassword = true
+        break
+    }
+  }
+
+  changePassword() {
+
   }
 
   editDetails() {

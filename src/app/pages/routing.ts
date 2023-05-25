@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthenticationGuard } from '../core/auth/authentication.guard';
 import { MyAccountComponent } from './my-account/my-account.component';
+import { SeoDetailsComponent } from './settings/general/seo-details/seo-details.component';
 
 export const Routing: Routes = [
   {
@@ -303,6 +304,10 @@ export const Routing: Routes = [
       }, {
         path: 'my-account',
         component: MyAccountComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'seo-details',
+        component: SeoDetailsComponent,
         canActivate: [AuthenticationGuard]
       },
     ]

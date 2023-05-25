@@ -33,9 +33,10 @@ import { UpdateHeadComponent } from './pages/catalog/product/update-head/update-
 import { AllProductsComponent } from './pages/catalog/product/all-products/all-products.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MyAccountComponent } from './pages/my-account/my-account.component';
+import { SeoDetailsComponent } from './pages/settings/general/seo-details/seo-details.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent, MyAccountComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent, MyAccountComponent, SeoDetailsComponent],
   imports: [
     DataTablesModule,
     BrowserModule,
