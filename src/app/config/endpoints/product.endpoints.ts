@@ -17,5 +17,6 @@ export const productEndpoints = {
     product_images: '/products/product-images',
     products_bulk_image_upload: '/products/bulk-image-upload',
     products_bulk_file_upload: '/products/bulk-file-upload',
-    products_bulk_thumbnail_upload: '/products/bulk-thumbnail-upload'
+    products_bulk_thumbnail_upload: '/products/bulk-thumbnail-upload',
+    search_products: '/search-products'
 }

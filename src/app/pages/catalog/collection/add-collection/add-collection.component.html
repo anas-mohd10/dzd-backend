@@ -6,14 +6,14 @@
         <h3 class="page-title fs-2 fw-bolder">
           {{ editMode ? "Update Collection" : "Add Collection" }}
         </h3>
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.collection.ADD_COLLECTION }}">{{
               editMode ? "Update Collection" : "Add Collection"
               }}</a>
@@ -28,7 +28,7 @@
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm" (keydown.Enter)="$event.preventDefault()">
             <div class="row">
-              <h2 class="form-title">Collection Details</h2>
+              <h2 class="form-title fs-4">Collection Details</h2>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3 form-title required">Title</label>
@@ -112,7 +112,7 @@
                   </select>
                 </div>
               </div>
-              <h2 class="form-title">Collection Styles</h2>
+              <h2 class="form-title fs-4">Collection Styles</h2>
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-5 mb-3">Background</label>
@@ -157,7 +157,7 @@
               </div>
               <div class="col-12 col-sm-6">
                 <div class="col-12">
-                  <h2 class="form-title required">Media</h2>
+                  <h2 class="form-title required fs-4">Collection Thumbnail</h2>
                 </div>
                 <div class="form-group">
                   <div class="image-upload">
@@ -211,14 +211,12 @@
 
               <div class="col-12 col-sm-6">
                 <div class="col-12">
-                  <h2 class="form-title required">Banner</h2>
+                  <h2 class="form-title fs-4">Collection Cover Image</h2>
                 </div>
                 <div class="form-group">
                   <div class="image-upload">
                     <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="bannerFile($event)"
-
-                      style="height: 100px;" required>
+                      (change)="bannerFile($event)" style="height: 100px;" required>
                     <div class="image-upload-div">
                       <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
                           srcset=""></div>

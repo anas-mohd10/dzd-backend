@@ -5,7 +5,7 @@
 }
 
 .collection-card {
-  height: 200px;
+  height: 150px;
   padding: 10px 30px;
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -44,41 +44,23 @@
 }
 
 .collection-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.collection-subname {
-  font-size: 1rem;
   font-weight: 600;
 }
 
 .collection-status-true {
-  width: 150px;
-  background: #00bdab;
-  color: #ffffff;
-  padding: 5px;
-  font-size: 1.1rem;
+  color: #00bdab;
   font-weight: 600;
-  margin: 5px 0;
-  border-radius: 5px;
+  font-size: 1.1rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .collection-status-false {
-  width: 150px;
-  background: #c64a54;
-  color: #ffffff;
-  padding: 5px;
-  font-size: 1.1rem;
+  color: #ce1626;
   font-weight: 600;
-  margin: 5px 0;
-  border-radius: 5px;
+  font-size: 1.1rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .collection-featured-true {
