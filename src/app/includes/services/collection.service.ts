@@ -16,6 +16,11 @@ export class CollectionService {
     return this.http.post(`${url}`, data);
   }
 
+  addCollectionSku(data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.add_collection_sku);
+    return this.http.post(`${url}`, data);
+  }
+
   getCollection() {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.get_collection);
     return this.http.get(`${url}`);

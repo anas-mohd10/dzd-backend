@@ -209,41 +209,38 @@ export class AddBannerListComponent implements OnInit {
   }
 
   addBanner() {
-    let oldLength = this.bannerMedia.length
-    switch (this.bannerType) {
-      case 1:
-        if (this.bannerType < 1) {
-          this.bannerMedia.push({
-            web: { file: this.web_file, name: this.w_name },
-            mobile: { file: this.mobile_file, name: this.m_name },
-            redirection: {
-              unit: '',
-              category: this.category ? this.category : '',
-              collection: this.collection ? this.collection : '',
-              product: this.product ? this.product : '',
-              external: this.bannerForm.get('redirectURL')?.value
-            },
-          })
-          let newLength = this.bannerMedia.length
-          if ((oldLength + 1) == newLength) {
-            this.web_file = null
-            this.mobile_file = null
-            this.w_name = null
-            this.m_name = null
-            this.w_file = null
-            this.m_file = null
-          }
-        }
-        break
-      case 2:
-        break
-      case 3:
-        break
-      case 4:
-        break
-      default:
-        break
+    let length = this.bannerMedia.length
+    if (length < this.bannerType) {
+      this.addFiles()
+    } else {
+      this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
     }
+    this.clearFiles()
+
+    console.log(this.bannerMedia);
+  }
+
+  addFiles() {
+    this.bannerMedia.push({
+      web: { file: this.web_file, name: this.w_name },
+      mobile: { file: this.mobile_file, name: this.m_name },
+      redirection: {
+        unit: '',
+        category: this.category ? this.category : '',
+        collection: this.collection ? this.collection : '',
+        product: this.product ? this.product : '',
+        external: this.bannerForm.get('redirectURL')?.value
+      },
+    })
+  }
+
+  clearFiles() {
+    this.web_file = null
+    this.mobile_file = null
+    this.w_name = null
+    this.m_name = null
+    this.w_file = null
+    this.m_file = null
   }
 
   imageCroppedWeb(event: ImageCroppedEvent) {
@@ -272,17 +269,9 @@ export class AddBannerListComponent implements OnInit {
   loadImageMobileFailed() {
   }
 
-  removeImage(key: any) {
-    this.croppedImage = ''
-    if (key === 'web') {
-      this.webLoadImage = false
-    } else if (key === 'mobile') {
-      this.mobileLoadImage = false
-    }
-  }
-
   onSubmit() {
     if (!this.bannerForm.valid) {
+      this.toastr.error('Invalid form')
       return;
     }
 
@@ -296,6 +285,14 @@ export class AddBannerListComponent implements OnInit {
           this.router.navigate([this.appRoute.banner.BANNER_LIST]);
         }
       })
+    }
+  }
+
+  checkFileLength() {
+    if (this.bannerMedia.length == this.bannerType) {
+      return true
+    } else {
+      return false
     }
   }
 
@@ -316,10 +313,11 @@ export class AddBannerListComponent implements OnInit {
       file: this.bannerMedia
     }
 
-    if (this.web_file != '' && this.mobile_file != '') {
+    let isValidFile = this.checkFileLength()
+    if (isValidFile) {
       return data
     } else {
-      this.toastr.info('Banner image is being processed')
+      this.toastr.error('Invalid file length')
     }
   }
 }

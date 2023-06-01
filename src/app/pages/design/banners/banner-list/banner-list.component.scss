@@ -31,13 +31,11 @@
 
    .active {
       color: #10aa7c;
-      // padding: 0.625rem;
       border-radius: 0.3125rem;
    }
 
    .inactive {
       color: #aa1025;
-      // padding: 0.625rem;
       border-radius: 0.3125rem;
    }
 }
@@ -67,7 +65,6 @@
 .banner-status,
 .banner-title,
 .banner-position span {
-   font-size: 1.4rem;
    font-weight: 600;
    margin: 20px 0;
 }

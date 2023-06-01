@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [AddCollectionComponent],
@@ -17,6 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     NgSelectModule,
     ImageCropperModule,
+    DragDropModule,
     NgMultiSelectDropDownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

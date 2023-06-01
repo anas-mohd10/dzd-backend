@@ -61,9 +61,9 @@ export class ProductService {
     return this.http.post(`${url}`, query);
   }
 
-  findProducts(query: any, page: any) {
+  findProducts(data: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.search_products);
-    return this.http.post(`${url}`, query);
+    return this.http.post(`${url}`, data);
   }
 
   archivedProducts(query: any, page: any) {

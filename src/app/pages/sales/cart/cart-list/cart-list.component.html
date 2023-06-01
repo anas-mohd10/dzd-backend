@@ -43,12 +43,10 @@
               <thead class="thead mt-100">
                 <tr class="fs-5">
                   <th class="text-gray-400 col-md-2">Sl No.</th>
-                  <th class="text-gray-400 col-md-2">Order No.</th>
                   <th class="text-gray-400 col-md-2">Customer</th>
                   <th class="text-gray-400 col-md-2">Product</th>
                   <th class="text-gray-400 col-md-2">Quantity</th>
                   <th class="text-gray-400 col-md-2">Grand Total</th>
-                  <th class="text-gray-400 col-md-2">Status</th>
                   <th class="text-gray-400 col-md-2">Date</th>
                   <th class="text-gray-400 col-md-2">Notify</th>
                 </tr>
@@ -57,9 +55,6 @@
                 <tr *ngFor="let cart of carts; let i = index">
                   <td>
                     <h2 class="table-avatar">{{ i + 1 }}</h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar">{{ cart?.order ? cart?.order : '-' }}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.customer?.name }} <br>{{ cart?.customer?.mobile }}</h2>
@@ -72,9 +67,6 @@
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.total }}</h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar">{{ cart?.status }}</h2>
                   </td>
                   <td>
                     <h2 class="table-avatar">{{ cart?.date?.added }}</h2>

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -8,6 +8,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-add-collection',
@@ -51,7 +52,15 @@ export class AddCollectionComponent implements OnInit {
   bannerFilename: any;
   bannerChangedEvent: any = '';
   loadBanner: boolean;
+
+  product: FormControl = new FormControl('')
+  productSku: FormControl = new FormControl('')
+  searchProducts: Array<any> = []
   croppedBanner: any;
+
+  isAutoCompleteEnabled: boolean = true
+  productIds: Array<any> = [];
+  productDetails: Array<any> = []
 
   constructor(
     private collectionService: CollectionService,
@@ -202,7 +211,7 @@ export class AddCollectionComponent implements OnInit {
     this.loadImage = true
   }
 
-  bannerFile(event:any) {
+  bannerFile(event: any) {
     this.bannerFiledata = <File>event.target.files[0];
     this.bannerFilename = this.bannerFiledata.name
     this.bannerChangedEvent = event;
@@ -213,22 +222,62 @@ export class AddCollectionComponent implements OnInit {
     this.file = file
   }
 
+  getProducts() {
+    if (this.product.value) {
+      this.productService.findProducts({ name: this.product.value }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.searchProducts = res?.result
+          this.cdr.markForCheck()
+        }
+      })
+    } else { this.searchProducts = [] }
+  }
+
+  toggleProductMethod(type: any) { this.isAutoCompleteEnabled = type }
+
+  addProductSku(product: any) {
+    if (!this.productIds.includes(product?._id)) {
+      this.productDetails.push(product)
+      this.productIds.push(product?._id)
+    } else {
+      this.productDetails = this.productDetails.filter(item => item?._id !== product?._id)
+      this.productIds = this.productIds.filter(item => item !== product?._id)
+    }
+  }
+
   addCollection() {
     if (!this.collectionForm.valid) {
       this.toastr.error('Validation failed. Kindly try again with proper values.')
       return;
     }
 
-    const payload = this.createPayload()
+    if (this.isAutoCompleteEnabled) {
+      for (let product of this.productDetails) this.selectedProducts.push(product._id)
+      const payload = this.createPayload()
+      this.collectionService.addCollection(payload).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.messaage);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+        }
+      });
+    } else {
+      this.selectedProducts = this.productSku?.value.split(',')
+      const payload = this.createPayload()
+      this.collectionService.addCollectionSku(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+        } else {
+          this.toastr.error(res?.messaage);
+        }
+      });
+    }
+  }
 
-    this.collectionService.addCollection(payload).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.messaage);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-      }
-    });
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.productDetails, event.previousIndex, event.currentIndex);
   }
 
   createPayload() {

@@ -1,5 +1,6 @@
 export const collectionEndpoints = {
     add_collection: '/add-collection',
+    add_collection_sku: '/add-collection-sku',
     get_collection: '/collections',
     get_collection_page: '/collections-page',
     get_active_collections: '/collections/active',

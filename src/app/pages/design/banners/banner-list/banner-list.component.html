@@ -5,15 +5,15 @@
       </div>
       <div class="row">
          <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb fw-bolder">
-               <li class="breadcrumb-item fs-5">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.banner.BANNER_LIST}}">Banners</a>
                </li>
             </ul>
-            <button class="btn btn-primary cursor-pointer fs-5" color="primary"
+            <button class="btn btn-primary cursor-pointer fs-6" color="primary"
                routerLink="{{ appRoute.banner.ADD_BANNER }}" style="width: 200px;">
                Add Banners
             </button>
@@ -23,17 +23,16 @@
    <div class="total-count-container col-sm-3 bg-dark" *ngIf="count != 0">
       <h4 class="text-white">Total {{totalcount ? totalcount : 0}} banners</h4>
    </div>
-   <!-- card container start -->
    <div class="banner-card-container view-container col-12">
       <ng-container *ngFor="let banner of banners">
          <div class="banner-card card-hover editable-{{banner?.isEditable}}"
             [ngClass]="{'inactive-banner': !banner?.isActive, 'active-banner': banner?.isActive}">
             <div class="banner-card-left">
-               <div class="banner-title">{{banner?.title}}</div>
-               <div class="banner-from">Valid From <span>{{banner?.validFrom}}</span></div>
-               <div class="banner-till">Valid To <span>{{banner?.validTo}}</span></div>
-               <div class="banner-status active" *ngIf="banner?.isActive">Active</div>
-               <div class="banner-status inactive" *ngIf="!banner?.isActive">Inactive</div>
+               <div class="banner-title fs-6">{{banner?.title}}</div>
+               <div class="banner-from fs-6">Valid From <span class="fs-5">{{banner?.validFrom}}</span></div>
+               <div class="banner-till fs-6">Valid To <span class="fs-5">{{banner?.validTo}}</span></div>
+               <div class="banner-status fs-6 active" *ngIf="banner?.isActive">Active</div>
+               <div class="banner-status fs-6 inactive" *ngIf="!banner?.isActive">Inactive</div>
                <div class="banner-edit-btn">
                   <button class="btn btn-sm bg-secondary text-dark fs-5 fw-bolder"
                      style="width: 100px; font-weight: 500;" [routerLink]="appRoute.banner.UPDATE_BANNER"
@@ -41,9 +40,6 @@
                </div>
             </div>
             <div class="banner-card-right">
-               <!-- <div class="banner-web-image">
-                  <img src="{{base}}/{{banner?.files?.web[0]}}" alt="web banner">
-               </div> -->
                <ng-container *ngFor="let banner of banner?.files?.mobile">
                   <div class="banner-mobile-image">
                      <img src="{{base}}/{{banner}}" alt="mobile banner">
@@ -59,8 +55,6 @@
          </div>
       </ng-container>
    </div>
-   <!-- card containe end -->
-   <!-- Pagination start -->
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
@@ -89,5 +83,4 @@
          </div>
       </ul>
    </nav>
-   <!-- Pagination end -->
 </div>
