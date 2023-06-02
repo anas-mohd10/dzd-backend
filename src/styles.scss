@@ -657,11 +657,11 @@ a.page-link.page-link-disabled {
   background: #eb2b2b;
   height: 100%;
   width: 100%;
-  border-radius: 50px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 //Validation text
@@ -697,11 +697,10 @@ label {
 .uploads .close-icon {
   cursor: pointer;
   position: absolute;
-  right: -17px;
-  top: -17px;
-  height: 35px;
-  width: 35px;
-  /* background: #ffffff; */
+  right: -12px;
+  top: -12px;
+  height: 25px;
+  width: 25px;
   border-radius: 10px;
   display: flex;
   align-items: center;

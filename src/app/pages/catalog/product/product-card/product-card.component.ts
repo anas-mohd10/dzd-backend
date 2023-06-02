@@ -145,9 +145,6 @@ export class ProductCardComponent implements OnInit {
   onReload() {
     this.productform.get('name')?.setValue('')
     this.productform.get('isActive')?.setValue('')
-    this.productform.get('isFeatured')?.setValue('')
-    this.productform.get('category')?.setValue('')
-    const radio = document.querySelectorAll('#category')
     this.searchProduct()
   }
 

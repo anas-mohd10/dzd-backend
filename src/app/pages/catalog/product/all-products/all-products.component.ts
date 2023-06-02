@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment.prod';
@@ -45,17 +46,24 @@ export class AllProductsComponent implements OnInit {
   base: string;
 
   loaded: boolean = false
-
+  settings: any = {}
   name: any = new FormControl('')
 
   constructor(
     private cdr: ChangeDetectorRef,
     private ProductService: ProductService,
     private formBuilder: FormBuilder,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
+    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+        this.cdr.markForCheck();
+      }
+    })
     this.initForm()
     this.base = environment.base
 

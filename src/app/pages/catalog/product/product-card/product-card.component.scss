@@ -43,10 +43,8 @@
 
    .product-image {
       width: 100%;
-      // margin: 5px 0 20px 0;
       display: flex;
       align-items: center;
-      // justify-content: center;
    }
 
    .product-image img {
@@ -456,7 +454,7 @@
       font-weight: 600;
    }
 
-   .product-out-stock{
+   .product-out-stock {
       position: absolute;
       font-size: 1.2rem;
       left: 5%;
@@ -473,7 +471,7 @@
       font-weight: 600;
    }
 
-   .product-limited-stock{
+   .product-limited-stock {
       position: absolute;
       font-size: 1.2rem;
       left: 5%;
@@ -611,7 +609,6 @@
                      display: -webkit-box;
                      -webkit-line-clamp: 1;
                      -webkit-box-orient: vertical;
-                     font-size: 1.1rem;
                   }
                }
             }
