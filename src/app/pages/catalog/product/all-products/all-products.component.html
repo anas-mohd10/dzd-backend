@@ -83,8 +83,9 @@
                   [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.offer}">
                   {{settings?.currency}} {{product?.price?.mrp}}</div>
               </div>
-              <div class="product-rating fs-6">
-                {{product?.rating}} <i class="bi bi-star-fill"></i>
+              <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
+                <div>{{product?.rating}}</div>
+                <img src="../../../../../assets/icons/rating.svg" alt="Icon">
               </div>
             </div>
             <div class="product-stock" *ngIf="product?.stock > 5">{{product?.stock}} left in stock</div>

@@ -944,6 +944,7 @@ export class AddProductComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.productheadform.get('name')?.setValue(res?.result[0]?.name)
         this.productheadform.get('hsn')?.setValue(res?.result[0]?.hsn)
+        this.productheadform.get('sku')?.setValue(res?.result[0]?.sku)
         this.productheadform.get('cod')?.setValue(res?.result[0]?.cod?.isPresent)
         this.productheadform.get('codCharge')?.setValue(res?.result[0]?.cod?.value)
         this.productheadform.get('shippingMethod')?.setValue(res?.result[0]?.shipping?.method)

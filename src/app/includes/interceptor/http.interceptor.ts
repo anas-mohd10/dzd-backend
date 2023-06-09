@@ -12,8 +12,7 @@ export class HttpInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
     private toast: ToastService
-  ) {
-  }
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let bearerToken = ''

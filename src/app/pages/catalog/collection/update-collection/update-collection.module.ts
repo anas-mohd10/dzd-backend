@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [UpdateCollectionComponent],
@@ -16,6 +17,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     FormsModule,
     ToastrModule,
+    DragDropModule,
     NgSelectModule,
     ImageCropperModule,
     ToastrModule.forRoot({

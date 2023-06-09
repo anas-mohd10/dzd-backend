@@ -5,7 +5,8 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment.prod';
-
+import { HttpClient } from '@angular/common/http';
+import { decrypt } from "../../../../core/encrypt/encrypt"
 @Component({
   selector: 'app-all-products',
   templateUrl: './all-products.component.html',
@@ -15,8 +16,6 @@ export class AllProductsComponent implements OnInit {
   appRoute = appRoutes
   products: any
   productform: any;
-
-  //Page and limit for query
   page: any = 1;
   pages: any = []
   nextpages: any = []
@@ -24,27 +23,20 @@ export class AllProductsComponent implements OnInit {
   limit: any = 8;
   selectedpage: any = 1
   max: any = 3
-
-  //Total no. of data from backend
   totalcount: any;
   totaldata: any;
   count: any = 0
   showFilter: boolean = false;
   category: any;
-
-  //Conditions
   isData: boolean = true;
   showBtn: boolean = true;
   showLessBtn: boolean = false;
   isNext: boolean = true
-
-  //Filters array
   filters: any = [];
   show: any;
   shifted: any
   categories: any;
   base: string;
-
   loaded: boolean = false
   settings: any = {}
   name: any = new FormControl('')
@@ -54,7 +46,8 @@ export class AllProductsComponent implements OnInit {
     private ProductService: ProductService,
     private formBuilder: FormBuilder,
     private CategoryService: CategoryService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private client: HttpClient
   ) { }
 
   ngOnInit(): void {
@@ -66,10 +59,9 @@ export class AllProductsComponent implements OnInit {
     })
     this.initForm()
     this.base = environment.base
-
     this.productform.value['name'] = this.name?.value
-
-    this.ProductService.searchProducts(this.productform.value, this.page).subscribe((res: any) => {
+    this.ProductService.searchProducts(this.productform.value, this.page).subscribe(async (res: any) => {
+      // res.result = await decrypt(res?.result)
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
         for (let _product of this.products) {
