@@ -1,0 +1,71 @@
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primary: #00bdab;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+
+.storesContainer {
+    .buttonContainer {
+        margin: 10px 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .resultContainer {
+
+        .stores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+
+            .store {
+                padding: 20px;
+                background: $white;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+
+                .storeCity {
+                    margin: 0 0 10px 0;
+                    font-weight: 600;
+                }
+
+                .storeAddress,
+                .storeEmail,
+                .storeMobile {
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: flex-start;
+                    margin: 0 0 10px 0;
+
+                    img {
+                        margin: 0 10px 0 0;
+
+                        svg {
+                            color: $primary !important;
+                        }
+                    }
+
+                    .storeValue {
+                        .storeLabel {
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                .storeDirection {
+                    .storeLink {
+                        width: 100%;
+                        height: 30px;
+
+
+                        
+                    }
+                }
+            }
+        }
+    }
+}

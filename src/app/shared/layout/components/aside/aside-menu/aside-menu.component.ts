@@ -11,21 +11,21 @@ import { appRoutes } from 'src/app/config/routes';
 
 export class AsideMenuComponent implements OnInit {
   appRoute = appRoutes;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   rootUrl = "https://localhost:3000/api/v1/w/admin/auth";
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  getRoles(){
-    this.http.get(this.rootUrl + "/roles").subscribe((_res)=>{
+  getRoles() {
+    this.http.get(this.rootUrl + "/roles").subscribe((_res) => {
       console.log(_res)
       return _res
     })
   }
 
-  getPermissions(){
-    this.http.get(this.rootUrl + "/permissions").subscribe((_res)=>{
+  getPermissions() {
+    this.http.get(this.rootUrl + "/permissions").subscribe((_res) => {
       console.log(_res)
       return _res
     })

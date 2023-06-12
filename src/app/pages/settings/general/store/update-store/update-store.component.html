@@ -1,0 +1,119 @@
+<div class="storesContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Stores</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.stores.STORE_LIST}}">Stores</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.stores.UPDATE_STORE}}">Update Stores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-10">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="form">
+                    <div class="row">
+                        <h3 class="fw-bolder">Basic Details</h3>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Name</label>
+                            <input type="text" class="form-control" formControlName="name"
+                                [ngClass]="{ 'is-invalid':  (fc.name.touched || !isValid) && fc.name.errors?.required }" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Email</label>
+                            <input type="text" class="form-control" formControlName="email"
+                                [ngClass]="{ 'is-invalid':  (fc.email.touched || !isValid) && fc.email.errors?.required }" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Mobile number</label>
+                            <input type="text" class="form-control" formControlName="mobile"
+                                [ngClass]="{ 'is-invalid':  (fc.mobile.touched || !isValid) && fc.mobile.errors?.required }" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-5 col-12">
+                            <h3 class="fw-bolder">Address Details</h3>
+                            <label class="mb-1 fs-6 required">Map location link </label>
+                            <input type="text" class="form-control" formControlName="map"
+                                [ngClass]="{ 'is-invalid':  (fc.map.touched || !isValid) && fc.map.errors?.required }" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Firstlane</label>
+                            <input type="text" class="form-control" formControlName="firstlane"
+                                [ngClass]="{ 'is-invalid':  (fc.firstlane.touched || !isValid) && fc.firstlane.errors?.required }" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6">Secondlane</label>
+                            <input type="text" class="form-control" formControlName="secondlane" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Area</label>
+                            <input type="text" class="form-control" formControlName="area"
+                                [ngClass]="{ 'is-invalid':  (fc.area.touched || !isValid) && fc.area.errors?.required }" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Landmark</label>
+                            <input type="text" class="form-control" formControlName="landmark"
+                                [ngClass]="{ 'is-invalid':  (fc.landmark.touched || !isValid) && fc.landmark.errors?.required }" />
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">City</label>
+                            <input type="text" class="form-control" formControlName="city"
+                                [ngClass]="{ 'is-invalid':  (fc.city.touched || !isValid) && fc.city.errors?.required }" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6">Status</label>
+                            <select class="form-select form-select-lg mb-3 fs-6" formControlName="isActive">
+                                <option value=true>Active</option>
+                                <option value=false>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-5 col-12">
+                            <h3 class="fw-bolder mb-0">Slot Details</h3>
+                            <p>Select store timing from available slots</p>
+                        </div>
+                        <ng-container *ngIf="timeslots.length > 0">
+                            <div class="timeslots mb-5">
+                                <ng-container *ngFor="let time of timeslots">
+                                    <div class="timeslot fs-6" [ngClass]="{'selectedTime': slots.includes(time?._id)}"
+                                        (click)="selectSlot(time?._id)">
+                                        <img src="../../../../../../assets/icons/clock.svg" alt="Icon">
+                                        <div>{{time?.from}} - {{time?.to}}</div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="timeslots.length == 0">
+                            <div class="mb-5"> No timeslots available. Kindly add <a
+                                    routerLink="{{appRoute.timeslots.TIME_SLOTS}}">timeslots</a></div>
+                        </ng-container>
+                    </div>
+                    <div class="col-12 d-flex align-items-center justify-content-end">
+                        <button routerLink="{{ appRoute.stores.STORE_LIST}}" class="btn btn-light text-dark w200 mr-10">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary w200" (click)="addDetails()">
+                            Add Store
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

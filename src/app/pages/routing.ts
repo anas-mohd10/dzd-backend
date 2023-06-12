@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { AuthenticationGuard } from '../core/auth/authentication.guard';
 import { MyAccountComponent } from './my-account/my-account.component';
 import { SeoDetailsComponent } from './settings/general/seo-details/seo-details.component';
+import { TimeslotsComponent } from './settings/general/timeslots/timeslots.component';
 
 export const Routing: Routes = [
   {
@@ -309,10 +310,17 @@ export const Routing: Routes = [
         path: 'seo-details',
         component: SeoDetailsComponent,
         canActivate: [AuthenticationGuard]
-      },
+      }, {
+        path: 'time-slots',
+        component: TimeslotsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'stores',
+        loadChildren: () => import('./settings/general/store/store.module').then((m) => m.StoreModule),
+        canActivate: [AuthenticationGuard]
+      }
     ]
-  },
-  {
+  }, {
     path: '',
     redirectTo: '/auth/login',
     pathMatch: 'full',
