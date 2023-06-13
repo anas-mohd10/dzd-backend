@@ -35,9 +35,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MyAccountComponent } from './pages/my-account/my-account.component';
 import { SeoDetailsComponent } from './pages/settings/general/seo-details/seo-details.component';
 import { TimeslotsComponent } from './pages/settings/general/timeslots/timeslots.component';
+import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent, MyAccountComponent, SeoDetailsComponent, TimeslotsComponent],
+  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent, MyAccountComponent, SeoDetailsComponent, TimeslotsComponent, EnquiresComponent],
   imports: [
     DataTablesModule,
     BrowserModule,

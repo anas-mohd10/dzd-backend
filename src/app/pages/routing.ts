@@ -4,6 +4,7 @@ import { AuthenticationGuard } from '../core/auth/authentication.guard';
 import { MyAccountComponent } from './my-account/my-account.component';
 import { SeoDetailsComponent } from './settings/general/seo-details/seo-details.component';
 import { TimeslotsComponent } from './settings/general/timeslots/timeslots.component';
+import { EnquiresComponent } from './sales/enquires/enquires.component';
 
 export const Routing: Routes = [
   {
@@ -317,6 +318,10 @@ export const Routing: Routes = [
       }, {
         path: 'stores',
         loadChildren: () => import('./settings/general/store/store.module').then((m) => m.StoreModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'enquiries',
+        component: EnquiresComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

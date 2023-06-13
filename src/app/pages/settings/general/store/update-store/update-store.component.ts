@@ -42,7 +42,6 @@ export class UpdateStoreComponent implements OnInit {
       }
     })
 
-
     if (this.refid) {
       this.StoresService.getStoreDetails({ refid: this.refid }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
@@ -56,7 +55,9 @@ export class UpdateStoreComponent implements OnInit {
           this.form.get('city')?.patchValue(res?.result?.address?.city)
           this.form.get('landmark')?.patchValue(res?.result?.address?.landmark)
           this.form.get('isActive')?.patchValue(res?.result?.isActive)
+          this.form.get('isFeatured')?.patchValue(res?.result?.isFeatured)
           this.form.get('isDelete')?.patchValue(res?.result?.isDelete)
+          this.slots = res?.result?.slots
         }
       })
     }
@@ -65,8 +66,8 @@ export class UpdateStoreComponent implements OnInit {
   initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
-      mobile: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       area: new FormControl('', Validators.required),
@@ -75,6 +76,7 @@ export class UpdateStoreComponent implements OnInit {
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isDelete: new FormControl(false),
+      isFeatured: new FormControl(false)
     })
   }
 
@@ -93,8 +95,8 @@ export class UpdateStoreComponent implements OnInit {
     }
 
     const payload = this.createPayload()
-    if (payload) {
-      this.StoresService.add(payload).subscribe((res: any) => {
+    if (payload && this.slots.length > 0) {
+      this.StoresService.update(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.ToastrService.success(res?.message)
           this.Router.navigate([appRoutes.stores.STORE_LIST])
@@ -121,7 +123,10 @@ export class UpdateStoreComponent implements OnInit {
       },
       map: this.form.get('map')?.value,
       isActive: this.form.get('isActive')?.value,
+      isFeatured: this.form.get('isFeatured')?.value,
       isDelete: this.form.get('isDelete')?.value,
+      slots: this.slots,
+      refid: this.refid
     }
 
     return data

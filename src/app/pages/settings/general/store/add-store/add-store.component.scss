@@ -4,9 +4,15 @@ $inactiveState: #ce1626;
 $activeState: #00bdab;
 $activeBackground: #00bdab20;
 $border: #cccccc;
+$error: #F1416C;
 
 label {
     font-weight: normal !important;
+}
+
+.error {
+    color: $error;
+    margin: 5px 0 0 0;
 }
 
 .timeslots {

@@ -28,6 +28,13 @@
             <div class="stores">
                 <ng-container *ngFor="let store of data">
                     <div class="store">
+                        <div class="editButton" routerLink="{{appRoute.stores.UPDATE_STORE}}"
+                            [queryParams]="{'store': store?.refid}">
+                            <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                        </div>
+                        <div class="featuredStore" *ngIf="store?.isFeatured">
+                            <img src="../../../../../../assets/icons/verified.svg" alt="Icon">
+                        </div>
                         <div class="storeCity fs-5">{{store?.address?.city}}</div>
                         <div class="storeAddress">
                             <img src="../../../../../../assets/icons/location.svg" alt="Icon">

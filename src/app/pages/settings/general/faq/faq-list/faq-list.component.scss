@@ -1,20 +1,44 @@
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$inactiveBackground: #ce162610;
+$activeState: #00bdab;
+$primary: #00bdab;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+
 .faq-container {
   margin: 50px 0;
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
 }
 
 .faq-card {
-  width: calc(50% - 20px);
-  margin: 10px 10px;
+  width: 100%;
+  margin: 0 0 10px 0;
   background: #ffffff;
-  box-shadow: 0 10px 35px rgb(0 0 0 / 10%);
+  box-shadow: 0 10px 25px $boxShadow;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 20px 30px;
+  position: relative;
+
+  .editButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 40px;
+    width: 40px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border-radius: 20px;
+
+    &:hover {
+      background: $border;
+    }
+  }
 }
 
 .faq-subject {
@@ -24,14 +48,14 @@
 }
 
 .faq-question {
-  margin: 20px 0 10px 0;
-  font-weight: 700;
+  margin: 0 0 10px 0;
+  font-weight: 600;
   color: #000000;
-  font-size: 1.4rem;
+  font-size: 1.22rem;
 }
 
 .faq-answer {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .edit-btn {
@@ -42,5 +66,6 @@
 }
 
 .faq-container .false {
-  border: 1px solid #9c1313;
+  border: 1px solid $inactiveState;
+  background: $inactiveBackground;
 }

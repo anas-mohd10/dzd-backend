@@ -45,6 +45,7 @@ const myAccount = '/my-account'
 const seoDetails = '/seo-details'
 const timeSlotDetails = '/time-slots'
 const stores = '/stores'
+const enquires = '/enquiries'
 
 export const appRoutes = {
   BASE: environment.base + "/",
@@ -234,5 +235,8 @@ export const appRoutes = {
     ADD_STORE: `${app}${stores}/add`,
     UPDATE_STORE: `${app}${stores}/update`,
     STORE_LIST: `${app}${stores}`,
+  },
+  enquires: {
+    ENQUIRY_LIST: `${app}${enquires}`
   }
 }

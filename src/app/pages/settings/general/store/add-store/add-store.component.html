@@ -35,11 +35,17 @@
                             <label class="mb-1 fs-6 required">Email</label>
                             <input type="text" class="form-control" formControlName="email"
                                 [ngClass]="{ 'is-invalid':  (fc.email.touched || !isValid) && fc.email.errors?.required }" />
+                            <div class="fs-6 error" *ngIf="fc.email.errors?.pattern">
+                                Please enter a valid email
+                            </div>
                         </div>
                         <div class="mb-5 col-6">
                             <label class="mb-1 fs-6 required">Mobile number</label>
                             <input type="text" class="form-control" formControlName="mobile"
                                 [ngClass]="{ 'is-invalid':  (fc.mobile.touched || !isValid) && fc.mobile.errors?.required }" />
+                            <div class="error" *ngIf="fc.mobile.errors?.pattern">
+                                Please enter a valid mobile number
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -81,6 +87,16 @@
                                 <option value=true>Active</option>
                                 <option value=false>Inactive</option>
                             </select>
+                        </div>
+                        <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6">Featured</label>
+                            <select class="form-select form-select-lg mb-3 fs-6" formControlName="isFeatured">
+                                <option value=true>Yes</option>
+                                <option value=false>No</option>
+                            </select>
+                            <div class="alert alert-info" role="alert">
+                                If featured, this store will considered as the main store
+                            </div>
                         </div>
                     </div>
                     <div class="row">

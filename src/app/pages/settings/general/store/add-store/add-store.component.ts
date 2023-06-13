@@ -43,15 +43,16 @@ export class AddStoreComponent implements OnInit {
   initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
-      mobile: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       area: new FormControl('', Validators.required),
       landmark: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
-      isActive: new FormControl(true)
+      isActive: new FormControl(true),
+      isFeatured: new FormControl(false)
     })
   }
 
@@ -70,7 +71,7 @@ export class AddStoreComponent implements OnInit {
     }
 
     const payload = this.createPayload()
-    if (payload) {
+    if (payload && this.slots.length > 0) {
       this.StoresService.add(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.ToastrService.success(res?.message)
@@ -98,6 +99,8 @@ export class AddStoreComponent implements OnInit {
       },
       map: this.form.get('map')?.value,
       isActive: this.form.get('isActive')?.value,
+      isFeatured: this.form.get('isFeatured')?.value,
+      slots: this.slots
     }
 
     return data
