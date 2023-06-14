@@ -199,7 +199,7 @@
       <!-- Order Details -->
 
       <!-- Customer Address -->
-      <div class="card card-flush flex-row-fluid overflow-hidden" style="background: #f6f6f6; border-radius: 10px;">
+      <div class="card card-flush flex-row-fluid overflow-hidden">
         <div class="card-header">
           <div class="card-title">
             <h3 class="fs-4 text-dark fw-bolder d-flex align-items-center justify-content-center">
@@ -406,8 +406,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fs-2 text-dark fw-bolder">Items</td>
-                  <td class="text-end fs-2 text-dark fw-bolder">Amount</td>
+                  <td colspan="4" class="text-end fs-3 text-dark fw-bolder">Items</td>
+                  <td class="text-end fs-3 text-dark fw-bolder">Amount</td>
                 </tr>
                 <tr>
                   <td colspan="4" class="text-end fw-bolder text-dark">Subtotal</td>
@@ -430,13 +430,17 @@
                   <td class="text-end">₹ {{order?.discount}}</td>
                 </tr>
                 <tr>
+                  <td colspan="4" class="text-end fw-bolder text-dark">Additional Charge</td>
+                  <td class="text-end">₹ {{order?.additionalCharge}}</td>
+                </tr>
+                <tr>
                   <td colspan="12" class="text-end">
                     <div class="hrLine"></div>
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="fs-3 text-dark fw-bolder text-end">Grand Total</td>
-                  <td class="text-end fs-3 text-dark fw-bolder">₹ {{order?.total}}</td>
+                  <td colspan="4" class="fs-4 text-dark fw-bolder text-end">Grand Total</td>
+                  <td class="text-end fs-4 text-dark fw-bolder">₹ {{order?.total}}</td>
                 </tr>
               </tbody>
             </table>
