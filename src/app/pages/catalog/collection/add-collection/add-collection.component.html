@@ -28,7 +28,9 @@
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm" (keydown.Enter)="$event.preventDefault()">
             <div class="row">
+
               <h2 class="form-title fs-4">Collection Details</h2>
+
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title required">Title</label>
@@ -37,9 +39,10 @@
                       (cf.name.touched || isSubmitted) &&
                       cf.name.errors?.required
                     }" />
-                  <div class="fs-7 mt-3">A collection title is required</div>
+                  <div class="fs-7 mt-3">A collection name is required and recommended to be unique.</div>
                 </div>
               </div>
+
               <div class="col-12 col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title required">Sub Title</label>
@@ -48,41 +51,33 @@
                       (cf.name.touched || isSubmitted) &&
                       cf.name.errors?.required
                     }" />
-                  <div class="fs-7 mt-3">A collection subtitle is required</div>
+                  <div class="fs-7 mt-3">A collection name is required and recommended to be unique.</div>
                 </div>
               </div>
+
               <div class="col-12">
                 <div class="col-sm-6">
                   <label class="fs-6 mb-3 required">Products</label>
                   <div class="fs-7 mb-3">Selected products will be under this collection</div>
-
                   <div class="wraperBox">
                     <div class="productAddMethod">
                       <input type="radio" id="Autocomplete" name="Autocomplete" checked
                         (click)="toggleProductMethod(true)">.
                       <label class="fs-6" for="Autocomplete">Autocomplete</label>
                     </div>
-
                     <div class="productAddMethod">
                       <input type="radio" id="SKU" name="Autocomplete" (click)="toggleProductMethod(false)">
                       <label class="fs-6" for="SKU">SKU</label>
                     </div>
                   </div>
-
-
-
                   <input type="text" class="form-control fs-6" [formControl]="productSku"
                     placeholder="Enter SKU1,SKU2,SKU3 etc" *ngIf="!isAutoCompleteEnabled" class="form-control fs-6" />
-
-
                   <input type="text" class="form-control fs-6" [formControl]="product" (ngModelChange)="getProducts()"
                     placeholder="Search product" *ngIf="isAutoCompleteEnabled" class="form-control fs-6" />
-
                 </div>
 
                 <ng-container *ngIf="searchProducts.length > 0">
                   <div class="searchProductsContainer" *ngIf="isAutoCompleteEnabled">
-
                     <table class="table">
                       <thead>
                         <tr class="fs-6">
@@ -107,12 +102,12 @@
                               {{product?.sku}}
                             </td>
                             <td>
-                              <button class="btn btn-sm btn-primary text-white fs-6"
-                                *ngIf="!productIds.includes(product?._id)" (click)="addProductSku(product)">Add</button>
-
-                              <button class="btn btn-sm btn-secondary fs-6" (click)="addProductSku(product)"
-                                *ngIf="productIds.includes(product?._id)">Remove
-                              </button>
+                              <div *ngIf="!productIds.includes(product?._id)" (click)="addProductSku(product)">
+                                <img src="../../../../../assets/icons/AddCircleOutline.svg" alt="Icon">
+                              </div>
+                              <div *ngIf="productIds.includes(product?._id)" (click)="addProductSku(product)">
+                                <img src="../../../../../assets/icons/RemoveCircleOutline.svg" alt="Icon">
+                              </div>
                             </td>
                           </tr>
                         </ng-container>
@@ -120,7 +115,6 @@
                     </table>
                   </div>
                 </ng-container>
-
                 <ng-container *ngIf="productDetails.length > 0">
                   <div class="fs-7 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
                   <div class="addedProductsWrapper">
@@ -136,41 +130,45 @@
                     </div>
                   </div>
                 </ng-container>
-
               </div>
-              <div class="col-12 col-sm-6">
+
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title">Featured Collection?</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                  <select class="form-select fs-6 form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured" (change)="checkFeatured($event.target)">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6" *ngIf="featured">
+              <div class="col-sm-6" *ngIf="featured">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title">Visibility Type?</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
-                    (change)="checkGrid($event.target)">
+                  <select class="form-select fs-6 form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="type" (change)="checkGrid($event.target)">
                     <option value="grid" selected>Grid</option>
                     <option value="slider">Slider</option>
                   </select>
                   <div class="fs-7 mt-3">Products will be visibile as selected type</div>
                 </div>
               </div>
-              <div class="col-12 col-sm-6" *ngIf="grid">
+              <div class="col-sm-6" *ngIf="grid">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title">Grid Count?</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="count">
+                  <select class="form-select fs-6 form-select-lg mb-3" aria-label=".form-select-lg"
+                    formControlName="count">
+                    <option disabled selected>-- Select an Option --</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
                   </select>
-                  <div class="fs-7 mt-3">No. of products per row. Recommended are 2 or 3</div>
+                  <div class="fs-7 mt-3 alert alert-info" role="alert">
+                    The recommended number of products per row is either 2 or 3
+                  </div>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title">Active Collection?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"

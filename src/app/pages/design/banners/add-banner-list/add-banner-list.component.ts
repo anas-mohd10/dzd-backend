@@ -3,12 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
 import { BannerService } from 'src/app/includes/services/banner.service';
-import { ProductService } from 'src/app/includes/services/product.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { CollectionService } from 'src/app/includes/services/collection.service';
-import { CategoryService } from 'src/app/includes/services/category.service';
 
 @Component({
   selector: 'app-add-banner-list',
@@ -19,7 +16,7 @@ export class AddBannerListComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes
-  bannerForm: FormGroup
+  form: FormGroup
   isSubmitted = false;
   productsData: any;
   fileData: File;
@@ -72,14 +69,10 @@ export class AddBannerListComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
     private bannerService: BannerService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef,
-    private CollectionService: CollectionService,
-    private CategoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -87,47 +80,25 @@ export class AddBannerListComponent implements OnInit {
     const date = new Date()
     this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
     this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
-
-    this.CollectionService.getActiveCollection().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.collections = res?.result
-        this.cdr.markForCheck()
-      }
-    })
-
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.products = res?.result
-        this.cdr.markForCheck()
-      }
-    })
-
-    this.CategoryService.getActiveCategory().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.categories = res?.result
-        this.cdr.markForCheck()
-      }
-    })
-
     this.initForm()
     this.managePage()
   }
 
   initForm() {
-    this.bannerForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       redirectURL: [''],
-      isActive: ['true', Validators.required],
-      type: ["1", Validators.required]
+      isActive: ['true', Validators.required]
     });
-    this.bannerForm.get('validFrom')?.setValue(this.from_date)
-    this.bannerForm.get('validTo')?.setValue(this.to_date)
+
+    this.form.get('validFrom')?.setValue(this.from_date)
+    this.form.get('validTo')?.setValue(this.to_date)
   }
 
   get hf() {
-    return this.bannerForm.controls;
+    return this.form.controls;
   }
 
   getBannerType(type: any) {
@@ -145,53 +116,6 @@ export class AddBannerListComponent implements OnInit {
       default:
         break;
     }
-  }
-
-  redirectionValidation(type: any) {
-    if (type == 'category') {
-      this.product = null
-      this.bannerForm.get('redirectURL')?.setValue('')
-      this.collection = null
-
-      this.redirection = {
-        type: type,
-        category: this.category
-      }
-    } else if (type == 'collection') {
-      this.product = null
-      this.bannerForm.get('redirectURL')?.setValue('')
-      this.category = null
-
-      this.redirection = {
-        type: type,
-        collection: this.collection
-      }
-    } else if (type == 'product') {
-      this.bannerForm.get('redirectURL')?.setValue('')
-      this.category = null
-      this.collection = null
-
-      this.redirection = {
-        type: type,
-        product: this.product
-      }
-    } else {
-      this.product = null
-      this.category = null
-      this.collection = null
-
-      this.redirection = {
-        type: type,
-        external: this.bannerForm.get('redirectURL')?.value
-      }
-    }
-  }
-
-  getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
-      this.productsData = res?.result
-      this.cdr.markForCheck()
-    })
   }
 
   handleInputChange(event: any, key: any) {
@@ -216,21 +140,12 @@ export class AddBannerListComponent implements OnInit {
       this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
     }
     this.clearFiles()
-
-    console.log(this.bannerMedia);
   }
 
   addFiles() {
     this.bannerMedia.push({
       web: { file: this.web_file, name: this.w_name },
-      mobile: { file: this.mobile_file, name: this.m_name },
-      redirection: {
-        unit: '',
-        category: this.category ? this.category : '',
-        collection: this.collection ? this.collection : '',
-        product: this.product ? this.product : '',
-        external: this.bannerForm.get('redirectURL')?.value
-      },
+      mobile: { file: this.mobile_file, name: this.m_name }
     })
   }
 
@@ -270,7 +185,7 @@ export class AddBannerListComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.bannerForm.valid) {
+    if (!this.form.valid) {
       this.toastr.error('Invalid form')
       return;
     }
@@ -298,18 +213,11 @@ export class AddBannerListComponent implements OnInit {
 
   createPayload() {
     const data = {
-      type: this.bannerForm.get('type')?.value,
-      title: this.bannerForm.get('title')?.value,
-      validFrom: this.bannerForm.get('validFrom')?.value,
-      validTo: this.bannerForm.get('validTo')?.value,
-      isActive: this.bannerForm.get('isActive')?.value,
-      redirection: {
-        unit: '',
-        category: this.category ? this.category : '',
-        collection: this.collection ? this.collection : '',
-        product: this.product ? this.product : '',
-        external: this.bannerForm.get('redirectURL')?.value
-      },
+      type: this.bannerType,
+      title: this.form.get('title')?.value,
+      validFrom: this.form.get('validFrom')?.value,
+      validTo: this.form.get('validTo')?.value,
+      isActive: this.form.get('isActive')?.value,
       file: this.bannerMedia
     }
 

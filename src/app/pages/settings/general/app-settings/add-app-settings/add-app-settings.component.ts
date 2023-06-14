@@ -17,12 +17,11 @@ export class AddAppSettingsComponent implements OnInit {
   appRoute = appRoutes
   appsettingsform: FormGroup
   isSubmitted = false;
-
-  //Varibales
   primary: any
   secondary: any
   items_per_page: any
   text: string;
+  currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED']
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,13 +53,17 @@ export class AddAppSettingsComponent implements OnInit {
       label: ['', Validators.required],
       toastError: ['', Validators.required],
       toastSuccess: ['', Validators.required],
+      toastInfo: ['', Validators.required],
       text: ['', Validators.required],
+      currency: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required]
     })
   }
 
   onSubmit() {
+    console.log(this.appsettingsform.get('currency')?.value);
+
     if (!this.appsettingsform.valid) {
       this.toastr.error('Validation error occured');
       return
@@ -77,8 +80,12 @@ export class AddAppSettingsComponent implements OnInit {
       toast: {
         success: this.appsettingsform.get('toastSuccess')?.value,
         error: this.appsettingsform.get('toastError')?.value,
+        info: this.appsettingsform.get('toastInfo')?.value
       },
-      fonts: { family: this.appsettingsform.get('fontFamily')?.value },
+      currency: this.appsettingsform.get('currency')?.value,
+      fonts: {
+        family: this.appsettingsform.get('fontFamily')?.value
+      },
       itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value
     }
 

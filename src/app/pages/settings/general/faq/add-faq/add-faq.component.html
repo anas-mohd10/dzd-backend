@@ -2,37 +2,32 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update FAQs" : "Add FAQs" }}
+        <h3 class="page-title fs-2 fw-bolder">
+          {{ editMode ? "Update FAQ" : "Add FAQ" }}
         </h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
-            <a routerLink="{{ appRoute.faq.FAQ_LIST }}">FAQs</a>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.faq.FAQ_LIST }}">FAQ</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.faq.ADD_FAQ}}">
-              {{ editMode ? "Update FAQs" : "Add FAQs"}}
-            </a>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.faq.ADD_FAQ }}">{{editMode ? "Update FAQ" : "Add FAQ"}}</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="col-sm-12 fs-5 mt-10">
+  <div class="col-sm-12 fs-6 mt-10">
     <div class="card">
       <div class="card-body">
         <form (ngSubmit)="onSubmit()" [formGroup]="faqForm">
           <div class="row">
-            <div class="col-12">
-              <h5 class="form-title fs-4"><span>FAQ details</span></h5>
-            </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-sm-6">
               <div class="form-group">
-                <label class="fs-5 mb-3 required">Subject</label>
-                <select class="form-select fs-5" formControlName="subject"
+                <label class="fs-6 mb-3 required">Subject</label>
+                <select class="form-select fs-6" formControlName="subject"
                   [ngClass]="{'is-invalid':(ff.subject.touched || isSubmitted) && ff.subject.errors?.required}">
                   <option value="" disabled>-- Select an option --</option>
                   <option value="GENERAL">General</option>
@@ -43,25 +38,25 @@
                 </select>
               </div>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-sm-6">
               <div class="form-group">
-                <label class="fs-5 mb-3 required"> Question</label>
-                <input type="question" class="form-control fs-5" formControlName="question"
+                <label class="fs-6 mb-3 required"> Question</label>
+                <input type="question" class="form-control fs-6" formControlName="question"
                   [ngClass]="{'is-invalid':(ff.question.touched || isSubmitted) && ff.question.errors?.required}" />
               </div>
             </div>
             <div class="col-12">
               <div class="form-group">
-                <label class="fs-5 mb-3 required required">Answer</label>
-                <textarea class=" form-control fs-5" formControlName="answer" style="resize: none"
+                <label class="fs-6 mb-3 required required">Answer</label>
+                <textarea class=" form-control fs-6" formControlName="answer" style="resize: none"
                   id="featureddescription" rows="3"
                   [ngClass]="{'is-invalid':(ff.answer.touched || isSubmitted) && ff.answer.errors?.required}"></textarea>
               </div>
             </div>
-            <div class="col-12 col-sm-6">
+            <div class="col-sm-6">
               <div class="form-group">
-                <label class="fs-5 mb-3 required">Status</label>
-                <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                <label class="fs-6 mb-3">Status</label>
+                <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                   formControlName="isActive">
                   <option value="" disabled>-- Select an option --</option>
                   <option value="true">Active</option>
@@ -69,13 +64,13 @@
                 </select>
               </div>
             </div>
-            <div class="col-12">
-              <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+            <div class="col-12 d-flex align-items-center justify-content-end">
+              <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                 style="width: 200px; margin-right: 20px;">
                 Cancel
               </a>
-              <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
-                Submit
+              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                Add
               </button>
             </div>
           </div>

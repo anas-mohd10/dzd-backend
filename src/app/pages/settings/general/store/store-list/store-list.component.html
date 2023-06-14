@@ -1,0 +1,74 @@
+<div class="storesContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Stores</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.stores.STORE_LIST}}">Stores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttonContainer">
+        <button type="button" class="btn btn-primary" routerLink="{{appRoute.stores.ADD_STORE}}">
+            Add Store
+        </button>
+    </div>
+
+    <div class="resultContainer">
+        <ng-container *ngIf="data.length > 0">
+            <div class="stores">
+                <ng-container *ngFor="let store of data">
+                    <div class="store">
+                        <div class="editButton" routerLink="{{appRoute.stores.UPDATE_STORE}}"
+                            [queryParams]="{'store': store?.refid}">
+                            <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                        </div>
+                        <div class="featuredStore" *ngIf="store?.isFeatured">
+                            <img src="../../../../../../assets/icons/verified.svg" alt="Icon">
+                        </div>
+                        <div class="storeCity fs-5">{{store?.address?.city}}</div>
+                        <div class="storeAddress">
+                            <img src="../../../../../../assets/icons/location.svg" alt="Icon">
+                            <div class="storeValue">
+                                <div class="storeLabel fs-5">Address</div>
+                                <div>{{store?.address?.firstlane}}, {{store?.address?.secondlane}},
+                                    {{store?.address?.area}}, {{store?.address?.landmark}}</div>
+                            </div>
+                        </div>
+                        <div class="storeEmail">
+                            <img src="../../../../../../assets/icons/email.svg" alt="Icon">
+                            <div class="storeValue">
+                                <div class="storeLabel fs-5">Email Address</div>
+                                <div>{{store?.contact?.email}}</div>
+                            </div>
+                        </div>
+                        <div class="storeMobile">
+                            <img src="../../../../../../assets/icons/mobile.svg" alt="Icon">
+                            <div class="storeValue">
+                                <div class="storeLabel fs-5">Mobile Number</div>
+                                <div>{{store?.contact?.mobile}}</div>
+                            </div>
+                        </div>
+                        <div class="storeDirection">
+                            <a class="storeLink" href="{{store?.map}}" target="_blank">
+                                <div>Go directions</div> <img src="../../../../../../assets/icons/map.svg" alt="Icon">
+                            </a>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="data.length == 0">
+            <h3 class="fw-bolder">No stores found</h3>
+        </ng-container>
+    </div>
+</div>

@@ -21,23 +21,30 @@
       </div>
    </div>
    <div class="total-count-container col-sm-3 bg-dark" *ngIf="count != 0">
-      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} banners</h4>
+      <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} banners</h4>
    </div>
    <div class="banner-card-container view-container col-12">
       <ng-container *ngFor="let banner of banners">
          <div class="banner-card card-hover editable-{{banner?.isEditable}}"
             [ngClass]="{'inactive-banner': !banner?.isActive, 'active-banner': banner?.isActive}">
             <div class="banner-card-left">
-               <div class="banner-title fs-6">{{banner?.title}}</div>
-               <div class="banner-from fs-6">Valid From <span class="fs-5">{{banner?.validFrom}}</span></div>
-               <div class="banner-till fs-6">Valid To <span class="fs-5">{{banner?.validTo}}</span></div>
-               <div class="banner-status fs-6 active" *ngIf="banner?.isActive">Active</div>
-               <div class="banner-status fs-6 inactive" *ngIf="!banner?.isActive">Inactive</div>
-               <div class="banner-edit-btn">
-                  <button class="btn btn-sm bg-secondary text-dark fs-5 fw-bolder"
-                     style="width: 100px; font-weight: 500;" [routerLink]="appRoute.banner.UPDATE_BANNER"
-                     [queryParams]="{banner: banner?.bannerid}">Edit</button>
+               <div class="wrapperBox">
+                  <div>
+                     <div class="banner-title fs-6">{{banner?.title ? banner?.title : '-'}}</div>
+                     <div class="banner-from fs-6">Valid From {{banner?.validFrom}}</div>
+                     <div class="banner-till fs-6">Valid To {{banner?.validTo}}</div>
+                  </div>
+                  <div>
+                     <div class="card-edit-btn" [routerLink]="appRoute.banner.UPDATE_BANNER"
+                        [queryParams]="{banner: banner?.bannerid}">
+                        <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                     </div>
+                     <div class="banner-status fs-6 active" *ngIf="banner?.isActive">Active</div>
+                     <div class="banner-status fs-6 inactive" *ngIf="!banner?.isActive">Inactive</div>
+
+                  </div>
                </div>
+
             </div>
             <div class="banner-card-right">
                <ng-container *ngFor="let banner of banner?.files?.mobile">

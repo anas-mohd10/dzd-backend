@@ -10,16 +10,14 @@ import { ArchivedBrandComponent } from '../archived-brand/archived-brand.compone
   imports: [
     CommonModule,
     DataTablesModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: BrandCardComponent,
-      },
-      {
-        path: 'archive',
-        component: ArchivedBrandComponent
-      }
-    ]),
+    RouterModule.forChild([{
+      path: '',
+      component: BrandCardComponent,
+    }, {
+      path: 'archive',
+      component: ArchivedBrandComponent
+    }]),
   ],
 })
+
 export class BrandModule { }

@@ -9,6 +9,7 @@ import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -31,6 +32,9 @@ export class AddOrdersComponent implements OnInit {
   customerId: any;
   isProducts: boolean = false
   isCartAdded: boolean = false
+  deliveryType: String = '0'
+  stores: Array<any> = []
+  timeslots: Array<any> = []
 
   //Cart
   product: any;
@@ -42,6 +46,8 @@ export class AddOrdersComponent implements OnInit {
   base: string;
   subTotal: any = 0
   showTransactionId: boolean = false;
+  store: FormControl = new FormControl('')
+  deliveryTime: any = null;
 
   constructor(
     private orderService: OrdersService,
@@ -53,6 +59,7 @@ export class AddOrdersComponent implements OnInit {
     private productService: ProductService,
     private couponsService: CouponsService,
     private cdr: ChangeDetectorRef,
+    private StoresService: StoresService
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +69,20 @@ export class AddOrdersComponent implements OnInit {
     this.getActiveCustomers()
     this.getActiveProducts()
     this.getActiveCoupons()
+
+    this.StoresService.getStores().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.stores = res?.result
+        this.cdr.markForCheck()
+      }
+    })
+  }
+
+  getTimeSlots(e: any) {
+    this.timeslots = []
+    for (let store of this.stores) {
+      if (store?.refid == e.value) this.timeslots.push(...store?.slots)
+    }
   }
 
   initForm() {
@@ -196,9 +217,6 @@ export class AddOrdersComponent implements OnInit {
   removeQty(i: number) {
     this.cart[i]['quantity'] = this.cart[i]['quantity'] - 1
     this.cart[i]['total'] = this.cart[i]['total'] - (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
-
-    console.log(this.subTotal, this.cart[i]['total']);
-
     this.subTotal = this.subTotal - (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
     if (this.cart[i]['quantity'] == 0) this.cart.splice(i, 1)
     let products = []
@@ -215,9 +233,6 @@ export class AddOrdersComponent implements OnInit {
   addOty(i: number) {
     this.cart[i]['quantity'] = this.cart[i]['quantity'] + 1
     this.cart[i]['total'] = this.cart[i]['total'] + (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
-
-    console.log(this.subTotal, this.cart[i]['total']);
-
     this.subTotal = this.subTotal + (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
   }
 
@@ -228,6 +243,16 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.addOrder();
     }
+  }
+
+  selectDeliveryType(type: any) {
+    this.store?.setValue(null)
+    this.deliveryType = type
+    this.deliveryTime = null
+  }
+
+  selectDeliveryTime(time: any) {
+    this.deliveryTime = time
   }
 
   updateOrder() { }
@@ -259,18 +284,35 @@ export class AddOrdersComponent implements OnInit {
       payment: {
         transactionId: data?.transactionId
       },
+      deliveryType: this.deliveryType,
+      deliveryTime: this.deliveryTime,
       additionalCharge: data.additionalCharge
     }
 
     if (this.cart.length != 0) {
-      this.orderService.addOrder(payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+      if (this.deliveryType == '1') {
+        if (this.deliveryTime) {
+          this.orderService.addOrder(payload).subscribe((res: any) => {
+            if (res.errorCode != 0) {
+              this.toastr.error(res?.message);
+            } else if (res.errorCode == 0) {
+              this.toastr.success(res?.message);
+              this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+            }
+          })
+        } else {
+          this.toastr.error('Choose a time to collect');
         }
-      })
+      } else {
+        this.orderService.addOrder(payload).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+          }
+        })
+      }
     } else {
       this.toastr.error('Add atleast one product to place the order');
     }

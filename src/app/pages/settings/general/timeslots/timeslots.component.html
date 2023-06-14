@@ -1,0 +1,102 @@
+<div class="timeSlotsContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Time Slots</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.timeslots.TIME_SLOTS}}">Time Slots</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttonContainer">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#slotModal">
+            Add Time Slots
+        </button>
+    </div>
+
+    <div class="resultContainer">
+        <ng-container *ngIf="data.length > 0">
+            <ng-container *ngFor="let time of data">
+                <div class="timeSlotCard">
+                    <div class="time fs-5">
+                        <img src="../../../../../assets/icons/clock.svg" alt="Icon">
+                        <div>{{time?.from}} - {{time?.to}}</div>
+                    </div>
+                    <div class="timeStatus fs-6" [ngClass]="{'activeState': time?.isActive}">{{time?.isActive ? 'Active'
+                        : 'Inactive'}}</div>
+                    <div class="editButton" (click)="getDetails(time?.refid)" data-bs-toggle="modal"
+                        data-bs-target="#slotModal">
+                        <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="data.length==0">
+            <h3 class="fw-bolder">No time slots found</h3>
+        </ng-container>
+    </div>
+</div>
+
+<div class="modal fade" id="slotModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Time Slots</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="form">
+                    <div class="mb-3 row">
+                        <label for="from" class="col-sm-2 col-form-label required">From</label>
+                        <div class="col-sm-10">
+                            <input type="time" class="form-control" id="from" formControlName="from"
+                                [ngClass]="{ 'is-invalid':  (fc.from.touched || !isValid) && fc.from.errors?.required }" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="to" class="col-sm-2 col-form-label required">To</label>
+                        <div class="col-sm-10">
+                            <input type="time" class="form-control" id="to" formControlName="to"
+                                [ngClass]="{ 'is-invalid':  (fc.to.touched || !isValid) && fc.to.errors?.required }" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="isActive" class="col-sm-2 col-form-label required">Status</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-select-lg mb-3 fs-6" formControlName="isActive"
+                                [ngClass]="{ 'is-invalid':  (fc.isActive.touched || !isValid) && fc.isActive.errors?.required }">
+                                <option value=true>Active</option>
+                                <option value=false>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="refid">
+                        <div class="mb-3 row">
+                            <label for="isDelete" class="col-sm-2 col-form-label">Delete time slot?</label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-select-lg mb-3 fs-6" formControlName="isDelete">
+                                    <option value=true>Yes</option>
+                                    <option value=false>No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </ng-container>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="resetForm()"
+                    data-bs-dismiss="modal">Discard</button>
+                <button type="button" class="btn btn-primary" (click)="addDetails()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

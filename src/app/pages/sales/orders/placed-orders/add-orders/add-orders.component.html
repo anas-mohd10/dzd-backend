@@ -1,109 +1,112 @@
 <div class="content container-fluid">
+
   <div class="page-header">
-    <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update Orders" : "Add Orders" }}
-        </h3>
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update Orders" : "Add Orders" }}</h1>
+    </div>
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
-            <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST}}">
-              {{ editMode ? "Update Orders" : "Add Orders"}}
-            </a>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.orders.ADD_ORDER_LIST}}"> {{ editMode ? "Update Orders" : "Add Orders"}}</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
+
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-12">
       <div class="card">
         <div class="card-body">
           <form [formGroup]="orderForm">
             <div class="row">
-              <h5 class="fs-3 text-dark fw-bolder">Orders Details</h5>
-              <div class="col-12">
-                <div class="form-group col-sm-6">
-                  <label class="fs-5 mb-3 required">Customer</label>
-                  <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
-                    [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
-                    [ngModelOptions]="{standalone: true}" (change)="getAddress()">
-                  </ng-select>
-                </div>
+
+              <div class="form-group col-sm-6">
+                <label class="fs-6 mb-3 required">Customer</label>
+                <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
+                  [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
+                  [ngModelOptions]="{standalone: true}" (change)="getAddress()">
+                </ng-select>
               </div>
-              <h5 class="fs-3 text-dark fw-bolder">Address Details</h5>
-              <div class="col-sm-6">
+
+              <div class="col-12">
+                <h5 class="fs-3 text-dark fw-bolder">Address Details</h5>
+              </div>
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required"> Address Line 1</label>
-                  <input type="text" class="form-control fs-5" formControlName="firstline"
+                  <label class="fs-6 mb-3 required"> Address lane 1</label>
+                  <input type="text" class="form-control fs-6" formControlName="firstline"
                     [ngClass]="{'is-invalid': (of.firstline.touched || isSubmitted) &&  of.firstline.errors?.required }" />
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3"> Address Line 2</label>
-                  <input type="text" class="form-control fs-5" formControlName="secondline" />
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3"> Area</label>
-                  <input type="text" class="form-control fs-5" formControlName="area" />
+                  <label class="fs-6 mb-3"> Address lane 2</label>
+                  <input type="text" class="form-control fs-6" formControlName="secondline" />
                 </div>
               </div>
 
-              <div class="col-sm-6">
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required"> City</label>
-                  <input type="text" class="form-control fs-5" formControlName="city" [ngClass]="{
-                                 'is-invalid':
-                                 (of.city.touched || isSubmitted) &&
-                                 of.city.errors?.required
-                               }" />
+                  <label class="fs-6 mb-3"> Area</label>
+                  <input type="text" class="form-control fs-6" formControlName="area" />
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required"> Landmark</label>
-                  <input type="text" class="form-control fs-5" formControlName="landmark" [ngClass]="{
-                                 'is-invalid':
-                                 (of.landmark.touched || isSubmitted) &&
-                                 of.landmark.errors?.required
-                               }" />
+                  <label class="fs-6 mb-3 required"> City</label>
+                  <input type="text" class="form-control fs-6" formControlName="city"
+                    [ngClass]="{  'is-invalid': (of.city.touched || isSubmitted) &&  of.city.errors?.required}" />
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required"> Pincode</label>
-                  <input type="number" class="form-control fs-5" formControlName="pincode" [ngClass]="{
+                  <label class="fs-6 mb-3 required"> Landmark</label>
+                  <input type="text" class="form-control fs-6" formControlName="landmark"
+                    [ngClass]="{ 'is-invalid':  (of.landmark.touched || isSubmitted) &&   of.landmark.errors?.required   }" />
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label class="fs-6 mb-3 required"> Pincode</label>
+                  <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
                                  'is-invalid':
                                  (of.pincode.touched || isSubmitted) &&
                                  of.pincode.errors?.required
                                }" />
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3"> Latitude</label>
-                  <input type="number" class="form-control fs-5" formControlName="lat" />
+                  <label class="fs-6 mb-3"> Latitude</label>
+                  <input type="number" class="form-control fs-6" formControlName="lat" />
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3"> Longitude</label>
-                  <input type="number" class="form-control fs-5" formControlName="lng" />
+                  <label class="fs-6 mb-3"> Longitude</label>
+                  <input type="number" class="form-control fs-6" formControlName="lng" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">State</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                  <label class="fs-6 mb-3 required">State</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                     formControlName="state">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="Kerala">Kerala</option>
@@ -115,6 +118,7 @@
                   </select>
                 </div>
               </div>
+
               <div class="product-add-container">
                 <div class="col-12 d-flex align-items-center justify-content-between" *ngIf="cart.length != 0">
                   <h5 class="fs-3 text-dark fw-bolder">Cart</h5>
@@ -127,9 +131,8 @@
                 <div class="col-12">
                   <ng-container *ngIf="cart.length == 0">
                     <div class="emptyCart-container">
-                      <img src="../../../../../../assets/media/12.png" style="height: 150px;" alt="">
-                      <div class="mt-10" style="font-size: 1.4rem; font-weight: 700;">Empty cart</div>
-                      <button type="button" class="mt-5 btn btn-primary btn-rounded btn-standard" data-bs-toggle="modal"
+                      <img src="../../../../../../assets/icons/emptyCart.gif" style="height: 150px;" alt="">
+                      <button type="button" class="mt-5 btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#cartModal">
                         Add Products
                       </button>
@@ -143,22 +146,22 @@
                           <img class="sm-thumbnail-image" src="{{base}}/{{item?.image}}" alt="Product">
                         </div>
                         <div class="cart-details">
-                          <div class="cart-brand">{{item?.brand}}</div>
-                          <div class="cart-product">{{item?.name}}</div>
+                          <div class="cart-brand fs-6">{{item?.brand}}</div>
+                          <div class="cart-product fs-4">{{item?.name}}</div>
                           <div class="cart-price">
-                            <span class="offer-price">₹ {{item?.price?.offer != item?.price?.mrp ? item?.price?.offer :
+                            <span class="offer-price fs-5">₹ {{item?.price?.offer != item?.price?.mrp ?
+                              item?.price?.offer :
                               (item?.price?.offer == item?.price?.mrp ? item?.price?.mrp : item?.price?.offer)}}</span>
-                            <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">₹
+                            <span class="mrp-price fs-6" *ngIf="item?.price?.offer < item?.price?.mrp">₹
                               {{item?.price?.mrp}}</span>
                           </div>
                           <div class="cart-bottom">
                             <div class="cart-remove">
-                              <button class="btn btn-rounded btn-secondary btn-standard"
-                                (click)="removeProduct(i)">Remove</button>
+                              <button class="btn btn-light" (click)="removeProduct(i)">Remove</button>
                             </div>
                             <div class="cart-quantity">
                               <button class="qty-btn" (click)="removeQty(i)"><i class="bi bi-dash"></i></button>
-                              <div class="quantity">{{item?.quantity}}</div>
+                              <div class="quantity fs-6">{{item?.quantity}}</div>
                               <button class="qty-btn" (click)="addOty(i)"><i class="bi bi-plus"></i></button>
                             </div>
                           </div>
@@ -176,8 +179,8 @@
                     <div class="orderSummaryCard">
                       <div class="orderSlNo">{{i+1}}</div>
                       <div class="productDetails">
-                        <div class="orderProductName">{{item?.name}}</div>
-                        <div class="orderProductPrice">
+                        <div class="orderProductName fs-4">{{item?.name}}</div>
+                        <div class="orderProductPrice fs-5">
                           <span class="offer-price">₹ {{item?.price?.offer != item?.price?.mrp ? item?.price?.offer :
                             (item?.price?.offer == item?.price?.mrp ? item?.price?.mrp : item?.price?.offer)}}</span>
                           <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">₹
@@ -197,7 +200,7 @@
               </div>
 
               <div class="col-12" *ngIf="isProducts">
-                <label class="fs-5 mb-3">Apply Coupon</label>
+                <label class="fs-6 mb-3">Apply Coupon</label>
                 <div class="col-6">
                   <ng-select [items]="activeCoupons" bindLabel="title" bindValue="id" [(ngModel)]="coupon"
                     placeholder="Apply coupon ( If applicable )" [multiple]=false [ngModelOptions]="{standalone: true}"
@@ -206,12 +209,55 @@
                 </div>
               </div>
 
+              <div class="col-12 mb-3">
+                <label class="fs-6 mb-3">How do you want to delivery your order?</label>
+                <div class="col-6 deliveryTypeWrapper">
+                  <div class="typeBox" [ngClass]="{'active': deliveryType == '0' }" (click)="selectDeliveryType('0')">
+                    <div class="typeTitle fs-5">Delivery</div>
+                    <div class="typeNote fs-7">Ship order to given address</div>
+                  </div>
+                  <div class="typeBox" [ngClass]="{'active': deliveryType == '1' }" (click)="selectDeliveryType('1')">
+                    <div class="typeTitle fs-5">Click and Collect</div>
+                    <div class="typeNote fs-7">Collect package from nearest Sajidha outlet</div>
+                  </div>
+                </div>
+              </div>
 
-              <h5 class="fs-3 text-dark fw-bolder">Other Details</h5>
-              <div class="col-sm-6">
+              <ng-container *ngIf="deliveryType == '1'">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Choose a location</label>
+                    <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                      [formControl]="store" (change)="getTimeSlots($event.target)">
+                      <option value="" disabled>-- Select an option --</option>
+                      <ng-container *ngFor="let store of stores; let i = index">
+                        <option value="{{store?.refid}}">{{store?.address?.city}}
+                        </option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
+                <div class="col-12">
+                  <label class="fs-6 mb-3">Available timeslots</label>
+                  <div class="timeslots">
+                    <ng-container *ngFor="let time of timeslots">
+                      <div class="timeslot" (click)="selectDeliveryTime(time?.refid)"
+                        [ngClass]="{'active': deliveryTime == time?.refid}">
+                        <img src="../../../../../../assets/icons/clock.svg" alt="Icon">
+                        <div> {{time?.from}} - {{time?.to}}</div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Payment Method</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                  <label class="fs-6 mb-3 required">Payment Method</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                     formControlName="paymentMethod" (change)="checkPaymentmethod($event.target)"
                     [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>
@@ -221,24 +267,28 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Additional Charge</label>
-                  <input type="text" formControlName="additionalCharge" class="form-control fs-5">
+                  <label class="fs-6 mb-3">Additional Charge</label>
+                  <input type="text" formControlName="additionalCharge" class="form-control fs-6">
                 </div>
               </div>
-              <div class="col-sm-6" *ngIf="showTransactionId">
+
+              <div class="col-6 mb-3" *ngIf="showTransactionId">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Transaction ID</label>
-                  <input type="text" formControlName="transactionId" class="form-control fs-5">
+                  <label class="fs-6 mb-3 required">Transaction ID</label>
+                  <input type="text" formControlName="transactionId" class="form-control fs-6">
                 </div>
               </div>
-              <div class="col-sm-6">
+
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">GST No.</label>
-                  <input type="text" formControlName="gst" class="form-control fs-5">
+                  <label class="fs-6 mb-3">GST No.</label>
+                  <input type="text" formControlName="gst" class="form-control fs-6">
                 </div>
               </div>
+
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary text-dark"
                   style="margin-right: 20px;">
@@ -248,6 +298,7 @@
                   Place Order
                 </button>
               </div>
+
             </div>
           </form>
         </div>
@@ -261,22 +312,22 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="cartModalLabel">Add Products</h1>
+        <h1 class="modal-title fs-6" id="cartModalLabel">Add Products</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="normal-text">{{cart?.length}} products in cart</div>
           <div class="col-12">
-            <label class="fs-5 mb-3 required">Product</label>
+            <label class="fs-6 mb-3 required">Product</label>
             <ng-select [items]="activeProducts" bindLabel="name" bindValue="_id" [(ngModel)]="product"
               placeholder="Select product" [multiple]=false [ngModelOptions]="{standalone: true}"
               style="font-size: 1.1rem;">
             </ng-select>
           </div>
           <div class="col-12">
-            <label class="fs-5 mb-3 required">Quantity</label>
-            <input type="number" class="form-control fs-5" id="quantity" [formControl]="quantity"
+            <label class="fs-6 mb-3 required">Quantity</label>
+            <input type="number" class="form-control fs-6" id="quantity" [formControl]="quantity"
               placeholder="Enter product quantity">
           </div>
         </div>
@@ -291,8 +342,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-standard btn-rounded" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary btn-standard btn-rounded" (click)="add()">Add to Cart</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="add()">Add to Cart</button>
       </div>
     </div>
   </div>

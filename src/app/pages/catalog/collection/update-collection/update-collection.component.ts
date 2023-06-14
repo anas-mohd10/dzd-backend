@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-update-collection',
@@ -32,14 +33,13 @@ export class UpdateCollectionComponent implements OnInit {
   isSubmitted: boolean;
   uploadedimg: any;
   array: any = [];
-  product: any = [];
   filedata: File;
   filename: string;
   imageChangedEvent: any;
   loadImage: boolean;
   croppedImage: any;
   base: any
-  //Styling variables
+
   background: any
   border: any
   color: any
@@ -56,7 +56,14 @@ export class UpdateCollectionComponent implements OnInit {
   bannerChangedEvent: any = '';
   loadBanner: boolean = false;
   bannerimg: any;
-  croppedBanner : any
+  croppedBanner: any
+
+  product: FormControl = new FormControl('')
+  productSku: FormControl = new FormControl('')
+  searchProducts: Array<any> = []
+  isAutoCompleteEnabled: boolean = true
+  productIds: Array<any> = [];
+  productDetails: Array<any> = []
 
   constructor(
     private collectionService: CollectionService,
@@ -137,19 +144,9 @@ export class UpdateCollectionComponent implements OnInit {
           this.collectionData = res?.result[0];
           this.uploadedimg = this.collectionData?.file
           this.bannerimg = this.base + "/" + res?.result[0].banner
-          this.collectionForm.get('name')?.setValue(this.collectionData?.name);
-          this.collectionForm.get('subname')?.setValue(this.collectionData?.subname);
-          this.collectionForm.get('isFeatured')?.setValue(this.collectionData?.isFeatured);
-          this.collectionForm.get('isActive')?.setValue(this.collectionData?.isActive);
-          this.collectionForm.get('isArchive')?.setValue(this.collectionData?.isArchive);
-          this.collectionForm.get('type')?.setValue(this.collectionData?.type);
-          this.collectionForm.get('count')?.setValue(this.collectionData?.count);
-          this.collectionForm.get('background')?.setValue(this.collectionData?.style.background);
-          this.collectionForm.get('border')?.setValue(this.collectionData?.style.border);
-          this.collectionForm.get('radius')?.setValue(this.collectionData?.style.radius);
-          this.collectionForm.get('color')?.setValue(this.collectionData?.style.text.color);
-          this.collectionForm.get('fontSize')?.setValue(this.collectionData?.style.text.fontSize);
-          this.collectionForm.get('fontWeight')?.setValue(this.collectionData?.style.text.fontWeight);
+          for (let key of Object.keys(this.collectionData)) {
+            this.collectionForm.get(key)?.setValue(this.collectionData[key])
+          }
           this.color = this.collectionData?.style.text.color
           this.background = this.collectionData?.style.background
           this.border = this.collectionData?.style.border
@@ -163,6 +160,33 @@ export class UpdateCollectionComponent implements OnInit {
     });
   }
 
+  toggleProductMethod(type: any) { this.isAutoCompleteEnabled = type }
+
+  getProducts() {
+    if (this.product.value) {
+      this.productService.findProducts({ name: this.product.value }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.searchProducts = res?.result
+          this.cdr.markForCheck()
+        }
+      })
+    } else { this.searchProducts = [] }
+  }
+
+  addProductSku(product: any) {
+    if (!this.productIds.includes(product?._id)) {
+      this.productDetails.push(product)
+      this.productIds.push(product?._id)
+    } else {
+      this.productDetails = this.productDetails.filter(item => item?._id !== product?._id)
+      this.productIds = this.productIds.filter(item => item !== product?._id)
+    }
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.productDetails, event.previousIndex, event.currentIndex);
+  }
+
   compareFn(item: any, selected: any) {
     return item._id === selected._id;
   }
@@ -174,7 +198,7 @@ export class UpdateCollectionComponent implements OnInit {
     this.loadImage = true
   }
 
-  bannerFile(event : any) {
+  bannerFile(event: any) {
     this.bannerFiledata = <File>event.target.files[0];
     this.bannerFilename = this.bannerFiledata.name
     this.bannerChangedEvent = event;
@@ -291,9 +315,9 @@ export class UpdateCollectionComponent implements OnInit {
       type: this.collectionForm.get('type')?.value,
       count: this.collectionForm.get('count')?.value,
       file: this.file ? this.file : this.collectionData?.file,
-      bannerstring :  this.croppedBanner,
-      bannername : this.bannerFilename,
-      banner : this.collectionData?.banner,
+      bannerstring: this.croppedBanner,
+      bannername: this.bannerFilename,
+      banner: this.collectionData?.banner,
       style: {
         background: this.collectionForm.get('background')?.value,
         border: this.collectionForm.get('border')?.value,

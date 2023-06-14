@@ -6,13 +6,13 @@
                {{ editMode ? "Update App Settings" : "Add App Settings" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}">App Settings</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.appSettings.UPDATE_APP_SETTINGS }}">
                      {{ editMode ? "Update App Settings" : "Add App Settings"}}
                   </a>
@@ -22,62 +22,85 @@
       </div>
    </div>
    <div class="page-container">
-      <div class="col-sm-12 fs-5 mt-10">
+      <div class="col-sm-12 fs-6 mt-10">
          <div class="card">
             <div class="card-body">
                <form [formGroup]="form">
                   <div class="col-12">
                      <h2 class="form-title">Color Details</h2>
                      <div class="row">
-                        <div class="col-12 col-sm-3">
+
+                        <div class="col-12 fs-4 fw-bolder">
+                           Brand Color Details
+                        </div>
+
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Primary Color</label>
-                              <input type="color" placeholder="App primary color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="primary" />
+                              <label class="fs-6 mb-3">Primary Color</label>
+                              <input type="color" placeholder="App primary color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="primary" />
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Secondary Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="secondary" />
+                              <label class="fs-6 mb-3">Secondary Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="secondary" />
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+
+                        <div class="col-12 fs-4 fw-bolder">
+                           Additional Color Details
+                        </div>
+
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Label Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="label" />
+                              <label class="fs-6 mb-3">Label Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="label" />
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Star Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="star" />
+                              <label class="fs-6 mb-3">Star Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="star" />
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Text Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="text" />
+                              <label class="fs-6 mb-3">Text Color</label>
+                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="text" />
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+
+                        <div class="col-12 fs-4 fw-bolder">
+                           Toast Color Details
+                        </div>
+
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Toast Success Color</label>
-                              <input type="color" placeholder="App toast success color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="toastSuccess" />
+                              <label class="fs-6 mb-3">Toast Success Color</label>
+                              <input type="color" placeholder="App toast success color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="toastSuccess" />
                            </div>
                         </div>
-                        <div class="col-12 col-sm-3">
+                        <div class="col-sm-2">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Toast Error Color</label>
-                              <input type="color" placeholder="App toast error color" class="form-control fs-5"
-                                 style="height: 50px;" formControlName="toastError" />
+                              <label class="fs-6 mb-3">Toast Error Color</label>
+                              <input type="color" placeholder="App toast error color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="toastError" />
                            </div>
                         </div>
+                        <div class="col-sm-2">
+                           <div class="form-group">
+                              <label class="fs-6 mb-3">Toast Info Color</label>
+                              <input type="color" placeholder="App toast error color" class="form-control fs-6"
+                                 style="height: 40px;" formControlName="toastInfo" />
+                           </div>
+                        </div>
+
                      </div>
                   </div>
                   <div class="col-12">
@@ -85,8 +108,8 @@
                      <div class="row">
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Items Per Page</label>
-                              <input type="number" placeholder="14" class="form-control fs-5"
+                              <label class="fs-6 mb-3">Items Per Page</label>
+                              <input type="number" placeholder="14" class="form-control fs-6"
                                  formControlName="itemsPerPage" />
                            </div>
                         </div>
@@ -96,8 +119,8 @@
                      <h2 class="form-title">Font Details</h2>
                      <div class="col-12 col-sm-6">
                         <div class="form-group">
-                           <label class="fs-5 mb-3">Font Family?</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <label class="fs-6 mb-3">Font Family?</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="fontFamily">
                               <option value="">-- Select an option --</option>
                               <option value="Manrope">Manrope</option>
@@ -105,6 +128,7 @@
                               <option value="BellMT">BellMT</option>
                               <option value="BookAntiqua">BookAntiqua</option>
                               <option value="Active">Active</option>
+                              <option value="Hellix">Hellix</option>
                            </select>
                         </div>
                      </div>
@@ -115,18 +139,14 @@
                      <div class="row">
                         <div class="col-12 col-sm-6">
                            <div class="form-group">
-                              <label class="fs-5 mb-3">Currency</label>
-                              <div class="currencyInputs">
+                              <label class="fs-6 mb-3">Currency</label>
+                              <select class="form-select form-select-lg fs-6 mb-3" aria-label=".form-select-lg"
+                                 formControlName="currency">
+                                 <option value="" disabled>-- Select an option --</option>
                                  <ng-container *ngFor="let currency of currencies">
-                                    <div class="form-check">
-                                       <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                          id="flexRadioDefault1" (click)="currencyInput(currency)">
-                                       <label class="form-check-label" for="flexRadioDefault1">
-                                          {{currency}}
-                                       </label>
-                                    </div>
+                                    <option value="{{currency}}">{{currency}}</option>
                                  </ng-container>
-                              </div>
+                              </select>
                            </div>
                         </div>
                      </div>
@@ -135,11 +155,11 @@
 
                   <div class="col-12 d-flex align-items-center justify-content-end">
                      <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
-                        class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
+                        class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
                         style="width: 200px; margin-right: 20px;">
                         Cancel
                      </a>
-                     <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+                     <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
                         (click)="onSubmit()">
                         Update
                      </button>

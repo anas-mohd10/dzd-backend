@@ -7,13 +7,14 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 import { ArchivedProductComponent } from '../archived-product/archived-product.component';
 import { ProductSuccessComponent } from '../product-success/product-success.component';
 import { AllProductsComponent } from '../all-products/all-products.component';
-// import { WidgetsModule } from '../../_metronic/partials';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [ProductComponent],
   imports: [
     CommonModule,
     DataTablesModule,
+    HttpClientModule,
     RouterModule.forChild([
       {
         path: 'product',
@@ -32,7 +33,6 @@ import { AllProductsComponent } from '../all-products/all-products.component';
         component: ProductSuccessComponent
       }
     ]),
-    // WidgetsModule,
   ],
 })
 export class ProductModule { }

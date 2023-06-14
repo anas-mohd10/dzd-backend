@@ -30,4 +30,14 @@ export class InvoiceSettingsService {
     const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.generate_invoice);
     return this.http.post(`${url}`, data);
   }
+
+  generateShippingDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.generate_shipping_details);
+    return this.http.post(`${url}`, data);
+  }
+
+  generateProducts(data: any) {
+    const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.generate_products);
+    return this.http.post(`${url}`, data);
+  }
 }

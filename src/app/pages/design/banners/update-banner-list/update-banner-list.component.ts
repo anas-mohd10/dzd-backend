@@ -21,7 +21,7 @@ export class UpdateBannerListComponent implements OnInit {
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes
-  bannerForm: FormGroup
+  form: FormGroup
   slug: any = ''
   bannerData: any
   productsData: any;
@@ -57,6 +57,7 @@ export class UpdateBannerListComponent implements OnInit {
   product: any
   category: any
   redirection: {};
+  bannerType: any;
 
   aspectRatioWebWidth: any = 2
   aspectRatioWebHeight: any = 1
@@ -65,6 +66,7 @@ export class UpdateBannerListComponent implements OnInit {
 
   previousBanners: any = []
   bannerMedia: any = []
+
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
@@ -106,35 +108,33 @@ export class UpdateBannerListComponent implements OnInit {
     })
   }
 
+  getBannerType(type: any) {
+    this.bannerType = type
+  }
+
   getBanner() {
     this.bannerService.getBanner(this.slug).subscribe((res: any) => {
-      this.bannerData = res?.result[0]
-      this.bannerForm.get("title")?.setValue(res?.result[0].title)
-      this.bannerForm.get("validFrom")?.setValue(res?.result[0].validFrom)
-      this.bannerForm.get("validTo")?.setValue(res?.result[0].validTo)
-      this.bannerForm.get("type")?.setValue(res?.result[0].type)
-      this.bannerForm.get("isActive")?.setValue(res?.result[0].isActive)
-      this.bannerForm.get("redirectURL")?.setValue(res?.result[0].redirection?.external)
-
-      this.fromDate = new Date(this.bannerData.validFrom).toISOString().split('T')[0];
-      this.lastDate = new Date(this.bannerData.validTo).toISOString().split('T')[0];
-
-      this.category = res?.result[0]?.redirection?.category ? res?.result[0]?.redirection?.category : null
-      this.product = res?.result[0]?.redirection?.product ? res?.result[0]?.redirection?.product : null
-      this.collection = res?.result[0]?.redirection?.collection ? res?.result[0]?.redirection?.collection : null
-
-      this.bannerForm.get('validFrom')?.setValue(this.fromDate);
-      this.bannerForm.get('validTo')?.setValue(this.lastDate);
-
-      const today = new Date().toISOString()
-      if (today > this.bannerData?.validFrom) {
-        this.validBanner = true
-        this.bannerForm.get('validFrom')?.disable()
+      if (res?.errorCode == 0) {
+        this.bannerData = res?.result[0]
+        this.form.get("title")?.setValue(res?.result[0].title)
+        this.form.get("validFrom")?.setValue(res?.result[0].validFrom)
+        this.form.get("validTo")?.setValue(res?.result[0].validTo)
+        this.form.get("isActive")?.setValue(res?.result[0].isActive)
+        this.fromDate = new Date(this.bannerData.validFrom).toISOString().split('T')[0];
+        this.lastDate = new Date(this.bannerData.validTo).toISOString().split('T')[0];
+        this.category = res?.result[0]?.redirection?.category ? res?.result[0]?.redirection?.category : null
+        this.product = res?.result[0]?.redirection?.product ? res?.result[0]?.redirection?.product : null
+        this.collection = res?.result[0]?.redirection?.collection ? res?.result[0]?.redirection?.collection : null
+        this.form.get('validFrom')?.setValue(this.fromDate);
+        this.form.get('validTo')?.setValue(this.lastDate);
+        const today = new Date().toISOString()
+        if (today > this.bannerData?.validFrom) {
+          this.validBanner = true
+          this.form.get('validFrom')?.disable()
+        }
+        this.form.get('type')?.setValue(res?.result[0]?.type)
+        this.cdr.markForCheck()
       }
-
-      this.web_file = this.bannerData?.w_file
-      this.mobile_file = this.bannerData?.m_file
-      this.cdr.markForCheck()
     })
   }
 
@@ -153,18 +153,18 @@ export class UpdateBannerListComponent implements OnInit {
   }
 
   initForm() {
-    this.bannerForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       redirectURL: [''],
-      type: ["1", Validators.required],
+      type: ['', Validators.required],
       isActive: ['true', Validators.required],
     });
   }
 
   get hf() {
-    return this.bannerForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -221,81 +221,34 @@ export class UpdateBannerListComponent implements OnInit {
     }
   }
 
-  redirectionValidation(type: any) {
-    if (type == 'category') {
-      this.product = null
-      this.bannerForm.get('redirectURL')?.setValue('')
-      this.collection = null
-
-      this.redirection = {
-        type: type,
-        category: this.category
-      }
-    } else if (type == 'collection') {
-      this.product = null
-      this.bannerForm.get('redirectURL')?.setValue('')
-      this.category = null
-
-      this.redirection = {
-        type: type,
-        collection: this.collection
-      }
-    } else if (type == 'product') {
-      this.bannerForm.get('redirectURL')?.setValue('')
-      this.category = null
-      this.collection = null
-
-      this.redirection = {
-        type: type,
-        product: this.product
-      }
+  addBanner() {
+    let length = this.bannerMedia.length
+    if (length < this.bannerType) {
+      this.addFiles()
     } else {
-      this.product = null
-      this.category = null
-      this.collection = null
-
-      this.redirection = {
-        type: type,
-        external: this.bannerForm.get('redirectURL')?.value
-      }
+      this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
     }
+    this.clearFiles()
   }
 
-  addBanner() {
-    const type = this.bannerForm.get('type')?.value
-    if (type == "1") {
-      if (this.bannerMedia.length < 1) {
-        const prevLen = this.bannerMedia.length
-        this.bannerMedia.push({ w_file: this.web_file, w_name: this.w_name, m_file: this.mobile_file, m_name: this.m_name })
-        const newlen = this.bannerMedia.length
-        if ((prevLen + 1) == newlen) {
-          this.web_file = null
-          this.w_name = null
-          this.mobile_file = null
-          this.m_name = null
-        }
-      } else {
-        this.toastr.info('Maximum banner limit reached')
-      }
-    } else if (type == "2") {
-      if (this.bannerMedia.length < 2) {
-        const prevLen = this.bannerMedia.length
-        this.bannerMedia.push({ w_file: this.web_file, w_name: this.w_name, m_file: this.mobile_file, m_name: this.m_name })
-        const newlen = this.bannerMedia.length
-        if ((prevLen + 1) == newlen) {
-          this.web_file = null
-          this.w_name = null
-          this.mobile_file = null
-          this.m_name = null
-        }
-      } else {
-        this.toastr.info('Maximum banner limit reached')
-      }
-    }
+  addFiles() {
+    this.bannerMedia.push({
+      web: { file: this.web_file, name: this.w_name },
+      mobile: { file: this.mobile_file, name: this.m_name }
+    })
+  }
+
+  clearFiles() {
+    this.web_file = null
+    this.mobile_file = null
+    this.w_name = null
+    this.m_name = null
+    this.w_file = null
+    this.m_file = null
   }
 
   onSubmit() {
-    if (!this.bannerForm.valid) {
+    if (!this.form.valid) {
       return;
     }
 
@@ -314,17 +267,17 @@ export class UpdateBannerListComponent implements OnInit {
 
   createPayload() {
     const data = {
-      title: this.bannerForm.get('title')?.value,
-      validFrom: this.bannerForm.get('validFrom')?.value,
-      redirectionUrl: this.bannerForm.get('redirectURL')?.value,
-      isActive: this.bannerForm.get('isActive')?.value,
-      validTo: this.bannerForm.get('validTo')?.value,
+      title: this.form.get('title')?.value,
+      validFrom: this.form.get('validFrom')?.value,
+      redirectionUrl: this.form.get('redirectURL')?.value,
+      isActive: this.form.get('isActive')?.value,
+      validTo: this.form.get('validTo')?.value,
       redirection: {
         unit: '',
         category: this.category ? this.category : '',
         collection: this.collection ? this.collection : '',
         product: this.product ? this.product : '',
-        external: this.bannerForm.get('redirectURL')?.value
+        external: this.form.get('redirectURL')?.value
       },
       file: this.bannerMedia,
       bannerid: this.slug

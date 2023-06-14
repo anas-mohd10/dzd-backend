@@ -6,14 +6,14 @@
         <h5 class="page-title fw-bolder fs-2">
           {{ editMode ? "Update Order" : "Add Order" }}
         </h5>
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.orders.ORDERS_LIST}}">Orders</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{ order: slug }">
               {{ editMode ? "Update Order" : "Add Order" }}
             </a>
@@ -23,6 +23,9 @@
     </div>
   </div>
   <div class="topButtons d-flex align-items-center justify-content-end">
+    <div class="printButton bg-primary" (click)="generateProducts()">
+      <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
+    </div>
     <div class="printButton bg-primary" (click)="generateShippingDetails()">
       <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
     </div>
@@ -43,7 +46,7 @@
           </div>
           <div class="card-body fw-bolder pt-0">
             <div class="table-responsive">
-              <table class="table align-middle table-row-bordered mb-0 fs-5 gy-5 min-w-300px">
+              <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
                 <tbody class="fw-bold text-gray-600">
                   <tr>
                     <td class="text-muted">
@@ -121,7 +124,7 @@
           </div>
           <div class="card-body pt-0">
             <div class="table-responsive">
-              <table class="table align-middle table-row-bordered mb-0 fs-5 gy-5 min-w-300px">
+              <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
                 <tbody class="fw-bold text-gray-600">
                   <tr>
                     <td class="text-muted">
@@ -196,16 +199,16 @@
       <!-- Order Details -->
 
       <!-- Customer Address -->
-      <div class="card card-flush flex-row-fluid overflow-hidden" style="background: #f6f6f6; border-radius: 10px;">
+      <div class="card card-flush flex-row-fluid overflow-hidden">
         <div class="card-header">
           <div class="card-title">
-            <h3 class="fs-3 text-dark fw-bolder d-flex align-items-center justify-content-center">
-              <i class="bi bi-house fs-1 text-dark" style="margin: 0 5px 0 0;"></i> Customer Address
+            <h3 class="fs-4 text-dark fw-bolder d-flex align-items-center justify-content-center">
+              <i class="bi bi-house fs-3 text-dark" style="margin: 0 5px 0 0;"></i> Customer Address
             </h3>
           </div>
         </div>
-        <div class="card-body fs-5 pt-0">
-          <div class="customerDetails fs-4 fw-bolder">
+        <div class="card-body fs-6 pt-0">
+          <div class="customerDetails fs-5 fw-bolder">
             {{order?.customerId?.name}},
             {{order?.customerId?.mobile}},
             {{order?.customerId?.email}}
@@ -218,13 +221,13 @@
         </div>
         <div class="card-header">
           <div class="card-title">
-            <h3 class="fs-3 text-dark fw-bolder d-flex align-items-center justify-content-center">
-              <i class="bi bi-truck fs-1 text-dark" style="margin: 0 5px 0 0;"></i> Shipping Address
+            <h3 class="fs-4 text-dark fw-bolder d-flex align-items-center justify-content-center">
+              <i class="bi bi-truck fs-3 text-dark" style="margin: 0 5px 0 0;"></i> Shipping Address
             </h3>
           </div>
         </div>
-        <div class="card-body fs-5 pt-0">
-          <div class="customerDetails fs-4 fw-bolder">
+        <div class="card-body fs-6 pt-0">
+          <div class="customerDetails fs-5 fw-bolder">
             {{order?.customerId?.name}},
             {{order?.customerId?.mobile}},
             {{order?.customerId?.email}}
@@ -239,7 +242,7 @@
       <!-- Customer Address -->
     </div>
     <div class="row mt-10">
-      <div class="col-sm-12 fs-5">
+      <div class="col-sm-12 fs-6">
         <div class="card">
           <div class="card-body">
             <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
@@ -256,12 +259,12 @@
                         Details</h3>
                     </div>
                     <div class="col-12 form-group">
-                      <label class="fs-5 mb-3">Order ID</label>
-                      <input type="text" class="form-control fs-5" formControlName="orderId" />
+                      <label class="fs-6 mb-3">Order ID</label>
+                      <input type="text" class="form-control fs-6" formControlName="orderId" />
                     </div>
                     <div class="col-12 form-group">
-                      <label class="fs-5 mb-3">Transaction ID</label>
-                      <input type="text" class="form-control fs-5" formControlName="paymentId" />
+                      <label class="fs-6 mb-3">Transaction ID</label>
+                      <input type="text" class="form-control fs-6" formControlName="paymentId" />
                     </div>
                   </div>
                 </div>
@@ -273,8 +276,8 @@
                   </div>
                   <div class="orderStatuses" style="background: #f6f6f6; padding: 10px 20px; border-radius: 10px;">
                     <div class="col-12 form-group">
-                      <label class="fs-5 mb-3">Order Status</label>
-                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                      <label class="fs-6 mb-3">Order Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                         formControlName="orderStatus">
                         <option value="disabled" disabled>-- Select an option --</option>
                         <option value="ACCEPTED">Accepted</option>
@@ -290,8 +293,8 @@
                       </select>
                     </div>
                     <div class="col-12 form-group">
-                      <label class="fs-5 mb-3">Payment Status</label>
-                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                      <label class="fs-6 mb-3">Payment Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                         formControlName="paymentStatus">
                         <option value="disabled" disabled>-- Select an option --</option>
                         <option value="UNPAID">Unpaid</option>
@@ -300,50 +303,50 @@
                     </div>
                   </div>
                   <div class="col-12 form-group">
-                    <label class="fs-5 mb-3">Tracking URL</label>
-                    <input type="text" class="form-control fs-5" formControlName="trackingURL" />
+                    <label class="fs-6 mb-3">Tracking URL</label>
+                    <input type="text" class="form-control fs-6" formControlName="trackingURL" />
                   </div>
                   <div class="col-12 form-group">
-                    <label class="fs-5 mb-3">Order Note</label>
-                    <textarea class="form-control fs-5" formControlName="orderNote" style="resize: none" id="orderNote"
+                    <label class="fs-6 mb-3">Order Note</label>
+                    <textarea class="form-control fs-6" formControlName="orderNote" style="resize: none" id="orderNote"
                       rows="5">
                     </textarea>
                   </div>
                   <div class="row">
                     <div class="col-6">
                       <div class="col-12 form-group">
-                        <label class="fs-5 mb-3">Date Expected</label>
-                        <input class="fs-5 mb-3 form-control" type="date" formControlName="dateExpected">
+                        <label class="fs-6 mb-3">Date Expected</label>
+                        <input class="fs-6 mb-3 form-control" type="date" formControlName="dateExpected">
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="col-12 form-group">
-                        <label class="fs-5 mb-3">Out for Delivery</label>
-                        <input class="fs-5 mb-3 form-control" type="date" formControlName="outForDelivery">
+                        <label class="fs-6 mb-3">Out for Delivery</label>
+                        <input class="fs-6 mb-3 form-control" type="date" formControlName="outForDelivery">
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-6">
                       <div class="col-12 form-group">
-                        <label class="fs-5 mb-3">Delivered Date</label>
-                        <input class="fs-5 mb-3 form-control" type="date" formControlName="deliveryDate">
+                        <label class="fs-6 mb-3">Delivered Date</label>
+                        <input class="fs-6 mb-3 form-control" type="date" formControlName="deliveryDate">
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="col-12 form-group">
-                        <label class="fs-5 mb-3">Delivery Person</label>
-                        <input class="fs-5 mb-3 form-control" type="text" formControlName="deliveryPerson">
+                        <label class="fs-6 mb-3">Delivery Person</label>
+                        <input class="fs-6 mb-3 form-control" type="text" formControlName="deliveryPerson">
                       </div>
                     </div>
                   </div>
                   <div class="col-12 d-flex align-items-center justify-content-end">
                     <a routerLink="{{ appRoute.orders.ORDERS_LIST}}"
-                      class="btn btn-secondary btn-sm fs-5 text-dark fw-bolder"
+                      class="btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
                       style="width: 200px; margin-right: 20px;">
                       Cancel
                     </a>
-                    <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                    <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
                       Update
                     </button>
                   </div>
@@ -366,9 +369,9 @@
         </div>
         <div class="card-body pt-0">
           <div class="table-responsive">
-            <table class="table align-middle fs-5 gy-5 mb-0">
+            <table class="table align-middle fs-6 gy-5 mb-0">
               <thead>
-                <tr class="text-start text-gray-400 fw-bolder fs-5 gs-0">
+                <tr class="text-start text-gray-400 fw-bolder fs-6 gs-0">
                   <th class="min-w-175px">Product</th>
                   <th class="min-w-100px text-end">SKU</th>
                   <th class="min-w-70px text-end">Qty</th>
@@ -403,8 +406,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fs-2 text-dark fw-bolder">Items</td>
-                  <td class="text-end fs-2 text-dark fw-bolder">Amount</td>
+                  <td colspan="4" class="text-end fs-3 text-dark fw-bolder">Items</td>
+                  <td class="text-end fs-3 text-dark fw-bolder">Amount</td>
                 </tr>
                 <tr>
                   <td colspan="4" class="text-end fw-bolder text-dark">Subtotal</td>
@@ -427,13 +430,17 @@
                   <td class="text-end">₹ {{order?.discount}}</td>
                 </tr>
                 <tr>
+                  <td colspan="4" class="text-end fw-bolder text-dark">Additional Charge</td>
+                  <td class="text-end">₹ {{order?.additionalCharge}}</td>
+                </tr>
+                <tr>
                   <td colspan="12" class="text-end">
                     <div class="hrLine"></div>
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="fs-3 text-dark fw-bolder text-end">Grand Total</td>
-                  <td class="text-end fs-3 text-dark fw-bolder">₹ {{order?.total}}</td>
+                  <td colspan="4" class="fs-4 text-dark fw-bolder text-end">Grand Total</td>
+                  <td class="text-end fs-4 text-dark fw-bolder">₹ {{order?.total}}</td>
                 </tr>
               </tbody>
             </table>
@@ -445,7 +452,7 @@
 
     <!-- Order history section-->
     <div class="row mt-10">
-      <div class="col-sm-12 fs-5">
+      <div class="col-sm-12 fs-6">
         <div class="card py-4">
           <div class="card-body">
             <h3 class="fs-3 text-dark fw-bolder"><i class="bi bi-clock-history fs-1 text-dark"></i> History</h3>
@@ -453,14 +460,16 @@
               <ng-container *ngFor="let history of order?.history; let i=index">
                 <div class="orderHistoryItem">
                   <div class="historyStatus text-primary">
-                    <div class="historyNumber bg-primary">{{i+1}}</div> {{history?.status}}
+                    <div class="historyNumber bg-primary fs-6">{{i+1}}</div> {{history?.status}}
                   </div>
-                  <div class="historyDate">{{history?.date}}</div>
+                  <div class="historyDate fs-6">{{history?.date}}</div>
                   <div class="historyBy">
                     <div class="userDetails">
-                      <span class="userName">{{history?.created?.type == 'Customer' ? history?.created?.user?.name :
+                      <span class="userName fs-6">{{history?.created?.type == 'Customer' ? history?.created?.user?.name
+                        :
                         history?.created?.admin?.username}}</span>
-                      <span class="userMobile">{{history?.created?.type == 'Customer' ? history?.created?.user?.mobile :
+                      <span class="userMobile fs-6">{{history?.created?.type == 'Customer' ?
+                        history?.created?.user?.mobile :
                         history?.created?.admin?.email}}</span>
                     </div>
                   </div>

@@ -8,9 +8,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
-import { jsPDF } from "jspdf";
-import html2canvas from 'html2canvas';
-
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-update-orders',
@@ -117,11 +115,37 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   generateInvoice() {
-
+    this.invoiceService.generateInvoice({ order: this.orderNumber }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.downloadPDF(res?.result?.pdf, this.orderNumber)
+      }
+    })
   }
 
   generateShippingDetails() {
+    this.invoiceService.generateShippingDetails({ order: this.orderNumber }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.downloadPDF(res?.result?.pdf, this.orderNumber)
+      }
+    })
+  }
 
+  generateProducts() {
+    this.invoiceService.generateProducts({ order: this.orderNumber }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        const filename = "Products" + this.orderNumber
+        this.downloadPDF(res?.result?.pdf, filename)
+      }
+    })
+  }
+
+  downloadPDF(base64String: string, pdfname: string) {
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    saveAs(blob, `${pdfname}.pdf`);
   }
 
   onSubmit() {

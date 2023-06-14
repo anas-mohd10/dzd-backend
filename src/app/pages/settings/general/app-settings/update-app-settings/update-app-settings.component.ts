@@ -46,7 +46,9 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('text')?.setValue("#" + res?.result?.colors?.text.split('FF')[1])
         this.form.get('toastSuccess')?.setValue("#" + res?.result?.toast?.success.split('FF')[1])
         this.form.get('toastError')?.setValue("#" + res?.result?.toast?.error.split('FF')[1])
+        this.form.get('toastInfo')?.setValue("#" + res?.result?.toast?.info.split('FF')[1])
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
+        this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.cdr.markForCheck()
       }
@@ -60,15 +62,13 @@ export class UpdateAppSettingsComponent implements OnInit {
       star: ['', Validators.required],
       label: ['', Validators.required],
       toastError: ['', Validators.required],
+      currency: ['', Validators.required],
       toastSuccess: ['', Validators.required],
+      toastInfo: ['', Validators.required],
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required]
     })
-  }
-
-  currencyInput(data: any) {
-    this.currency = data
   }
 
   onSubmit() {
@@ -88,11 +88,12 @@ export class UpdateAppSettingsComponent implements OnInit {
       toast: {
         success: this.form.get('toastSuccess')?.value,
         error: this.form.get('toastError')?.value,
+        info: this.form.get('toastInfo')?.value
       },
+      currency: this.form.get('currency')?.value,
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       refid: this.refid,
-      currency: this.currency
     }
 
     this.AppSettingsService.updateGeneralSettings(data).subscribe((res: any) => {

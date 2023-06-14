@@ -43,6 +43,9 @@ const generalSettingsRoutes = "/app-settings"
 const dashboardSettings = "/home-settings"
 const myAccount = '/my-account'
 const seoDetails = '/seo-details'
+const timeSlotDetails = '/time-slots'
+const stores = '/stores'
+const enquires = '/enquiries'
 
 export const appRoutes = {
   BASE: environment.base + "/",
@@ -224,5 +227,16 @@ export const appRoutes = {
   },
   seo: {
     SEO_DETAILS: `${app}${seoDetails}`
+  },
+  timeslots: {
+    TIME_SLOTS: `${app}${timeSlotDetails}`
+  },
+  stores: {
+    ADD_STORE: `${app}${stores}/add`,
+    UPDATE_STORE: `${app}${stores}/update`,
+    STORE_LIST: `${app}${stores}`,
+  },
+  enquires: {
+    ENQUIRY_LIST: `${app}${enquires}`
   }
-};
+}

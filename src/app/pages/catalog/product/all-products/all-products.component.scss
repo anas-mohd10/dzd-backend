@@ -202,10 +202,19 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      overflow: hidden;
 
       &:hover {
          background: #ffffff;
-         box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
+         box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+
+         img {
+            transform: scale(1.05);
+         }
+      }
+
+      img {
+         transition: 0.3s all ease-in-out;
       }
 
       .product-price {
@@ -263,14 +272,12 @@
    }
 
    .product-offerprice {
-      font-size: 1.3rem;
       font-weight: 600;
       color: #000000;
       margin: 0 0.5rem 0 0;
    }
 
    .product-mrpprice {
-      font-size: 1.3rem;
       color: #555555;
    }
 
@@ -342,7 +349,7 @@
       font-weight: 600;
    }
 
-   .product-out-stock{
+   .product-out-stock {
       position: absolute;
       font-size: 1.2rem;
       left: 5%;
@@ -359,7 +366,7 @@
       font-weight: 600;
    }
 
-   .product-limited-stock{
+   .product-limited-stock {
       position: absolute;
       font-size: 1.2rem;
       left: 5%;
