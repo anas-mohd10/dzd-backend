@@ -241,6 +241,20 @@
 
               <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
                 <div class="col-12">
+                  <label class="fs-6 mb-3">Select a pickup dates</label>
+                  <div class="dates">
+                    <ng-container *ngFor="let date of dates">
+                      <div class="date" (click)="selectDeliveryDate(date)"
+                        [ngClass]="{'active': deliveryDate == date}">
+                        <div> {{date}}</div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
+                <div class="col-12">
                   <label class="fs-6 mb-3">Available timeslots</label>
                   <div class="timeslots">
                     <ng-container *ngFor="let time of timeslots">

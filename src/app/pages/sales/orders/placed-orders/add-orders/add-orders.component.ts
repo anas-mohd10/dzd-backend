@@ -1,6 +1,5 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -35,6 +34,7 @@ export class AddOrdersComponent implements OnInit {
   deliveryType: String = '0'
   stores: Array<any> = []
   timeslots: Array<any> = []
+  dates: Array<any> = []
 
   //Cart
   product: any;
@@ -48,6 +48,7 @@ export class AddOrdersComponent implements OnInit {
   showTransactionId: boolean = false;
   store: FormControl = new FormControl('')
   deliveryTime: any = null;
+  deliveryDate: any = null;
 
   constructor(
     private orderService: OrdersService,
@@ -59,7 +60,7 @@ export class AddOrdersComponent implements OnInit {
     private productService: ProductService,
     private couponsService: CouponsService,
     private cdr: ChangeDetectorRef,
-    private StoresService: StoresService
+    private StoresService: StoresService,
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +77,33 @@ export class AddOrdersComponent implements OnInit {
         this.cdr.markForCheck()
       }
     })
+
+    this.dates = this.getNextSevenDays();
+    this.deliveryDate = this.dates[0]
+  }
+
+  getNextSevenDays() {
+    const dates = [];
+    const today = new Date();
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date();
+      date.setDate(today.getDate() + i).toLocaleString();
+      const formattedDate = this.formatDate(date)
+      dates.push(formattedDate);
+    }
+
+    return dates;
+  }
+
+  formatDate(date: Date): string {
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const day = daysOfWeek[date.getDay()];
+    const dateNumber = date.getDate();
+    const month = monthsOfYear[date.getMonth()];
+    const year = new Date().getFullYear();
+    return `${day} ${dateNumber} ${month} ${year}`;
   }
 
   getTimeSlots(e: any) {
@@ -249,10 +277,16 @@ export class AddOrdersComponent implements OnInit {
     this.store?.setValue(null)
     this.deliveryType = type
     this.deliveryTime = null
+    this.deliveryDate = null
+    this.timeslots = []
   }
 
   selectDeliveryTime(time: any) {
     this.deliveryTime = time
+  }
+
+  selectDeliveryDate(date: any) {
+    this.deliveryDate = date
   }
 
   updateOrder() { }
@@ -286,12 +320,13 @@ export class AddOrdersComponent implements OnInit {
       },
       deliveryType: this.deliveryType,
       deliveryTime: this.deliveryTime,
+      deliveryDate: this.deliveryDate,
       additionalCharge: data.additionalCharge
     }
 
     if (this.cart.length != 0) {
       if (this.deliveryType == '1') {
-        if (this.deliveryTime) {
+        if (this.deliveryTime && this.deliveryDate) {
           this.orderService.addOrder(payload).subscribe((res: any) => {
             if (res.errorCode != 0) {
               this.toastr.error(res?.message);

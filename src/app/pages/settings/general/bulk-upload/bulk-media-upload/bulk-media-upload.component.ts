@@ -20,6 +20,8 @@ export class BulkMediaUploadComponent implements OnInit {
   filesize: any;
   filestring: any;
   isTriggered: boolean = false;
+  file: any;
+  base64Data: string;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -51,17 +53,21 @@ export class BulkMediaUploadComponent implements OnInit {
   }
 
   fileUpload(event: any) {
-    this.images = <Array<File>>event.files;
+    this.file = event.files[0]
+    this.filesize = Math.floor(this.file.size / (1024 * 1024))
+    this.filesize = this.filesize.toFixed(2) + ' MB'
     this.isUploaded = true
   }
 
   removeFileUpload() {
+    this.file = null
+    this.filesize = null
+    this.isUploaded = false
   }
 
   bulkUpload() {
     let formdata = new FormData()
-    for (let file of this.images) formdata.append("file", file)
-
+    formdata.append('file', this.file)
     switch (this.pageType) {
       case 'category':
         this.isTriggered = true

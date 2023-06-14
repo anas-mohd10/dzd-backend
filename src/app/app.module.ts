@@ -1,15 +1,13 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './core/auth/authentication.guard';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -19,7 +17,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataTablesModule } from 'angular-datatables';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { LayoutModule } from './shared/layout';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsvService } from './includes/services/csv.service';
 import { ProductCardComponent } from './pages/catalog/product/product-card/product-card.component';
 import { BrandCardComponent } from './pages/catalog/brand/brand-card/brand-card.component';
@@ -36,9 +34,25 @@ import { MyAccountComponent } from './pages/my-account/my-account.component';
 import { SeoDetailsComponent } from './pages/settings/general/seo-details/seo-details.component';
 import { TimeslotsComponent } from './pages/settings/general/timeslots/timeslots.component';
 import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, ProductCardComponent, BrandCardComponent, ArchivedBrandComponent, ArchivedCategoryComponent, ArchivedProductComponent, ArchivedCollectionComponent, ProductSuccessComponent, UpdateHeadComponent, AllProductsComponent, MyAccountComponent, SeoDetailsComponent, TimeslotsComponent, EnquiresComponent],
+  declarations: [
+    AppComponent,
+    ProductCardComponent,
+    BrandCardComponent,
+    ArchivedBrandComponent,
+    ArchivedCategoryComponent,
+    ArchivedProductComponent,
+    ArchivedCollectionComponent,
+    ProductSuccessComponent,
+    UpdateHeadComponent,
+    AllProductsComponent,
+    MyAccountComponent,
+    SeoDetailsComponent,
+    TimeslotsComponent,
+    EnquiresComponent
+  ],
   imports: [
     DataTablesModule,
     BrowserModule,
@@ -58,6 +72,7 @@ import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
     NgbModule,
     NgSelectModule,
     LayoutModule,
+    CommonModule,
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,

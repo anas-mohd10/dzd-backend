@@ -82,7 +82,7 @@ $primaryMedium: #00bdab50;
 
                 p {
                     margin: 20px 0 0 0;
-                    font-size: 20px;
+                    font-size: 16px;
                     text-align: center;
                     font-weight: 600;
                     line-height: 30px;
@@ -100,7 +100,7 @@ $primaryMedium: #00bdab50;
             width: calc(100% - 330px);
 
             .uploadedTitle {
-                font-size: 20px;
+                font-size: 16px;
                 font-weight: 600;
                 color: $text;
             }
@@ -111,23 +111,15 @@ $primaryMedium: #00bdab50;
                 display: flex;
                 align-items: flex-start;
                 justify-content: space-between;
-                background: $white;
-                padding: 15px;
-                border-radius: 10px;
-                box-shadow: 0 0 15px 5px rgba($color: $primaryLight, $alpha: 0.05);
-                font-size: 18px;
-                font-weight: 600;
+                font-size: 16px;
+
+                img {
+                    cursor: pointer;
+                }
 
                 .fileDetails {
                     .fileName {
-                        font-size: 16px;
-                        font-weight: 600;
                         color: $text;
-                    }
-
-                    .fileSize {
-                        font-size: 14px;
-                        margin: 10px 0 0 0;
                     }
                 }
 

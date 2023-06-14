@@ -154,6 +154,7 @@ export class UpdateCollectionComponent implements OnInit {
           if (this.collectionData?.isFeatured == true) this.featured = !this.featured
           if (this.collectionData?.type == 'grid') this.grid = !this.grid
           if (this.collectionData.isArchive == true) this.isArchived = true
+          this.productDetails = [...this.collectionData?.products]
           this.cdr.markForCheck()
           break
       }

@@ -12,6 +12,8 @@ export class DashboardComponent implements OnInit {
   daysRevenue: any = []
   lastMonthRevenue: void;
   userData: any
+  products: Array<any> = []
+
   constructor(
     private DashboardService: DashboardService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -20,7 +22,12 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.AuthService.getCurrentUser();
-    // this.userData = {username:'j'}
+    this.DashboardService.getTopSellingProducts({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.products = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
 
     this.DashboardService.getDashboard({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
