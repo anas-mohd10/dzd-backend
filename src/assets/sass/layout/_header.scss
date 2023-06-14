@@ -28,18 +28,21 @@
 
 		// Fixed header and fixed toolbar modes
 		.header-fixed.toolbar-fixed & {
-			box-shadow: none;
+			background: #FFFFFF;
+			box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.08);
 		}
 
 		// Aside default enabled, aside fixed & header sticky modes
 		.aside-enabled.aside-fixed.header-fixed & {
-			left: get($aside-config, width);
+			// left: get($aside-config, width);
+			left: 0;
 			transition: left get($aside-config, transition-speed) ease;
 		}
 
 		// Aside default enabled, aside fixed, header sticky & aside minimize modes
 		.aside-enabled.aside-fixed.header-fixed[data-kt-aside-minimize="on"] & {
-			left: get($aside-config, minimized-width);
+			// left: get($aside-config, minimized-width);
+			left: 0;
 			transition: left get($aside-config, transition-speed) ease;
 		}
 

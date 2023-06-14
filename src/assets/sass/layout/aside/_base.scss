@@ -95,7 +95,7 @@
 		// Fixed aside mode
 		.aside-fixed & {
 			position: fixed;
-			top: 0;
+			top: 65px;
 			bottom: 0;
 			left: 0;
 			z-index: get($aside-config, z-index);

@@ -1,72 +1,134 @@
 <div class="welcomeMessage">
-  <h1> Hello, <span>{{userData.username}}!</span></h1>
+  <!-- <h1> Hello, <span>{{userData.username}}!</span></h1> -->
+  <h1>Overview</h1>
 </div>
 
-
 <div class="informationSections">
-
-
   <div class="informationLeft">
-
     <div class="infoFirsrt">
-      <div class="page-title">
+      <!-- <div class="page-title">
         <div class="fs-4 fw-bolder mb-lg-5"><i class="bi bi-receipt fs-4 text-primary"></i> Store Statistics</div>
-      </div>
+      </div> -->
 
       <div class="overviewContainer grid-4">
         <div class="overviewCard">
+          <div class="overviewValue">₹ {{ data?.header?.revenue }}</div>
           <div class="overviewTitle">
-            <img src="./assets/media/icons/duotune/finance/fin008.svg" alt="Icon">
             <p>Total Revenue</p>
           </div>
-          <div class="overviewValue">₹ {{data?.header?.revenue}}</div>
         </div>
         <div class="overviewCard">
+          <div class="overviewValue">{{ data?.header?.orders }}</div>
           <div class="overviewTitle">
-            <img src="./assets/media/icons/duotune/ecommerce/ecm008.svg" alt="Icon">
             <p>Total Orders</p>
           </div>
-          <div class="overviewValue">{{data?.header?.orders}}</div>
         </div>
         <div class="overviewCard">
+          <div class="overviewValue">{{ data?.header?.customers }}</div>
           <div class="overviewTitle">
-            <img src="./assets/media/icons/duotune/graphs/gra007.svg" alt="Icon">
             <p>Total Customers</p>
           </div>
-          <div class="overviewValue">{{data?.header?.customers}}</div>
         </div>
         <div class="overviewCard">
+          <div class="overviewValue">{{ data?.header?.products }}</div>
           <div class="overviewTitle">
-            <img src="./assets/media/icons/duotune/graphs/gra007.svg" alt="Icon">
             <p>Total Products</p>
           </div>
-          <div class="overviewValue">{{data?.header?.products}}</div>
         </div>
       </div>
     </div>
 
     <div class="infoSecond">
       <div class="page-title">
-        <div class="fs-4 fw-bolder">
-          <i class="bi bi-stack fs-4 text-primary"></i>
-          Other Informations
-        </div>
+        <div class="fs-4 fw-bolder info_head">Other Informations</div>
       </div>
 
       <div class="overviewContainer grid-5">
         <ng-container *ngFor="let info of data?.otherInformations">
           <div class="overviewCard">
+            <div class="overviewValue">{{ info?.value }}</div>
             <div class="overviewTitle">
-              <p>{{info?.title}}</p>
+              <p>{{ info?.title }}</p>
             </div>
-            <div class="overviewValue">{{info?.value}}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="info_third">
+      <div class="overviewContainerSales grid-3">
+        <ng-container>
+          <div class="quick_sales_section">
+            <div class="sales_content">
+              <div class="page-title">
+                <div class="fs-4 fw-bolder info_head">sales</div>
+              </div>
+              <div class="sale_cards">
+                <div class="overviewCard">
+                  <div class="overviewValue">25</div>
+                  <div class="overviewTitle">
+                    <p>today's orders</p>
+                  </div>
+                  <div class="lastDay_orders">
+                    <div class="order_lose">
+                      <span> 20 </span>
+                      <img
+                        src="../../../../../assets/icons/downArrow.svg"
+                        alt=""
+                      />
+                    </div>
+                    <h6>yesterday’s orders</h6>
+                    <a href=""> view orders </a>
+                  </div>
+                </div>
+                <div class="overviewCard">
+                  <div class="overviewValue">25</div>
+                  <div class="overviewTitle">
+                    <p>today's orders</p>
+                  </div>
+                  <div class="lastDay_orders">
+                    <div class="order_lose">
+                      <span> 20 </span>
+                      <img
+                        src="../../../../../assets/icons/downArrow.svg"
+                        alt=""
+                      />
+                    </div>
+                    <h6>yesterday’s orders</h6>
+                    <a href=""> view orders </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="quick_access_content">
+              <div class="page-title">
+                <div class="fs-4 fw-bolder info_head">Quick access</div>
+              </div>
+              <div class="quick_cards">
+                <div class="overviewCard quick_flex">
+                  <div class="orders">
+                    <ul>
+                      <li> orders </li>
+                      <li> products </li>
+                      <li> create coupons </li>
+                    </ul>
+                  </div>
+                  <div class="costumers">
+                    <ul>
+                      <li>customers</li>
+                      <li>collections</li>
+                      <li>create sale</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </ng-container>
       </div>
     </div>
   </div>
 
-  <div class="informationRight">
+  <!-- <div class="informationRight">
     <div class="quickAccess">
       <div class="page-title">
         <div class="fs-4 fw-bolder">
@@ -84,36 +146,209 @@
         </ul>
       </div>
     </div>
-  </div>
-
+  </div> -->
 </div>
 
-
 <div class="row mb-5 mt-10">
-  <div class="col-xl-4">
+  <div class="col-xl-8 apex_chart">
     <div class="stats5Months" *ngIf="monthlyRevenue.length > 0">
-      <div class="fs-4 fw-bolder text-primary mb-lg-5"><i class="bi bi-clipboard-data fs-4 text-primary"></i> Last
-        {{monthlyRevenue.length}}
-        month sales</div>
+      <div class="fs-4 fw-bolder  mb-lg-5 info_head">analytics </div>
       <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
         color="success" change="₹ {{monthlyRevenue[0]['revenue']}}" description="{{monthlyRevenue[0]['name']}} sales">
       </app-stats-widget4>
     </div>
-    <div class="stats7Days" *ngIf="daysRevenue.length > 0">
+    <!-- <div class="stats7Days" *ngIf="daysRevenue.length > 0">
       <div class="fs-4 text-primary fw-bolder mb-lg-5"><i class="bi bi-clipboard-data fs-4 text-primary"></i> Last
         {{daysRevenue.length}}
         days sales</div>
       <app-stats-widget3 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
         color="success" title="Today Sales" change="₹ {{daysRevenue[0]['revenue']}}">
       </app-stats-widget3>
-    </div>
+    </div> -->
   </div>
 
-  <div class="col-xl-8">
+  <!-- <div class="col-xl-8">
     <div class="topSellingProducts  mb-lg-5">
       <div class="fs-4 fw-bolder text-primary mb-lg-5"><i class="bi bi-tags fs-4 text-primary"></i> Top Selling Products
       </div>
       <app-advance-tables-widget4></app-advance-tables-widget4>
+    </div>
+  </div> -->
+  <div class="col-xl-4">
+    <div class="fs-4 fw-bolder  mb-lg-5 info_head">top selling products</div>
+      <div class="selling_box">
+        <div class="selling_products">
+          <div class="selling_phoneImg">
+            <img src="../../../../../assets/icons/iphone.svg" alt=""/>
+          </div>
+          <div class="product_details">
+            <h2>
+              Apple iPhone 13
+            </h2>
+            <h6>
+              <span>1</span> sold <span>11</span> times
+            </h6>
+          </div>
+          <div class="price">
+            <h4>
+              AED 50
+            </h4>
+          </div>
+        </div>
+        <div class="selling_products">
+          <div class="selling_phoneImg">
+            <img src="../../../../../assets/icons/iphone.svg" alt=""/>
+          </div>
+          <div class="product_details">
+            <h2>
+              Apple iPhone 13
+            </h2>
+            <h6>
+              <span>1</span> sold <span>11</span> times
+            </h6>
+          </div>
+          <div class="price">
+            <h4>
+              AED 50
+            </h4>
+          </div>
+        </div>
+        <div class="selling_products">
+          <div class="selling_phoneImg">
+            <img src="../../../../../assets/icons/iphone.svg" alt=""/>
+          </div>
+          <div class="product_details">
+            <h2>
+              Apple iPhone 13
+            </h2>
+            <h6>
+              <span>1</span> sold <span>11</span> times
+            </h6>
+          </div>
+          <div class="price">
+            <h4>
+              AED 50
+            </h4>
+          </div>
+        </div>
+        <div class="selling_products">
+          <div class="selling_phoneImg">
+            <img src="../../../../../assets/icons/iphone.svg" alt=""/>
+          </div>
+          <div class="product_details">
+            <h2>
+              Apple iPhone 13
+            </h2>
+            <h6>
+              <span>1</span> sold <span>11</span> times
+            </h6>
+          </div>
+          <div class="price">
+            <h4>
+              AED 50
+            </h4>
+          </div>
+        </div>
+        <div class="selling_products">
+          <div class="selling_phoneImg">
+            <img src="../../../../../assets/icons/iphone.svg" alt=""/>
+          </div>
+          <div class="product_details">
+            <h2>
+              Apple iPhone 13
+            </h2>
+            <h6>
+              <span>1</span> sold <span>11</span> times
+            </h6>
+          </div>
+          <div class="price">
+            <h4>
+              AED 50
+            </h4>
+          </div>
+        </div>
+        <div class="selling_products">
+          <div class="selling_phoneImg">
+            <img src="../../../../../assets/icons/iphone.svg" alt=""/>
+          </div>
+          <div class="product_details">
+            <h2>
+              Apple iPhone 13
+            </h2>
+            <h6>
+              <span>1</span> sold <span>11</span> times
+            </h6>
+          </div>
+          <div class="price">
+            <h4>
+              AED 50
+            </h4>
+          </div>
+        </div>
+      </div>
+      
+      
+  </div>
+
+</div>
+
+<div class="row mb-5 mt-10">
+  <div class="col-xl-8">
+    <div class="stats5Months" *ngIf="monthlyRevenue.length > 0">
+      <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
+        color="success" change="₹ {{monthlyRevenue[0]['revenue']}}" description="{{monthlyRevenue[0]['name']}} sales">
+      </app-stats-widget4>
+    </div>
+    <!-- <div class="stats7Days" *ngIf="daysRevenue.length > 0">
+      <div class="fs-4 text-primary fw-bolder mb-lg-5"><i class="bi bi-clipboard-data fs-4 text-primary"></i> Last
+        {{daysRevenue.length}}
+        days sales</div>
+      <app-stats-widget3 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
+        color="success" title="Today Sales" change="₹ {{daysRevenue[0]['revenue']}}">
+      </app-stats-widget3>
+    </div> -->
+  </div>
+
+  <!-- <div class="col-xl-8">
+    <div class="topSellingProducts  mb-lg-5">
+      <div class="fs-4 fw-bolder text-primary mb-lg-5"><i class="bi bi-tags fs-4 text-primary"></i> Top Selling Products
+      </div>
+      <app-advance-tables-widget4></app-advance-tables-widget4>
+    </div>
+  </div> -->
+  <div class="col-xl-4 monthly_chartParent">
+    <div class="monthly_comparison_box">
+      <h4>
+        monthly sales comparison   
+      </h4>
+      <h6>
+        View details comparison of sales and order in detail  
+      </h6>
+      <a href="">
+        View Details
+      </a>
+    </div>
+    <div class="monthly_comparison_box">
+      <h4>
+        monthly sales comparison   
+      </h4>
+      <h6>
+        View details comparison of sales and order in detail  
+      </h6>
+      <a href="">
+        View Details
+      </a>
+    </div>
+    <div class="monthly_comparison_box">
+      <h4>
+        monthly sales comparison   
+      </h4>
+      <h6>
+        View details comparison of sales and order in detail  
+      </h6>
+      <a href="">
+        View Details
+      </a>
     </div>
   </div>
 
@@ -121,38 +356,11 @@
 
 <div class="row mb-5">
   <div class="newOrders">
-    <div class="fs-4 fw-bolder text-primary mb-lg-5"><i class="bi bi-basket fs-4 text-primary"></i> Latest Orders</div>
+    <div class="fs-4 fw-bolder  mb-lg-5 info_head">top selling products</div>
     <app-advance-tables-widget9></app-advance-tables-widget9>
   </div>
-</div>
+</div> 
 
 
 
-
-
-<!-- <div class="row">
-        <div class="col-lg-3">
-          <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin008.svg"
-            class="card bg-success card-xl-stretch mb-xl-5" color="dark" iconColor="white"
-            title="₹ {{data?.header?.revenue}}" description="Total Revenue">
-          </app-stats-widget5>
-        </div>
-        <div class="col-lg-3">
-          <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
-            class="card bg-dark card-xl-stretch mb-xl-8" color="dark" iconColor="white" title="{{data?.header?.orders}}"
-            description="Total Orders">
-          </app-stats-widget5>
-        </div>
-        <div class="col-lg-3">
-          <app-stats-widget5 svgIcon="./assets/media/icons/duotune/graphs/gra007.svg"
-            class="card bg-info card-xl-stretch mb-xl-8" color="info" iconColor="white" title="{{data?.header?.customers}}"
-            description="Total Customers">
-          </app-stats-widget5>
-        </div>
-        <div class="col-lg-3">
-          <app-stats-widget5 svgIcon="./assets/media/icons/duotune/graphs/gra007.svg"
-            class="card bg-primary card-xl-stretch mb-5 mb-xl-8" color="info" iconColor="white"
-            title="{{data?.header?.products}}" description="Total Products">
-          </app-stats-widget5>
-        </div>
-      </div> -->
+      

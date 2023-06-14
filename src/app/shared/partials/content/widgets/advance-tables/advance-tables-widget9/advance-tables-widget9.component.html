@@ -12,34 +12,32 @@
         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
           <thead>
             <tr class="text-left fs-6 text-gray-400">
-              <th style="min-width: 120px">Order No.</th>
-              <th style="min-width: 120px">Customer</th>
-              <th style="min-width: 100px">Total</th>
-              <th style="min-width: 100px">Order Date</th>
-              <th style="min-width: 100px">Payment Method</th>
-              <th style="min-width: 100px">Payment Status</th>
-              <th style="min-width: 100px">Order Status</th>
-              <th style="min-width: 100px">Delivered Date</th>
+              <th style="min-width: 120px">si No.</th>
+              <th style="min-width: 120px">order no </th>
+              <th style="min-width: 100px">Date</th>
+              <th style="min-width: 100px">customer</th>
+              <th style="min-width: 100px">total</th>
+              <th style="min-width: 100px">Payment method</th>
               <th style="min-width: 100px">Action</th>
             </tr>
           </thead>
           <tbody class="fs-6">
             <tr *ngFor="let order of orders">
+              <td>01</td>
+              <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
               <td>{{order?.orderNo}}</td>
-              <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td>
-              <td>₹ {{order?.total}}</td>
-              <td>{{order?.orderDate}}</td>
-              <td>{{order?.paymentMethod}}</td>
+              <td> {{order?.orderDate}}</td>
+              <td> {{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td>
+              <td> ₹ {{order?.total}} </td>
               <td>
                 <span class="paymentStatus {{order?.paymentStatus.toLowerCase()}}">{{order?.paymentStatus}}</span>
               </td>
-              <td> <span class="orderStatus {{order?.orderStatus.toLowerCase()}}">{{order?.orderStatus}}</span> </td>
-              <td>{{order?.delivery?.deliveryDate ? order?.delivery?.deliveryDate : '-'}}</td>
-              <td>
+              
+              <td>         
                 <a routerLink="{{ appRoutes.orders.UPDATE_ORDER_LIST }}" [queryParams]="{ order: order?.refid }">
-                  <img class="iconImage" src="../../../../../assets/icons/visibility.png" alt="Icon">
+                  <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
                 </a>
-              </td>
+              </td> 
             </tr>
             <tr *ngIf="totalOrders == 0">
               <div class="emptyImage">

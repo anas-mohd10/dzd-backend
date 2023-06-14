@@ -1,6 +1,6 @@
 <div class="card-body p-0">
   <div class="d-flex flex-stack card-p flex-grow-1">
-    <span class="symbol symbol-50px" [ngClass]="'symbol-light-' + color + ' me-2'">
+    <!-- <span class="symbol symbol-50px" [ngClass]="'symbol-light-' + color + ' me-2'">
       <span class="symbol-label">
         <span [inlineSVG]="svgIcon" class="svg-icon svg-icon-2x" [ngClass]="'svg-icon-' + color"></span>
       </span>
@@ -9,14 +9,72 @@
     <div class="d-flex flex-column text-end">
       <span class="text-dark fw-bolder fs-2">{{ change }}</span>
       <span class="text-muted fw-bold mt-1 fs-5">{{ description }}</span>
-    </div>
+    </div> -->
+        <div class="main_form">
+          <div class="duration_time">
+          <div class="timeZone">
+            <span> time zone </span>
+            <select
+              class="form-select form-select-lg mb-3"
+              aria-label=".form-select-lg"
+              formControlName="isActive"
+            >
+              <option value="" disabled>-- Select an option --</option>
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+          <div class="Duration">
+            <span> duration </span>
+            <select
+              class="form-select form-select-lg mb-3"
+              aria-label=".form-select-lg"
+              formControlName="isActive"
+            >
+              <option value="" disabled>-- Select an option --</option>
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+          </div>
+          <div class="settings">
+            <img src="../../../../../assets/icons/Setting.svg" alt="" />
+          </div>
+        </div>
+        <div class="chart_details">
+          <div class="total_sales">
+            <h6>
+              AED 50
+            </h6>
+            <h5>
+              total sales  
+            </h5>
+          </div>
+          <a href="">
+            view details  
+          </a>
+        </div>
   </div>
 
-  <div #chartRef class="statistics-widget-3-chart card-rounded-bottom" [style.height]="'150px'">
-    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
-      [yaxis]="chartOptions.yaxis" [dataLabels]="chartOptions.dataLabels" [stroke]="chartOptions.stroke"
-      [legend]="chartOptions.legend" [fill]="chartOptions.fill" [states]="chartOptions.states"
-      [tooltip]="chartOptions.tooltip" [colors]="chartOptions.colors" [markers]="chartOptions.markers"
-      [plotOptions]="chartOptions.plotOptions"></apx-chart>
+  <div
+    #chartRef
+    class="statistics-widget-3-chart card-rounded-bottom"
+    [style.height]="'150px'"
+  >
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [yaxis]="chartOptions.yaxis"
+      [dataLabels]="chartOptions.dataLabels"
+      [stroke]="chartOptions.stroke"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [states]="chartOptions.states"
+      [tooltip]="chartOptions.tooltip"
+      [colors]="chartOptions.colors"
+      [markers]="chartOptions.markers"
+      [plotOptions]="chartOptions.plotOptions"
+    ></apx-chart>
   </div>
 </div>

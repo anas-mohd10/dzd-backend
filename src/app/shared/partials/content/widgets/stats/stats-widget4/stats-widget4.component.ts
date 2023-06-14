@@ -20,7 +20,7 @@ export class StatsWidget4Component implements OnInit {
   baseColor: string;
   lightColor: string;
   monthlyRevenue: any = [];
-  months: any = [];
+  months: any = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
   revenues: any = []
 
   constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) {
@@ -37,7 +37,7 @@ export class StatsWidget4Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.height = 150;
+    this.height = 350;
     this.labelColor = getCSSVariableValue('--bs-gray-800');
     this.baseColor = getCSSVariableValue('--bs-' + this.color);
     this.lightColor = getCSSVariableValue('--bs-light-' + this.color);
@@ -52,6 +52,8 @@ export class StatsWidget4Component implements OnInit {
   }
 }
 
+
+
 function getChartOptions(
   revenues: any,
   months: any,
@@ -64,24 +66,18 @@ function getChartOptions(
     series: [
       {
         name: 'Net Profit',
-        data: revenues,
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
       },
     ],
     chart: {
-      fontFamily: 'inherit',
-      type: 'area',
-      height: height,
-      toolbar: {
-        show: false,
-      },
+      height: 350,
+      type: "line",
       zoom: {
-        enabled: false,
-      },
-      sparkline: {
-        enabled: true,
-      },
+        enabled: false
+      }
     },
-    plotOptions: {},
+    plotOptions: {
+    },
     legend: {
       show: false,
     },
@@ -93,7 +89,7 @@ function getChartOptions(
       opacity: 1,
     },
     stroke: {
-      curve: 'smooth',
+      curve: 'straight',
       show: true,
       width: 3,
       colors: [baseColor],
@@ -101,13 +97,13 @@ function getChartOptions(
     xaxis: {
       categories: months,
       axisBorder: {
-        show: false,
+        show: !false,
       },
       axisTicks: {
-        show: false,
+        show: !false,
       },
       labels: {
-        show: false,
+        show: !false,
         style: {
           colors: labelColor,
           fontSize: '12px',
@@ -123,14 +119,14 @@ function getChartOptions(
         },
       },
       tooltip: {
-        enabled: false,
+        enabled: !false,
       },
     },
     yaxis: {
       min: 0,
-      max: 100000,
+      max: 150,
       labels: {
-        show: false,
+        show: !false,
         style: {
           colors: labelColor,
           fontSize: '12px',

@@ -128,90 +128,15 @@
                       </div>
                     </div>
                   </ng-container>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-5 mb-3">Returnable Product?</label>
-                    <select class="form-select" formControlName="returnable" (change)="checkReturnable($event.target)">
-                      <option value="Check" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                  <ng-container *ngIf="isReturn">
-                    <div class="col-12 col-sm-6">
-                      <div class="form-group">
-                        <label class="fs-5 mb-3 required">Return Days</label>
-                        <input type="number" class="form-control fs-5" formControlName="returnDays" />
-                      </div>
-                    </div>
-                  </ng-container>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-5 mb-3">Active Product?</label>
-                    <select class="form-select" formControlName="isActive"
-                      [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
-                      <option value="Check" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-5 mb-3">Archive Product?</label>
-                    <select class="form-select" formControlName="isArchive"
-                      [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
-                      <option value="Check" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                  <div class="col-12">
-                    <div class="col-12">
-                      <h2 class="form-title required">Basic Product Image</h2>
-                    </div>
-                    <div class="col-12 col-sm-6 form-group">
-                      <div class="image-upload">
-                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                          (change)="handleInputBasicChange($event)" style="height: 100px;" required>
-                        <div class="image-upload-div">
-                          <div class="left-img">
-                            <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                          </div>
-                          <div class="right-text d-flex flex-column">
-                            <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                            <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
-                              file</span>
-                          </div>
-                        </div>
-                      </div>
-                      <ng-container *ngIf="loadBasicImage">
-                        <div class="col-12 preview-section" style="margin-top: 50px;">
-                          <div class="crop-image col-sm-6">
-                            <image-cropper class="crop-section" [imageChangedEvent]="imageBasicChangedEvent"
-                              [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                              [cropperMaxHeight]="1600" format="jpeg" (imageCropped)="imageBasicCropped($event)"
-                              (imageLoaded)="basicImageLoaded()" (cropperReady)="cropperBasicReady()"
-                              (loadImageFailed)="loadBasicImageFailed()">
-                            </image-cropper>
-                          </div>
-                          <div class="uploads uploaded col-sm-6">
-                            <div class="close-icon">
-                              <i class="bi bi-x-lg text-white" (click)="removeBasicImage()"></i>
-                            </div>
-                            <img class="preview-img" id="previewImage" [src]="basicImage">
-                          </div>
-                        </div>
-                      </ng-container>
-                      <div class="uploaded-image mt-5">
-                        <img *ngIf="basicfile != ''" src="{{basicfile}}" alt="" style="width: 150px; height: 150px">
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.product.PRODUCT_LIST}}"
+                <!-- <a routerLink="{{ appRoute.product.PRODUCT_LIST}}"
                   class="fw-bolder btn btn-secondary btn-sm fs-5 text-dark"
-                  style="width: 200px; margin-right: 20px;">Cancel</a>
+                  style="width: 200px; margin-right: 20px;">Cancel</a> -->
                 <button *ngIf="slug == ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder"
-                  style="width: 200px" (click)="addHead()">Add</button>
+                  style="width: 200px" (click)="addHead()">Save</button>
                 <button *ngIf="slug != ''" type="submit" class="btn btn-primary btn-sm fs-5 fw-bolder"
                   style="width: 200px" (click)="goToNextTab('product')">Next</button>
               </div>

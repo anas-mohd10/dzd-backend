@@ -217,6 +217,10 @@
     }
 }
 
+.statistics-widget-3-chart.card-rounded-bottom {
+    height: 100% !important;
+  }
+
 // Utilities
 .card-p {
     padding: $card-py $card-px !important;
@@ -259,6 +263,94 @@
     border-bottom-left-radius: $card-border-radius;
     border-bottom-right-radius: $card-border-radius;
 }
+.apexcharts-toolbar {
+    display: none !important;
+}
+
+.d-flex.flex-stack.card-p.flex-grow-1 {
+    flex-direction: column;
+    align-items: start;
+
+    .main_form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .duration_time{
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            .timeZone{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                .form-select {
+                    max-width: 180px;
+                    width: 100%;
+                    margin: 0 !important;
+                }
+                span {
+                    font-weight: 800;
+                    font-size: 14px;
+                    line-height: 16px;
+                    letter-spacing: -0.02em;
+                    text-transform: capitalize;
+                    color: #23272E;
+                }
+            }
+            .Duration {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+    
+                .form-select {
+                    max-width: 150px;
+                    width: 100%;
+                    margin: 0 !important;
+                }
+                span {
+                    font-weight: 800;
+                    font-size: 14px;
+                    line-height: 16px;
+                    letter-spacing: -0.02em;
+                    text-transform: capitalize;
+                    color: #23272E;
+                }
+            }
+        }
+    }
+    .chart_details {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 20px;
+
+        .total_sales {
+
+            h6 {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 22px;
+                color: #00BDAB;
+            }
+            h5 {
+                font-weight: 500;
+                font-size: 13px;
+                line-height: 18px;
+                text-transform: capitalize;
+                color: #8B909A;
+            }
+        }
+    }
+}
+
+   
+
+
+
 
 // Mobile mode
 @include media-breakpoint-down(md) {

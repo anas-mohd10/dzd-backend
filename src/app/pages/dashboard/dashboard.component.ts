@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.userData = this.AuthService.getCurrentUser();
+    // this.userData = {username:'j'}
 
     this.DashboardService.getDashboard({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {

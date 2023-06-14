@@ -2,10 +2,8 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  padding: 0.625rem 1.25rem;
   border-radius: 0.625rem;
-  width: 100%;
-  display: flex;
+  padding: 5px 10px;
 }
 
 .placed {
@@ -42,17 +40,15 @@
 }
 
 .paymentStatus {
-  align-items: center;
-  justify-content: center;
   font-weight: 600;
-  padding: 0.625rem 1.25rem;
   border-radius: 0.625rem;
-  width: 100%;
-  display: flex;
+  padding: 5px 10px;
 }
 
 .paid {
-  background: #2fe55c80;
+  background: #28C76F;
+ 
+  color: white;
 }
 
 .unpaid {
@@ -83,4 +79,30 @@
   &:hover .tooltiptext {
     visibility: visible;
   }
+}
+.table thead {
+  background: #00BDAB;
+}
+.table thead th {
+  color: white;
+  font-weight: 700;
+  padding: 16px;
+}
+
+a.btn.btn-primary.fw-bolder.font-size-sm.mr-3 {
+  border: 1px solid #00bdab !important;
+  color: #00bdab;
+  background: white;
+}
+tr.text-left.fs-6.text-gray-400 {
+  border-bottom: 1px solid #E8E8E8;
+}
+table.table td {
+  padding: 16px 20px;
+}
+table.table tr {
+  border-bottom: 1px solid #E8E8E8;
+}
+.statistics-widget-3-chart.card-rounded-bottom {
+  height: 100%;
 }

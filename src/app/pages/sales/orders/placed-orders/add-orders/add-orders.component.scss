@@ -156,6 +156,7 @@
 
 .page-title {
   margin: 0;
+  font-weight: 700;
 }
 
 .orderSummaryCard {
@@ -218,4 +219,8 @@
     font-size: 1.44rem;
     font-weight: 600;
   }
+}
+
+h3.page-title.fw-bolder.fs-2 {
+  font-weight: 700 !important;
 }
