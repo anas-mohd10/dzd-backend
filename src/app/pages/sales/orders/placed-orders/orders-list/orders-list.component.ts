@@ -28,6 +28,7 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   count: Number = 0
   totalrevenues: any;
   averagesales: any;
+  currentTab: number=0;
 
   constructor(
     private ordersService: OrdersService,
@@ -120,5 +121,9 @@ export class OrdersListComponent implements OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
+  }
+
+  navSwitch(tabNumber:number){
+    this.currentTab=tabNumber
   }
 }

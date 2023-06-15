@@ -23,112 +23,701 @@
   <div class="top-form-container">
     <div class="row order-cards">
       <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
+        <app-stats-widget5 
           class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="{{count}}"
-          description="Total Orders">
+          description="total revenue  ">
         </app-stats-widget5>
       </div>
       <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin008.svg"
+        <app-stats-widget5 
           class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{totalrevenues}}"
-          description="Total Revenue">
+          description="total orders ">
         </app-stats-widget5>
       </div>
       <div class="col-lg-3">
-        <app-stats-widget5 svgIcon="./assets/media/icons/duotune/finance/fin001.svg"
-          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title="Rs. {{averagesales}}"
+        <app-stats-widget5 
+          class="card bg-white card-xl-stretch mb-xl-5" color="white" iconColor="primary" title=" {{averagesales}}"
           description="Average Sales">
         </app-stats-widget5>
       </div>
     </div>
-    <form [formGroup]="orderform">
-      <div class="row align-items-end justify-content-end">
-        <div class="search-input col-sm-2">
-          <label class="fs-5">From</label>
-          <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
-            placeholder="From date">
-        </div>
-        <div class="search-input col-sm-2">
-          <label class="fs-5">To</label>
-          <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
-        </div>
-        <div class="search-status col-sm-2">
-          <select name="" id="" class="form-select fs-5" formControlName="orderStatus" (change)="searchOrder()">
-            <option value="" disabled>Order Status Filter</option>
-            <option value="PLACED">Placed</option>
-            <option value="ACCEPTED">Accepted</option>
-            <option value="CANCELLED">Cancelled</option>
-            <option value="PACKED">Packed</option>
-            <option value="SHIPPED">Shipped</option>
-            <option value="DELIVERED">Delivered</option>
-            <option value="FAILURE">Failure</option>
-            <option value="REFUNDED">Refunded</option>
-          </select>
-        </div>
-        <div class="search-featured col-sm-2">
-          <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
-            <option value="" disabled> Payment Method Filter</option>
-            <option value="COD">Cash On Delivery</option>
-            <option value="ONLINE">Online</option>
-            <option value="UNPAID">Unpaid</option>
-            <option value="SPLIT">Split</option>
-            <option value="CARD">Card</option>
-          </select>
-        </div>
-        <div class="search-submit col-sm-2">
-          <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
-            style="outline: none; border: none;">Clear</button>
-        </div>
-      </div>
-    </form>
+   
   </div>
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
-        <div class="card-body">
-          <div class="table-responsive">
-            <table id=DataTables_Table_0 datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-              class="table table-center">
-              <thead>
-                <tr class="fs-5 text-gray-400">
-                  <th scope="col" class="">Sl No</th>
-                  <th scope="col">Order No.</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Customer</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Payment Method</th>
-                  <th scope="col">Payment Status</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let order of orders; let i = index" class="fs-5">
-                  <th scope="row">{{i + 1}}</th>
-                  <td>{{order?.orderNo}}</td>
-                  <td>{{order?.orderDate}} <br> {{order?.orderTime}}</td>
-                  <td>
-                    <span class="orderStatus {{order?.orderStatus.toLowerCase()}} fs-6">
-                      {{order?.orderStatus}}
-                    </span>
-                  </td>
-                  <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td>
-                  <td>Rs. {{order?.total}}</td>
-                  <td>{{order?.paymentMethod}}</td>
-                  <td><span
-                      class="paymentStatus {{order?.paymentStatus.toLowerCase()}} fs-6">{{order?.paymentStatus}}</span>
-                  </td>
-                  <td>
-                    <a class="fs-5 h-100 cursor-pointer table-avatar text-gray-400er"
-                      routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{ order: order?.refid }">
-                      <i class="bi bi-pen"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+       <div class="row nav_row">
+        <div class="col-8 arrow_flex">
+          <nav class="nav_arrow">
+            
+          <div class="arrow_right">
+            <img src="../../../../../assets/icons/arrowleft.svg" alt="">
+          </div>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button (click)="navSwitch(0)" class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#overview"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">All</button>
+                <button (click)="navSwitch(1)" class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#edit-details"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true"> shipped </button>
+                <button (click)="navSwitch(2)" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#product-details"
+                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">cancelled
+                </button>
+                <button (click)="navSwitch(3)" class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#product-details"
+                type="button" role="tab" aria-controls="nav-profile" aria-selected="false">placed
+            </button>
+            </div>
+        </nav>
+        <div class="arrow_left">
+          <img src="../../../../../assets/icons/Arrowright.svg" alt="">
+        </div>
+        </div>
+        <div class="col-4">
+          <div class="search_input">
+            <input type="text" placeholder="search ">
+            <img class="search_icon" src="../../../../../assets/icons/Search.svg" alt="" />
           </div>
         </div>
+       </div>
+
+       <div *ngIf="currentTab==0" class="row">
+        <form class="calender_form" [formGroup]="orderform">
+          <div class="row align-items-end justify-content-between">
+            <div class="search-input col-sm-3">
+              <label class="fs-5">From</label>
+              <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
+                placeholder="From date">
+            </div>
+            <div class="search-input col-sm-3">
+              <label class="fs-5">To</label>
+              <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
+            </div>
+            <div class="search-featured col-sm-4">
+              <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
+                <option value="" disabled> Payment Method</option>
+                <option value="COD">Cash On Delivery</option>
+                <option value="ONLINE">Online</option>
+                <option value="UNPAID">Unpaid</option>
+                <option value="SPLIT">Split</option>
+                <option value="CARD">Card</option>
+              </select>
+            </div>
+            <div class="search-submit col-sm-2">
+              <button type="button" class=" outline_btn form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
+                style="outline: none; border: none;">Clear</button>
+            </div>
+          </div>
+        </form> 
+              <div class="table-responsive">
+                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+                  <thead class="common_thead">
+                    <tr class="text-left fs-6 text-gray-400">
+                      <th style="min-width: 120px">si No.</th>
+                      <th style="min-width: 120px">order no </th>
+                      <th style="min-width: 100px">Date</th>
+                      <th style="min-width: 100px">customer</th>
+                      <th style="min-width: 100px">total</th>
+                      <th style="min-width: 100px">Payment method</th>
+                      <th style="min-width: 100px">Payment status</th>
+                      <th style="min-width: 100px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="fs-6">
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr *ngIf="">
+                      <div class="emptyImage">
+                        <img src="../../../../../../../assets/media/5.png" alt="Image">
+                      </div>
+                      <div class="emptyNote">No data available</div>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="filtering">
+                  <span>
+                    Showing
+                  </span>
+                  <select name="" id="">
+                    <option value="">10</option>
+                    <option value="">15</option>
+                    <option value="">20</option>
+                    <option value="">25</option>
+                  </select>
+                  <span>
+                    of 50
+                  </span>
+                </div>
+              </div>
+       </div>
+       <div *ngIf="currentTab==1" class="row">
+        <form class="calender_form" [formGroup]="orderform">
+          <div class="row align-items-end justify-content-between">
+            <div class="search-input col-sm-3">
+              <label class="fs-5">From</label>
+              <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
+                placeholder="From date">
+            </div>
+            <div class="search-input col-sm-3">
+              <label class="fs-5">To</label>
+              <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
+            </div>
+            <div class="search-featured col-sm-4">
+              <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
+                <option value="" disabled> Payment Method</option>
+                <option value="COD">Cash On Delivery</option>
+                <option value="ONLINE">Online</option>
+                <option value="UNPAID">Unpaid</option>
+                <option value="SPLIT">Split</option>
+                <option value="CARD">Card</option>
+              </select>
+            </div>
+            <div class="search-submit col-sm-2">
+              <button type="button" class=" outline_btn form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
+                style="outline: none; border: none;">Clear</button>
+            </div>
+          </div>
+        </form> 
+              <div class="table-responsive">
+                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+                  <thead class="common_thead">
+                    <tr class="text-left fs-6 text-gray-400">
+                      <th style="min-width: 120px">si No.</th>
+                      <th style="min-width: 120px">order no </th>
+                      <th style="min-width: 100px">Date</th>
+                      <th style="min-width: 100px">customer</th>
+                      <th style="min-width: 100px">total</th>
+                      <th style="min-width: 100px">Payment method</th>
+                      <th style="min-width: 100px">Payment status</th>
+                      <th style="min-width: 100px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="fs-6">
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr *ngIf="">
+                      <div class="emptyImage">
+                        <img src="../../../../../../../assets/media/5.png" alt="Image">
+                      </div>
+                      <div class="emptyNote">No data available</div>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="filtering">
+                  <span>
+                    Showing
+                  </span>
+                  <select name="" id="">
+                    <option value="">10</option>
+                    <option value="">15</option>
+                    <option value="">20</option>
+                    <option value="">25</option>
+                  </select>
+                  <span>
+                    of 50
+                  </span>
+                </div>
+              </div>
+       </div>
+       <div *ngIf="currentTab==2" class="row">
+        <form class="calender_form" [formGroup]="orderform">
+          <div class="row align-items-end justify-content-between">
+            <div class="search-input col-sm-3">
+              <label class="fs-5">From</label>
+              <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
+                placeholder="From date">
+            </div>
+            <div class="search-input col-sm-3">
+              <label class="fs-5">To</label>
+              <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
+            </div>
+            <div class="search-featured col-sm-4">
+              <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
+                <option value="" disabled> Payment Method</option>
+                <option value="COD">Cash On Delivery</option>
+                <option value="ONLINE">Online</option>
+                <option value="UNPAID">Unpaid</option>
+                <option value="SPLIT">Split</option>
+                <option value="CARD">Card</option>
+              </select>
+            </div>
+            <div class="search-submit col-sm-2">
+              <button type="button" class=" outline_btn form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
+                style="outline: none; border: none;">Clear</button>
+            </div>
+          </div>
+        </form> 
+              <div class="table-responsive">
+                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+                  <thead class="common_thead">
+                    <tr class="text-left fs-6 text-gray-400">
+                      <th style="min-width: 120px">si No.</th>
+                      <th style="min-width: 120px">order no </th>
+                      <th style="min-width: 100px">Date</th>
+                      <th style="min-width: 100px">customer</th>
+                      <th style="min-width: 100px">total</th>
+                      <th style="min-width: 100px">Payment method</th>
+                      <th style="min-width: 100px">Payment status</th>
+                      <th style="min-width: 100px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="fs-6">
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr *ngIf="">
+                      <div class="emptyImage">
+                        <img src="../../../../../../../assets/media/5.png" alt="Image">
+                      </div>
+                      <div class="emptyNote">No data available</div>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="filtering">
+                  <span>
+                    Showing
+                  </span>
+                  <select name="" id="">
+                    <option value="">10</option>
+                    <option value="">15</option>
+                    <option value="">20</option>
+                    <option value="">25</option>
+                  </select>
+                  <span>
+                    of 50
+                  </span>
+                </div>
+              </div>
+       </div>
+       <div *ngIf="currentTab==3" class="row">
+        <form class="calender_form" [formGroup]="orderform">
+          <div class="row align-items-end justify-content-between">
+            <div class="search-input col-sm-3">
+              <label class="fs-5">From</label>
+              <input type="date" class="form-control" formControlName="fdate" (change)="searchOrder()"
+                placeholder="From date">
+            </div>
+            <div class="search-input col-sm-3">
+              <label class="fs-5">To</label>
+              <input type="date" class="form-control" formControlName="tdate" (change)="searchOrder()">
+            </div>
+            <div class="search-featured col-sm-4">
+              <select name="" id="" class="form-select fs-5" formControlName="paymentMethod" (change)="searchOrder()">
+                <option value="" disabled> Payment Method</option>
+                <option value="COD">Cash On Delivery</option>
+                <option value="ONLINE">Online</option>
+                <option value="UNPAID">Unpaid</option>
+                <option value="SPLIT">Split</option>
+                <option value="CARD">Card</option>
+              </select>
+            </div>
+            <div class="search-submit col-sm-2">
+              <button type="button" class=" outline_btn form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
+                style="outline: none; border: none;">Clear</button>
+            </div>
+          </div>
+        </form> 
+              <div class="table-responsive">
+                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+                  <thead class="common_thead">
+                    <tr class="text-left fs-6 text-gray-400">
+                      <th style="min-width: 120px">si No.</th>
+                      <th style="min-width: 120px">order no </th>
+                      <th style="min-width: 100px">Date</th>
+                      <th style="min-width: 100px">customer</th>
+                      <th style="min-width: 100px">total</th>
+                      <th style="min-width: 100px">Payment method</th>
+                      <th style="min-width: 100px">Payment status</th>
+                      <th style="min-width: 100px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="fs-6">
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr>
+                      <td>01</td>
+                      <!-- <td>{{order?.customerId?.name}} <br> {{order?.customerId?.mobile}}</td> -->
+                      <td>#100000</td>
+                      <td>tue feb 21 2023 <br>
+                        07:30:42 </td>
+                      <td> shifas p
+                        <br> 7025332222</td>
+                      <td> rs. 110 </td>
+                      <td>
+                        <span class="paymentStatus">online </span>
+                      </td>
+    
+                      <td>
+                        <button class="paymentmethd">paid  </button>
+                      </td>
+                      
+                      <td>         
+                        <a routerLink="">
+                          <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
+                        </a>
+                      </td> 
+                    </tr>
+                    <tr *ngIf="">
+                      <div class="emptyImage">
+                        <img src="../../../../../../../assets/media/5.png" alt="Image">
+                      </div>
+                      <div class="emptyNote">No data available</div>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="filtering">
+                  <span>
+                    Showing
+                  </span>
+                  <select name="" id="">
+                    <option value="">10</option>
+                    <option value="">15</option>
+                    <option value="">20</option>
+                    <option value="">25</option>
+                  </select>
+                  <span>
+                    of 50
+                  </span>
+                </div>
+              </div>
+       </div>
+
+
+
+       
       </div>
     </div>
   </div>

@@ -128,7 +128,7 @@
 		color: $title-color;
 
 		.menu-title {
-			color: $title-color;
+			color: #8B909A;
 		}
 	}
 
@@ -226,4 +226,13 @@
 
 		@include menu-link-theme($title-color, $icon-color, $bullet-color, $arrow-color, $bg-color);
 	}
+}
+
+
+
+.menu-state-title-primary .menu-item .menu-link.active .menu-title {
+	color: white !important;
+}
+.menu-state-icon-primary .menu-item .menu-link.active .menu-icon i {
+	color: white !important;
 }
