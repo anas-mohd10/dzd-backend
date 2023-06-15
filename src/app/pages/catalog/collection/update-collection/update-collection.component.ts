@@ -147,6 +147,14 @@ export class UpdateCollectionComponent implements OnInit {
           for (let key of Object.keys(this.collectionData)) {
             this.collectionForm.get(key)?.setValue(this.collectionData[key])
           }
+
+          this.collectionForm.get('background')?.setValue(this.collectionData.style.background);
+          this.collectionForm.get('border')?.setValue(this.collectionData.style.border);
+          this.collectionForm.get('radius')?.setValue(this.collectionData.style.radius);
+          this.collectionForm.get('color')?.setValue(this.collectionData.style.text.color);
+          this.collectionForm.get('fontSize')?.setValue(this.collectionData.style.text.fontSize);
+          this.collectionForm.get('fontWeight')?.setValue(this.collectionData.style.text.fontWeight);
+
           this.color = this.collectionData?.style.text.color
           this.background = this.collectionData?.style.background
           this.border = this.collectionData?.style.border
@@ -185,7 +193,9 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.productDetails, event.previousIndex, event.currentIndex);
+    let products = [...this.productDetails]
+    moveItemInArray(products, event.previousIndex, event.currentIndex);
+    this.productDetails = [...products]
   }
 
   compareFn(item: any, selected: any) {
@@ -275,6 +285,8 @@ export class UpdateCollectionComponent implements OnInit {
       return;
     }
 
+    this.selectedProducts = []
+    for (let product of this.productDetails) this.selectedProducts.push(product._id)
     const payload = this.createPayload()
     if (payload) {
       this.collectionService.updateCollection(this.collectionData?.colid, payload).subscribe((res: any) => {

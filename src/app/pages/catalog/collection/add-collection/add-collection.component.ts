@@ -252,6 +252,7 @@ export class AddCollectionComponent implements OnInit {
     }
 
     if (this.isAutoCompleteEnabled) {
+      this.selectedProducts = []
       for (let product of this.productDetails) this.selectedProducts.push(product._id)
       const payload = this.createPayload()
       this.collectionService.addCollection(payload).subscribe((res: any) => {
@@ -277,7 +278,9 @@ export class AddCollectionComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.productDetails, event.previousIndex, event.currentIndex);
+    let products = [...this.productDetails]
+    moveItemInArray(products, event.previousIndex, event.currentIndex);
+    this.productDetails = [...products]
   }
 
   createPayload() {

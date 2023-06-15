@@ -1,5 +1,4 @@
 <div class="welcomeMessage">
-  <h1 class="mb-3"> Hello, <span>{{userData.username}}!</span></h1>
   <h1>Overview</h1>
 </div>
 
@@ -61,30 +60,32 @@
               </div>
               <div class="sale_cards">
                 <div class="overviewCard">
-                  <div class="overviewValue">25</div>
+                  <div class="overviewValue">{{orders?.today}}</div>
                   <div class="overviewTitle">
                     <p>Today's orders</p>
                   </div>
                   <div class="lastDay_orders">
                     <div class="order_lose">
-                      <span> 20 </span>
-                      <img src="../../../../../assets/icons/downArrow.svg" alt="" />
+                      <span [ngClass]="{'up': orderUp}"> {{orderDifference}} </span>
+                      <img src="../../../assets/icons/salesDown.svg" *ngIf="!orderUp" alt="Icon" />
+                      <img src="../../../assets/icons/salesUp.svg" *ngIf="orderUp" alt="Icon" />
                     </div>
                     <h6>Yesterday’s orders</h6>
                     <a routerLink="/app/placed-orders"> View orders </a>
                   </div>
                 </div>
                 <div class="overviewCard">
-                  <div class="overviewValue">25</div>
+                  <div class="overviewValue">{{sales?.today}}</div>
                   <div class="overviewTitle">
-                    <p>Today's orders</p>
+                    <p>Today's sales</p>
                   </div>
                   <div class="lastDay_orders">
                     <div class="order_lose">
-                      <span> 20 </span>
-                      <img src="../../../../../assets/icons/downArrow.svg" alt="" />
+                      <span [ngClass]="{'up': saleUp}"> {{saleDifference}} </span>
+                      <img src="../../../assets/icons/salesDown.svg" *ngIf="!saleUp" alt="Icon" />
+                      <img src="../../../assets/icons/salesUp.svg" *ngIf="saleUp" alt="Icon" />
                     </div>
-                    <h6>yesterday’s orders</h6>
+                    <h6>Yesterday’s sales</h6>
                     <a routerLink="/app/placed-orders"> View orders </a>
                   </div>
                 </div>

@@ -13,6 +13,14 @@ export class DashboardComponent implements OnInit {
   lastMonthRevenue: void;
   userData: any
   products: Array<any> = []
+  orders: any
+  sales: any
+
+  orderDifference: Number = 0
+  orderUp: Boolean = false
+
+  saleDifference: Number = 0
+  saleUp: Boolean = false
 
   constructor(
     private DashboardService: DashboardService,
@@ -38,7 +46,20 @@ export class DashboardComponent implements OnInit {
 
     this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.monthlyRevenue = res?.result
+        this.monthlyRevenue = res?.result?.monthly
+        this.orders = res?.result?.orders
+        this.sales = res?.result?.sales
+        this.saleDifference = res?.result?.sales?.saleDifference
+        this.saleUp = res?.result?.sales?.saleUp
+
+        if (this.orders?.today >= this.orders?.yesterday) {
+          this.orderDifference = this.orders?.today - this.orders?.yesterday
+          this.orderUp = true
+        } else {
+          this.orderDifference = this.orders?.yesterday - this.orders?.today
+          this.orderUp = false
+        }
+
         this.lastMonthRevenue = this.monthlyRevenue[0]['revenue']
         this.ChangeDetectorRef.markForCheck()
       }

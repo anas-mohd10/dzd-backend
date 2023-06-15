@@ -1,12 +1,17 @@
 .page-title {
    margin: 0px;
  }
- 
- #previewBanner {
-   width: 400px;
-   height: 200px;
-   object-fit: cover;
- }
+
+ label {
+  font-weight: normal !important;
+}
+
+#previewBanner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
  
  .searchProductsContainer {
    max-height: 400px;

@@ -58,8 +58,10 @@ $white: #ffffff;
         }
       }
     }
+
     .info_third {
       width: 100%;
+
       .overviewContainerSales {
         margin: 15px 0 0 0;
 
@@ -81,6 +83,7 @@ $white: #ffffff;
               margin-top: 15px;
             }
           }
+
           .quick_access_content {
             .quick_cards {
               .quick_flex {
@@ -88,18 +91,22 @@ $white: #ffffff;
                 margin-top: 15px;
                 justify-content: center;
                 align-items: center;
+
                 ul {
                   padding: 0;
+
                   li {
                     list-style: none;
                     padding-bottom: 18px;
                   }
                 }
-                .costumers { 
+
+                .costumers {
                   ul {
                     padding-left: 2rem;
                   }
                 }
+
                 .orders {
                   ul {
                     padding-right: 5.3rem;
@@ -121,6 +128,7 @@ $white: #ffffff;
             display: flex;
             justify-content: flex-start;
             align-items: center;
+
             p {
               font-size: 14px;
               line-height: 18px;
@@ -130,7 +138,7 @@ $white: #ffffff;
             }
           }
 
-         
+
 
           .overviewValue {
             margin-bottom: 10px;
@@ -139,6 +147,7 @@ $white: #ffffff;
             line-height: 24px;
             color: #4b4b4b;
           }
+
           .lastDay_orders {
             display: flex;
             justify-content: center;
@@ -151,9 +160,14 @@ $white: #ffffff;
                 font-size: 14px;
                 line-height: 20px;
                 text-transform: capitalize;
-                color: #f01b0a;
+                color: #e6021c;
+              }
+
+              .up {
+                color: #55b965;
               }
             }
+
             h6 {
               margin: 0 17px 0 5px;
               font-weight: 500;
@@ -162,6 +176,7 @@ $white: #ffffff;
               text-transform: capitalize;
               color: #4b4b4b;
             }
+
             a {
               font-weight: 500;
               font-size: 14px;
@@ -225,9 +240,10 @@ $white: #ffffff;
   }
 }
 
-.apex_chart{
+.apex_chart {
   background: white;
 }
+
 .card-rounded-bottom {
   height: 100%;
 }
@@ -235,6 +251,7 @@ $white: #ffffff;
 .selling_box {
   padding: 24px;
   background-color: white;
+
   .selling_products {
     display: flex;
     justify-content: start;
@@ -242,6 +259,7 @@ $white: #ffffff;
     gap: 1.6rem;
     padding: 1.5rem 0;
     border-bottom: 1px solid #E8E8E8;
+
     .product_details {
       h6 {
         color: #8B909A;
@@ -249,11 +267,12 @@ $white: #ffffff;
         font-weight: 400;
         line-height: 20px;
         margin: 0;
-  
+
         span {
           color: #00bdab;
         }
       }
+
       h2 {
         font-size: 15px;
         line-height: 21px;
@@ -275,8 +294,9 @@ $white: #ffffff;
     color: #23272E;
     text-transform: capitalize;
     margin: 0;
-    
+
   }
+
   h6 {
     font-weight: 400;
     font-size: 13px;
@@ -285,6 +305,7 @@ $white: #ffffff;
     text-transform: capitalize;
     margin: 4px 0 10px 0;
   }
+
   a {
     font-weight: 500;
     font-size: 15px;
@@ -311,6 +332,7 @@ $white: #ffffff;
       display: flex;
       justify-content: flex-start;
       align-items: center;
+
       p {
         font-size: 14px;
         line-height: 18px;
@@ -341,11 +363,10 @@ $white: #ffffff;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
+
 .info_head {
   color: #23272e;
   font-weight: 700 !important;
   font-size: 20px !important;
   line-height: 24px;
 }
-
-
