@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
+import SwiperCore, { SwiperOptions } from 'swiper';
 
 @Component({
   selector: 'app-orders-list',
@@ -29,6 +30,34 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   totalrevenues: any;
   averagesales: any;
   currentTab: number=0;
+  swiperConfig:SwiperOptions={
+    slidesPerView: 3,
+    spaceBetween: 50,
+    navigation: {
+      nextEl:"#next",
+      prevEl:'#prev'
+      
+    },
+    pagination: { clickable: true },
+    scrollbar: { draggable: true },
+    autoplay: true,
+    breakpoints:{
+      320: {
+        slidesPerView: 12,
+        spaceBetween: 20
+      },
+      // when window width is >= 480px
+      480: {
+        slidesPerView: 3,
+        spaceBetween: 30
+      },
+      // when window width is >= 640px
+      640: {
+        slidesPerView: 4,
+        spaceBetween: 20
+      }
+    }
+  }
 
   constructor(
     private ordersService: OrdersService,

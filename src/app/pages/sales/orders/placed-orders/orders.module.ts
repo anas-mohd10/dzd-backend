@@ -9,6 +9,7 @@ import { WidgetsModule } from '../../../../shared/partials';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
       progressBar: true,
     }),
     WidgetsModule,
+    SwiperModule
   ]
 })
 export class OrdersModule { }

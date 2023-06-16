@@ -35,6 +35,7 @@ import { SeoDetailsComponent } from './pages/settings/general/seo-details/seo-de
 import { TimeslotsComponent } from './pages/settings/general/timeslots/timeslots.component';
 import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
 import { CommonModule } from '@angular/common';
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    SwiperModule
   ],
   exports: [
     RouterModule,

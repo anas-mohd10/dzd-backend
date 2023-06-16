@@ -43,12 +43,52 @@
     </div>
    
   </div>
+  
+ 
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
        <div class="row nav_row">
-        <div class="col-8 arrow_flex">
-          <nav class="nav_arrow">
+        <div class="col-7 arrow_flex">
+
+<!-- <div id="next">next</div>
+<div id="prev">prev</div> -->
+          <swiper
+          [config]="swiperConfig"
+        >
+          <ng-template swiperSlide>
+           <button class="nav_btn active">
+            All
+           </button>
+          </ng-template>
+          <ng-template swiperSlide>
+            <button class="nav_btn">
+              shipped
+            </button>
+          </ng-template>
+          <ng-template swiperSlide>
+            <button class="nav_btn">
+              cancelled
+            </button>
+          </ng-template>
+          <ng-template swiperSlide>
+            <button class="nav_btn">
+              placed
+            </button>
+          </ng-template>
+          <ng-template swiperSlide>
+            <button class="nav_btn">
+              placed
+            </button>
+          </ng-template>
+          <ng-template swiperSlide>
+            <button class="nav_btn">
+              placed
+            </button>
+          </ng-template>
+        </swiper>
+
+          <!-- <nav class="nav_arrow">
             
           <div class="arrow_right">
             <img src="../../../../../assets/icons/arrowleft.svg" alt="">
@@ -68,9 +108,10 @@
         </nav>
         <div class="arrow_left">
           <img src="../../../../../assets/icons/Arrowright.svg" alt="">
+        </div> -->
+        
         </div>
-        </div>
-        <div class="col-4">
+        <div class="col-5">
           <div class="search_input">
             <input type="text" placeholder="search ">
             <img class="search_icon" src="../../../../../assets/icons/Search.svg" alt="" />
