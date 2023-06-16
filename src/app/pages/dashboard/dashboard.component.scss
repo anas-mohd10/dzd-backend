@@ -67,10 +67,8 @@ $white: #ffffff;
 
         .quick_sales_section {
           display: flex;
-          justify-content: space-between;
+          justify-content: start;
           align-items: start;
-          grid-gap: 2rem;
-          gap: 2rem;
           margin-bottom: 3rem;
 
           .sales_content {
@@ -78,9 +76,12 @@ $white: #ffffff;
               display: flex;
               justify-content: start;
               align-items: start;
-              gap: 20px;
-              flex-wrap: wrap;
               margin-top: 15px;
+              gap: 20px;
+
+              .overviewCard {
+                width: calc(100% / 2);
+              }
             }
           }
 
@@ -150,7 +151,7 @@ $white: #ffffff;
 
           .lastDay_orders {
             display: flex;
-            justify-content: center;
+            justify-content: start;
             align-items: center;
             margin-top: 20px;
 
@@ -240,8 +241,11 @@ $white: #ffffff;
   }
 }
 
-.apex_chart {
-  background: white;
+.stats5Months {
+  height: 100%;
+}
+.card.card-xl-stretch.mb-xl-8 {
+  height: auto;
 }
 
 .card-rounded-bottom {
@@ -352,6 +356,24 @@ $white: #ffffff;
   }
 }
 
+.quick_flex {
+    ul {
+      margin: 0;
+    }
+  
+}
+
+.selling_phoneImg {
+  width: 50px;
+  height: 50px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
 .grid-5 {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -369,4 +391,15 @@ $white: #ffffff;
   font-weight: 700 !important;
   font-size: 20px !important;
   line-height: 24px;
+}
+
+@media (max-width: 1199.98px) {
+  .sale_cards {
+    flex-direction: column;
+    width: 100%;
+
+    .overviewCard {
+      width: 100% !important;
+    }
+  }
 }
