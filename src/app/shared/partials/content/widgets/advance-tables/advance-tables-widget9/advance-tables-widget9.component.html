@@ -12,11 +12,11 @@
         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
           <thead>
             <tr class="text-left fs-6 text-gray-400">
-              <th style="min-width: 120px">si No.</th>
-              <th style="min-width: 120px">order no </th>
+              <th style="min-width: 120px">Sl No.</th>
+              <th style="min-width: 120px">Order No. </th>
               <th style="min-width: 100px">Date</th>
-              <th style="min-width: 100px">customer</th>
-              <th style="min-width: 100px">total</th>
+              <th style="min-width: 100px">Customer</th>
+              <th style="min-width: 100px">Total</th>
               <th style="min-width: 100px">Payment method</th>
               <th style="min-width: 100px">Action</th>
             </tr>
@@ -32,12 +32,12 @@
               <td>
                 <span class="paymentStatus {{order?.paymentStatus.toLowerCase()}}">{{order?.paymentStatus}}</span>
               </td>
-              
-              <td>         
+
+              <td>
                 <a routerLink="{{ appRoutes.orders.UPDATE_ORDER_LIST }}" [queryParams]="{ order: order?.refid }">
                   <img class="iconImage" src="../../../../../assets/icons/Edit.png" alt="Icon">
                 </a>
-              </td> 
+              </td>
             </tr>
             <tr *ngIf="totalOrders == 0">
               <div class="emptyImage">

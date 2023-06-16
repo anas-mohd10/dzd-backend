@@ -329,6 +329,7 @@ $white: #ffffff;
   .overviewCard {
     padding: 24px;
     border-radius: 10px;
+    cursor: pointer;
     background: $white;
 
     .overviewTitle {

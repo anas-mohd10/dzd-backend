@@ -6,25 +6,25 @@
   <div class="informationLeft">
     <div class="infoFirsrt">
       <div class="overviewContainer grid-4">
-        <div class="overviewCard">
+        <div class="overviewCard" routerLink="/app/placed-orders">
           <div class="overviewValue">₹ {{ data?.header?.revenue }}</div>
           <div class="overviewTitle">
             <p>Total Revenue</p>
           </div>
         </div>
-        <div class="overviewCard">
+        <div class="overviewCard" routerLink="/app/placed-orders">
           <div class="overviewValue">{{ data?.header?.orders }}</div>
           <div class="overviewTitle">
             <p>Total Orders</p>
           </div>
         </div>
-        <div class="overviewCard">
+        <div class="overviewCard" routerLink="/app/customers">
           <div class="overviewValue">{{ data?.header?.customers }}</div>
           <div class="overviewTitle">
             <p>Total Customers</p>
           </div>
         </div>
-        <div class="overviewCard">
+        <div class="overviewCard" routerLink="/app/product">
           <div class="overviewValue">{{ data?.header?.products }}</div>
           <div class="overviewTitle">
             <p>Total Products</p>
@@ -40,7 +40,7 @@
 
       <div class="overviewContainer grid-5">
         <ng-container *ngFor="let info of data?.otherInformations">
-          <div class="overviewCard">
+          <div class="overviewCard" routerLink="{{info?.path}}">
             <div class="overviewValue">{{ info?.value }}</div>
             <div class="overviewTitle">
               <p>{{ info?.title }}</p>
