@@ -14,7 +14,7 @@
                </li>
             </ul>
             <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-               routerLink="{{ appRoute.banner.ADD_BANNER }}" style="width: 200px;">
+               routerLink="{{ appRoute.banner.ADD_BANNER }}">
                Add Banners
             </button>
          </div>
@@ -37,7 +37,7 @@
                   <div>
                      <div class="card-edit-btn" [routerLink]="appRoute.banner.UPDATE_BANNER"
                         [queryParams]="{banner: banner?.bannerid}">
-                        <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                        <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                      </div>
                      <div class="banner-status fs-6 active" *ngIf="banner?.isActive">Active</div>
                      <div class="banner-status fs-6 inactive" *ngIf="!banner?.isActive">Inactive</div>

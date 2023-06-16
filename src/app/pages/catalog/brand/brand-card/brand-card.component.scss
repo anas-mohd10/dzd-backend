@@ -1,3 +1,13 @@
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primary: #00bdab;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$hover: #F0F8F7;
+$grey: #888888;
+
 .brand-card-container {
   width: 100%;
   display: grid;
@@ -6,98 +16,59 @@
 }
 
 .brand-card {
-  height: 150px;
   padding: 10px;
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: flex-start;
+  position: relative;
 
-  .brandCardTop {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .editButton {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 40px;
+    width: 40px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border-radius: 20px;
+
+    &:hover {
+      background: $hover;
+    }
   }
 
-  .brandCardBottom {
-    font-size: 13px;
-    margin: 10px 0 0 0;
+  .brand-image {
+    height: 60px;
+    width: 60px;
 
-    span {
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
+
+  .brand-details {
+    margin: 0 0 0 10px;
+
+    .brand-status-true,
+    .brand-featured-true {
+      color: #00bdab;
+      font-weight: 600;
+    }
+
+    .brand-status-false {
+      color: #ce1626;
+      font-weight: 600;
+    }
+
+    .brand-featured-false {
+      color: #0087bd;
       font-weight: 600;
     }
   }
-}
-
-.brand-details {
-  display: flex;
-  align-self: center;
-  justify-content: start;
-
-  .flex-1 {
-    margin: 0 0 0 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-
-.flex-21 {
-  justify-content: space-between;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.brand-image {
-  height: 60px;
-  width: 60px;
-
-  img {
-    height: 100%;
-    width: 100%;
-    border-radius: 10px;
-  }
-}
-
-
-.brand-name {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.brand-status-true {
-  color: #00bdab;
-  font-weight: 600;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.brand-status-false {
-  color: #ce1626;
-  font-weight: 600;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.brand-featured-true {
-  color: #00bdab;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.brand-featured-false {
-  color: #0087bd;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-input:focus,
-select:focus {
-  border: 1px solid #00bdab;
 }

@@ -51,8 +51,8 @@ export class CollectionService {
     return this.http.get(`${url}`);
   }
 
-  updateCollection(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection + "?slug=" + slug);
+  updateCollection(data: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.update_collection);
     return this.http.put(`${url}`, data);
   }
 

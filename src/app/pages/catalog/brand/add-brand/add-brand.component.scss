@@ -4,8 +4,9 @@
   object-fit: cover;
 }
 
-
-
+label {
+  font-weight: normal !important;
+}
 
 .preview-section {
   display: grid;

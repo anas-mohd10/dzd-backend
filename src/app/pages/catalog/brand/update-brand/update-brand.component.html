@@ -5,14 +5,14 @@
     </div>
     <div class="row align-items-center">
       <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{'brand': slug}">
               {{editMode ? "Update Brand" : "Add Brand"}}</a>
           </li>
@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
@@ -29,21 +29,20 @@
               <div class="col-12">
                 <h2 class="form-title">Brand Details</h2>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="required fs-5 mb-3">Brand Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" placeholder="Brand name"
+                  <label class="required fs-6 mb-3">Brand Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" placeholder="Brand name"
                     [ngClass]="{
                       'is-invalid':
                       (bf.name.touched || isSubmitted) &&
                       bf.name.errors?.required
                     }" />
-                  <div class="fs-7 mt-3">A brand name is required and recommended to be unique.</div>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Status</label>
+                  <label class="fs-6 mb-3 required">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="false">Inactive</option>
@@ -51,9 +50,9 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 required">Featured Brand ?</label>
+                  <label class="fs-6 mb-3 required">Featured Brand ?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isFeatured">
                     <option value="false" selected>No</option>
@@ -61,9 +60,9 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Archive Brand?</label>
+                  <label class="fs-6 mb-3">Archive Brand?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
                     formControlName="isArchive">
                     <option value="false" selected>No</option>
@@ -74,55 +73,55 @@
               <div class="col-12">
                 <h2 class="form-title fw-bolder">Brand Styles</h2>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                  <label class="fs-6 mb-3">Background</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                     formControlName="background" (change)="getColors('background', $event.target)" />
                   <span>{{background}}</span>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
+                  <label class="fs-6 mb-3">Border</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
                     style="height: 50px;" (change)="getColors('border', $event.target)" />
                   <span>{{border}}</span>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Border Radius</label>
-                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+                  <label class="fs-6 mb-3">Border Radius</label>
+                  <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6  mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Color</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                  <label class="fs-6 mb-3">Color</label>
+                  <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                     formControlName="color" (change)="getColors('color', $event.target)" />
                   <span>{{color}}</span>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Font Weight</label>
-                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+                  <label class="fs-6 mb-3">Font Weight</label>
+                  <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="fs-5 mb-3">Font Size ( in px )</label>
-                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+                  <label class="fs-6 mb-3">Font Size ( in px )</label>
+                  <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-sm-6">
                 <div class="col-12">
                   <h3 class="form-title required"><span>Media</span></h3>
                 </div>
                 <div class="form-group col-12">
                   <div class="image-upload col-sm-6">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
                       (change)="handleInputChange($event)"
                       onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
                       style="height: 100px;" required>
@@ -176,14 +175,12 @@
 
               <div class="col-12 col-sm-6">
                 <div class="col-12">
-                  <h3 class="form-title required"><span>Banner</span></h3>
+                  <h3 class="form-title">Brand banner</h3>
                 </div>
                 <div class="form-group col-12">
                   <div class="image-upload col-sm-6">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
-                      (change)="bannerFile($event)"
-
-                      style="height: 100px;" required>
+                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                      (change)="bannerFile($event)" style="height: 100px;" required>
                     <div class="image-upload-div">
                       <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
                           srcset=""></div>
@@ -220,10 +217,10 @@
 
               <div class="col-12  d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.brand.BRAND_LIST}}"
-                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
+                  class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">Update</button>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">Update</button>
               </div>
             </div>
           </form>
@@ -231,7 +228,7 @@
             <ng-container *ngIf="isArchived">
               <div class="col-12  d-flex align-items-center justify-content-end">
                 <div class="form-group col-sm-6">
-                  <label class="fs-5 mb-3">Restore Brand?</label>
+                  <label class="fs-6 mb-3">Restore Brand?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" [formControl]="restore">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
@@ -240,10 +237,10 @@
               </div>
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.brand.ARCHIVED_BRAND}}"
-                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
+                  class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-dark btn-sm fs-5 fw-bolder" style="width: 200px"
+                <button type="submit" class="btn btn-dark btn-sm fs-6 fw-bolder" style="width: 200px"
                   (click)="restoreBrand()">Restore</button>
               </div>
             </ng-container>

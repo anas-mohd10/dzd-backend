@@ -1,46 +1,59 @@
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primary: #00bdab;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$hover: #F0F8F7;
+$grey: #888888;
+
 .collection-card-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
 .collection-card {
-  height: 150px;
-  padding: 10px 30px;
+  padding: 10px;
   background: #ffffff;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
+  justify-content: flex-start;
 
-.collection-details {
-  display: flex;
-  align-self: center;
-  justify-content: start
-}
+  .editButton {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 40px;
+    width: 40px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border-radius: 20px;
 
-.collection-details .flex-1 {
-  margin: 0 0 0 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    &:hover {
+      background: $hover;
+    }
+  }
 
-.collection-image {
-  height: 120px;
-  width: 120px;
-}
+  .collection-image {
+    height: 100px;
+    width: 100px;
 
-.collection-image img {
-  height: 100%;
-  width: 100%;
-  border-radius: 10px;
-}
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 10px;
+    }
+  }
 
-.collection-details {
-  margin: 0 0 0 20px;
+  .collectionDetails {
+    margin: 0 0 0 10px;
+  }
 }
 
 .collection-name {
@@ -50,27 +63,19 @@
 .collection-status-true {
   color: #00bdab;
   font-weight: 600;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: flex-end;
 }
 
 .collection-status-false {
   color: #ce1626;
   font-weight: 600;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: flex-end;
 }
 
 .collection-featured-true {
   color: #00bdab;
   font-weight: 600;
-  font-size: 1.1rem;
 }
 
 .collection-featured-false {
   color: #0087bd;
   font-weight: 600;
-  font-size: 1.1rem;
 }
