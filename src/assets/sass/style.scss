@@ -24,3 +24,6 @@ $mode: default;
 @import "~animate.css/animate.css";
 @import "./core/vendors/plugins/prismjs";
 @import "./core/vendors/plugins/formvalidation";
+@import 'swiper/scss';
+@import 'swiper/scss/navigation';
+@import 'swiper/scss/pagination';

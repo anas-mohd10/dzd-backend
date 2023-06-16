@@ -218,3 +218,41 @@
 }
 
 
+.nav_btn {
+  background: white;
+  border: none;
+  outline: none;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  color: #23272E;
+
+  &.active {
+    color: #20BDAB;
+    position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      background-color: #00BDAB;
+      height: 2px;
+      width: 80%;
+
+    }
+  }
+}
+
+.swiper-button-next {
+  &:after {
+    color: black !important;
+  }
+}
+
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
+  color: black;
+}
+
+
