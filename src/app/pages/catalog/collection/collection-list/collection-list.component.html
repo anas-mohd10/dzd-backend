@@ -14,7 +14,7 @@
           </li>
         </ul>
         <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.collection.ADD_COLLECTION }}" style=" width: 200px">
+          routerLink="{{ appRoute.collection.ADD_COLLECTION }}">
           Add Collection
         </button>
       </div>
@@ -42,49 +42,49 @@
           </select>
         </div>
         <div class="search-submit col-sm-2">
-          <button type="button" class="form-control fw-bolder fs-6 bg-secondary text-dark" (click)="onReload()"
+          <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
             style="outline: none; border: none;">Clear</button>
         </div>
       </div>
     </form>
   </div>
-  <div class="col-12 d-flex justify-content-between">
+  <div class=" col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} collections</h4>
+      <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} collections</h4>
     </div>
     <div>
       <button class="btn btn-secondary cursor-pointer fs-6" color="primary"
-        routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION}}" style="width: 200px">Archived Collections</button>
+        routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION}}">Archived Collections</button>
     </div>
   </div>
+
   <div class="collection-card-container view-container">
     <ng-container *ngFor="let collection of collections">
       <div class="collection-card card-hover">
-        <div class="collection-details">
-          <div class="collection-image">
-            <img src='{{base}}/{{collection?.file}}' alt="collection image" srcset="" />
+        <div class="editButton">
+          <div routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+            [queryParams]="{ collection: collection?.slug }">
+            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
           </div>
-          <div class="flex-1">
+        </div>
+
+        <div class="collection-image">
+          <img src='{{base}}/{{collection?.file}}' alt="Image" />
+        </div>
+
+        <div class="collectionDetails">
+          <div class="mb-3">
             <div class="collection-name fs-4">{{collection?.name}}</div>
             <div class="collection-subname fs-6">{{collection?.subname}}</div>
-            <div class="collection-featured-{{collection?.isFeatured}}">
-              <ng-container *ngIf="collection?.isFeatured == true">Featured</ng-container>
-              <ng-container *ngIf="collection?.isFeatured == false">Not Featured</ng-container>
-            </div>
-            <div class="card-edit-btn">
-              <button routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-                [queryParams]="{ collection: collection?.slug }" class="fs-6 cursor-pointer text-darker">
-                Edit
-              </button>
-            </div>
+          </div>
+          <div class="fs-6 collection-featured-{{collection?.isFeatured}}">
+            {{collection?.isFeatured ? 'Featured' : 'Not featured'}}
+          </div>
+          <div class="fs-6 collection-status-{{collection?.isActive}}">
+            {{collection?.isActive ? 'Active' : 'Inactive'}}
           </div>
         </div>
-        <div class="flex-21">
-          <div class="collection-status-{{collection?.isActive}}">
-            <ng-container *ngIf="collection?.isActive == true">Active</ng-container>
-            <ng-container *ngIf="collection?.isActive == false">Inactive</ng-container>
-          </div>
-        </div>
+
       </div>
     </ng-container>
     <ng-container *ngIf="count == 0">

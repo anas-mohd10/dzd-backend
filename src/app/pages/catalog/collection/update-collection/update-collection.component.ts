@@ -94,7 +94,7 @@ export class UpdateCollectionComponent implements OnInit {
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
-      subname: ['', Validators.required],
+      subname: [''],
       products: [],
       isFeatured: ['false', Validators.required],
       isActive: ['true', Validators.required],
@@ -286,18 +286,21 @@ export class UpdateCollectionComponent implements OnInit {
     }
 
     this.selectedProducts = []
-    for (let product of this.productDetails) this.selectedProducts.push(product._id)
-    const payload = this.createPayload()
-    if (payload) {
-      this.collectionService.updateCollection(this.collectionData?.colid, payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Collection Added Successfully');
-          this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-        }
-      });
+    if (!this.isAutoCompleteEnabled) {
+      this.selectedProducts = this.productSku?.value.split(',')
+    } else {
+      for (let product of this.productDetails) this.selectedProducts.push(product._id)
     }
+
+    const payload = this.createPayload()
+    this.collectionService.updateCollection(payload).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error(res?.message);
+      } else if (res.errorCode == 0) {
+        this.toastr.success(res?.message);
+        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+      }
+    });
   }
 
   restoreCollection() {
@@ -341,7 +344,8 @@ export class UpdateCollectionComponent implements OnInit {
           fontWeight: this.collectionForm.get('fontWeight')?.value,
         }
       },
-      colid: this.collectionData?.colid
+      colid: this.collectionData?.colid,
+      isSku: !this.isAutoCompleteEnabled ? true : false
     }
 
     return data

@@ -2,6 +2,9 @@
 @import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
+.text-grey{
+  color: #444444;
+}
 
 .menu-state-title-primary .menu-item .menu-link.active {
   background: #00BDAB !important;

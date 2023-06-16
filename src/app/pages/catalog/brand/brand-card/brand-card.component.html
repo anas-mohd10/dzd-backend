@@ -13,8 +13,8 @@
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="{{ appRoute.brand.ADD_BRAND }}"
-          style="width: 200px">Add Brand</button>
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.brand.ADD_BRAND }}">Add Brand</button>
       </div>
     </div>
   </div>
@@ -48,48 +48,33 @@
   </div>
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} brands</h4>
+      <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} brands</h4>
     </div>
     <div>
       <button class="btn btn-secondary cursor-pointer fs-6" color="primary"
-        routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}" style="width: 200px">Archived Brands</button>
+        routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}">Archived Brands</button>
     </div>
   </div>
   <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
       <div class="brand-card card-hover">
-        <div class="brandCardTop">
-          <div class="brand-details">
-            <div class="brand-image">
-              <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
-            </div>
-            <div class="flex-1">
-              <div class="brand-name fs-4">{{brand?.name}}</div>
-              <div class="brand-featured-{{brand?.isFeatured}}">
-                <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
-                <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
-              </div>
-              <div class="card-edit-btn">
-                <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-                  class="fs-5 cursor-pointer text-darker">
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="flex-21">
-            <div class="brand-status-{{brand?.isActive}}">
-              <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
-              <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
-            </div>
+        <div class="editButton">
+          <div routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }">
+            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
           </div>
         </div>
-        <div class="brandCardBottom">
-          <div class="createdDate">
-            <span>Created on </span> {{brand?.createdAt}}
+
+        <div class="brand-image">
+          <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+        </div>
+
+        <div class="brand-details">
+          <div class="brand-name fs-4 fw-bolder mb-3">{{brand?.name}}</div>
+          <div class="fs-6 brand-featured-{{brand?.isFeatured}}">
+            {{brand?.isFeatured ? 'Featured' : 'Not featured'}}
           </div>
-          <div class="updatedDate">
-            <span>Updated on </span> {{brand?.updatedAt}}
+          <div class="fs-6 brand-status-{{brand?.isActive}}">
+            {{brand?.isActive ? 'Active' : 'Inactive'}}
           </div>
         </div>
       </div>
