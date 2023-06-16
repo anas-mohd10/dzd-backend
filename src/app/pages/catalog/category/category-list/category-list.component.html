@@ -6,16 +6,16 @@
     </div>
     <div class="row align-items-center">
       <div class="col d-flex flex-row align-items-start justify-content-between">
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-5" color="primary"
-          routerLink="{{ appRoute.category.ADD_CATEGORY }}" style="width: 200px">
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.category.ADD_CATEGORY }}">
           Add Category
         </button>
       </div>
@@ -24,36 +24,36 @@
   <form [formGroup]="categoryform">
     <div class="col-12 row align-items-end justify-content-end">
       <div class="search-input col-sm-4" style="padding: 0;">
-        <input type="text" placeholder="Search for category here..." class="form-control fs-5" formControlName="name"
+        <input type="text" placeholder="Search for category here..." class="form-control fs-6" formControlName="name"
           (ngModelChange)="searchCategory()">
       </div>
       <div class="search-status col-sm-2">
-        <select name="" id="" class="form-select fs-5" formControlName="isActive" (change)="searchCategory()">
+        <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="searchCategory()">
           <option value="" disabled>Category Status Filter</option>
           <option value=true>Active</option>
           <option value=false>Inactive</option>
         </select>
       </div>
       <div class="search-featured col-sm-2">
-        <select name="" id="" class="form-select fs-5" formControlName="isFeatured" (change)="searchCategory()">
+        <select name="" id="" class="form-select fs-6" formControlName="isFeatured" (change)="searchCategory()">
           <option value="" disabled>Featured Category Filter</option>
           <option value=true>Featured</option>
           <option value=false>Non featured</option>
         </select>
       </div>
       <div class="search-submit col-sm-2">
-        <button type="button" class="form-control fw-bolder fs-5 bg-secondary text-dark" (click)="onReload()"
+        <button type="button" class="form-control fw-bolder fs-6 bg-secondary text-dark" (click)="onReload()"
           style="outline: none; border: none;">Clear</button>
       </div>
     </div>
   </form>
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} categories</h4>
+      <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} categories</h4>
     </div>
     <div>
-      <button class="btn btn-secondary cursor-pointer fs-5 fw-bolder" color="primary"
-        routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}" style="width: 200px">Archived Categories</button>
+      <button class="btn btn-secondary cursor-pointer fs-6 fw-bolder" color="primary"
+        routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}">Archived Categories</button>
     </div>
   </div>
 
@@ -61,34 +61,31 @@
   <div class="category-card-container view-container">
     <ng-container *ngFor="let category of categories">
       <div class="category-card card-hover">
-        <div class="category-details">
-          <div class="category-image">
-            <img src='{{base}}/{{category?.file}}' alt="category image" srcset="" />
-          </div>
-          <div class="flex-1">
-            <div class="category-name fs-3">{{category?.name}}</div>
-            <div class="category-featured-{{category?.isFeatured}}">
-              <ng-container *ngIf="category?.isFeatured == true">Featured</ng-container>
-              <ng-container *ngIf="category?.isFeatured == false">Not Featured</ng-container>
-            </div>
+
+        <div class="editButton">
+          <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
+            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
           </div>
         </div>
-        <div class="flex-21">
-          <div class="category-status-{{category?.isActive}}">
-            <ng-container *ngIf="category?.isActive == true">Active</ng-container>
-            <ng-container *ngIf="category?.isActive == false">Inactive</ng-container>
+
+        <div class="category-image">
+          <img src='{{base}}/{{category?.file}}' alt="category image" srcset="" />
+        </div>
+
+        <div class="category-details">
+          <div class="category-name mb-3 fs-4">{{category?.name}}</div>
+          <div class="categoryStatus">
+            <div class="fs-6 category-featured-{{category?.isFeatured}}">
+              {{category?.isFeatured ? 'Featured' : 'Not featured'}}
+            </div>
+            <div class="statusSeperator">.</div>
+            <div class="fs-6 category-status-{{category?.isActive}}">
+              {{category?.isActive ? 'Active' : 'Inactive'}}
+            </div>
           </div>
-          <div class="card-edit-btn">
-            <button (click)="showAttributesContainer(category?.catid, category?.name, category?.slug)"
-              class=" fs-5 cursor-pointer text-white text-darker" style="background: #0087bd;">
-              Attributes
-            </button>
-          </div>
-          <div class="card-edit-btn">
-            <button routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }"
-              class="fs-5 cursor-pointer text-darker">
-              Edit
-            </button>
+          <div class="category-attribute fs-6"
+            (click)="showAttributesContainer(category?.catid, category?.name, category?.slug)">
+            View attributes
           </div>
         </div>
       </div>
@@ -156,7 +153,7 @@
         </h4>
       </div>
       <div class="attributes-add">
-        <button class="btn-secondary btn btn-sm fs-5 fw-bolder" style="width: 200px;" (click)="navigateToUpdate()">Add
+        <button class="btn-secondary btn btn-sm fs-6 fw-bolder" style="width: 200px;" (click)="navigateToUpdate()">Add
           Attributes</button>
       </div>
     </div>
@@ -223,28 +220,28 @@
     <form [formGroup]="attributeform" (keydown.Enter)="$event.preventDefault()">
       <div class="col-12 row">
         <div class="col-12 col-sm-6 form-group">
-          <label class="fs-5 mb-3">Attribute Name</label>
-          <input type="text" placeholder="Eg. Size" class="form-control fs-5" formControlName="attributeName" />
+          <label class="fs-6 mb-3">Attribute Name</label>
+          <input type="text" placeholder="Eg. Size" class="form-control fs-6" formControlName="attributeName" />
         </div>
         <div class="col-12 col-sm-6 form-group">
-          <label class="fs-5 mb-3">Attribute Status?</label>
-          <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+          <label class="fs-6 mb-3">Attribute Status?</label>
+          <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
             formControlName="attributeStatus">
             <option value="false">Inactive</option>
             <option value="true">Active</option>
           </select>
         </div>
         <div class="col-12 col-sm-6 form-group">
-          <label class="fs-5 mb-3">Filtered Attribute?</label>
-          <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+          <label class="fs-6 mb-3">Filtered Attribute?</label>
+          <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
             formControlName="attributeFiltered">
             <option value="false">No</option>
             <option value="true">Yes</option>
           </select>
         </div>
         <div class="col-12 form-group col-sm-6">
-          <label class="fs-5 mb-3">Attribute Type</label>
-          <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+          <label class="fs-6 mb-3">Attribute Type</label>
+          <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
             formControlName="attributeType" (change)="handleAttributeType($event.target)">
             <option value="" selected disabled>-- Select an attribute type --</option>
             <option value="Color">Color Picker</option>
@@ -254,8 +251,8 @@
         </div>
         <div class="col-12" *ngIf="showColorPicker"> <!-- Attribute color picker -->
           <div class="form-group col-sm-6">
-            <label class="fs-5 mb-3">Attribute Color</label>
-            <input type="color" placeholder="Attribute color" class="form-control fs-5" style="height: 50px;"
+            <label class="fs-6 mb-3">Attribute Color</label>
+            <input type="color" placeholder="Attribute color" class="form-control fs-6" style="height: 50px;"
               formControlName="attributeColor" (change)="handleAttrributeValues('color', $event.target)" />
           </div>
           <div class="col-12 attr-color-preview" *ngIf="attributecolors.length > 0">
@@ -269,8 +266,8 @@
         </div>
         <div class="col-12" *ngIf="showTextInput"> <!-- Attribute text values -->
           <div class="form-group col-sm-6">
-            <label class="fs-5 mb-3">Attribute Text</label>
-            <input type="text" placeholder="Eg. Large" class="form-control fs-5" style="height: 50px;"
+            <label class="fs-6 mb-3">Attribute Text</label>
+            <input type="text" placeholder="Eg. Large" class="form-control fs-6" style="height: 50px;"
               formControlName="attributeText" (keydown.Enter)="handleAttrributeValues('text', $event.target)" />
             <div class="fs-6 mt-3">*Press Enter to add attribute text</div>
           </div>
@@ -287,7 +284,7 @@
         <div class="col-12" *ngIf="showFileInput"> <!-- Attribute image values -->
           <div class="form-group col-sm-6">
             <div class="image-upload">
-              <input type="file" class="form-control fs-5" name="image" accept="image/*"
+              <input type="file" class="form-control fs-6" name="image" accept="image/*"
                 (change)="handleAttrInputChange($event)" style="height: 100px;" required>
               <div class="image-upload-div">
                 <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
@@ -314,7 +311,7 @@
                   <i class="bi bi-x-lg text-white" (click)="removeAttrImage()"></i>
                 </div>
                 <img class="preview-img" id="previewImage" [src]="attributecroppped">
-                <button class="btn btn-sm fs-5 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
+                <button class="btn btn-sm fs-6 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
                   (click)="handleAttrributeValues('file', '')">Add Image</button>
               </div>
             </div>
@@ -331,7 +328,7 @@
           </div>
         </div>
         <div class="col-12 d-flex align-items-center justify-content-end save-attribute-btn">
-          <button class="btn bg-primary text-white fs-5" (click)="saveAttribute()">Save
+          <button class="btn bg-primary text-white fs-6" (click)="saveAttribute()">Save
             Attribute</button>
         </div>
       </div>

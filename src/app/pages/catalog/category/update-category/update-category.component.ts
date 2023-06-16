@@ -76,7 +76,7 @@ export class UpdateCategoryComponent implements OnInit {
   bannerChangedEvent: any = '';
   loadBanner: boolean = false;
   bannerimg: any;
-  croppedBanner : any
+  croppedBanner: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -160,7 +160,7 @@ export class UpdateCategoryComponent implements OnInit {
     this.loadImage = true
   }
 
-  bannerFile(event : any) {
+  bannerFile(event: any) {
     this.bannerFiledata = <File>event.target.files[0];
     this.bannerFilename = this.bannerFiledata.name
     this.bannerChangedEvent = event;
@@ -235,7 +235,7 @@ export class UpdateCategoryComponent implements OnInit {
 
       this.uploadedimg = this.categoryValues?.file;
       this.img = this.base + "/" + res?.result[0].file
-      this.bannerimg = this.base + "/" + res?.result[0].banner
+      this.bannerimg = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
       this.categoryForm.get('name')?.setValue(this.categoryValues.name);
       this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
       this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
@@ -542,9 +542,9 @@ export class UpdateCategoryComponent implements OnInit {
       filename: this.filename,
       path: this.path,
       file: this.file ? this.file : this.categoryValues?.file,
-      bannerstring :  this.croppedBanner,
-      bannername : this.bannerFilename,
-      banner : this.categoryValues?.banner,
+      bannerstring: this.croppedBanner,
+      bannername: this.bannerFilename,
+      banner: this.categoryValues?.banner,
       attributes: this.attributes,
       style: {
         background: this.categoryForm.get('background')?.value,

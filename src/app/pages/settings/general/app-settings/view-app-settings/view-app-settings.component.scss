@@ -1,10 +1,8 @@
 .app-settings-container {
    margin: 10px 0 0 0;
 
-
    .items-per-page,
    .font-family {
-      font-size: 1.3rem;
       font-weight: 500;
       margin: 10px 0 0 0;
       color: #999999;
@@ -62,12 +60,7 @@
    border-radius: 10px;
 
    .detailsTitle {
-      font-size: 16px;
       color: #999999;
       margin: 0 0 10px 0;
-   }
-
-   .detailsValue {
-      font-size: 24px;
    }
 }

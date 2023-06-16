@@ -143,7 +143,7 @@ export class UpdateCollectionComponent implements OnInit {
         case 0:
           this.collectionData = res?.result[0];
           this.uploadedimg = this.collectionData?.file
-          this.bannerimg = this.base + "/" + res?.result[0].banner
+          this.bannerimg = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
           for (let key of Object.keys(this.collectionData)) {
             this.collectionForm.get(key)?.setValue(this.collectionData[key])
           }
@@ -159,6 +159,7 @@ export class UpdateCollectionComponent implements OnInit {
           this.background = this.collectionData?.style.background
           this.border = this.collectionData?.style.border
           this.selectedProducts = this.collectionData?.products
+          for (let product of this.collectionData?.products) this.productIds.push(product?._id)
           if (this.collectionData?.isFeatured == true) this.featured = !this.featured
           if (this.collectionData?.type == 'grid') this.grid = !this.grid
           if (this.collectionData.isArchive == true) this.isArchived = true
@@ -183,6 +184,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   addProductSku(product: any) {
+    console.log(this.productIds);
     if (!this.productIds.includes(product?._id)) {
       this.productDetails.push(product)
       this.productIds.push(product?._id)

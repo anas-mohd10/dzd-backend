@@ -120,9 +120,12 @@
                       (cdkDropListDropped)="drop($event)">
                       <div class="example-box" *ngFor="let product of productDetails" cdkDrag>
                         <div class="addedProductCard">
+                          <div class="close" (click)="addProductSku(product)">
+                            <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                          </div>
                           <div class="image"><img src="{{base}}/{{product?.thumbnail}}" alt="Product"></div>
                           <div class="name fs-6">{{product?.name}}</div>
-                          <div class="sku">{{product?.sku}}</div>
+                          <div class="sku">SKU: {{product?.sku}}</div>
                         </div>
                       </div>
                     </div>
@@ -302,7 +305,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="uploaded-image col-sm-6 mt-5">
+                  <div class="uploaded-image col-sm-6 mt-5" *ngIf="bannerimg">
                     <img src="{{bannerimg}}" alt="" style="width: 300px; height: 150px">
                   </div>
                 </div>
