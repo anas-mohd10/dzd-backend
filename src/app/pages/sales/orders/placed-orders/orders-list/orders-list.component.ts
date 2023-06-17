@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
@@ -12,7 +12,7 @@ import SwiperCore, { SwiperOptions } from 'swiper';
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.scss']
 })
-export class OrdersListComponent implements OnDestroy, OnInit {
+export class OrdersListComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
@@ -29,19 +29,19 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   count: Number = 0
   totalrevenues: any;
   averagesales: any;
-  currentTab: number=0;
-  swiperConfig:SwiperOptions={
+  currentTab: number = 0;
+  swiperConfig: SwiperOptions = {
     slidesPerView: 3,
     spaceBetween: 50,
     navigation: {
-      nextEl:"#next",
-      prevEl:'#prev'
-      
+      nextEl: "#next",
+      prevEl: '#prev'
+
     },
     pagination: { clickable: true },
     scrollbar: { draggable: true },
     autoplay: true,
-    breakpoints:{
+    breakpoints: {
       320: {
         slidesPerView: 12,
         spaceBetween: 20
@@ -59,6 +59,42 @@ export class OrdersListComponent implements OnDestroy, OnInit {
     }
   }
 
+  page: String = '1'
+  limit: FormControl = new FormControl('10')
+  activeValue: String = ''
+  activeStatus: String = 'All Orders'
+  orderStatus: Array<any> = [{
+    status: 'All Orders',
+    value: ''
+  }, {
+    status: 'Placed',
+    value: 'PLACED'
+  }, {
+    status: 'Accepted',
+    value: 'ACCEPTED'
+  }, {
+    status: 'Shipped',
+    value: 'SHIPPED'
+  }, {
+    status: 'Refunded',
+    value: 'REFUNDED'
+  }, {
+    status: 'Delivered',
+    value: 'DELIVERED'
+  }, {
+    status: 'Failed',
+    value: 'FAILED'
+  }, {
+    status: 'Cancelled',
+    value: 'CANCELLED'
+  }, {
+    status: 'Packed',
+    value: 'PACKED'
+  }, {
+    status: 'Partial Refunded',
+    value: 'PARTIAL REFUNDED'
+  }]
+
   constructor(
     private ordersService: OrdersService,
     private toastr: ToastrService,
@@ -68,32 +104,45 @@ export class OrdersListComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.initForm()
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 10,
-      processing: true,
-    };
+    this.getOrders()
+  }
 
-    this.ordersService.getOrders().subscribe((res: any) => {
-      this.orders = res?.result?.orders
-      for (let order of this.orders) {
-        order.orderDate = new Date(order.orderDate).toDateString()
+  getLimit() {
+    this.getOrders()
+  }
+
+  getStatus(status: any) {
+    this.activeStatus = status?.status
+    this.activeValue = status?.value
+    this.getOrders()
+  }
+
+  getOrders() {
+    let payload = {
+      status: this.activeValue,
+      page: this.page,
+      limit: this.limit.value,
+      paymentMethod: this.orderform.get('paymentMethod')?.value,
+      from: this.orderform.get('fromDate')?.value,
+      to: this.orderform.get('toDate')?.value
+    }
+    this.ordersService.getOrders(payload).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.orders = res?.result?.orders
+        for (let order of this.orders) order.orderDate = new Date(order.orderDate).toDateString()
+        this.count = res?.result?.total_orders
+        this.averagesales = res?.result?.average_sales
+        this.totalrevenues = res?.result?.total_revenue
+        this.cdr.markForCheck()
       }
-      this.count = res?.result?.total_orders
-      this.averagesales = res?.result?.average_sales
-      this.totalrevenues = res?.result?.total_revenue
-      this.cdr.markForCheck()
-      this.dtTrigger.next()
     })
   }
 
   initForm() {
-    this.orderform = this.formBuilder.group({
-      fdate: [''],
-      tdate: [''],
-      paymentMethod: [''],
-      orderStatus: [''],
+    this.orderform = new FormGroup({
+      fromDate: new FormControl(''),
+      toDate: new FormControl(''),
+      paymentMethod: new FormControl(''),
     });
   }
 
@@ -111,20 +160,8 @@ export class OrdersListComponent implements OnDestroy, OnInit {
   }
 
   onReload() {
-    this.orderform.get('fdate')?.setValue('')
-    this.orderform.get('tdate')?.setValue('')
-    this.orderform.get('paymentMethod')?.setValue('')
-    this.orderform.get('orderStatus')?.setValue('')
-
-    this.ordersService.getOrders().subscribe((res: any) => {
-      this.dtTrigger.unsubscribe()
-      this.orders = res?.result?.orders
-      for (let order of this.orders) {
-        order.orderDate = new Date(order.orderDate).toDateString()
-      }
-      this.cdr.markForCheck()
-      this.dtTrigger.next()
-    })
+    this.initForm()
+    this.getOrders()
   }
 
   searchOrder() {
@@ -139,20 +176,5 @@ export class OrdersListComponent implements OnDestroy, OnInit {
         this.dtTrigger.next()
       }
     })
-  }
-
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.destroy()
-      this.dtTrigger.next();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
-  navSwitch(tabNumber:number){
-    this.currentTab=tabNumber
   }
 }

@@ -6,13 +6,13 @@
   <div class="informationLeft">
     <div class="infoFirsrt">
       <div class="overviewContainer grid-4">
-        <div class="overviewCard" routerLink="/app/placed-orders">
+        <div class="overviewCard" routerLink="/app/orders">
           <div class="overviewValue">₹ {{ data?.header?.revenue }}</div>
           <div class="overviewTitle">
             <p>Total Revenue</p>
           </div>
         </div>
-        <div class="overviewCard" routerLink="/app/placed-orders">
+        <div class="overviewCard" routerLink="/app/orders">
           <div class="overviewValue">{{ data?.header?.orders }}</div>
           <div class="overviewTitle">
             <p>Total Orders</p>
@@ -71,7 +71,7 @@
                       <img src="../../../assets/icons/salesUp.svg" *ngIf="orderUp" alt="Icon" />
                     </div>
                     <h6>Yesterday’s orders</h6>
-                    <a routerLink="/app/placed-orders"> View orders </a>
+                    <a routerLink="/app/orders"> View orders </a>
                   </div>
                 </div>
                 <div class="overviewCard">
@@ -86,7 +86,7 @@
                       <img src="../../../assets/icons/salesUp.svg" *ngIf="saleUp" alt="Icon" />
                     </div>
                     <h6>Yesterday’s sales</h6>
-                    <a routerLink="/app/placed-orders"> View orders </a>
+                    <a routerLink="/app/orders"> View orders </a>
                   </div>
                 </div>
               </div>
@@ -100,7 +100,7 @@
                 <div class="overviewCard quick_flex">
                   <div class="orders">
                     <ul>
-                      <li routerLink="/app/placed-orders"> Orders </li>
+                      <li routerLink="/app/orders"> Orders </li>
                       <li routerLink="/app/product"> Products </li>
                       <li routerLink="/app/coupons/add"> Create coupons </li>
                     </ul>
@@ -131,7 +131,7 @@
       </div>
       <div class="linksContainer">
         <ul>
-          <li><a routerLink="/app/placed-orders">Orders <i class="bi bi-link-45deg fs-2"></i></a></li>
+          <li><a routerLink="/app/orders">Orders <i class="bi bi-link-45deg fs-2"></i></a></li>
           <li><a routerLink="/app/product">Products<i class="bi bi-link-45deg fs-2"></i> </a></li>
           <li><a routerLink="/app/category">Category<i class="bi bi-link-45deg fs-2"></i></a></li>
           <li><a routerLink="/app/collection">Collections<i class="bi bi-link-45deg fs-2"></i></a></li>

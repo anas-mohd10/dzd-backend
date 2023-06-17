@@ -7,6 +7,10 @@
   color: #444444;
 }
 
+.swiper-slide {
+  width: max-content !important;
+}
+
 .menu-state-title-primary .menu-item .menu-link.active {
   background: #00BDAB !important;
 }

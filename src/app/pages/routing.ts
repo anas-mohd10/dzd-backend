@@ -170,7 +170,7 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'placed-orders',
+        path: 'orders',
         loadChildren: () => import('./sales/orders/placed-orders/orders.module').then((m) => m.OrdersModule),
         canActivate: [AuthenticationGuard]
       },
