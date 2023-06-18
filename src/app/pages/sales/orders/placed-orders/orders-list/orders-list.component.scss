@@ -1,4 +1,12 @@
 $white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
 
 .order-cards {
   .card-body {
@@ -56,15 +64,6 @@ $white: #ffffff;
   border-radius: .625rem;
 }
 
-.paid {
-  background: #2fe55c80;
-}
-
-.unpaid {
-  background: #e52f2f80;
-  color: #ffffff !important;
-}
-
 .top-form-container {
   margin-top: 30px;
 }
@@ -91,16 +90,10 @@ $white: #ffffff;
 
   th {
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 15px;
     text-transform: capitalize;
     color: #FFFFFF;
-  }
-}
-
-.search-featured {
-  select {
-    width: fit-content;
   }
 }
 
@@ -128,7 +121,7 @@ $white: #ffffff;
   justify-content: start;
   align-items: center;
   gap: 8px;
-  padding: 16px 25px;
+  padding: 16px 0;
 
   span {
     color: #8B909A;
@@ -149,9 +142,54 @@ $white: #ffffff;
 }
 
 .table-responsive {
+  padding: 0 25px;
+
   tr {
     border-bottom: 1px solid #E8E8E8;
   }
+
+  tbody {
+    tr {
+      td {
+
+        &:nth-child(2n) {
+          background: #f0f8f7;
+        }
+
+        img {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+.search-input {
+  input[type=button] {
+    font-weight: 400 !important;
+  }
+}
+
+.paid {
+  background: $activeState;
+  padding: 0 5px;
+  border-radius: 5px;
+  color: $white;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.unpaid {
+    background: $inactiveState;
+    color: $white;
+  }
+}
+
+.search_top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .nav-link {
@@ -184,12 +222,11 @@ $white: #ffffff;
 .nav-tabs {
   gap: 30px;
   padding-right: 35px;
-
 }
 
 .nav_row {
-  margin-top: 40px;
-  padding: 0 50px 0 35px;
+  margin-top: 30px;
+  padding: 0 25px;
 }
 
 .search_input {
@@ -213,7 +250,8 @@ $white: #ffffff;
 .arrow_flex {
   display: flex;
   align-items: center;
-  justify-content: space-between
+  justify-content: space-between;
+  padding: 0;
 }
 
 .nav_arrow {
@@ -261,10 +299,35 @@ label {
 }
 
 .emptyNote {
-  display: grid;
-  place-items: center;
-
+  margin: 0 0 20px 0;
   .note {
     font-weight: normal;
+  }
+}
+
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .paginationBefore,
+  .paginationNext {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    background: $background;
+    cursor: pointer;
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  .paginationPage {
+    margin: 0 10px;
   }
 }

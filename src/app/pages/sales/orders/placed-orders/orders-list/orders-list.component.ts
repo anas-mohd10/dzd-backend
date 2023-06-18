@@ -22,7 +22,6 @@ export class OrdersListComponent implements OnInit {
   appRoute = appRoutes;
   orders: any = [];
   base: any
-  isTable: Boolean = false
   isDateValid: boolean = false;
   totalcount: Number = 0
   totalRevenue: Number = 0
@@ -31,36 +30,28 @@ export class OrdersListComponent implements OnInit {
   averagesales: any;
   currentTab: number = 0;
   swiperConfig: SwiperOptions = {
-    slidesPerView: 3,
+    slidesPerView: 'auto',
     spaceBetween: 50,
-    navigation: {
-      nextEl: "#next",
-      prevEl: '#prev'
-
-    },
+    navigation: { nextEl: "#next", prevEl: '#prev' },
     pagination: { clickable: true },
     scrollbar: { draggable: true },
     autoplay: true,
     breakpoints: {
       320: {
-        slidesPerView: 12,
+        slidesPerView: 'auto',
         spaceBetween: 20
-      },
-      // when window width is >= 480px
-      480: {
-        slidesPerView: 3,
+      }, 480: {
+        slidesPerView: 'auto',
         spaceBetween: 30
-      },
-      // when window width is >= 640px
-      640: {
-        slidesPerView: 4,
+      }, 640: {
+        slidesPerView: 'auto',
         spaceBetween: 20
       }
     }
   }
-
-  page: String = '1'
-  limit: FormControl = new FormControl('10')
+  page: number = 1
+  limit: FormControl = new FormControl(10)
+  keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'
   orderStatus: Array<any> = [{
@@ -94,6 +85,7 @@ export class OrdersListComponent implements OnInit {
     status: 'Partial Refunded',
     value: 'PARTIAL REFUNDED'
   }]
+  lastPage: Boolean = false
 
   constructor(
     private ordersService: OrdersService,
@@ -117,6 +109,16 @@ export class OrdersListComponent implements OnInit {
     this.getOrders()
   }
 
+  getPreviousPage() {
+    this.page = this.page - 1
+    this.getOrders()
+  }
+
+  getNextPage() {
+    this.page = this.page + 1
+    this.getOrders()
+  }
+
   getOrders() {
     let payload = {
       status: this.activeValue,
@@ -124,7 +126,10 @@ export class OrdersListComponent implements OnInit {
       limit: this.limit.value,
       paymentMethod: this.orderform.get('paymentMethod')?.value,
       from: this.orderform.get('fromDate')?.value,
-      to: this.orderform.get('toDate')?.value
+      to: this.orderform.get('toDate')?.value,
+      keyword: this.keyword.value,
+      source: this.orderform.get('source')?.value,
+      paymentStatus: this.orderform.get('paymentStatus')?.value
     }
     this.ordersService.getOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -133,6 +138,8 @@ export class OrdersListComponent implements OnInit {
         this.count = res?.result?.total_orders
         this.averagesales = res?.result?.average_sales
         this.totalrevenues = res?.result?.total_revenue
+        this.lastPage = res?.result?.lastPage
+        this.page = res?.result?.page
         this.cdr.markForCheck()
       }
     })
@@ -143,6 +150,8 @@ export class OrdersListComponent implements OnInit {
       fromDate: new FormControl(''),
       toDate: new FormControl(''),
       paymentMethod: new FormControl(''),
+      paymentStatus: new FormControl(''),
+      source: new FormControl(''),
     });
   }
 
@@ -160,6 +169,8 @@ export class OrdersListComponent implements OnInit {
   }
 
   onReload() {
+    this.keyword.setValue('')
+    this.limit.setValue(10)
     this.initForm()
     this.getOrders()
   }

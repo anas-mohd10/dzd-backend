@@ -1,4 +1,4 @@
-<div class="timeSlotsContainer">
+<div class="enquiresContainer">
     <div class="page-header">
         <div class="page-title">
             <h1 class="fw-bolder">Enquires</h1>
@@ -13,6 +13,88 @@
                         <a routerLink="{{ appRoute.enquires.ENQUIRY_LIST}}">Enquires</a>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row search d-flex align-items-end justify-content-end">
+        <div class="col-3">
+            <label class="fs-6 mb-1">&nbsp;</label>
+            <input type="text" class="form-control fs-6 text-dark" [formControl]="keyword" (ngModelChange)="search()"
+                placeholder="Search enquiries here">
+        </div>
+        <div class="col-2">
+            <label class="fs-6 mb-1">Status</label>
+            <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="search()">
+                <option value="" disabled>-- Select an option --</option>
+                <option value=false>Inactive</option>
+                <option value=true>Active</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <label class="fs-6 mb-1">&nbsp;</label>
+            <input type="button" class="btn btn-secondary" value="Clear filters">
+        </div>
+    </div>
+
+    <div class="filteringWrapper col-12">
+        <div class="filtering">
+            <span class="fs-6 text-dark">Show</span>
+            <select [formControl]="limit" (change)="search()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+            </select>
+            <span class="fs-6 text-dark">entries</span>
+        </div>
+        <div class="pagination">
+            
+        </div>
+    </div>
+
+    <div class="resultsContainer">
+        <ng-container *ngFor="let enquiry of enquires">
+            <div class="enquiryCard">
+                <div class="editButton" data-bs-toggle="modal" data-bs-target="#enquiry">
+                    <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                </div>
+                <div class="name">
+                    <img src="../../../../assets/icons/user.svg" alt="Icon">
+                    <span class="fs-6">{{enquiry?.firstname}} {{enquiry?.lastname}}</span>
+                </div>
+                <div class="mobile">
+                    <img src="../../../../assets/icons/phone.svg" alt="Icon">
+                    <span class="fs-6">{{enquiry?.countryCode}} {{enquiry?.mobile}}</span>
+                </div>
+                <div class="email">
+                    <img src="../../../../assets/icons/mail.svg" alt="Icon">
+                    <span class="fs-6"> {{enquiry?.email}}</span>
+                </div>
+                <div class="date">
+                    <img src="../../../../assets/icons/calendar.svg" alt="Icon">
+                    <span> {{enquiry?.date}}</span>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="modal fade" id="enquiry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Enquiry Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>

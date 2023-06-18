@@ -10,12 +10,12 @@ import { EnquiryService } from 'src/app/includes/services/enquiry.service'
 })
 export class EnquiresComponent implements OnInit {
   appRoute = appRoutes
-  data: Array<any> = []
+  enquires: Array<any> = []
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
+  limit: FormControl = new FormControl("20")
   query: any = {}
-  page: String = "1"
-  limit: String = "30"
+  page: number = 1
   form: FormGroup
 
   constructor(
@@ -25,12 +25,7 @@ export class EnquiresComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm()
-    this.payload()
-    this.EnquiryService.searchEnquiry(this.query).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.data = res?.result?.data
-      }
-    })
+    this.search()
   }
 
   initForm() {
@@ -49,19 +44,17 @@ export class EnquiresComponent implements OnInit {
     this.isActive?.setValue(null)
   }
 
-  payload() {
-    return this.query = {
-      keyword: this.keyword.value,
-      page: this.page,
-      limit: this.limit,
-    }
-  }
-
   search() {
-    this.payload()
+    this.query = {
+      keyword: this.keyword.value,
+      isActive: this.isActive.value,
+      page: this.page,
+      limit: this.limit
+    }
     this.EnquiryService.searchEnquiry(this.query).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.data = res?.result?.data
+        this.enquires = res?.result?.data
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }

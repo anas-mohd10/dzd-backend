@@ -28,4 +28,9 @@ export class EnquiryService {
     const url = this.commonService.getFullUrl(this.enquiryEndpoints.update);
     return this.http.put(`${url}`, data)
   }
+
+  getEnquiry(data: any) {
+    const url = this.commonService.getFullUrl(this.enquiryEndpoints.get);
+    return this.http.get(`${url}`, data)
+  }
 }
