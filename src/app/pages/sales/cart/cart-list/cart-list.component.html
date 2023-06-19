@@ -5,11 +5,11 @@
     </div>
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
           </li>
         </ul>
@@ -18,7 +18,7 @@
   </div>
   <div class="top-form-container">
     <div class="row align-items-end">
-      <div class="col-12 col-sm-2 align-items-center justify-content-evenly fs-5">
+      <div class="col-12 col-sm-2 align-items-center justify-content-evenly fs-6">
         <label class="col-sm-2 form-title">Customer</label>
         <div class="form-group">
           <ng-select [items]="customers" bindLabel="name" bindValue="_id" [(ngModel)]="customer"
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="col-12 col-sm-2">
-        <a (click)="clearFilter()" class=" btn btn-secondary fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+        <a (click)="clearFilter()" class=" btn btn-secondary fs-6 text-dark" style="width: 200px; margin-right: 20px;">
           Clear
         </a>
       </div>
@@ -90,7 +90,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="notifyModalLabel">Notify {{user}}</h1>
+        <h1 class="modal-title fs-6" id="notifyModalLabel">Notify {{user}}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

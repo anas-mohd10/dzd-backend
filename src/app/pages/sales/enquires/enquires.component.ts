@@ -17,6 +17,8 @@ export class EnquiresComponent implements OnInit {
   query: any = {}
   page: number = 1
   form: FormGroup
+  enquiry: any = {}
+  lastPage: Boolean = false
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -24,39 +26,43 @@ export class EnquiresComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initForm()
-    this.search()
-  }
-
-  initForm() {
-    this.form = new FormGroup({
-      firstname: new FormControl('', Validators.required),
-      lastname: new FormControl(''),
-      email: new FormControl('', Validators.required),
-      countryCode: new FormControl('', Validators.required),
-      mobile: new FormControl('', Validators.required),
-      message: new FormControl('', Validators.required),
-    })
+    this.getEnquiries()
   }
 
   reset() {
-    this.keyword?.setValue(null)
-    this.isActive?.setValue(null)
+    this.keyword?.setValue('')
+    this.isActive?.setValue('')
   }
 
-  search() {
+  getEnquiries() {
     this.query = {
       keyword: this.keyword.value,
       isActive: this.isActive.value,
       page: this.page,
-      limit: this.limit
+      limit: this.limit?.value
     }
     this.EnquiryService.searchEnquiry(this.query).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.enquires = res?.result?.data
+        this.lastPage = res?.result?.lastPage
+        this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
+
+  getEnquiry(data: any) {
+    this.enquiry = data
+  }
+
+  getPreviousPage() {
+    this.page -= 1
+    this.getEnquiries()
+  }
+
+  getNextPage() {
+    this.page += 1
+    this.getEnquiries()
   }
 }
 

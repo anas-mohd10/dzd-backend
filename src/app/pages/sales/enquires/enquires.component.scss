@@ -1,12 +1,14 @@
+$hover: #e3e3e3;
+$grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primary: #00bdab;
+$primaryBackground: #20BDAB40;
 $activeBackground: #00bdab20;
 $border: #cccccc;
-$hover: #e3e3e3;
-$grey: #888888;
+$background: #e5e5e5;
+$error: #F1416C;
 
 label,
 input[type=button] {
@@ -79,5 +81,60 @@ input[type=button] {
                 }
             }
         }
+    }
+}
+
+
+.modal {
+    .modal-dialog {
+        .modal-content {
+            .modal-body {
+                .enquiryData {
+                    img {
+                        margin: 0 10px 0 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .paginationBefore,
+    .paginationNext {
+        height: 30px;
+        width: 30px;
+        border-radius: 15px;
+        display: grid;
+        place-items: center;
+        background: $background;
+        cursor: pointer;
+
+        &.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    }
+
+    .paginationPage {
+        margin: 0 10px;
+    }
+}
+
+.search {
+    input[type=button] {
+        width: 100%;
+    }
+}
+
+.emptyNote {
+    margin: 0 0 20px 0;
+
+    .note {
+        font-weight: normal;
     }
 }
