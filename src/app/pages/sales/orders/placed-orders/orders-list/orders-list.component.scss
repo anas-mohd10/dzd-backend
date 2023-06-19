@@ -172,7 +172,7 @@ $error: #F1416C;
 
 .paid {
   background: $activeState;
-  padding: 0 5px;
+  padding: 3px 5px;
   border-radius: 5px;
   color: $white;
   width: 70px;
@@ -183,6 +183,7 @@ $error: #F1416C;
   &.unpaid {
     background: $inactiveState;
     color: $white;
+    
   }
 }
 
