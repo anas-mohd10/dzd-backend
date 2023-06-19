@@ -112,6 +112,10 @@ $white: #ffffff;
                   ul {
                     padding-right: 5.3rem;
                     border-right: 1px solid #E1E1E1;
+
+                    @media (min-width: 1400px) {
+                      padding-right: 3rem;
+                    }
                   }
                 }
               }
@@ -153,7 +157,8 @@ $white: #ffffff;
             display: flex;
             justify-content: start;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            margin-bottom: 36px;
 
             .order_lose {
               span {
@@ -282,7 +287,17 @@ $white: #ffffff;
         line-height: 21px;
         color: #23272E;
         margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        width: 100%;
       }
+    }
+    .price {
+      max-width: 60px;
+      width: 100%;
     }
   }
 }
@@ -290,7 +305,7 @@ $white: #ffffff;
 .monthly_comparison_box {
   background: white;
   padding: 24px;
-
+  margin-bottom: 24px;
   h4 {
     font-weight: 700;
     font-size: 15px;
