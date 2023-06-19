@@ -161,3 +161,19 @@
         }
     }
 }
+
+.thead {
+    background-color: #20BDAB;
+
+	th {
+		color: white !important;
+	}
+}
+
+tr.odd {
+    border-bottom: 1px solid black;
+}
+
+tr.even {
+    border-bottom: 1px solid black;
+}
