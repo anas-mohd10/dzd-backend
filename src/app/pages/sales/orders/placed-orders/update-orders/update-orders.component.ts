@@ -49,6 +49,7 @@ export class UpdateOrdersComponent implements OnInit {
     this.managePage()
     this.slug = this.route.snapshot.queryParams.order || ''
     this.getOrderDetails()
+    
   }
 
   initForm() {

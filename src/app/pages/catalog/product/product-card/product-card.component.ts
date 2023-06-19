@@ -227,31 +227,31 @@ export class ProductCardComponent implements OnInit {
 
   //Variants product
   showVariantProducts(name: any, prodid: any) {
-    this.showVariants = !this.showVariants;
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-    this.variantproduct = name
+    // this.showVariants = !this.showVariants;
+    // let bodyEl = document.querySelector('body');
+    // bodyEl?.classList.toggle('overflow-hidden')
+    // this.variantproduct = name
 
-    let query = { ...this.variantProductform.value }
-    query['product.refid'] = prodid
-    this.prodid = prodid
-    this.productService.searchProducts(query, this.page).subscribe((res: any) => {
-      this.variantProducts = res?.result?.data
-      for (let _product of this.variantProducts) {
-        const diff = _product?.price?.mrp - _product.price?.offer
-        const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
-        const message = {
-          text: `${percentage_off} % off`,
-        }
-        _product['message'] = message
-      }
-      this.variantCount = this.variantProducts.length
-      this.variantTotalCount = res?.result?.total_item
-      this.variantLimit = res?.result?.items_per_page
-      this.variantTotalData = Math.ceil(this.totalcount / this.limit)
-      this.setVariantPages()
-      this.cdr.markForCheck();
-    });
+    // let query = { ...this.variantProductform.value }
+    // query['product.refid'] = prodid
+    // this.prodid = prodid
+    // this.productService.searchProducts(query, this.page).subscribe((res: any) => {
+    //   this.variantProducts = res?.result?.data
+    //   for (let _product of this.variantProducts) {
+    //     const diff = _product?.price?.mrp - _product.price?.offer
+    //     const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+    //     const message = {
+    //       text: `${percentage_off} % off`,
+    //     }
+    //     _product['message'] = message
+    //   }
+    //   this.variantCount = this.variantProducts.length
+    //   this.variantTotalCount = res?.result?.total_item
+    //   this.variantLimit = res?.result?.items_per_page
+    //   this.variantTotalData = Math.ceil(this.totalcount / this.limit)
+    //   this.setVariantPages()
+    //   this.cdr.markForCheck();
+    // });
   }
 
   setVariantPages() {
@@ -296,25 +296,25 @@ export class ProductCardComponent implements OnInit {
   }
 
   searchVariantProduct() {
-    let query = { ...this.variantProductform.value }
-    query['product.refid'] = this.prodid
-    this.productService.searchProducts(query, this.page).subscribe((res: any) => {
-      this.variantProducts = res?.result?.data
-      for (let _product of this.variantProducts) {
-        const diff = _product?.price?.mrp - _product.price?.offer
-        const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
-        const message = {
-          text: `${percentage_off} % off`,
-        }
-        _product['message'] = message
-      }
-      this.variantCount = this.variantProducts.length
-      this.variantTotalCount = res?.result?.total_item
-      this.variantLimit = res?.result?.items_per_page
-      this.variantTotalData = Math.ceil(this.totalcount / this.limit)
-      this.setVariantPages()
-      this.cdr.markForCheck();
-    });
+    // let query = { ...this.variantProductform.value }
+    // query['product.refid'] = this.prodid
+    // this.productService.searchProducts(query, this.page).subscribe((res: any) => {
+    //   this.variantProducts = res?.result?.data
+    //   for (let _product of this.variantProducts) {
+    //     const diff = _product?.price?.mrp - _product.price?.offer
+    //     const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+    //     const message = {
+    //       text: `${percentage_off} % off`,
+    //     }
+    //     _product['message'] = message
+    //   }
+    //   this.variantCount = this.variantProducts.length
+    //   this.variantTotalCount = res?.result?.total_item
+    //   this.variantLimit = res?.result?.items_per_page
+    //   this.variantTotalData = Math.ceil(this.totalcount / this.limit)
+    //   this.setVariantPages()
+    //   this.cdr.markForCheck();
+    // });
   }
 
   showFilters() {

@@ -6,7 +6,7 @@
   <div class="informationLeft">
     <div class="infoFirsrt">
       <div class="overviewContainer grid-4">
-        <div class="overviewCard" routerLink="/app/orders">
+        <div class="overviewCard">
           <div class="overviewValue">₹ {{ data?.header?.revenue }}</div>
           <div class="overviewTitle">
             <p>Total Revenue</p>
@@ -40,7 +40,7 @@
 
       <div class="overviewContainer grid-5">
         <ng-container *ngFor="let info of data?.otherInformations">
-          <div class="overviewCard" routerLink="{{info?.path}}">
+          <div class="overviewCard" routerLink="{{info?.path}}" [queryParams]="{'type': info?.query}">
             <div class="overviewValue">{{ info?.value }}</div>
             <div class="overviewTitle">
               <p>{{ info?.title }}</p>
@@ -86,7 +86,6 @@
                       <img src="../../../assets/icons/salesUp.svg" *ngIf="saleUp" alt="Icon" />
                     </div>
                     <h6>Yesterday’s sales</h6>
-                    <a routerLink="/app/orders"> View orders </a>
                   </div>
                 </div>
               </div>
@@ -255,7 +254,7 @@
 
 <div class="row mb-5">
   <div class="newOrders">
-    <div class="fs-4 fw-bolder  mb-lg-5 info_head">top selling products</div>
+    <div class="fs-4 fw-bolder  mb-lg-5 info_head">New orders</div>
     <app-advance-tables-widget9></app-advance-tables-widget9>
   </div>
 </div>

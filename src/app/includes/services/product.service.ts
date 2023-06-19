@@ -56,8 +56,8 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
-  searchProducts(query: any, page: any) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.search_product + "?page=" + page);
+  searchProducts(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.search_product);
     return this.http.post(`${url}`, query);
   }
 

@@ -144,17 +144,17 @@ $error: #F1416C;
 .table-responsive {
   padding: 0 25px;
 
-  // tr {
-  //   border-bottom: 1px solid #E8E8E8;
-  // }
+  tr {
+    border-bottom: 1px solid #E8E8E8;
+  }
 
   tbody {
     tr {
       td {
 
-        &:nth-child(2n) {
-          background: #f0f8f7;
-        }
+        // &:nth-child(2n) {
+        //   background: #f0f8f7;
+        // }
 
         img {
           cursor: pointer;
@@ -300,6 +300,7 @@ label {
 
 .emptyNote {
   margin: 0 0 20px 0;
+
   .note {
     font-weight: normal;
   }

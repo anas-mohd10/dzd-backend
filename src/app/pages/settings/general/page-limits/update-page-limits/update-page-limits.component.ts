@@ -80,11 +80,11 @@ export class UpdatePageLimitsComponent implements OnInit {
       this.cdr.markForCheck();
     });
 
-    this.ProductService.searchProducts({ isActive: true, isDelete: false }, this.page).subscribe((res: any) => {
-      this.products = res?.result?.data
-      this.productscount = res?.result?.total
-      this.cdr.markForCheck();
-    });
+    // this.ProductService.searchProducts({ isActive: true, isDelete: false }, this.page).subscribe((res: any) => {
+    //   this.products = res?.result?.data
+    //   this.productscount = res?.result?.total
+    //   this.cdr.markForCheck();
+    // });
 
     this.CollectionService.searchCollection({ isActive: true, isDelete: false }, this.page).subscribe((res: any) => {
       this.collections = res?.result?.data

@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
 import SwiperCore, { SwiperOptions } from 'swiper';
+import { ActivatedRoute, Router } from '@angular/router';
+Router
 
 @Component({
   selector: 'app-orders-list',
@@ -64,6 +66,9 @@ export class OrdersListComponent implements OnInit {
     status: 'Accepted',
     value: 'ACCEPTED'
   }, {
+    status: 'Pending',
+    value: 'PENDING'
+  }, {
     status: 'Shipped',
     value: 'SHIPPED'
   }, {
@@ -86,15 +91,29 @@ export class OrdersListComponent implements OnInit {
     value: 'PARTIAL REFUNDED'
   }]
   lastPage: Boolean = false
+  type: any = null
 
   constructor(
     private ordersService: OrdersService,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
+    private ActivatedRoute: ActivatedRoute,
+    private Router: Router
   ) { }
 
   ngOnInit(): void {
+    this.type = this.ActivatedRoute.snapshot.queryParams.type || ''
+    switch (this.type) {
+      case 'pending':
+        this.activeStatus = 'Pending'
+        this.activeValue = 'PENDING'
+        break
+      case 'refunded':
+        this.activeStatus = 'Refunded'
+        this.activeValue = 'REFUNDED'
+        break
+    }
     this.initForm()
     this.getOrders()
   }
@@ -172,6 +191,9 @@ export class OrdersListComponent implements OnInit {
     this.keyword.setValue('')
     this.limit.setValue(10)
     this.initForm()
+    this.activeStatus = 'All Orders'
+    this.activeValue = ''
+    this.Router.navigate([appRoutes.orders.ORDERS_LIST])
     this.getOrders()
   }
 

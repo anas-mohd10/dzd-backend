@@ -23,14 +23,32 @@
     </div>
   </div>
   <div class="topButtons d-flex align-items-center justify-content-end">
-    <div class="printButton bg-primary" (click)="generateProducts()">
-      <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
+    <div class="position-relative btns-sx">
+      <div class="printButton bg-secondary" (click)="generateProducts()">
+        <img src="../../../../../../assets/icons/slip.svg" alt="icon" class="iconImage">
+        Store Slip
+      </div>
+      <div class="toolTip">
+        Generate store slip
+      </div>
     </div>
-    <div class="printButton bg-primary" (click)="generateShippingDetails()">
-      <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
+    <div class="position-relative btns-sx">
+      <div class="printButton bg-secondary" (click)="generateShippingDetails()">
+        <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
+        Packing Slip
+      </div>
+      <div class="toolTip">
+        Generate packing slip
+      </div>
     </div>
-    <div class="printButton bg-primary" (click)="generateInvoice()">
-      <img src="../../../../../../assets/icons/printer.svg" alt="icon" class="iconImage">
+    <div class="position-relative btns-sx">
+      <div class="printButton bg-primary text-white" (click)="generateInvoice()">
+        <img src="../../../../../../assets/icons/printer.svg" alt="icon" class="iconImage">
+        Generate Invoice
+      </div>
+      <div class="toolTip">
+        Generate Invoice
+      </div>
     </div>
   </div>
   <div class="row mt-10">

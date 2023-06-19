@@ -1,3 +1,13 @@
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
 .orderStatus {
   align-items: center;
   justify-content: center;
@@ -47,7 +57,7 @@
 
 .paid {
   background: #28C76F;
- 
+
   color: white;
 }
 
@@ -80,9 +90,11 @@
     visibility: visible;
   }
 }
+
 .table thead {
   background: #00BDAB;
 }
+
 .table thead th {
   color: white;
   font-weight: 700;
@@ -94,15 +106,35 @@ a.btn.btn-primary.fw-bolder.font-size-sm.mr-3 {
   color: #00bdab;
   background: white;
 }
+
 tr.text-left.fs-6.text-gray-400 {
   border-bottom: 1px solid #E8E8E8;
 }
+
 table.table td {
   padding: 16px 20px;
 }
+
 table.table tr {
   border-bottom: 1px solid #E8E8E8;
 }
+
 .statistics-widget-3-chart.card-rounded-bottom {
   height: 100%;
+}
+
+.paid {
+  background: $activeState;
+  padding: 0 5px;
+  border-radius: 5px;
+  color: $white;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.unpaid {
+    background: $inactiveState;
+    color: $white;
+  }
 }
