@@ -54,7 +54,7 @@
       <div class="overviewContainerSales grid-3">
         <ng-container>
           <div class="quick_sales_section row">
-            <div class="sales_content col-8 col-xxl-9">
+            <div class="sales_content col-8 col-xxl-7">
               <div class="page-title">
                 <div class="fs-4 fw-bolder info_head">Sales</div>
               </div>
@@ -64,7 +64,7 @@
                   <div class="overviewTitle">
                     <p>Today's orders</p>
                   </div>
-                  <div class="lastDay_orders">
+                  <div class="lastDay_orders mb-4" >
                     <div class="order_lose">
                       <span [ngClass]="{'up': orderUp}"> {{orderDifference}} </span>
                       <img src="../../../assets/icons/salesDown.svg" *ngIf="!orderUp" alt="Icon" />
@@ -79,7 +79,7 @@
                   <div class="overviewTitle">
                     <p>Today's sales</p>
                   </div>
-                  <div class="lastDay_orders">
+                  <div class="lastDay_orders mb-4">
                     <div class="order_lose">
                       <span [ngClass]="{'up': saleUp}"> {{saleDifference}} </span>
                       <img src="../../../assets/icons/salesDown.svg" *ngIf="!saleUp" alt="Icon" />
@@ -91,20 +91,20 @@
               </div>
             </div>
 
-            <div class="quick_access_content col-4 col-xxl-3">
+            <div class="quick_access_content col-4 col-xxl-5">
               <div class="page-title">
                 <div class="fs-4 fw-bolder info_head">Quick access</div>
               </div>
               <div class="quick_cards">
                 <div class="overviewCard quick_flex">
-                  <div class="orders">
+                  <div class="orders col-6">
                     <ul>
                       <li routerLink="/app/orders"> Orders </li>
                       <li routerLink="/app/product"> Products </li>
                       <li routerLink="/app/coupons/add"> Create coupons </li>
                     </ul>
                   </div>
-                  <div class="costumers">
+                  <div class="costumers col-6">
                     <ul>
                       <li routerLink="/app/collection">Customers</li>
                       <li routerLink="/app/collection">Collections</li>
