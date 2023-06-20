@@ -37,29 +37,6 @@
         </div>
     </div>
 
-    <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-        <div class="filtering">
-            <span class="fs-6 text-dark">Show</span>
-            <select [formControl]="limit" (change)="getEnquiries()">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-            </select>
-            <span class="fs-6 text-dark">entries</span>
-        </div>
-        <div class="pagination">
-            <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-                <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-            </div>
-            <div class="paginationPage">{{page}}</div>
-            <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-                <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-            </div>
-        </div>
-    </div>
-
     <div class="resultsContainer">
         <ng-container *ngFor="let enquiry of enquires">
             <div class="enquiryCard">
@@ -88,6 +65,29 @@
             <div class="emptyNote">
                 <div class="fs-3 fw-bolder">No result found</div>
                 <div class="fs-6 note">We couldn't find any item based on your search</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+        <div class="filtering">
+            <span class="fs-6 text-dark">Show</span>
+            <select [formControl]="limit" (change)="getEnquiries()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+            </select>
+            <span class="fs-6 text-dark">entries</span>
+        </div>
+        <div class="pagination">
+            <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
+                <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+            </div>
+            <div class="paginationPage">{{page}}</div>
+            <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
+                <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
             </div>
         </div>
     </div>

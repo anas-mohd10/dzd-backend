@@ -151,11 +151,6 @@ $error: #F1416C;
   tbody {
     tr {
       td {
-
-        // &:nth-child(2n) {
-        //   background: #f0f8f7;
-        // }
-
         img {
           cursor: pointer;
         }
@@ -183,7 +178,7 @@ $error: #F1416C;
   &.unpaid {
     background: $inactiveState;
     color: $white;
-    
+
   }
 }
 
