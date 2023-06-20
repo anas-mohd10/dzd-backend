@@ -1,4 +1,5 @@
 <div class="brand-page-container">
+
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder">Reviews</h1>
@@ -6,77 +7,115 @@
     <div class="row align-items-center">
       <div class="col d-flex flex-row justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.review.REVIEW_LIST }}">Reviews</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
+          <div class="pb-5">
+            <div class="row d-flex justify-content-end align-items-end">
+              <div class="col-2">
+                <label class="form-label">&nbsp;</label>
+                <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
+                  (ngModelChange)="searchReviews()">
+              </div>
+              <div class="col-2">
+                <label class="fs-6 mb-1">Status</label>
+                <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="searchReviews()">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value=false>Inactive</option>
+                  <option value=true>Active</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <label class="fs-6 mb-1">From</label>
+                <input type="date" class="form-control fs-6 text-dark" [formControl]="fromDate"
+                  (change)="searchReviews()">
+              </div>
+              <div class="col-2">
+                <label class="fs-6 mb-1">To</label>
+                <input type="date" class="form-control fs-6 text-dark" [formControl]="toDate"
+                  (change)="searchReviews()">
+              </div>
+              <div class="col-2">
+                <label class="fs-6 mb-1">&nbsp;</label>
+                <input type="button" class="btn btn-secondary" value="Clear filters" (click)="clearFilters()">
+              </div>
+            </div>
+          </div>
+
           <div class="table-responsive">
-            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="datatable table table-center mb-0">
-              <thead class="thead mt-100">
-                <tr class="fs-5">
-                  <th class="text-gray-400">Sl No.</th>
-                  <th class="text-gray-400">Order No.</th>
-                  <th class="text-gray-400 col-md-2">Product</th>
-                  <th class="text-gray-400">Customer</th>
-                  <th class="text-gray-400">Rating</th>
-                  <th class="text-gray-400">Review</th>
-                  <th class="text-gray-400">Date</th>
-                  <th class="text-gray-400">Action</th>
+            <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
+              *ngIf="reviews.length > 0">
+              <thead class="common_thead">
+                <tr class="text-left fs-6 text-gray-400">
+                  <th style="min-width: 120px">Customer</th>
+                  <th style="min-width: 100px">Order</th>
+                  <th style="min-width: 100px">Product</th>
+                  <th style="min-width: 100px">Rating</th>
+                  <th style="min-width: 100px">Review</th>
+                  <th style="min-width: 100px">Date</th>
+                  <th style="min-width: 100px">&nbsp;</th>
                 </tr>
               </thead>
-              <tbody class="fs-5">
-                <tr *ngFor="let review of reviews; let i = index">
-                  <td>
-                    <h2 class="table-avatar">{{ i + 1 }}</h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar">{{ review?.order?.refid }}</h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar">{{review?.product?.id?.name}}</h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar">{{review?.customer?.id?.name}} <br> {{review?.customer?.id?.mobile}}</h2>
-                  </td>
-                  <td style="flex-wrap: wrap !important;">
-                    <h2 class="table-avatar fw-700" style="flex-wrap: wrap !important;">{{ review?.rating }} </h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar review">
-                      <div class="reviewTitle">{{review?.title}} </div>
-                      <div class="reviewMessage">{{review?.message}}</div>
-                    </h2>
-                  </td>
-                  <td>
-                    <h2 class="table-avatar">{{ review?.created }}</h2>
-                  </td>
-                  <td>
-                    <ng-container *ngIf="review?.isActive == true">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                          (change)="reviewAction($event.target, review?.refid)" id="flexSwitchCheckDefault" checked>
-                      </div>
-                    </ng-container>
-                    <ng-container *ngIf="review?.isActive == false">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                          (change)="reviewAction($event.target, review?.refid)" id=" flexSwitchCheckDefault">
-                      </div>
-                    </ng-container>
-                  </td>
-                </tr>
+              <tbody class="fs-6">
+                <ng-container *ngFor="let review of reviews">
+                  <tr>
+                    <td>{{review?.customer?.id?.name}}</td>
+                    <td>{{review?.order?.id?.orderNo}}</td>
+                    <td>{{review?.product?.id?.name}}</td>
+                    <td>{{review?.rating}}</td>
+                    <td>
+                      <img src="../../../../../assets/icons/view.svg" alt="Icon">
+                    </td>
+                    <td>{{review?.created}} </td>
+                    <td><img src="../../../../../assets/icons/editPen.svg" alt="Icon"></td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
+
+            <div *ngIf="reviews.length == 0">
+              <div class="emptyNote">
+                <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                <div class="fs-3 fw-bolder">No result found</div>
+                <div class="fs-5 note">We couldn't find any item based on your search.</div>
+              </div>
+            </div>
+
+            <div class="filteringWrapper d-flex align-items-center justify-content-between col-12"
+              *ngIf="reviews.length > 0">
+              <div class="filtering">
+                <span class="fs-6 text-dark">Show</span>
+                <select [formControl]="limit" (change)="searchReviews()">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                </select>
+                <span class="fs-6 text-dark">entries</span>
+              </div>
+              <div class="pagination">
+                <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
+                  <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                </div>
+                <div class="paginationPage">{{page}}</div>
+                <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
+                  <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

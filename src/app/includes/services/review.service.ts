@@ -31,4 +31,9 @@ export class ReviewService {
     const url = this.commonService.getFullUrl(this.reviewsEndpoints.update_review + "?code=" + code);
     return this.http.put(`${url}`, data);
   }
+
+  searchReviews(data: any) {
+    const url = this.commonService.getFullUrl(this.reviewsEndpoints.search_reviews);
+    return this.http.post(`${url}`, data);
+  }
 }
