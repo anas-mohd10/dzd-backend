@@ -5,19 +5,20 @@
       </div>
       <div class="row align-items-center">
          <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb fw-bolder">
-               <li class="breadcrumb-item fs-5">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}">Customers</a>
                </li>
             </ul>
             <div>
-               <button class="btn btn-secondary cursor-pointer fs-5" color="primary" style="width: 200px; margin: 0 10px 0 0;">
+               <button class="btn btn-secondary cursor-pointer fs-6" color="primary"
+                  style="width: 200px; margin: 0 10px 0 0;">
                   Export Customers
                </button>
-               <button class="btn btn-outline btn-outline-primary cursor-pointer fs-5" color="primary"
+               <button class="btn btn-outline btn-outline-primary cursor-pointer fs-6" color="primary"
                   routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}" style="width: 200px">
                   Add Customers
                </button>
@@ -38,7 +39,7 @@
                <div class="table-responsive" *ngIf="isTable">
                   <table datatable [dtOptions]="dtOptions" class="datatable table table-center mb-">
                      <thead class="thead mt-100">
-                        <tr class="fs-5">
+                        <tr class="fs-6">
                            <th class="text-gray-400 col-md-2">Sl No.</th>
                            <th class="text-gray-400 col-md-2">Name</th>
                            <th class="text-gray-400 col-md-2">Email</th>
@@ -51,19 +52,19 @@
                      <tbody>
                         <tr *ngFor="let customer of customersData; let i = index">
                            <td>
-                              <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                              <h2 class="table-avatar fs-6">{{ i + 1 }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{customer.name}}</h2>
+                              <h2 class="table-avatar fs-6">{{customer.name}}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ customer.email }}</h2>
+                              <h2 class="table-avatar fs-6">{{ customer.email }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ customer.mobile }}</h2>
+                              <h2 class="table-avatar fs-6">{{ customer.mobile }}</h2>
                            </td>
                            <td>
-                              <h2 class="table-avatar fs-5">{{ customer.walletBalance }}</h2>
+                              <h2 class="table-avatar fs-6">{{ customer.walletBalance }}</h2>
                            </td>
                            <td>
                               <ng-container *ngIf="customer?.isActive == true">
@@ -79,7 +80,7 @@
                            </td>
                            <td>
                               <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}"
-                                 [queryParams]="{ customer: customer?.userid }" class="fs-5 cursor-pointer text-darker">
+                                 [queryParams]="{ customer: customer?.userid }" class="fs-6 cursor-pointer text-darker">
                                  <i class="bi bi-pen"></i>
                                  Edit
                               </a>

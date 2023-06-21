@@ -34,28 +34,28 @@
 
    <div class="product-card-container view-container col-12">
       <ng-container *ngFor="let product of products">
-         <div class="col-sm-3">
-            <div class="product-card card-hover">
-               <div class="product-image"><img src='{{base}}/{{product?.file}}' alt="product image" srcset="" />
+         <div class="product-card card-hover">
+            <div class="editButton">
+               <div (click)="openModal(product?.prodid)">
+                  <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                </div>
-               <div class="product-details">
-                  <div class="product-details-head">
-                     <div class="product-name fs-3">{{product?.name}}</div>
-                     <div class="product-brand" *ngIf="product?.brand"><img src="{{base}}/{{product?.brand?.file}}"
-                           alt=""></div>
+            </div>
+            <div class="viewButton">
+               <div (click)="getProducts(product?.name, product?.prodid)">
+                  <img src="../../../../../assets/icons/view.svg" alt="Icon">
+               </div>
+            </div>
+            <div class="product-image">
+               <img src='{{base}}/{{product?.file}}' alt="Product" />
+            </div>
+            <div class="product-details">
+               <div class="product-details-head">
+                  <div class="product-brand mb-1" *ngIf="product?.brand">
+                     <img src="{{base}}/{{product?.brand?.file}}" alt="Brand">
                   </div>
-                  <div class="product-status-{{product?.isActive}}">
+                  <div class="product-name fs-4 mb-3">{{product?.name}}</div>
+                  <div class="product-status-{{product?.isActive}} fs-6">
                      {{product?.isActive ? 'Active' : 'Inactive'}}
-                  </div>
-                  <div class="product-card-bottom">
-                     <div class="view-variant-button">
-                        <button (click)="showVariantProducts(product?.name, product?.prodid)">View</button>
-                     </div>
-                     <div class="card-edit-btn">
-                        <button (click)="openModal(product?.prodid)" class="fs-6 cursor-pointer text-darker">
-                           Edit
-                        </button>
-                     </div>
                   </div>
                </div>
             </div>
@@ -102,9 +102,10 @@
 <div class="variant-products-overlay" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
 </div>
 <div class="variant-products-container" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
+
    <div class="variant-products-header">
-      <div class="variant-products-header-left">
-         Products under <span>{{variantproduct}}</span> product head
+      <div class="variant-products-header-left fs-2">
+         Products under <span>{{productName}}</span> product head
       </div>
       <div class="variant-products-header-right">
          <div class="close-button" (click)="hideVariantProducts()">
@@ -112,97 +113,124 @@
          </div>
       </div>
    </div>
+
    <div class="variant-product-filters col-12">
       <form [formGroup]="variantProductform">
          <div class="row align-items-end justify-content-end">
-            <div class="search-input col-sm-4" style="padding: 0;">
-               <input type="text" placeholder="Search for products here..." class="form-control fs-6"
-                  formControlName="name" (ngModelChange)="searchVariantProduct()">
+            <div class="search-input col-2" style="padding: 0;">
+               <label class="fs-6 mb-1">&nbsp;</label>
+               <input type="text" placeholder="Search products here..." class="form-control fs-6" formControlName="name"
+                  (ngModelChange)="searchProducts()">
             </div>
-            <div class="search-status col-sm-2">
-               <select name="" id="" class="form-select fs-6" formControlName="isActive"
-                  (change)="searchVariantProduct()">
-                  <option value="" disabled>Product Status Filter</option>
+            <div class="search-status col-2">
+               <label class="fs-6 mb-1">Status</label>
+               <select class="form-select fs-6" formControlName="isActive" (change)="searchProducts()">
+                  <option value="" disabled>-- Select an option --</option>
                   <option value=true>Active</option>
                   <option value=false>Inactive</option>
                </select>
             </div>
-            <div class="search-featured col-sm-2">
-               <select class="form-select fs-6" formControlName="isFeatured" (change)="searchVariantProduct()">
-                  <option value="" disabled>Featured Product Status</option>
+            <div class="search-featured col-2">
+               <label class="fs-6 mb-1">Featured</label>
+               <select class="form-select fs-6" formControlName="isFeatured" (change)="searchProducts()">
+                  <option value="" disabled>-- Select an option --</option>
                   <option value=true>Featured</option>
-                  <option value=false>Non featured</option>
+                  <option value=false>Normal</option>
                </select>
             </div>
-            <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fw-bolder fs-6 bg-secondary text-dark"
-                  (click)="onVariantReload()" style="outline: none; border: none;">Clear</button>
+            <div class="search-submit col-2">
+               <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
+                  (click)="clearVariantFilters()">
             </div>
          </div>
       </form>
    </div>
-   <div class="col-12 d-flex justify-content-between" style="margin: 40px 0;">
-      <div class="total-count-container col-sm-3 bg-dark">
+
+   <div class="d-flex justify-content-between" style="margin: 20px 0;">
+      <div class="total-count-container bg-dark col-2">
          <h4 class="text-white fs-6">Total {{variantTotalCount ? variantTotalCount : 0}} products</h4>
       </div>
-      <div class="total-count-buttons  d-flex justify-content-between">
-         <div>
-            <button class="btn btn-primary fs-6" (click)="navigateToAdd()" style="width: 200px; margin-right: 20px;">
-               Add Products
-            </button>
-         </div>
+      <div class="total-count-buttons">
+         <button class="btn btn-primary fs-6" (click)="navigateToAdd()" style="width: 200px;">
+            Add Products
+         </button>
       </div>
    </div>
-   <div class="variant-product-result-container row">
+
+   <div class="productsWrapper">
       <ng-container *ngFor="let product of variantProducts">
-         <div class="col-sm-3">
-            <div class="product-card card-hover">
-               <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+         <div class="product-card card-hover" (click)="navigateToUpdate(product?.prodid)">
+            <div class="product-image">
+               <img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+            </div>
+            <div class="product-details">
+               <div class="product-status-{{product?.isActive}}">
+                  {{product?.isActive ? 'Active' : 'Inactive'}}
                </div>
-               <div class="product-details">
-                  <div class="product-status-{{product?.isActive}}">
-                     {{product?.isActive ? 'Active' : 'Inactive'}}
-                  </div>
-                  <div class="product-offer">
-                     {{product?.message?.text}}
-                  </div>
-                  <div class="product-out-stock" *ngIf="product?.stock == 0">
-                     Out of Stock
-                  </div>
-                  <div class="product-limited-stock" *ngIf="product?.stock <= 5 && product?.stock > 0">
-                     Limited stock
-                  </div>
-                  <div class="product-brand">{{product?.brand?.name}}</div>
-                  <div class="product-name fs-3">{{product?.name}}</div>
-                  <div class="product-price">
-                     <div class="d-flex">
-                        <div class="product-offerprice">Rs. {{product?.price?.offer}}</div>
-                        <div class="product-mrpprice"
-                           [ngClass]="{'strike-price': product?.price?.mrp > product?.price?.offer}">
-                           Rs. {{product?.price?.mrp}}</div>
+               <div class="product-offer">
+                  {{product?.message?.text}}
+               </div>
+               <div class="product-out-stock" *ngIf="product?.stock == 0">
+                  Out of Stock
+               </div>
+               <div class="product-limited-stock" *ngIf="product?.stock <= 5 && product?.stock > 0">
+                  Limited stock
+               </div>
+               <div class="product-brand">{{product?.brand?.name}}</div>
+               <div class="product-name fs-5">{{product?.name}}</div>
+               <div class="product-price">
+                  <div class="d-flex">
+                     <div class="product-offerprice fs-6" *ngIf="product?.price?.offer != product?.price?.mrp">
+                        {{settings?.currency}}
+                        {{product?.price?.offer}}</div>
+                     <div class="product-offerprice fs-6" *ngIf="product?.price?.offer == product?.price?.mrp">
+                        {{settings?.currency}}
+                        {{product?.price?.mrp}}
                      </div>
-                     <div class="product-rating">
-                        {{product?.rating}} <i class="bi bi-star-fill"></i>
-                     </div>
+                     <div class="product-mrpprice" *ngIf="product?.price?.offer != product?.price?.mrp"
+                        [ngClass]="{'strike-price fs-6': product?.price?.mrp > product?.price?.offer}">
+                        {{settings?.currency}} {{product?.price?.mrp}}</div>
                   </div>
-                  <div class="product-stock" *ngIf="product?.stock > 5">{{product?.stock}} left in stock</div>
-                  <div class="product-card-bottom">
-                     <div class="card-edit-btn">
-                        <button (click)="navigateToUpdate(product?.prodid)" class="fs-6 cursor-pointer text-darker">
-                           Edit
-                        </button>
-                     </div>
+                  <div class="product-rating fs-6">
+                     {{product?.rating}} <i class="bi bi-star-fill"></i>
                   </div>
                </div>
+               <div class="product-stock" *ngIf="product?.stock > 5">{{product?.stock}} left in stock</div>
             </div>
          </div>
       </ng-container>
-      <ng-container *ngIf="variantCount == 0">
-         <div class="no-data-container">
-            <div class="no-data-image"><img src="../../../../../assets/media/searching001.svg" alt="" srcset=""></div>
-            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
+
+      <ng-container *ngIf="variantProducts.length == 0">
+         <div>
+            <div class="emptyNote">
+               <div class="fs-3 fw-bolder">No result found</div>
+               <div class="fs-5 note">We couldn't find any item based on your search.</div>
+            </div>
          </div>
       </ng-container>
+   </div>
+
+   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+      <div class="filtering">
+         <span class="fs-6 text-dark">Show</span>
+         <select [formControl]="variantPageLimit" (change)="searchProducts()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+         </select>
+         <span class="fs-6 text-dark">entries</span>
+      </div>
+      <div class="pagination">
+         <div class="paginationBefore" [ngClass]="{'disabled': variantPage == 1}" (click)="getPreviousPage()">
+            <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+         </div>
+         <div class="paginationPage">{{variantPage}}</div>
+         <div class="paginationNext" [ngClass]="{'disabled': variantLastPage}" (click)="getNextPage()">
+            <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+         </div>
+      </div>
    </div>
 </div>
 

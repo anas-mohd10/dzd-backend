@@ -1,12 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { ProductService } from 'src/app/includes/services/product.service';
-import { VariantProductService } from 'src/app/includes/services/variant.product.service';
 import { environment } from 'src/environments/environment';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-product-card',
@@ -48,8 +48,15 @@ export class ProductCardComponent implements OnInit {
   showVariants: Boolean = false
   variantproduct: any
 
-  variantProducts: any;
-  variantPage: any = 1;
+  variantProducts: any = [];
+  productName: String = ''
+  productProdid: any = null
+  variantTotalcount: any
+  variantLastPage: Boolean = false
+  variantPage: Number = 1;
+  variantPageLimit: FormControl = new FormControl('20')
+  settings: any = {}
+
   variantPages: any = []
   vairnatNextPages: any = []
   variantCurrpage: any = 1;
@@ -78,7 +85,8 @@ export class ProductCardComponent implements OnInit {
     private Router: Router,
     private ActivatedRoute: ActivatedRoute,
     private ProductHeadService: ProductHeadService,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -97,6 +105,12 @@ export class ProductCardComponent implements OnInit {
       this.setPages()
       this.cdr.markForCheck();
     });
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+      }
+    })
 
     this.CategoryService.getMainCategories().subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -120,10 +134,10 @@ export class ProductCardComponent implements OnInit {
       category: ['']
     });
 
-    this.variantProductform = this.formBuilder.group({
-      name: [''],
-      isActive: [''],
-      isFeatured: [''],
+    this.variantProductform = new FormGroup({
+      name: new FormControl(''),
+      isActive: new FormControl(''),
+      isFeatured: new FormControl(''),
     });
   }
 
@@ -225,33 +239,51 @@ export class ProductCardComponent implements OnInit {
     this.isNext = true
   }
 
-  //Variants product
-  showVariantProducts(name: any, prodid: any) {
-    // this.showVariants = !this.showVariants;
-    // let bodyEl = document.querySelector('body');
-    // bodyEl?.classList.toggle('overflow-hidden')
-    // this.variantproduct = name
+  getProducts(name: any, prodid: any) {
+    this.showVariants = !this.showVariants;
+    let bodyEl = document.querySelector('body');
+    bodyEl?.classList.toggle('overflow-hidden')
+    this.productName = name
+    this.productProdid = prodid
+    this.searchProducts()
+    this.cdr.markForCheck();
+  }
 
-    // let query = { ...this.variantProductform.value }
-    // query['product.refid'] = prodid
-    // this.prodid = prodid
-    // this.productService.searchProducts(query, this.page).subscribe((res: any) => {
-    //   this.variantProducts = res?.result?.data
-    //   for (let _product of this.variantProducts) {
-    //     const diff = _product?.price?.mrp - _product.price?.offer
-    //     const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
-    //     const message = {
-    //       text: `${percentage_off} % off`,
-    //     }
-    //     _product['message'] = message
-    //   }
-    //   this.variantCount = this.variantProducts.length
-    //   this.variantTotalCount = res?.result?.total_item
-    //   this.variantLimit = res?.result?.items_per_page
-    //   this.variantTotalData = Math.ceil(this.totalcount / this.limit)
-    //   this.setVariantPages()
-    //   this.cdr.markForCheck();
-    // });
+  searchProducts() {
+    let payload = {
+      ...this.variantProductform.value,
+      parent: this.productProdid,
+      page: this.variantPage,
+      limit: this.variantPageLimit?.value
+    }
+    this.productService.searchProducts(payload).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.variantProducts = res?.result?.data
+        this.variantTotalcount = res?.result?.total_item
+        this.variantLastPage = res?.result?.lastPage
+        this.variantPage = res?.result?.page
+        this.cdr.markForCheck();
+      }
+    })
+  }
+
+  getProductOffers() {
+    for (let _product of this.variantProducts) {
+      const diff = _product?.price?.mrp - _product.price?.offer
+      const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
+      const message = {
+        text: `${percentage_off} % off`,
+      }
+      _product['message'] = message
+    }
+  }
+
+  getPreviousPage() {
+
+  }
+
+  getNextPage() {
+
   }
 
   setVariantPages() {
@@ -278,7 +310,7 @@ export class ProductCardComponent implements OnInit {
   navigateToAdd() {
     let bodyEl = document.querySelector('body');
     bodyEl?.classList.toggle('overflow-hidden')
-    this.Router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: this.prodid } })
+    this.Router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: this.productProdid } })
   }
 
   navigateToUpdate(id: any) {
@@ -288,33 +320,13 @@ export class ProductCardComponent implements OnInit {
     this.Router.navigate([this.appRoute.product.UPDATE_PRODUCT], { queryParams: { id: id } })
   }
 
-  onVariantReload() {
+  clearVariantFilters() {
     this.variantProductform.get('name')?.setValue('')
     this.variantProductform.get('isActive')?.setValue('')
     this.variantProductform.get('isFeatured')?.setValue('')
-    this.searchVariantProduct()
-  }
-
-  searchVariantProduct() {
-    // let query = { ...this.variantProductform.value }
-    // query['product.refid'] = this.prodid
-    // this.productService.searchProducts(query, this.page).subscribe((res: any) => {
-    //   this.variantProducts = res?.result?.data
-    //   for (let _product of this.variantProducts) {
-    //     const diff = _product?.price?.mrp - _product.price?.offer
-    //     const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
-    //     const message = {
-    //       text: `${percentage_off} % off`,
-    //     }
-    //     _product['message'] = message
-    //   }
-    //   this.variantCount = this.variantProducts.length
-    //   this.variantTotalCount = res?.result?.total_item
-    //   this.variantLimit = res?.result?.items_per_page
-    //   this.variantTotalData = Math.ceil(this.totalcount / this.limit)
-    //   this.setVariantPages()
-    //   this.cdr.markForCheck();
-    // });
+    this.variantPage = 1
+    this.variantPageLimit?.setValue('20')
+    this.searchProducts()
   }
 
   showFilters() {
