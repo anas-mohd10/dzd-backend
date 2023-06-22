@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -27,6 +27,8 @@ export class UpdateCustomersComponent implements OnInit {
   validBtn: boolean = false
   selectedID: any = ''
 
+  addressForm: FormGroup
+
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomersService,
@@ -50,21 +52,28 @@ export class UpdateCustomersComponent implements OnInit {
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       walletBalance: [''],
       isActive: ['true', Validators.required],
-      type: [''],
-      firstline: [''],
-      secondline: [''],
-      area: [''],
-      city: [''],
-      landmark: [''],
-      pincode: ['',],
-      lat: [''],
-      lng: [''],
-      state: [''],
     });
+
+    this.addressForm = new FormGroup({
+      firstlane: new FormControl('', Validators.required),
+      secondlane: new FormControl(''),
+      city: new FormControl('', Validators.required),
+      area: new FormControl('', Validators.required),
+      landmark: new FormControl('', Validators.required),
+      type: new FormControl('', Validators.required),
+      pincode: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
+      lat: new FormControl(''),
+      lng: new FormControl(''),
+    })
   }
 
   get cf() {
     return this.customersForm.controls;
+  }
+
+  get addressControls() {
+    return this.addressForm.controls;
   }
 
   managePage() {
@@ -97,9 +106,8 @@ export class UpdateCustomersComponent implements OnInit {
 
   validateNumber(e: any) {
     const data = { mobile: '' }
-    if (e.value) {
-      data.mobile = e.value
-    }
+    if (e.value) data.mobile = e.value
+
     this.customerService.getCustomerByNum(data).subscribe((res: any) => {
       if (res?.result.length != 0) {
         this.uniqueNum = false
@@ -111,79 +119,38 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   addAddress() {
-    if (this.customersForm.get("type")?.value) {
-      if (this.customersForm.get("firstline")?.value) {
-        if (this.customersForm.get("city")?.value) {
-          if (this.customersForm.get("landmark")?.value) {
-            if (this.customersForm.get("pincode")?.value) {
-              if (this.customersForm.get("state")?.value) {
-                this.addAddressFields()
-                this.address = this.addresses[0]
-                if (this.addresses.length > 0) {
-                  this.validBtn = true
-                }
-                this.customersForm.get("firstline")?.setValue('')
-                this.customersForm.get("secondline")?.setValue('')
-                this.customersForm.get("area")?.setValue('')
-                this.customersForm.get("city")?.setValue('')
-                this.customersForm.get("pincode")?.setValue('')
-                this.customersForm.get("state")?.setValue('')
-                this.customersForm.get("lat")?.setValue('')
-                this.customersForm.get("lng")?.setValue('')
-                this.customersForm.get("landmark")?.setValue('')
-                this.customersForm.get("type")?.setValue('')
-              } else {
-                this.toastr.error('Address state required! 😔');
-              }
-            } else {
-              this.toastr.error('Address pincode required! 😔');
-            }
-          } else {
-            this.toastr.error('Address landmark required! 😔');
-          }
-        } else {
-          this.toastr.error('Address city required! 😔');
-        }
-      } else {
-        this.toastr.error('Address line 1 required! 😔');
+    let payload = {
+      ...this.addressForm?.value,
+      coordinates: {
+        lat: this.addressForm?.get('lat')?.value,
+        lng: this.addressForm?.get('lng')?.value,
       }
-    } else {
-      this.toastr.error('Address type required! 😔');
     }
+
+    this.customerService.addAddress(payload).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.getAddress()
+        this.toastr.success(res?.message)
+      } else {
+        this.toastr.error(res?.message)
+      }
+    })
   }
 
-  addAddressFields() {
-    this.addresses.push({
-      firstline: this.customersForm.get("firstline")?.value,
-      secondline: this.customersForm.get("secondline")?.value,
-      area: this.customersForm.get("area")?.value,
-      city: this.customersForm.get("city")?.value,
-      pincode: this.customersForm.get("pincode")?.value,
-      state: this.customersForm.get("state")?.value,
-      lat: this.customersForm.get("lat")?.value,
-      lng: this.customersForm.get("lng")?.value,
-      landmark: this.customersForm.get("landmark")?.value,
-      type: this.customersForm.get("type")?.value,
-      id: this.addresses.length + Math.floor(100 + Math.random() * 90)
-    });
+  getAddress() {
+    this.customerService.getAddress({ userid: this.slug }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.address = res?.result
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   selectAddress(id: any) {
-    this.address = this.addresses[id]
+
   }
 
   removeAddress(id: any) {
-    const defaultaddress = this.addresses[id]
-    if (this.addresses.length > 1) {
-      this.address = this.addresses[0]
-      if (defaultaddress == this.address) {
-        this.address = {}
-      }
-      this.toastr.info("Address deleted successfully");
-      this.addresses.splice(id, 1)
-    } else {
-      this.toastr.error("Cannot remove this address, add more address to remove this.");
-    }
   }
 
   getCustomerDetails() {
@@ -195,10 +162,6 @@ export class UpdateCustomersComponent implements OnInit {
       this.customersForm.get("countryCode")?.setValue(this.customerData.countryCode)
       this.customersForm.get("isActive")?.setValue(this.customerData.isActive)
       this.customersForm.get("walletBalance")?.setValue(this.customerData.walletBalance)
-      this.address = res?.result[0]?.address
-      this.addresses = res?.result[0]?.checkoutAddress
-      this.selectedID = res?.result[0]?.address?.id
-      if (this.addresses.length > 0) this.validBtn = true
       this.cdr.markForCheck()
     })
   }
@@ -218,28 +181,22 @@ export class UpdateCustomersComponent implements OnInit {
       return;
     }
 
-    if (this.addresses.length > 0 && this.address) {
-      let data = {
-        name: this.customersForm.get("name")?.value,
-        email: this.customersForm.get("email")?.value,
-        countryCode: this.customersForm.get("countryCode")?.value,
-        mobile: this.customersForm.get("mobile")?.value,
-        address: this.address,
-        checkoutAddress: this.addresses,
-        walletBalance: this.customersForm.get("walletBalance")?.value,
-        isActive: this.customersForm.get("isActive")?.value,
-      }
-      this.customerService.updateCustomer(this.slug, data).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Customer updated successfully');
-          this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
-        }
-      })
-    } else {
-      this.toastr.error('Add atleast one address to continue🙂');
+    let data = {
+      name: this.customersForm.get("name")?.value,
+      email: this.customersForm.get("email")?.value,
+      countryCode: this.customersForm.get("countryCode")?.value,
+      mobile: this.customersForm.get("mobile")?.value,
+      walletBalance: this.customersForm.get("walletBalance")?.value,
+      isActive: this.customersForm.get("isActive")?.value,
     }
+    this.customerService.updateCustomer(this.slug, data).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error(res?.message);
+      } else if (res.errorCode == 0) {
+        this.toastr.success(res?.message);
+        this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+      }
+    })
   }
 
   addCustomer() { }

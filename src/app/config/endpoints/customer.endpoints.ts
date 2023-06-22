@@ -7,5 +7,7 @@ export const customerEndpoints = {
   get_customer_by_slug: '/customer/slug',
   update_customer: '/customer/update',
   get_customer_by_number: '/customer/number',
-  search_customers: '/customer/search'
+  search_customers: '/search-customers',
+  add_address: '/add-address',
+  get_address: '/get-address'
 }

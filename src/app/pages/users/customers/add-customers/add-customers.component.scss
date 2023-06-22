@@ -1,62 +1,17 @@
-$primaryColor: #00bdab;
-$whiteColor: #ffffff;
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
 
-.address-card {
-   margin: 0 10px 30px 0;
-   display: flex;
-   align-items: flex-start;
-   justify-content: space-between;
-   background: #ffffff;
-   box-shadow: 0 0 15px 5px #00000015;
-   padding: 20px 10px;
-   border-radius: 10px;
-
-   .delete-address {
-      height: 30px;
-      width: 30px;
-      background: #ff000095;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #000000;
-      border-radius: 10px;
-      cursor: pointer;
-
-      i {
-         color: #ffffff !important;
-      }
-   }
-
-   .form-check {
-      display: flex !important;
-      align-items: flex-start;
-      font-size: 1.1rem;
-
-      .address-type {
-         background: $primaryColor;
-         color: $whiteColor;
-         font-weight: 700;
-         padding: 2.5px 5px;
-         border-radius: 5px;
-         width: max-content;
-      }
-
-      .label-address {
-         font-size: 1.1rem;
-      }
-   }
-}
-
-.disabled-button {
-   pointer-events: none;
-   opacity: 0.5;
-}
-
-.page-title {
-   margin: 0;
-}
-
-.form-check-input {
-   height: 1.3rem;
-   width: 1.3rem;
+label,
+input[type=button] {
+   font-weight: normal !important;
+   width: 100%;
 }

@@ -8,6 +8,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -29,6 +30,7 @@ export class UpdateOrdersComponent implements OnInit {
   price: any = 0
   slug: any
   base: string;
+  settings: any
 
   @ViewChild("productDetails", { static: true }) productDetails: ElementRef;
   @ViewChild("shippingAddress", { static: true }) shippingAddress: ElementRef;
@@ -40,7 +42,8 @@ export class UpdateOrdersComponent implements OnInit {
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private invoiceService: InvoiceSettingsService
+    private invoiceService: InvoiceSettingsService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -49,7 +52,13 @@ export class UpdateOrdersComponent implements OnInit {
     this.managePage()
     this.slug = this.route.snapshot.queryParams.order || ''
     this.getOrderDetails()
-    
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   initForm() {

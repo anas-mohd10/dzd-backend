@@ -58,6 +58,42 @@ label {
     }
 }
 
+
+.orderDeliveryWrapper {
+
+    .detailsWrapper {
+        .deliveryType {
+            .title {
+                font-weight: 600;
+                color: #A1A5B7;
+            }
+        }
+
+        .deliveryDate {
+            .title {
+                font-weight: 600;
+                color: #A1A5B7;
+            }
+        }
+
+        .deliveryTime {
+            .title {
+                font-weight: 600;
+                color: #A1A5B7;
+            }
+        }
+
+        .delivery {
+            border-bottom: 1px solid #eaeaea;
+            padding: 0 0 5px 0;
+
+            &:last-child {
+                border: none;
+            }
+        }
+    }
+}
+
 .orderHistoryCard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

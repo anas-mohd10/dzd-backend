@@ -43,20 +43,8 @@ export class AddCustomersComponent implements OnInit {
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       walletBalance: [''],
       isActive: ['true', Validators.required],
-      type: [''],
-      firstline: [''],
-      secondline: [''],
-      area: [''],
-      city: [''],
-      landmark: [''],
-      pincode: ['',],
-      lat: [''],
-      lng: [''],
-      state: [''],
     });
   }
-
-  // [Validators.required, Validators.pattern("^[1-9]{1}[0-9]{2}[0-9]{3}$")]
 
   get cf() {
     return this.customersForm.controls;
@@ -80,6 +68,7 @@ export class AddCustomersComponent implements OnInit {
     if (e.value) {
       data.email = e.value
     }
+
     this.customerService.getCustomerByMail(data).subscribe((res: any) => {
       if (res?.result.length != 0) {
         this.uniqueEmail = false
@@ -114,115 +103,33 @@ export class AddCustomersComponent implements OnInit {
     }
   }
 
-  addAddress() {
-    if (this.customersForm.get("type")?.value) {
-      if (this.customersForm.get("firstline")?.value) {
-        if (this.customersForm.get("city")?.value) {
-          if (this.customersForm.get("landmark")?.value) {
-            if (this.customersForm.get("pincode")?.value) {
-              if (this.customersForm.get("state")?.value) {
-                this.addAddressFields()
-                this.address = this.addresses[0]
-                if (this.addresses.length > 0) {
-                  this.validBtn = true
-                }
-                this.customersForm.get("firstline")?.setValue('')
-                this.customersForm.get("secondline")?.setValue('')
-                this.customersForm.get("area")?.setValue('')
-                this.customersForm.get("city")?.setValue('')
-                this.customersForm.get("pincode")?.setValue('')
-                this.customersForm.get("state")?.setValue('')
-                this.customersForm.get("lat")?.setValue('')
-                this.customersForm.get("lng")?.setValue('')
-                this.customersForm.get("landmark")?.setValue('')
-                this.customersForm.get("type")?.setValue('')
-              } else {
-                this.toastr.error('Address state required');
-              }
-            } else {
-              this.toastr.error('Address pincode required');
-            }
-          } else {
-            this.toastr.error('Address landmark required');
-          }
-        } else {
-          this.toastr.error('Address city required');
-        }
-      } else {
-        this.toastr.error('Address line 1 required');
-      }
-    } else {
-      this.toastr.error('Address type required!');
-    }
-  }
-
-  addAddressFields() {
-    this.addresses.push({
-      firstline: this.customersForm.get("firstline")?.value,
-      secondline: this.customersForm.get("secondline")?.value,
-      area: this.customersForm.get("area")?.value,
-      city: this.customersForm.get("city")?.value,
-      pincode: this.customersForm.get("pincode")?.value,
-      state: this.customersForm.get("state")?.value,
-      lat: this.customersForm.get("lat")?.value,
-      lng: this.customersForm.get("lng")?.value,
-      landmark: this.customersForm.get("landmark")?.value,
-      type: this.customersForm.get("type")?.value,
-      id: this.addresses.length + Math.floor(100 + Math.random() * 90)
-    });
-  }
-
-  selectAddress(id: any) {
-    this.address = this.addresses[id]
-  }
-
-  removeAddress(id: any) {
-    const defaultaddress = this.addresses[id]
-    if (defaultaddress == this.address) {
-      this.address = {}
-    }
-    this.addresses.splice(id, 1)
-    this.toastr.info("Address deleted successfully");
-    if (this.addresses.length > 0) {
-      this.address = this.addresses[0]
-    } else {
-      this.toastr.error("Cannot remove this address, add more address to remove this.");
-    }
-  }
-
   updateCustomer() { }
 
   addCustomer() {
     if (!this.customersForm.valid) {
-      this.toastr.error('Something wrong occured');
+      this.toastr.error('Validation failed');
       return;
     }
 
-    if (this.addresses.length > 0 && this.address) {
-      let data = {
-        name: this.customersForm.get("name")?.value,
-        email: this.customersForm.get("email")?.value,
-        countryCode: this.customersForm.get("countryCode")?.value,
-        mobile: this.customersForm.get("mobile")?.value,
-        address: this.address,
-        checkoutAddress: this.addresses,
-        walletBalance: this.customersForm.get("walletBalance")?.value,
-        isActive: this.customersForm.get("isActive")?.value,
-      }
-      if (this.uniqueEmail == true && this.uniqueNum == true) {
-        this.customerService.addCustomer(data).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error('Something went wrong');
-          } else if (res.errorCode == 0) {
-            this.toastr.success('Customer added successfully');
-            this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
-          }
-        })
-      } else {
-        this.toastr.error('Email or Mobile number already exists');
-      }
+    let data = {
+      name: this.customersForm.get("name")?.value,
+      email: this.customersForm.get("email")?.value,
+      countryCode: this.customersForm.get("countryCode")?.value,
+      mobile: this.customersForm.get("mobile")?.value,
+      walletBalance: this.customersForm.get("walletBalance")?.value,
+      isActive: this.customersForm.get("isActive")?.value,
+    }
+    if (this.uniqueEmail == true && this.uniqueNum == true) {
+      this.customerService.addCustomer(data).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+        }
+      })
     } else {
-      this.toastr.error('Add atleast one address to continue🙂');
+      this.toastr.error('Email or Mobile number already exists');
     }
   }
 }

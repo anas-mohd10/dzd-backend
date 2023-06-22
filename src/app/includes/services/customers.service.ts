@@ -55,4 +55,14 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.update_customer + "?slug=" + slug);
     return this.http.put(`${url}`, data)
   }
+
+  addAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.add_address);
+    return this.http.post(`${url}`, data)
+  }
+
+  getAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.get_address);
+    return this.http.post(`${url}`, data)
+  }
 }
