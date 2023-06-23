@@ -99,112 +99,149 @@
                         </div>
                      </div>
 
+                     <div class="addressWrapper">
+                        <div class="col-12">
+                           <h3 class="form-title fs-4">Address</h3>
+                        </div>
+                        <div class="addressCards">
+                           <ng-container *ngFor="let address of addresses">
+                              <div class="addressCard">
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                       id="{{address?.refid}}" [formControl]="defaultAddress"
+                                       value="{{address?.refid}}">
+                                    <label class="form-check-label" for="{{address?.refid}}">
+                                       <div class="details">
+                                          <div class="contactDetails">
+                                             <div class="fs-6"> {{address?.name}}</div>
+                                             <div class="fs-6"> {{address?.countryCode}} {{address?.mobile}}</div>
+                                          </div>
+                                          <div class="address">
+                                             <div class="type fs-6 mb-1">{{address?.type}}</div>
+                                             <div class="fs-6"> {{address?.firstlane}} {{address?.secondlane}}</div>
+                                             <div class="fs-6"> {{address?.area}} {{address?.city}}</div>
+                                             <div class="fs-6"> {{address?.landmark}} {{address?.ppincode}}</div>
+                                             <div class="fs-6"> {{address?.state}}</div>
+                                          </div>
+                                       </div>
+                                    </label>
+                                 </div>
+                              </div>
+                           </ng-container>
+                        </div>
+                        <ng-container *ngIf="addresses.length == 0">
+                           <div>No address found</div>
+                        </ng-container>
+                     </div>
+
                      <div class="col-12">
                         <h3 class="form-title fs-4"><span>Address Details</span></h3>
                      </div>
 
-                     <div class="row">
+                     <div class="col-12">
                         <form [formGroup]="addressForm">
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Address Type</label>
-                                 <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                                    formControlName="type" [ngClass]="{
+                           <div class="row">
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3 required">Address Type</label>
+                                    <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                                       formControlName="type" [ngClass]="{
+                                          'is-invalid':
+                                          (addressControls.type.touched || isSubmitted) &&
+                                          addressControls.type.errors?.required
+                                        }">
+                                       <option value="" disabled>-- Select an option --</option>
+                                       <option value="Home">Home</option>
+                                       <option value="Work">Work</option>
+                                       <option value="Other">Other</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3 required">Firstlane</label>
+                                    <input type="text" class="form-control fs-6" formControlName="firstlane" [ngClass]="{
                                        'is-invalid':
-                                       (addressControls.type.touched || isSubmitted) &&
-                                       addressControls.type.errors?.required
-                                     }">
-                                    <option value="" disabled>-- Select an option --</option>
-                                    <option value="Home">Home</option>
-                                    <option value="Work">Work</option>
-                                    <option value="Other">Other</option>
-                                 </select>
+                                       (addressControls.firstlane.touched || isSubmitted) &&
+                                       addressControls.firstlane.errors?.required
+                                     }" />
+                                 </div>
                               </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Firstlane</label>
-                                 <input type="text" class="form-control fs-6" formControlName="firstlane" [ngClass]="{
-                                    'is-invalid':
-                                    (addressControls.firstlane.touched || isSubmitted) &&
-                                    addressControls.firstlane.errors?.required
-                                  }" />
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3">Secondlane</label>
+                                    <input type="text" class="form-control fs-6" formControlName="secondlane" />
+                                 </div>
                               </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3">Secondlane</label>
-                                 <input type="text" class="form-control fs-6" formControlName="secondlane" />
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3"> Area</label>
+                                    <input type="text" class="form-control fs-6" formControlName="area" />
+                                 </div>
                               </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3"> Area</label>
-                                 <input type="text" class="form-control fs-6" formControlName="area" />
-                              </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required"> City</label>
-                                 <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
-                                    'is-invalid':
-                                    (addressControls.city.touched || isSubmitted) &&
-                                    addressControls.city.errors?.required
-                                  }" />
-                              </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required"> Landmark</label>
-                                 <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
-                                    'is-invalid':
-                                    (addressControls.landmark.touched || isSubmitted) &&
-                                    addressControls.landmark.errors?.required
-                                  }" />
-                              </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required"> Pincode</label>
-                                 <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
-                                    'is-invalid':
-                                    (addressControls.pincode.touched || isSubmitted) &&
-                                    addressControls.pincode.errors?.required
-                                  }" />
-                              </div>
-                              <div class="text-danger" *ngIf="addressControls.pincode.errors?.pattern">Please, Enter
-                                 Valid Pincode
-                              </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3"> Latitude</label>
-                                 <input type="number" class="form-control fs-6" formControlName="lat" />
-                              </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3"> Longitude</label>
-                                 <input type="number" class="form-control fs-6" formControlName="lng" />
-                              </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="form-group mb-3 mb-3">
-                                 <label class="fs-6 mb-3 required">State</label>
-                                 <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                                    formControlName="state" [ngClass]="{
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3 required"> City</label>
+                                    <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
                                        'is-invalid':
-                                       (addressControls.state.touched || isSubmitted) &&
-                                       addressControls.state.errors?.required
-                                     }">
-                                    <option value="" disabled>-- Select an option --</option>
-                                    <option value="Kerala">Kerala</option>
-                                    <option value="Karnataka">Karnataka</option>
-                                    <option value="Tamilnadu">Tamilnadu</option>
-                                    <option value="Goa">Goa</option>
-                                    <option value="Maharastra">Maharastra</option>
-                                    <option value="Gujarat">Gujarat</option>
-                                 </select>
+                                       (addressControls.city.touched || isSubmitted) &&
+                                       addressControls.city.errors?.required
+                                     }" />
+                                 </div>
+                              </div>
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3 required"> Landmark</label>
+                                    <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
+                                       'is-invalid':
+                                       (addressControls.landmark.touched || isSubmitted) &&
+                                       addressControls.landmark.errors?.required
+                                     }" />
+                                 </div>
+                              </div>
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3 required"> Pincode</label>
+                                    <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                                       'is-invalid':
+                                       (addressControls.pincode.touched || isSubmitted) &&
+                                       addressControls.pincode.errors?.required
+                                     }" />
+                                 </div>
+                                 <div class="text-danger" *ngIf="addressControls.pincode.errors?.pattern">Please, Enter
+                                    Valid Pincode
+                                 </div>
+                              </div>
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3"> Latitude</label>
+                                    <input type="number" class="form-control fs-6" formControlName="lat" />
+                                 </div>
+                              </div>
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3"> Longitude</label>
+                                    <input type="number" class="form-control fs-6" formControlName="lng" />
+                                 </div>
+                              </div>
+                              <div class="col-6">
+                                 <div class="form-group mb-3 mb-3">
+                                    <label class="fs-6 mb-3 required">State</label>
+                                    <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                                       formControlName="state" [ngClass]="{
+                                          'is-invalid':
+                                          (addressControls.state.touched || isSubmitted) &&
+                                          addressControls.state.errors?.required
+                                        }">
+                                       <option value="" disabled>-- Select an option --</option>
+                                       <option value="Kerala">Kerala</option>
+                                       <option value="Karnataka">Karnataka</option>
+                                       <option value="Tamilnadu">Tamilnadu</option>
+                                       <option value="Goa">Goa</option>
+                                       <option value="Maharastra">Maharastra</option>
+                                       <option value="Gujarat">Gujarat</option>
+                                    </select>
+                                 </div>
                               </div>
                            </div>
                         </form>
@@ -215,16 +252,7 @@
                            Save Address
                         </button>
                      </div>
-                     <div class="col-12" *ngIf="addresses.length > 0">
-                        <div class="col-12">
-                           <h5 class="form-title fs-4">Select Default Address</h5>
-                           <div class="fs-6">
-                              If none of them are selected, first address will be selected as default address
-                           </div>
-                        </div>
-                        <ng-container *ngFor="let address of addresses; let i =index">
-                        </ng-container>
-                     </div>
+
                      <div class="col-12 d-flex align-items-center justify-content-end">
                         <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
                            class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">

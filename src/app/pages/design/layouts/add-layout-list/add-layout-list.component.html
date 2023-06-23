@@ -6,13 +6,13 @@
                {{ editMode ? "Update Layouts" : "Add Layouts" }}
             </h3>
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.layout.LAYOUT_LIST }}">Layouts</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.layout.ADD_LAYOUT}}">
                      {{ editMode ? "Update Layouts" : "Add Layouts"}}
                   </a>
@@ -22,39 +22,39 @@
       </div>
    </div>
    <div class="row mt-10">
-      <div class="col-sm-12 fs-5">
+      <div class="col-sm-12 fs-6">
          <div class="card">
             <div class="card-body">
                <form (ngSubmit)="onSubmit()" [formGroup]="layoutForm" enctype=" multipart/form-data">
                   <div class="row">
                      <div class="col-12">
-                        <h3 class="form-title"><span>Layouts Details</span></h3>
+                        <h3 class="fw-bolder"><span>Layouts Details</span></h3>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Title</label>
-                           <input type="text" class="form-control fs-5" formControlName="title"
+                     <div class="col-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 ">Title</label>
+                           <input type="text" class="form-control fs-6" formControlName="title"
                               [ngClass]="{'is-invalid': (lf.title.touched || isSubmitted) && lf.title.errors?.required}" />
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Valid From</label>
-                           <input type="date" class="form-control fs-5" formControlName="validFrom"
+                     <div class="col-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3  required">Valid From</label>
+                           <input type="date" class="form-control fs-6" formControlName="validFrom"
                               [ngClass]="{'is-invalid': (lf.validFrom.touched || isSubmitted) &&  lf.validFrom.errors?.required}" />
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title required">Valid To</label>
-                           <input type="date" class="form-control fs-5" formControlName="validTo"
+                     <div class="col-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3  required">Valid To</label>
+                           <input type="date" class="form-control fs-6" formControlName="validTo"
                               [ngClass]="{'is-invalid': (lf.validTo.touched || isSubmitted) &&  lf.validTo.errors?.required}" />
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Status</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                     <div class="col-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 ">Status</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Active</option>
@@ -63,10 +63,10 @@
                         </div>
                      </div>
 
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Grid Count</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                     <div class="col-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 ">Grid Count</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="gridCount">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="1">1</option>
@@ -76,10 +76,10 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-5 mb-3 form-title">Type</label>
-                           <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                     <div class="col-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 ">Type</label>
+                           <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                               formControlName="type">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="Slider">Slider</option>
@@ -89,20 +89,18 @@
                      </div>
 
                      <div class="col-12">
-                        <h3 class="form-title"><span>Media Files</span></h3>
+                        <h3 class="fw-bolder">Media files</h3>
                      </div>
 
-                     <!-- Button trigger modal -->
                      <div class="col-12">
-                        <div class="col-sm-6">
-                           <button type="button" class="btn btn-dark fs-5" data-bs-toggle="modal"
+                        <div class="col-sm-6" >
+                           <button type="button" class="btn btn-dark fs-6" data-bs-toggle="modal"
                               data-bs-target="#fileModal" style="width: 200px; border-radius: 50px;">
                               Upload File
                            </button>
                         </div>
                      </div>
 
-                     <!-- Modal -->
                      <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -114,11 +112,11 @@
                               <div class="modal-body">
                                  <div class="col-12">
                                     <div class="col-12">
-                                       <h3 class="form-title required"><span>Media</span></h3>
+                                       <h3 class=" required"><span>Media</span></h3>
                                     </div>
                                     <div class="form-group">
                                        <div class="image-upload">
-                                          <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                                          <input type="file" class="form-control fs-6" name="image" accept="image/*"
                                              (change)="handleInputChange($event)" style="height: 100px;" required>
                                           <label class="fs-7 text-disabled">Please upload a Mobile banner with 546px *
                                              390px</label>
@@ -167,15 +165,15 @@
                                  </div>
                                  <div class="col-12 mt-20">
                                     <div class="form-group">
-                                       <label class="fs-5 mb-3">Redirection URL</label>
-                                       <input type="text" formControlName="redirectionURL" class="form-control fs-5">
+                                       <label class="fs-6 mb-3">Redirection URL</label>
+                                       <input type="text" formControlName="redirectionURL" class="form-control fs-6">
                                     </div>
                                  </div>
                               </div>
                               <div class="modal-footer">
-                                 <button type="button" class="btn btn-secondary fs-5" style="width: 200px"
+                                 <button type="button" class="btn btn-secondary fs-6" style="width: 200px"
                                     data-bs-dismiss="modal">Close</button>
-                                 <button type="button" class="btn btn-primary fs-5" style="width: 200px"
+                                 <button type="button" class="btn btn-primary fs-6" style="width: 200px"
                                     (click)="addFile()">Save</button>
                               </div>
                            </div>
@@ -186,12 +184,12 @@
                         <div *ngFor="let layout of dataFiles; let i=index">
                            <div class="uploaded-layouts">
                               <div class="layout-card">
-                                 <div class="prod-details-layout fs-5 fw-bold mt-3">
+                                 <div class="prod-details-layout fs-6 fw-bold mt-3">
                                     <div class="prod-img-layout mt-3">
                                        <img class="layout-preview" [src]="layout?.url" alt="" srcset="">
                                     </div>
                                  </div>
-                                 <div class="prod-url fs-5 fw-bold mt-3">
+                                 <div class="prod-url fs-6 fw-bold mt-3">
                                     Redirection URL : {{layout?.redirect}}
                                  </div>
                                  <div class="close-icon" (click)="removeFile(layout?.id)">
@@ -202,11 +200,11 @@
                         </div>
                      </div>
                      <div class="col-12 d-flex align-items-center justify-content-end">
-                        <a routerLink="{{ appRoute.layout.LAYOUT_LIST}}" class="btn btn-secondary btn-sm fs-5 text-dark"
+                        <a routerLink="{{ appRoute.layout.LAYOUT_LIST}}" class="btn btn-secondary btn-sm fs-6 text-dark"
                            style="width: 200px; margin-right: 20px;">
                            Cancel
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
                            Add
                         </button>
                      </div>

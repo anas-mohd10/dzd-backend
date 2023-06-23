@@ -27,11 +27,11 @@
               <div class="col-2">
                 <label class="form-label">&nbsp;</label>
                 <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
-                  (ngModelChange)="searchReviews()">
+                  (ngModelChange)="getReviews()">
               </div>
               <div class="col-2">
                 <label class="fs-6 mb-1">Status</label>
-                <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="searchReviews()">
+                <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="getReviews()">
                   <option value="" disabled>-- Select an option --</option>
                   <option value=false>Inactive</option>
                   <option value=true>Active</option>
@@ -39,13 +39,11 @@
               </div>
               <div class="col-2">
                 <label class="fs-6 mb-1">From</label>
-                <input type="date" class="form-control fs-6 text-dark" [formControl]="fromDate"
-                  (change)="searchReviews()">
+                <input type="date" class="form-control fs-6 text-dark" [formControl]="fromDate" (change)="getReviews()">
               </div>
               <div class="col-2">
                 <label class="fs-6 mb-1">To</label>
-                <input type="date" class="form-control fs-6 text-dark" [formControl]="toDate"
-                  (change)="searchReviews()">
+                <input type="date" class="form-control fs-6 text-dark" [formControl]="toDate" (change)="getReviews()">
               </div>
               <div class="col-2">
                 <label class="fs-6 mb-1">&nbsp;</label>
@@ -76,10 +74,13 @@
                     <td>{{review?.product?.id?.name}}</td>
                     <td>{{review?.rating}}</td>
                     <td>
-                      <img src="../../../../../assets/icons/view.svg" alt="Icon">
+                      <img data-bs-toggle="modal" data-bs-target="#reviewModal"
+                        src="../../../../../assets/icons/view.svg" alt="Icon" (click)="selectReview(review)">
                     </td>
                     <td>{{review?.created}} </td>
-                    <td><img src="../../../../../assets/icons/editPen.svg" alt="Icon"></td>
+                    <td>
+                      Visibile
+                    </td>
                   </tr>
                 </ng-container>
               </tbody>
@@ -97,7 +98,7 @@
               *ngIf="reviews.length > 0">
               <div class="filtering">
                 <span class="fs-6 text-dark">Show</span>
-                <select [formControl]="limit" (change)="searchReviews()">
+                <select [formControl]="limit" (change)="getReviews()">
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="15">15</option>
@@ -117,6 +118,24 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Review details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="reviewDetails">
+          <div class="fs-6 mb-3">Review by {{data?.customer?.id?.name}} on {{data?.created}}</div>
+          <div class="reviewTitle fs-4 fw-bolder mb-1"> {{data?.title}}</div>
+          <div class="reviewMessage fs-6"> {{data?.message}}</div>
         </div>
       </div>
     </div>

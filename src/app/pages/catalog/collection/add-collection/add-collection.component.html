@@ -145,6 +145,17 @@
                   </select>
                 </div>
               </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="fs-6 mb-3 form-title">Highlight Collection?</label>
+                  <select class="form-select fs-6 form-select-lg mb-3" aria-label=".form-select-lg" formControlName="isHighlighted">
+                    <option value="false" selected>No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+
               <div class="col-sm-6" *ngIf="featured">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title">Visibility Type?</label>
@@ -156,6 +167,7 @@
                   <div class="fs-7 mt-3">Products will be visibile as selected type</div>
                 </div>
               </div>
+
               <div class="col-sm-6" *ngIf="grid">
                 <div class="form-group">
                   <label class="fs-6 mb-3 form-title">Grid Count?</label>

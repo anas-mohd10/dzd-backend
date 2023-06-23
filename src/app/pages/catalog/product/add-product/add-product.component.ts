@@ -299,7 +299,7 @@ export class AddProductComponent implements OnInit {
 
     this.productheadform = this.formBuilder.group({
       name: ['', Validators.required],
-      hsn: ['', Validators.required],
+      hsn: [''],
       sku: ['', Validators.required],
       tax: [''],
       cod: ['false', Validators.required],

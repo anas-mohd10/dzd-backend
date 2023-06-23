@@ -22,12 +22,13 @@ export class UpdateCustomersComponent implements OnInit {
   customerData: any;
   slug: any;
   uniqueNum: boolean;
-  addresses: any = []
+  addresses: Array<any> = []
   address: any
   validBtn: boolean = false
   selectedID: any = ''
 
   addressForm: FormGroup
+  defaultAddress: FormControl = new FormControl('')
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,6 +43,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.managePage()
     this.slug = this.route.snapshot.queryParams.customer || ''
     this.getCustomerDetails()
+    this.getAddress()
   }
 
   initForm() {
@@ -124,12 +126,14 @@ export class UpdateCustomersComponent implements OnInit {
       coordinates: {
         lat: this.addressForm?.get('lat')?.value,
         lng: this.addressForm?.get('lng')?.value,
-      }
+      },
+      customer: this.customerData?._id
     }
 
     this.customerService.addAddress(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress()
+        this.addressForm.reset()
         this.toastr.success(res?.message)
       } else {
         this.toastr.error(res?.message)
@@ -140,7 +144,10 @@ export class UpdateCustomersComponent implements OnInit {
   getAddress() {
     this.customerService.getAddress({ userid: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.address = res?.result
+        this.addresses = res?.result
+        for (let address of res?.result) {
+          if (address?.isDefault) this.defaultAddress.setValue(address?.refid)
+        }
         this.cdr.markForCheck()
       }
     })

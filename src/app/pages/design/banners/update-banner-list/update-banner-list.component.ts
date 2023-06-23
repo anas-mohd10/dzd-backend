@@ -67,6 +67,9 @@ export class UpdateBannerListComponent implements OnInit {
   previousBanners: any = []
   bannerMedia: any = []
 
+  mobileBanners: Array<any> = []
+  webBanners: Array<any> = []
+
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
@@ -133,6 +136,9 @@ export class UpdateBannerListComponent implements OnInit {
           this.form.get('validFrom')?.disable()
         }
         this.form.get('type')?.setValue(res?.result[0]?.type)
+
+        this.mobileBanners = [...this.bannerData?.files?.mobile]
+        this.webBanners = [...this.bannerData?.files?.web]
         this.cdr.markForCheck()
       }
     })

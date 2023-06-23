@@ -10,24 +10,23 @@
             <div class="row">
                <h2 class="form-title">Basic Details</h2>
                <div class="col-12 col-sm-6 form-group">
-                  <label class="fs-5 mb-3 required">Name</label>
-                  <input type="text" class="form-control fs-5" placeholder="Eg. iPhone 14 Pro Max"
+                  <label class="fs-6 mb-3 required">Name</label>
+                  <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
                      formControlName="name" [ngClass]="{
                 'is-invalid': (hf.name.touched || isSubmitted) && hf.name.errors?.required}" />
                </div>
                <div class="col-12 col-sm-6 form-group">
-                  <label class="fs-5 mb-3 required">HSN</label>
-                  <input type="text" class="form-control fs-5" formControlName="hsn" [ngClass]="{
-                'is-invalid': (hf.hsn.touched || isSubmitted) && hf.hsn.errors?.required}" />
+                  <label class="fs-6 mb-3">HSN</label>
+                  <input type="text" class="form-control fs-6" formControlName="hsn" />
                </div>
                <div class="col-12 col-sm-6 form-group">
-                  <label class="fs-5 mb-3 required">SKU</label>
-                  <input type="text" class="form-control fs-5" formControlName="sku" [ngClass]="{
+                  <label class="fs-6 mb-3 required">SKU</label>
+                  <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
                 'is-invalid': (hf.sku.touched || isSubmitted) && hf.sku.errors?.required}" />
                </div>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product tax-->
-                  <label class="fs-5 mb-3 required">Tax</label>
+                  <label class="fs-6 mb-3 required">Tax</label>
                   <div class="brand-select">
                      <ng-select [items]="taxClassData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedTax"
                         [ngModelOptions]="{standalone: true}" placeholder="Select tax class">
@@ -36,21 +35,21 @@
                </div>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product brand-->
-                  <label class="fs-5 mb-3 required">Brand</label>
+                  <label class="fs-6 mb-3 required">Brand</label>
                   <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
                      [ngModelOptions]="{standalone: true}" placeholder="Select brand">
                   </ng-select>
                </div>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product main category-->
-                  <label class="fs-5 mb-3 required">Main Category</label>
+                  <label class="fs-6 mb-3 required">Main Category</label>
                   <ng-select [items]="maincategories" bindLabel="name" bindValue="_id"
                      [(ngModel)]="selectedMainCategory" placeholder="Select category" [multiple]=true
                      [ngModelOptions]="{standalone: true}" (change)="mainCategory()">
                   </ng-select>
                </div>
                <div class="col-12 col-sm-6 form-group" *ngIf="showMainCategory">
-                  <label class="fs-5 mb-3 required">Default Category</label>
+                  <label class="fs-6 mb-3 required">Default Category</label>
                   <ng-select [items]="defaultcategories" bindLabel="name" bindValue="_id"
                      [(ngModel)]="selectedDefaultCategory" placeholder="Select default category" [multiple]=false
                      [ngModelOptions]="{standalone: true}">
@@ -59,7 +58,7 @@
                </div>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product shipping-->
-                  <label class="fs-5 mb-3 required">Shipping Method</label>
+                  <label class="fs-6 mb-3 required">Shipping Method</label>
                   <select class="form-select" formControlName="shippingMethod"
                      (change)="checkShippingMethod($event.target)"
                      [ngClass]="{'is-invalid': (hf.shippingMethod.touched || isSubmitted) && hf.shippingMethod.errors?.required}">
@@ -71,7 +70,7 @@
                <ng-container *ngIf="isShipping">
                   <!-- Product shipping cost -->
                   <div class="col-12 col-sm-6 form-group">
-                     <label class="fs-5 mb-3 required">Shipping Cost </label>
+                     <label class="fs-6 mb-3 required">Shipping Cost </label>
                      <div class="input-group mb-3">
                         <span class="input-group-text">Rs.</span>
                         <input type="number" class="form-control" formControlName="shippingCost" />
@@ -81,7 +80,7 @@
                </ng-container>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product COD -->
-                  <label class="fs-5 mb-3">COD Available?</label>
+                  <label class="fs-6 mb-3">COD Available?</label>
                   <select class="form-select" formControlName="cod" (change)="checkCod($event.target)">
                      <option value="Check" disabled>-- Select an option --</option>
                      <option value="true">Yes</option>
@@ -92,7 +91,7 @@
                   <!-- Product COD cost -->
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 required"> COD Charge </label>
+                        <label class="fs-6 mb-3 required"> COD Charge </label>
                         <div class="input-group mb-3">
                            <span class="input-group-text">Rs.</span>
                            <input type="number" class="form-control" formControlName="codCharge" />
@@ -103,7 +102,7 @@
                </ng-container>
                <div class="col-12 col-sm-6 form-group">
                   <!-- Product return -->
-                  <label class="fs-5 mb-3">Returnable Product?</label>
+                  <label class="fs-6 mb-3">Returnable Product?</label>
                   <select class="form-select" formControlName="returnable" (change)="checkReturnable($event.target)">
                      <option value="Check" disabled>-- Select an option --</option>
                      <option value="true">Yes</option>
@@ -114,13 +113,13 @@
                   <!-- Product return days-->
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 required">Return Days</label>
-                        <input type="number" class="form-control fs-5" formControlName="returnDays" />
+                        <label class="fs-6 mb-3 required">Return Days</label>
+                        <input type="number" class="form-control fs-6" formControlName="returnDays" />
                      </div>
                   </div>
                </ng-container>
                <div class="col-12 col-sm-6 form-group">
-                  <label class="fs-5 mb-3">Active Product?</label>
+                  <label class="fs-6 mb-3">Active Product?</label>
                   <select class="form-select" formControlName="isActive"
                      [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
                      <option value="Check" disabled>-- Select an option --</option>
@@ -129,7 +128,7 @@
                   </select>
                </div>
                <div class="col-12 col-sm-6 form-group">
-                  <label class="fs-5 mb-3">Archive Product?</label>
+                  <label class="fs-6 mb-3">Archive Product?</label>
                   <select class="form-select" formControlName="isArchive"
                      [ngClass]="{'is-invalid': (hf.isActive.touched || isSubmitted) && hf.isActive.errors?.required}">
                      <option value="Check" disabled>-- Select an option --</option>
@@ -144,7 +143,7 @@
                   </div>
                   <div class="col-12 col-sm-6 form-group">
                      <div class="image-upload">
-                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        <input type="file" class="form-control fs-6" name="image" accept="image/*"
                            (change)="handleInputBasicChange($event)" style="height: 100px;" required>
                         <div class="image-upload-div">
                            <div class="left-img">
@@ -184,9 +183,9 @@
             </div>
          </form>
          <div class="col-12 d-flex align-items-center justify-content-end">
-            <a (click)="hideEditModal()" class=" btn btn-secondary btn-sm fs-5 text-dark"
+            <a (click)="hideEditModal()" class=" btn btn-secondary btn-sm fs-6 text-dark"
                style="width: 200px; margin-right: 20px;">Cancel</a>
-            <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
+            <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
                (click)="onSubmit()">Update</button>
          </div>
       </div>

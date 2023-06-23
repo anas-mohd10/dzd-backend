@@ -19,6 +19,8 @@ export class ReviewsListComponent implements OnInit {
   fromDate: FormControl = new FormControl('')
   toDate: FormControl = new FormControl('')
   lastPage: Boolean = false
+  review: FormControl = new FormControl('')
+  data: any = {}
 
   constructor(
     private reviewService: ReviewService,
@@ -28,25 +30,15 @@ export class ReviewsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.searchReviews()
+    this.getReviews()
   }
 
-  reviewAction() {
-    // let state = event.checked
-    // this.data = {
-    //   isActive: state
-    // }
-    // this.reviewService.updateReview(code, this.data).subscribe((res: any) => {
-    //   if (res.errorCode != 0) {
-    //     this.toastr.error(res?.message);
-    //   } else if (res.errorCode == 0) {
-    //     this.toastr.success(res?.message);
-    //     document.location.reload()
-    //   }
-    // })
+  updateReview(data: any) {
   }
 
-  searchReviews() {
+  selectReview(data: any) { this.data = data }
+
+  getReviews() {
     let payload = {
       page: this.page,
       limit: this.limit?.value,
@@ -59,7 +51,7 @@ export class ReviewsListComponent implements OnInit {
     this.reviewService.searchReviews(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.reviews = res?.result?.data
-        for (let review of this.reviews) review.created = new Date(review?.created).toDateString()
+        for (let data of this.reviews) data.created = new Date(data?.created).toDateString()
         this.page = res?.result?.page
         this.lastPage = res?.result?.lastPage
         this.ChangeDetectorRef.markForCheck()
@@ -69,12 +61,12 @@ export class ReviewsListComponent implements OnInit {
 
   getPreviousPage() {
     this.page -= this.page
-    this.searchReviews()
+    this.getReviews()
   }
 
   getNextPage() {
     this.page += this.page
-    this.searchReviews()
+    this.getReviews()
   }
 
   clearFilters() {
@@ -82,7 +74,7 @@ export class ReviewsListComponent implements OnInit {
     this.isActive.setValue('')
     this.fromDate.setValue('')
     this.toDate.setValue('')
-    this.searchReviews()
+    this.getReviews()
     this.limit.setValue(20)
     this.page = 1
   }

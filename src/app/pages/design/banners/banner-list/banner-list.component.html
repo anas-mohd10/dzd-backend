@@ -20,9 +20,11 @@
          </div>
       </div>
    </div>
+
    <div class="total-count-container col-sm-3 bg-dark" *ngIf="count != 0">
       <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} banners</h4>
    </div>
+
    <div class="banner-card-container view-container col-12">
       <ng-container *ngFor="let banner of banners">
          <div class="banner-card card-hover editable-{{banner?.isEditable}}"
@@ -41,10 +43,8 @@
                      </div>
                      <div class="banner-status fs-6 active" *ngIf="banner?.isActive">Active</div>
                      <div class="banner-status fs-6 inactive" *ngIf="!banner?.isActive">Inactive</div>
-
                   </div>
                </div>
-
             </div>
             <div class="banner-card-right">
                <ng-container *ngFor="let banner of banner?.files?.mobile">
@@ -62,6 +62,7 @@
          </div>
       </ng-container>
    </div>
+
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">

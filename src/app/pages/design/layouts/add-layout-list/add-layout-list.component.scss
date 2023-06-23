@@ -1,5 +1,11 @@
-.crop-image{
-   .note{
+.crop-image {
+   .note {
       margin: 0 0 30px 0;
    }
+}
+
+label,
+input[type=button] {
+   font-weight: normal !important;
+   width: 100%;
 }

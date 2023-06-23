@@ -12,7 +12,6 @@ import { WidgetsModule } from 'src/app/shared/partials';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-
 @NgModule({
   declarations: [
     BannerListComponent,

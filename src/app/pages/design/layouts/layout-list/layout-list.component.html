@@ -26,7 +26,6 @@
    <!-- card container start -->
    <div class="layout-card-container view-container col-12">
       <ng-container *ngFor="let layout of layouts">
-         <!-- <div class="col-sm-6"> -->
          <div class="layout-card card-hover editable-{{layout?.isEditable}}"
             [ngClass]="{'inactive-layout': !layout?.isActive, 'active-layout': layout?.isActive}">
             <div class="layout-card-left">
@@ -34,9 +33,9 @@
                <div class="layout-from">Valid from <span>{{layout?.validFrom}}</span></div>
                <div class="layout-till">Valid to <span>{{layout?.validTo}}</span></div>
                <div class="layout-grid-count">Grid count <span>{{layout?.gridCount}}</span></div>
-               <div class="layout-type">{{layout?.type}}
-                  <div class="layout-status active" *ngIf="layout?.isActive">Active</div>
-                  <div class="layout-status inactive" *ngIf="!layout?.isActive">Inactive</div>
+               <div class="layout-type">{{layout?.type}}</div>
+               <div class="layout-status active" [ngClass]="{'inactive': !layout?.isActive}" *ngIf="layout?.isActive">
+                  {{layout?.isActive ? 'Active' : 'Inactive'}}
                </div>
                <div class="layout-edit-btn">
                   <button class="btn btn-sm bg-secondary text-dark fs-5" style="width: 100px; font-weight: 500;"
@@ -46,12 +45,13 @@
             <div class="layout-card-right">
                <div class="layout-images">
                   <ng-container *ngFor="let images of layout?.files">
-                     <div class="layout-image"><img src="{{base}}/{{images?.file}}" alt="" srcset=""></div>
+                     <div class="layout-image">
+                        <img src="{{base}}/{{images?.file}}" alt="" srcset="">
+                     </div>
                   </ng-container>
                </div>
             </div>
          </div>
-         <!-- </div> -->
       </ng-container>
       <ng-container *ngIf="count == 0">
          <div class="no-data-container">

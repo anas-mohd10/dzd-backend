@@ -134,7 +134,7 @@ export class UpdateHeadComponent implements OnInit {
   initForm() {
     this.productheadform = this.formBuilder.group({
       name: ['', Validators.required],
-      hsn: ['', Validators.required],
+      hsn: [''],
       sku: ['', Validators.required],
       tax: [''],
       cod: ['false', Validators.required],
@@ -289,6 +289,7 @@ export class UpdateHeadComponent implements OnInit {
     let data = {
       name: this.productheadform.get('name')?.value,
       hsn: this.productheadform.get('hsn')?.value,
+      sku: this.productheadform.get('sku')?.value,
       tax: this.selectedTax,
       brand: this.selectedBrand,
       isActive: this.productheadform.get('isActive')?.value,

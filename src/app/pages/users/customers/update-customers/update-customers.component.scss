@@ -1,7 +1,7 @@
 $hover: #e3e3e3;
 $grey: #888888;
 $white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
+$boxShadow: rgba(0, 0, 0, 0.08);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
 $primaryBackground: #20BDAB40;
@@ -14,4 +14,30 @@ label,
 input[type=button] {
    font-weight: normal !important;
    width: 100%;
+}
+
+.addressWrapper {
+   .addressCards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+
+      .addressCard {
+         background: $white;
+         box-shadow: 0 5px 10px 5px $boxShadow;
+         padding: 10px;
+         border-radius: 10px;
+
+         .address {
+            .type {
+               background: $activeState;
+               color: $white;
+               font-weight: 600;
+               width: max-content;
+               padding: 0 5px;
+               border-radius: 5px;
+            }
+         }
+      }
+   }
 }
