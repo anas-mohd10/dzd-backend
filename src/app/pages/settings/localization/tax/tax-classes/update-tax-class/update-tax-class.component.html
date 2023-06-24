@@ -6,14 +6,14 @@
     </div>
     <div class="row align-items-center">
       <div class="col">
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}" [queryParams]="{ taxClass: taxClass }">{{ editMode
               ? "Update Tax Class" : "Add Tax Class" }}</a>
           </li>
@@ -21,9 +21,9 @@
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
+
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="taxClassForm">
@@ -31,33 +31,37 @@
               <div class="col-12">
                 <h3 class="form-title"><span>Tax Class Details</span></h3>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required"> Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" />
+                  <label class="fs-6 mb-3 required">Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                      'is-invalid':
+                      (tf.name.touched || isSubmitted) &&
+                      tf.name.errors?.required
+                    }" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title"> Description</label>
-                  <input type="text" class="form-control fs-5 description-textarea" formControlName="description" />
+                  <label class="fs-6 mb-3">Description</label>
+                  <input type="text" class="form-control fs-6" formControlName="description" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Status</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                  <label class="fs-6 mb-3">Status</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                     formControlName="isActive">
                     <option value="true" selected>Active</option>
                     <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+              <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required">Tax Rule</label>
-                  <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                    formControlName="rule" (change)="tagRule()" [ngClass]="{
+                  <label class="fs-6 mb-3 required">Tax Rule</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg" (change)="tagRule()"
+                    formControlName="rule" [ngClass]="{
                       'is-invalid':
                       (tf.rule.touched || isSubmitted) &&
                       tf.rule.errors?.required
@@ -79,12 +83,13 @@
                   </ng-container>
                 </div>
               </div>
+
               <div class="col-12 d-flex justify-content-end">
-                <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST}}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+                <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
                   Update
                 </button>
               </div>

@@ -89,7 +89,7 @@ export class AddCollectionComponent implements OnInit {
   initForm() {
     this.collectionForm = this.formBuilder.group({
       name: ['', Validators.required],
-      subname: ['', Validators.required],
+      subname: [''],
       file: [''],
       products: [Validators.required],
       isFeatured: ['false', Validators.required],

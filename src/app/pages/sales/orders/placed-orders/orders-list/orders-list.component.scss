@@ -296,6 +296,8 @@ label {
 
 .emptyNote {
   margin: 0 0 20px 0;
+  display: grid;
+  place-items: center;
 
   .note {
     font-weight: normal;

@@ -1,29 +1,25 @@
 <div class="taxClass-page-container">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder">Tax Class</h1>
     </div>
     <div class="row align-items-center">
       <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-5" color="primary"
-          routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}" style="width: 200px;">
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">
           Add Tax Class
         </button>
       </div>
     </div>
   </div>
-  <!-- Page Header -->
-
-  <!-- Table start -->
   <div class="row">
     <div class="col-sm-12">
       <div class="card card-table">
@@ -32,7 +28,7 @@
             <table datatable [dtOptions]="dtOptions"
               class="table table-center">
               <thead class="thead">
-                <tr class="fs-5">
+                <tr class="fs-6">
                   <th class="text-gray-400 col-md-2">Sl No.</th>
                   <th class="text-gray-400 col-md-2">Tax Class</th>
                   <th class="text-gray-400 col-md-2">Description</th>
@@ -43,13 +39,13 @@
               <tbody>
                 <tr *ngFor="let taxClass of taxClassData; let i = index">
                   <td class="col-md-2">
-                    <h2 class="table-avatar fs-5">{{ i + 1 }}</h2>
+                    <h2 class="table-avatar fs-6">{{ i + 1 }}</h2>
                   </td>
                   <td class="col-md-2">
-                    <h2 class="table-avatar fs-5">{{ taxClass?.name }}</h2>
+                    <h2 class="table-avatar fs-6">{{ taxClass?.name }}</h2>
                   </td>
                   <td class="description-col">
-                    <h2 class="table-avatar fs-5">
+                    <h2 class="table-avatar fs-6">
                       {{ taxClass?.description }}
                     </h2>
                   </td>
@@ -71,7 +67,7 @@
                   </td>
                   <td class="col-md-2">
                     <a routerLink="{{ appRoute.taxClass.UPDATE_TAX_CLASS }}"
-                      [queryParams]="{ taxClass: taxClass?.slug }" class="fs-5 cursor-pointer text-darker"><i
+                      [queryParams]="{ taxClass: taxClass?.slug }" class="fs-6 cursor-pointer text-darker"><i
                         class="bi bi-pen"></i> Edit
                     </a>
                   </td>
