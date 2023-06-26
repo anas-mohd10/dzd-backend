@@ -221,13 +221,12 @@ input[type=button] {
 
    .product-card {
       position: relative;
-      margin: 10px 10px 10px 0;
-      height: 320px;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
+      cursor: pointer;
 
       &:hover {
          background: #ffffff;
@@ -254,8 +253,9 @@ input[type=button] {
    }
 
    .product-image {
-      height: 60%;
+      height: 100%;
       width: 100%;
+      position: relative;
    }
 
    .product-image img {
@@ -266,10 +266,9 @@ input[type=button] {
    }
 
    .product-details {
-      height: 40%;
       width: 100%;
       border-radius: 15px 15px 0 0;
-      padding: 10px 20px;
+      padding: 10px;
    }
 
    .product-brand {
@@ -307,7 +306,6 @@ input[type=button] {
 
    .product-rating {
       font-size: 1.3rem;
-      margin: 0.625rem 0;
       font-weight: 500;
 
       i {
@@ -327,12 +325,11 @@ input[type=button] {
       position: absolute;
       right: 5%;
       top: 5%;
-      width: 27%;
-      height: 2rem;
+      width: max-content;
+      padding: 0 5px;
       background: #00bdab;
       color: #ffffff;
-      padding: 0.3125rem;
-      font-size: 1.2rem;
+      font-size: 1.075rem;
       border-radius: 3.125rem;
       display: flex;
       align-items: center;
@@ -344,13 +341,12 @@ input[type=button] {
       position: absolute;
       right: 5%;
       top: 5%;
-      width: 27%;
-      height: 2rem;
+      width: max-content;
+      padding: 0 5px;
       background: #c64a54;
       color: #ffffff;
       padding: 0.3125rem;
-      font-size: 1.2rem;
-      border-radius: 3.125rem;
+      font-size: 1.075rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -359,11 +355,11 @@ input[type=button] {
 
    .product-offer {
       position: absolute;
-      font-size: 1.2rem;
+      font-size: 1.075rem;
       left: 5%;
       top: 5%;
-      width: 27%;
-      height: 2rem;
+      width: max-content;
+      padding: 0 5px;
       background: #7962a3;
       color: #ffffff;
       border-radius: 3.125rem;
@@ -375,12 +371,11 @@ input[type=button] {
 
    .product-out-stock {
       position: absolute;
-      font-size: 1.2rem;
-      left: 5%;
+      font-size: 1.075rem;
+      right: 5%;
       bottom: 5%;
       width: max-content;
       padding: 0 3px;
-      height: 2rem;
       background: #c52525;
       color: #ffffff;
       border-radius: 3.125rem;
@@ -392,12 +387,11 @@ input[type=button] {
 
    .product-limited-stock {
       position: absolute;
-      font-size: 1.2rem;
-      left: 5%;
+      font-size: 1.075rem;
+      right: 5%;
       bottom: 5%;
       width: max-content;
       padding: 0 5px;
-      height: 2rem;
       background: #d9601b;
       color: #ffffff;
       border-radius: 3.125rem;
@@ -408,7 +402,6 @@ input[type=button] {
    }
 
    .product-stock {
-      font-size: 1.1rem;
       font-weight: 500;
    }
 
@@ -506,4 +499,10 @@ input[type=button] {
          margin: 0 10px;
       }
    }
+}
+
+.productCards {
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   gap: 10px;
 }

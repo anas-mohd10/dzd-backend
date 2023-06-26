@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { AuthService } from 'src/app/includes/services/auth.service';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -18,18 +19,26 @@ export class DashboardComponent implements OnInit {
 
   orderDifference: Number = 0
   orderUp: Boolean = false
-
+  settings: any = {}
   saleDifference: Number = 0
   saleUp: Boolean = false
 
   constructor(
     private DashboardService: DashboardService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AuthService: AuthService
+    private AuthService: AuthService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
     this.userData = this.AuthService.getCurrentUser();
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+      }
+    })
+
     this.DashboardService.getTopSellingProducts({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result

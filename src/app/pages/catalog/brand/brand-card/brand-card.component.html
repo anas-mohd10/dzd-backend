@@ -18,6 +18,7 @@
       </div>
     </div>
   </div>
+  
   <div class="brand-form-container">
     <form [formGroup]="brandform">
       <div class="col-12 row align-items-end justify-content-end">
@@ -46,6 +47,7 @@
       </div>
     </form>
   </div>
+
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} brands</h4>
@@ -55,6 +57,7 @@
         routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}">Archived Brands</button>
     </div>
   </div>
+
   <div class="brand-card-container view-container col-12">
     <ng-container *ngFor="let brand of brands">
       <div class="brand-card card-hover">
@@ -80,9 +83,9 @@
       </div>
     </ng-container>
     <ng-container *ngIf="count == 0">
-      <div class="no-data-container">
-        <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-        <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
+      <div class="emptyNote">
+        <div class="fs-3 fw-bolder">No result found</div>
+        <div class="fs-6 note">We couldn't find any item based on your search</div>
       </div>
     </ng-container>
   </div>

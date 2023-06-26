@@ -23,12 +23,37 @@
 
    <div class="col-12 d-flex justify-content-between">
       <div class="total-count-container col-sm-3 bg-dark">
-         <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} product head</h4>
+         <h4 class="text-white fs-6">Total {{products.length > 0 ? products.length : 0}} product head</h4>
       </div>
-      <div class="left-buttons">
-         <button class="btn btn-secondary cursor-pointer fs-6" style="margin: 0 0 0 10px;" (click)="showFilters()">
-            <i class="bi bi-sort-up" style="font-size: 1.6rem;"></i>
-         </button>
+   </div>
+
+   <div class="row mt-3 d-flex align-items-center justify-content-end">
+      <div class="search-input col-3">
+         <label class="fs-6">&nbsp;</label>
+         <input type="text" placeholder="Search for products here" class="form-control fs-6" [formControl]="keyword"
+            (ngModelChange)="getHeads()">
+      </div>
+      <div class="search-status col-2">
+         <label class="fs-6">Status</label>
+         <select class="form-select fs-6" [formControl]="isActive" (change)="getHeads()">
+            <option value="" disabled>Select an option</option>
+            <option value=true>Active</option>
+            <option value=false>Inactive</option>
+         </select>
+      </div>
+      <div class="search-status col-2">
+         <label class="fs-6">Categories</label>
+         <select class="form-select fs-6" [formControl]="category" (change)="getHeads()">
+            <option value="" disabled>Select an option</option>
+            <ng-container *ngFor="let category of categories">
+               <option value={{category?.catid}}>{{category?.name}}</option>
+            </ng-container>
+         </select>
+      </div>
+      <div class="search-input col-2">
+         <label class="fs-6 mb-1">&nbsp;</label>
+         <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
+            (click)="clearFilters()">
       </div>
    </div>
 
@@ -61,42 +86,36 @@
             </div>
          </div>
       </ng-container>
-      <ng-container *ngIf="count == 0">
-         <div class="no-data-container">
-            <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-            <h2 class="fw-bolder fs-4">Sorry, we haven't found any data</h2>
+      <ng-container *ngIf="products.length == 0">
+         <div class="emptyNote">
+            <div class="fs-3 fw-bolder">No result found</div>
+            <div class="fs-5 note">We couldn't find any item based on your search.</div>
          </div>
       </ng-container>
    </div>
 
-   <nav aria-label="Page navigation example" *ngIf="count != 0">
-      <ul class="pagination-container">
-         <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
-            <a class="page-link" (click)="loadPrevious()" aria-label="Previous">
-               <i class="bi bi-arrow-left-circle"></i>
-            </a>
+   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+      <div class="filtering">
+         <span class="fs-6 text-dark">Show</span>
+         <select [formControl]="limit" (change)="getHeads()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+         </select>
+         <span class="fs-6 text-dark">entries</span>
+      </div>
+      <div class="pagination">
+         <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
+            <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
          </div>
-         <div class="page-change-icon" *ngIf="selectedpage == 1">
-            <a class="page-link page-link-disabled" aria-label="Previous">
-               <i class="bi bi-arrow-left-circle"></i>
-            </a>
+         <div class="paginationPage">{{page}}</div>
+         <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
+            <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
          </div>
-         <li class="page-item" *ngFor="let key of pages">
-            <a *ngIf="selectedpage != key" class="page-link" (click)="fetchProduct(key, limit)">{{key}}</a>
-            <a *ngIf="selectedpage == key" class="page-link page-active" (click)="fetchProduct(key, limit)">{{key}}</a>
-         </li>
-         <div class="page-change-icon" *ngIf="selectedpage != totaldata">
-            <a class="page-link" (click)="loadNext()" aria-label="Next">
-               <i class="bi bi-arrow-right-circle"></i>
-            </a>
-         </div>
-         <div class="page-change-icon" *ngIf="selectedpage == totaldata">
-            <a class="page-link page-link-disabled" aria-label="Next">
-               <i class="bi bi-arrow-right-circle"></i>
-            </a>
-         </div>
-      </ul>
-   </nav>
+      </div>
+   </div>
 </div>
 
 <div class="variant-products-overlay" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
@@ -191,21 +210,17 @@
                         [ngClass]="{'strike-price fs-6': product?.price?.mrp > product?.price?.offer}">
                         {{settings?.currency}} {{product?.price?.mrp}}</div>
                   </div>
-                  <div class="product-rating fs-6">
-                     {{product?.rating}} <i class="bi bi-star-fill"></i>
-                  </div>
                </div>
                <div class="product-stock" *ngIf="product?.stock > 5">{{product?.stock}} left in stock</div>
+               <div class="product-sku">SKU : {{product?.sku}}</div>
             </div>
          </div>
       </ng-container>
 
       <ng-container *ngIf="variantProducts.length == 0">
-         <div>
-            <div class="emptyNote">
-               <div class="fs-3 fw-bolder">No result found</div>
-               <div class="fs-5 note">We couldn't find any item based on your search.</div>
-            </div>
+         <div class="emptyNote">
+            <div class="fs-3 fw-bolder">No result found</div>
+            <div class="fs-5 note">We couldn't find any item based on your search.</div>
          </div>
       </ng-container>
    </div>
@@ -223,69 +238,13 @@
          <span class="fs-6 text-dark">entries</span>
       </div>
       <div class="pagination">
-         <div class="paginationBefore" [ngClass]="{'disabled': variantPage == 1}" (click)="getPreviousPage()">
+         <div class="paginationBefore" [ngClass]="{'disabled': variantPage == 1}" (click)="getVariantPreviousPage()">
             <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
          </div>
          <div class="paginationPage">{{variantPage}}</div>
-         <div class="paginationNext" [ngClass]="{'disabled': variantLastPage}" (click)="getNextPage()">
+         <div class="paginationNext" [ngClass]="{'disabled': variantLastPage}" (click)="getVariantNextPage()">
             <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
          </div>
-      </div>
-   </div>
-</div>
-
-<div class="filters-overlay" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }"></div>
-<div class="filters-container" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }">
-   <div class="filters-head">
-      <div class="filters-container-title">Filters </div>
-      <div class="filters-close-button">
-         <div class="close-button" (click)="hideFilters()">
-            <i class="bi bi-x-lg"></i>
-         </div>
-      </div>
-   </div>
-   <div class="filters">
-      <div class="product-form-container">
-         <form [formGroup]="productform">
-            <div class="col-12 row" style="display: flex; flex-direction: column;">
-               <div class="search-input col-12">
-                  <label class="fs-6 mb-3">Search</label>
-                  <input type="text" placeholder="Search for products here..." class="form-control fs-6"
-                     formControlName="name" (ngModelChange)="searchProduct()">
-               </div>
-               <div class="search-category col-12">
-                  <label class="fs-6 mb-3">Category</label>
-                  <div class="category-checkbox-container">
-                     <ng-container *ngFor="let category of categories">
-                        <div class="category-checkbox">
-                           <div class="form-check">
-                              <input type="radio" name="category_radio" id="category" class="form-check-input"
-                                 (click)="selectCategory(category?.catid)" />
-                              <label class="form-check-label fs-6" for="flexCheckDefault">
-                                 {{category?.name}}
-                              </label>
-                           </div>
-                        </div>
-                     </ng-container>
-                  </div>
-                  <ng-container *ngIf="categories.length == 0">
-                     No categories found
-                  </ng-container>
-               </div>
-               <div class="search-status col-12">
-                  <label class="fs-6 mb-3">Status</label>
-                  <select name="" id="" class="form-select fs-6" formControlName="isActive" (change)="searchProduct()">
-                     <option value="" disabled>Select an option</option>
-                     <option value=true>Active</option>
-                     <option value=false>Inactive</option>
-                  </select>
-               </div>
-               <div class="search-submit col-12">
-                  <button type="button" class="form-control fw-bolder fs-6 bg-secondary text-dark" (click)="onReload()"
-                     style="outline: none; border: none;">Clear Filters</button>
-               </div>
-            </div>
-         </form>
       </div>
    </div>
 </div>

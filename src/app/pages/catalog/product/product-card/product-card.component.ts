@@ -15,35 +15,10 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 })
 export class ProductCardComponent implements OnInit {
   appRoute = appRoutes;
-  products: any;
+  products: Array<any> = [];
   productform: any;
   variantProductform: any;
   base: any
-
-  //Page and limit for query
-  page: any = 1;
-  pages: any = []
-  nextpages: any = []
-  currpage: any = 1;
-  limit: any = 8;
-  selectedpage: any = 1
-  max: any = 3
-
-  //Total no. of data from backend
-  totalcount: any;
-  totaldata: any;
-  count: any = 0
-
-  //Conditions
-  isData: boolean = true;
-  showBtn: boolean = true;
-  showLessBtn: boolean = false;
-  isNext: boolean = true
-
-  //Filters array
-  filters: any = [];
-  show: any;
-  shifted: any
 
   showVariants: Boolean = false
   variantproduct: any
@@ -53,7 +28,7 @@ export class ProductCardComponent implements OnInit {
   productProdid: any = null
   variantTotalcount: any
   variantLastPage: Boolean = false
-  variantPage: Number = 1;
+  variantPage: number = 1;
   variantPageLimit: FormControl = new FormControl('20')
   settings: any = {}
 
@@ -71,12 +46,19 @@ export class ProductCardComponent implements OnInit {
   categories: any = [];
 
   showFilter: Boolean = false
-  category: any;
   inputText: any = 'name';
   isUpdateModal: Boolean = false
   sendId: any
   isClose: any
   checkstatus: boolean = true;
+
+
+  isActive: FormControl = new FormControl('')
+  keyword: FormControl = new FormControl('')
+  limit: FormControl = new FormControl('20')
+  category: FormControl = new FormControl('')
+  page: number = 1
+  lastPage: Boolean = false
 
   constructor(
     private productService: ProductService,
@@ -91,24 +73,13 @@ export class ProductCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.base = environment.base
-    setTimeout(() => {
-      this.setPages()
-    })
     this.initForm()
-
-    this.ProductHeadService.searchProductHead(this.productform.value, this.page).subscribe((res: any) => {
-      this.products = res?.result?.data
-      this.count = this.products.length
-      this.totalcount = res?.result?.total_item
-      this.limit = res?.result?.items_per_page
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.setPages()
-      this.cdr.markForCheck();
-    });
+    this.getHeads()
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+        this.cdr.markForCheck();
       }
     })
 
@@ -128,12 +99,6 @@ export class ProductCardComponent implements OnInit {
   }
 
   initForm() {
-    this.productform = this.formBuilder.group({
-      name: [''],
-      isActive: [''],
-      category: ['']
-    });
-
     this.variantProductform = new FormGroup({
       name: new FormControl(''),
       isActive: new FormControl(''),
@@ -141,102 +106,42 @@ export class ProductCardComponent implements OnInit {
     });
   }
 
-  setPages() {
-    this.currpage = 1
-    this.selectedpage = 1
-    this.pages.length = 0
-    if (this.totaldata > 3) {
-      for (let i = 1; i <= this.max; i++) {
-        this.pages.push(i)
-      }
-    } else {
-      for (let i = 1; i <= this.totaldata; i++) {
-        this.pages.push(i)
-      }
+  getNextPage() {
+    this.page += 1
+    this.getHeads()
+  }
+
+  getPreviousPage() {
+    this.page -= 1
+    this.getHeads()
+  }
+
+  clearFilters() {
+    this.keyword.setValue('')
+    this.limit.setValue('20')
+    this.category.setValue('')
+    this.isActive.setValue('')
+    this.page = 1
+    this.getHeads()
+  }
+
+  getHeads() {
+    let payload = {
+      limit: this.limit.value,
+      page: this.page,
+      keyword: this.keyword.value,
+      isActive: this.isActive.value,
+      category: this.category.value
     }
-  }
 
-  onReload() {
-    this.productform.get('name')?.setValue('')
-    this.productform.get('isActive')?.setValue('')
-    this.searchProduct()
-  }
-
-  searchProduct() {
-    this.currpage = 1
-    let filters = { ...this.productform.value }
-    filters['category'] = this.category
-    this.ProductHeadService.searchProductHead(filters, this.page).subscribe((res: any) => {
+    this.ProductHeadService.searchProductHead(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
-        this.count = this.products.length
-        this.totalcount = res?.result?.total_item
-        this.totaldata = Math.ceil(this.totalcount / this.limit)
-        this.setPages()
-        this.cdr.markForCheck();
-        this.isData = true
+        this.page = res?.result?.page
+        this.lastPage = res?.result?.lastPage
+        this.cdr.markForCheck()
       }
     })
-  }
-
-  selectCategory(id: any) {
-    this.category = id
-    this.searchProduct()
-  }
-
-  fetchProduct(page: any, limit: any) {
-    this.selectedpage = page
-    this.currpage = page
-    this.getData(this.productform.value, page, limit)
-  }
-
-  loadNext() {
-    this.currpage += 1
-    this.selectedpage += 1
-    if (this.currpage <= 3) {
-      if (this.currpage <= this.totaldata) {
-        this.getData(this.productform.value, this.currpage, this.limit)
-      } else {
-        this.isNext = false
-      }
-    } else {
-      this.shifted = this.pages.shift() //Captures the shifted number from pagination array
-      this.pages.push(this.currpage)
-      if (this.currpage <= this.totaldata) {
-        this.getData(this.productform.value, this.currpage, this.limit)
-      } else {
-        this.isNext = false
-      }
-    }
-  }
-
-  loadPrevious() {
-    this.currpage -= 1
-    this.selectedpage -= 1
-    if (this.currpage > 3 && this.currpage <= this.totaldata && this.currpage > 0) {
-      this.getData(this.productform.value, this.currpage, this.limit)
-    }
-    else {
-      if (this.pages[0] != 1) {
-        this.pages.pop()
-        this.pages.unshift(this.shifted)
-        this.shifted -= 1
-        this.getData(this.productform.value, this.currpage, this.limit)
-      } else {
-        this.getData(this.productform.value, this.currpage, this.limit)
-      }
-    }
-  }
-
-  getData(data: any, page: any, limit: any) {
-    this.ProductHeadService.searchProductHead(data, page).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.products = res?.result?.data
-        this.count = this.products.length
-        this.cdr.markForCheck();
-      }
-    })
-    this.isNext = true
   }
 
   getProducts(name: any, prodid: any) {
@@ -278,27 +183,14 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
-  getPreviousPage() {
-
+  getVariantPreviousPage() {
+    this.variantPage -= 1
+    this.searchProducts()
   }
 
-  getNextPage() {
-
-  }
-
-  setVariantPages() {
-    this.variantCurrpage = 1
-    this.variantSelectedpage = 1
-    this.variantPages.length = 0
-    if (this.variantTotalData > 3) {
-      for (let i = 1; i <= this.variantMax; i++) {
-        this.variantPages.push(i)
-      }
-    } else {
-      for (let i = 1; i <= this.variantTotalData; i++) {
-        this.variantPages.push(i)
-      }
-    }
+  getVariantNextPage() {
+    this.variantPage += 1
+    this.searchProducts()
   }
 
   hideVariantProducts() {

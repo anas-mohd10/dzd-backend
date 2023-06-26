@@ -3,29 +3,28 @@
       <div class="page-title">
          <h1 class="fw-bolder">Brands</h1>
       </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb fw-bolder">
-               <li class="breadcrumb-item fs-5">
+      <div class="row">
+         <div class="col d-flex align-items-start justify-content-between">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}">Archived Brands</a>
                </li>
             </ul>
          </div>
       </div>
    </div>
-   <!-- Form start -->
+
    <div class="brand-form-container">
       <form [formGroup]="brandform">
          <div class="col-12 row align-items-end justify-content-end">
             <div class="search-input col-sm-4" style="padding: 0;">
-               <!-- <label class="fs-5">Search</label> -->
-               <input type="text" placeholder="Search for brands here..." class="form-control fs-5"
+               <input type="text" placeholder="Search for brands here..." class="form-control fs-6"
                   formControlName="name" (ngModelChange)="searchBrand()">
             </div>
             <div class="search-submit col-sm-2">
@@ -35,53 +34,43 @@
          </div>
       </form>
    </div>
-   <!-- Form end -->
 
    <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white">Total {{totalcount ? totalcount : 0}} archived brands</h4>
+      <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} archived brands</h4>
    </div>
 
-   <!-- Card start -->
-   <div class="brand-card-container view-container">
+   <div class="brand-card-container view-container col-12">
       <ng-container *ngFor="let brand of brands">
          <div class="brand-card card-hover">
+            <div class="editButton">
+               <div routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }">
+                  <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+               </div>
+            </div>
+
+            <div class="brand-image">
+               <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+            </div>
+
             <div class="brand-details">
-               <div class="brand-image">
-                  <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
+               <div class="brand-name fs-4 fw-bolder mb-3">{{brand?.name}}</div>
+               <div class="fs-6 brand-featured-{{brand?.isFeatured}}">
+                  {{brand?.isFeatured ? 'Featured' : 'Not featured'}}
                </div>
-               <div class="flex-1">
-                  <div class="brand-name fs-3">{{brand?.name}}</div>
-                  <div class="brand-featured-{{brand?.isFeatured}}">
-                     <ng-container *ngIf="brand?.isFeatured == true">Featured</ng-container>
-                     <ng-container *ngIf="brand?.isFeatured == false">Not Featured</ng-container>
-                  </div>
-               </div>
-            </div>
-            <div class="flex-21">
-               <div class="brand-status-{{brand?.isActive}}">
-                  <ng-container *ngIf="brand?.isActive == true">Active</ng-container>
-                  <ng-container *ngIf="brand?.isActive == false">Inactive</ng-container>
-               </div>
-               <div class="card-edit-btn">
-                  <button routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }"
-                     class="fs-5 cursor-pointer text-darker">
-                     Edit
-                  </button>
+               <div class="fs-6 brand-status-{{brand?.isActive}}">
+                  {{brand?.isActive ? 'Active' : 'Inactive'}}
                </div>
             </div>
          </div>
       </ng-container>
-
       <ng-container *ngIf="count == 0">
-         <div class="no-data-container">
-            <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
+         <div class="emptyNote">
+            <div class="fs-3 fw-bolder">No result found</div>
+            <div class="fs-6 note">We couldn't find any item based on your search</div>
          </div>
       </ng-container>
-
    </div>
-   <!-- Card end -->
-   <!-- Pagination start -->
+
    <nav aria-label="Page navigation example" *ngIf="count != 0">
       <ul class="pagination-container">
          <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">

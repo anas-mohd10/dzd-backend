@@ -144,7 +144,7 @@ $grey: #888888;
     align-items: center;
 
     .attributes-header-left {
-      font-size: 1.7rem;
+      font-size: 1.4rem;
       font-weight: 700;
     }
 
@@ -202,7 +202,7 @@ $grey: #888888;
 
   .attributes-result-cards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 
     .attribute-card {
@@ -224,13 +224,11 @@ $grey: #888888;
 
           .attribute-name,
           .attribute-type {
-            font-size: 1.2rem;
             color: #000000;
             margin: 0 1.875rem 0 0;
 
             span {
-              font-size: 1.4rem;
-              font-weight: 600;
+              font-weight: 700;
             }
           }
         }
@@ -238,35 +236,28 @@ $grey: #888888;
         .attribute-edit {
           cursor: pointer;
           color: #222222;
-          font-size: 1.2rem;
         }
       }
 
       .published {
         i {
           color: #229359;
-          font-size: 1.2rem;
         }
 
         span {
           color: #000000;
           margin: 0 0 0 0.625rem;
-          font-weight: 600;
-          font-size: 1.2rem;
         }
       }
 
       .unpublished {
         i {
           color: #eb2b2b;
-          font-size: 1.2rem;
         }
 
         span {
           color: #000000;
           margin: 0 0 0 0.625rem;
-          font-weight: 600;
-          font-size: 1.2rem;
         }
       }
 

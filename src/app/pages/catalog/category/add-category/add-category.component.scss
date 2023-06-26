@@ -8,6 +8,10 @@
    }
 }
 
+label {
+   font-weight: normal !important;
+}
+
 .attributes-section {
 
    .save-attribute-btn {
@@ -128,10 +132,10 @@
    }
 }
 
-#previewBanner{
-  width: 400px ;
-  height: 200px ;
-  object-fit: cover;
+#previewBanner {
+   width: 400px;
+   height: 200px;
+   object-fit: cover;
 }
 
 .attr-added-container {

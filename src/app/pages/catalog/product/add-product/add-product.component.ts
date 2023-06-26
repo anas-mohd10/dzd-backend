@@ -266,8 +266,8 @@ export class AddProductComponent implements OnInit {
     this.productform = this.formBuilder.group({
       name: ['', Validators.required],
       sku: ['', Validators.required],
-      mrpPrice: ['', Validators.required],
-      offerPrice: [''],
+      mrpPrice: ['', [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]],
+      offerPrice: ['', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')],
       stock: ['', Validators.required],
       moq: ['', Validators.required],
       maxOrderQuantity: ['', Validators.required],

@@ -121,7 +121,6 @@
                     <label class="fs-6 mb-3">Background</label>
                     <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                       formControlName="background" (change)="getColors('background', $event.target)" />
-                    <span>{{background}}</span>
                   </div>
                 </div>
                 <div class="mb-3 col-sm-6">
@@ -129,7 +128,6 @@
                     <label class="fs-6 mb-3">Border</label>
                     <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
                       style="height: 50px;" (change)="getColors('border', $event.target)" />
-                    <span>{{border}}</span>
                   </div>
                 </div>
                 <div class="mb-3 col-sm-6">
@@ -143,7 +141,6 @@
                     <label class="fs-6 mb-3">Color</label>
                     <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                       formControlName="color" (change)="getColors('color', $event.target)" />
-                    <span>{{color}}</span>
                   </div>
                 </div>
                 <div class="mb-3 col-sm-6">
@@ -413,8 +410,8 @@
                       <div class="attribute-card">
                         <div class="attribute-card-header">
                           <div class="attribute-details">
-                            <div class="attribute-name">Name : <span>{{attribute?.name}}</span></div>
-                            <div class="attribute-type">Type : <span>{{attribute?.type}}</span></div>
+                            <div class="attribute-name">Name : <span class="fs-6">{{attribute?.name}}</span></div>
+                            <div class="attribute-type">Type : <span class="fs-6">{{attribute?.type}}</span></div>
                           </div>
                           <div class="attribute-remove-button" (click)="removeAttribute(attribute?.id)">
                             Remove

@@ -6,14 +6,14 @@
     </div>
     <div class="row align-items-center">
       <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb fw-bolder">
-          <li class="breadcrumb-item fs-5">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.category.ADD_CATEGORY }}">{{editMode ? "Update Category" : "Add Category"}}</a>
           </li>
         </ul>
@@ -21,17 +21,16 @@
     </div>
   </div>
 
-  <!-- /Page Header -->
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-sm-12 fs-6">
       <div class="card">
         <ul class="category-tabs nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active fw-bolder" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+            <button class="nav-link active fw-bolder fs-6" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
               type="button" role="tab" aria-controls="home" aria-selected="true">Category Details</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link fw-bolder" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+            <button class="nav-link fw-bolder fs-6" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
               type="button" role="tab" aria-controls="profile" aria-selected="false">
               Category Attributes
             </button>
@@ -43,20 +42,20 @@
               <div class="category-details-section tab-pane fade show active" id="home" role="tabpanel"
                 aria-labelledby="home-tab">
                 <div class="row">
-                  <div class="col-12">
-                    <h2 class="form-title" style="font-weight: 600;"><span>Category Details</span></h2>
-                  </div>
-                  <div class="col-sm-6">
+
+                  <h3 class="mb-3 fw-bolder">Category Details</h3>
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3 required">Category Name</label>
-                      <input type="text" placeholder="Category name" class="form-control fs-5" formControlName="name"
+                      <label class="fs-6 mb-3 required">Category Name</label>
+                      <input type="text" placeholder="Category name" class="form-control fs-6" formControlName="name"
                         [ngClass]="{'is-invalid': (bf.name.touched || isSubmitted) && bf.name.errors?.required}" />
-                      <div class="fs-7 mt-3">A category name is required and recommended to be unique.</div>
                     </div>
                   </div>
-                  <div class="col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3 required">Root Category</label>
+                      <label class="fs-6 mb-3 required">Root Category</label>
                       <select class="form-select" aria-label="-- select --" formControlName="isRoot"
                         (change)="handleCheckBox($event.target)"
                         [ngClass]="{ 'is-invalid': (bf.isRoot.touched || isSubmitted) && bf.isRoot.errors?.required}">
@@ -64,13 +63,13 @@
                         <option value="false">No</option>
                         <option value="true">Yes</option>
                       </select>
-                      <div class="fs-7 mt-3">Kindly confirm whether this is a root category or not. </div>
                     </div>
                   </div>
+
                   <ng-container *ngIf="!isChecked">
-                    <div class="col-12 col-sm-6">
+                    <div class="col-6 mb-3">
                       <div class="form-group">
-                        <label class="fs-5 mb-3 required">Parent Category</label>
+                        <label class="fs-6 mb-3 required">Parent Category</label>
                         <select class="form-select" aria-label="-- select --" formControlName="parent"
                           [ngClass]="{'is-invalid':(bf.parent.touched || isSubmitted) && bf.parent.errors?.required}"
                           (change)="getParent($event.target)">
@@ -80,30 +79,33 @@
                       </div>
                     </div>
                   </ng-container>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Status</label>
-                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                      <label class="fs-6 mb-3">Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                         formControlName="isActive">
                         <option value="false" selected>Inactive</option>
                         <option value="true">Active</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Featured Category?</label>
-                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                      <label class="fs-6 mb-3">Featured Category?</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                         formControlName="isFeatured">
                         <option value="false" selected>No</option>
                         <option value="true">Yes</option>
                       </select>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Archive Category?</label>
-                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                      <label class="fs-6 mb-3">Archive Category?</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                         formControlName="isArchive">
                         <option value="false" selected>No</option>
                         <option value="true">Yes</option>
@@ -111,53 +113,52 @@
                     </div>
                   </div>
 
-                  <!-- Category styles start -->
-                  <div class="col-12">
-                    <h2 class="form-title" style="font-weight: 600;"><span>Category Styles</span></h2>
-                  </div>
-                  <div class="col-12 col-sm-6">
+                  <h3 class="mb-3 fw-bolder">Category Styles</h3>
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Background</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                      <label class="fs-6 mb-3">Background</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                         formControlName="background" (change)="getColors('background', $event.target)" />
-                      <span>{{background}}</span>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Border</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
+                      <label class="fs-6 mb-3">Border</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
                         style="height: 50px;" (change)="getColors('border', $event.target)" />
-                      <span>{{border}}</span>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Border Radius</label>
-                      <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+                      <label class="fs-6 mb-3">Border Radius</label>
+                      <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Color</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
+                      <label class="fs-6 mb-3">Color</label>
+                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                         formControlName="color" (change)="getColors('color', $event.target)" />
-                      <span>{{color}}</span>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Font Weight</label>
-                      <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+                      <label class="fs-6 mb-3">Font Weight</label>
+                      <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
+
+                  <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Font Size ( in px )</label>
-                      <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+                      <label class="fs-6 mb-3">Font Size ( in px )</label>
+                      <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
                     </div>
                   </div>
-                  <!-- Category styles end -->
 
                   <div class="col-12">
                     <div class="col-12">
@@ -165,7 +166,7 @@
                     </div>
                     <div class="form-group col-sm-6">
                       <div class="image-upload">
-                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        <input type="file" class="form-control fs-6" name="image" accept="image/*"
                           (change)="handleInputChange($event)" style="height: 100px;" required>
                         <div class="image-upload-div">
                           <div class="left-img">
@@ -202,8 +203,6 @@
                     </div>
                   </ng-container>
 
-
-
                   <div class="imageSelectionContainer">
                     <div class="seperator">Or </div>
                     <div class="title">Select an existing image</div>
@@ -218,14 +217,13 @@
                     </div>
                   </div>
 
-
                   <div class="col-12">
                     <div class="col-12">
                       <h3 class="form-title">Category cover image</h3>
                     </div>
                     <div class="form-group col-sm-6">
                       <div class="image-upload">
-                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        <input type="file" class="form-control fs-6" name="image" accept="image/*"
                           (change)="bannerFile($event)" style="height: 100px;" required>
                         <div class="image-upload-div">
                           <div class="left-img">
@@ -243,6 +241,7 @@
                       </div>
                     </div>
                   </div>
+
                   <ng-container *ngIf="loadBanner">
                     <div class="col-12 preview-section">
                       <div class="crop-image col-sm-6">
@@ -261,56 +260,48 @@
                       </div>
                     </div>
                   </ng-container>
-
-
                 </div>
               </div>
 
-              <!-- Category attributes start -->
               <div class="attributes-section tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="col-12 d-flex justify-content-between align-items-center">
-                  <h2 class="form-title" style="font-weight: 600;"><span>Category Attributes</span></h2>
-                  <div class="add-attributes-button">
-                    <!-- <button class="bg-primary btn text-white fs-5" (click)="showAttributeSection()">View
-                      Attributes</button> -->
-                  </div>
-                </div>
+                <h3 class="mb-3 fw-bolder">Category Attributes</h3>
+
                 <div class="attributes-container row">
-                  <div class="col-12 col-sm-6"> <!-- Attribute name-->
+
+                  <div class="col-sm-6">
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Attribute Name</label>
-                      <input type="text" placeholder="Eg. Size" class="form-control fs-5"
+                      <label class="fs-6 mb-3">Attribute Name</label>
+                      <input type="text" placeholder="Eg. Size" class="form-control fs-6"
                         formControlName="attributeName" />
                     </div>
                   </div>
+
                   <div class="col-sm-6">
-                    <div class="col-12">
-                      <div class="form-group">
-                        <label class="fs-5 mb-3">Attribute Status?</label>
-                        <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                          formControlName="attributeStatus">
-                          <option value="false">Inactive</option>
-                          <option value="true">Active</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="col-12">
-                      <div class="form-group">
-                        <label class="fs-5 mb-3">Filtered Attribute?</label>
-                        <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
-                          formControlName="attributeFiltered">
-                          <option value="false">No</option>
-                          <option value="true">Yes</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6"> <!-- Attribute type-->
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Attribute Type</label>
-                      <select class="form-select form-select-lg mb-3 fs-5" aria-label=".form-select-lg"
+                      <label class="fs-6 mb-3">Attribute Status?</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                        formControlName="attributeStatus">
+                        <option value="false">Inactive</option>
+                        <option value="true">Active</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-6 mb-3">Filtered Attribute?</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                        formControlName="attributeFiltered">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label class="fs-6 mb-3">Attribute Type</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                         formControlName="attributeType" (change)="handleAttributeType($event.target)">
                         <option value="" selected disabled>-- Select an attribute type --</option>
                         <option value="Color">Color Picker</option>
@@ -319,10 +310,11 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6" *ngIf="showColorPicker"> <!-- Attribute color picker -->
+
+                  <div class="col-sm-6" *ngIf="showColorPicker"> <!-- Attribute color picker -->
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Attribute Color</label>
-                      <input type="color" placeholder="Attribute color" class="form-control fs-5" style="height: 50px;"
+                      <label class="fs-6 mb-3">Attribute Color</label>
+                      <input type="color" placeholder="Attribute color" class="form-control fs-6" style="height: 50px;"
                         formControlName="attributeColor" (change)="handleAttrributeValues('color', $event.target)" />
                     </div>
                     <div class="col-12 attr-color-preview" *ngIf="attributecolors.length > 0">
@@ -334,10 +326,11 @@
                       </ng-container>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6" *ngIf="showTextInput"> <!-- Attribute text values -->
+
+                  <div class="col-sm-6" *ngIf="showTextInput"> <!-- Attribute text values -->
                     <div class="form-group">
-                      <label class="fs-5 mb-3">Attribute Text</label>
-                      <input type="text" placeholder="Eg. Large" class="form-control fs-5" style="height: 50px;"
+                      <label class="fs-6 mb-3">Attribute Text</label>
+                      <input type="text" placeholder="Eg. Large" class="form-control fs-6" style="height: 50px;"
                         formControlName="attributeText"
                         (keydown.Enter)="handleAttrributeValues('text', $event.target)" />
                       <div class="fs-6 mt-3">*Press Enter to add attribute text</div>
@@ -352,10 +345,11 @@
                       </ng-container>
                     </div>
                   </div>
-                  <div class="col-12" *ngIf="showFileInput"> <!-- Attribute image values -->
+
+                  <div class="col-12" *ngIf="showFileInput">
                     <div class="form-group col-sm-6">
                       <div class="image-upload">
-                        <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                        <input type="file" class="form-control fs-6" name="image" accept="image/*"
                           (change)="handleAttrInputChange($event)" style="height: 100px;" required>
                         <div class="image-upload-div">
                           <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
@@ -383,7 +377,7 @@
                             <i class="bi bi-x-lg text-white" (click)="removeAttrImage()"></i>
                           </div>
                           <img class="preview-img" id="previewImage" [src]="attributecroppped">
-                          <button class="btn btn-sm fs-5 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
+                          <button class="btn btn-sm fs-6 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
                             (click)="handleAttrributeValues('file', '')">Add Image</button>
                         </div>
                       </div>
@@ -399,11 +393,13 @@
                       </ng-container>
                     </div>
                   </div>
+
                   <div class="col-12 d-flex align-items-center justify-content-end save-attribute-btn"
                     *ngIf="showSaveButton">
-                    <button class="btn bg-primary text-white fs-5" (click)="saveAttribute()">Save
+                    <button class="btn bg-primary text-white fs-6" (click)="saveAttribute()">Save
                       Attribute</button>
                   </div>
+
                   <div class="attr-added-container col-12" *ngIf="attributes.length > 0">
                     <div class="col-12">
                       <h2 class="form-title" style="font-weight: 600;">Added Attributes</h2>
@@ -451,14 +447,13 @@
                   </div>
                 </div>
               </div>
-              <!-- Category attributes end -->
 
               <div class="col-12 d-flex align-items-center justify-content-end" style="margin: 30px 0 0 0;">
                 <a routerLink="{{ appRoute.category.CATEGORY_LIST}}"
-                  class="fw-bolder btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+                  class="fw-bolder btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px" (click)="onSubmit()">
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="onSubmit()">
                   Add
                 </button>
               </div>

@@ -16,8 +16,8 @@ export class ProductHeadService {
     return this.http.post(`${url}`, data);
   }
 
-  searchProductHead(data: any, page: any) {
-    const url = this.commonService.getFullUrl(this.productHeadEndpoints.search_product_head + "?page=" + page);
+  searchProductHead(data: any) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.search_product_head);
     return this.http.post(`${url}`, data);
   }
 

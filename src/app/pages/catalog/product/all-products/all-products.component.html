@@ -37,7 +37,7 @@
       </select>
     </div>
     <div class="search-status col-2">
-      <label class="fs-6">Status</label>
+      <label class="fs-6">Stock</label>
       <select class="form-select fs-6" [formControl]="stock" (change)="getProducts()">
         <option value="" disabled>Select an option</option>
         <option value=0>Out of Stock</option>
@@ -59,9 +59,6 @@
         routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
         Archived Products
       </button>
-      <button class="btn btn-secondary cursor-pointer fs-6" style="margin: 0 0 0 10px;" (click)="showFilters()">
-        <i class="bi bi-sort-up" style="font-size: 1.6rem;"></i>
-      </button>
     </div>
   </div>
 
@@ -72,12 +69,12 @@
   </div>
 
   <div class="variant-product-result-container view-container row" *ngIf="loaded">
-    <ng-container *ngFor="let product of products">
-      <div class="col-sm-3">
-        <div class="product-card card-hover">
-          <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
-          </div>
-          <div class="product-details">
+    <div class="productCards">
+      <ng-container *ngFor="let product of products">
+        <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
+          [queryParams]="{id: product?.prodid}">
+          <div class="product-image">
+            <img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
             <div class="product-status-{{product?.isActive}} fs-6">
               {{product?.isActive ? 'Active' : 'Inactive'}}
             </div>
@@ -87,11 +84,13 @@
             <div class="product-out-stock fs-6" *ngIf="product?.stock == 0">
               Out of Stock
             </div>
-            <div class="product-limited-stock" *ngIf="product?.stock <= 5 && product?.stock > 0">
+            <div class="product-limited-stock" *ngIf="product?.stock <= product?.stockWarning && product?.stock > 0">
               Limited stock
             </div>
+          </div>
+          <div class="product-details">
             <div class="product-brand">{{product?.brand?.name}}</div>
-            <div class="product-name fs-5">{{product?.name}}</div>
+            <div class="product-name mb-2 fs-5">{{product?.name}}</div>
             <div class="product-price">
               <div class="d-flex">
                 <div class="product-offerprice fs-6" *ngIf="product?.price?.offer != product?.price?.mrp">
@@ -107,22 +106,14 @@
               </div>
               <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
                 <div>{{product?.rating}}</div>
-                <img src="../../../../../assets/icons/rating.svg" alt="Icon">
               </div>
             </div>
-            <div class="product-stock" *ngIf="product?.stock > 5">{{product?.stock}} left in stock</div>
-            <div class="product-card-bottom">
-              <div class="card-edit-btn">
-                <button routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}"
-                  class="fs-6 cursor-pointer text-darker">
-                  Edit
-                </button>
-              </div>
-            </div>
+            <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
+            <div class="fs-6">SKU : <span>{{product?.sku}}</span></div>
           </div>
         </div>
-      </div>
-    </ng-container>
+      </ng-container>
+    </div>
     <div *ngIf="products.length == 0">
       <div class="emptyNote">
         <div class="fs-3 fw-bolder">No result found</div>

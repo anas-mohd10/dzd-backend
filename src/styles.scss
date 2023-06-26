@@ -3,7 +3,15 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
-.text-grey{
+.emptyNote {
+  margin: 0 0 20px 0;
+
+  .note {
+    font-weight: normal;
+  }
+}
+
+.text-grey {
   color: #444444;
 }
 
@@ -57,14 +65,13 @@
   }
 
   .seperator {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1.075rem;
   }
 
   .title {
     font-size: 1.25rem;
     font-weight: 600;
-    margin: 30px 0;
+    margin: 10px 0;
   }
 
   .postedImages {
@@ -701,7 +708,7 @@ label {
   .form-check-label {
     margin: 0 0 0 10px;
   }
-  
+
 }
 
 .uploads {

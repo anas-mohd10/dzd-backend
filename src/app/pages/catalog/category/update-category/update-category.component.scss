@@ -136,15 +136,15 @@
 }
 
 .attr-added-container {
-   .attr-cards.col-12 {
+   .attr-cards {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
 
       .attribute-card {
          border: 1px solid #E4E6EF;
          padding: 15px;
-         border-radius: 15px;
+         border-radius: 0.9375rem;
          width: 100%;
 
          .attribute-card-header {
@@ -164,13 +164,12 @@
                   margin: 0 1.875rem 0 0;
 
                   span {
-                     font-size: 1.4rem;
-                     font-weight: 600;
+                     font-weight: 700;
                   }
                }
             }
 
-            .attribute-remove-button {
+            .attribute-edit {
                cursor: pointer;
                color: #222222;
             }
@@ -179,50 +178,42 @@
          .published {
             i {
                color: #229359;
-               font-size: 1.2rem;
             }
 
             span {
                color: #000000;
                margin: 0 0 0 0.625rem;
-               font-weight: 600;
-               font-size: 1.2rem;
             }
          }
 
          .unpublished {
             i {
                color: #eb2b2b;
-               font-size: 1.2rem;
             }
 
             span {
                color: #000000;
                margin: 0 0 0 0.625rem;
-               font-weight: 600;
-               font-size: 1.2rem;
             }
          }
 
          .attribute-card-values {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: start;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
             margin: 1.625rem 0;
 
             .attribute-color {
-               height: 3.125rem;
-               width: 3.125rem;
+               height: 40px;
+               width: 100%;
                margin: 0 0.625rem 0 0;
-               border-radius: 0.3125rem;
+               border-radius: 10px;
             }
 
             .attribute-text {
-               padding: 5px 10px;
-               width: max-content;
+               height: 40px;
+               width: 100%;
                background: #00bdab;
-               margin: 10px 10px 0 0;
                display: flex;
                align-items: center;
                justify-content: center;

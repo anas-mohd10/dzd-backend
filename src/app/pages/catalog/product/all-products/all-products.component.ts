@@ -140,9 +140,7 @@ export class AllProductsComponent implements OnInit {
     this.Router.navigate([this.appRoute.product.ALL_PRODUCTS])
   }
 
-
   hideFilters() { }
 
   showFilters() { }
-
 }

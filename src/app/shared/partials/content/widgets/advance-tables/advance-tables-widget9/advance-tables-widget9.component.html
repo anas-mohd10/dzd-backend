@@ -36,6 +36,9 @@
             </ng-container>
           </tbody>
         </table>
+        <ng-container *ngIf="orders.length == 0">
+          No new orders
+        </ng-container>
       </div>
     </div>
   </div>

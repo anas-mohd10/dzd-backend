@@ -21,6 +21,7 @@
       </div>
     </div>
   </div>
+
   <form [formGroup]="categoryform">
     <div class="col-12 row align-items-end justify-content-end">
       <div class="search-input col-sm-4" style="padding: 0;">
@@ -47,6 +48,7 @@
       </div>
     </div>
   </form>
+
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
       <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} categories</h4>
@@ -57,7 +59,6 @@
     </div>
   </div>
 
-  <!-- Card start -->
   <div class="category-card-container view-container">
     <ng-container *ngFor="let category of categories">
       <div class="category-card card-hover">
@@ -97,8 +98,7 @@
       </div>
     </ng-container>
   </div>
-  <!-- Card end -->
-  <!-- Pagination start -->
+
   <nav aria-label="Page navigation example" *ngIf="count != 0">
     <ul class="pagination-container">
       <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
@@ -127,11 +127,9 @@
       </div>
     </ul>
   </nav>
-  <!-- Pagination end -->
+
 </div>
 
-
-<!-- Attributes container start -->
 <div class="attributes-overlay" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
 </div>
 <div class="attributes-container" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
@@ -145,45 +143,55 @@
       </div>
     </div>
   </div>
+
   <div class="attributes-result-container">
     <div class="attributes-result-header">
       <div class="total-count-container col-sm-3 bg-dark">
-        <h4 class="attributes-count text-white" style="font-weight: 600; margin: 0;">
+        <h4 class="attributes-count text-white fs-6" style="font-weight: 600; margin: 0;">
           Total {{attributeslength ? attributeslength : 0}} attributes
         </h4>
       </div>
       <div class="attributes-add">
-        <button class="btn-secondary btn btn-sm fs-6 fw-bolder" style="width: 200px;" (click)="navigateToUpdate()">Add
+        <button class="btn-secondary btn btn-sm fs-6 fw-bolder" (click)="navigateToUpdate()">Add
           Attributes</button>
       </div>
     </div>
+
     <div class="attributes-result-cards">
       <ng-container *ngFor="let attribute of attributes">
         <div class="attribute-card">
+
           <div class="attribute-card-header">
             <div class="attribute-details">
-              <div class="attribute-name">Name : <span>{{attribute?.name}}</span></div>
-              <div class="attribute-type">Type : <span>{{attribute?.type}}</span></div>
+              <div class="attribute-name fs-5">Name : <span>{{attribute?.name}}</span></div>
+              <div class="attribute-type fs-6">Type : <span>{{attribute?.type}}</span></div>
             </div>
             <div class="attribute-edit fw-bolder" (click)="showEditModal(attribute?.refid)">
-              Edit Attribute
+              <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
             </div>
           </div>
+
           <div class="attribute-status published" *ngIf="attribute?.isActive == true; else unpublished">
-            <i class="bi bi-circle-fill"></i> <span>Published</span>
+            <i class="bi bi-circle-fill"></i>
+            <span class="fs-6">Published</span>
           </div>
+
           <ng-template #unpublished>
-            <div class="attribute-status unpublished"><i class="bi bi-circle-fill"></i>
-              <span>Unpublished</span>
+            <div class="attribute-status unpublished">
+              <i class="bi bi-circle-fill"></i>
+              <span class="fs-6">Unpublished</span>
             </div>
           </ng-template>
 
           <div class="attribute-filetered published" *ngIf="attribute?.isFilter == true; else unfiletered">
-            <i class="bi bi-sort-alpha-down" style="font-size: 2rem;"></i> <span>Filter Attribute</span>
+            <i class="bi bi-sort-alpha-down"></i>
+            <span class="fs-6">Filter Attribute</span>
           </div>
+
           <ng-template #unfiletered>
-            <div class="attribute-status unpublished"><i class="bi bi-sort-alpha-down" style="font-size: 2rem;"></i>
-              <span>Non filter Attribute</span>
+            <div class=" attribute-status unpublished">
+              <i class="bi bi-sort-alpha-down"></i>
+              <span class="fs-6">Non filter Attribute</span>
             </div>
           </ng-template>
 
@@ -192,8 +200,9 @@
               <div class="attribute-color" *ngIf="attribute?.type == 'Color'" [ngStyle]="{'background': value.value}">
               </div>
               <div class="attribute-text" *ngIf="attribute?.type == 'Text'">{{value?.value}}</div>
-              <div class="attribute-image" *ngIf="attribute?.type == 'File'"><img src="{{base}}/{{value?.value}}"
-                  alt="attribute"></div>
+              <div class="attribute-image" *ngIf="attribute?.type == 'File'">
+                <img src="{{base}}/{{value?.value}}" alt="attribute">
+              </div>
             </ng-container>
           </div>
         </div>
@@ -207,9 +216,7 @@
     </ng-container>
   </div>
 </div>
-<!-- Attributes container end -->
 
-<!-- Modal -->
 <div class="modal-container-overlay" [ngClass]="{'show-overlay': showModal, 'hide-overlay': !showModal}"></div>
 <div class="modal-container" [ngClass]="{'show-modal': showModal, 'hide-modal': !showModal}">
   <div class="modal-header">
