@@ -5,5 +5,5 @@ export const offerEndpoints = {
   get_offer_by_id: '/offer',
   update_offer: '/update-offer',
   get_offer_count: '/offers/count',
-  search_offer: '/offers/search'
+  search_offer: '/search-offers'
 };

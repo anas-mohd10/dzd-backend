@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -9,7 +9,6 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -664,7 +663,9 @@ export class UpdateProductComponent implements OnInit {
       case 'basic':
         this.showProduct = false
         this.showMedia = false
-        this.headAdded = true
+        
+        document.querySelector('.nav-home-tab')?.classList.add('active')
+        this.headAdded = false
         window.scrollTo(0, 0);
         break
     }

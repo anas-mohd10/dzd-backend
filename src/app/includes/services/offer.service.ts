@@ -35,8 +35,8 @@ export class OfferService {
     return this.http.put(`${url}`, data);
   }
 
-  searchOffer(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.offerEndpoints.search_offer + "?page=" + page + "&limit=" + limit);
+  searchOffers(query: any) {
+    const url = this.commonService.getFullUrl(this.offerEndpoints.search_offer);
     return this.http.post(`${url}`, query);
   }
 
