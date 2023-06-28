@@ -6,6 +6,8 @@ import { BannerService } from 'src/app/includes/services/banner.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ProductService } from 'src/app/includes/services/product.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
 
 @Component({
   selector: 'app-add-banner-list',
@@ -18,7 +20,6 @@ export class AddBannerListComponent implements OnInit {
   appRoute = appRoutes
   form: FormGroup
   isSubmitted = false;
-  productsData: any;
   fileData: File;
   uploadedImg: boolean;
   bannerFile: File;
@@ -29,29 +30,8 @@ export class AddBannerListComponent implements OnInit {
   imageMobileChangedEvent: any = '';
   croppedImage: any = '';
 
-  webLoadImage: boolean = false;
-  mobileLoadImage: boolean = false
-
-  w_file: any
-  m_file: any
-
-  w_name: any
-  m_name: any
-
-  web_file: any
-  mobile_file: any
   to_date: string;
   from_date: string;
-
-  isGrid: boolean = false
-  categories: any = []
-  products: any = []
-  collections: any = []
-
-  collection: any
-  product: any
-  category: any
-  redirection: {};
 
   aspectRatioWebWidth: any = 2
   aspectRatioWebHeight: any = 1
@@ -64,15 +44,30 @@ export class AddBannerListComponent implements OnInit {
   mobileHeight: any = 750
 
   previousBanners: any = []
-  bannerMedia: any = []
+
+
+  isGrid: Boolean = false
+  files: Array<any> = []
   bannerType: any;
+  products: Array<any> = []
+  product: string = ''
+  categories: Array<any> = []
+  category: string = ''
+  external: FormControl = new FormControl('');
+  count: FormControl = new FormControl('1', [Validators.min(1), Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')])
+  redirectionType: string = ''
+  file: any
+  name: String = ''
+  isImage: Boolean = false
+  isCarousel: Boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private bannerService: BannerService,
     private toastr: ToastrService,
+    private ProductService: ProductService,
+    private CategoryService: CategoryService
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +77,18 @@ export class AddBannerListComponent implements OnInit {
     this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
     this.initForm()
     this.managePage()
+
+    this.ProductService.getActiveProduct().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.products = res?.result
+      }
+    })
+
+    this.CategoryService.getActiveCategory().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.categories = res?.result
+      }
+    })
   }
 
   initForm() {
@@ -89,7 +96,7 @@ export class AddBannerListComponent implements OnInit {
       title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
-      redirectURL: [''],
+      redirection: [''],
       isActive: ['true', Validators.required]
     });
 
@@ -103,6 +110,20 @@ export class AddBannerListComponent implements OnInit {
 
   getBannerType(type: any) {
     this.bannerType = type
+    if (this.bannerType == 4) {
+      this.isGrid = true
+      this.isCarousel = false
+    } else if (this.bannerType == 1) {
+      this.isGrid = false
+      this.isCarousel = true
+    } else {
+      this.isGrid = false
+      this.isCarousel = false
+    }
+  }
+
+  getRedirectionType(event: any) {
+    this.redirectionType = event?.value
   }
 
   managePage() {
@@ -113,57 +134,56 @@ export class AddBannerListComponent implements OnInit {
       case PageTasks.UPDATE:
         this.editMode = true;
         break;
-      default:
-        break;
     }
   }
 
   handleInputChange(event: any, key: any) {
-    if (key === 'web') {
-      this.w_file = event.target.files[0]
-      this.w_name = this.w_file.name
-      this.imageWebChangedEvent = event;
-      this.webLoadImage = true
-    } else if (key === 'mobile') {
-      this.m_file = event.target.files[0]
-      this.m_name = this.m_file.name
-      this.imageMobileChangedEvent = event;
-      this.mobileLoadImage = true
-    }
+    this.name = event?.target?.files[0]?.name
+    this.imageWebChangedEvent = event;
+    this.isImage = true
   }
 
   addBanner() {
-    let length = this.bannerMedia.length
-    if (length < this.bannerType) {
-      this.addFiles()
+    if (this.bannerType == '1') {
+      if (this.files.length < this.count?.value) {
+        this.addFiles()
+      } else {
+        this.toastr.error('Maximum ' + this.count?.value + ' files are allowed')
+      }
     } else {
-      this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
+      if (this.files.length < this.bannerType) {
+        this.addFiles()
+      } else {
+        this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
+      }
     }
+
     this.clearFiles()
   }
 
   addFiles() {
-    this.bannerMedia.push({
-      web: { file: this.web_file, name: this.w_name },
-      mobile: { file: this.mobile_file, name: this.m_name }
-    })
+    let data = {
+      file: this.file,
+      name: this.name,
+      redirection: { type: this.redirectionType, url: '' }
+    }
+    if (this.redirectionType == 'product') data.redirection.url = this.product
+    if (this.redirectionType == 'category') data.redirection.url = this.category
+    if (this.redirectionType == 'external') data.redirection.url = this.external?.value
+    this.files.push(data)
+  }
+
+  removeBanner(name: any) {
+    this.files = this.files.filter((item: any) => item?.name != name)
   }
 
   clearFiles() {
-    this.web_file = null
-    this.mobile_file = null
-    this.w_name = null
-    this.m_name = null
-    this.w_file = null
-    this.m_file = null
+    this.file = null
+    this.name = ''
   }
 
   imageCroppedWeb(event: ImageCroppedEvent) {
-    this.web_file = event.base64;
-  }
-
-  imageCroppedMobile(event: ImageCroppedEvent) {
-    this.mobile_file = event.base64;
+    this.file = event.base64;
   }
 
   imageWebLoaded() {
@@ -175,22 +195,16 @@ export class AddBannerListComponent implements OnInit {
   loadImageWebFailed() {
   }
 
-  imageMobileLoaded() {
-  }
-
-  cropperMobileReady() {
-  }
-
-  loadImageMobileFailed() {
-  }
-
   onSubmit() {
     if (!this.form.valid) {
-      this.toastr.error('Invalid form')
+      this.toastr.error('Form validation failed')
       return;
     }
 
     const payload = this.createPayload()
+
+    console.log(payload);
+
     if (payload) {
       this.bannerService.addBaner(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
@@ -203,29 +217,30 @@ export class AddBannerListComponent implements OnInit {
     }
   }
 
-  checkFileLength() {
-    if (this.bannerMedia.length == this.bannerType) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   createPayload() {
-    const data = {
+    let data = {
       type: this.bannerType,
       title: this.form.get('title')?.value,
       validFrom: this.form.get('validFrom')?.value,
       validTo: this.form.get('validTo')?.value,
       isActive: this.form.get('isActive')?.value,
-      file: this.bannerMedia
+      files: this.files
     }
 
-    let isValidFile = this.checkFileLength()
-    if (isValidFile) {
-      return data
+    if (this.bannerType == '1') {
+      if (this.files.length == this.count?.value) {
+        return data
+      } else {
+        this.toastr.error("Can't proceed with banner creation, please add all the required files")
+        return false
+      }
     } else {
-      this.toastr.error('Invalid file length')
+      if (this.files.length == this.bannerType) {
+        return data
+      } else {
+        this.toastr.error("Can't proceed with banner creation, please add all the required files")
+        return false
+      }
     }
   }
 }

@@ -28,10 +28,11 @@
             <div class="card-body">
                <form [formGroup]="form" enctype="multipart/form-data">
                   <div class="row">
-                     <h2 class="form-title">Banner Details</h2>
-                     <div class="col-12 col-sm-6">
+                     <h3 class="form-title">Banner Details</h3>
+
+                     <div class="col-6 mb-3">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title">Title</label>
+                           <label class="fs-6 mb-3">Title</label>
                            <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
                               'is-invalid':
                               (hf.title.touched || isSubmitted) &&
@@ -40,26 +41,26 @@
                         </div>
                      </div>
 
-                     <div class="col-12 col-sm-6">
+                     <div class="col-6 mb-3">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Valid From</label>
+                           <label class="fs-6 mb-3  required">Valid From</label>
                            <input type="date" class="form-control fs-6" formControlName="validFrom"
                               [ngClass]="{'is-invalid': (hf.validFrom.touched || isSubmitted) &&  hf.validFrom.errors?.required}" />
                         </div>
                      </div>
 
-                     <div class="col-12 col-sm-6">
+                     <div class="col-6 mb-3">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title required">Valid To</label>
+                           <label class="fs-6 mb-3  required">Valid To</label>
                            <input type="date" class="form-control fs-6" formControlName="validTo"
                               [ngClass]="{ 'is-invalid': (hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required }" />
                         </div>
                      </div>
 
-                     <div class="col-12 col-sm-6">
+                     <div class="col-6 mb-3">
                         <div class="form-group">
-                           <label class="fs-6 mb-3 form-title">Active Banner?</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           <label class="fs-6 mb-3 ">Active Banner?</label>
+                           <select class="form-select fs-6 mb-3" aria-label=".form-select-lg"
                               formControlName="isActive">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="true">Active</option>
@@ -68,12 +69,12 @@
                         </div>
                      </div>
 
-                     <div class="col-12 col-sm-6">
+                     <div class="col-6 mb-3">
                         <div class="form-group">
-                           <label class="fs-6 form-title">Banner Type</label>
+                           <label class="fs-6 ">Banner Type</label>
                            <div class="d-flex align-items-center justify-content-start" style="margin: 20px 0 0 0;">
                               <div class="form-check" style="margin: 0 10px 0 0;">
-                                 <input class="form-check-input" type="radio" name="type" id="type-2"
+                                 <input class="form-check-input" type="radio" name="type" id="type-1"
                                     (click)="getBannerType(1)">
                                  <label class="form-check-label fs-6" for="type-2" style="margin: 0;">
                                     Full width
@@ -104,55 +105,124 @@
                         </div>
                      </div>
 
-                     <div class="col-12">
-                        <h2 class="form-title required">Media</h2>
+                     <div class="col-6 mb-3" *ngIf="isCarousel">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Type</label>
+                           <select class="form-select mb-3 fs-6" [formControl]="count">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                           </select>
+                        </div>
                      </div>
 
-                     <ng-container *ngIf="bannerMedia.length > 0">
+                     <div class="col-12">
+                        <h3 class="form-title required">Media</h3>
+                     </div>
+
+                     <ng-container *ngIf="files.length > 0">
                         <div class="uploadedBanners">
-                           <ng-container *ngFor="let banner of bannerMedia">
+                           <ng-container *ngFor="let banner of files; let i = index">
                               <div class="bannerCard">
-                                 <div class="banner"><img src="{{banner?.web?.file}}" alt="Banner"></div>
-                                 <div class="banner"><img src="{{banner?.mobile?.file}}" alt="Banner"></div>
+                                 <div class="close" (click)="removeBanner(banner?.name)">
+                                    <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                 </div>
+                                 <div class="banner">
+                                    <img src="{{banner?.file}}" alt="Banner">
+                                 </div>
                               </div>
                            </ng-container>
                         </div>
                      </ng-container>
 
-                     <div class="bannerUploadImages">
-                        <div class="uploadButton">
-                           <button type="button" class="btn btn-secondary fs-6 text-dark fw-bolder"
-                              data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                              <div>Upload web banner </div>
-                              <img src="../../../../../assets/icons/uploadArrow.svg" alt="Icon">
-                           </button>
+                     <div class="col-6">
+                        <div class="form-group">
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                 (change)="handleInputChange($event, 'web')" required style="height: 100px;">
+                              <div class="image-upload-div">
+                                 <div class="left-img">
+                                    <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                                 </div>
+                                 <div class="right-text d-flex flex-column">
+                                    <span class="right-text-title fs-4 fw-bolder">Select Files</span>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <ng-container *ngIf="isImage">
+                              <div class="preview-section">
+                                 <div class="crop-image col-6">
+
+                                    <image-cropper *ngIf="!isGrid" class="crop-section"
+                                       [imageChangedEvent]="imageWebChangedEvent" [maintainAspectRatio]="true"
+                                       [aspectRatio]="3 / 1" [cropperMaxWidth]="1366" [cropperMaxHeight]="413"
+                                       format="png" (imageCropped)="imageCroppedWeb($event)"
+                                       (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
+                                       (loadImageFailed)="loadImageWebFailed()">
+                                    </image-cropper>
+
+                                    <image-cropper *ngIf="isGrid" class="crop-section"
+                                       [imageChangedEvent]="imageWebChangedEvent" [maintainAspectRatio]="true"
+                                       [aspectRatio]="2 / 2" [cropperMaxWidth]="1000" [cropperMaxHeight]="1000"
+                                       format="png" (imageCropped)="imageCroppedWeb($event)"
+                                       (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
+                                       (loadImageFailed)="loadImageWebFailed()">
+                                    </image-cropper>
+
+                                 </div>
+                              </div>
+
+                              <div class="col-12">
+
+                                 <div class="form-title fs-4">
+                                    Redirection
+                                    <span class="fs-7 text-muted">(optional)</span>
+                                 </div>
+
+                                 <div class="form-group mt-4">
+                                    <label class="fs-6 mb-3">Redirection type?</label>
+                                    <select class="form-select fs-6" (change)="getRedirectionType($event.target)">
+                                       <option value="" selected disabled>-- Select an option --</option>
+                                       <option value="category">Products by category</option>
+                                       <option value="product">Product details</option>
+                                       <option value="external">External</option>
+                                    </select>
+                                 </div>
+
+                                 <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'product'">
+                                    <label class="fs-6 mb-2">Products</label>
+                                    <ng-select [items]="products" bindLabel="name" bindValue="slug"
+                                       [(ngModel)]="product" placeholder="-- Select product --" [multiple]=false
+                                       [ngModelOptions]="{standalone: true}">
+                                    </ng-select>
+                                 </div>
+
+                                 <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'category'">
+                                    <label class="fs-6 mb-2">Catgeory</label>
+                                    <ng-select [items]="categories" bindLabel="name" bindValue="slug"
+                                       [(ngModel)]="category" placeholder="-- Select category --" [multiple]=false
+                                       [ngModelOptions]="{standalone: true}">
+                                    </ng-select>
+                                 </div>
+
+                                 <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'external'">
+                                    <label class="fs-6 mb-2">External URL</label>
+                                    <input type="text" class="form-control" [formControl]="external"
+                                       placeholder="Enter external url here">
+                                 </div>
+                              </div>
+                           </ng-container>
+
+                           <div class="uploadBtn d-flex align-items-center justify-content-end" *ngIf="file">
+                              <button type="submit" class="btn btn-secondary btn-sm fs-6 mt-5" (click)="addBanner()">
+                                 Confirm banners
+                              </button>
+                           </div>
+
                         </div>
-                        <div class="uploadButton">
-                           <button type="button" class="btn btn-secondary fs-6 text-dark fw-bolder"
-                              data-bs-toggle="modal" data-bs-target="#staticMobileBackdrop">
-                              <div>Upload mobile banner</div>
-                              <img src="../../../../../assets/icons/uploadArrow.svg" alt="Icon">
-                           </button>
-                        </div>
-                     </div>
-
-                     <div class="draftTitle fs-6" *ngIf="web_file || mobile_file">
-                        Click confirm banners button to upload the banner
-                     </div>
-
-                     <div class="draftBanners" *ngIf="web_file || mobile_file">
-                        <img class="preview-img" id="previewImage"
-                           [src]="web_file ? web_file : '../../../../../assets/media/preview-image.png'">
-                        <img class="preview-img" id="previewImage"
-                           [src]="mobile_file ? mobile_file : '../../../../../assets/media/preview-image.png'">
-                     </div>
-
-                     <div class="uploadBtn d-flex align-items-center justify-content-end"
-                        *ngIf="web_file && mobile_file">
-                        <button type="submit" class="fw-bolder btn btn-secondary btn-sm fs-6 mt-10" style="width: 200px"
-                           (click)="addBanner()">
-                           Confirm Banners
-                        </button>
                      </div>
 
                      <div class="col-12 d-flex align-items-center justify-content-end mt-20">
@@ -174,7 +244,7 @@
    </div>
 </div>
 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
    aria-labelledby="staticBackdropLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -239,10 +309,10 @@
          </div>
       </div>
    </div>
-</div>
+</div> -->
 
 
-<div class="modal fade" id="staticMobileBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<!-- <div class="modal fade" id="staticMobileBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
    aria-labelledby="staticBackdropLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -305,4 +375,4 @@
          </div>
       </div>
    </div>
-</div>
+</div> -->

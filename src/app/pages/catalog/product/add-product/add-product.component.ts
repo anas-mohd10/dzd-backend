@@ -99,7 +99,7 @@ export class AddProductComponent implements OnInit {
   maincategories: any = []
   selectedMainCategory: any
   subcategories: any = []
-  selectedSubCategory: any
+  selectedSubCategory: any = []
   showMainCategory: Boolean = false
   parentCategory: any = []
   subCategory: any = []
@@ -700,13 +700,20 @@ export class AddProductComponent implements OnInit {
 
   createPayload() {
     let categoryRefid = []
-    for (let category of this.subcategories) {
-      for (let _category of this.selectedSubCategory) {
-        if (category?._id == _category) {
-          categoryRefid.push(category.catid)
+
+    if (this.selectedSubCategory.length > 0) {
+      for (let category of this.subcategories) {
+        for (let _category of this.selectedSubCategory) {
+          if (category?._id == _category) {
+            categoryRefid.push(category.catid)
+          }
         }
       }
     }
+
+    this.selectedSubCategory = [...this.selectedSubCategory, ...this.producthhead['parentCategory']['id']]
+    categoryRefid = [...categoryRefid, ...this.producthhead['parentCategory']['refid']]
+
     const data = {
       name: this.productform.get('name')?.value,
       sku: this.productform.get('sku')?.value,

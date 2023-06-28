@@ -57,13 +57,12 @@ export class AddAppSettingsComponent implements OnInit {
       text: ['', Validators.required],
       currency: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
-      fontFamily: ['', Validators.required]
+      fontFamily: ['', Validators.required],
+      domain: ['', Validators.required]
     })
   }
 
   onSubmit() {
-    console.log(this.appsettingsform.get('currency')?.value);
-
     if (!this.appsettingsform.valid) {
       this.toastr.error('Validation error occured');
       return
@@ -86,7 +85,8 @@ export class AddAppSettingsComponent implements OnInit {
       fonts: {
         family: this.appsettingsform.get('fontFamily')?.value
       },
-      itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value
+      itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value,
+      domain: this.appsettingsform.get('domain')?.value
     }
 
     this.AppSettingsService.addGeneralSettings(data).subscribe((res: any) => {

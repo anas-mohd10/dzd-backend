@@ -53,11 +53,21 @@ $grey: #888888;
 
   .collectionDetails {
     margin: 0 0 0 10px;
+    width: calc(100% - 100px);
   }
 }
 
 .collection-name {
   font-weight: 600;
+}
+
+.collection-subname {
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .collection-status-true {

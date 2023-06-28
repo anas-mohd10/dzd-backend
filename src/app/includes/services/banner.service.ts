@@ -21,9 +21,9 @@ export class BannerService {
     return this.http.get(`${url}`);
   }
 
-  getBannersByPage(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banners_page + "?page=" + page + "&limit=" + limit);
-    return this.http.get(`${url}`);
+  searchBanners(data: any) {
+    const url = this.commonService.getFullUrl(this.bannerEndpoints.get_banners_page);
+    return this.http.post(`${url}`, data);
   }
 
   getBannersCount() {

@@ -49,6 +49,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('toastInfo')?.setValue("#" + res?.result?.toast?.info.split('FF')[1])
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
         this.form.get('currency')?.setValue(res?.result?.currency)
+        this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.cdr.markForCheck()
       }
@@ -67,7 +68,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       toastInfo: ['', Validators.required],
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
-      fontFamily: ['', Validators.required]
+      fontFamily: ['', Validators.required],
+      domain: ['', Validators.required]
     })
   }
 
@@ -94,6 +96,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       refid: this.refid,
+      domain: this.form.get('domain')?.value
     }
 
     this.AppSettingsService.updateGeneralSettings(data).subscribe((res: any) => {

@@ -8,9 +8,9 @@ describe('AddBannerListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddBannerListComponent ]
+      declarations: [AddBannerListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

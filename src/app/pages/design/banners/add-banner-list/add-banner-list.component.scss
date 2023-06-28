@@ -104,6 +104,9 @@
    width: max-content;
 }
 
+label {
+   font-weight: normal !important;
+}
 
 .bannerCard {
    width: auto;
@@ -121,6 +124,30 @@
          object-fit: cover;
          border-radius: 10px;
          border: 1px solid rgba($color: #000000, $alpha: 0.1);
+      }
+   }
+
+   position: relative;
+
+   .close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 30px;
+      width: 30px;
+      display: grid;
+      place-items: center;
+      background: #e7e7e7;
+      border-radius: 5px;
+   }
+
+   .image {
+      height: 100px;
+      width: 100px;
+
+      img {
+         height: 100%;
+         width: 100%;
       }
    }
 }
