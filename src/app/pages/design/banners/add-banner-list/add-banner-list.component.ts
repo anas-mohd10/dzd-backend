@@ -20,33 +20,13 @@ export class AddBannerListComponent implements OnInit {
   appRoute = appRoutes
   form: FormGroup
   isSubmitted = false;
-  fileData: File;
-  uploadedImg: boolean;
-  bannerFile: File;
-  mobileBannerFile: File;
-  images: any = []
-
   imageWebChangedEvent: any = '';
-  imageMobileChangedEvent: any = '';
-  croppedImage: any = '';
-
-  to_date: string;
-  from_date: string;
-
-  aspectRatioWebWidth: any = 2
-  aspectRatioWebHeight: any = 1
-  webWidth: any = 2000
-  webHeight: any = 1000
-
-  aspectRatioMobileWidth: any = 6
-  aspectRatioMobileHeight: any = 3
-  mobileWidth: any = 1500
-  mobileHeight: any = 750
-
-  previousBanners: any = []
-
-
-  isGrid: Boolean = false
+  to_date: string = '';
+  from_date: string = '';
+  fullWidth: Boolean = false
+  halfWidth: Boolean = false
+  thirdWidth: Boolean = false
+  quarterWidth: Boolean = false
   files: Array<any> = []
   bannerType: any;
   products: Array<any> = []
@@ -111,14 +91,30 @@ export class AddBannerListComponent implements OnInit {
   getBannerType(type: any) {
     this.bannerType = type
     if (this.bannerType == 4) {
-      this.isGrid = true
+      this.quarterWidth = true
+      this.fullWidth = false
+      this.halfWidth = false
+      this.thirdWidth = false
+
       this.isCarousel = false
     } else if (this.bannerType == 1) {
-      this.isGrid = false
+      this.quarterWidth = false
+      this.fullWidth = true
+      this.halfWidth = false
+      this.thirdWidth = false
+
       this.isCarousel = true
-    } else {
-      this.isGrid = false
-      this.isCarousel = false
+    } else if (this.bannerType == 3) {
+      this.quarterWidth = false
+      this.fullWidth = false
+      this.halfWidth = false
+      this.thirdWidth = true
+
+      this.isCarousel = true
+    } else if (this.bannerType == 2) {
+
+
+      this.isCarousel = true
     }
   }
 
@@ -197,14 +193,12 @@ export class AddBannerListComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
+      this.isSubmitted = true;
       this.toastr.error('Form validation failed')
       return;
     }
 
     const payload = this.createPayload()
-
-    console.log(payload);
-
     if (payload) {
       this.bannerService.addBaner(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
@@ -224,7 +218,8 @@ export class AddBannerListComponent implements OnInit {
       validFrom: this.form.get('validFrom')?.value,
       validTo: this.form.get('validTo')?.value,
       isActive: this.form.get('isActive')?.value,
-      files: this.files
+      files: this.files,
+      count: this.count?.value
     }
 
     if (this.bannerType == '1') {

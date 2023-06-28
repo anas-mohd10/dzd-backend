@@ -156,15 +156,31 @@
                               <div class="preview-section">
                                  <div class="crop-image col-6">
 
-                                    <image-cropper *ngIf="!isGrid" class="crop-section"
+                                    <image-cropper *ngIf="fullWidth" class="crop-section"
                                        [imageChangedEvent]="imageWebChangedEvent" [maintainAspectRatio]="true"
-                                       [aspectRatio]="3 / 1" [cropperMaxWidth]="1366" [cropperMaxHeight]="413"
+                                       [aspectRatio]="3 / 1" [cropperMaxWidth]="1370" [cropperMaxHeight]="420"
                                        format="png" (imageCropped)="imageCroppedWeb($event)"
                                        (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
                                        (loadImageFailed)="loadImageWebFailed()">
                                     </image-cropper>
 
-                                    <image-cropper *ngIf="isGrid" class="crop-section"
+                                    <image-cropper *ngIf="halfWidth" class="crop-section"
+                                       [imageChangedEvent]="imageWebChangedEvent" [maintainAspectRatio]="true"
+                                       [aspectRatio]="2 / 1" [cropperMaxWidth]="550" [cropperMaxHeight]="275"
+                                       format="png" (imageCropped)="imageCroppedWeb($event)"
+                                       (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
+                                       (loadImageFailed)="loadImageWebFailed()">
+                                    </image-cropper>
+
+                                    <image-cropper *ngIf="thirdWidth" class="crop-section"
+                                       [imageChangedEvent]="imageWebChangedEvent" [maintainAspectRatio]="true"
+                                       [aspectRatio]="1.7 / 1" [cropperMaxWidth]="370" [cropperMaxHeight]="210"
+                                       format="png" (imageCropped)="imageCroppedWeb($event)"
+                                       (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
+                                       (loadImageFailed)="loadImageWebFailed()">
+                                    </image-cropper>
+
+                                    <image-cropper *ngIf="quarterWidth" class="crop-section"
                                        [imageChangedEvent]="imageWebChangedEvent" [maintainAspectRatio]="true"
                                        [aspectRatio]="2 / 2" [cropperMaxWidth]="1000" [cropperMaxHeight]="1000"
                                        format="png" (imageCropped)="imageCroppedWeb($event)"

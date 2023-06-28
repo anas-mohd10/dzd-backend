@@ -36,8 +36,8 @@ export class BannerService {
     return this.http.get(`${url}`);
   }
 
-  updateBanner(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.bannerEndpoints.update_banner + "?slug=" + slug);
+  updateBanner(data: any) {
+    const url = this.commonService.getFullUrl(this.bannerEndpoints.update_banner);
     return this.http.put(`${url}`, data);
   }
 }

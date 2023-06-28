@@ -22,53 +22,33 @@ export class UpdateBannerListComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes
   form: FormGroup
-  slug: any = ''
-  bannerData: any
-  productsData: any;
-  images: any = [];
-  eImages: any = [] //Exsisting images
   isSubmitted = false;
   imageWebChangedEvent: any = '';
-  imageMobileChangedEvent: any = '';
-  croppedImage: any = '';
-
-  webLoadImage: boolean = false;
-  mobileLoadImage: boolean = false
-
-  w_file: any
-  m_file: any
-
-  w_name: any
-  m_name: any
-
-  web_file: any
-  mobile_file: any
-  fromDate: string;
-  lastDate: string;
-  validBanner: boolean;
-  base: string;
-
-  isGrid: boolean = false
-  categories: any = []
-  products: any = []
-  collections: any = []
-
-  collection: any
-  product: any
-  category: any
-  redirection: {};
+  to_date: string = '';
+  from_date: string = '';
+  fullWidth: Boolean = false
+  halfWidth: Boolean = false
+  thirdWidth: Boolean = false
+  quarterWidth: Boolean = false
+  files: Array<any> = []
   bannerType: any;
-
-  aspectRatioWebWidth: any = 2
-  aspectRatioWebHeight: any = 1
-  aspectRatioMobileWidth: any = 6
-  aspectRatioMobileHeight: any = 3
-
-  previousBanners: any = []
-  bannerMedia: any = []
-
-  mobileBanners: Array<any> = []
-  webBanners: Array<any> = []
+  products: Array<any> = []
+  product: string = ''
+  categories: Array<any> = []
+  category: string = ''
+  external: FormControl = new FormControl('');
+  count: FormControl = new FormControl('1', [Validators.min(1), Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')])
+  redirectionType: string = ''
+  file: any
+  name: String = ''
+  isImage: Boolean = false
+  isCarousel: Boolean = false
+  base: string = ''
+  slug: string = ''
+  bannerData: any = {}
+  validBanner: Boolean = false
+  fromDate: string = ''
+  lastDate: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,7 +58,6 @@ export class UpdateBannerListComponent implements OnInit {
     private bannerService: BannerService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    private CollectionService: CollectionService,
     private CategoryService: CategoryService
   ) { }
 
@@ -88,13 +67,6 @@ export class UpdateBannerListComponent implements OnInit {
     this.getBanner()
     this.initForm()
     this.managePage()
-
-    this.CollectionService.getActiveCollection().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.collections = res?.result
-        this.cdr.markForCheck()
-      }
-    })
 
     this.productService.getActiveProduct().subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -111,10 +83,6 @@ export class UpdateBannerListComponent implements OnInit {
     })
   }
 
-  getBannerType(type: any) {
-    this.bannerType = type
-  }
-
   getBanner() {
     this.bannerService.getBanner(this.slug).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -125,9 +93,6 @@ export class UpdateBannerListComponent implements OnInit {
         this.form.get("isActive")?.setValue(res?.result[0].isActive)
         this.fromDate = new Date(this.bannerData.validFrom).toISOString().split('T')[0];
         this.lastDate = new Date(this.bannerData.validTo).toISOString().split('T')[0];
-        this.category = res?.result[0]?.redirection?.category ? res?.result[0]?.redirection?.category : null
-        this.product = res?.result[0]?.redirection?.product ? res?.result[0]?.redirection?.product : null
-        this.collection = res?.result[0]?.redirection?.collection ? res?.result[0]?.redirection?.collection : null
         this.form.get('validFrom')?.setValue(this.fromDate);
         this.form.get('validTo')?.setValue(this.lastDate);
         const today = new Date().toISOString()
@@ -135,27 +100,47 @@ export class UpdateBannerListComponent implements OnInit {
           this.validBanner = true
           this.form.get('validFrom')?.disable()
         }
-        this.form.get('type')?.setValue(res?.result[0]?.type)
 
-        this.mobileBanners = [...this.bannerData?.files?.mobile]
-        this.webBanners = [...this.bannerData?.files?.web]
+        this.bannerType = res?.result[0].type
+        this.count.setValue(res?.result[0].count)
+        for (let file of this.bannerData?.files) {
+          this.files.push({
+            file: this.base + "/" + file?.file,
+            name: null,
+            redirection: file?.redirection
+          })
+        }
+
+        switch (this.bannerType) {
+          case '1':
+            this.quarterWidth = false
+            this.fullWidth = true
+            this.halfWidth = false
+            this.thirdWidth = false
+            break
+          case '2':
+            this.quarterWidth = false
+            this.fullWidth = false
+            this.halfWidth = true
+            this.thirdWidth = false
+            break
+          case '3':
+            this.quarterWidth = false
+            this.fullWidth = false
+            this.halfWidth = false
+            this.thirdWidth = true
+            break
+          case '4':
+            this.quarterWidth = true
+            this.fullWidth = false
+            this.halfWidth = false
+            this.thirdWidth = false
+            break
+        }
+
         this.cdr.markForCheck()
       }
     })
-  }
-
-  handleInputChange(event: any, key: any) {
-    if (key === 'web') {
-      this.w_file = event.target.files[0]
-      this.w_name = this.w_file.name
-      this.imageWebChangedEvent = event;
-      this.webLoadImage = true
-    } else if (key === 'mobile') {
-      this.m_file = event.target.files[0]
-      this.m_name = this.m_file.name
-      this.imageMobileChangedEvent = event;
-      this.mobileLoadImage = true
-    }
   }
 
   initForm() {
@@ -163,14 +148,53 @@ export class UpdateBannerListComponent implements OnInit {
       title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
-      redirectURL: [''],
-      type: ['', Validators.required],
-      isActive: ['true', Validators.required],
+      redirection: [''],
+      isActive: ['true', Validators.required]
     });
+
+    this.form.get('validFrom')?.setValue(this.from_date)
+    this.form.get('validTo')?.setValue(this.to_date)
   }
 
   get hf() {
     return this.form.controls;
+  }
+
+  getBannerType(type: any) {
+    this.bannerType = type
+    if (this.bannerType == 4) {
+      this.quarterWidth = true
+      this.fullWidth = false
+      this.halfWidth = false
+      this.thirdWidth = false
+
+      this.isCarousel = false
+    } else if (this.bannerType == 1) {
+      this.quarterWidth = false
+      this.fullWidth = true
+      this.halfWidth = false
+      this.thirdWidth = false
+
+      this.isCarousel = true
+    } else if (this.bannerType == 3) {
+      this.quarterWidth = false
+      this.fullWidth = false
+      this.halfWidth = false
+      this.thirdWidth = true
+
+      this.isCarousel = true
+    } else if (this.bannerType == 2) {
+      this.quarterWidth = false
+      this.fullWidth = false
+      this.halfWidth = true
+      this.thirdWidth = false
+
+      this.isCarousel = true
+    }
+  }
+
+  getRedirectionType(event: any) {
+    this.redirectionType = event?.value
   }
 
   managePage() {
@@ -181,90 +205,81 @@ export class UpdateBannerListComponent implements OnInit {
       case PageTasks.UPDATE:
         this.editMode = true;
         break;
-      default:
-        break;
     }
   }
 
-  imageCroppedWeb(event: ImageCroppedEvent) {
-    this.web_file = event.base64;
-  }
-
-  imageCroppedMobile(event: ImageCroppedEvent) {
-    this.mobile_file = event.base64;
-  }
-
-  imageWebLoaded() {
-    // show cropper
-  }
-
-  cropperWebReady() {
-    // cropper ready
-  }
-
-  loadImageWebFailed() {
-    // show message
-  }
-
-  imageMobileLoaded() {
-    // show cropper
-  }
-
-  cropperMobileReady() {
-    // cropper ready
-  }
-
-  loadImageMobileFailed() {
-    // show message
-  }
-
-  removeImage(key: any) {
-    this.croppedImage = ''
-    if (key === 'web') {
-      this.webLoadImage = false
-    } else if (key === 'mobile') {
-      this.mobileLoadImage = false
-    }
+  handleInputChange(event: any, key: any) {
+    this.name = event?.target?.files[0]?.name
+    this.imageWebChangedEvent = event;
+    this.isImage = true
   }
 
   addBanner() {
-    let length = this.bannerMedia.length
-    if (length < this.bannerType) {
-      this.addFiles()
+    if (this.bannerType == '1') {
+      if (this.files.length < this.count?.value) {
+        this.addFiles()
+      } else {
+        this.toastr.error('Maximum ' + this.count?.value + ' files are allowed')
+      }
     } else {
-      this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
+      if (this.files.length < this.bannerType) {
+        this.addFiles()
+      } else {
+        this.toastr.error('Maximum ' + this.bannerType + ' files are allowed')
+      }
     }
+
     this.clearFiles()
   }
 
   addFiles() {
-    this.bannerMedia.push({
-      web: { file: this.web_file, name: this.w_name },
-      mobile: { file: this.mobile_file, name: this.m_name }
-    })
+    let data = {
+      file: this.file,
+      name: this.name,
+      redirection: { type: this.redirectionType, url: '' }
+    }
+    if (this.redirectionType == 'product') data.redirection.url = this.product
+    if (this.redirectionType == 'category') data.redirection.url = this.category
+    if (this.redirectionType == 'external') data.redirection.url = this.external?.value
+    this.files.push(data)
+  }
+
+  removeBanner(name: any) {
+    this.files = this.files.filter((item: any) => item?.file != name)
   }
 
   clearFiles() {
-    this.web_file = null
-    this.mobile_file = null
-    this.w_name = null
-    this.m_name = null
-    this.w_file = null
-    this.m_file = null
+    this.file = null
+    this.name = ''
+  }
+
+  imageCroppedWeb(event: ImageCroppedEvent) {
+    this.file = event.base64;
+  }
+
+  imageWebLoaded() {
+  }
+
+  cropperWebReady() {
+  }
+
+  loadImageWebFailed() {
   }
 
   onSubmit() {
     if (!this.form.valid) {
+      this.isSubmitted = true;
+      this.toastr.error('Form validation failed')
       return;
     }
 
     const payload = this.createPayload()
     if (payload) {
-      this.bannerService.updateBanner(this.slug, payload).subscribe((res: any) => {
+      this.bannerService.updateBanner(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
+          this.toastr.error(res?.message);
         } else if (res.errorCode == 0) {
-          this.toastr.success('Banner updated successfully');
+          this.toastr.success(res?.message);
           this.router.navigate([this.appRoute.banner.BANNER_LIST]);
         }
       })
@@ -272,27 +287,30 @@ export class UpdateBannerListComponent implements OnInit {
   }
 
   createPayload() {
-    const data = {
+    let data = {
+      type: this.bannerType,
       title: this.form.get('title')?.value,
       validFrom: this.form.get('validFrom')?.value,
-      redirectionUrl: this.form.get('redirectURL')?.value,
-      isActive: this.form.get('isActive')?.value,
       validTo: this.form.get('validTo')?.value,
-      redirection: {
-        unit: '',
-        category: this.category ? this.category : '',
-        collection: this.collection ? this.collection : '',
-        product: this.product ? this.product : '',
-        external: this.form.get('redirectURL')?.value
-      },
-      file: this.bannerMedia,
-      bannerid: this.slug
+      isActive: this.form.get('isActive')?.value,
+      files: this.files,
+      bannerid: this.bannerData?.bannerid
     }
 
-    if (this.web_file != '' && this.mobile_file != '') {
-      return data
+    if (this.bannerType == '1') {
+      if (this.files.length == this.count?.value) {
+        return data
+      } else {
+        this.toastr.error("Can't proceed with banner creation, please add all the required files")
+        return false
+      }
     } else {
-      this.toastr.info('Banner image is being processed')
+      if (this.files.length == this.bannerType) {
+        return data
+      } else {
+        this.toastr.error("Can't proceed with banner creation, please add all the required files")
+        return false
+      }
     }
   }
 }
