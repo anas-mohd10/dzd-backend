@@ -9,5 +9,7 @@ export const customerEndpoints = {
   get_customer_by_number: '/customer/number',
   search_customers: '/search-customers',
   add_address: '/add-address',
-  get_address: '/get-address'
+  get_address: '/get-address',
+  address_details: '/address-details',
+  manage_address: '/manage-address'
 }

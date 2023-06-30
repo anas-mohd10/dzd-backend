@@ -141,6 +141,15 @@ export class UpdateCustomersComponent implements OnInit {
     })
   }
 
+  manageAddress(refid: any) {
+    this.customerService.manageAddress({ customer: this.customerData?._id, refid: refid }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.getAddress()
+        this.toastr.success(res?.message)
+      }
+    })
+  }
+
   getAddress() {
     this.customerService.getAddress({ userid: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {

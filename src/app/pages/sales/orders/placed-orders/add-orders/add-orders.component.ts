@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
@@ -49,6 +50,7 @@ export class AddOrdersComponent implements OnInit {
   store: FormControl = new FormControl('')
   deliveryTime: any = null;
   deliveryDate: any = null;
+  settings: any = {}
 
   constructor(
     private orderService: OrdersService,
@@ -61,6 +63,7 @@ export class AddOrdersComponent implements OnInit {
     private couponsService: CouponsService,
     private cdr: ChangeDetectorRef,
     private StoresService: StoresService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -75,6 +78,12 @@ export class AddOrdersComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.stores = res?.result
         this.cdr.markForCheck()
+      }
+    })
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
       }
     })
 
@@ -171,17 +180,19 @@ export class AddOrdersComponent implements OnInit {
   }
 
   getAddress() {
-    this.customerService.getCustomerBySlug(this.selectedCustomer).subscribe((res: any) => {
-      this.customerId = res?.result[0]._id
-      this.orderForm.get("firstline")?.setValue(res?.result[0].address.firstline)
-      this.orderForm.get("secondline")?.setValue(res?.result[0].address.secondline)
-      this.orderForm.get("city")?.setValue(res?.result[0].address.city)
-      this.orderForm.get("area")?.setValue(res?.result[0].address.area)
-      this.orderForm.get("pincode")?.setValue(res?.result[0].address.pincode)
-      this.orderForm.get("lat")?.setValue(res?.result[0].address.lat)
-      this.orderForm.get("lng")?.setValue(res?.result[0].address.lng)
-      this.orderForm.get("state")?.setValue(res?.result[0].address.state)
-      this.orderForm.get("landmark")?.setValue(res?.result[0].address.landmark)
+    this.customerService.getAddressDetails({ customer: this.selectedCustomer }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.orderForm.get('firstline')?.setValue(res?.result?.firstlane)
+        this.orderForm.get('secondline')?.setValue(res?.result?.secondlane)
+        this.orderForm.get('area')?.setValue(res?.result?.area)
+        this.orderForm.get('city')?.setValue(res?.result?.city)
+        this.orderForm.get('landmark')?.setValue(res?.result?.landmark)
+        this.orderForm.get('pincode')?.setValue(res?.result?.pincode)
+        this.orderForm.get('state')?.setValue(res?.result?.state)
+        this.orderForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
+        this.orderForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
+        this.cdr.markForCheck()
+      }
     })
   }
 
@@ -299,7 +310,7 @@ export class AddOrdersComponent implements OnInit {
 
     let data = this.orderForm.value
     let payload = {
-      customerId: this.customerId,
+      customerId: this.selectedCustomer,
       address: {
         firstline: data.firstline,
         secondline: data.secondline,

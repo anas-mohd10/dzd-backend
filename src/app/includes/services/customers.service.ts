@@ -65,4 +65,14 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_address);
     return this.http.post(`${url}`, data)
   }
+
+  getAddressDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.address_details);
+    return this.http.post(`${url}`, data)
+  }
+
+  manageAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.manage_address);
+    return this.http.put(`${url}`, data)
+  }
 }

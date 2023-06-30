@@ -30,9 +30,9 @@
 
               <div class="form-group col-sm-6">
                 <label class="fs-6 mb-3 required">Customer</label>
-                <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="userid"
-                  [(ngModel)]="selectedCustomer" placeholder="Select customer" [multiple]=false
-                  [ngModelOptions]="{standalone: true}" (change)="getAddress()">
+                <ng-select [items]="activeCustomersData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCustomer"
+                  placeholder="Select customer" [multiple]=false [ngModelOptions]="{standalone: true}"
+                  (change)="getAddress()">
                 </ng-select>
               </div>
 
@@ -149,10 +149,12 @@
                           <div class="cart-brand fs-6">{{item?.brand}}</div>
                           <div class="cart-product fs-4">{{item?.name}}</div>
                           <div class="cart-price">
-                            <span class="offer-price fs-5">₹ {{item?.price?.offer != item?.price?.mrp ?
+                            <span class="offer-price fs-5">{{settings?.currency}} {{item?.price?.offer !=
+                              item?.price?.mrp ?
                               item?.price?.offer :
                               (item?.price?.offer == item?.price?.mrp ? item?.price?.mrp : item?.price?.offer)}}</span>
-                            <span class="mrp-price fs-6" *ngIf="item?.price?.offer < item?.price?.mrp">₹
+                            <span class="mrp-price fs-6"
+                              *ngIf="item?.price?.offer < item?.price?.mrp">{{settings?.currency}}
                               {{item?.price?.mrp}}</span>
                           </div>
                           <div class="cart-bottom">
@@ -181,21 +183,22 @@
                       <div class="productDetails">
                         <div class="orderProductName fs-4">{{item?.name}}</div>
                         <div class="orderProductPrice fs-5">
-                          <span class="offer-price">₹ {{item?.price?.offer != item?.price?.mrp ? item?.price?.offer :
+                          <span class="offer-price">{{settings?.currency}} {{item?.price?.offer != item?.price?.mrp ?
+                            item?.price?.offer :
                             (item?.price?.offer == item?.price?.mrp ? item?.price?.mrp : item?.price?.offer)}}</span>
-                          <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">₹
+                          <span class="mrp-price" *ngIf="item?.price?.offer < item?.price?.mrp">{{settings?.currency}}
                             {{item?.price?.mrp}}</span>
                         </div>
                       </div>
                       <div class="productQuantity">x {{item?.quantity}}</div>
-                      <div class="orderTotal">₹ {{item?.total}}</div>
+                      <div class="orderTotal">{{settings?.currency}} {{item?.total}}</div>
                     </div>
                   </ng-container>
                 </div>
 
                 <div class="subTotal" *ngIf="subTotal > 0">
                   <div class="subTotalTitle">Sub Total:</div>
-                  <div class="subTotalAmount">₹ {{subTotal}}</div>
+                  <div class="subTotalAmount">{{settings?.currency}} {{subTotal}}</div>
                 </div>
               </div>
 
@@ -244,8 +247,7 @@
                   <label class="fs-6 mb-3">Select a pickup dates</label>
                   <div class="dates">
                     <ng-container *ngFor="let date of dates">
-                      <div class="date" (click)="selectDeliveryDate(date)"
-                        [ngClass]="{'active': deliveryDate == date}">
+                      <div class="date" (click)="selectDeliveryDate(date)" [ngClass]="{'active': deliveryDate == date}">
                         <div> {{date}}</div>
                       </div>
                     </ng-container>
