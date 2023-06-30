@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { PermissionsService } from 'src/app/includes/services/permissions.service';
 import { RolesService } from 'src/app/includes/services/roles.service';
-
 @Component({
   selector: 'app-add-roles',
   templateUrl: './add-roles.component.html',
   styleUrls: ['./add-roles.component.scss']
 })
 export class AddRolesComponent implements OnInit {
-  roleForm: FormGroup;
+  form: FormGroup;
   appRoute = appRoutes
   task = PageTasks.ADD;
   editMode = false;
@@ -22,35 +21,34 @@ export class AddRolesComponent implements OnInit {
   permissionsArray: any = []
   roleNames: any = [];
 
+  checkedPermissions: Array<any> = []
+  permissions: Array<any> = []
+
   constructor(
-    private roleService: RolesService,
-    private permissionService: PermissionsService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService
+    private RolesService: RolesService,
+    private PermissionsService: PermissionsService,
+    private FormBuilder: FormBuilder,
+    private Router: Router,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.initForm()
-    this.task = this.route.snapshot.params.task || PageTasks.ADD;
     this.managePage()
-    this.getPermission()
-    this.getRoles()
-    this.roleForm.get("permission")?.setValue(false)
+    this.getPermissions()
   }
 
   initForm() {
-    this.roleForm = this.formBuilder.group({
+    this.form = this.FormBuilder.group({
       name: ['', Validators.required],
       description: [''],
-      selectall: [''],
-      permission: [Validators.required],
+      isActive: ['true']
     });
   }
 
-  get rf() {
-    return this.roleForm.controls;
+  get roleForm() {
+    return this.form.controls;
   }
 
   managePage() {
@@ -66,51 +64,27 @@ export class AddRolesComponent implements OnInit {
     }
   }
 
-  getPermission() {
-    this.permissionService.getPermissions().subscribe((res: any) => {
-      this.permissionsData = res?.result
-    })
-  }
-
-  getRoles() {
-    this.roleService.getRoles().subscribe((res: any) => {
-      for (let role of res?.result) {
-        this.roleNames.push(role.name)
+  getPermissions() {
+    this.PermissionsService.getPermissions().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.permissions = res?.result
       }
     })
   }
 
-  checkPermission(id: any, event: any) {
-    let checked = event.target.checked
-    if (checked == true) {
-      if (!this.permissionsArray.includes(id)) {
-        this.permissionsArray.push(id)
-        if (this.permissionsArray.length == this.permissionsData.length) {
-          this.roleForm.get("selectall")?.setValue(true)
-        }
-      }
-    } else if (checked == false) {
-      let index = this.permissionsArray.indexOf(id)
-      this.permissionsArray.splice(index, 1)
-      this.roleForm.get("selectall")?.setValue(false)
-    }
+  selectAllPermissions() {
+    for (let permission of this.permissions) this.checkedPermissions.push(permission?.refid)
   }
 
-  checkAllPermission(event: any) {
-    let checked = event.target.checked
-    if (checked == true) {
-      for (let permission of this.permissionsData) {
-        if (!this.permissionsArray.includes(permission._id)) {
-          this.permissionsArray.push(permission._id)
-        }
-      }
-      this.roleForm.get("permission")?.setValue(true)
-    } else if (checked == false) {
-      for (let permission of this.permissionsData) {
-        let index = this.permissionsArray.indexOf(permission._id)
-        this.permissionsArray.splice(index, 1)
-      }
-      this.roleForm.get("permission")?.setValue(false)
+  deselectAllPermissions() {
+    this.permissionsData = []
+  }
+
+  checkPermission(permission: any) {
+    if (!this.checkedPermissions.includes(permission)) {
+      this.checkedPermissions.push(permission)
+    } else {
+      this.checkedPermissions = this.checkedPermissions.filter(item => item != permission)
     }
   }
 
@@ -123,26 +97,26 @@ export class AddRolesComponent implements OnInit {
     }
   }
 
-
   addRole() {
-    if (!this.roleForm.valid) {
-      return;
+    if (!this.form.valid) {
+      this.isSubmitted = true
+      return
     }
 
-    let name = this.roleForm.get('name')?.value
+    let payload = {
+      ...this.form.value,
+      permissions: this.checkedPermissions
+    }
 
-    if (!this.roleNames.includes(name)) {
-      this.roleForm.get("permission")?.setValue(this.permissionsArray)
-      this.roleService.addRoles(this.roleForm.value).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error('Something Went Wrong');
-        } else if (res.errorCode == 0) {
-          this.toastr.success('Role Added Successfully');
-          this.router.navigate([this.appRoute.roles.ROLES_LIST]);
+    if (this.checkedPermissions.length > 0) {
+      this.RolesService.addRoles(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.Router.navigate([this.appRoute.roles.ROLES_LIST])
         }
       })
     } else {
-      this.toastr.info(`${name} already exists`);
+      this.ToastrService.error('Select atleast one permission to continue')
     }
   }
 

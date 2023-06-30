@@ -27,20 +27,10 @@
       </div>
    </div>
    <div class="row">
-      <div class="col-lg-3">
-         <app-stats-widget5 svgIcon="./assets/media/icons/duotune/ecommerce/ecm008.svg"
-            class="card bg-white hoverable card-xl-stretch mb-xl-5" color="white" iconColor="primary"
-            title="{{customersCount ? customersCount : 0}}" description="Total Active Customers">
-         </app-stats-widget5>
-      </div>
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
-
-
-
-               <div class="table-responsive" *ngIf="isTable">
-
+               <div class="table-responsive">
                   <div class="pb-5">
                      <div class="row d-flex justify-content-end align-items-end">
                         <div class="col-2">
@@ -63,7 +53,6 @@
                         </div>
                      </div>
                   </div>
-
 
                   <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
                      *ngIf="customers.length > 0">

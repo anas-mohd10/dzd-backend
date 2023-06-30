@@ -9,7 +9,10 @@ import { CommonService } from './common.service';
 export class PermissionsService {
   permissionsEndpoint = permissionsEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
   getPermissions() {
     const url = this.commonService.getFullUrl(this.permissionsEndpoint.get_permissions);

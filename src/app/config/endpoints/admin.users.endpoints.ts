@@ -4,5 +4,6 @@ export const adminUsersEndpoints = {
      register_admin: '/add-admin-user',
      update_admin: '/update-admin-user',
      get_admin_count: '/get-admin-mail',
-     admin_details: '/admin-details'
+     admin_details: '/admin-details',
+     search_admins: '/search-admins'
 }

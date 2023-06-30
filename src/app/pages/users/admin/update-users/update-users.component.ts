@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -20,6 +20,7 @@ export class UpdateUsersComponent implements OnInit {
   isSubmitted = false;
   rolesData: any;
   admin: any;
+  uniqueEmail: boolean = false;
 
   constructor(
     private adminService: AdminUsersService,
@@ -39,15 +40,15 @@ export class UpdateUsersComponent implements OnInit {
 
   initForm() {
     this.adminForm = this.formBuilder.group({
-      firstname: [''],
+      firstname: ['', Validators.required],
       lastname: [''],
-      email: [''],
-      mobile: [''],
-      username: [''],
-      roleId: [''],
+      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      username: ['', Validators.required],
+      roleId: ['', Validators.required],
       firstPwd: [''],
       password: [''],
-      isActive: [''],
+      isActive: ['true', Validators.required],
     });
   }
 
@@ -84,6 +85,21 @@ export class UpdateUsersComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  checkEmail(e: any) {
+    const data = { email: '' }
+    if (e.value) {
+      data.email = e.value
+    }
+    this.adminService.getAdminUserByMail(data).subscribe((res: any) => {
+      if (res?.result.length != 0) {
+        this.uniqueEmail = false
+        this.toastr.error("Email already exists")
+      } else {
+        this.uniqueEmail = true
+      }
+    })
   }
 
   onSubmit() {

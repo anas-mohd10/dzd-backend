@@ -1,18 +1,19 @@
 <div class="content container-fluid">
+
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update Role" : "Add Role"}}</h1>
+    </div>
     <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update Role" : "Add Role" }}
-        </h3>
+      <div class="col d-flex align-items-start justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.roles.ROLES_LIST }}">Roles</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.roles.ADD_ROLES }}">
               {{ editMode ? "Update Role" : "Add Role"}}
             </a>
@@ -21,75 +22,83 @@
       </div>
     </div>
   </div>
+
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="roleForm">
+          <form (ngSubmit)="onSubmit()" [formGroup]="form">
             <div class="row">
-              <div style="display: none;">{{permissionsData.length}}</div>
-              <div class="col-12">
-                <h3 class="form-title"><span>Role Details</span></h3>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 form-title required"> Name</label>
-                  <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
-                      'is-invalid':
-                      (rf.name.touched || isSubmitted) &&
-                      rf.name.errors?.required
-                    }" />
-                  <span class="text-danger error-msg fs-7" *ngIf="
-                      (rf.name.touched || isSubmitted) &&
-                      rf.name.errors?.required
-                  ">Name is required
-                  </span>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6"></div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Description</label>
-                  <textarea class="form-control fs-5" formControlName="description" style="resize: none"
-                    rows="5"></textarea>
-                </div>
-              </div>
-              <div class="col-12 col-sm-6"></div>
 
               <div class="col-12">
-                <label class="fs-5 mb-3 form-title required">Select Permissions</label>
-                <div class="form-group mt-10">
+                <h3 class="form-title">Role Details</h3>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label class="fs-6 mb-3 required"> Name</label>
+                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                      'is-invalid':
+                      (roleForm.name.touched || isSubmitted) &&
+                      roleForm.name.errors?.required
+                    }" />
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label class="fs-6 mb-3"> Description</label>
+                  <input type="text" class="form-control fs-6" formControlName="description" />
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Status</label>
+                  <select class="form-select fs-6" formControlName="isActive">
+                    <option value="false">Inactive</option>
+                    <option value="true">Active</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="fs-6 mb-3 required">Select Permissions</label>
+                <div class="d-flex align-items-center justify-content-start" *ngIf="permissions.length > 0">
                   <div class="form-check">
-                    <input class="form-check-input form-title fs-5" type="checkbox" value="selected" id="selectAllCheck"
-                      (change)="checkAllPermission($event)" formControlName="selectall">
-                    <label class="form-check-label" for="selectAllCheck">
-                      Select All / Deselect All
+                    <input class="form-check-input" type="radio" name="selectAll" id="selectAll"
+                      (click)="selectAllPermissions()">
+                    <label class="form-check-label fs-6" for="selectAll">
+                      Select all
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="selectAll" id="deselectAll"
+                      (click)="deselectAllPermissions()">
+                    <label class="form-check-label fs-6" for="deselectAll">
+                      Deselect all
                     </label>
                   </div>
                 </div>
-                <div class="permissions-input">
-                  <div class="form-group mt-10" *ngFor="let permission of permissionsData">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input form-title fs-5" type="checkbox" id="{{permission.name}}"
-                        value="{{permission._id}}" (change)="checkPermission(permission._id, $event)"
-                        formControlName="permission">
-                      <span class="text-danger error-msg fs-7"
-                        *ngIf="(rf.permission.touched || isSubmitted) && rf.permission.errors?.required">
-                        Permission is required
-                      </span>
-                      <label class="form-check-label" for="{{permission.name}}">{{permission.name}}</label>
+                <div class="permissionsWrapper" *ngIf="permissions.length > 0">
+                  <ng-container *ngFor="let permission of permissions">
+                    <div class="permission">
+
                     </div>
-                  </div>
+                  </ng-container>
                 </div>
+
+                <ng-container *ngIf="permissions.length == 0">
+                  <div class="fs-6 text-muted mt-1">No permissions found</div>
+                </ng-container>
               </div>
-              <div class="col-12">
-                <a routerLink="{{ appRoute.roles.ROLES_LIST }}" class=" btn btn-secondary btn-sm fs-5 text-dark"
+
+              <div class="col-12 d-flex align-items-center justify-content-end">
+                <a routerLink="{{ appRoute.roles.ROLES_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
-                  Add
-                </button>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"> Add </button>
               </div>
             </div>
           </form>

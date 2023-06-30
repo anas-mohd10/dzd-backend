@@ -40,5 +40,9 @@ export class AdminUsersService {
     return this.http.put(`${url}`, data)
   }
 
-  
+  searchAdmins(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.search_admins);
+    return this.http.post(`${url}`, data)
+  }
+
 }

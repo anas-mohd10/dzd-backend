@@ -1,0 +1,17 @@
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
+label,
+input[type=button] {
+    font-weight: normal !important;
+    width: 100%;
+}

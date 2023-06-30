@@ -11,7 +11,7 @@ export class RolesService {
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addRoles(data: any) {
-    const url = this.commonService.getFullUrl(this.rolesEndpoints.add_roles);
+    const url = this.commonService.getFullUrl(this.rolesEndpoints.add_role);
     return this.http.post(`${url}`, data)
   }
 
@@ -20,13 +20,23 @@ export class RolesService {
     return this.http.get(`${url}`)
   }
 
-  getRoleById(slug: any) {
-    const url = this.commonService.getFullUrl(this.rolesEndpoints.get_role_by_slug + "?slug=" + slug);
+  getActiveRoles() {
+    const url = this.commonService.getFullUrl(this.rolesEndpoints.active_roles);
     return this.http.get(`${url}`)
   }
 
-  updateRoles(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.rolesEndpoints.update + "?slug=" + slug);
+  searchRoles(data: any) {
+    const url = this.commonService.getFullUrl(this.rolesEndpoints.search_role);
+    return this.http.post(`${url}`, data)
+  }
+
+  getRoleDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.rolesEndpoints.get_role_details);
+    return this.http.post(`${url}`, data)
+  }
+
+  updateRoles(data: any) {
+    const url = this.commonService.getFullUrl(this.rolesEndpoints.update_role);
     return this.http.put(`${url}`, data)
   }
 }

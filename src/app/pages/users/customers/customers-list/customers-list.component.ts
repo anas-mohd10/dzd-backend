@@ -1,8 +1,5 @@
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { appRoutes } from "../../../../config/routes/app.routes"
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { FormControl } from '@angular/forms';
 
@@ -12,15 +9,10 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./customers-list.component.scss']
 })
 
-export class CustomersListComponent implements OnDestroy, OnInit {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
+export class CustomersListComponent implements OnInit {
 
   appRoute = appRoutes;
   customersData: any;
-  isTable: boolean = false;
   customersCount: any;
 
   customers: Array<any> = []
@@ -36,25 +28,6 @@ export class CustomersListComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 10,
-      processing: true,
-    };
-
-    this.customersService.getCustomersCoumt().subscribe((res: any) => {
-      this.customersCount = res?.result
-      this.cdr.markForCheck()
-    })
-
-    this.customersService.getCustomers().subscribe((res: any) => {
-      this.customersData = res?.result
-      this.isTable = true
-      this.dtTrigger.next();
-      this.cdr.markForCheck()
-    })
-
     this.getCustomers()
   }
 
@@ -93,9 +66,4 @@ export class CustomersListComponent implements OnDestroy, OnInit {
       }
     })
   }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
 }
