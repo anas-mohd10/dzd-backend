@@ -182,14 +182,14 @@ export class UpdateBannerListComponent implements OnInit {
       this.halfWidth = false
       this.thirdWidth = true
 
-      this.isCarousel = true
+      this.isCarousel = false
     } else if (this.bannerType == 2) {
       this.quarterWidth = false
       this.fullWidth = false
       this.halfWidth = true
       this.thirdWidth = false
 
-      this.isCarousel = true
+      this.isCarousel = false
     }
   }
 

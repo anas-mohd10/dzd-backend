@@ -74,7 +74,7 @@ export class AddOrdersComponent implements OnInit {
     this.getActiveProducts()
     this.getActiveCoupons()
 
-    this.StoresService.getStores().subscribe((res: any) => {
+    this.StoresService.getClickPoints().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.stores = res?.result
         this.cdr.markForCheck()

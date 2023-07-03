@@ -52,6 +52,7 @@ export class AddStoreComponent implements OnInit {
       city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
+      isClickPoint: new FormControl(false),
       isFeatured: new FormControl(false)
     })
   }
@@ -99,6 +100,7 @@ export class AddStoreComponent implements OnInit {
       },
       map: this.form.get('map')?.value,
       isActive: this.form.get('isActive')?.value,
+      isClickPoint: this.form.get('isClickPoint')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
       slots: this.slots
     }

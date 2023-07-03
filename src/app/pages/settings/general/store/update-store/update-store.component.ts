@@ -56,8 +56,10 @@ export class UpdateStoreComponent implements OnInit {
           this.form.get('landmark')?.patchValue(res?.result?.address?.landmark)
           this.form.get('isActive')?.patchValue(res?.result?.isActive)
           this.form.get('isFeatured')?.patchValue(res?.result?.isFeatured)
+          this.form.get('isClickPoint')?.patchValue(res?.result?.isClickPoint)
           this.form.get('isDelete')?.patchValue(res?.result?.isDelete)
           this.slots = res?.result?.slots
+          this.ChangeDetectorRef.markForCheck()
         }
       })
     }
@@ -76,6 +78,7 @@ export class UpdateStoreComponent implements OnInit {
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isDelete: new FormControl(false),
+      isClickPoint: new FormControl(false),
       isFeatured: new FormControl(false)
     })
   }
@@ -124,6 +127,7 @@ export class UpdateStoreComponent implements OnInit {
       map: this.form.get('map')?.value,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
+      isClickPoint: this.form.get('isClickPoint')?.value,
       isDelete: this.form.get('isDelete')?.value,
       slots: this.slots,
       refid: this.refid

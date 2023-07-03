@@ -24,6 +24,11 @@ export class StoresService {
     return this.http.get(`${url}`);
   }
 
+  getClickPoints() {
+    const url = this.commonService.getFullUrl(this.storeEndpoints.click_points);
+    return this.http.get(`${url}`);
+  }
+
   getStoreDetails(data: any) {
     const url = this.commonService.getFullUrl(this.storeEndpoints.store_details);
     return this.http.post(`${url}`, data);

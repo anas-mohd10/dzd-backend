@@ -59,6 +59,19 @@ $grey: #888888;
                     background: $border;
                 }
 
+                .clickPoint {
+                    position: absolute;
+                    right: 55px;
+                    top: 10px;
+                    height: 40px;
+                    width: 40px;
+                    display: grid;
+                    place-items: center;
+                    cursor: pointer;
+                    border-radius: 20px;
+                    background: $border;
+                }
+
                 .storeCity.fs-5 {
                     font-size: 1.4rem !important;
                     font-weight: 800 !important;

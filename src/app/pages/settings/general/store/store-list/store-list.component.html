@@ -35,6 +35,9 @@
                         <div class="featuredStore" *ngIf="store?.isFeatured">
                             <img src="../../../../../../assets/icons/verified.svg" alt="Icon">
                         </div>
+                        <div class="clickPoint" *ngIf="store?.isClickPoint">
+                            <img src="../../../../../../assets/icons/clickPoint.svg" alt="Icon">
+                        </div>
                         <div class="storeCity fs-5">{{store?.address?.city}}</div>
                         <div class="storeAddress">
                             <img src="../../../../../../assets/icons/location.svg" alt="Icon">
