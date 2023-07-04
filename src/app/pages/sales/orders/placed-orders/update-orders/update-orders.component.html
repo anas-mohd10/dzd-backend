@@ -432,7 +432,13 @@
             <table class="table align-middle fs-6 gy-5 mb-0">
               <thead>
                 <tr class="text-start text-gray-400 fw-bolder fs-6 gs-0">
-                  <th class="min-w-175px">Product</th>
+                  <th class="min-w-70px text-end">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                      <label class="form-check-label" for="flexCheckDefault">&nbsp;</label>
+                    </div>
+                  </th>
+                  <th class="min-w-150px">Product</th>
                   <th class="min-w-100px text-end">SKU</th>
                   <th class="min-w-70px text-end">Qty</th>
                   <th class="min-w-100px text-end">Unit Price</th>
@@ -441,6 +447,12 @@
               </thead>
               <tbody class="fw-bold text-gray-600">
                 <tr *ngFor="let product of order?.product">
+                  <td>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="flexCheckDefault">
+                      <label class="form-check-label" for="flexCheckDefault">&nbsp;</label>
+                    </div>
+                  </td>
                   <td>
                     <div class="d-flex align-items-center">
                       <a class="symbol symbol-50px">
@@ -457,7 +469,7 @@
                   <td class="text-end">{{product?.priceAfterTax}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="fs-4 fw-bolder text-dark text-end">Total</td>
+                  <td colspan="5" class="fs-4 fw-bolder text-dark text-end">Total</td>
                   <td class="text-end">{{settings?.currency}} {{order?.priceAfterTax}}</td>
                 </tr>
                 <tr>
@@ -466,32 +478,32 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fs-3 text-dark fw-bolder">Items</td>
+                  <td colspan="5" class="text-end fs-3 text-dark fw-bolder">Items</td>
                   <td class="text-end fs-3 text-dark fw-bolder">Amount</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fw-bolder text-dark">Subtotal</td>
+                  <td colspan="5" class="text-end fw-bolder text-dark">Subtotal</td>
                   <td class="text-end">{{settings?.currency}} {{order?.priceBeforeTax}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fw-bolder text-dark">Tax</td>
+                  <td colspan="5" class="text-end fw-bolder text-dark">Tax</td>
                   <td class="text-end">{{settings?.currency}} {{order?.tax}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fw-bolder text-dark">Shipping Cost</td>
+                  <td colspan="5" class="text-end fw-bolder text-dark">Shipping Cost</td>
                   <td class="text-end">{{settings?.currency}} {{order?.shippingCost}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fw-bolder text-dark">Cash On Delivery Cost</td>
+                  <td colspan="5" class="text-end fw-bolder text-dark">Cash On Delivery Cost</td>
                   <td class="text-end">{{settings?.currency}} {{order?.paymentMethod == 'ONLINE' ? 0 : order?.codCost}}
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fw-bolder text-dark">Discount</td>
+                  <td colspan="5" class="text-end fw-bolder text-dark">Discount</td>
                   <td class="text-end">{{settings?.currency}} {{order?.discount}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fw-bolder text-dark">Additional Charge</td>
+                  <td colspan="5" class="text-end fw-bolder text-dark">Additional Charge</td>
                   <td class="text-end">{{settings?.currency}} {{order?.additionalCharge}}</td>
                 </tr>
                 <tr>
@@ -500,7 +512,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="fs-4 text-dark fw-bolder text-end">Grand Total</td>
+                  <td colspan="5" class="fs-4 text-dark fw-bolder text-end">Grand Total</td>
                   <td class="text-end fs-4 text-dark fw-bolder">{{settings?.currency}} {{order?.total}}</td>
                 </tr>
               </tbody>
