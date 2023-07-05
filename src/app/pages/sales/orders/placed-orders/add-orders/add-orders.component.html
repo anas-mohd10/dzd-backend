@@ -42,16 +42,32 @@
 
               <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Address lane 1</label>
-                  <input type="text" class="form-control fs-6" formControlName="firstline"
-                    [ngClass]="{'is-invalid': (of.firstline.touched || isSubmitted) &&  of.firstline.errors?.required }" />
+                  <label class="fs-6 mb-3 required">Type</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" formControlName="type" [ngClass]="{
+                     'is-invalid':
+                     (of.type.touched || isSubmitted) &&
+                     of.type.errors?.required
+                   }">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="Home">Home</option>
+                    <option value="Work">Work</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
               </div>
 
               <div class="col-6 mb-3">
                 <div class="form-group">
-                  <label class="fs-6 mb-3"> Address lane 2</label>
-                  <input type="text" class="form-control fs-6" formControlName="secondline" />
+                  <label class="fs-6 mb-3 required">Firstlane</label>
+                  <input type="text" class="form-control fs-6" formControlName="firstlane"
+                    [ngClass]="{'is-invalid': (of.firstlane.touched || isSubmitted) &&  of.firstlane.errors?.required }" />
+                </div>
+              </div>
+
+              <div class="col-6 mb-3">
+                <div class="form-group">
+                  <label class="fs-6 mb-3">Secondlane</label>
+                  <input type="text" class="form-control fs-6" formControlName="secondlane" />
                 </div>
               </div>
 

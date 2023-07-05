@@ -144,13 +144,13 @@
                       {{order?.paymentStatus == 'PAID' ? 'Paid' : 'Pending'}}
                     </span>
                   </td>
-                  <td routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.refid}"> <img
+                  <td routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img
                       src="../../../../../assets/icons/editPen.svg" alt="Icon"></td>
                 </tr>
               </ng-container>
             </tbody>
           </table>
-          
+
           <div *ngIf="orders.length == 0">
             <div class="emptyNote">
               <img src="../../../../../../assets/icons/empty.gif" alt="Icon">

@@ -125,8 +125,9 @@ export class AddOrdersComponent implements OnInit {
   initForm() {
     this.orderForm = this.formBuilder.group({
       paymentMethod: ['', Validators.required],
-      firstline: ['', Validators.required],
-      secondline: [''],
+      type: ['', Validators.required],
+      firstlane: ['', Validators.required],
+      secondlane: [''],
       area: [''],
       city: ['', Validators.required],
       pincode: ['', Validators.required],
@@ -182,8 +183,9 @@ export class AddOrdersComponent implements OnInit {
   getAddress() {
     this.customerService.getAddressDetails({ customer: this.selectedCustomer }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.orderForm.get('firstline')?.setValue(res?.result?.firstlane)
-        this.orderForm.get('secondline')?.setValue(res?.result?.secondlane)
+        this.orderForm.get('firstlane')?.setValue(res?.result?.firstlane)
+        this.orderForm.get('secondlane')?.setValue(res?.result?.secondlane)
+        this.orderForm.get('type')?.setValue(res?.result?.type)
         this.orderForm.get('area')?.setValue(res?.result?.area)
         this.orderForm.get('city')?.setValue(res?.result?.city)
         this.orderForm.get('landmark')?.setValue(res?.result?.landmark)
@@ -312,18 +314,21 @@ export class AddOrdersComponent implements OnInit {
     let payload = {
       customerId: this.selectedCustomer,
       address: {
-        firstline: data.firstline,
-        secondline: data.secondline,
+        type: data?.type,
+        firstlane: data.firstlane,
+        secondlane: data.secondlane,
         area: data.area,
         city: data.city,
         pincode: data.pincode,
         state: data.state,
-        lat: data.lat,
-        lng: data.lng,
+        coordinates: {
+          lat: data.lat,
+          lng: data.lng,
+        },
         landmark: data.landmark,
       },
       couponId: this.coupon ? this.coupon : '',
-      product: this.cart,
+      products: this.cart,
       gst: data.gst,
       paymentMethod: data.paymentMethod,
       payment: {

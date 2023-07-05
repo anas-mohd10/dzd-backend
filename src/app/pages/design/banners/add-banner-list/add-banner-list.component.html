@@ -69,7 +69,7 @@
                         </div>
                      </div>
 
-                     <div class="col-6 mb-3">
+                     <div class="col-12 mb-3">
                         <div class="form-group">
                            <label class="fs-6 ">Banner Type</label>
                            <div class="d-flex align-items-center justify-content-start" style="margin: 20px 0 0 0;">
@@ -109,6 +109,20 @@
                         <div class="form-group">
                            <label class="fs-6 mb-3">Type</label>
                            <select class="form-select mb-3 fs-6" [formControl]="count">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="col-6 mb-3" *ngIf="isCarousel">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Height Constraint</label>
+                           <select class="form-select mb-3 fs-6" [formControl]="heightConstraint"
+                              (change)="getHeightConstraint()">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="1">1</option>
                               <option value="2">2</option>

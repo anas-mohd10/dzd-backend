@@ -90,37 +90,35 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getOrderDetails() {
-    this.orderService.getOrdersByRefid(this.slug, {}).subscribe((res: any) => {
-      this.order = res?.result?.orders[0]
-      this.orderNumber = res?.result?.orders[0].orderNo
-      this.productCount = this.order.product.length
-      this.order.orderDate = new Date(this.order.orderDate).toDateString()
-      this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
-      this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
-      this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
-      this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
-      this.orderForm.get("orderId")?.setValue(this.order?.payment?.orderId)
-      this.orderForm.get("paymentId")?.setValue(this.order?.payment?.transactionId)
 
-      for (let history of this.order.history) {
-        history['status'] = history?.status[0] + history?.status.slice(1).toLowerCase();
-        history['created']['type'] = history?.created?.type[0] + history?.created?.type.slice(1).toLowerCase();
-        history['date'] = new Date(history?.date).toDateString() + " " + new Date(history?.date).toLocaleTimeString()
+    this.orderService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        console.log(res?.result);
+        this.order = res?.result
+        this.orderNumber = res?.result?.orderNo
+        this.productCount = this.order.products.length
+        this.order.orderDate = new Date(this.order.orderDate).toDateString()
+        this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
+        this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
+        this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
+        this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
+        this.orderForm.get("orderId")?.setValue(this.order?.payment?.orderId)
+        this.orderForm.get("paymentId")?.setValue(this.order?.payment?.transactionId)
+
+        let dateExpected = ''
+        let outForDelivery = ''
+        let deliveryDate = ''
+        if (this.order?.delivery?.dateExpected) dateExpected = new Date(this.order?.delivery?.dateExpected).toISOString().split('T')[0];
+        if (this.order?.delivery?.outForDelivery) outForDelivery = new Date(this.order?.delivery?.outForDelivery).toISOString().split('T')[0];
+        if (this.order?.delivery?.deliveryDate) deliveryDate = new Date(this.order?.delivery?.deliveryDate).toISOString().split('T')[0];
+
+        this.orderForm.get("deliveryPerson")?.setValue(this.order?.delivery?.deliveryPerson)
+        this.orderForm.get("dateExpected")?.setValue(dateExpected)
+        this.orderForm.get("outForDelivery")?.setValue(outForDelivery)
+        this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
+
+        this.cdr.markForCheck()
       }
-
-      let dateExpected = ''
-      let outForDelivery = ''
-      let deliveryDate = ''
-      if (this.order?.delivery?.dateExpected) dateExpected = new Date(this.order?.delivery?.dateExpected).toISOString().split('T')[0];
-      if (this.order?.delivery?.outForDelivery) outForDelivery = new Date(this.order?.delivery?.outForDelivery).toISOString().split('T')[0];
-      if (this.order?.delivery?.deliveryDate) deliveryDate = new Date(this.order?.delivery?.deliveryDate).toISOString().split('T')[0];
-
-      this.orderForm.get("deliveryPerson")?.setValue(this.order?.delivery?.deliveryPerson)
-      this.orderForm.get("dateExpected")?.setValue(dateExpected)
-      this.orderForm.get("outForDelivery")?.setValue(outForDelivery)
-      this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
-
-      this.cdr.markForCheck()
     })
   }
 

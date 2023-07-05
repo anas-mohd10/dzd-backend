@@ -34,12 +34,14 @@ export class AddBannerListComponent implements OnInit {
   categories: Array<any> = []
   category: string = ''
   external: FormControl = new FormControl('');
+  heightConstraint: FormControl = new FormControl('1')
   count: FormControl = new FormControl('1', [Validators.min(1), Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')])
   redirectionType: string = ''
   file: any
   name: String = ''
   isImage: Boolean = false
   isCarousel: Boolean = false
+  isHeightConstraint: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -118,6 +120,18 @@ export class AddBannerListComponent implements OnInit {
       this.thirdWidth = false
 
       this.isCarousel = false
+    }
+  }
+
+  getHeightConstraint() {
+    if (this.heightConstraint?.value == '1') {
+      this.isHeightConstraint = '1'
+    } else if (this.heightConstraint?.value == '2') {
+      this.isHeightConstraint = '2'
+    } else if (this.heightConstraint?.value == '3') {
+      this.isHeightConstraint = '3'
+    } else if (this.heightConstraint?.value == '4') {
+      this.isHeightConstraint = '4'
     }
   }
 
@@ -221,6 +235,7 @@ export class AddBannerListComponent implements OnInit {
       validFrom: this.form.get('validFrom')?.value,
       validTo: this.form.get('validTo')?.value,
       isActive: this.form.get('isActive')?.value,
+      heightConstraint: this.heightConstraint?.value,
       files: this.files,
       count: this.count?.value
     }

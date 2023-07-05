@@ -418,7 +418,6 @@
       </div>
     </div>
 
-    <!-- Product details -->
     <div class="row mt-10" id="productDetails" #productDetails>
       <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
         <div class="card-header">
@@ -446,7 +445,7 @@
                 </tr>
               </thead>
               <tbody class="fw-bold text-gray-600">
-                <tr *ngFor="let product of order?.product">
+                <tr *ngFor="let product of order?.products">
                   <td>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="flexCheckDefault">
@@ -466,7 +465,7 @@
                   <td class="text-end">{{product?.productId?.sku}}</td>
                   <td class="text-end">{{product?.quantity}}</td>
                   <td class="text-end">{{product?.pricePerUnit}}</td>
-                  <td class="text-end">{{product?.priceAfterTax}}</td>
+                  <td class="text-end">{{product?.total}}</td>
                 </tr>
                 <tr>
                   <td colspan="5" class="fs-4 fw-bolder text-dark text-end">Total</td>
@@ -521,38 +520,5 @@
         </div>
       </div>
     </div>
-    <!-- Product details -->
-
-    <!-- Order history section-->
-    <div class="row mt-10">
-      <div class="col-sm-12 fs-6">
-        <div class="card py-4">
-          <div class="card-body">
-            <h3 class="fs-3 text-dark fw-bolder"><i class="bi bi-clock-history fs-1 text-dark"></i> History</h3>
-            <div class="orderHistoryCard">
-              <ng-container *ngFor="let history of order?.history; let i=index">
-                <div class="orderHistoryItem">
-                  <div class="historyStatus text-primary">
-                    <div class="historyNumber bg-primary fs-6">{{i+1}}</div> {{history?.status}}
-                  </div>
-                  <div class="historyDate fs-6">{{history?.date}}</div>
-                  <div class="historyBy">
-                    <div class="userDetails">
-                      <span class="userName fs-6">{{history?.created?.type == 'Customer' ? history?.created?.user?.name
-                        :
-                        history?.created?.admin?.username}}</span>
-                      <span class="userMobile fs-6">{{history?.created?.type == 'Customer' ?
-                        history?.created?.user?.mobile :
-                        history?.created?.admin?.email}}</span>
-                    </div>
-                  </div>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Order history section-->
   </div>
 </div>

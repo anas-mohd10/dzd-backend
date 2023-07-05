@@ -21,6 +21,11 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
+  getOrderDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.order_details);
+    return this.http.post(`${url}`, data)
+  }
+
   getPendingOrders() {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_pending_orders);
     return this.http.get(`${url}`)
