@@ -80,29 +80,4 @@
             </div>
         </div>
     </div>
-    <div class="uploadHistory">
-        <div class="bulkTitle">
-            <h3 class="fw-bolder">Bulk Upload History</h3>
-        </div>
-        <ng-container *ngIf="history.length == 0">
-            <div class="noHistory">
-                <div class="image">
-                    <img src="../../../../../../assets/icons/history.png" alt="Icon">
-                </div>
-                <div class="text">No history found</div>
-            </div>
-        </ng-container>
-
-        <div class="historyContainer" *ngIf="history.length > 0">
-            <ng-container *ngFor="let data of history; let i = index">
-                <div class="historyCard">
-                    <div class="historyDetails">
-                        <div class="historyType">{{data?.type}}</div>
-                        <div class="historyFile">{{data?.name}}</div>
-                    </div>
-                    <div class="historyDate">{{data?.date}}</div>
-                </div>
-            </ng-container>
-        </div>
-    </div>
 </div>

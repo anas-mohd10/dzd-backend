@@ -41,8 +41,8 @@ export class BrandService {
     return this.http.put(`${url}`, data);
   }
 
-  searchBrand(query: any, page: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.search_brand + "?page=" + page);
+  searchBrand(query: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.search_brand);
     return this.http.post(`${url}`, query);
   }
 

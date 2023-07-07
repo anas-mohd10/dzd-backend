@@ -330,11 +330,10 @@ input[type=button] {
       background: #00bdab;
       color: #ffffff;
       font-size: 1.075rem;
-      border-radius: 3.125rem;
+      border-radius: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
    }
 
    .product-status-false {
@@ -349,8 +348,8 @@ input[type=button] {
       font-size: 1.075rem;
       display: flex;
       align-items: center;
+      border-radius: 0.5rem;
       justify-content: center;
-      font-weight: 600;
    }
 
    .product-offer {
@@ -362,11 +361,10 @@ input[type=button] {
       padding: 0 5px;
       background: #7962a3;
       color: #ffffff;
-      border-radius: 3.125rem;
+      border-radius: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
    }
 
    .product-out-stock {
@@ -378,11 +376,10 @@ input[type=button] {
       padding: 0 3px;
       background: #c52525;
       color: #ffffff;
-      border-radius: 3.125rem;
+      border-radius: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
    }
 
    .product-limited-stock {
@@ -394,11 +391,10 @@ input[type=button] {
       padding: 0 5px;
       background: #d9601b;
       color: #ffffff;
-      border-radius: 3.125rem;
+      border-radius: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
    }
 
    .product-stock {

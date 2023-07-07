@@ -11,27 +11,12 @@
     <ng-container *ngIf="!isTriggered">
         <div class="bulkUploadContainer">
             <div class="bulkUploadInput">
-                <input type="file" (change)="fileUpload($event.target)">
+                <input type="file" (change)="fileUpload($event.target)" multiple>
                 <div class="bulkUploadMask">
                     <img src="../../../../../../assets/media/svg/files/upload.svg" alt="Upload">
                     <p>Drop your files here or <span>Browse</span></p>
                 </div>
             </div>
-
-            <ng-container *ngIf="isUploaded">
-                <div class="previewContainer">
-                    <div class="uploadedTitle">Processed file</div>
-                    <div class="uploadedFileContainer">
-                        <div class="fileDetails">
-                            <div class="fileName fs-6">{{file.name}}</div>
-                            <div class="fileSize fs-6">{{filesize}}</div>
-                        </div>
-                        <div (click)="removeFileUpload()">
-                            <img src="../../../../../../assets/icons/close.svg" alt="Icon">
-                        </div>
-                    </div>
-                </div>
-            </ng-container>
         </div>
     </ng-container>
 

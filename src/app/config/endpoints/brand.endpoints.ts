@@ -6,7 +6,7 @@ export const brandEndpoints = {
   update_brand: '/update-brand',
   get_brand_count: '/brands/count',
   //Filter APIs
-  search_brand: '/brands/search',
+  search_brand: '/search-brands',
   archive_brand: '/brands/archive',
   restore_brand: '/brands/restore',
   brand_images: '/brands/images',

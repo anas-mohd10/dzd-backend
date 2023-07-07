@@ -15,8 +15,9 @@ export const productEndpoints = {
     product_by_prodid: '/products/prodid',
     thumbnail_images: '/products/thumbnail-images',
     product_images: '/products/product-images',
-    products_bulk_image_upload: '/products/bulk-image-upload',
-    products_bulk_file_upload: '/products/bulk-file-upload',
-    products_bulk_thumbnail_upload: '/products/bulk-thumbnail-upload',
-    search_products: '/search-products'
+    search_products: '/search-products',
+
+    products_bulk_image_upload: '/product-images',
+    products_bulk_file_upload: '/product-file',
+    products_bulk_thumbnail_upload: '/thumbnail-images',
 }

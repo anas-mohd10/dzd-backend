@@ -230,6 +230,7 @@ export class UpdateCategoryComponent implements OnInit {
             refid: value?.refid
           })
         }
+
         this.cdr.markForCheck()
       })
 
@@ -248,6 +249,7 @@ export class UpdateCategoryComponent implements OnInit {
       this.categoryForm.get('color')?.setValue(this.categoryValues.style?.text?.color);
       this.categoryForm.get('fontWeight')?.setValue(this.categoryValues.style?.text?.fontWeight);
       this.categoryForm.get('fontSize')?.setValue(this.categoryValues.style?.text?.fontSize);
+
       this.border = this.categoryValues.style?.border
       this.background = this.categoryValues.style?.background
       this.color = this.categoryValues.style?.text.color
@@ -255,6 +257,7 @@ export class UpdateCategoryComponent implements OnInit {
       this.catid = this.categoryValues?.parent?.catid
       this.root = this.categoryValues?.root?._id
       this.path = this.categoryValues?.path
+
       if (this.categoryValues.isRoot == true) this.isChecked = true;
       if (this.categoryValues.isArchive == true) this.isArchived = true
       this.cdr.markForCheck()
@@ -264,15 +267,12 @@ export class UpdateCategoryComponent implements OnInit {
   getCategory() {
     this.CategoryService.getCategory().subscribe((res: any) => {
       this.categoryData = res?.result;
-      this.cdr.markForCheck()
+
       for (let i = 0; i < res?.result.length; i++) {
         if (res?.result[i].isActive == true && res?.result[i].isArchive == false) {
-          if (res?.result[i].parent && !res?.result[i].root) {
-            this.categories.push(res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
-          }
-          if (!res?.result[i].parent && res?.result[i].root) {
-            this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
-          }
+          if (res?.result[i].parent && !res?.result[i].root) this.categories.push(res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
+          if (!res?.result[i].parent && res?.result[i].root) this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
+          if (!res?.result[i].parent && !res?.result[i].root) this.categories.push(res?.result[i].name);
           if (res?.result[i].parent && res?.result[i].root) {
             if (res?.result[i].parent.refid._id != res?.result[i].root._id) {
               this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].parent.refid.name + ' > ' + res?.result[i].name);
@@ -280,11 +280,9 @@ export class UpdateCategoryComponent implements OnInit {
               this.categories.push(res?.result[i].root.name + ' > ' + res?.result[i].name);
             }
           }
-          if (!res?.result[i].parent && !res?.result[i].root) {
-            this.categories.push(res?.result[i].name);
-          }
         }
       }
+      this.cdr.markForCheck()
     });
   }
 

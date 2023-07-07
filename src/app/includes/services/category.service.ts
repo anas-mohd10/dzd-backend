@@ -31,8 +31,8 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  searchCategory(query: any, page: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.search_category + "?page=" + page);
+  searchCategory(query: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.search_category);
     return this.http.post(`${url}`, query);
   }
 
