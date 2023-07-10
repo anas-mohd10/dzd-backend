@@ -23,9 +23,8 @@ export class ReviewsListComponent implements OnInit {
   data: any = {}
 
   constructor(
-    private reviewService: ReviewService,
-    private router: Router,
-    private toastr: ToastrService,
+    private ReviewService: ReviewService,
+    private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
@@ -34,6 +33,21 @@ export class ReviewsListComponent implements OnInit {
   }
 
   updateReview(data: any) {
+    this.ReviewService.updateReview({refid: data}).subscribe((res: any) => {
+      if(res?.errorCode == 0){
+        this.ToastrService.success(res?.message)
+        this.getReviews()
+      }
+    })
+  }
+
+  deleteReview(data: any) {
+    this.ReviewService.deleteReview({refid: data}).subscribe((res: any) => {
+      if(res?.errorCode == 0){
+        this.ToastrService.success(res?.message)
+        this.getReviews()
+      }
+    })
   }
 
   selectReview(data: any) { this.data = data }
@@ -48,10 +62,13 @@ export class ReviewsListComponent implements OnInit {
       toDate: this.toDate?.value
     }
 
-    this.reviewService.searchReviews(payload).subscribe((res: any) => {
+    this.ReviewService.searchReviews(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.reviews = res?.result?.data
-        for (let data of this.reviews) data.created = new Date(data?.created).toDateString()
+        for (let data of this.reviews) {
+          data.created = new Date(data?.created).toDateString()
+          if (data.isActive) this.review.setValue(data?.refid)
+        }
         this.page = res?.result?.page
         this.lastPage = res?.result?.lastPage
         this.ChangeDetectorRef.markForCheck()

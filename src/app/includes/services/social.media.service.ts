@@ -20,14 +20,4 @@ export class SocialMediaService {
     const url = this.commonService.getFullUrl(this.socialMediaEndpoints.get_social);
     return this.http.get(`${url}`);
   }
-
-  getSocialMediaLinksBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.socialMediaEndpoints.get_social + "?slug=" + slug);
-    return this.http.get(`${url}`);
-  }
-
-  updateSocialMediaLink(slug: any, data: any){
-    const url = this.commonService.getFullUrl(this.socialMediaEndpoints.update_social + "?slug=" + slug);
-    return this.http.put(`${url}`, data);
-  }
 }

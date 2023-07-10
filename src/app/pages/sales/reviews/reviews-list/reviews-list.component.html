@@ -74,12 +74,19 @@
                     <td class="product-name">{{review?.product?.id?.name}}</td>
                     <td>{{review?.rating}}</td>
                     <td>
-                      <img data-bs-toggle="modal" data-bs-target="#reviewModal"
-                        src="../../../../../assets/icons/view.svg" alt="Icon" (click)="selectReview(review)">
+                      <div class="fs-6 viewText text-muted fw-bolder" data-bs-toggle="modal"
+                        data-bs-target="#reviewModal" (click)="selectReview(review)">View</div>
                     </td>
                     <td>{{review?.created}} </td>
                     <td>
-                      Visibile
+                      <div class="manageButton">
+                        <div (click)="updateReview(review?.refid)" *ngIf="!review?.isActive">
+                          <img src="../../../../../assets/icons/visibility.svg" alt="Icon">
+                        </div>
+                        <div (click)="updateReview(review?.refid)" *ngIf="review?.isActive">
+                          <img src="../../../../../assets/icons/visibilityOff.svg" alt="Icon">
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 </ng-container>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { SocialMediaService } from 'src/app/includes/services/social.media.service';
 
@@ -9,24 +9,22 @@ import { SocialMediaService } from 'src/app/includes/services/social.media.servi
 })
 export class SocialMediaListComponent implements OnInit {
   appRoute = appRoutes
-  socialMediaData: any
+  data: any
   isData = false
 
   constructor(
-    private socialMediaService: SocialMediaService,
+    private SocialMediaService: SocialMediaService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.getSocialMedia()
-  }
-
-  getSocialMedia() {
-    this.socialMediaService.getSocialMediaLinks().subscribe((res: any) => {
-      this.socialMediaData = res?.result
-      if (res?.result.length == 0) {
-        this.isData = true
-      } else {
-        this.isData = false
+    this.SocialMediaService.getSocialMediaLinks().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        if (res?.result) {
+          this.data = res?.result
+          this.isData = true
+          this.ChangeDetectorRef.markForCheck()
+        }
       }
     })
   }

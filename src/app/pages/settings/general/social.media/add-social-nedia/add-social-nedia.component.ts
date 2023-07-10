@@ -32,10 +32,6 @@ export class AddSocialNediaComponent implements OnInit {
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
   }
 
-  get smf() {
-    return this.socialMediaForm.controls;
-  }
-
   initForm() {
     this.socialMediaForm = this.formBuilder.group({
       facebook: [''],
@@ -74,18 +70,13 @@ export class AddSocialNediaComponent implements OnInit {
   }
 
   addSocialMediaLinks() {
-    if (!this.socialMediaForm.valid) {
-      return;
-    }
-
     this.socialMediaService.addSocialMediaLinks(this.socialMediaForm.value).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Social media added successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.socialMedia.SOCIAL_MEDIA_LIST]);
       }
     })
   }
-
 }

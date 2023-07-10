@@ -1,14 +1,9 @@
 .social-card {
-   padding: 25px 20px;
+   padding: 15px 20px;
    background: #ffffff;
    box-shadow: 0 10px 35px #00000010;
    border-radius: 10px;
    margin: 10px 0 0 0;
-
-   .social-card-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-   }
 
    .social-card-link {
       width: 100%;
@@ -19,4 +14,8 @@
       font-size: 1.5rem;
       font-weight: 600;
    }
+}
+
+.btn-primary{
+   width: 120px !important; 
 }

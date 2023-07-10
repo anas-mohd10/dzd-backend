@@ -24,7 +24,6 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@kolkov/angular-editor": "^1.0.0",
-    "@mobiscroll/angular-lite": "^2",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0-beta.2",
     "@ng-select/ng-select": "~7.4.0",
     "@ngneat/hot-toast": "^4.1.0",
@@ -94,3 +93,4 @@
     "typescript": "~4.3.2"
   }
 }
+

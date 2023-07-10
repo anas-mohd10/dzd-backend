@@ -1,82 +1,82 @@
 <div class="content container-fluid">
    <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder"> {{ editMode ? "Update Social Links" : "Add Social Links" }}</h1>
+      </div>
       <div class="row align-items-center">
-         <div class="col">
-            <h3 class="page-title fw-bolder fs-2">
-               {{ editMode ? "Update social media links" : "Add social media links" }}
-            </h3>
+         <div class="col d-flex align-items-start justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
+               <li class="breadcrumb-item fs-6">
+                  <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social Links</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST}}">
-                     {{ editMode ? "Update social media links" : "Add social media links"}}
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}">
+                     {{ editMode ? "Update Social Links" : "Add Social Links"}}
                   </a>
                </li>
             </ul>
          </div>
       </div>
    </div>
-   <div class="col-sm-12 fs-5 mt-10">
+   <div class="col-sm-12 fs-6 mt-10">
       <div class="card">
          <div class="card-body">
-            <form (ngSubmit)="onSubmit()" [formGroup]="socialMediaForm">
+            <form (ngSubmit)="onSubmit()" [formGroup]="form">
                <div class="row">
                   <div class="col-12">
-                     <h5 class="form-title fs-4"><span>Social Media details</span></h5>
+                     <h2 class="form-title">Social Media Links</h2>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">Facebook</label>
-                        <input type="text" class="form-control fs-5" formControlName="facebook" />
+                        <label class="fs-6 mb-3 ">Facebook</label>
+                        <input type="text" class="form-control fs-6" formControlName="facebook" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">Instagram</label>
-                        <input type="text" class="form-control fs-5" formControlName="instagram" />
+                        <label class="fs-6 mb-3 ">Instagram</label>
+                        <input type="text" class="form-control fs-6" formControlName="instagram" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">LinkedIn</label>
-                        <input type="text" class="form-control fs-5" formControlName="linkedin" />
+                        <label class="fs-6 mb-3 ">LinkedIn</label>
+                        <input type="text" class="form-control fs-6" formControlName="linkedin" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">Twitter</label>
-                        <input type="text" class="form-control fs-5" formControlName="twitter" />
+                        <label class="fs-6 mb-3 ">Twitter</label>
+                        <input type="text" class="form-control fs-6" formControlName="twitter" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">Whatsapp</label>
-                        <input type="text" class="form-control fs-5" formControlName="whatsapp" />
+                        <label class="fs-6 mb-3 ">Whatsapp</label>
+                        <input type="text" class="form-control fs-6" formControlName="whatsapp" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">YouTube</label>
-                        <input type="text" class="form-control fs-5" formControlName="youtube" />
+                        <label class="fs-6 mb-3 ">YouTube</label>
+                        <input type="text" class="form-control fs-6" formControlName="youtube" />
                      </div>
                   </div>
                   <div class="col-12 col-sm-6">
                      <div class="form-group">
-                        <label class="fs-5 mb-3 form-title">Behance</label>
-                        <input type="text" class="form-control fs-5" formControlName="behance" />
+                        <label class="fs-6 mb-3 ">Behance</label>
+                        <input type="text" class="form-control fs-6" formControlName="behance" />
                      </div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-12 d-flex align-items-center justify-content-end">
                      <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}"
-                        class=" btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
+                        class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
                         Cancel
                      </a>
-                     <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">
+                     <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
                         Update
                      </button>
                   </div>

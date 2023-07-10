@@ -4,88 +4,65 @@
          <h1 class="fw-bolder">Social Media</h1>
       </div>
       <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
+         <div class="col d-flex align-items-start justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
                </li>
             </ul>
-            <button *ngIf="isData" class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary"
-               style="width: 200px" routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
-               Add Links
+            <button *ngIf="!isData" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
+               routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
+               Add
             </button>
-            <button class="btn btn-primary btn-sm cursor-pointer fs-5" [queryParams]="{slug: socialMediaData[0]?.slug}"
-               *ngIf="!isData" color="primary" routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}"
-               style="width: 200px;">Edit Links</button>
+            <button class="btn btn-primary btn-sm cursor-pointer fs-6" *ngIf="isData" color="primary"
+               routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}">Edit</button>
          </div>
       </div>
    </div>
    <div class="row mt-10">
-      <div style="display: none;">{{socialMediaData.length}}</div>
       <div class="social-card">
-         <div class="social-card-title">Facebook</div>
+         <div class="social-card-title fs-6">Facebook</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.facebook}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.facebook}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.facebook}}" target="_blank" class="fs-6 card-link">{{data?.facebook}}</a>
          </div>
       </div>
       <div class="social-card">
-         <div class="social-card-title">Instagram</div>
+         <div class="social-card-title fs-6">Instagram</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.instagram}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.instagram}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.instagram}}" target="_blank" class="fs-6 card-link">{{data?.instagram}}</a>
          </div>
       </div>
       <div class="social-card">
-         <div class="social-card-title">Linkedin</div>
+         <div class="social-card-title fs-6">Linkedin</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.linkedin}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.linkedin}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.linkedin}}" target="_blank" class="fs-6 card-link">{{data?.linkedin}}</a>
          </div>
       </div>
       <div class="social-card">
-         <div class="social-card-title">Whatsapp</div>
+         <div class="social-card-title fs-6">Whatsapp</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.whatsapp}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.whatsapp}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.whatsapp}}" target="_blank" class="fs-6 card-link">{{data?.whatsapp}}</a>
          </div>
       </div>
       <div class="social-card">
-         <div class="social-card-title form-title">Twitter</div>
+         <div class="social-card-title fs-6">Twitter</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.twitter}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.twitter}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.twitter}}" target="_blank" class="fs-6 card-link">{{data?.twitter}}</a>
          </div>
       </div>
       <div class="social-card">
-         <div class="social-card-title form-title">Youtube</div>
+         <div class="social-card-title fs-6">Youtube</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.youtube}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.youtube}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.youtube}}" target="_blank" class="fs-6 card-link">{{data?.youtube}}</a>
          </div>
       </div>
       <div class="social-card">
-         <div class="social-card-title form-title">Behance</div>
+         <div class="social-card-title fs-6">Behance</div>
          <div class="social-card-link">
-            <a href="{{socialMediaData[0]?.behance}}" target="_blank"
-               class="fs-5 card-link">{{socialMediaData[0]?.behance}}</a>
-            <!-- <a routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST}}"
-               [queryParams]="{slug: socialMediaData[0]?.slug}" class="edit-btn fs-5">Edit link</a> -->
+            <a href="{{data?.behance}}" target="_blank" class="fs-6 card-link">{{data?.behance}}</a>
          </div>
       </div>
    </div>

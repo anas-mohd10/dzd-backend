@@ -17,7 +17,7 @@ export class UpdateSocialNediaComponent implements OnInit {
   task = PageTasks.UPDATE;
   editMode: boolean;
   isSubmitted: boolean;
-  socialMediaForm: FormGroup
+  form: FormGroup
   slug: any;
 
   constructor(
@@ -32,29 +32,15 @@ export class UpdateSocialNediaComponent implements OnInit {
     this.managePage()
     this.initForm()
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.slug = this.route.snapshot.queryParams.slug || ''
-    this.getSocialMediaLinks()
-  }
-
-  getSocialMediaLinks() {
-    this.socialMediaService.getSocialMediaLinksBySlug(this.slug).subscribe((res: any) => {
-      this.socialMediaData = res?.result[0]
-      this.socialMediaForm.get("facebook")?.setValue(res?.result[0]?.facebook)
-      this.socialMediaForm.get("instagram")?.setValue(res?.result[0]?.instagram)
-      this.socialMediaForm.get("linkedin")?.setValue(res?.result[0]?.linkedin)
-      this.socialMediaForm.get("twitter")?.setValue(res?.result[0]?.twitter)
-      this.socialMediaForm.get("youtube")?.setValue(res?.result[0]?.youtube)
-      this.socialMediaForm.get("behance")?.setValue(res?.result[0]?.behance)
-      this.socialMediaForm.get("whatsapp")?.setValue(res?.result[0]?.whatsapp)
+    this.socialMediaService.getSocialMediaLinks().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        if(res?.result) for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+      }
     })
   }
 
-  get smf() {
-    return this.socialMediaForm.controls;
-  }
-
   initForm() {
-    this.socialMediaForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       facebook: [''],
       whatsapp: [''],
       instagram: [''],
@@ -91,15 +77,11 @@ export class UpdateSocialNediaComponent implements OnInit {
   }
 
   updateSocialMediaLinks() {
-    if (!this.socialMediaForm.valid) {
-      return;
-    }
-
-    this.socialMediaService.updateSocialMediaLink(this.slug, this.socialMediaForm.value).subscribe((res: any) => {
+    this.socialMediaService.addSocialMediaLinks(this.form.value).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Social media updated successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.socialMedia.SOCIAL_MEDIA_LIST]);
       }
     })
