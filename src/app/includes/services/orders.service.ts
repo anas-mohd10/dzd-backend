@@ -51,8 +51,8 @@ export class OrdersService {
     return this.http.get(`${url}`)
   }
 
-  updateOrder(number: any, data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.update_order + "?number=" + number);
+  updateOrder(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.update_order);
     return this.http.put(`${url}`, data)
   }
 

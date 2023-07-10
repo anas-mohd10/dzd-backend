@@ -172,3 +172,43 @@ td {
         }
     }
 }
+
+
+$hover: #f3f3f3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+$white: #ffffff;
+
+.historyWrapper{
+    .productHistoryWrapper{
+        background: $white;
+        margin: 0 0 30px 0;
+
+        .productHistory{
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+
+            .history{
+                background: $hover;
+                border: 1px solid $hover;
+                border-radius: 10px;
+                padding: 5px;
+                cursor: pointer;
+
+                &:hover{
+                    background: $white;
+                    border: 1px solid $hover;
+                }
+            }
+        }
+    }
+}

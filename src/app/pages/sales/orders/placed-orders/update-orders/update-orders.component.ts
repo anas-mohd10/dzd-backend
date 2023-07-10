@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -9,7 +9,6 @@ import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settin
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
-import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-update-orders',
@@ -31,9 +30,8 @@ export class UpdateOrdersComponent implements OnInit {
   slug: any
   base: string;
   settings: any
-
-  @ViewChild("productDetails", { static: true }) productDetails: ElementRef;
-  @ViewChild("shippingAddress", { static: true }) shippingAddress: ElementRef;
+  processedProducts: Array<any> = []
+  processProduct: FormControl = new FormControl('')
 
   constructor(
     private orderService: OrdersService,
@@ -93,7 +91,6 @@ export class UpdateOrdersComponent implements OnInit {
 
     this.orderService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        console.log(res?.result);
         this.order = res?.result
         this.orderNumber = res?.result?.orderNo
         this.productCount = this.order.products.length
@@ -117,43 +114,36 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderForm.get("outForDelivery")?.setValue(outForDelivery)
         this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
 
+        for (let product of this.order?.products) {
+          for (let history of product?.history) history.date = new Date(history.date).toLocaleString()
+        }
+
         this.cdr.markForCheck()
       }
     })
   }
 
-  generateInvoice() {
-    this.invoiceService.generateInvoice({ order: this.orderNumber }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.downloadPDF(res?.result?.pdf, this.orderNumber)
-      }
-    })
-  }
-
-  generateShippingDetails() {
-    this.invoiceService.generateShippingDetails({ order: this.orderNumber }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.downloadPDF(res?.result?.pdf, this.orderNumber)
-      }
-    })
-  }
-
-  generateProducts() {
-    this.invoiceService.generateProducts({ order: this.orderNumber }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        const filename = "Products" + this.orderNumber
-        this.downloadPDF(res?.result?.pdf, filename)
-      }
-    })
-  }
-
-  downloadPDF(base64String: string, pdfname: string) {
-    const byteCharacters = atob(base64String);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
-    saveAs(blob, `${pdfname}.pdf`);
+  processProducts(type: any, product: any) {
+    switch (type) {
+      case 'all':
+        if (this.order?.products.length == this.processedProducts.length) {
+          this.processedProducts = []
+          this.processProduct.setValue('')
+        } else {
+          for (let product of this.order.products) {
+            this.processProduct.setValue(product?._id)
+            this.processedProducts.push(product?._id)
+          }
+        }
+        break
+      case 'select':
+        if (this.processedProducts.includes(product)) {
+          this.processedProducts = this.processedProducts.filter(item => item !== product)
+        } else {
+          this.processedProducts.push(product)
+        }
+        break
+    }
   }
 
   onSubmit() {
@@ -169,13 +159,17 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    this.orderService.updateOrder(this.slug, this.orderForm.value).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
-      }
-    })
+    if (this.processedProducts.length > 0) {
+      this.orderService.updateOrder({ ...this.orderForm.value, products: this.processedProducts, order: this.orderNumber }).subscribe((res: any) => {
+        if (res.errorCode != 0) {
+          this.toastr.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.toastr.success(res?.message);
+          this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+        }
+      })
+    } else {
+      this.toastr.error('Please select at least one product');
+    }
   }
 }

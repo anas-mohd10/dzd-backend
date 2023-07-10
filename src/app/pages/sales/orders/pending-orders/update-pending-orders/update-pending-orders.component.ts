@@ -84,14 +84,14 @@ export class UpdatePendingOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    this.orderService.updateOrder(this.orderNumber, this.orderForm.value).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Order updated successfully');
-        this.router.navigate([this.appRoute.orders.PENDING_ORDERS_LIST]);
-      }
-    })
+    // this.orderService.updateOrder(this.orderNumber, this.orderForm.value).subscribe((res: any) => {
+    //   if (res.errorCode != 0) {
+    //     this.toastr.error('Something went wrong');
+    //   } else if (res.errorCode == 0) {
+    //     this.toastr.success('Order updated successfully');
+    //     this.router.navigate([this.appRoute.orders.PENDING_ORDERS_LIST]);
+    //   }
+    // })
   }
 
 }
