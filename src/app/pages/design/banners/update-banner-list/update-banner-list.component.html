@@ -68,34 +68,34 @@
                         </div>
                      </div>
 
-                     <div class="col-6 mb-3">
+                     <div class="col-12 mb-3">
                         <div class="form-group">
                            <label class="fs-6 ">Banner Type</label>
                            <div class="d-flex align-items-center justify-content-start" style="margin: 20px 0 0 0;">
                               <div class="form-check" style="margin: 0 10px 0 0;">
                                  <input class="form-check-input" type="radio" name="type" id="type-1"
-                                    (click)="getBannerType(1)">
+                                    (click)="getBannerType(1)" value="1" formControlName="type">
                                  <label class="form-check-label fs-6" for="type-2" style="margin: 0;">
                                     Full width
                                  </label>
                               </div>
                               <div class="form-check" style="margin: 0 10px 0 0;">
                                  <input class="form-check-input" type="radio" name="type" id="type-2"
-                                    (click)="getBannerType(2)">
+                                    (click)="getBannerType(2)" value="2" formControlName="type">
                                  <label class="form-check-label fs-6" for="type-2" style="margin: 0;">
                                     Half width
                                  </label>
                               </div>
                               <div class="form-check" style="margin: 0 10px 0 0;">
                                  <input class="form-check-input" type="radio" name="type" id="type-3"
-                                    (click)="getBannerType(3)">
+                                    (click)="getBannerType(3)" value="3" formControlName="type">
                                  <label class="form-check-label fs-6" for="type-3" style="margin: 0;">
                                     One third width
                                  </label>
                               </div>
                               <div class="form-check" style="margin: 0 10px 0 0;">
                                  <input class="form-check-input" type="radio" name="type" id="type-4"
-                                    (click)="getBannerType(4)">
+                                    (click)="getBannerType(4)" value="4" formControlName="type">
                                  <label class="form-check-label fs-6" for="flexRadioDefault2" style="margin: 0;">
                                     Quarter width
                                  </label>
@@ -113,6 +113,18 @@
                               <option value="2">2</option>
                               <option value="3">3</option>
                               <option value="4">4</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="col-6 mb-3" *ngIf="isCarousel">
+                        <div class="form-group">
+                           <label class="fs-6 mb-3">Height Constraint</label>
+                           <select class="form-select mb-3 fs-6" [formControl]="heightConstraint"
+                              (change)="getHeightConstraint()">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value="1">Use cropper</option>
+                              <option value="2">Upload custom image</option>
                            </select>
                         </div>
                      </div>
@@ -136,11 +148,11 @@
                         </div>
                      </ng-container>
 
-                     <div class="col-6">
+                     <div class="col-6" *ngIf="isHeightConstraint == '1' && bannerType">
                         <div class="form-group">
                            <div class="image-upload">
                               <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                                 (change)="handleInputChange($event, 'web')" required style="height: 100px;">
+                                 (change)="handleInputChange($event, 'crop')" required style="height: 100px;">
                               <div class="image-upload-div">
                                  <div class="left-img">
                                     <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
@@ -231,6 +243,66 @@
                               </div>
                            </ng-container>
 
+                           <div class="uploadBtn d-flex align-items-center justify-content-end" *ngIf="file">
+                              <button type="submit" class="btn btn-secondary btn-sm fs-6 mt-5" (click)="addBanner()">
+                                 Confirm banners
+                              </button>
+                           </div>
+
+                        </div>
+                     </div>
+
+                     <div class="col-6" *ngIf="isHeightConstraint == '2'">
+                        <div class="form-group">
+                           <div class="image-upload">
+                              <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                 (change)="handleInputChange($event, 'custom')" required style="height: 100px;">
+                              <div class="image-upload-div">
+                                 <div class="left-img">
+                                    <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                                 </div>
+                                 <div class="right-text d-flex flex-column">
+                                    <span class="right-text-title fs-4 fw-bolder">Select Files</span>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <ng-container *ngIf="isImage">
+                              <div class="col-12">
+                                 <div class="form-title fs-4">
+                                    Redirection
+                                    <span class="fs-7 text-muted">(optional)</span>
+                                 </div>
+                                 <div class="form-group mt-4">
+                                    <label class="fs-6 mb-3">Redirection type?</label>
+                                    <select class="form-select fs-6" (change)="getRedirectionType($event.target)">
+                                       <option value="" selected disabled>-- Select an option --</option>
+                                       <option value="category">Products by category</option>
+                                       <option value="product">Product details</option>
+                                       <option value="external">External</option>
+                                    </select>
+                                 </div>
+                                 <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'product'">
+                                    <label class="fs-6 mb-2">Products</label>
+                                    <ng-select [items]="products" bindLabel="name" bindValue="slug"
+                                       [(ngModel)]="product" placeholder="-- Select product --" [multiple]=false
+                                       [ngModelOptions]="{standalone: true}">
+                                    </ng-select>
+                                 </div>
+                                 <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'category'">
+                                    <label class="fs-6 mb-2">Catgeory</label>
+                                    <ng-select [items]="categories" bindLabel="name" bindValue="slug"
+                                       [(ngModel)]="category" placeholder="-- Select category --" [multiple]=false
+                                       [ngModelOptions]="{standalone: true}">
+                                    </ng-select>
+                                 </div>
+                                 <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'external'">
+                                    <label class="fs-6 mb-2">External URL</label>
+                                    <input type="text" class="form-control" [formControl]="external"
+                                       placeholder="Enter external url here">
+                                 </div>
+                              </div>
+                           </ng-container>
                            <div class="uploadBtn d-flex align-items-center justify-content-end" *ngIf="file">
                               <button type="submit" class="btn btn-secondary btn-sm fs-6 mt-5" (click)="addBanner()">
                                  Confirm banners

@@ -19,6 +19,7 @@ export class BannerListComponent implements OnInit {
   isActive: FormControl = new FormControl('')
   validFrom: FormControl = new FormControl('')
   validTo: FormControl = new FormControl('')
+  type: FormControl = new FormControl('')
   lastPage: Boolean = false
 
   constructor(
@@ -36,6 +37,7 @@ export class BannerListComponent implements OnInit {
     this.isActive.setValue('')
     this.validFrom.setValue('')
     this.validTo.setValue('')
+    this.type.setValue('')
     this.page = 1
     this.getBanners()
   }
@@ -57,6 +59,7 @@ export class BannerListComponent implements OnInit {
       validFrom: this.validFrom.value,
       validTo: this.validTo.value,
       page: this.page,
+      type: this.type.value,
       limit: this.limit.value
     }
 

@@ -10,19 +10,13 @@ export class AboutService {
   aboutEndpoints = aboutEndpoints
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  createAbout(data: any) {
-    const url = this.commonService.getFullUrl(this.aboutEndpoints.create_about);
+  manageAbout(data: any) {
+    const url = this.commonService.getFullUrl(this.aboutEndpoints.manage_about);
     return this.http.post(`${url}`, data)
   }
 
-  getAbout() {
-    const url = this.commonService.getFullUrl(this.aboutEndpoints.get_about);
+  getAboutDetails() {
+    const url = this.commonService.getFullUrl(this.aboutEndpoints.get_about_details);
     return this.http.get(`${url}`)
   }
-
-  updateAbout(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.aboutEndpoints.update_about + "?slug=" + slug);
-    return this.http.put(`${url}`, data)
-  }
-
 }

@@ -49,10 +49,9 @@ export class StatsWidget4Component implements OnInit {
       this.baseColor,
       this.lightColor
     );
+
   }
 }
-
-
 
 function getChartOptions(
   revenues: any,

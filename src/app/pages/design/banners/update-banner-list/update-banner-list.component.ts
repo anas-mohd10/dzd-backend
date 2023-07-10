@@ -49,6 +49,8 @@ export class UpdateBannerListComponent implements OnInit {
   validBanner: Boolean = false
   fromDate: string = ''
   lastDate: string = ''
+  heightConstraint: FormControl = new FormControl('1')
+  isHeightConstraint: string = '1'
 
   constructor(
     private formBuilder: FormBuilder,
@@ -102,6 +104,8 @@ export class UpdateBannerListComponent implements OnInit {
         }
 
         this.bannerType = res?.result[0].type
+        this.form.get('type')?.setValue(this.bannerType)
+        if (this.bannerType == '1') this.isCarousel = true
         this.count.setValue(res?.result[0].count)
         for (let file of this.bannerData?.files) {
           this.files.push({
@@ -149,7 +153,8 @@ export class UpdateBannerListComponent implements OnInit {
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
       redirection: [''],
-      isActive: ['true', Validators.required]
+      isActive: ['true', Validators.required],
+      type: [''],
     });
 
     this.form.get('validFrom')?.setValue(this.from_date)
@@ -208,10 +213,32 @@ export class UpdateBannerListComponent implements OnInit {
     }
   }
 
+  getHeightConstraint() {
+    if (this.heightConstraint?.value == '1') {
+      this.isHeightConstraint = '1'
+    } else if (this.heightConstraint?.value == '2') {
+      this.isHeightConstraint = '2'
+    }
+  }
+
   handleInputChange(event: any, key: any) {
-    this.name = event?.target?.files[0]?.name
-    this.imageWebChangedEvent = event;
-    this.isImage = true
+    switch (key) {
+      case 'crop':
+        this.name = event?.target?.files[0]?.name
+        this.imageWebChangedEvent = event;
+        break
+      case 'custom':
+        let file = event?.target?.files[0]
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          this.file = reader.result as string
+        }
+        reader.readAsDataURL(file);
+        this.name = event?.target?.files[0]?.name
+        break
+    }
+    this.isImage = true 
   }
 
   addBanner() {

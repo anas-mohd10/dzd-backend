@@ -41,7 +41,7 @@ export class AddBannerListComponent implements OnInit {
   name: String = ''
   isImage: Boolean = false
   isCarousel: Boolean = false
-  isHeightConstraint: string = ''
+  isHeightConstraint: string = '1'
 
   constructor(
     private formBuilder: FormBuilder,
@@ -128,10 +128,6 @@ export class AddBannerListComponent implements OnInit {
       this.isHeightConstraint = '1'
     } else if (this.heightConstraint?.value == '2') {
       this.isHeightConstraint = '2'
-    } else if (this.heightConstraint?.value == '3') {
-      this.isHeightConstraint = '3'
-    } else if (this.heightConstraint?.value == '4') {
-      this.isHeightConstraint = '4'
     }
   }
 
@@ -151,8 +147,22 @@ export class AddBannerListComponent implements OnInit {
   }
 
   handleInputChange(event: any, key: any) {
-    this.name = event?.target?.files[0]?.name
-    this.imageWebChangedEvent = event;
+    switch (key) {
+      case 'crop':
+        this.name = event?.target?.files[0]?.name
+        this.imageWebChangedEvent = event;
+        break
+      case 'custom':
+        let file = event?.target?.files[0]
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result as string;
+          this.file = reader.result as string
+        }
+        reader.readAsDataURL(file);
+        this.name = event?.target?.files[0]?.name
+        break
+    }
     this.isImage = true
   }
 

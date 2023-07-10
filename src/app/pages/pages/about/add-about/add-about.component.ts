@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
@@ -14,13 +14,18 @@ export class AddAboutComponent implements OnInit {
   appRoute = appRoutes
   aboutData: any;
   displayTable: boolean;
-  aboutForm: FormGroup
+  form: FormGroup
   task = PageTasks.ADD;
   editMode = false;
   isSubmitted: boolean;
   isData: Boolean = false
   isHidden: Boolean = true
   slug: any;
+
+  features: Array<any> = []
+  file: File
+  isFile: boolean = false
+  previewFile: string = ''
 
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -47,8 +52,7 @@ export class AddAboutComponent implements OnInit {
   };
 
   constructor(
-    private aboutService: AboutService,
-    private formBuilder: FormBuilder,
+    private AboutService: AboutService,
     private toastr: ToastrService
   ) { }
 
@@ -59,13 +63,14 @@ export class AddAboutComponent implements OnInit {
   }
 
   initForm() {
-    this.aboutForm = this.formBuilder.group({
-      description: ['', Validators.required]
+    this.form = new FormGroup({
+      overview: new FormControl('', Validators.required),
+      detailed: new FormControl(''),
     });
   }
 
   get af() {
-    return this.aboutForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -82,12 +87,10 @@ export class AddAboutComponent implements OnInit {
   }
 
   getAbout() {
-    this.aboutService.getAbout().subscribe((res: any) => {
+    this.AboutService.getAboutDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.isData = res?.result.length > 0 ? true : false
-        let data = res?.result[0]
-        this.slug = data?.slug
-        this.aboutForm.get("description")?.setValue(data?.description)
+        this.isData = res?.result ? true : false
+        for (let _key of Object.keys(res?.result?.description)) this.form.get(_key)?.setValue(res?.result?.description[_key])
       }
     })
   }
@@ -102,17 +105,36 @@ export class AddAboutComponent implements OnInit {
     this.isHidden = false
   }
 
+  onInputChange(event: any, type: any) {
+    switch (type) {
+      case 'hero':
+        this.file = event.target.files[0]
+        let reader = new FileReader();
+        reader.onloadend = () => {
+          this.previewFile = reader.result as string
+        };
+
+        reader.readAsDataURL(this.file);
+        this.isFile = true
+        break
+      case 'icon':
+
+        break
+    }  
+  }
+
   onSubmit() {
-    if (!this.aboutForm.valid) {
+    if (!this.form.valid) {
       this.isSubmitted = true
       return;
     }
+
     if (!this.isData) {
-      this.aboutService.createAbout(this.aboutForm.value).subscribe((res: any) => {
+      this.AboutService.manageAbout(this.form.value).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     } else {
-      this.aboutService.updateAbout(this.slug, this.aboutForm.value).subscribe((res: any) => {
+      this.AboutService.manageAbout(this.form.value).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     }
