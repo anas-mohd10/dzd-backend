@@ -41,6 +41,8 @@ export class AddSocialNediaComponent implements OnInit {
       youtube: [''],
       twitter: [''],
       behance: [''],
+      appStore: [''],
+      googlePlay: [''],
     });
   }
 

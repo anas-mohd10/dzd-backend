@@ -48,6 +48,8 @@ export class UpdateSocialNediaComponent implements OnInit {
       youtube: [''],
       twitter: [''],
       behance: [''],
+      appStore: [''],
+      googlePlay: [''],
     });
   }
 

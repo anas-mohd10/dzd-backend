@@ -39,9 +39,8 @@
                                  </div>
                               </div>
                            </div>
-
                            <ng-container *ngIf="isFile">
-                              <img src="{{previewFile}}" alt="About">
+                              <img src="{{previewFile}}" alt="About" class="heroImage mt-3">
                            </ng-container>
                         </div>
 
@@ -56,7 +55,32 @@
                         </div>
 
                         <div class="featuresIcon">
+                           <h4>Add features</h4> 
+                           <div class="col-6 form-group mb-3">
+                              <label for="detailed" class="fs-6 mb-3 required">Icon</label>
+                              <div class="image-upload">
+                                 <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                    (change)="onInputChange($event, 'icon')" required style="height: 100px;">
+                                 <div class="image-upload-div">
+                                    <div class="left-img">
+                                       <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                                    </div>
+                                    <div class="right-text d-flex flex-column">
+                                       <span class="right-text-title fs-4 fw-bolder">Select Files</span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
 
+                           <div class="col-6 mb-3">
+                              <label for="detailed" class="fs-6 mb-3">Title</label>
+                              <input type="text" class="form-control fs-6" [formControl]="title" />
+                           </div>
+
+                           <div class="col-6 mb-3">
+                              <label for="detailed" class="fs-6 mb-3">Description</label>
+                              <input type="text" class="form-control fs-6" [formControl]="note" />
+                           </div>
                         </div>
 
                         <div class="form-group mb-3">
