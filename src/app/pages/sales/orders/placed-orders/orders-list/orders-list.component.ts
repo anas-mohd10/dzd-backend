@@ -89,6 +89,9 @@ export class OrdersListComponent implements OnInit {
   }, {
     status: 'Partial Refunded',
     value: 'PARTIAL REFUNDED'
+  }, {
+    status: 'Partial Processed',
+    value: 'PARTIAL PROCESSED'
   }]
   lastPage: Boolean = false
   type: any = null

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoggedInGuard } from './core/auth/logged.in.guard';
-import { LayoutModule } from './shared/layout';
-LayoutModule
+import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +15,7 @@ export const routes: Routes = [
     path: '',
     loadChildren: () => import('./shared/layout/layout.module').then((m) => m.LayoutModule),
   },
+  { path: 'generate-invoice', component: GenerateInvoiceComponent },
   { path: '**', redirectTo: 'error/404' },
 ];
 

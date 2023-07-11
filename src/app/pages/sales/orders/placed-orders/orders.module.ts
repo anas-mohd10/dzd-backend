@@ -15,7 +15,7 @@ import { SwiperModule } from 'swiper/angular';
   declarations: [
     OrdersListComponent,
     AddOrdersComponent,
-    UpdateOrdersComponent
+    UpdateOrdersComponent,
   ],
   imports: [
     CommonModule,

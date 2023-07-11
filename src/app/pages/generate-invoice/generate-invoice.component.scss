@@ -1,0 +1,19 @@
+@media print {
+    a[href]:after {
+        content: none !important;
+    }
+
+    .noPrint {
+        display: none;
+    }
+}
+
+@page {
+    size: auto;
+    margin: 0mm;
+}
+
+html {
+    background-color: #FFFFFF;
+    margin: 0px;
+}

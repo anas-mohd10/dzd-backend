@@ -32,6 +32,7 @@ export class UpdateOrdersComponent implements OnInit {
   settings: any
   processedProducts: Array<any> = []
   processProduct: FormControl = new FormControl('')
+  allProduct: FormControl = new FormControl('')
 
   constructor(
     private orderService: OrdersService,
@@ -95,7 +96,6 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderNumber = res?.result?.orderNo
         this.productCount = this.order.products.length
         this.order.orderDate = new Date(this.order.orderDate).toDateString()
-        this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
         this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
         this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
         this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
@@ -115,7 +115,12 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
 
         for (let product of this.order?.products) {
-          for (let history of product?.history) history.date = new Date(history.date).toLocaleString()
+          for (let history of product?.history) {
+            history.status = "Order " + history.status.toLowerCase()
+            history.date = new Date(history.date).toLocaleString()
+          }
+          let history = [...product?.history]
+          product.currentStatus = history.pop()
         }
 
         this.cdr.markForCheck()
@@ -129,16 +134,19 @@ export class UpdateOrdersComponent implements OnInit {
         if (this.order?.products.length == this.processedProducts.length) {
           this.processedProducts = []
           this.processProduct.setValue('')
+          this.allProduct.setValue('')
         } else {
           for (let product of this.order.products) {
-            this.processProduct.setValue(product?._id)
-            this.processedProducts.push(product?._id)
+            this.processProduct.setValue(product?.productId?._id)
+            this.processedProducts.push(product?.productId?._id)
+            this.allProduct.setValue('all')
           }
         }
         break
       case 'select':
         if (this.processedProducts.includes(product)) {
           this.processedProducts = this.processedProducts.filter(item => item !== product)
+          this.allProduct.setValue('')
         } else {
           this.processedProducts.push(product)
         }

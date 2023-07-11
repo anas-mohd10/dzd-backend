@@ -36,6 +36,7 @@ import { TimeslotsComponent } from './pages/settings/general/timeslots/timeslots
 import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
 import { CommonModule } from '@angular/common';
 import { SwiperModule } from 'swiper/angular';
+import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { SwiperModule } from 'swiper/angular';
     MyAccountComponent,
     SeoDetailsComponent,
     TimeslotsComponent,
-    EnquiresComponent
+    EnquiresComponent,
+    GenerateInvoiceComponent
   ],
   imports: [
     DataTablesModule,
