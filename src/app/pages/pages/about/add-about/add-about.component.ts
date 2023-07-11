@@ -5,6 +5,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AboutService } from 'src/app/includes/services/about.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { environment } from 'src/environments/environment.prod';
 @Component({
   selector: 'app-add-about',
   templateUrl: './add-about.component.html',
@@ -51,6 +52,11 @@ export class AddAboutComponent implements OnInit {
     ]
   };
 
+  title: FormControl = new FormControl('')
+  note: FormControl = new FormControl('')
+  previewIcon: string = ''
+  iconName: string = ''
+
   constructor(
     private AboutService: AboutService,
     private toastr: ToastrService
@@ -90,6 +96,10 @@ export class AddAboutComponent implements OnInit {
     this.AboutService.getAboutDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.isData = res?.result ? true : false
+        this.features = res?.result?.features
+        for (let feature of res?.result?.features) feature.icon = environment.base + "/" + feature.icon
+        this.previewFile = environment.base + "/" + res?.result?.image
+        res?.result?.image ? this.isFile = true : this.isFile = false
         for (let _key of Object.keys(res?.result?.description)) this.form.get(_key)?.setValue(res?.result?.description[_key])
       }
     })
@@ -110,17 +120,40 @@ export class AddAboutComponent implements OnInit {
       case 'hero':
         this.file = event.target.files[0]
         let reader = new FileReader();
-        reader.onloadend = () => {
-          this.previewFile = reader.result as string
-        };
-
+        reader.onloadend = () => { this.previewFile = reader.result as string }
         reader.readAsDataURL(this.file);
         this.isFile = true
         break
       case 'icon':
-
+        let icon = event.target.files[0]
+        this.iconName = icon.name
+        let iconReader = new FileReader();
+        iconReader.onloadend = () => { this.previewIcon = iconReader.result as string };
+        iconReader.readAsDataURL(icon);
         break
-    }  
+    }
+  }
+
+  addFeature() {
+    this.features.push({
+      title: this.title.value,
+      name: this.iconName,
+      note: this.note.value,
+      icon: this.previewIcon
+    })
+
+    this.discardFeature()
+  }
+
+  discardFeature() {
+    this.title.setValue('')
+    this.note.setValue('')
+    this.previewIcon = ''
+    this.iconName = ''
+  }
+
+  deleteFeature(id: any) {
+    this.features.splice(id, 1)
   }
 
   onSubmit() {
@@ -128,13 +161,16 @@ export class AddAboutComponent implements OnInit {
       this.isSubmitted = true
       return;
     }
-
+    let formdata = new FormData()
+    formdata.append("file", this.file)
+    for (let _key of Object.keys(this.form.value)) formdata.append(_key, this.form.value[_key])
+    formdata.append("features", JSON.stringify(this.features))
     if (!this.isData) {
-      this.AboutService.manageAbout(this.form.value).subscribe((res: any) => {
+      this.AboutService.manageAbout(formdata).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     } else {
-      this.AboutService.manageAbout(this.form.value).subscribe((res: any) => {
+      this.AboutService.manageAbout(formdata).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     }
