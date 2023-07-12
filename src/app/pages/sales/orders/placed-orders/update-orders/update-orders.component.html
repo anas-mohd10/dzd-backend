@@ -33,17 +33,17 @@
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <div class="printButton bg-secondary" routerLink="{{appRoute.orders.PACKING_SLIP}}"
-        [queryParams]="{'order': orderNumber}">
+      <a class="printButton bg-secondary text-dark" href="/packing-slip?order={{orderNumber.split('#')[1]}}" target="_blank">
         <img src="../../../../../../assets/icons/shippingTruck.svg" alt="icon" class="iconImage">
         Packing Slip
-      </div>
+      </a>
       <div class="toolTip">
         Generate packing slip
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <a class="printButton bg-primary text-white" href="/generate-invoice?order={{orderNumber}}" target="_blank">
+      <a class="printButton bg-primary text-white" href="/generate-invoice?order={{orderNumber.split('#')[1]}}"
+        target="_blank">
         <img src="../../../../../../assets/icons/printer.svg" alt="icon" class="iconImage">
         Generate Invoice
       </a>
@@ -523,7 +523,6 @@
             </table>
           </div>
 
-          <!-- Product history starts -->
           <div class="historyWrapper mt-5">
             <h3 class="fs-3 text-dark fw-bolder">
               <i class="bi bi-bag-check fs-1 text-dark"></i>
@@ -532,12 +531,12 @@
             <div class="mt-2">
               <ng-container *ngFor="let product of order?.products">
                 <div class="productHistoryWrapper">
-                  <div class="productName text-muted fw-bolder fs-5 mb-2">{{product?.productId?.name}}</div>
+                  <div class="productName text-muted fw-bolder fs-6 mb-2">{{product?.productId?.name}}</div>
                   <div class="productHistory">
                     <ng-container *ngFor="let history of product?.history">
                       <div class="history">
-                        <div class="fs-5 fw-bolder">{{history?.status}}</div>
-                        <div class="fs-6">{{history?.date}}</div>
+                        <div class="fs-6 fw-bolder">{{history?.status}}</div>
+                        <div class="fs-7">{{history?.date}}</div>
                       </div>
                     </ng-container>
                   </div>
@@ -545,7 +544,6 @@
               </ng-container>
             </div>
           </div>
-          <!-- Product history ends -->
         </div>
       </div>
     </div>

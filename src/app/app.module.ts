@@ -37,6 +37,7 @@ import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
 import { CommonModule } from '@angular/common';
 import { SwiperModule } from 'swiper/angular';
 import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
+import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invo
     SeoDetailsComponent,
     TimeslotsComponent,
     EnquiresComponent,
-    GenerateInvoiceComponent
+    GenerateInvoiceComponent,
+    PackingSlipComponent
   ],
   imports: [
     DataTablesModule,

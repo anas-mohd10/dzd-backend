@@ -1,0 +1,174 @@
+<div class="noPrint" onclick="print('printWrapper')">Print</div>
+
+<div class="printWrapper">
+    <div class="a4--frame">
+        <!-- <div class="productThumb">
+            <img src="images/product.png" alt="">
+        </div> -->
+        <div class="datedOn">
+            {{date}}
+        </div>
+
+        <div class="shippmentAddress">
+            <label>Ship to:</label>
+            <p class="address">
+                {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                {{orderDetails?.address?.pincode}}
+            </p>
+            <p class="phoneNo">Phone : <span> {{orderDetails?.customerId?.countryCode}}
+                    {{orderDetails?.customerId?.mobile}} </span></p>
+            <p class="phoneNo">Payment Method : <span> {{orderDetails?.paymentMethod}}</span></p>
+        </div>
+
+        <div class="orderDetails">
+            <h4 class="orderId">Order ID: <span>#{{order}}</span></h4>
+            <p>Thank you for buying from Sajidha Hypermarket</p>
+
+            <table class="table table-striped table-bordered twocolumn-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Delivery Address
+                        </th>
+                        <th>
+                            Order Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                            {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                            {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                            {{orderDetails?.address?.pincode}}
+                        </td>
+                        <td>
+                            <div class="flexWraper">
+                                <span class="label"> Order Date:</span>
+                                <span>{{orderDetails?.orderDate}}</span>
+                            </div>
+                            <div class="flexWraper">
+                                <span class="label"> Shipping Service:</span>
+                                <span> Standard</span>
+                            </div>
+                            <div class="flexWraper">
+                                <span class="label"> Buyer Name:</span>
+                                <span> {{orderDetails?.customerId?.name}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-striped table-bordered orderDetails-Table">
+                <thead>
+                    <tr>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Product Details
+                        </th>
+                        <th>
+                            Unit Price
+                        </th>
+                        <th>
+                            Item subtotal
+                        </th>
+                        <th>
+                            Tax
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let product of orderDetails?.products; let i = index">
+                        <tr>
+                            <td>
+                                {{product?.quantity}}
+                            </td>
+                            <td>
+                                {{product?.productId?.name}}
+                                SKU: {{product?.productId?.sku}}
+                            </td>
+                            <td>
+                                {{settings?.currency}} {{product?.pricePerUnit}}
+                            </td>
+                            <td>
+                                {{settings?.currency}} {{product?.total}}
+                            </td>
+                            <td>
+                                {{settings?.currency}} {{product?.taxTotal}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            Delivery Charges
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.shippingCost}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Grand Total
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.total}}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <p class="orderDetails-Captions" [innerHTML]="settings?.notes?.packingSlip">
+            </p>
+        </div>
+
+        <div class="Declaration--letter">
+            <h6>Sajidha Hypermarket Declaration Letter
+                To Whomsoever It May Concern</h6>
+            <label>I, {{orderDetails?.customerId?.name}}, have placed the order for</label>
+            <table class="table table-striped table-bordered mt-5">
+                <thead>
+                    <tr>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Product Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let product of orderDetails?.products">
+                        <tr>
+                            <td>
+                                {{product?.quantity}}
+                            </td>
+                            <td>
+                                {{product?.productId?.name}}
+                                SKU: {{product?.productId?.sku}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+            <div class="decLetter">
+                <p class="address">
+                    Order ID: #{{order}}
+                </p>
+                <p class="phoneNo">
+                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                    {{orderDetails?.address?.pincode}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

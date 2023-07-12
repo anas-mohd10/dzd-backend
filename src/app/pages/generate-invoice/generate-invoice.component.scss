@@ -17,3 +17,158 @@ html {
     background-color: #FFFFFF;
     margin: 0px;
 }
+
+img{
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    padding: 0;
+    list-style: none;
+    margin: 0px;
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    margin: 0;
+    padding: 0;
+}
+
+.a4--frame{
+    max-width: 800px;
+    padding: 35px;
+    margin: auto;
+}
+
+.orderPreview {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+
+}
+
+.orderPreview .thumbnail{
+    width: 75px;
+    height: 75px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+}
+
+.orderPreview .thumbnail img{
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+
+.orderDetails{
+    text-align: right;
+}
+
+.orderDetails h5{
+    font-size: 18px;
+    color: #111111;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.orderDetails h6{
+    font-size: 14px;
+    color: #000;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+
+.addressFlex{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+.addressFlex > div{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.addressFlex > div:last-child{
+    text-align: end;
+}
+
+.addressFlex > div:last-child h4{
+    margin-left: auto;
+}
+
+.addressFlex label{
+    font-size: 14px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 10px;
+}
+
+.addressFlex h4{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    max-width: 250px;
+    width: 100%;
+}
+
+.storeLocation label{
+    font-size: 14px;
+    font-weight: 700;
+    color: #111111;
+    margin-bottom: 10px;
+}
+
+.storeLocation  h4{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    max-width: 250px;
+    width: 100%;
+}
+
+.storeLocation {
+    
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.orderSummary h2{
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    line-height: 28px;
+    margin-bottom: 20px;
+}
+
+.orderSummary .orderList-Table th, .orderSummary .orderList-Table td{
+    padding: 10px;
+}

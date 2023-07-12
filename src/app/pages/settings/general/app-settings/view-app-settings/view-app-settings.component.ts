@@ -9,7 +9,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 })
 export class ViewAppSettingsComponent implements OnInit {
   appRoute = appRoutes
-  generalSettings: any
+  data: any = {}
   len: any = 0
   slug: any
   generalSettingsCount: any
@@ -20,20 +20,18 @@ export class ViewAppSettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.AppSettingsService.getGeneralSettings().subscribe((res: any) => {
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.generalSettings = res?.result
-        this.generalSettings[0]['colors']['primary'] = '#' + this.generalSettings[0]['colors']['primary'].split('FF')[1]
-        this.generalSettings[0]['colors']['secondary'] = '#' + this.generalSettings[0]['colors']['secondary'].split('FF')[1]
-        this.generalSettings[0]['colors']['label'] = '#' + this.generalSettings[0]['colors']['label'].split('FF')[1]
-        this.generalSettings[0]['colors']['text'] = '#' + this.generalSettings[0]['colors']['text'].split('FF')[1]
-        this.generalSettings[0]['colors']['star'] = '#' + this.generalSettings[0]['colors']['star'].split('FF')[1]
-        this.generalSettings[0]['toast']['success'] = '#' + this.generalSettings[0]['toast']['success'].split('FF')[1]
-        this.generalSettings[0]['toast']['error'] = '#' + this.generalSettings[0]['toast']['error'].split('FF')[1]
-        this.slug = res?.result[0]?.refid
+        this.data = res?.result
+        this.data['colors']['primary'] = '#' + this.data['colors']['primary'].split('FF')[1]
+        this.data['colors']['secondary'] = '#' + this.data['colors']['secondary'].split('FF')[1]
+        this.data['colors']['label'] = '#' + this.data['colors']['label'].split('FF')[1]
+        this.data['colors']['text'] = '#' + this.data['colors']['text'].split('FF')[1]
+        this.data['colors']['star'] = '#' + this.data['colors']['star'].split('FF')[1]
+        this.data['toast']['success'] = '#' + this.data['toast']['success'].split('FF')[1]
+        this.data['toast']['error'] = '#' + this.data['toast']['error'].split('FF')[1]
+        this.slug = res?.result?.refid
         this.cdr.markForCheck()
-      } else {
-        this.generalSettings = []
       }
     })
 

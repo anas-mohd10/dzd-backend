@@ -1,0 +1,195 @@
+@media print {
+    a[href]:after {
+        content: none !important;
+    }
+
+    .noPrint {
+        display: none;
+    }
+}
+
+@page {
+    size: auto;
+    margin: 0mm;
+}
+
+html {
+    background-color: #FFFFFF;
+    margin: 0px;
+}
+
+body {
+    font-family: 'Manrope', sans-serif;
+}
+
+img {
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    padding: 0;
+}
+
+ul,
+li {
+    padding: 0;
+    list-style: none;
+    margin: 0px;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    margin: 0;
+    padding: 0;
+}
+
+.a4--frame {
+    max-width: 800px;
+    padding: 35px;
+    margin: auto;
+}
+
+.productThumb {
+    max-width: 300px;
+    width: 100%;
+    margin: auto;
+}
+
+.datedOn {
+    font-size: 14px;
+    color: #000;
+    line-height: 24px;
+    font-weight: 400;
+    padding-left: 20px;
+}
+
+.shippmentAddress label {
+    font-size: 16px;
+    color: #111111;
+    line-height: 15px;
+}
+
+.Declaration--letter label {
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 24px;
+    color: #111111;
+}
+
+.shippmentAddress {
+    margin-top: 39px;
+    padding-bottom: 39px;
+    padding-left: 20px;
+    border-bottom: 1px dashed #111111;
+}
+
+.orderDetails {
+    margin-top: 39px;
+    padding-bottom: 39px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 1px dashed #111111;
+}
+
+.Declaration--letter {
+    margin-top: 39px;
+    padding-bottom: 39px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.shippmentAddress p {
+    font-size: 14px;
+    color: #111111;
+    line-height: 22px;
+    font-weight: 600;
+    // line-height: 24px;
+}
+
+.shippmentAddress p.address {
+    max-width: 15.625rem;
+    margin-top: .625rem;
+}
+
+.shippmentAddress p.phoneNo {
+    margin-top: 10px;
+}
+
+.orderDetails .orderId {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000;
+    line-height: 24px;
+}
+
+.orderDetails p {
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 24px;
+    color: #111111;
+}
+
+.twocolumn-table {
+    margin: 20px 0;
+}
+
+.twocolumn-table thead tr th,
+.twocolumn-table tbody tr td {
+    width: 50%;
+    padding: 16px;
+}
+
+.twocolumn-table .flexWraper span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #111111;
+}
+
+.twocolumn-table .flexWraper span.label {
+    font-weight: 600;
+    color: #000;
+}
+
+.Declaration--letter h6 {
+    text-align: center;
+    margin: auto;
+    max-width: 500px;
+    font-size: 20px;
+    color: #000;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.decLetter {
+    margin-top: 25px;
+}
+
+.decLetter p {
+    font-size: 19px;
+    color: #111111;
+    line-height: 22px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.decLetter .phoneNo {
+    max-width: 350px;
+}

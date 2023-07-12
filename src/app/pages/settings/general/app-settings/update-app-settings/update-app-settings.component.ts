@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-update-app-settings',
@@ -20,8 +21,31 @@ export class UpdateAppSettingsComponent implements OnInit {
   isSubmitted = false;
   refid: any;
   currency: any
-
   currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED']
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Type here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
+      { class: 'manrope', name: 'Manrope' },
+      { class: 'Manrope', name: 'Manrope' },
+    ]
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,6 +75,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
+        this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.cdr.markForCheck()
       }
     })
@@ -69,7 +94,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required],
-      domain: ['', Validators.required]
+      domain: ['', Validators.required],
+      packingSlip: ['', Validators.required],
     })
   }
 
@@ -96,7 +122,10 @@ export class UpdateAppSettingsComponent implements OnInit {
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       refid: this.refid,
-      domain: this.form.get('domain')?.value
+      domain: this.form.get('domain')?.value,
+      notes: {
+        packingSlip: this.form.get('packingSlip')?.value,
+      }
     }
 
     this.AppSettingsService.updateGeneralSettings(data).subscribe((res: any) => {

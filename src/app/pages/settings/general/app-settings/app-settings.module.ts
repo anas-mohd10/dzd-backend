@@ -7,7 +7,7 @@ import { AddAppSettingsComponent } from './add-app-settings/add-app-settings.com
 import { UpdateAppSettingsComponent } from './update-app-settings/update-app-settings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { ToastrModule } from 'ngx-toastr';
     AppSettingsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

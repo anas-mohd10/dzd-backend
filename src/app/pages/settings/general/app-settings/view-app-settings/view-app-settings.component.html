@@ -31,94 +31,97 @@
       </div>
    </ng-container>
    <div class="app-settings-container">
-      <ng-container *ngFor="let data of generalSettings">
-         <div class="dataContainer">
-            <h2 class="form-title fs-4">Colors</h2>
-            <div class="colors">
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.colors?.primary.split('FF')}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Primary color</span>
-                     <span class="colorCode fs-4">{{data?.colors?.primary}}</span>
-                  </span>
-               </div>
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.colors?.secondary}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Secondary color</span>
-                     <span class="colorCode fs-4">{{data?.colors?.secondary}}</span>
-                  </span>
-               </div>
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.colors?.label}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Label color</span>
-                     <span class="colorCode fs-4">{{data?.colors?.label}}</span>
-                  </span>
-               </div>
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.colors?.text}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Text color</span>
-                     <span class="colorCode fs-4">{{data?.colors?.text}}</span>
-                  </span>
-               </div>
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.colors?.star}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Star color</span>
-                     <span class="colorCode fs-4">{{data?.colors?.star}}</span>
-                  </span>
-               </div>
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.toast?.error}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Toast error color</span>
-                     <span class="colorCode fs-4">{{data?.toast?.error}}</span>
-                  </span>
-               </div>
-               <div class="colorCard">
-                  <div class="color-container" [ngStyle]="{background: data?.toast?.success}"></div>
-                  <span class="fw-bolder colorDetails">
-                     <span class="colorType fs-6"> Toast success color</span>
-                     <span class="colorCode fs-4">{{data?.toast?.success}}</span>
-                  </span>
+      <div class="dataContainer">
+         <h2 class="form-title fs-5">Colors</h2>
+         <div class="colors">
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.colors?.primary.split('FF')}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Primary color</span>
+                  <span class="colorCode fs-5">{{data?.colors?.primary}}</span>
+               </span>
+            </div>
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.colors?.secondary}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Secondary color</span>
+                  <span class="colorCode fs-5">{{data?.colors?.secondary}}</span>
+               </span>
+            </div>
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.colors?.label}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Label color</span>
+                  <span class="colorCode fs-5">{{data?.colors?.label}}</span>
+               </span>
+            </div>
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.colors?.text}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Text color</span>
+                  <span class="colorCode fs-5">{{data?.colors?.text}}</span>
+               </span>
+            </div>
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.colors?.star}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Star color</span>
+                  <span class="colorCode fs-5">{{data?.colors?.star}}</span>
+               </span>
+            </div>
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.toast?.error}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Toast error color</span>
+                  <span class="colorCode fs-5">{{data?.toast?.error}}</span>
+               </span>
+            </div>
+            <div class="colorCard">
+               <div class="color-container" [ngStyle]="{background: data?.toast?.success}"></div>
+               <span class="fw-bolder colorDetails">
+                  <span class="colorType fs-6"> Toast success color</span>
+                  <span class="colorCode fs-5">{{data?.toast?.success}}</span>
+               </span>
+            </div>
+         </div>
+      </div>
+      <div class="dataContainer">
+         <h2 class="form-title fs-5">Additional Details</h2>
+         <div class="additinalDetails">
+            <div class="detailsCard fw-bolder">
+               <div class="detailsTitle fs-6">Items per Page</div>
+               <div class="detailsValue fs-5">{{data?.itemsPerPage ? data?.itemsPerPage : "0"}}</div>
+            </div>
+            <div class="detailsCard fw-bolder">
+               <div class="detailsTitle fs-6">Currency</div>
+               <div class="detailsValue fs-5">{{data?.currency}}</div>
+            </div>
+         </div>
+      </div>
+      <div class="dataContainer">
+         <h2 class="form-title fs-5">Notes</h2>
+         <div>Packing slip : <p [innerHTML]="data?.notes?.packingSlip"></p>
+         </div>
+      </div>
+      <div class="dataContainer">
+         <h2 class="form-title fs-5">Website Details</h2>
+         <div class="additinalDetails">
+            <div class="detailsCard fw-bolder">
+               <div class="detailsTitle fs-6">Domain</div>
+               <div class="detailsValue fs-5">
+                  <a href="{{data?.domain}}" target="_blank">{{data?.domain}}</a>
                </div>
             </div>
          </div>
-         <div class="dataContainer">
-            <h2 class="form-title fs-4">Additional Details</h2>
-            <div class="additinalDetails">
-               <div class="detailsCard fw-bolder">
-                  <div class="detailsTitle fs-6">Items per Page</div>
-                  <div class="detailsValue fs-4">{{data?.itemsPerPage ? data?.itemsPerPage : "0"}}</div>
-               </div>
-               <div class="detailsCard fw-bolder">
-                  <div class="detailsTitle fs-6">Currency</div>
-                  <div class="detailsValue fs-4">{{data?.currency}}</div>
-               </div>
+      </div>
+      <div class="dataContainer">
+         <h2 class="form-title fs-5">Font Details</h2>
+         <div class="fontDetails">
+            <div class="detailsCard fw-bolder">
+               <div class="detailsTitle fs-6">Font Family</div>
+               <div class="detailsValue fs-5">{{data?.fonts?.family ? data?.fonts?.family : "0"}}</div>
             </div>
          </div>
-         <div class="dataContainer">
-            <h2 class="form-title fs-4">Website Details</h2>
-            <div class="additinalDetails">
-               <div class="detailsCard fw-bolder">
-                  <div class="detailsTitle fs-6">Domain</div>
-                  <div class="detailsValue fs-4">
-                     <a href="{{data?.domain}}" target="_blank">{{data?.domain}}</a>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="dataContainer">
-            <h2 class="form-title fs-4">Font Details</h2>
-            <div class="fontDetails">
-               <div class="detailsCard fw-bolder">
-                  <div class="detailsTitle fs-6">Font Family</div>
-                  <div class="detailsValue fs-4">{{data?.fonts?.family ? data?.fonts?.family : "0"}}</div>
-               </div>
-            </div>
-         </div>
-      </ng-container>
+      </div>
    </div>
 </div>

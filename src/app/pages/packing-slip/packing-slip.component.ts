@@ -1,16 +1,17 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { OrdersService } from 'src/app/includes/services/orders.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { OrdersService } from 'src/app/includes/services/orders.service';
 
 @Component({
-  selector: 'app-generate-invoice',
-  templateUrl: './generate-invoice.component.html',
-  styleUrls: ['./generate-invoice.component.scss']
+  selector: 'app-packing-slip',
+  templateUrl: './packing-slip.component.html',
+  styleUrls: ['./packing-slip.component.scss']
 })
-export class GenerateInvoiceComponent implements OnInit {
+export class PackingSlipComponent implements OnInit {
   order: string = ''
   orderDetails: any = {}
+  date: any = new Date()
   settings: any = {}
 
   constructor(
@@ -21,6 +22,7 @@ export class GenerateInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.date = this.date.toDateString()
     this.order = this.ActivatedRoute.snapshot.queryParams.order || ''
     this.OrdersService.getOrderDetails({ order: '#' + this.order }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -45,5 +47,4 @@ export class GenerateInvoiceComponent implements OnInit {
     window.print()
     document.body.innerHTML = body;
   }
-
 }

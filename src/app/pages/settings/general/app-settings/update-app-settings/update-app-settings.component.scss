@@ -11,3 +11,7 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
 }
+
+label {
+    font-weight: normal !important;
+}

@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
-
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 @Component({
   selector: 'app-add-app-settings',
   templateUrl: './add-app-settings.component.html',
@@ -22,6 +22,30 @@ export class AddAppSettingsComponent implements OnInit {
   items_per_page: any
   text: string;
   currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED']
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Type here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
+      { class: 'manrope', name: 'Manrope' },
+      { class: 'Manrope', name: 'Manrope' },
+    ]
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,7 +82,8 @@ export class AddAppSettingsComponent implements OnInit {
       currency: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required],
-      domain: ['', Validators.required]
+      domain: ['', Validators.required],
+      packingSlip: ['', Validators.required],
     })
   }
 
@@ -86,7 +111,10 @@ export class AddAppSettingsComponent implements OnInit {
         family: this.appsettingsform.get('fontFamily')?.value
       },
       itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value,
-      domain: this.appsettingsform.get('domain')?.value
+      domain: this.appsettingsform.get('domain')?.value,
+      notes: {
+        packingSlip: this.appsettingsform.get('packingSlip')?.value,
+      }
     }
 
     this.AppSettingsService.addGeneralSettings(data).subscribe((res: any) => {

@@ -1,5 +1,139 @@
 <div class="noPrint" onclick="print('printWrapper')">Print</div>
 
 <div class="printWrapper">
-    Print Area
+    <div class="a4--frame">
+        <div class="orderPreview">
+            <div class="orderDetails">
+                <h5>Order ID : <span>#{{order}}</span></h5>
+            </div>
+        </div>
+        <div class="addressFlex">
+            <div>
+                <label>Bill To :</label>
+                <h4>
+                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                    {{orderDetails?.address?.pincode}}
+                </h4>
+            </div>
+            <div>
+                <label>Shipped To :</label>
+                <h4>
+                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                    {{orderDetails?.address?.pincode}}
+                </h4>
+            </div>
+        </div>
+        <div class="addressFlex">
+            <div>
+                <label>Payment Method:</label>
+                <h4>
+                    {{orderDetails?.paymentMethod}}
+                </h4>
+            </div>
+            <div>
+                <label>Order Date :</label>
+                <h4>
+                    {{orderDetails?.orderDate}}
+                </h4>
+            </div>
+        </div>
+
+        <!-- <div class="storeLocation">
+            <label>Store Address:</label>
+            <h4>
+                Store Name,
+                C-089, C-43
+                Abu hail, Dubai, UAE,
+                Pincode - 67
+            </h4>
+        </div> -->
+
+        <div class="orderSummary">
+            <h2>Order Summary</h2>
+
+            <table class="table table-striped table-bordered orderList-Table">
+                <thead>
+                    <tr>
+                        <th>
+                            Item
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Quanity
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let product of orderDetails?.products">
+                        <tr>
+                            <td>
+                                {{product?.productId?.name}}
+                            </td>
+                            <td>
+                                {{settings?.currency}} {{product?.pricePerUnit}}
+                            </td>
+                            <td>
+                                {{product?.quantity}}
+                            </td>
+                            <td>
+                                {{settings?.currency}} {{product?.total}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            Total {{settings?.currency}}
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.total}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Sub Total
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.priceBeforeTax}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            VAT 5%
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.tax}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Delivery Charges
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.shippingCost}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Total
+                        </td>
+                        <td colspan="2">
+                            {{settings?.currency}} {{orderDetails?.total}}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
 </div>
