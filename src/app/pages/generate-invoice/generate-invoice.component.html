@@ -1,4 +1,4 @@
-<div class="noPrint" onclick="print('printWrapper')">Print</div>
+
 
 <div class="printWrapper">
     <div class="a4--frame">
@@ -92,42 +92,42 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3">
                             Total {{settings?.currency}}
                         </td>
-                        <td colspan="2">
+                        <td >
                             {{settings?.currency}} {{orderDetails?.total}}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3">
                             Sub Total
                         </td>
-                        <td colspan="2">
+                        <td >
                             {{settings?.currency}} {{orderDetails?.priceBeforeTax}}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3">
                             VAT 5%
                         </td>
-                        <td colspan="2">
+                        <td >
                             {{settings?.currency}} {{orderDetails?.tax}}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3">
                             Delivery Charges
                         </td>
-                        <td colspan="2">
+                        <td >
                             {{settings?.currency}} {{orderDetails?.shippingCost}}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="3">
                             Total
                         </td>
-                        <td colspan="2">
+                        <td >
                             {{settings?.currency}} {{orderDetails?.total}}
                         </td>
                     </tr>
@@ -136,4 +136,8 @@
         </div>
 
     </div>
+
 </div>
+
+
+<div class="noPrint btn btn-info" onclick="print('printWrapper')">Print</div>
