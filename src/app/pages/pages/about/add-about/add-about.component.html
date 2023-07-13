@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="featuresIcon">
-                           <h2 class="fw-bolder">Add features</h2> 
+                           <h2 class="fw-bolder">Add features</h2>
                            <div class="col-6 form-group mb-3">
                               <label for="detailed" class="fs-6 mb-3 required">Icon</label>
                               <div class="image-upload">
@@ -87,14 +87,14 @@
                                  style="width: 200px; margin-right: 20px;">
                                  Discard
                               </a>
-                              <button (click)="addFeature()" class="btn btn-info fs-6"
-                                 style="width: 200px">Save changes</button>
+                              <button (click)="addFeature()" class="btn btn-info fs-6" style="width: 200px">Save
+                                 changes</button>
                            </div>
                         </div>
 
-                        <ng-container *ngIf="features.length > 0">
+                        <ng-container *ngIf="addedFeatures.length > 0">
                            <div class="features">
-                              <ng-container *ngFor="let feature of features">
+                              <ng-container *ngFor="let feature of addedFeatures; let i = index">
                                  <div class="featureCard">
                                     <div class="icon">
                                        <img src="{{feature?.icon}}" alt="icon">

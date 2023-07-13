@@ -23,7 +23,7 @@ export class AddAboutComponent implements OnInit {
   isHidden: Boolean = true
   slug: any;
 
-  features: Array<any> = []
+  addedFeatures: Array<any> = []
   file: File
   isFile: boolean = false
   previewFile: string = ''
@@ -96,7 +96,7 @@ export class AddAboutComponent implements OnInit {
     this.AboutService.getAboutDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.isData = res?.result ? true : false
-        this.features = res?.result?.features
+        this.addedFeatures = res?.result?.features
         for (let feature of res?.result?.features) feature.icon = environment.base + "/" + feature.icon
         this.previewFile = environment.base + "/" + res?.result?.image
         res?.result?.image ? this.isFile = true : this.isFile = false
@@ -135,7 +135,7 @@ export class AddAboutComponent implements OnInit {
   }
 
   addFeature() {
-    this.features.push({
+    this.addedFeatures.push({
       title: this.title.value,
       name: this.iconName,
       note: this.note.value,
@@ -153,7 +153,7 @@ export class AddAboutComponent implements OnInit {
   }
 
   deleteFeature(id: any) {
-    this.features.splice(id, 1)
+    this.addedFeatures.splice(id, 1)
   }
 
   onSubmit() {
@@ -164,7 +164,7 @@ export class AddAboutComponent implements OnInit {
     let formdata = new FormData()
     formdata.append("file", this.file)
     for (let _key of Object.keys(this.form.value)) formdata.append(_key, this.form.value[_key])
-    formdata.append("features", JSON.stringify(this.features))
+    formdata.append("features", JSON.stringify(this.addedFeatures))
     if (!this.isData) {
       this.AboutService.manageAbout(formdata).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
