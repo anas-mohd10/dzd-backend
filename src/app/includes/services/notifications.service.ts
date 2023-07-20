@@ -9,7 +9,10 @@ import { CommonService } from './common.service';
 export class NotificationsService {
   notificationsEndpoints = notificationsEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
   addNotification(data: any) {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.add_notification);
@@ -21,34 +24,14 @@ export class NotificationsService {
     return this.http.get(`${url}`);
   }
 
-  getNotificationsByPage(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification_page + "?page=" + page + "&limit=" + limit);
-    return this.http.get(`${url}`);
-  }
-
-  getNotificationsCount() {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification_count);
-    return this.http.get(`${url}`);
-  }
-
-  getSentNotificationsCount() {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_sent_notification_count);
-    return this.http.get(`${url}`);
-  }
-
-  getPendingNotificationsCount() {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_pending_notification_count);
-    return this.http.get(`${url}`);
-  }
-
-  searchNotifications(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.search_notifications + "?page=" + page + "&limit=" + limit);
+  getNotificationDetails(query: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification_details);
     return this.http.post(`${url}`, query);
   }
 
-  getNotificationBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification + "?slug=" + slug);
-    return this.http.get(`${url}`);
+  searchNotifications(query: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.search_notifications);
+    return this.http.post(`${url}`, query);
   }
 
   updateNotification(slug: any, data: any) {

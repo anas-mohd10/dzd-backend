@@ -14,15 +14,15 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   styleUrls: ['./add-notifications.component.scss']
 })
 export class AddNotificationsComponent implements OnInit {
-  notificationForm: FormGroup;
+  form: FormGroup;
   task = PageTasks.ADD;
   editMode = false;
   filedata: File;
   isSubmitted: boolean;
   appRoute = appRoutes;
-  customersdata: any = []
+  customersData: Array<any> = []
   customers: any
-  getCustomer: Boolean = false
+  selectCustomers: boolean = false
   invalidDate: Boolean = false
   invalidTime: Boolean = false
   isScheduled: Boolean = false
@@ -30,6 +30,7 @@ export class AddNotificationsComponent implements OnInit {
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
+  isTypeDisabled: boolean = false
 
   constructor(
     private notificationsService: NotificationsService,
@@ -44,14 +45,13 @@ export class AddNotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.managePage()
-    this.getCustomers()
-  }
 
-  //Active customers
-  getCustomers() {
     this.customersService.getActiveCustomers().subscribe((res: any) => {
-      this.customersdata = res?.result
-      this.cdr.markForCheck()
+      if (res?.errorCode == 0) {
+        this.customersData = res?.result
+        for (let customer of this.customersData) customer.title = (customer?.name ? customer?.name : '-- Incomplete Profile --') + " ( " + customer?.mobile + " )"
+        this.cdr.markForCheck()
+      }
     })
   }
 
@@ -83,43 +83,50 @@ export class AddNotificationsComponent implements OnInit {
     this.loadImage = false
   }
 
-  selectcustomer(event: any) {
-    let val = event.value
-    if (val == "false") {
-      this.getCustomer = true
-    } else {
-      this.getCustomer = false
-      this.customers = []
-    }
-  }
-
   checkType(event: any) {
     let type = event.value
-    if (type == "Scheduled") {
+    if (type == "scheduled") {
       this.isScheduled = true
     } else {
       this.isScheduled = false
     }
   }
 
+  notifyCustomers() {
+    if (this.form.get('notifyAll')?.value == 'false') {
+      this.selectCustomers = true
+    } else {
+      this.selectCustomers = false
+    }
+  }
+
+  getChannel() {
+    if (this.form.get('channel')?.value == 'app') {
+      this.isTypeDisabled = true
+    } else {
+      this.isTypeDisabled = false
+    }
+  }
+
   initForm() {
-    this.notificationForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: ['', Validators.required],
       channel: ['', Validators.required],
-      type: ['', Validators.required],
+      type: ['instant'],
       content: ['', Validators.required],
       scheduledDate: [''],
       scheduledTime: [''],
       file: [''],
       customer: [''],
+      redirection: [''],
       selectCustomer: [''],
-      isAllCustomer: [''],
+      notifyAll: ['', Validators.required],
       isActive: ['true', Validators.required],
     });
   }
 
   get nf() {
-    return this.notificationForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -145,23 +152,26 @@ export class AddNotificationsComponent implements OnInit {
   }
 
   addNotification() {
-    if (!this.notificationForm.valid) {
+    if (!this.form.valid) {
       this.toastr.error("Kindly fill required fields")
       return;
     }
 
     const data = {
-      title: this.notificationForm.get('title')?.value,
-      channel: this.notificationForm.get('channel')?.value,
-      type: this.notificationForm.get('type')?.value,
-      content: this.notificationForm.get('content')?.value,
-      scheduledDate: this.notificationForm.get('scheduledDate')?.value,
-      scheduledTime: this.notificationForm.get('scheduledTime')?.value,
+      title: this.form.get('title')?.value,
+      channel: this.form.get('channel')?.value,
+      type: this.form.get('type')?.value,
+      content: this.form.get('content')?.value,
+      scheduled: {
+        date: this.form.get('scheduledDate')?.value,
+        time: this.form.get('scheduledTime')?.value,
+      },
       filestring: this.croppedImage,
       filename: this.filename,
-      customer: this.customers,
-      isAllCustomer: this.notificationForm.get('isAllCustomer')?.value,
-      isActive: this.notificationForm.get('isActive')?.value,
+      customers: this.customers,
+      redirect: this.form.get('redirection')?.value,
+      notifyAll: this.form.get('notifyAll')?.value,
+      isActive: this.form.get('isActive')?.value,
     }
 
     this.notificationsService.addNotification(data).subscribe((res: any) => {
@@ -175,6 +185,7 @@ export class AddNotificationsComponent implements OnInit {
   }
 
   updateNotification() {
+
   }
 
 }

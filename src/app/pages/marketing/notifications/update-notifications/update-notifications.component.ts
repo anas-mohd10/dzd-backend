@@ -60,35 +60,6 @@ export class UpdateNotificationsComponent implements OnInit {
       this.cdr.markForCheck()
     })
 
-    this.notificationsService.getNotificationBySlug(this.slug).subscribe((res: any) => {
-      this.notificationForm.get("title")?.setValue(res?.result[0].title)
-      this.notificationForm.get("content")?.setValue(res?.result[0].content)
-      this.notificationForm.get("channel")?.setValue(res?.result[0].channel)
-      this.notificationForm.get("type")?.setValue(res?.result[0].type)
-      this.notificationForm.get("isActive")?.setValue(res?.result[0].isActive)
-      this.notificationForm.get("status")?.setValue(res?.result[0].status)
-      this.notificationForm.get("isAllCustomer")?.setValue(JSON.stringify(res?.result[0].isAllCustomers))
-
-      if(!res?.result[0].isAllCustomers){
-        this.notificationForm.get('selectCustomer')?.setValue(res?.result[0].isAllCustomers)
-      }
-
-      this.uploadedimg = res?.result[0].file
-      this.img = this.base + "/" + res?.result[0].file
-
-      if (res?.result[0].type == "Scheduled") {
-        this.isScheduled = true
-      }
-
-      for(let customer of res?.result[0]?.customers){
-        this.customers.push(customer?.id?._id)
-      }
-
-      const date = new Date(res?.result[0].scheduledDate).toISOString().split('T')[0]
-      this.notificationForm.get("scheduledDate")?.setValue(date)
-      this.notificationForm.get("scheduledTime")?.setValue(res?.result[0].scheduledTime)
-      this.cdr.markForCheck()
-    })
   }
 
   selectcustomer(event: any) {
