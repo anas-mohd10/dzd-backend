@@ -52,7 +52,7 @@ export class OrdersListComponent implements OnInit {
     }
   }
   page: number = 1
-  limit: FormControl = new FormControl(10)
+  limit: FormControl = new FormControl(20)
   keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'
@@ -192,7 +192,7 @@ export class OrdersListComponent implements OnInit {
 
   onReload() {
     this.keyword.setValue('')
-    this.limit.setValue(10)
+    this.limit.setValue(20)
     this.initForm()
     this.activeStatus = 'All Orders'
     this.activeValue = ''

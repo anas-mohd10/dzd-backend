@@ -92,4 +92,12 @@ export class CustomerReportListComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
+
+  getCustomers() {
+
+  }
+
+  clearFilters() {
+
+  }
 }

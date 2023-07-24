@@ -99,8 +99,8 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
         this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
         this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
-        this.orderForm.get("orderId")?.setValue(this.order?.payment?.orderId)
-        this.orderForm.get("paymentId")?.setValue(this.order?.payment?.transactionId)
+        this.orderForm.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
+        this.orderForm.get("paymentId")?.setValue(this.order?.payment?.referenceId)
 
         let dateExpected = ''
         let outForDelivery = ''

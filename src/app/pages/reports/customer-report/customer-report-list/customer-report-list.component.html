@@ -3,35 +3,34 @@
       <div class="page-title">
          <h1 class="fw-bolder">Customer Report</h1>
       </div>
-      <div class="row align-items-center">
+      <div class="row">
          <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb fw-bolder">
-               <li class="breadcrumb-item fs-5">
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.reports.ORDER_REPORT }}">Customer Report</a>
+               <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.reports.CUSTOMER_REPORT }}">Customer Reports</a>
                </li>
             </ul>
-            <button class="btn btn-dark cursor-pointer fs-5" color="text-white" style="width: 200px"
-               (click)="downloadCsvFile()">Export</button>
+            <button class="btn btn-primary cursor-pointer fs-6" color="primary">Export</button>
          </div>
       </div>
    </div>
-   <div class="row col-12 d-flex justify-content-end align-items-end">
-      <div class="col-sm-2 align-items-center justify-content-evenly fs-5">
-         <label class="fs-5">Customers</label>
-         <ng-select [items]="customers" bindLabel="name" bindValue="_id" [(ngModel)]="customer"
-            placeholder="--Select customer--" [multiple]=false [ngModelOptions]="{standalone: true}"
-            (change)="filterReport()">
-         </ng-select>
+
+   <div class="row d-flex align-items-start justify-content-end">
+      <div class="col-lg-4">
+         <label class="fs-6 mb-1">&nbsp;</label>
+         <input type="text" placeholder="Search customers here..." class="form-control fs-6" formControlName="customer"
+            (ngModelChange)="getCustomers()">
       </div>
-      <div class="col-sm-2">
-         <a (click)="reloadPage()" class=" btn btn-secondary fs-5 text-dark" style="width: 200px; margin-right: 20px;">
-            Reset
-         </a>
+      <div class="col-lg-2">
+         <label class="fs-6 mb-1">&nbsp;</label>
+         <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
+            (click)="clearFilters()">
       </div>
    </div>
+
    <div class="row">
       <div class="col-sm-12">
          <div class="card card-table">
