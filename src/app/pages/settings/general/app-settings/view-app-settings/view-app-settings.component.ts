@@ -34,15 +34,6 @@ export class ViewAppSettingsComponent implements OnInit {
         this.cdr.markForCheck()
       }
     })
-
-    this.AppSettingsService.getGeneralSettingsCount().subscribe((res: any) => {
-      if (res?.result) {
-        this.generalSettingsCount = res?.result
-      } else {
-        this.generalSettingsCount = 0
-      }
-      this.cdr.markForCheck()
-    })
   }
 
 }

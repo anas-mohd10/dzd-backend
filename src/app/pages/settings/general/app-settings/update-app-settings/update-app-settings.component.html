@@ -179,6 +179,66 @@
                      </div>
                   </div>
 
+                  <div class="col-lg-12">
+                     <h2 class="form-title">Media Details</h2>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label class="fs-6 mb-3 required">Logo</label>
+                              <div class="image-upload">
+                                 <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                    (change)="onInputChange('logo', $event)" style="height: 100px;" required>
+                                 <div class="image-upload-div">
+                                    <div class="left-img">
+                                       <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                                    </div>
+                                    <div class="right-text d-flex flex-column">
+                                       <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                                       <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                                          Upload up to 1 file
+                                       </span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="logoPreview mt-5" *ngIf="logoFilePreview">
+                              <div class="logo">
+                                 <img src="{{logoFilePreview}}" alt="Logo">
+                                 <div class="logoClose fs-6 mt-2" (click)="removeLogo('logo')"> Discard </div>
+                              </div>
+                           </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="form-group">
+                              <label class="fs-6 mb-3 required">Favicon</label>
+                              <div class="image-upload">
+                                 <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                                    (change)="onInputChange('favicon', $event)" style="height: 100px;" required>
+                                 <div class="image-upload-div">
+                                    <div class="left-img">
+                                       <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                                    </div>
+                                    <div class="right-text d-flex flex-column">
+                                       <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                                       <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                                          Upload up to 1 file
+                                       </span>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <div class="faviconPreview mt-5" *ngIf="faviconFilePreview">
+                              <div class="favicon">
+                                 <img src="{{faviconFilePreview}}" alt="Favicon">
+                                 <div class="faviconClose fs-6 mt-2" (click)="removeLogo('favicon')"> Discard </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
 
                   <div class="col-12 d-flex align-items-center justify-content-end">
                      <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"

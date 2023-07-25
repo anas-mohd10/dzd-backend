@@ -6,6 +6,7 @@ import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-update-app-settings',
@@ -47,6 +48,11 @@ export class UpdateAppSettingsComponent implements OnInit {
     ]
   };
 
+  logoFile: any
+  logoFilePreview: any
+  faviconFile: any
+  faviconFilePreview: any
+
   constructor(
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -76,6 +82,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
+        this.logoFilePreview = environment.base + "/" + res?.result?.logo
+        this.faviconFilePreview = environment.base + "/" + res?.result?.favicon
         this.cdr.markForCheck()
       }
     })
@@ -97,6 +105,47 @@ export class UpdateAppSettingsComponent implements OnInit {
       domain: ['', Validators.required],
       packingSlip: ['', Validators.required],
     })
+  }
+
+  onInputChange(type: any, event: any) {
+    switch (type) {
+      case 'logo':
+        this.logoFile = event.target.files[0]
+        const reader = new FileReader();
+        reader.onload = (e: any) => { this.logoFilePreview = e.target.result };
+        reader.readAsDataURL(this.logoFile);
+        break
+      case 'favicon':
+        this.faviconFile = event.target.files[0]
+        const favReader = new FileReader();
+        favReader.onload = (e: any) => { this.faviconFilePreview = e.target.result };
+        favReader.readAsDataURL(event.target.files[0]);
+        const image = new Image();
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.onload = () => {
+          let height = image.width;
+          let width = image.height;
+          if (height != width) {
+            this.toastr.error('The specified file' + event.target.files[0].name + ' could not be uploaded');
+            this.faviconFile = null
+            this.faviconFilePreview = null
+          }
+        };
+        break
+    }
+  }
+
+  removeLogo(type: any) {
+    switch (type) {
+      case 'logo':
+        this.logoFile = null
+        this.logoFilePreview = null
+        break
+      case 'favicon':
+        this.faviconFile = null
+        this.faviconFilePreview = null
+        break
+    }
   }
 
   onSubmit() {
@@ -128,7 +177,12 @@ export class UpdateAppSettingsComponent implements OnInit {
       }
     }
 
-    this.AppSettingsService.updateGeneralSettings(data).subscribe((res: any) => {
+    const formdata = new FormData();
+    formdata.append('data', JSON.stringify(data))
+    formdata.append('file', this.logoFile)
+    formdata.append('favicon', this.faviconFile)
+
+    this.AppSettingsService.updateGeneralSettings(formdata).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.toastr.success(res?.message);
         this.Router.navigate([this.appRoute.appSettings.APP_SETTINGS_LIST])

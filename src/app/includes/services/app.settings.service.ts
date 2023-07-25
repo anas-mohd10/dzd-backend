@@ -24,11 +24,6 @@ export class AppSettingsService {
     return this.http.get(`${url}`);
   }
 
-  getGeneralSettingsCount() {
-    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_settings_count);
-    return this.http.get(`${url}`);
-  }
-
   getGeneralSettingsbyId(id: any) {
     const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.get_general_settings_by_id + "?id=" + id);
     return this.http.get(`${url}`);

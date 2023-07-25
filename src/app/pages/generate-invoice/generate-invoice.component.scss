@@ -4,7 +4,7 @@
     }
 
     .noPrint {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -18,7 +18,7 @@ html {
     margin: 0px;
 }
 
-img{
+img {
     width: 100%;
 }
 
@@ -46,6 +46,7 @@ li {
     list-style: none;
     margin: 0px;
 }
+
 p {
     margin: 0;
     padding: 0;
@@ -56,10 +57,16 @@ label {
     padding: 0;
 }
 
-.a4--frame{
+.a4--frame {
     max-width: 800px;
     padding: 35px;
     margin: auto;
+
+    .storeLogo {
+        img {
+            width: 200px !important;
+        }
+    }
 }
 
 .orderPreview {
@@ -72,7 +79,7 @@ label {
 
 }
 
-.orderPreview .thumbnail{
+.orderPreview .thumbnail {
     width: 75px;
     height: 75px;
     border-radius: 10px;
@@ -80,23 +87,23 @@ label {
     border: 1px solid #ccc;
 }
 
-.orderPreview .thumbnail img{
+.orderPreview .thumbnail img {
     aspect-ratio: 1;
     object-fit: contain;
 }
 
-.orderDetails{
+.orderDetails {
     text-align: right;
 }
 
-.orderDetails h5{
+.orderDetails h5 {
     font-size: 18px;
     color: #111111;
     font-weight: 700;
     line-height: 24px;
 }
 
-.orderDetails h6{
+.orderDetails h6 {
     font-size: 14px;
     color: #000;
     font-weight: 400;
@@ -104,33 +111,34 @@ label {
 }
 
 
-.addressFlex{
+.addressFlex {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 15px;
 }
-.addressFlex > div{
+
+.addressFlex>div {
     width: 50%;
     display: flex;
     flex-direction: column;
 }
 
-.addressFlex > div:last-child{
+.addressFlex>div:last-child {
     text-align: end;
 }
 
-.addressFlex > div:last-child h4{
+.addressFlex>div:last-child h4 {
     margin-left: auto;
 }
 
-.addressFlex label{
+.addressFlex label {
     font-size: 12px;
     font-weight: 700;
     color: #111111;
 }
 
-.addressFlex h4{
+.addressFlex h4 {
     font-size: 14px;
     font-weight: 400;
     line-height: 27px;
@@ -138,14 +146,14 @@ label {
     width: 100%;
 }
 
-.storeLocation label{
+.storeLocation label {
     font-size: 14px;
     font-weight: 700;
     color: #111111;
     margin-bottom: 10px;
 }
 
-.storeLocation  h4{
+.storeLocation h4 {
     font-size: 16px;
     font-weight: 400;
     line-height: 27px;
@@ -154,13 +162,13 @@ label {
 }
 
 .storeLocation {
-    
+
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
 }
 
-.orderSummary h2{
+.orderSummary h2 {
     font-size: 20px;
     font-weight: 700;
     color: #000;
@@ -168,11 +176,12 @@ label {
     margin-bottom: 5px;
 }
 
-.orderSummary .orderList-Table th, .orderSummary .orderList-Table td{
+.orderSummary .orderList-Table th,
+.orderSummary .orderList-Table td {
     padding: 10px;
 }
 
-.noPrint{
+.noPrint {
     margin: 10px auto;
     display: table;
 }
