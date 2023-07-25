@@ -12,6 +12,8 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-update-product',
@@ -126,7 +128,7 @@ export class UpdateProductComponent implements OnInit {
   base: string;
   submitting: boolean;
   isVideo: boolean;
-
+  settings: any = {}
   attributesValues: any = [];
   selectedAttributesValues: any = [];
 
@@ -165,7 +167,8 @@ export class UpdateProductComponent implements OnInit {
     private taxClassService: TaxClassesService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    private AttributeService: AttributeService
+    private AttributeService: AttributeService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   get pf() {
@@ -173,6 +176,12 @@ export class UpdateProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+        this.cdr.markForCheck()
+      }
+    })
     this.initForm();
     this.base = environment.base
     this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
@@ -187,6 +196,7 @@ export class UpdateProductComponent implements OnInit {
     this.categoryService.getMainCategories().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.maincategories = res?.result
+        this.subcategories = [...this.maincategories, ...this.subcategories]
         this.cdr.markForCheck()
       }
     })
@@ -200,11 +210,11 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('mrpPrice')?.setValue(res?.result[0]?.price?.mrp)
         this.productform.get('offerPrice')?.setValue(res?.result[0]?.price?.offer)
 
-        //Product Category and Attributes Details
         this.categoryService.getSubCategoriesbyId(res?.result[0]?.product?.id?.parentCategory?.id).subscribe((res: any) => {
           if (res?.errorCode == 0) this.subcategories = res?.result
           this.cdr.markForCheck()
         })
+
         this.selectedSubCategory = res?.result[0]?.category?.id
 
         this.AttributeService.getAttributeByCategory(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
@@ -225,7 +235,6 @@ export class UpdateProductComponent implements OnInit {
           }
         }
 
-        //Sku, Moq & Stock Details
         this.productform.get('sku')?.setValue(res?.result[0]?.sku)
         this.productform.get('stock')?.setValue(res?.result[0]?.stock)
         this.productform.get('moq')?.setValue(res?.result[0]?.moq)
@@ -234,11 +243,9 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('additionalbutton')?.setValue(res?.result[0]?.details?.additionalbutton)
         this.productform.get('buttonredireturl')?.setValue(res?.result[0]?.details?.buttonredireturl)
 
-        //Unit and Value Details
         this.productform.get('unit')?.setValue(res?.result[0]?.unit?.type)
         this.productform.get('value')?.setValue(res?.result[0]?.unit?.value)
 
-        //Additional Details
         this.searchKeyowrds = res?.result[0]?.searchKeywords
         this.selectedProducts = res?.result[0]?.relatedProducts
         this.productform.get('isFeatured')?.setValue(res?.result[0]?.isFeatured)
@@ -249,11 +256,8 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('longDescription')?.setValue(res?.result[0]?.details?.longDescription)
         this.productform.get('features')?.setValue(res?.result[0]?.details?.features)
 
-        if (res?.result[0]?.isArchive == true) {
-          this.isArchived = true
-        }
+        if (res?.result[0]?.isArchive == true) this.isArchived = true
 
-        //Product Style Details
         this.productform.get('background')?.setValue(res?.result[0]?.style?.background)
         this.productform.get('border')?.setValue(res?.result[0]?.style?.border)
         this.productform.get('radius')?.setValue(res?.result[0]?.style?.radius)
@@ -264,23 +268,24 @@ export class UpdateProductComponent implements OnInit {
         this.img = environment.base + "/" + res?.result[0]?.thumbnail
         this.vid = environment.base + "/" + res?.result[0]?.video
         this.isVideo = res?.result[0]?.video ? true : false
-        for (let file of res?.result[0]?.files) {
-          this.imageFiles.push({
-            fileString: '',
-            filename: '',
-            url: environment.base + "/" + file,
-            id: this.imageFiles.length
-          })
 
-          this.files.push({
-            url: file,
-            id: this.files.length
-          })
+        for (let file of res?.result[0]?.files) {
+          this.imageFiles.push({ fileString: '', filename: '', url: environment.base + "/" + file, id: this.imageFiles.length })
+          this.files.push({ url: file, id: this.files.length })
         }
 
         this.cdr.markForCheck()
       }
     })
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    let products = [...this.imageFiles]
+    moveItemInArray(products, event.previousIndex, event.currentIndex);
+    this.imageFiles = [...products]
+    let productsFiles = [...this.files]
+    moveItemInArray(productsFiles, event.previousIndex, event.currentIndex);
+    this.files = [...productsFiles]
   }
 
   initForm() {
@@ -397,6 +402,9 @@ export class UpdateProductComponent implements OnInit {
   }
 
   removeFile(id: any) {
+    console.log(this.imageFiles)
+    console.log(this.files)
+
     this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
   }
@@ -663,7 +671,7 @@ export class UpdateProductComponent implements OnInit {
       case 'basic':
         this.showProduct = false
         this.showMedia = false
-        
+
         document.querySelector('.nav-home-tab')?.classList.add('active')
         this.headAdded = false
         window.scrollTo(0, 0);

@@ -185,7 +185,6 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   addProductSku(product: any) {
-    console.log(this.productIds);
     if (!this.productIds.includes(product?._id)) {
       this.productDetails.push(product)
       this.productIds.push(product?._id)

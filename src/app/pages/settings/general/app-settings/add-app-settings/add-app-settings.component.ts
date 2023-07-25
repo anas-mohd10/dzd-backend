@@ -47,6 +47,11 @@ export class AddAppSettingsComponent implements OnInit {
     ]
   };
 
+  logoFile: any
+  logoFilePreview: any
+  faviconFile: any
+  faviconFilePreview: any
+
   constructor(
     private formBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -87,6 +92,47 @@ export class AddAppSettingsComponent implements OnInit {
     })
   }
 
+  onInputChange(type: any, event: any) {
+    switch (type) {
+      case 'logo':
+        this.logoFile = event.target.files[0]
+        const reader = new FileReader();
+        reader.onload = (e: any) => { this.logoFilePreview = e.target.result };
+        reader.readAsDataURL(this.logoFile);
+        break
+      case 'favicon':
+        this.faviconFile = event.target.files[0]
+        const favReader = new FileReader();
+        favReader.onload = (e: any) => { this.faviconFilePreview = e.target.result };
+        favReader.readAsDataURL(event.target.files[0]);
+        const image = new Image();
+        image.src = URL.createObjectURL(event.target.files[0]);
+        image.onload = () => {
+          let height = image.width;
+          let width = image.height;
+          if (height != width && height != 16 && width != 16) {
+            this.toastr.error('The specified file' + event.target.files[0].name + ' could not be uploaded');
+            this.faviconFile = null
+            this.faviconFilePreview = null
+          }
+        };
+        break
+    }
+  }
+
+  removeLogo(type: any) {
+    switch (type) {
+      case 'logo':
+        this.logoFile = null
+        this.logoFilePreview = null
+        break
+      case 'favicon':
+        this.faviconFile = null
+        this.faviconFilePreview = null
+        break
+    }
+  }
+
   onSubmit() {
     if (!this.appsettingsform.valid) {
       this.toastr.error('Validation error occured');
@@ -117,7 +163,12 @@ export class AddAppSettingsComponent implements OnInit {
       }
     }
 
-    this.AppSettingsService.addGeneralSettings(data).subscribe((res: any) => {
+    const formdata = new FormData();
+    formdata.append('data', JSON.stringify(data))
+    formdata.append('file', this.logoFile)
+    formdata.append('favicon', this.faviconFile)
+
+    this.AppSettingsService.addGeneralSettings(formdata).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.appSettings.APP_SETTINGS_LIST])

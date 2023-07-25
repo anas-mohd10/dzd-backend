@@ -1,13 +1,15 @@
 <div class="printWrapper">
     <div class="a4--frame">
-        <div class="storeLogo mb-5">
+        <div class="storeLogo mb-5 d-flex align-items-center justify-content-between">
             <img src="{{base}}/{{settings?.logo}}" alt="Preview">
-            <div class="storeAddress mt-2" *ngIf="store">
-                {{store?.address?.firstlane}}, {{store?.address?.secondlane}}, {{store?.address?.area}},
-                {{store?.address?.city}}
-            </div>
-            <div class="storeContact" *ngIf="helpCenter">
-                Contact us: {{helpCenter[0]?.phone}} | {{helpCenter[0]?.email}}
+            <div class="">
+                <div class="d-flex align-items-center justify-content-end storeAddress mt-2" *ngIf="store">
+                    {{store?.address?.firstlane}}, {{store?.address?.secondlane}}, {{store?.address?.area}},
+                    {{store?.address?.city}}
+                </div>
+                <div class="d-flex align-items-center justify-content-end storeContact" *ngIf="helpCenter">
+                    Contact us: {{helpCenter[0]?.phone}} | {{helpCenter[0]?.email}}
+                </div>
             </div>
         </div>
         <div class="orderPreview">
@@ -61,8 +63,8 @@
                     <ng-container *ngFor="let product of orderDetails?.products">
                         <tr>
                             <td>
-                                <img class="me-1" src="{{base}}/{{product?.productId?.thumbnail}}" height="40px"
-                                    width="50px" alt="Product">
+                                <img class="me-1 productImage" src="{{base}}/{{product?.productId?.thumbnail}}"
+                                    alt="Product">
                                 {{product?.productId?.name}}
                             </td>
                             <td>

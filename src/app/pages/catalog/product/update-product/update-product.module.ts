@@ -8,6 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [UpdateProductComponent],
@@ -17,6 +18,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ReactiveFormsModule,
     FormsModule,
     ImageCropperModule,
+    DragDropModule,
     NgSelectModule,
     AngularEditorModule,
     ToastrModule.forRoot({

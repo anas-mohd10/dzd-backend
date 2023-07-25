@@ -53,6 +53,7 @@ export class AddStoreComponent implements OnInit {
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isClickPoint: new FormControl(false),
+      countryCode: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
       isFeatured: new FormControl(false)
     })
   }
@@ -89,7 +90,8 @@ export class AddStoreComponent implements OnInit {
       name: this.form.get('name')?.value,
       contact: {
         email: this.form.get('email')?.value,
-        mobile: this.form.get('mobile')?.value
+        mobile: this.form.get('mobile')?.value,
+        countryCode: this.form.get('countryCode')?.value,
       },
       address: {
         firstlane: this.form.get('firstlane')?.value,

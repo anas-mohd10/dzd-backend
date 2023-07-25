@@ -40,6 +40,13 @@
                             </div>
                         </div>
                         <div class="mb-5 col-6">
+                            <label class="mb-1 fs-6 required">Country Code</label>
+                            <select class="form-select form-select-lg mb-3 fs-6" formControlName="countryCode"
+                                [ngClass]="{ 'is-invalid':  (fc.countryCode.touched || !isValid) && fc.countryCode.errors?.required }">
+                                <option value='+971'>+971</option>
+                            </select>
+                        </div>
+                        <div class="mb-5 col-6">
                             <label class="mb-1 fs-6 required">Mobile number</label>
                             <input type="text" class="form-control" formControlName="mobile"
                                 [ngClass]="{ 'is-invalid':  (fc.mobile.touched || !isValid) && fc.mobile.errors?.required }" />

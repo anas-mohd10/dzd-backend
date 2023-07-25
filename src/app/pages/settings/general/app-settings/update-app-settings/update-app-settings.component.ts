@@ -125,7 +125,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         image.onload = () => {
           let height = image.width;
           let width = image.height;
-          if (height != width) {
+          if (height != width && height != 16 && width != 16) {
             this.toastr.error('The specified file' + event.target.files[0].name + ' could not be uploaded');
             this.faviconFile = null
             this.faviconFilePreview = null
