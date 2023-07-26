@@ -24,8 +24,8 @@
          <div class="row d-flex align-items-end justify-content-end">
             <div class="search-input col-lg-4">
                <label class="fs-6">&nbsp;</label>
-               <input type="text" placeholder="Search for coupons here" class="form-control fs-6" formControlName="name"
-                  (ngModelChange)="getCoupons()">
+               <input type="text" placeholder="Search for coupons here" class="form-control fs-6"
+                  formControlName="title" (ngModelChange)="getCoupons()">
             </div>
             <div class="search-status col-lg-2">
                <label class="fs-6">Status</label>
@@ -42,7 +42,7 @@
             </div>
             <div class="search-featured col-lg-2">
                <label class="fs-6 form-title">End Date</label>
-               <input type="date" class="form-control fs-6" formControlName="toDate" (change)="getCoupons()">
+               <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getCoupons()">
             </div>
             <div class="search-input col-lg-2">
                <label class="fs-6 mb-1">&nbsp;</label>
@@ -55,74 +55,28 @@
 
    <div class="col-12 d-flex justify-content-between">
       <div class="total-count-container col-sm-3 bg-dark">
-         <h4 class="text-white fs-6">Total {{coupons.length > 0 ? coupons.length : 0}} offers</h4>
+         <h4 class="text-white fs-6">Total {{coupons.length > 0 ? coupons.length : 0}} coupons</h4>
       </div>
    </div>
 
    <div class="coupon-card-container view-container col-lg-12">
       <ng-container *ngFor="let coupon of coupons">
-         <!-- <div class="col-sm-6">
-            <div class="coupon-card card-hover editable-{{coupon?.isEditable}}">
-               <div class="coupon-card-body">
-                  <div class="coupon-details">
-                     <div class="inner-coupon-details">
-                        <div class="coupon-image">
-                           <img src='{{base}}/{{coupon?.file}}' alt="coupon image" srcset="" />
-                        </div>
-                        <div class="coupon-name-details">
-                           <div class="coupon-name">{{coupon?.title}}</div>
-                           <div class="coupon-discount">
-                              <span>
-                                 <span *ngIf="coupon?.type == 'Flat'">₹</span>
-                                 {{coupon?.value}}
-                              </span>
-                              {{coupon?.type}}
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="coupon-card-right">
-                     <div class="inner-coupon-card-right">
-                        <div class="coupon-code fs-5">
-                           use <span>{{coupon?.code}}</span>coupon code
-                        </div>
-                        <div class="coupon-status coupon-status-{{coupon?.isActive}}">
-                           <ng-container *ngIf="coupon?.isActive == true">Active</ng-container>
-                           <ng-container *ngIf="coupon?.isActive == false">Inactive</ng-container>
-                        </div>
-                        <div class="card-edit-btn coupon-edit-btn">
-                           <button routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}"
-                              [queryParams]="{ coupon: coupon?.couponid }" class="fs-5 cursor-pointer text-darker">
-                              Edit
-                           </button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="coupon-date">
-                  <div class="coupon-from-date">
-                     <div class="date-icon bg-primary">
-                        <i class="bi bi-calendar4-range"></i>
-                     </div>
-                     <span>{{coupon?.fromDate}}</span>
-                  </div>
-                  <i class="bi bi-dot"></i>
-                  <div class="coupon-last-date">
-                     <div class="date-icon bg-primary">
-                        <i class="bi bi-calendar4-range"></i>
-                     </div>
-                     <span>{{coupon?.lastDate}}</span>
-                  </div>
+         <div class="couponCard card-hover d-flex align-items-start justify-content-start">
+            <div class="editButton">
+               <div routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{ coupon: coupon?.refid }">
+                  <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                </div>
             </div>
-         </div> -->
-
-         <div class="couponCard">
-            <div class="couponImage">
-               <img src="{{base}}/{{coupon?.file}}" alt="Coupon">
+            <div class="couponImage me-2">
+               <img src="{{coupon?.file}}" alt="Coupon">
             </div>
             <div class="couponDetails">
                <div class="couponName fs-6">{{coupon?.title}}</div>
+               <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
+               <div class="fs-6">{{coupon?.message}}</div>
+               <div class="fs-6 mt-2 couponStatus" [ngClass]="{'inactive': !coupon?.isActive}">
+                  {{coupon?.isActive ? 'Active' : 'Inactive'}}
+               </div>
             </div>
          </div>
       </ng-container>

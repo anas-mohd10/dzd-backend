@@ -37,6 +37,7 @@ export class AddBannerListComponent implements OnInit {
   heightConstraint: FormControl = new FormControl('1')
   count: FormControl = new FormControl('1', [Validators.min(1), Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')])
   redirectionType: string = ''
+  title: FormControl = new FormControl('')
   file: any
   name: String = ''
   isImage: Boolean = false
@@ -188,6 +189,7 @@ export class AddBannerListComponent implements OnInit {
     let data = {
       file: this.file,
       name: this.name,
+      title: this.title?.value,
       redirection: { type: this.redirectionType, url: '' }
     }
     if (this.redirectionType == 'product') data.redirection.url = this.product

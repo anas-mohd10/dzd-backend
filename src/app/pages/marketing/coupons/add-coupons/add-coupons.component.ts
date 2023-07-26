@@ -183,7 +183,7 @@ export class AddCouponsComponent implements OnInit {
 
   validateValue(_val: any) {
     const type = this.form.get('type')?.value
-    if (type == "%") {
+    if (type == "percent") {
       if (_val?.value <= 100) {
         this.isValidValue = true
       } else {
@@ -234,9 +234,9 @@ export class AddCouponsComponent implements OnInit {
         minPurchase: this.form.get('minPurchase')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
-        categories: JSON.stringify(this.categories),
-        products: JSON.stringify(this.products),
-        collections: JSON.stringify(this.collections),
+        categories: this.categories,
+        products: this.products,
+        collections: this.collections,
         details: {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,
@@ -258,6 +258,6 @@ export class AddCouponsComponent implements OnInit {
       }
 
       return data
-    } 
+    }
   }
 }

@@ -65,8 +65,51 @@ input[type=button] {
   }
 }
 
-.coupon-card-container{
-  .couponCard{
-    
+.coupon-card-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  .couponCard {
+    padding: 10px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    position: relative;
+
+    .editButton {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      height: 40px;
+      width: 40px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      border-radius: 20px;
+  
+      &:hover {
+        background: $hover;
+      }
+    }
+
+    .couponImage {
+      img {
+        height: 100px;
+        width: 100px;
+        border-radius: 10px;
+      }
+    }
+
+    .couponDetails{
+
+      .couponStatus{
+        color: $activeState;
+
+        &.inactive{
+          color: $inactiveState;
+        }
+      }
+    }
   }
 }

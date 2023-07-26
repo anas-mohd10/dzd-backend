@@ -54,8 +54,8 @@
                   <select class="form-select" formControlName="type"
                     [ngClass]="{ 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>
-                    <option value="%">%</option>
-                    <option value="Flat">Flat</option>
+                    <option value="percent">%</option>
+                    <option value="amount">Flat</option>
                   </select>
                 </div>
               </div>

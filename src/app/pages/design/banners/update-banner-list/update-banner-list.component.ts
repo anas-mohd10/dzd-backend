@@ -51,6 +51,7 @@ export class UpdateBannerListComponent implements OnInit {
   lastDate: string = ''
   heightConstraint: FormControl = new FormControl('1')
   isHeightConstraint: string = '1'
+  title: FormControl = new FormControl('')
 
   constructor(
     private formBuilder: FormBuilder,
@@ -111,6 +112,8 @@ export class UpdateBannerListComponent implements OnInit {
           this.files.push({
             file: this.base + "/" + file?.file,
             name: null,
+            mobileFile: this.base + "/" + file?.mobileFile,
+            title: file?.title,
             redirection: file?.redirection
           })
         }
@@ -263,6 +266,7 @@ export class UpdateBannerListComponent implements OnInit {
     let data = {
       file: this.file,
       name: this.name,
+      title: this.title?.value,
       redirection: { type: this.redirectionType, url: '' }
     }
     if (this.redirectionType == 'product') data.redirection.url = this.product

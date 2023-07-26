@@ -73,7 +73,7 @@ export class CouponsListComponent implements OnInit {
         this.lastPage = res?.result?.lastPage
         for (let coupon of this.coupons) {
           coupon.fromDate = new Date(coupon.fromDate).toLocaleDateString()
-          coupon.toDate = new Date(coupon.toDate).toLocaleDateString()
+          coupon.lastDate = new Date(coupon.lastDate).toLocaleDateString()
         }
         this.ChangeDetectorRef.markForCheck()
       }
