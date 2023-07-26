@@ -17,6 +17,21 @@ export class DashboardService {
     return this.http.post(`${url}`, data)
   }
 
+  getWebDashboard() {
+    const url = this.commonService.getWebUrl(this.dashboardEndpoints.dashboard);
+    return this.http.get(`${url}`)
+  }
+
+  publishDashboard(data: any) {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.publish_dashboard);
+    return this.http.post(`${url}`, data)
+  }
+
+  previewDashboard(data: any) {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.preview_dashboard);
+    return this.http.post(`${url}`, data)
+  }
+
   getMonthlyRevenue(data: any) {
     const url = this.commonService.getFullUrl(this.dashboardEndpoints.monthly_revenue);
     return this.http.post(`${url}`, data)

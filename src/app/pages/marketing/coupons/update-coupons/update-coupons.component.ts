@@ -104,7 +104,6 @@ export class UpdateCouponsComponent implements OnInit {
       categories: [],
       products: [],
       collections: [],
-      // isMultiple: ['false', Validators.required],
       couponType: ['', Validators.required],
       couponValue: [0, Validators.required],
       isActive: ['true'],
@@ -151,7 +150,7 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   getCouponBySlug() {
-    this.couponsService.getCouponBySlug(this.slug).subscribe((res: any) => {
+    this.couponsService.getCouponDetails({ refid: this.slug }).subscribe((res: any) => {
       this.couponData = res?.result[0]
       this.image = this.base + "/" + this.couponData?.file;
       this.uploadedimg = this.base + "/" + this.couponData?.file
@@ -271,7 +270,7 @@ export class UpdateCouponsComponent implements OnInit {
 
     const payload = this.createPayload()
     if (payload) {
-      this.couponsService.updateCoupon(this.slug, payload).subscribe((res: any) => {
+      this.couponsService.updateCoupon(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.toastr.error(res?.message);
         } else if (res.errorCode == 0) {
@@ -299,6 +298,7 @@ export class UpdateCouponsComponent implements OnInit {
           type: this.couponForm.get('couponType')?.value,
           value: this.couponForm.get('couponValue')?.value,
         },
+        refid: this.slug,
         filestring: this.croppedImage,
         filename: this.filename,
         file: '',
@@ -319,7 +319,6 @@ export class UpdateCouponsComponent implements OnInit {
       if (this.couponData?.file) {
         data.file = this.couponData?.file
       }
-      console.log(data);
       return data
     } else {
       this.error_message = 'Value should be always less than or equal to 100'

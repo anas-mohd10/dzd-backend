@@ -10,73 +10,29 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./coupons-list.component.scss']
 })
 export class CouponsListComponent implements OnInit {
-  appRoute = appRoutes
-  base: string;
-  couponform: FormGroup;
-  coupons: any;
-
-  //Page and limit for query
-  page: any = 1;
-  pages: any = []
-  nextpages: any = []
-  currpage: any = 1;
-  limit: any = 8;
-  selectedpage: any = 1
-  max: any = 3
-
-  //Total no. of data from backend
-  totalcount: any;
-  totaldata: any;
-  count: any = 0
-
-  //Conditions
-  isData: boolean = true;
-  showBtn: boolean = true;
-  showLessBtn: boolean = false;
-  isNext: boolean = true
-
-  //Filters array
-  filters: any = [];
-  show: any;
-  shifted: any
-
-  pageLimit = new FormControl('15')
+  appRoute = appRoutes;
+  coupons: Array<any> = [];
+  form: FormGroup;
+  base: any
+  settings: any = {}
+  page: number = 1
+  limit: FormControl = new FormControl('20')
+  lastPage: Boolean = false;
 
   constructor(
-    private couponService: CouponsService,
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private CouponsService: CouponsService,
+    private FormBuilder: FormBuilder,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.initForm()
     this.base = environment.base
-    setTimeout(() => {
-      this.setPages()
-    })
-
-    this.couponService.searchCoupon(this.couponform.value, this.page, this.limit).subscribe((res: any) => {
-      this.coupons = res?.result?.data
-      for (let data of this.coupons) {
-        const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
-        if (data.lastDate > today) {
-          data.isEditable = true
-        } else {
-          data.isEditable = false
-        }
-        data.fromDate = new Date(data.fromDate).toDateString()
-        data.lastDate = new Date(data.lastDate).toDateString()
-      }
-      this.count = this.coupons.length
-      this.totalcount = res?.result?.total
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.setPages()
-      this.cdr.markForCheck();
-    });
+    this.getCoupons()
   }
 
   initForm() {
-    this.couponform = this.formBuilder.group({
+    this.form = this.FormBuilder.group({
       title: [''],
       fromDate: [''],
       lastDate: [''],
@@ -85,122 +41,42 @@ export class CouponsListComponent implements OnInit {
     });
   }
 
-  onReload() {
-    this.couponform.get('title')?.setValue('')
-    this.couponform.get('fromDate')?.setValue('')
-    this.couponform.get('lastDate')?.setValue('')
-    this.couponform.get('isActive')?.setValue('')
-    this.couponform.get('isFeatured')?.setValue('')
-    this.searchCoupon()
+  clearFilters() {
+    this.initForm()
+    this.getCoupons()
   }
 
-  changeLimit(_val: any) {
-    this.limit = _val.value
-    this.searchCoupon()
+  getNextPage() {
+    this.page += 1
+    this.getCoupons()
   }
 
-  searchCoupon() {
-    this.currpage = 1
-    this.couponService.searchCoupon(this.couponform.value, this.page, this.limit).subscribe((res: any) => {
+  getPreviousPage() {
+    this.page -= 1
+    this.getCoupons()
+  }
+
+  getCoupons() {
+    let payload = {
+      title: this.form.get('title')?.value,
+      limit: this.limit.value,
+      page: this.page,
+      isActive: this.form.get('isActive')?.value,
+      fromDate: this.form.get('fromDate')?.value,
+      toDate: this.form.get('lastDate')?.value,
+    }
+
+    this.CouponsService.searchCoupons(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.coupons = res?.result?.data
-        for (let data of this.coupons) {
-          const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
-          if (data.lastDate > today) {
-            data.isEditable = true
-          } else {
-            data.isEditable = false
-          }
-          data.fromDate = new Date(data.fromDate).toDateString()
-          data.lastDate = new Date(data.lastDate).toDateString()
+        this.page = res?.result?.page
+        this.lastPage = res?.result?.lastPage
+        for (let coupon of this.coupons) {
+          coupon.fromDate = new Date(coupon.fromDate).toLocaleDateString()
+          coupon.toDate = new Date(coupon.toDate).toLocaleDateString()
         }
-        this.count = this.coupons.length
-        this.totalcount = res?.result?.total
-        this.totaldata = Math.ceil(this.totalcount / this.limit)
-        this.setPages()
-        this.cdr.markForCheck();
-        this.isData = true
+        this.ChangeDetectorRef.markForCheck()
       }
     })
-  }
-
-  fetchCoupon(page: any, limit: any) {
-    this.selectedpage = page
-    this.currpage = page
-    this.getData(this.couponform.value, page, limit)
-  }
-
-  loadNext() {
-    this.currpage += 1
-    this.selectedpage += 1
-    if (this.currpage <= 3) {
-      if (this.currpage <= this.totaldata) {
-        this.getData(this.couponform.value, this.currpage, this.limit)
-      } else {
-        this.isNext = false
-      }
-    } else {
-      this.shifted = this.pages.shift() //Captures the shifted number from pagination array
-      this.pages.push(this.currpage)
-      if (this.currpage <= this.totaldata) {
-        this.getData(this.couponform.value, this.currpage, this.limit)
-      } else {
-        this.isNext = false
-      }
-    }
-  }
-
-  loadPrevious() {
-    this.currpage -= 1
-    this.selectedpage -= 1
-    if (this.currpage > 3 && this.currpage <= this.totaldata && this.currpage > 0) {
-      this.getData(this.couponform.value, this.currpage, this.limit)
-    }
-    else {
-      if (this.pages[0] != 1) {
-        this.pages.pop()
-        this.pages.unshift(this.shifted)
-        this.shifted -= 1
-        this.getData(this.couponform.value, this.currpage, this.limit)
-      } else {
-        this.getData(this.couponform.value, this.currpage, this.limit)
-      }
-    }
-  }
-
-  setPages() {
-    this.currpage = 1
-    this.selectedpage = 1
-    this.pages.length = 0
-    if (this.totaldata > 3) {
-      for (let i = 1; i <= this.max; i++) {
-        this.pages.push(i)
-      }
-    } else {
-      for (let i = 1; i <= this.totaldata; i++) {
-        this.pages.push(i)
-      }
-    }
-  }
-
-  getData(data: any, page: any, limit: any) {
-    this.couponService.searchCoupon(data, page, limit).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.coupons = res?.result?.data
-        for (let data of this.coupons) {
-          const today = new Date(new Date().setHours(0, 0, 0, 0)).toISOString()
-          if (data.lastDate > today) {
-            data.isEditable = true
-          } else {
-            data.isEditable = false
-          }
-          data.fromDate = new Date(data.fromDate).toDateString()
-          data.lastDate = new Date(data.lastDate).toDateString()
-        }
-        this.count = this.coupons.length
-        this.cdr.markForCheck();
-      }
-    })
-    this.isNext = true
   }
 }

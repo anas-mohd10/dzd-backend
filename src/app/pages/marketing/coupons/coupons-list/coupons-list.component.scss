@@ -1,214 +1,72 @@
-.coupon-card-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 10px 0 0 0;
-  width: 100%;
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
 
-  .editable-false {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+label,
+input[type=button] {
+  font-weight: normal !important;
 }
 
-.coupon-card {
-  margin: 10px 10px 10px 0;
-  height: 250px;
-  border-radius: 10px;
-  position: relative;
-  background: #ffffff;
-  box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.coupon-card-body {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.coupon-details {
-  // width: 30%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 0 10px 10px;
-  border-radius: 15px 0 0 15px;
-}
-
-.inner-coupon-details {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  // padding: 20px 0 20px 10px;
-}
-
-.coupon-card-right {
-  width: 50%;
-  height: 100%;
-  border-radius: 0 15px 15px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #ffffff;
-  padding: 10px 0 10px 0;
-}
-
-.inner-coupon-card-right {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 10px 20px;
-}
-
-.coupon-image {
-  height: 120px;
-  width: 120px;
-}
-
-.coupon-image img {
-  height: 100%;
-  width: 100%;
-  border-radius: 10px;
-}
-
-.coupon-name-details {
-  margin: 0 0 0 20px;
-}
-
-.coupon-name {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #000000;
-  margin: 0 0 10px 0;
-}
-
-.coupon-discount {
-  color: #4461d7;
-  font-size: 1.6rem;
-  font-weight: 600;
-
-  span {
-    font-size: 2.2rem;
-    margin: 0 0.3125rem 0 0 ;
-  }
-}
-
-.coupon-featured-true {
-  color: #00bdab;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.coupon-featured-false {
-  color: #0087bd;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-
-.coupon-code {
-  display: flex;
-  color: #1c1421;
-  align-items: center;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-
-  span {
-    margin: 5px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    border-radius: 5px;
-  }
-}
-
-.coupon-status {
-  position: absolute;
-  top: 10%;
-  right: 5%;
-  border-radius: 50px;
-  width: 100px;
-}
-
-.coupon-status-true {
-  background: #00bdab;
-  color: #ffffff;
-  padding: 5px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 5px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.coupon-status-false {
-  background: #c64a54;
-  color: #ffffff;
-  padding: 5px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 5px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.coupon-date {
-  padding: 10px 0 10px 10px;
-  display: flex;
-  align-items: center;
-
-  .coupon-from-date,
-  .coupon-last-date {
+.filteringWrapper {
+  .filtering {
     display: flex;
+    justify-content: start;
     align-items: center;
-    margin: 0 20px;
+    gap: 8px;
 
     span {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #000000;
-      margin: 0 10px;
+      color: #8B909A;
+      line-height: 18px;
+    }
+
+    select {
+      border: 1px solid #E8E8E8;
+      border-radius: 6px;
+      padding: 5px;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 
-  .date-icon {
-    background: #ff6562;
-    padding: 10px;
+  .pagination {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 5px;
 
-    i {
-      color: #ffffff;
-      font-size: 1.3rem;
+    .paginationBefore,
+    .paginationNext {
+      height: 30px;
+      width: 30px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: $background;
+      cursor: pointer;
+
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+
+    .paginationPage {
+      margin: 0 10px;
     }
   }
 }
 
-.card-edit-btn {
-  position: absolute;
-  bottom: 10%;
-  right: 5%;
-  border-radius: 50px;
-
-  button {
-    width: 100px !important;
-    border-radius: 50px;
+.coupon-card-container{
+  .couponCard{
+    
   }
 }

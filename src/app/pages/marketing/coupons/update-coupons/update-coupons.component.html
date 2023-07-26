@@ -1,26 +1,26 @@
 <div class="content container-fluid">
    <div class="page-header">
+      <div class="page-title">
+         <h1 class="fw-bolder"> {{ editMode ? "Update Coupon" : "Add Coupon" }}</h1>
+      </div>
       <div class="row align-items-center">
-         <div class="col">
-            <h3 class="page-title fw-bolder fs-2">
-               {{ editMode ? "Update Coupons" : "Add Coupons" }}
-            </h3>
+         <div class="col d-flex align-items-start justify-content-between">
             <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
-               <li class="breadcrumb-item fs-5">
+               <li class="breadcrumb-item fs-6">
                   <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
                </li>
-               <li class="breadcrumb-item active fs-5">
+               <li class="breadcrumb-item active fs-6">
                   <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
-                     {{ editMode ? "Update Coupons" : "Add Coupons"}}
-                  </a>
+                     {{editMode ? "Update Coupon" : "Add Coupon"}}</a>
                </li>
             </ul>
          </div>
       </div>
    </div>
+
    <div class="row mt-10">
       <div class="col-sm-12 fs-5">
          <div class="card">

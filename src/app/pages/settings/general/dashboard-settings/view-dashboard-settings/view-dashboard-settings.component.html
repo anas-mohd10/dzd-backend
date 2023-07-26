@@ -3,102 +3,15 @@
       <div class="page-title">
          <h1 class="fw-bolder">Dashboard Settings</h1>
       </div>
-      <div class="row d-flex align-items-center justify-content-emd">
-         <div class="save-btn-container">
-            <!-- <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-5">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-5">
-                  <a routerLink="{{ appRoute.dashboardSettings.DASHBOARD_SETTINGS_LIST}}">Home Settings</a>
-               </li>
-            </ul> -->
-            <button *ngIf="dashboardSettingsCount == 0" class="btn btn-primary btn-sm cursor-pointer fs-5"
-               color="primary" style="width: 200px"
-               routerLink="{{ appRoute.dashboardSettings.ADD_DASHBOARD_SETTINGS }}">
-               Add Configurations
-            </button>
-            <button *ngIf="isSave" class="btn btn-primary btn-sm cursor-pointer fs-5" color="primary"
-               style="width: 200px" (click)="saveButton()">
-               Save Changes
-            </button>
-         </div>
+   </div>
+
+   <div class="buttonsWrapper mt-2">
+      <div class="buttonCard btn btn-primary" routerLink="/app/home-settings/web">
+         Web
+      </div>
+      <div class="buttonCard btn btn-secondary" routerLink="/app/home-settings/mobile">
+         Mobile
       </div>
    </div>
-   <ng-container *ngIf="dashboardSettingsCount == 0">
-      <div class="no-data-container" style="margin: 40px 0 0 0;">
-         <h2>Sorry, we haven't found any data</h2>
-      </div>
-   </ng-container>
-   <div class="home-settings-container col-12" *ngIf="dashboardSettingsCount != 0">
-      <div class="mobile-phone-container">
-         <img src="../../../../../../assets/media/screen_mockup.jpg" alt="">
-         <div class="content-box">
-            <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-               <div class="example-box" *ngFor="let data of homeSettings; let i=index" cdkDrag
-                  (mouseenter)="getId(data?.type, data?.title?.text, i)" (mouseleave)="removeId()">
-                  {{data?.title?.text ?
-                  data?.title?.text : data?.type}}</div>
-            </div>
-         </div>
-         <div class="mobile-app-dashboard-container">
-            <ng-container *ngFor="let data of hoverarray">
-               <div class="data-card">
-                  <div class="data-title">{{data?.title?.text}}</div>
-                  <div class="data-container">
-                     <div class="data-products-card" *ngIf="data?.type == 'product' || 'product-grid'">
-                        <ng-container *ngFor="let value of data?.product_items">
-                           <div class="data-product-card">
-                              <div class="data-img"><img src="{{value?.medias[0]?.thumbnail}}" alt="product"></div>
-                              <div class="data-container-name">{{value?.name?.text}}</div>
-                              <div class="data-container-price">
-                                 <div class="data-container-offer-price">{{value?.price?.text}}</div>
-                                 <div class="data-container-actual-price">{{value?.actual_price?.text}}</div>
-                              </div>
-                           </div>
-                        </ng-container>
-                     </div>
-                     <div class="data-details-card" *ngIf="data?.type == 'brand'">
-                        <ng-container *ngFor="let value of data?.brand_items">
-                           <div class="data-detail-card">
-                              <div class="data-detail-img"><img src="{{value?.image}}" alt="product"></div>
-                              <div class="data-detail-name">{{value?.text?.text}}</div>
-                           </div>
-                        </ng-container>
-                     </div>
-                     <div class="data-details-card" *ngIf="data?.type == 'category'">
-                        <ng-container *ngFor="let value of data?.category_items">
-                           <div class="data-detail-card category-card">
-                              <div class="data-detail-img"><img src="{{value?.image}}" alt="category"></div>
-                              <div class="data-detail-name">{{value?.text?.text}}</div>
-                           </div>
-                        </ng-container>
-                     </div>
-                     <div class="data-details-card" *ngIf="data?.type == 'deals-grid'">
-                        <ng-container *ngFor="let value of data?.deals_items">
-                           <div class="data-deal-card">
-                              <div class="data-detail-img"><img src="{{value?.image}}" alt="deals"></div>
-                              <div class="data-detail-head">{{value?.head?.text}}</div>
-                              <div class="data-detail-subhead">{{value?.subhead?.text}}</div>
-                           </div>
-                        </ng-container>
-                     </div>
-                     <div class="data-banner" *ngIf="data?.type == 'banner'">
-                        <ng-container *ngFor="let value of data?.banner_items">
-                           <div class="data-banner-card mb-10" [ngClass]="{'data-card': data?.banner_items.length == 2}">
-                              <div class="data-detail-img"><img src="{{value?.image}}" alt="deals"></div>
-                           </div>
-                        </ng-container>
-                     </div>
-                     <div class="data-banner" *ngIf="data?.type == 'carausel'">
-                        <div class="data-banner-card">
-                           <div class="data-detail-img"><img src="{{carausel_image}}" alt="deals"></div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </ng-container>
-         </div>
-      </div>
-   </div>
+
 </div>

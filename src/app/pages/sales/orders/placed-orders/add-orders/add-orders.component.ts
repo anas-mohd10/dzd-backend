@@ -244,7 +244,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   getCoupons(data: any) {
-    this.couponsService.getCouponsByProduct({ products: data }).subscribe((res: any) => {
+    this.couponsService.getProductCoupons({ products: data }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.activeCoupons = res?.result
       }

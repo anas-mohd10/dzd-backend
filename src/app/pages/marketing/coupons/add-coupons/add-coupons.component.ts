@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ToastrService } from 'ngx-toastr';
 import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
@@ -16,7 +17,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
   styleUrls: ['./add-coupons.component.scss']
 })
 export class AddCouponsComponent implements OnInit {
-  couponForm: FormGroup;
+  form: FormGroup;
   task = PageTasks.ADD;
   editMode = false;
   filedata: File;
@@ -46,15 +47,13 @@ export class AddCouponsComponent implements OnInit {
   collectionsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
 
-  isValidValue: Boolean = false
+
   error_message: string;
+
   from_date: string;
   to_date: string
-
-  //Styling variables
-  background: any
-  border: any
-  color: any
+  isValidValue: boolean = true
+  settings: any = {}
 
   constructor(
     private productService: ProductService,
@@ -65,13 +64,22 @@ export class AddCouponsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
+    private AppSettingsService: AppSettingsService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    const get_date = new Date().getDate()
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+
+    const getDate = new Date().getDate()
     const date = new Date()
-    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
-    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+    this.from_date = new Date(date.setDate(getDate + 1)).toISOString().split('T')[0]
+    this.to_date = new Date(date.setDate(getDate + 3)).toISOString().split('T')[0]
 
     this.initForm();
     this.managePage();
@@ -81,15 +89,15 @@ export class AddCouponsComponent implements OnInit {
   }
 
   initForm() {
-    this.couponForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: ['', Validators.required],
       code: ['', Validators.required],
       type: ['', Validators.required],
-      value: ['', Validators.required],
+      value: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
       file: [''],
-      minPurchase: [''],
+      minPurchase: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       categories: [],
       products: [],
       collections: [],
@@ -99,29 +107,25 @@ export class AddCouponsComponent implements OnInit {
       color: [''],
       fontSize: [''],
       fontWeight: [''],
-      // isMultiple: ['false', Validators.required],
-      couponType: ['', Validators.required],
-      couponValue: [0, Validators.required],
+      couponType: ['limited', Validators.required],
+      couponValue: [10, Validators.required],
       isActive: ['true'],
       isDelete: ['false'],
       isVisibility: ['true'],
     });
-    this.couponForm.get('fromDate')?.setValue(this.from_date)
-    this.couponForm.get('lastDate')?.setValue(this.to_date)
 
-    this.couponForm.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.background = AppSettings.BACKGROUND
-    this.couponForm.get('border')?.setValue(AppSettings.BORDER)
-    this.border = AppSettings.BORDER
-    this.couponForm.get('color')?.setValue(AppSettings.COLOR)
-    this.color = AppSettings.COLOR
-    this.couponForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.couponForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.couponForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
+    this.form.get('fromDate')?.setValue(this.from_date)
+    this.form.get('lastDate')?.setValue(this.to_date)
+    this.form.get('background')?.setValue(AppSettings.BACKGROUND)
+    this.form.get('border')?.setValue(AppSettings.BORDER)
+    this.form.get('color')?.setValue(AppSettings.COLOR)
+    this.form.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.form.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.form.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   get cf() {
-    return this.couponForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -166,37 +170,21 @@ export class AddCouponsComponent implements OnInit {
     this.croppedImage = event.base64;
   }
 
-  imageLoaded() {
-    // show cropper
-  }
+  imageLoaded() { }
 
-  cropperReady() {
-    // cropper ready
-  }
+  cropperReady() { }
 
-  loadImageFailed() {
-    // show message
-  }
+  loadImageFailed() { }
 
   removeImage() {
     this.croppedImage = ''
     this.loadImage = false
   }
 
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
   validateValue(_val: any) {
-    const type = this.couponForm.get('type')?.value
+    const type = this.form.get('type')?.value
     if (type == "%") {
-      if (_val.value <= 100) {
+      if (_val?.value <= 100) {
         this.isValidValue = true
       } else {
         this.isValidValue = false
@@ -218,10 +206,11 @@ export class AddCouponsComponent implements OnInit {
   updateCoupon() { }
 
   addCoupon() {
-    if (!this.couponForm.valid) {
-      console.error("Validation error")
+    if (!this.form.valid) {
+      this.isSubmitted = true
       return;
     }
+
     const payload = this.createPayload()
     if (payload) {
       this.couponsService.addCoupon(payload).subscribe((res: any) => {
@@ -236,41 +225,39 @@ export class AddCouponsComponent implements OnInit {
   }
 
   createPayload() {
-    if (this.isValidValue == true) {
+    if (this.isValidValue) {
       const data = {
-        title: this.couponForm.get('title')?.value,
-        code: this.couponForm.get('code')?.value,
-        fromDate: this.couponForm.get('fromDate')?.value,
-        lastDate: this.couponForm.get('lastDate')?.value,
-        minPurchase: this.couponForm.get('minPurchase')?.value,
-        value: this.couponForm.get('value')?.value,
-        type: this.couponForm.get('type')?.value,
+        title: this.form.get('title')?.value,
+        code: this.form.get('code')?.value,
+        fromDate: this.form.get('fromDate')?.value,
+        lastDate: this.form.get('lastDate')?.value,
+        minPurchase: this.form.get('minPurchase')?.value,
+        value: this.form.get('value')?.value,
+        type: this.form.get('type')?.value,
         categories: JSON.stringify(this.categories),
         products: JSON.stringify(this.products),
         collections: JSON.stringify(this.collections),
         details: {
-          type: this.couponForm.get('couponType')?.value,
-          value: this.couponForm.get('couponValue')?.value,
+          type: this.form.get('couponType')?.value,
+          value: this.form.get('couponValue')?.value,
         },
         filestring: this.croppedImage,
         filename: this.filename,
-        isActive: this.couponForm.get('isActive')?.value,
-        isVisibility: this.couponForm.get('isVisibility')?.value,
+        isActive: this.form.get('isActive')?.value,
+        isVisibility: this.form.get('isVisibility')?.value,
         style: {
-          background: this.couponForm.get('background')?.value,
-          border: this.couponForm.get('border')?.value,
-          radius: this.couponForm.get('radius')?.value,
+          background: this.form.get('background')?.value,
+          border: this.form.get('border')?.value,
+          radius: this.form.get('radius')?.value,
           text: {
-            color: this.couponForm.get('color')?.value,
-            fontSize: this.couponForm.get('fontSize')?.value,
-            fontWeight: this.couponForm.get('fontWeight')?.value,
+            color: this.form.get('color')?.value,
+            fontSize: this.form.get('fontSize')?.value,
+            fontWeight: this.form.get('fontWeight')?.value,
           }
         }
       }
+
       return data
-    } else {
-      this.error_message = 'Value should be always less than or equal to 100'
-      this.toastr.error(this.error_message)
-    }
+    } 
   }
 }

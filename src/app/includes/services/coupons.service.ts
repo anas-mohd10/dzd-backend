@@ -9,7 +9,10 @@ import { couponsEndpoints } from 'src/app/config/endpoints';
 export class CouponsService {
   couponsEndpoints = couponsEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
   addCoupon(data: any) {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.add_coupon);
@@ -26,34 +29,23 @@ export class CouponsService {
     return this.http.get(`${url}`);
   }
 
-  getCouponsByProduct(data: any) {
-    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupons_product);
+  getProductCoupons(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_product_cpupons);
     return this.http.post(`${url}`, data);
   }
 
-  getCouponBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_by_slug + "?slug=" + slug);
-    return this.http.get(`${url}`);
+  getCouponDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_details);
+    return this.http.post(`${url}`, data);
   }
 
-  updateCoupon(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.couponsEndpoints.update_coupon + "?slug=" + slug);
+  updateCoupon(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.update_coupon);
     return this.http.put(`${url}`, data);
   }
 
-  searchCoupon(query: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.couponsEndpoints.search_coupon + "?page=" + page + "&limit=" + limit);
-    return this.http.post(`${url}`, query);
+  searchCoupons(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.search_coupon);
+    return this.http.post(`${url}`, data);
   }
-
-  getCouponCount() {
-    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_count);
-    return this.http.get(`${url}`);
-  }
-
-  getCouponPage(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon_page + "?page=" + page + "&limit=" + limit);
-    return this.http.get(`${url}`);
-  }
-
 }

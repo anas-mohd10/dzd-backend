@@ -1,118 +1,132 @@
 <div class="content container-fluid">
   <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder"> {{ editMode ? "Update Coupon" : "Add Coupon" }}</h1>
+    </div>
     <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update Coupons" : "Add Coupons" }}
-        </h3>
+      <div class="col d-flex align-items-start justify-content-between">
         <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
-          <li class="breadcrumb-item fs-5">
+          <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
           </li>
-          <li class="breadcrumb-item active fs-5">
+          <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
-              {{ editMode ? "Update Coupons" : "Add Coupons"}}
-            </a>
+              {{editMode ? "Update Coupon" : "Add Coupon"}}</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
+
   <div class="row mt-10">
-    <div class="col-sm-12 fs-5">
+    <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="couponForm">
+          <form [formGroup]="form">
             <div class="row">
-              <div style="display: none;">{{categoriesData.length}}</div>
+
               <div class="col-12">
                 <h2 class="form-title">Coupon Details</h2>
               </div>
-              <div class=" col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Title</label>
-                  <input type="text" class="form-control fs-5" formControlName="title" [ngClass]="{
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Title</label>
+                  <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
                             'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Code</label>
-                  <input type="text" class="form-control fs-5" formControlName="code" [ngClass]="{
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Coupon Code</label>
+                  <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
                             'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Type</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" formControlName="type"
-                    [ngClass]="{
-                                 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Type</label>
+                  <select class="form-select" formControlName="type"
+                    [ngClass]="{ 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="%">%</option>
                     <option value="Flat">Flat</option>
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Value</label>
-                  <input type="number" min="0" class="form-control fs-5" formControlName="value"
-                    (change)="validateValue($event.target)" [ngClass]="{
-                            'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required}" />
-                  <label class="fs-6 text-danger" *ngIf="!isValidValue">{{error_message}}</label>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Value</label>
+                  <input type="text" class="form-control fs-6" formControlName="value"
+                    (change)="validateValue($event.target)"
+                    [ngClass]="{
+                            'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required || cf.value.errors?.pattern}" />
+                  <div class="mt-1 alert alert-danger" role="alert" *ngIf="cf.value.errors?.pattern">
+                    Only numbers are allowed
+                  </div>
+                  <div class="mt-1 alert alert-danger" role="alert" *ngIf="!isValidValue">
+                    Value must be lesser than or equal to 100 when coupon type is percentage
+                  </div>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">From Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="fromDate"
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">From Date</label>
+                  <input type="date" class="form-control fs-6" formControlName="fromDate"
                     [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Last Date</label>
-                  <input type="date" class="form-control fs-5" formControlName="lastDate"
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Last Date</label>
+                  <input type="date" class="form-control fs-6" formControlName="lastDate"
                     [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Minimum Purchase</label>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text">Rs.</span>
-                    <input type="number" class="form-control" formControlName="minPurchase" />
-                    <span class="input-group-text">.00</span>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Minimum Purchase</label>
+                  <input type="text" class="form-control" formControlName="minPurchase"
+                    [ngClass]="{ 'is-invalid': (cf.minPurchase.touched || isSubmitted) && cf.minPurchase.errors?.required || cf.minPurchase.errors?.pattern}" />
+                  <div class="alert alert-danger mt-1" role="alert" *ngIf="cf.minPurchase.errors?.pattern">
+                    Only numbers are allowed
                   </div>
                 </div>
               </div>
 
               <div class="row" style="margin: 20px 0; padding: 0px;">
-                <div class="col-4">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3">Products</label>
+                <div class="col-lg-4">
+                  <div class="form-group mb-3">
+                    <label class="fs-6 mb-3">Products</label>
                     <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
                       placeholder="Select products applicable to coupon" [multiple]=true
                       [ngModelOptions]="{standalone: true}">
                     </ng-select>
                   </div>
                 </div>
-                <div class="col-4">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3">Collection</label>
+
+                <div class="col-lg-4">
+                  <div class="form-group mb-3">
+                    <label class="fs-6 mb-3">Collection</label>
                     <ng-select [items]="collectionsData" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
                       placeholder="Select collections applicable to coupon" [multiple]=true
                       [ngModelOptions]="{standalone: true}">
                     </ng-select>
                   </div>
                 </div>
-                <div class="col-4">
-                  <div class="form-group">
-                    <label class="fs-5 mb-3">Category</label>
+
+                <div class="col-lg-4">
+                  <div class="form-group mb-3">
+                    <label class="fs-6 mb-3">Category</label>
                     <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
                       placeholder="Select categories applicable to coupon" [multiple]=true
                       [ngModelOptions]="{standalone: true}">
@@ -121,9 +135,9 @@
                 </div>
               </div>
 
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Active Coupon?</label>
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Active Coupon?</label>
                   <select class="form-select" formControlName="isActive">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="true">Yes</option>
@@ -131,9 +145,10 @@
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Visible Coupon?</label>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Visible Coupon?</label>
                   <select class="form-select" formControlName="isVisibility">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="true">Yes</option>
@@ -142,78 +157,82 @@
                 </div>
               </div>
 
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3 required">Coupon Type</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                    formControlName="couponType" [ngClass]="{
-                                 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Coupon Type</label>
+                  <select class="form-select form-select-lg mb-3" formControlName="couponType">
                     <option value="" disabled>-- Select an option --</option>
-                    <option value="LTD">Limited</option>
-                    <option value="UNLTD">Unlimited</option>
+                    <option value="limited">Limited</option>
+                    <option value="unlimited">Unlimited</option>
                   </select>
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">No. of Coupons</label>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">No. of Coupons</label>
                   <div class="input-group mb-3">
                     <input type="number" class="form-control" formControlName="couponValue" />
                   </div>
                 </div>
               </div>
+
               <div class="col-12">
                 <h2 class="form-title">Coupon Styles</h2>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Background</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="background" (change)="getColors('background', $event.target)" />
-                  <span>{{background}}</span>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Background</label>
+                  <input type="color" placeholder="Background" class="form-control fs-6" style="height: 50px;"
+                    formControlName="background" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" formControlName="border"
-                    style="height: 50px;" (change)="getColors('border', $event.target)" />
-                  <span>{{border}}</span>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Border</label>
+                  <input type="color" placeholder="Border" class="form-control fs-6" formControlName="border"
+                    style="height: 50px;" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Border Radius</label>
-                  <input type="number" placeholder="2" class="form-control fs-5" formControlName="radius" />
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Border Radius</label>
+                  <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Color</label>
-                  <input type="color" placeholder="Category name" class="form-control fs-5" style="height: 50px;"
-                    formControlName="color" (change)="getColors('color', $event.target)" />
-                  <span>{{color}}</span>
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Color</label>
+                  <input type="color" placeholder="Color" class="form-control fs-6" style="height: 50px;"
+                    formControlName="color" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Weight</label>
-                  <input type="number" placeholder="400" class="form-control fs-5" formControlName="fontWeight" />
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Font Weight</label>
+                  <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label class="fs-5 mb-3">Font Size ( in px )</label>
-                  <input type="number" placeholder="14" class="form-control fs-5" formControlName="fontSize" />
+
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Font Size ( in px )</label>
+                  <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
                 </div>
               </div>
-              <div class="col-12 col-sm-6">
+
+              <div class="col-lg-6">
                 <div class="col-12">
                   <h2 class="form-title">Media</h2>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                   <div class="image-upload">
-                    <input type="file" class="form-control fs-5" name="image" accept="image/*"
+                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
                       (change)="handleInputChange($event)"
                       onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0])"
                       style="height: 100px;" required>
@@ -246,16 +265,19 @@
                   </div>
                 </div>
               </ng-container>
+
               <div class="col-12">
-                <div class="alert alert-warning fs-5 fw-bolder" role="alert">Only visible coupons will be reflected in
+                <div class="alert alert-warning fs-6" role="alert">Only visible coupons will be reflected in
                   user app, other coupons can be used in admin dashboard.</div>
               </div>
+
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}"
-                  class=" btn btn-secondary btn-sm fs-5 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
+                  class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder" style="width: 200px; margin-right: 20px;">
                   Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px">Add</button>
+                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
+                  (click)="onSubmit()">Add</button>
               </div>
             </div>
           </form>

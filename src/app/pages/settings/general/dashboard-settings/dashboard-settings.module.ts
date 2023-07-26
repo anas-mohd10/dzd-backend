@@ -5,14 +5,16 @@ import { DashboardSettingsRoutingModule } from './dashboard-settings-routing.mod
 import { ViewDashboardSettingsComponent } from './view-dashboard-settings/view-dashboard-settings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-import { AddDashboardSettingsComponent } from './add-dashboard-settings/add-dashboard-settings.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { WebDashboardComponent } from './web-dashboard/web-dashboard.component';
+import { AppDashboardComponent } from './app-dashboard/app-dashboard.component';
 
 @NgModule({
   declarations: [
     ViewDashboardSettingsComponent,
-    AddDashboardSettingsComponent,
+    WebDashboardComponent,
+    AppDashboardComponent,
   ],
   imports: [
     CommonModule,

@@ -1,11 +1,9 @@
 export const couponsEndpoints = {
    add_coupon: '/add-coupon',
    get_coupon: '/coupons',
-   get_coupons_product: '/coupons-product',
-   get_active_coupons: '/coupons/active',
-   get_coupon_by_slug: '/coupon',
-   get_coupon_count: '/coupons/count',
-   search_coupon: '/coupons/search',
-   get_coupon_page:'/coupons-page',
+   get_active_coupons: '/active-coupons',
+   get_product_cpupons: '/product-coupons',
+   get_coupon_details: '/coupon-details',
+   search_coupon: '/sarch-coupons',
    update_coupon: '/update-coupon',
 }

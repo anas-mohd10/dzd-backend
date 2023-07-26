@@ -1,0 +1,200 @@
+<div class="pageWrapper">
+    <div class="backButton mb-2" (click)="navigateBack()">
+        <img src="../../../../../../assets/icons/chevron-back.png" alt="Icon">
+    </div>
+    <div class="row">
+        <div class="col-9 iframeWrapper">
+            <iframe #previewFrame [src]="iframeSrc" frameborder="0"></iframe>
+        </div>
+        <div class="col-3 rearrangeWrapper">
+            <div class="rearrangeTitle">
+                <div class="fs-2 mb-1 fw-bolder">Homepage</div>
+                <div class="fs-7">Configure your homepage with widgets for desktop & mobile view.</div>
+            </div>
+
+            <div class="dashboardWrapper mt-3">
+
+                <div class="mt-4 mb-2 bottomButtons">
+                    <div class="previewButton btn btn-secondary" (click)="preview()">
+                        Preview
+                    </div>
+                    <div class="publishButton btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                        Publish
+                    </div>
+                </div>
+
+                <!-- <div class="addWidgetWrapper mb-4">
+                    <div class="widgetButton w-100 btn btn-info" data-bs-toggle="modal" data-bs-target="#widgetModal">
+                        Add Widget
+                    </div>
+                </div> -->
+
+                <div cdkDropList cdkDropListOrientation="vertical" class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let item of dashboard" cdkDrag>
+                        <div class="dragCard">
+                            <div *ngIf="item?.type == 'banner-1'">
+                                <button class="editBtn" routerLink="/app/banners/update" [queryParams]="{banner: item?.url}"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="fullBannerGrid mb-2">
+                                    <ng-container *ngFor="let file of item?.banner_items">
+                                        <img src="{{file?.file}}" class="img-fluid" alt="Banner">
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'banner-2'">
+                                <button class="editBtn"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="twoBannerGrid mb-2">
+                                    <ng-container *ngFor="let file of item?.banner_items">
+                                        <img src="{{file?.file}}" class="img-fluid" alt="Banner">
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'banner-3'">
+                                <button class="editBtn"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="tertiaryBannerGrid mb-2">
+                                    <ng-container *ngFor="let file of item?.banner_items">
+                                        <img src="{{file?.file}}" class="img-fluid" alt="Banner">
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'banner-4'">
+                                <button class="editBtn"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="quarterBannerGrid mb-2">
+                                    <ng-container *ngFor="let file of item?.banner_items">
+                                        <img src="{{file?.file}}" class="img-fluid" alt="Banner">
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'category'">
+                                <button class="editBtn" routerLink="/app/category"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="categoryGrid mb-2">
+                                    <ng-container *ngFor="let category of item?.category_items.slice(0, 4)">
+                                        <div class="categoryCard">
+                                            <img src="{{category?.image}}" alt="Category">
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'brand'">
+                                <button class="editBtn" routerLink="/app/brand"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="categoryGrid mb-2">
+                                    <ng-container *ngFor="let brand of item?.brand_items.slice(0, 4)">
+                                        <div class="categoryCard">
+                                            <img src="{{brand?.image}}" alt="Category">
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'product'">
+                                <button class="editBtn" routerLink="/app/collection/update"
+                                    [queryParams]="{collection: item?.button?.params?.slug}"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="text-center mb-3 fs-4 fw-bolder">{{item?.title?.text}}</div>
+                                <div class="categoryGrid mb-2">
+                                    <ng-container *ngFor="let product of item?.product_items.slice(0, 4)">
+                                        <div class="categoryCard">
+                                            <img src="{{product?.medias[0]?.thumbnail}}" alt="Product">
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div *ngIf="item?.type == 'delivery'">
+                                <button class="editBtn" routerLink="/app/stores"
+                                    [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
+                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                        alt="Icon">
+                                </button>
+                                <div class="deliverySlot fw-bolder fs-4 text-white mb-2"
+                                    [ngStyle]="{'background': settings?.colors?.primary.replace('0xFF', '#')}">
+                                    Select location
+                                </div>
+                            </div>
+                        </div>
+                        <div class="example-custom-placeholder" *cdkDragPlaceholder>
+                            Drop here
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="dashboard.length==0" class="mt-10 d-flex align-items-center justify-content-center ">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body fs-6">
+                Do you want to publish this changes to <span class="fw-bolder text-primary">{{settings?.domain}}</span>?
+                This changes are cannot be
+                recovered
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="discard()">Discard
+                    changes</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="publish()">Yes, publish
+                    it!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Widget</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div> -->
