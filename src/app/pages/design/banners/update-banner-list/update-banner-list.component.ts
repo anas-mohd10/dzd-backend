@@ -241,7 +241,7 @@ export class UpdateBannerListComponent implements OnInit {
         this.name = event?.target?.files[0]?.name
         break
     }
-    this.isImage = true 
+    this.isImage = true
   }
 
   addBanner() {
@@ -277,6 +277,10 @@ export class UpdateBannerListComponent implements OnInit {
 
   removeBanner(name: any) {
     this.files = this.files.filter((item: any) => item?.file != name)
+  }
+
+  editBanner(banner: any) {
+
   }
 
   clearFiles() {

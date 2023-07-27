@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./update-coupons.component.scss']
 })
 export class UpdateCouponsComponent implements OnInit {
-  couponForm: FormGroup;
+  form: FormGroup;
   task = PageTasks.UPDATE;
   editMode = false;
   filedata: File;
@@ -29,10 +29,12 @@ export class UpdateCouponsComponent implements OnInit {
   categoryNames: any = []
   productNames: any = []
   collectionNames: any = []
-  slug: any;
-  couponData: any;
-  valueInvalid: boolean = false;
-
+  croppedImage: string | null | undefined;
+  loadImage: boolean;
+  imageChangedEvent: Event | undefined;
+  filename: any;
+  errors: any
+  couponDetails: any = {}
   categories: any = []; //Array of category ids
   categoriesData: any = []; //Data fetched from database
   category: any = []; //Array of categorty name and id
@@ -44,23 +46,16 @@ export class UpdateCouponsComponent implements OnInit {
   collections: any = []; //Array of collection ids
   collectionsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
-  filename: string;
-  imageChangedEvent: any;
-  loadImage: boolean;
-  croppedImage: string | null | undefined;
-  uploadedimg: any;
-  base: any
-
-  isValidValue: Boolean = false
   error_message: string;
-
-  //Styling variables
-  background: any
-  border: any
-  color: any
-  image: string;
-  couponStarted: boolean;
-  validDate: boolean = false;
+  slug: string = ''
+  base: string = environment.base
+  from_date: string;
+  to_date: string
+  image: any = ''
+  isValidValue: boolean = true
+  settings: any = {}
+  couponStarted: boolean = false
+  validDate: boolean = false
 
   constructor(
     private productService: ProductService,
@@ -75,7 +70,6 @@ export class UpdateCouponsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.base = environment.base
     this.initForm();
     this.managePage();
     this.slug = this.route.snapshot.queryParams.coupon || ''
@@ -86,33 +80,34 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   initForm() {
-    this.couponForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: ['', Validators.required],
       code: ['', Validators.required],
       type: ['', Validators.required],
-      value: ['', Validators.required],
+      value: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
       file: [''],
-      minPurchase: [''],
+      minPurchase: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      categories: [],
+      products: [],
+      collections: [],
       background: [''],
       border: [''],
       radius: [''],
       color: [''],
       fontSize: [''],
       fontWeight: [''],
-      categories: [],
-      products: [],
-      collections: [],
-      couponType: ['', Validators.required],
-      couponValue: [0, Validators.required],
+      couponType: ['limited', Validators.required],
+      couponValue: [10, Validators.required],
       isActive: ['true'],
+      isDelete: ['false'],
       isVisibility: ['true'],
     });
   }
 
   get cf() {
-    return this.couponForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -151,40 +146,36 @@ export class UpdateCouponsComponent implements OnInit {
 
   getCouponBySlug() {
     this.couponsService.getCouponDetails({ refid: this.slug }).subscribe((res: any) => {
-      this.couponData = res?.result[0]
-      this.image = this.base + "/" + this.couponData?.file;
-      this.uploadedimg = this.base + "/" + this.couponData?.file
-      this.couponForm.get("title")?.setValue(this.couponData.title)
-      this.couponForm.get("code")?.setValue(this.couponData.code)
-      this.couponForm.get("type")?.setValue(this.couponData.type)
-      this.couponForm.get("value")?.setValue(this.couponData.value)
-      this.couponForm.get("fromDate")?.setValue(this.couponData.fromDate.split('T')[0])
-      this.couponForm.get("lastDate")?.setValue(this.couponData.lastDate.split('T')[0])
-      this.couponForm.get("maxDiscount")?.setValue(this.couponData.maxDiscount)
-      this.couponForm.get("minPurchase")?.setValue(this.couponData.minPurchase)
-      this.couponForm.get("couponType")?.setValue(this.couponData?.details?.type)
-      this.couponForm.get("couponValue")?.setValue(this.couponData?.details?.value)
-      this.couponForm.get("isActive")?.setValue(this.couponData.isActive)
-      this.couponForm.get("isVisibility")?.setValue(this.couponData.isVisibility)
+      this.couponDetails = res?.result
+      this.image = this.base + "/" + this.couponDetails?.file;
+      this.form.get("title")?.setValue(this.couponDetails.title)
+      this.form.get("code")?.setValue(this.couponDetails.code)
+      this.form.get("type")?.setValue(this.couponDetails.type)
+      this.form.get("value")?.setValue(this.couponDetails.value)
+      this.form.get("fromDate")?.setValue(this.couponDetails.fromDate.split('T')[0])
+      this.form.get("lastDate")?.setValue(this.couponDetails.lastDate.split('T')[0])
+      this.form.get("maxDiscount")?.setValue(this.couponDetails.maxDiscount)
+      this.form.get("minPurchase")?.setValue(this.couponDetails.minPurchase)
+      this.form.get("couponType")?.setValue(this.couponDetails?.details?.type)
+      this.form.get("couponValue")?.setValue(this.couponDetails?.details?.value)
+      this.form.get("isActive")?.setValue(this.couponDetails.isActive)
+      this.form.get("isVisibility")?.setValue(this.couponDetails.isVisibility)
 
       const today = new Date().toISOString()
-      if (today > this.couponData?.fromDate) {
+      if (today > this.couponDetails?.fromDate) {
         this.couponStarted = true
-        this.couponForm.get('fromDate')?.disable()
+        this.form.get('fromDate')?.disable()
       }
 
-      this.couponForm.get('background')?.setValue(this.couponData.style.background);
-      this.couponForm.get('border')?.setValue(this.couponData.style.border);
-      this.couponForm.get('radius')?.setValue(this.couponData.style.radius);
-      this.couponForm.get('color')?.setValue(this.couponData.style.text.color);
-      this.couponForm.get('fontSize')?.setValue(this.couponData.style.text.fontSize);
-      this.couponForm.get('fontWeight')?.setValue(this.couponData.style.text.fontWeight);
-      this.border = this.couponData.style.border
-      this.background = this.couponData.style.background
-      this.color = this.couponData.style.text.color
-      this.collections = this.couponData.collections
-      this.products = this.couponData.products
-      this.categories = this.couponData.categories
+      this.form.get('background')?.setValue(this.couponDetails.style.background);
+      this.form.get('border')?.setValue(this.couponDetails.style.border);
+      this.form.get('radius')?.setValue(this.couponDetails.style.radius);
+      this.form.get('color')?.setValue(this.couponDetails.style.text.color);
+      this.form.get('fontSize')?.setValue(this.couponDetails.style.text.fontSize);
+      this.form.get('fontWeight')?.setValue(this.couponDetails.style.text.fontWeight);
+      this.collections = this.couponDetails.collections
+      this.products = this.couponDetails.products
+      this.categories = this.couponDetails.categories
       this.cdr.markForCheck()
       this.isValidValue = true
     })
@@ -223,7 +214,7 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   validateValue(_val: any) {
-    const type = this.couponForm.get('type')?.value
+    const type = this.form.get('type')?.value
     if (type == "%") {
       if (_val.value <= 100) {
         this.isValidValue = true
@@ -233,28 +224,34 @@ export class UpdateCouponsComponent implements OnInit {
     }
   }
 
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
   validateDate(e: any) {
     const today = new Date().toISOString()
-    const fromDate = this.couponForm.get('fromDate')?.value
+    const fromDate = this.form.get('fromDate')?.value
     if (e.value < fromDate || e.value < today) {
       this.validDate = false
-      this.toastr.error('inavlid date')
+      this.toastr.error('Inavlid date')
     }
     else {
       this.validDate = true
     }
   }
 
+  applyCoupon(type: string) {
+    switch (type) {
+      case 'product':
+        this.categories = []
+        this.collections = []
+        break
+      case 'collection':
+        this.categories = []
+        this.products = []
+        break
+      case 'category':
+        this.products = []
+        this.collections = []
+        break
+    }
+  }
 
   onSubmit() {
     this.isSubmitted = true;
@@ -264,7 +261,7 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   updateCoupon() {
-    if (!this.couponForm.valid) {
+    if (!this.form.valid) {
       return;
     }
 
@@ -284,40 +281,40 @@ export class UpdateCouponsComponent implements OnInit {
   createPayload() {
     if (this.isValidValue == true) {
       const data = {
-        title: this.couponForm.get('title')?.value,
-        code: this.couponForm.get('code')?.value,
-        fromDate: this.couponForm.get('fromDate')?.value,
-        lastDate: this.couponForm.get('lastDate')?.value,
-        minPurchase: this.couponForm.get('minPurchase')?.value,
-        value: this.couponForm.get('value')?.value,
-        type: this.couponForm.get('type')?.value,
-        categories: JSON.stringify(this.categories),
-        products: JSON.stringify(this.products),
-        collections: JSON.stringify(this.collections),
+        title: this.form.get('title')?.value,
+        code: this.form.get('code')?.value,
+        fromDate: this.form.get('fromDate')?.value,
+        lastDate: this.form.get('lastDate')?.value,
+        minPurchase: this.form.get('minPurchase')?.value,
+        value: this.form.get('value')?.value,
+        type: this.form.get('type')?.value,
+        categories: this.categories,
+        products: this.products,
+        collections: this.collections,
         details: {
-          type: this.couponForm.get('couponType')?.value,
-          value: this.couponForm.get('couponValue')?.value,
+          type: this.form.get('couponType')?.value,
+          value: this.form.get('couponValue')?.value,
         },
         refid: this.slug,
         filestring: this.croppedImage,
         filename: this.filename,
         file: '',
-        isVisibility: this.couponForm.get('isVisibility')?.value,
-        isActive: this.couponForm.get('isActive')?.value,
+        isVisibility: this.form.get('isVisibility')?.value,
+        isActive: this.form.get('isActive')?.value,
         couponid: this.slug,
         style: {
-          background: this.couponForm.get('background')?.value,
-          border: this.couponForm.get('border')?.value,
-          radius: this.couponForm.get('radius')?.value,
+          background: this.form.get('background')?.value,
+          border: this.form.get('border')?.value,
+          radius: this.form.get('radius')?.value,
           text: {
-            color: this.couponForm.get('color')?.value,
-            fontSize: this.couponForm.get('fontSize')?.value,
-            fontWeight: this.couponForm.get('fontWeight')?.value,
+            color: this.form.get('color')?.value,
+            fontSize: this.form.get('fontSize')?.value,
+            fontWeight: this.form.get('fontWeight')?.value,
           }
         }
       }
-      if (this.couponData?.file) {
-        data.file = this.couponData?.file
+      if (this.couponDetails?.file) {
+        data.file = this.couponDetails?.file
       }
       return data
     } else {

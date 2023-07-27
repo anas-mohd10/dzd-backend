@@ -402,9 +402,6 @@ export class UpdateProductComponent implements OnInit {
   }
 
   removeFile(id: any) {
-    console.log(this.imageFiles)
-    console.log(this.files)
-
     this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
     this.files = this.files.filter((_data: any) => _data.id != id)
   }

@@ -1,31 +1,24 @@
-<div class="noPrint" onclick="print('printWrapper')">Print</div>
-
 <div class="printWrapper">
     <div class="a4--frame">
-        <!-- <div class="productThumb">
-            <img src="images/product.png" alt="">
-        </div> -->
-        <div class="datedOn">
-            {{date}}
-        </div>
+        <div class="datedOn"> {{date}} </div>
 
-       <div class="d-flex justify-content-between" style="border-bottom: 1px dashed #111111;">
-        <div class="shippmentAddress">
-            <label>Ship to:</label>
-            <p class="address">
-                {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
-                {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
-                {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
-                {{orderDetails?.address?.pincode}}
-            </p>
-           
+        <div class="d-flex justify-content-between" style="border-bottom: 1px dashed #111111;">
+            <div class="shippmentAddress">
+                <label>Ship to:</label>
+                <p class="address">
+                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                    {{orderDetails?.address?.pincode}}
+                </p>
+
+            </div>
+            <div>
+                <p class="phoneNo">Phone : <span> {{orderDetails?.customerId?.countryCode}}
+                        {{orderDetails?.customerId?.mobile}} </span></p>
+                <p class="phoneNo">Payment Method : <span> {{orderDetails?.paymentMethod}}</span></p>
+            </div>
         </div>
-        <div>
-            <p class="phoneNo">Phone : <span> {{orderDetails?.customerId?.countryCode}}
-                {{orderDetails?.customerId?.mobile}} </span></p>
-        <p class="phoneNo">Payment Method : <span> {{orderDetails?.paymentMethod}}</span></p>
-        </div>
-       </div>
 
         <div class="orderDetails">
             <h4 class="orderId">Order ID: <span>#{{order}}</span></h4>
@@ -177,3 +170,5 @@
         </div>
     </div>
 </div>
+
+<div id="printBtn" class="noPrint btn btn-info" onclick="print('printWrapper')">Print</div>

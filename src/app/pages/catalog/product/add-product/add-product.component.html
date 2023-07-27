@@ -573,17 +573,20 @@
                     <button class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="addImage()">Save</button>
                   </ng-container>
                   <div class="col-12" *ngIf="imageFiles.length != 0">
-                    <div class="products-image-container">
-                      <ng-container *ngFor="let image of imageFiles">
-                        <div class="products-image-card col-sm-3">
-                          <div class="products-image">
-                            <img class="product-preview" [src]="image?.url" alt="" srcset="">
-                          </div>
-                          <div class="products-delete-icon" (click)="removeFile(image?.id)">
-                            <i class="bi bi-x-lg"></i>
+                    <div class="addedProductsWrapper">
+                      <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+                        (cdkDropListDropped)="drop($event)">
+                        <div class="example-box" *ngFor="let image of imageFiles; let i=index" cdkDrag>
+                          <div class="addedProductCard">
+                            <div class="close" (click)="removeFile(i)">
+                              <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                            </div>
+                            <div class="image">
+                              <img src="{{image?.url}}" alt="Product">
+                            </div>
                           </div>
                         </div>
-                      </ng-container>
+                      </div>
                     </div>
                   </div>
                 </div>

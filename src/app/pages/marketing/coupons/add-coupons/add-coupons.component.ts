@@ -181,6 +181,23 @@ export class AddCouponsComponent implements OnInit {
     this.loadImage = false
   }
 
+  applyCoupon(type: string) {
+    switch (type) {
+      case 'product':
+        this.categories = []
+        this.collections = []
+        break
+      case 'collection':
+        this.categories = []
+        this.products = []
+        break
+      case 'category':
+        this.products = []
+        this.collections = []
+        break
+    }
+  }
+
   validateValue(_val: any) {
     const type = this.form.get('type')?.value
     if (type == "percent") {

@@ -4,7 +4,7 @@
     }
 
     .noPrint {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -152,13 +152,13 @@ label {
 
 
 .orderDetails-Table thead tr th,
-.orderDetails-Table  tbody tr td,
-.orderDetails-Table  tfoot tr td {
+.orderDetails-Table tbody tr td,
+.orderDetails-Table tfoot tr td {
     padding: 10px;
 }
 
 .bottomTwo thead tr th,
-.bottomTwo  tbody tr td{
+.bottomTwo tbody tr td {
     padding: 10px;
 }
 
@@ -205,4 +205,9 @@ label {
 
 .decLetter .phoneNo {
     max-width: 350px;
+}
+
+.noPrint {
+    margin: 10px auto;
+    display: table;
 }

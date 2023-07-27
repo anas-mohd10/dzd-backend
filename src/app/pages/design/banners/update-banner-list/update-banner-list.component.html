@@ -136,7 +136,7 @@
                      <ng-container *ngIf="files.length > 0">
                         <div class="uploadedBanners">
                            <ng-container *ngFor="let banner of files; let i = index">
-                              <div class="bannerCard">
+                              <div class="bannerCard" (click)="editBanner(banner)">
                                  <div class="close" (click)="removeBanner(banner?.file)">
                                     <img src="../../../../../assets/icons/close.svg" alt="Icon">
                                  </div>

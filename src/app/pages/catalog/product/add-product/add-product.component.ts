@@ -13,7 +13,7 @@ import { ProductHeadService } from 'src/app/includes/services/product.head.servi
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -478,6 +478,15 @@ export class AddProductComponent implements OnInit {
     this.croppedImage = ''
     this.filename = ''
     this.loadImage = false
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    let products = [...this.imageFiles]
+    moveItemInArray(products, event.previousIndex, event.currentIndex);
+    this.imageFiles = [...products]
+    let productsFiles = [...this.files]
+    moveItemInArray(productsFiles, event.previousIndex, event.currentIndex);
+    this.files = [...productsFiles]
   }
 
   removeFile(id: any) {

@@ -12,7 +12,7 @@ import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [AddProductComponent],
   imports: [
@@ -23,6 +23,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ImageCropperModule,
     VgBufferingModule,
     VgOverlayPlayModule,
+    DragDropModule,
     VgCoreModule,
     VgControlsModule,
     AngularEditorModule,

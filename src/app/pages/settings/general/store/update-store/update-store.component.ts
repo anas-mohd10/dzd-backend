@@ -77,7 +77,7 @@ export class UpdateStoreComponent implements OnInit {
       landmark: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
-      countryCode: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
+      countryCode: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isDelete: new FormControl(false),
       isClickPoint: new FormControl(false),
@@ -96,11 +96,14 @@ export class UpdateStoreComponent implements OnInit {
   addDetails() {
     if (!this.form.valid) {
       this.isValid = false
+      this.ToastrService.error('Invalid form')
       return
     }
 
     const payload = this.createPayload()
+    console.log("payload")
     if (payload && this.slots.length > 0) {
+      console.log(payload)
       this.StoresService.update(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.ToastrService.success(res?.message)
