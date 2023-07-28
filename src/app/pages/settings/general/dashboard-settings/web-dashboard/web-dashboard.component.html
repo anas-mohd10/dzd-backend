@@ -23,18 +23,19 @@
                     </div>
                 </div>
 
-                <!-- <div class="addWidgetWrapper mb-4">
+                <div class="addWidgetWrapper mb-4">
                     <div class="widgetButton w-100 btn btn-info" data-bs-toggle="modal" data-bs-target="#widgetModal">
                         Add Widget
                     </div>
-                </div> -->
+                </div>
 
                 <div cdkDropList cdkDropListOrientation="vertical" class="example-list"
                     (cdkDropListDropped)="drop($event)">
                     <div class="example-box" *ngFor="let item of dashboard" cdkDrag>
                         <div class="dragCard">
                             <div *ngIf="item?.type == 'banner-1'">
-                                <button class="editBtn" routerLink="/app/banners/update" [queryParams]="{banner: item?.url}"
+                                <button class="editBtn" routerLink="/app/banners/update"
+                                    [queryParams]="{banner: item?.url}"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
                                     <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
@@ -182,19 +183,144 @@
     </div>
 </div>
 
-<!-- <div class="modal fade" id="widgetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="widgetModal" tabindex="-1" aria-labelledby="widgetLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Widget</h1>
+                <h1 class="modal-title fs-5" id="widgetLabel">Add New Widget</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <div class="widgetWrapper mb-3">
+                    <div class="fs-5 fw-bolder">Banner Widgets</div>
+                    <div class="buttonsWrapper mt-2">
+                        <div class="widgetButton">
+                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <div class="text">
+                                <div class="fs-6 text-muted fw-bolder">Full Banner Layout</div>
+                            </div>
+                        </div>
+                        <div class="widgetButton">
+                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <div class="text">
+                                <div class="fs-6 text-muted fw-bolder">2 Banner Layout</div>
+                            </div>
+                        </div>
+                        <div class="widgetButton">
+                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <div class="text">
+                                <div class="fs-6 text-muted fw-bolder">3 Banner Layout</div>
+                            </div>
+                        </div>
+                        <div class="widgetButton">
+                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <div class="text">
+                                <div class="fs-6 text-muted fw-bolder">4 Banner Layout</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="widgetWrapper mb-3">
+                    <div class="fs-5 fw-bolder">Collection Widgets</div>
+                    <div class="buttonsWrapper mt-2">
+                        <div class="widgetButton" data-bs-dismiss="modal" data-bs-toggle="modal"
+                            data-bs-target="#collectionModal">
+                            <img src="../../../../../../assets/images/sliderPreview.png" alt="Preview">
+                            <div class="text">
+                                <div class="fs-6 text-muted fw-bolder">Product Card Layout</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div> -->
+</div>
+
+<div class="modal fade" id="collectionModal" tabindex="-1" aria-labelledby="collectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="collectionModalLabel">Create collection</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body overflow-scroll">
+                <form [formGroup]="collectionForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label class="required fs-6 mb-3">Title</label>
+                                <input type="text" class="form-control fs-6" formControlName="name"
+                                    placeholder="Enter collection name"
+                                    [ngClass]="{ 'is-invalid': (collectionFormControl.name.touched) &&  collectionFormControl.name.errors?.required }" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label class="fs-6 mb-3">Subtitle</label>
+                                <input type="text" class="form-control fs-6" formControlName="subname"
+                                    placeholder="Enter collection short description" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group mb-3">
+                                <label class="fs-6 mb-3">Search Products</label>
+                                <input type="text" class="form-control fs-6" [formControl]="product"
+                                    placeholder="Search products here" (ngModelChange)="getProducts()" />
+                            </div>
+
+                            <ng-container *ngIf="searchProducts.length > 0">
+                                <div class="searchResultsWrapper mt-5">
+                                    <ng-container *ngFor="let product of searchProducts">
+                                        <div class="productCard p-2 d-flex align-items-start justify-content-start"
+                                            (click)="selectProduct(product)"
+                                            [ngClass]="{'selected': products.includes(product?._id)}">
+                                            <div class="productImage me-2">
+                                                <img src="{{base}}/{{product?.thumbnail}}" alt="Product" height="70px"
+                                                    width="70px">
+                                            </div>
+                                            <div class="productDetails">
+                                                <div class="fs-6 productName">{{product?.name}}</div>
+                                                <div class="fs-6 text-muted">SKU : {{product?.sku}}</div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="col-lg-12 productsWrapper">
+                            <div class="fs-6 mb-3 required">Products</div>
+                            <ng-container *ngIf="productDetails.length == 0">
+                                <div class="fs-6 text-muted">No products added</div>
+                            </ng-container>
+                            <ng-container *ngIf="productDetails.length > 0">
+                                <div class="fs-7 mt-3 mb-3">Drag the products to rearrange there order in the
+                                    collection</div>
+                                <div class="addedProductsWrapper">
+                                    <div cdkDropList cdkDropListOrientation="horizontal" class="product-list"
+                                        (cdkDropListDropped)="dropProduct($event)">
+                                        <ng-container *ngFor="let product of productDetails">
+                                            <div class="product-box" cdkDrag>
+                                                <div class="example-custom-placeholder" *cdkDragPlaceholder>Drop Here!
+                                                </div>
+                                                <div class="close text-end" (click)="selectProduct(product)">
+                                                    <img src="../../../../../assets/icons/close.svg"
+                                                        style="cursor: pointer;" alt="Icon">
+                                                </div>
+                                                <img src="{{base}}/{{product?.thumbnail}}" alt="Product" height="100px">
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                <button type="button" class="btn btn-primary" (click)="addCollection()">Add Collection</button>
+            </div>
+        </div>
+    </div>
+</div>

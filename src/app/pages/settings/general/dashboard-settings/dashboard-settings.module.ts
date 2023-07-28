@@ -29,6 +29,6 @@ import { AppDashboardComponent } from './app-dashboard/app-dashboard.component';
       preventDuplicates: true,
       progressBar: true,
     }),
-  ]
+  ],
 })
 export class DashboardSettingsModule { }

@@ -38,7 +38,13 @@ import { CommonModule } from '@angular/common';
 import { SwiperModule } from 'swiper/angular';
 import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
 import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
+import { CDK_DRAG_CONFIG } from '@angular/cdk/drag-drop';
 
+const DragConfig = {
+  dragStartThreshold: 0,
+  pointerDirectionChangeThreshold: 5,
+  zIndex: 10000
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,6 +96,7 @@ import { PackingSlipComponent } from './pages/packing-slip/packing-slip.componen
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
+   { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
     AuthenticationGuard,
     CsvService
   ],
