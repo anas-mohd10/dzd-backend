@@ -37,25 +37,6 @@ export class ViewDashboardSettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.HomeSettingsService.getHomeSettings().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.homeSettings = res?.result
-        this.cdr.markForCheck()
-      } else {
-        this.homeSettings = []
-      }
-    })
-
-    this.HomeSettingsService.getHomeSettingsCount().subscribe((res: any) => {
-      if (res?.result) {
-        this.dashboardSettingsCount = res?.result
-      } else {
-        this.dashboardSettingsCount = 0
-      }
-      this.cdr.markForCheck()
-    })
-
-    this.carauselEvent()
   }
 
   getId(type: any, title: any, index: any) {
@@ -76,23 +57,6 @@ export class ViewDashboardSettingsComponent implements OnInit {
 
   removeId() {
     this.hoverarray = []
-  }
-
-  carauselEvent() {
-    setInterval(() => {
-      for (let home of this.homeSettings) {
-        if (home['type'] == 'carausel') {
-          if ((this.counter + 1) == home['carausel_items'].length) {
-            this.carausel_image = home['carausel_items'][this.counter]['image']
-            this.counter = 0
-          } else {
-            this.carausel_image = home['carausel_items'][this.counter]['image']
-            this.counter += 1
-          }
-          this.cdr.markForCheck()
-        }
-      }
-    }, 800)
   }
 
   drop(event: any) {

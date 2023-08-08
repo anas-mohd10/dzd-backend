@@ -90,4 +90,9 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.categories_bulk_image_upload);
     return this.http.post(`${url}`, data);
   }
+
+  findCategories(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.find_categories);
+    return this.http.post(`${url}`, data);
+  }
 }

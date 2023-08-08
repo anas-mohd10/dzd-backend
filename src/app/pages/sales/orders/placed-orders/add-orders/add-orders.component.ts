@@ -162,6 +162,7 @@ export class AddOrdersComponent implements OnInit {
   getActiveCustomers() {
     this.customerService.getActiveCustomers().subscribe((res: any) => {
       this.activeCustomersData = res?.result
+      for (let customer of this.activeCustomersData) customer.name = (customer?.name ? customer?.name : ' ') + " ( " + customer?.mobile + " )"
       this.cdr.markForCheck()
     })
   }

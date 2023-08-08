@@ -16,7 +16,7 @@ export const productEndpoints = {
     thumbnail_images: '/products/thumbnail-images',
     product_images: '/products/product-images',
     search_products: '/search-products',
-
+    product_datas: '/products-data',
     products_bulk_image_upload: '/product-images',
     products_bulk_file_upload: '/product-file',
     products_bulk_thumbnail_upload: '/thumbnail-images',

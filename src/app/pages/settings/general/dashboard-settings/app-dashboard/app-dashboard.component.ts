@@ -12,4 +12,7 @@ export class AppDashboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  navigateBack() {
+    window.history.back()
+  }
 }

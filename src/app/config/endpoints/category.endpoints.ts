@@ -15,5 +15,6 @@ export const categoryEndpoints = {
   all_sub_categories: '/all-sub-categories',
   category_images: '/categories/images',
   category_bulk_file_upload: '/categories/bulk-file-upload',
-  categories_bulk_image_upload: '/categories/bulk-image-upload'
+  categories_bulk_image_upload: '/categories/bulk-image-upload',
+  find_categories: '/find-categories'
 }

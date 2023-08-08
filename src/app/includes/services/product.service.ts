@@ -81,6 +81,11 @@ export class ProductService {
     return this.http.put(`${url}`, data);
   }
 
+  getProductWebData(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.product_datas);
+    return this.http.post(`${url}`, query);
+  }
+
   productImages(query: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.product_images);
     return this.http.post(`${url}`, query);
