@@ -1,13 +1,23 @@
 .loginContainer {
   height: 100vh;
   width: 100%;
-  padding: 10%;
+  padding: 5%;
+  gap: 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   .loginLeft {
-    flex: 1;
+    // flex: 1;
+
+    .login_img {
+      img {
+        @media (max-width: 1199.98px) {
+          max-width: 400px;
+          width: 100%;
+        }
+      }
+    }
 
     .loginLeftTitle {
       font-size: 3.5rem;
@@ -21,16 +31,37 @@
   }
 
   .loginRight {
-    max-width: 400px;
+    max-width: 490px;
     width: 100%;
     background: #ffffff;
-    padding: 1.5rem;
+    padding: 4rem;
     border: 1px solid rgba($color: #000000, $alpha: 0.1);
     border-radius: 20px;
+
+    @media (max-width: 1199.98px) {
+      max-width: 450px;
+    }
 
     .login-logo {
       margin: 0 0 40px 0;
       height: 40px;
+      text-align: center;
     }
   }
 }
+.login_label {
+  color: #3C3C43;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.forgot {
+  color: #3C3C43;
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  justify-content: end;
+  margin-top: 8px;
+}
+
+

@@ -337,3 +337,11 @@ nav {
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.breadcrumb .breadcrumb-item a {
+  font-weight: 600;
+}
+
+.form-control {
+  color: #8B909A !important;
+}

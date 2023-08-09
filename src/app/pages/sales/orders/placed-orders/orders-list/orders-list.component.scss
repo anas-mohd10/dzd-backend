@@ -109,11 +109,12 @@ $error: #F1416C;
 }
 
 .form-control {
-  color: #8B909A;
+  color: #8B909A !important;
 }
 
 .form-select {
-  color: #8B909A;
+  color: #8B909A !important;
+  border-radius: 4px;
 }
 
 .filtering {
@@ -166,10 +167,11 @@ $error: #F1416C;
 }
 
 .paid {
-  background: $activeState;
+  // background: $activeState;
   padding: 3px 5px;
   border-radius: 5px;
   color: $white;
+  background: #28C76F;
   width: 70px;
   display: flex;
   align-items: center;
@@ -241,6 +243,12 @@ $error: #F1416C;
     border-radius: 4px;
     margin-left: auto;
   }
+  img {
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, 50%);
+    right: 0;
+  }
 }
 
 .arrow_flex {
@@ -270,6 +278,7 @@ $error: #F1416C;
   letter-spacing: -0.02em;
   text-transform: capitalize;
   color: #23272E;
+  font-weight: 600;
 
   &.active {
     color: #20BDAB;
@@ -291,7 +300,7 @@ $error: #F1416C;
 }
 
 label {
-  font-weight: normal !important;
+  font-weight: 600 ;
 }
 
 .emptyNote {
@@ -329,4 +338,20 @@ label {
   .paginationPage {
     margin: 0 10px;
   }
+}
+
+
+input.form-control.btn-secondary.fs-6.text-dark {
+  background-color: white;
+  color: #00bdab !important;
+  border: 1px solid #00bdab;
+  font-size: 15px !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  text-align: center;
+
+}
+
+select.form-select.fs-6.text-dark.ng-untouched.ng-pristine.ng-valid {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQgNkw4IDEwTDEyIDYiIHN0cm9rZT0iIzIzMjcyRSIgc3Ryb2tlLXdpZHRoPSIxLjc1IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==) !important;
 }
