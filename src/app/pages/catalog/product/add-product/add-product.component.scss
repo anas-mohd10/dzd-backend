@@ -339,9 +339,34 @@ nav {
 }
 
 .breadcrumb .breadcrumb-item a {
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .form-control {
   color: #8B909A !important;
+}
+
+label.fs-6.mb-3 {
+  color: #3C3C43;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  text-transform: capitalize;
+}
+.breadcrumb .breadcrumb-item:after {
+  color: #20BDAB;
+  padding: 0 1px;
+  font-size: 25px;
+  margin-bottom: 2px;
+
+}
+.breadcrumb .breadcrumb-item {
+  padding: 0;
+}
+h3.page-title.fw-bolder.fs-2 {
+  padding-bottom: 5px;
+  color: #23272E;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  text-transform: capitalize;
 }

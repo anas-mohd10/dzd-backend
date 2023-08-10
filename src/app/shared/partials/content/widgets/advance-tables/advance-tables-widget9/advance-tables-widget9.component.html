@@ -1,4 +1,9 @@
 <div class="card card-custom" [ngClass]="cssClass">
+  <div class="view_allOrders">
+    <a href="">
+      view all orders
+    </a>
+  </div>
   <div class="card-body pt-5 pb-3">
     <div class="tab-content">
       <div class="table-responsive">
@@ -38,6 +43,7 @@
             </ng-container>
           </tbody>
         </table>
+        
         <ng-container *ngIf="orders.length == 0">
           No new orders
         </ng-container>

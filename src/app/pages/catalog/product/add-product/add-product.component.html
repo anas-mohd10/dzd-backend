@@ -44,22 +44,22 @@
                 <div class="row">
                   <h2 class="form-title">Basic Details</h2>
                   <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Name</label>
+                    <label class="fs-6 mb-3 required detail_label">Name</label>
                     <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
                       formControlName="name" [ngClass]="{
                     'is-invalid': (hf.name.touched || isSubmitted) && hf.name.errors?.required}" />
                   </div>
                   <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">HSN</label>
+                    <label class="fs-6 mb-3 detail_label">HSN</label>
                     <input type="text" class="form-control fs-6" formControlName="hsn" />
                   </div>
                   <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">SKU</label>
+                    <label class="fs-6 mb-3 required detail_label">SKU</label>
                     <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
                     'is-invalid': (hf.sku.touched || isSubmitted) && hf.sku.errors?.required}" />
                   </div>
                   <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Tax</label>
+                    <label class="fs-6 mb-3 required detail_label">Tax</label>
                     <div class="brand-select">
                       <ng-select [items]="taxClassData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedTax"
                         [ngModelOptions]="{standalone: true}" placeholder="Select tax class">
@@ -67,20 +67,20 @@
                     </div>
                   </div>
                   <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Brand</label>
+                    <label class="fs-6 mb-3 detail_label">Brand</label>
                     <ng-select [items]="brandData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrand"
                       [ngModelOptions]="{standalone: true}" placeholder="Select brand">
                     </ng-select>
                   </div>
                   <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Main Category</label>
+                    <label class="fs-6 mb-3 required detail_label">Main Category</label>
                     <ng-select [items]="maincategories" bindLabel="name" bindValue="_id"
                       [(ngModel)]="selectedMainCategory" placeholder="Select category" [multiple]=true
                       [ngModelOptions]="{standalone: true}" (change)="mainCategory()">
                     </ng-select>
                   </div>
                   <div class="col-12 col-sm-6 form-group" *ngIf="showMainCategory">
-                    <label class="fs-6 mb-3 required">Default Category</label>
+                    <label class="fs-6 mb-3 required detail_label">Default Category</label>
                     <ng-select [items]="defaultcategories" bindLabel="name" bindValue="_id"
                       [(ngModel)]="selectedDefaultCategory" placeholder="Select default category" [multiple]=false
                       [ngModelOptions]="{standalone: true}">
