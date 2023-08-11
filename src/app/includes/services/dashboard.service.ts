@@ -27,6 +27,11 @@ export class DashboardService {
     return this.http.post(`${url}`, data)
   }
 
+  getDashboardConfig() {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.dashboard_config);
+    return this.http.get(`${url}`)
+  }
+
   previewDashboard(data: any) {
     const url = this.commonService.getFullUrl(this.dashboardEndpoints.preview_dashboard);
     return this.http.post(`${url}`, data)

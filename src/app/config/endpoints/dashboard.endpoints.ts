@@ -6,4 +6,5 @@ export const dashboardEndpoints = {
   new_orders: '/new-orders',
   publish_dashboard: '/publish-dashboard',
   preview_dashboard: '/preview-dashboard',
+  dashboard_config: '/dashboard-config'
 }
