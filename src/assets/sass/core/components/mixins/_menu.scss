@@ -236,3 +236,22 @@
 .menu-state-icon-primary .menu-item .menu-link.active .menu-icon i {
 	color: white !important;
 }
+
+.menu-state-title-primary .menu-item .menu-link.active .menu-icon svg path {
+	stroke: white !important;
+}
+
+.menu-state-title-primary .menu-item .menu-link {
+	&:hover {
+		.menu-icon svg path {
+			stroke: #00bdab;
+		}
+	}
+}
+.menu-icon svg {
+	width: 20px !important;
+	height: 20px !important;
+}
+.menu-icon i {
+	font-size: 20px !important;
+}

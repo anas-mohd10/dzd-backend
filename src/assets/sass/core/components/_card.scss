@@ -288,6 +288,7 @@
                 .form-select {
                     max-width: 180px;
                     width: 100%;
+                    border-radius: 4px;
                     margin: 0 !important;
                 }
                 span {
@@ -304,10 +305,12 @@
                 justify-content: center;
                 align-items: center;
                 gap: 10px;
+                width: 230px;
     
                 .form-select {
                     max-width: 150px;
                     width: 100%;
+                    border-radius: 4px;
                     margin: 0 !important;
                 }
                 span {
@@ -342,6 +345,16 @@
                 line-height: 18px;
                 text-transform: capitalize;
                 color: #8B909A;
+            }
+        }
+        .view-Details {
+            a {
+                color: #00BDAB;
+                text-align: center;
+                font-size: 15px;
+                font-weight: 500;
+                line-height: 21px;
+                text-transform: capitalize;
             }
         }
     }

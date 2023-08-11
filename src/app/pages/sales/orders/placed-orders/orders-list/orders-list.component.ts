@@ -41,13 +41,13 @@ export class OrdersListComponent implements OnInit {
     breakpoints: {
       320: {
         slidesPerView: 'auto',
-        spaceBetween: 20
+        spaceBetween: 35
       }, 480: {
         slidesPerView: 'auto',
-        spaceBetween: 30
+        spaceBetween: 35
       }, 640: {
         slidesPerView: 'auto',
-        spaceBetween: 20
+        spaceBetween: 35
       }
     }
   }

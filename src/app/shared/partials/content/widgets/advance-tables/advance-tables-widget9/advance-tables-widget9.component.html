@@ -1,4 +1,9 @@
 <div class="card card-custom" [ngClass]="cssClass">
+  <div class="view_allOrders">
+    <a href="">
+      view all orders
+    </a>
+  </div>
   <div class="card-body pt-5 pb-3">
     <div class="tab-content">
       <div class="table-responsive">
@@ -6,6 +11,7 @@
           *ngIf="orders.length > 0">
           <thead class="common_thead">
             <tr class="text-left fs-6 text-gray-400">
+              <th style="min-width: 120px">si No.</th>
               <th style="min-width: 120px">Order</th>
               <th style="min-width: 100px">Date</th>
               <th style="min-width: 100px">Customer</th>
@@ -13,12 +19,13 @@
               <th style="min-width: 100px">Source</th>
               <th style="min-width: 100px">Payment method</th>
               <th style="min-width: 100px">Payment status</th>
-              <th style="min-width: 100px">&nbsp;</th>
+              <th style="min-width: 100px">Action</th>
             </tr>
           </thead>
           <tbody class="fs-6">
             <ng-container *ngFor="let order of orders">
               <tr>
+                <td>1</td>
                 <td>{{order?.orderNo}}</td>
                 <td>{{order?.orderDate}}</td>
                 <td>{{order?.customerId?.name}}</td>
@@ -31,11 +38,12 @@
                   </span>
                 </td>
                 <td routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.refid}"> <img
-                    src="../../../../../../../assets/icons/editPen.svg" alt="Icon"></td>
+                    src="../../../../../../../assets/icons/Edit2.svg" alt="Icon"></td>
               </tr>
             </ng-container>
           </tbody>
         </table>
+        
         <ng-container *ngIf="orders.length == 0">
           No new orders
         </ng-container>

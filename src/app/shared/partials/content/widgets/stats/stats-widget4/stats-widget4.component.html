@@ -3,6 +3,14 @@
     <div class="main_form">
       <div class="duration_time">
         <div class="Duration">
+          <span> time zone  </span>
+          <select class="form-select mb-3" formControlName="isActive">
+            <option value="" disabled>local time </option>
+            <option value="true">1 month</option>
+            <option value="false">6 months</option>
+          </select>
+        </div>
+        <div class="Duration">
           <span> Duration </span>
           <select class="form-select mb-3" formControlName="isActive">
             <option value="" disabled>-- Select an option --</option>
@@ -10,6 +18,9 @@
             <option value="false">6 months</option>
           </select>
         </div>
+      </div>
+      <div class="settings">
+        <img src="../../../../../assets/icons/settings.svg" alt="">
       </div>
     </div>
     <div class="chart_details">
@@ -20,6 +31,11 @@
         <h5>
           Total sales
         </h5>
+      </div>
+      <div class="view-Details">
+        <a href="">
+          view details  
+        </a>
       </div>
     </div>
   </div>
