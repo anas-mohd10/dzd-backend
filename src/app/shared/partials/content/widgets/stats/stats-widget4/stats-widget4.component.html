@@ -3,19 +3,11 @@
     <div class="main_form">
       <div class="duration_time">
         <div class="Duration">
-          <span> time zone  </span>
-          <select class="form-select mb-3" formControlName="isActive">
-            <option value="" disabled>local time </option>
-            <option value="true">1 month</option>
-            <option value="false">6 months</option>
-          </select>
-        </div>
-        <div class="Duration">
           <span> Duration </span>
-          <select class="form-select mb-3" formControlName="isActive">
+          <select class="form-select mb-3" [formControl]="duration">
             <option value="" disabled>-- Select an option --</option>
-            <option value="true">1 month</option>
-            <option value="false">6 months</option>
+            <option value="1">1 month</option>
+            <option value="6">6 months</option>
           </select>
         </div>
       </div>
@@ -32,19 +24,13 @@
           Total sales
         </h5>
       </div>
-      <div class="view-Details">
-        <a href="">
-          view details  
-        </a>
-      </div>
     </div>
   </div>
 
-  <div #chartRef class="statistics-widget-3-chart card-rounded-bottom" [style.height]="'150px'">
+  <div id="chart">
     <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
-      [yaxis]="chartOptions.yaxis" [dataLabels]="chartOptions.dataLabels" [stroke]="chartOptions.stroke"
-      [legend]="chartOptions.legend" [fill]="chartOptions.fill" [states]="chartOptions.states"
-      [tooltip]="chartOptions.tooltip" [colors]="chartOptions.colors" [markers]="chartOptions.markers"
-      [plotOptions]="chartOptions.plotOptions"></apx-chart>
+      [stroke]="chartOptions.stroke" [dataLabels]="chartOptions.dataLabels" [yaxis]="chartOptions.yaxis"
+      [labels]="chartOptions.labels" [legend]="chartOptions.legend" [title]="chartOptions.title"
+      [subtitle]="chartOptions.subtitle"></apx-chart>
   </div>
 </div>

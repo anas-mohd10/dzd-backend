@@ -3,6 +3,26 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
+.reviewDetails {
+  label {
+    font-weight: 400 !important;
+
+
+  }
+}
+
+ngx-star-rating.ng-untouched.ng-pristine.ng-valid {
+  float: left;
+}
+
+.star {
+  float: right;
+  padding: 0 10px 0 0 !important;
+  font-size: 25px !important;
+  color: #DBDBDB !important;
+  transition: all .2s;
+}
+
 .emptyNote {
   margin: 0 0 20px 0;
 

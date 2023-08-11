@@ -58,6 +58,7 @@ import { StatsWidget5Component } from './stats/stats-widget5/stats-widget5.compo
 import { StatsWidget6Component } from './stats/stats-widget6/stats-widget6.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 // import { TablesWidget1Component } from './tables/tables-widget1/tables-widget1.component';
 // import { TablesWidget2Component } from './tables/tables-widget2/tables-widget2.component';
 // import { TablesWidget3Component } from './tables/tables-widget3/tables-widget3.component';
@@ -148,6 +149,7 @@ import { RouterModule } from '@angular/router';
     NgApexchartsModule,
     HttpClientModule,
     RouterModule,
+    ReactiveFormsModule,
     NgbDropdownModule,
   ],
   exports: [

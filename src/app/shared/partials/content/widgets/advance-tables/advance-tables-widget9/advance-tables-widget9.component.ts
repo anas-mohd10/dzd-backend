@@ -10,7 +10,7 @@ import { DashboardService } from 'src/app/includes/services/dashboard.service';
 export class AdvanceTablesWidget9Component implements OnInit {
   @Input() cssClass: '';
   appRoutes = appRoutes
-  orders: any;
+  orders: any = [];
   totalOrders: any = 0;
 
   constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) { }

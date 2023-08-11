@@ -7,11 +7,10 @@
   <div class="card-body pt-5 pb-3">
     <div class="tab-content">
       <div class="table-responsive">
-        <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-          *ngIf="orders.length > 0">
+        <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
           <thead class="common_thead">
             <tr class="text-left fs-6 text-gray-400">
-              <th style="min-width: 120px">si No.</th>
+              <th style="min-width: 120px">Sl No.</th>
               <th style="min-width: 120px">Order</th>
               <th style="min-width: 100px">Date</th>
               <th style="min-width: 100px">Customer</th>
@@ -43,7 +42,7 @@
             </ng-container>
           </tbody>
         </table>
-        
+
         <ng-container *ngIf="orders.length == 0">
           No new orders
         </ng-container>
