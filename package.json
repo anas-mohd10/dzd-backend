@@ -64,6 +64,7 @@
     "ngx-infinite-scroll": "^13.1.0",
     "ngx-pagination": "^6.0.2",
     "ngx-popover": "0.0.16",
+    "ngx-star-rating": "^2.1.0",
     "ngx-tags-input-box": "^0.1.5",
     "ngx-toastr": "^14.3.0",
     "nouislider": "^15.2.0",
@@ -93,4 +94,3 @@
     "typescript": "~4.3.2"
   }
 }
-

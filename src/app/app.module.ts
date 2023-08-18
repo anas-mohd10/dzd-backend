@@ -39,6 +39,7 @@ import { SwiperModule } from 'swiper/angular';
 import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
 import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
 import { CDK_DRAG_CONFIG } from '@angular/cdk/drag-drop';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -78,6 +79,8 @@ const DragConfig = {
       preventDuplicates: true,
     }),
     AppRoutingModule,
+    NgApexchartsModule,
+    ReactiveFormsModule,
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
     NgbModule,
@@ -96,7 +99,7 @@ const DragConfig = {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
-   { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
+    { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
     AuthenticationGuard,
     CsvService
   ],

@@ -6,6 +6,7 @@ import { ReviewsListComponent } from './reviews-list/reviews-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReviewsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxStarRatingModule,
     DataTablesModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

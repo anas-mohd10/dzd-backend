@@ -1,12 +1,25 @@
 import { Injectable } from '@angular/core';
-import * as FileSaver from 'file-saver'
+import * as FileSaver from 'file-saver';
+import { customerEndpoints } from 'src/app/config/endpoints';
+import { HttpClient } from '@angular/common/http';
+import { CommonService } from './common.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CsvService {
+  customerEndpoints = customerEndpoints
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
+
+
+  downloadUsers() {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.download_customers);
+    return this.http.get(`${url}`)
+  }
 
   csvDownload(headers: any, data: any, name: any) {
     if (!data || !data.length) {
@@ -27,4 +40,6 @@ export class CsvService {
     let blob = new Blob([content], { type: fileType })
     FileSaver.saveAs(blob, name)
   }
+
+
 }

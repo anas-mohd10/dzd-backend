@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { appRoutes } from "../../../../config/routes/app.routes"
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { FormControl } from '@angular/forms';
+import { CsvService } from 'src/app/includes/services/csv.service';
 
 @Component({
   selector: 'app-customers-list',
@@ -25,6 +26,7 @@ export class CustomersListComponent implements OnInit {
   constructor(
     private customersService: CustomersService,
     private cdr: ChangeDetectorRef,
+    private CsvService: CsvService
   ) { }
 
   ngOnInit(): void {
@@ -64,6 +66,18 @@ export class CustomersListComponent implements OnInit {
         this.lastPage = res?.result?.lastPage
         this.cdr.markForCheck()
       }
+    })
+  }
+
+  downloadCustomers() {
+    this.CsvService.downloadUsers().subscribe((res: any) => {
+      const blob = new Blob([res], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
     })
   }
 }

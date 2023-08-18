@@ -11,5 +11,6 @@ export const customerEndpoints = {
   add_address: '/add-address',
   get_address: '/get-address',
   address_details: '/address-details',
-  manage_address: '/manage-address'
+  manage_address: '/manage-address',
+  download_customers: '/download-customers'
 }

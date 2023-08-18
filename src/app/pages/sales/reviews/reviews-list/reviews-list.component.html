@@ -57,22 +57,22 @@
               *ngIf="reviews.length > 0">
               <thead class="common_thead">
                 <tr class="text-left fs-6 text-gray-400">
+                  <th style="min-width: 120px">&nbsp;</th>
                   <th style="min-width: 120px">Customer</th>
                   <th style="min-width: 100px">Order</th>
                   <th style="min-width: 100px">Product</th>
-                  <th style="min-width: 100px">Rating</th>
                   <th style="min-width: 100px">Review</th>
                   <th style="min-width: 100px">Date</th>
                   <th style="min-width: 100px">&nbsp;</th>
                 </tr>
               </thead>
               <tbody class="fs-6">
-                <ng-container *ngFor="let review of reviews">
+                <ng-container *ngFor="let review of reviews; let i = index">
                   <tr>
+                    <td>{{i+1}}</td>
                     <td>{{review?.customer?.id?.name}}</td>
                     <td>{{review?.order?.id?.orderNo}}</td>
                     <td class="product-name">{{review?.product?.id?.name}}</td>
-                    <td>{{review?.rating}}</td>
                     <td>
                       <div class="fs-6 viewText text-muted fw-bolder" data-bs-toggle="modal"
                         data-bs-target="#reviewModal" (click)="selectReview(review)">View</div>
@@ -80,10 +80,10 @@
                     <td>{{review?.created}} </td>
                     <td>
                       <div class="manageButton">
-                        <div (click)="updateReview(review?.refid)" *ngIf="!review?.isActive">
+                        <div (click)="updateReview(review?.refid)" *ngIf="review?.isActive">
                           <img src="../../../../../assets/icons/visibility.svg" alt="Icon">
                         </div>
-                        <div (click)="updateReview(review?.refid)" *ngIf="review?.isActive">
+                        <div (click)="updateReview(review?.refid)" *ngIf="!review?.isActive">
                           <img src="../../../../../assets/icons/visibilityOff.svg" alt="Icon">
                         </div>
                       </div>
@@ -142,6 +142,9 @@
         <div class="reviewDetails">
           <div class="fs-6 mb-3">Review by {{data?.customer?.id?.name}} on {{data?.created}}</div>
           <div class="reviewMessage fs-6"> {{data?.message}}</div>
+          <div class="mt-5">
+            <ngx-star-rating [formControl]="rating" [id]="'rating'" [disabled]="true"></ngx-star-rating>
+          </div>
         </div>
       </div>
     </div>

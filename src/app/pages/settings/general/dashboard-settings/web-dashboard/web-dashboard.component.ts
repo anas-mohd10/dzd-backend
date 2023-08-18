@@ -39,6 +39,7 @@ export class WebDashboardComponent implements OnInit {
   category: FormControl = new FormControl('')
   isLimitExceeded: boolean = false
   categoryIndex: number
+  refItems: any = {}
 
   constructor(
     private DashboardService: DashboardService,
@@ -59,6 +60,14 @@ export class WebDashboardComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+      }
+    })
+
+    this.DashboardService.getDashboardConfig().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        let data = res?.result.pop()
+        this.refItems = data?.items
+        this.ChangeDetectorRef.markForCheck()
       }
     })
 
@@ -86,6 +95,8 @@ export class WebDashboardComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
+
+
 
     this.collectionForm = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -117,7 +128,18 @@ export class WebDashboardComponent implements OnInit {
   }
 
   publish() {
-    this.DashboardService.publishDashboard({ dashboard: JSON.stringify(this.dashboard), items: this.liveDashboardData?.items }).subscribe((res: any) => {
+    let referenceItems = {
+      categories: this.categories,
+      collections: this.refItems?.collections,
+      brands: this.refItems?.brands,
+    }
+
+    let payload = {
+      dashboard: JSON.stringify(this.dashboard),
+      items: referenceItems
+    }
+
+    this.DashboardService.publishDashboard(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         window.open(this.settings.domain, '_blank')
         document.location.reload()
@@ -177,6 +199,7 @@ export class WebDashboardComponent implements OnInit {
 
   manageCategory() {
     if (this.categories.length > 0) {
+      this.categories = []
       let categoryDetails = []
       for (let _category of this.categoryDetails) {
         categoryDetails.push({
@@ -188,6 +211,8 @@ export class WebDashboardComponent implements OnInit {
           type: 1,
           style: { background: _category?.style?.background, border: _category?.style?.border, radius: _category?.style?.radius }
         })
+
+        this.categories.push(_category?.catid)
       }
 
       this.dashboard[this.categoryIndex] = {

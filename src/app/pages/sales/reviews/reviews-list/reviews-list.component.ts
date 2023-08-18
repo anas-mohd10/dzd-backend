@@ -21,6 +21,7 @@ export class ReviewsListComponent implements OnInit {
   lastPage: Boolean = false
   review: FormControl = new FormControl('')
   data: any = {}
+  rating: FormControl = new FormControl('')
 
   constructor(
     private ReviewService: ReviewService,
@@ -33,8 +34,8 @@ export class ReviewsListComponent implements OnInit {
   }
 
   updateReview(data: any) {
-    this.ReviewService.updateReview({refid: data}).subscribe((res: any) => {
-      if(res?.errorCode == 0){
+    this.ReviewService.updateReview({ refid: data }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
         this.ToastrService.success(res?.message)
         this.getReviews()
       }
@@ -42,15 +43,19 @@ export class ReviewsListComponent implements OnInit {
   }
 
   deleteReview(data: any) {
-    this.ReviewService.deleteReview({refid: data}).subscribe((res: any) => {
-      if(res?.errorCode == 0){
+    this.ReviewService.deleteReview({ refid: data }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
         this.ToastrService.success(res?.message)
         this.getReviews()
       }
     })
   }
 
-  selectReview(data: any) { this.data = data }
+  selectReview(data: any) {
+    this.data = data
+    this.rating.setValue(data?.rating)
+    this.ChangeDetectorRef.markForCheck()
+  }
 
   getReviews() {
     let payload = {
