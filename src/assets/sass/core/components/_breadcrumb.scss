@@ -23,7 +23,10 @@
 
         &:after {
             content: ">";
-            padding-left: $breadcrumb-item-padding-x;
+            color: #20BDAB;
+            padding: 0 1px;
+            font-size: 25px;
+            margin-bottom: 2px;
         }
 
         &:before {

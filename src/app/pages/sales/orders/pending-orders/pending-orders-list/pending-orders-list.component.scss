@@ -19,11 +19,17 @@
 
 .paid {
    background: #2fe55c80;
-   padding: 3px 5px !important;
+   width: 47px;
+   font-size: 13px !important;
+   height: 24px;
+   padding: 5px 10px !important;
 }
 
 .unpaid {
    background: #e52f2f80;
+   width: 47px;
+   font-size: 13px !important;
+   height: 24px;
    color: #ffffff !important;
    padding: 3px 5px !important;
 }

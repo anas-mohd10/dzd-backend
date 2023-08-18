@@ -126,9 +126,11 @@ table.table tr {
 .paid {
   // background: $activeState;
   padding: 0 5px;
-  border-radius: 5px;
+  border-radius: 4px;
   color: $white;
-  width: 70px;
+  width: 47px;
+  font-size: 13px !important;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;

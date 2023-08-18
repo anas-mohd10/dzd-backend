@@ -51,6 +51,9 @@
 		.header-menu {
 			display: flex;
 		}
+		.d-flex.align-items-stretch.justify-content-between.container-fluid {
+			padding-left: 20px !important;
+		}
 	}
 }
 
