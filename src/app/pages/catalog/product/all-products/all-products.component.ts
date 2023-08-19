@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AllProductsComponent implements OnInit {
   appRoute = appRoutes
-  products: any
+  products: Array<any> = []
   productform: any;
 
   pages: any = []
@@ -47,6 +47,8 @@ export class AllProductsComponent implements OnInit {
   stock: FormControl = new FormControl('')
   category: FormControl = new FormControl('')
   lastPage: Boolean = false
+
+  isTableView: boolean = false
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -84,6 +86,14 @@ export class AllProductsComponent implements OnInit {
         this.cdr.markForCheck();
       }
     })
+  }
+
+  changeView(type: string) {
+    if (type == 'grid') {
+      this.isTableView = false
+    } else {
+      this.isTableView = true
+    }
   }
 
   getProducts() {

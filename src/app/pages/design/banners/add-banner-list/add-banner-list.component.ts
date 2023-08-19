@@ -43,6 +43,7 @@ export class AddBannerListComponent implements OnInit {
   isImage: Boolean = false
   isCarousel: Boolean = false
   isHeightConstraint: string = '1'
+  startDate: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private formBuilder: FormBuilder,

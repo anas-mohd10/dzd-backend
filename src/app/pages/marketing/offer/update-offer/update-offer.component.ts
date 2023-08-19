@@ -33,6 +33,7 @@ export class UpdateOfferComponent implements OnInit {
   filename: string;
   imageChangedEvent: any;
   base: any;
+  startDate: string = new Date().toISOString().split('T')[0];
 
   //Styling variables
   background: any

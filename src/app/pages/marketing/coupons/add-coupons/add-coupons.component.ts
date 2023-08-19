@@ -34,26 +34,21 @@ export class AddCouponsComponent implements OnInit {
   imageChangedEvent: Event | undefined;
   filename: any;
   errors: any
-
   categories: any = []; //Array of category ids
   categoriesData: any = []; //Data fetched from database
   category: any = []; //Array of categorty name and id
-
   products: any = []; //Array of product ids
   productsData: any = []; //Data fetched from database
   product: any = []; //Array of product name and id
-
   collections: any = []; //Array of collection ids
   collectionsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
-
-
   error_message: string;
-
   from_date: string;
   to_date: string
   isValidValue: boolean = true
   settings: any = {}
+  startDate: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private productService: ProductService,

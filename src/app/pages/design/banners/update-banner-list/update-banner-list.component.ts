@@ -52,6 +52,7 @@ export class UpdateBannerListComponent implements OnInit {
   heightConstraint: FormControl = new FormControl('1')
   isHeightConstraint: string = '1'
   title: FormControl = new FormControl('')
+  startDate: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private formBuilder: FormBuilder,

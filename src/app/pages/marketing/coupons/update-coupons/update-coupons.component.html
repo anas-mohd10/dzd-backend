@@ -78,7 +78,7 @@
                <div class="col-lg-6">
                   <div class="form-group mb-3">
                      <label class="fs-6 mb-3">From Date</label>
-                     <input type="date" class="form-control fs-6" formControlName="fromDate"
+                     <input type="date" class="form-control fs-6" [min]="startDate" formControlName="fromDate"
                         [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
                   </div>
                </div>

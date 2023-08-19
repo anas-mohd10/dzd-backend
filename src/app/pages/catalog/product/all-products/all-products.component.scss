@@ -15,6 +15,52 @@ input[type=button] {
    font-weight: normal !important;
 }
 
+
+.table-responsive {
+
+   .common_thead {
+      background: #20BDAB;
+
+      th {
+         font-weight: 600;
+         font-size: 14px;
+         line-height: 15px;
+         text-transform: capitalize;
+         color: #FFFFFF;
+      }
+   }
+
+   tr {
+      border-bottom: 1px solid #E8E8E8;
+   }
+
+   tbody {
+      tr {
+         td {
+            img {
+               cursor: pointer;
+            }
+         }
+      }
+   }
+}
+
+.pageViewButtons {
+   .viewBtn {
+      height: 40px;
+      width: 40px;
+      background: $white;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+
+      &.activeBtn {
+         border: 1px solid $activeState;
+      }
+   }
+}
+
 .emptyNote {
    margin: 0 0 20px 0;
 

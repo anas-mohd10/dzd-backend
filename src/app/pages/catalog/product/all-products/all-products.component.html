@@ -50,8 +50,27 @@
     </div>
   </div>
 
-  <div class="col-12 d-flex justify-content-between">
-    <div class="total-count-container col-sm-3 bg-dark">
+  <div class="col-12 d-flex align-items-center justify-content-end" *ngIf="loaded">
+    <div class="pageViewButtons d-flex align-items-center justify-content-end">
+      <div class="viewBtn rounded me-2" (click)="changeView('table')" [ngClass]="{'activeBtn': isTableView}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#888888" class="bi bi-list"
+          viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+        </svg>
+      </div>
+      <div class="viewBtn rounded" (click)="changeView('grid')" [ngClass]="{'activeBtn': !isTableView}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#888888" class="bi bi-grid-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 d-flex justify-content-between" *ngIf="loaded">
+    <div class="total-count-container col-sm-3 bg-primary">
       <h4 class="text-white fs-6">Total {{totalcount ? totalcount : 0}} products</h4>
     </div>
     <div class="left-buttons">
@@ -68,129 +87,131 @@
     </div>
   </div>
 
-  <div class="variant-product-result-container view-container row" *ngIf="loaded">
-    <div class="productCards">
-      <ng-container *ngFor="let product of products">
-        <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
-          [queryParams]="{id: product?.prodid}">
-          <div class="product-image">
-            <img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
-            <div class="product-status-{{product?.isActive}} fs-6">
-              {{product?.isActive ? 'Active' : 'Inactive'}}
-            </div>
-            <div class="product-offer fs-6" *ngIf="product?.price?.offer != product?.price?.mrp">
-              {{product?.message?.text}}
-            </div>
-            <div class="product-out-stock fs-6" *ngIf="product?.stock == 0">
-              Out of Stock
-            </div>
-            <div class="product-limited-stock" *ngIf="product?.stock <= product?.stockWarning && product?.stock > 0">
-              Limited stock
-            </div>
-          </div>
-          <div class="product-details">
-            <div class="product-brand">{{product?.brand?.name}}</div>
-            <div class="product-name mb-2 fs-4">{{product?.name}}</div>
-            <div class="product-price">
-              <div class="d-flex">
-                <div class="product-offerprice fs-5" *ngIf="product?.price?.offer != product?.price?.mrp">
-                  {{settings?.currency}}
-                  {{product?.price?.offer}}</div>
-                <div class="product-offerprice fs-5" *ngIf="product?.price?.offer == product?.price?.mrp">
-                  {{settings?.currency}}
-                  {{product?.price?.mrp}}
+  <div class="variant-product-result-container view-container row">
+
+    <ng-container *ngIf="loaded && !isTableView">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="productCards">
+            <ng-container *ngFor="let product of products">
+              <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
+                [queryParams]="{id: product?.prodid}">
+                <div class="product-image">
+                  <img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+                  <div class="product-status-{{product?.isActive}} fs-6">
+                    {{product?.isActive ? 'Active' : 'Inactive'}}
+                  </div>
+                  <div class="product-offer fs-6" *ngIf="product?.price?.offer != product?.price?.mrp">
+                    {{product?.message?.text}}
+                  </div>
+                  <div class="product-out-stock fs-6" *ngIf="product?.stock == 0">
+                    Out of Stock
+                  </div>
+                  <div class="product-limited-stock"
+                    *ngIf="product?.stock <= product?.stockWarning && product?.stock > 0">
+                    Limited stock
+                  </div>
                 </div>
-                <div class="product-mrpprice" *ngIf="product?.price?.offer != product?.price?.mrp"
-                  [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.offer}">
-                  {{settings?.currency}} {{product?.price?.mrp}}</div>
+                <div class="product-details">
+                  <div class="product-brand">{{product?.brand?.name}}</div>
+                  <div class="product-name mb-2 fs-4">{{product?.name}}</div>
+                  <div class="product-price">
+                    <div class="d-flex">
+                      <div class="product-offerprice fs-5" *ngIf="product?.price?.offer != product?.price?.mrp">
+                        {{settings?.currency}} {{product?.price?.offer}}</div>
+                      <div class="product-offerprice fs-5" *ngIf="product?.price?.offer == product?.price?.mrp">
+                        {{settings?.currency}}
+                        {{product?.price?.mrp}}
+                      </div>
+                      <div class="product-mrpprice" *ngIf="product?.price?.offer != product?.price?.mrp"
+                        [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.offer}">
+                        {{settings?.currency}} {{product?.price?.mrp}}</div>
+                    </div>
+                    <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
+                      <div>{{product?.rating}}</div>
+                    </div>
+                  </div>
+                  <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
+                  <div class="fs-6">SKU : <span>{{product?.sku}}</span></div>
+                </div>
               </div>
-              <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
-                <div>{{product?.rating}}</div>
-              </div>
-            </div>
-            <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
-            <div class="fs-6">SKU : <span>{{product?.sku}}</span></div>
+            </ng-container>
           </div>
         </div>
-      </ng-container>
+      </div>
+    </ng-container>
+
+    <div class="productTable" *ngIf="loaded && isTableView">
+      <div class="card card-table">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+              <thead class="common_thead">
+                <tr class="text-left fs-6 text-gray-400">
+                  <th style="min-width: 60px">&nbsp;</th>
+                  <th style="min-width: 60px">&nbsp;</th>
+                  <th style="min-width: 180px">Name</th>
+                  <th style="min-width: 100px">SKU</th>
+                  <th style="min-width: 100px">Price</th>
+                  <th style="min-width: 100px">Stock</th>
+                  <th style="min-width: 100px">Status</th>
+                  <th style="min-width: 100px">&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody class="fs-6">
+                <ng-container *ngFor="let product of products; let i = index">
+                  <tr>
+                    <td>{{i+1}}</td>
+                    <td>
+                      <img src="{{base}}/{{product?.thumbnail}}" alt="Product" height="60px" width="60px"
+                        class="rounded img-fluid">
+                    </td>
+                    <td>{{product?.name}}</td>
+                    <td>{{product?.sku}}</td>
+                    <td> {{settings?.currency}} {{product?.price?.offer}}</td>
+                    <td>{{product?.stock}}</td>
+                    <td> {{product?.isActive ? 'Active' : 'Inactive'}}</td>
+                    <td routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}">
+                      <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-    <div *ngIf="products.length == 0">
+
+    <div *ngIf="products.length == 0 && loaded">
       <div class="emptyNote">
         <div class="fs-3 fw-bolder">No result found</div>
         <div class="fs-6 note">We couldn't find any item based on your search</div>
       </div>
     </div>
-  </div>
 
-  <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-    <div class="filtering">
-      <span class="fs-6 text-dark">Show</span>
-      <select [formControl]="limit" (change)="getProducts()">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="25">25</option>
-      </select>
-      <span class="fs-6 text-dark">entries</span>
-    </div>
-    <div class="pagination">
-      <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-        <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+    <div *ngIf="loaded" class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+      <div class="filtering">
+        <span class="fs-6 text-dark">Show</span>
+        <select [formControl]="limit" (change)="getProducts()">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25</option>
+        </select>
+        <span class="fs-6 text-dark">entries</span>
       </div>
-      <div class="paginationPage">{{page}}</div>
-      <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-        <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+      <div class="pagination">
+        <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
+          <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+        </div>
+        <div class="paginationPage">{{page}}</div>
+        <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
+          <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+        </div>
       </div>
     </div>
+
   </div>
 </div>
-
-<!-- <div class="filters-overlay" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }"></div>
-<div class="filters-container" [ngClass]="{'show-filters': showFilter, 'hide-filters': !showFilter }">
-  <div class="filters-head">
-    <div class="filters-container-title">Filters </div>
-    <div class="filters-close-button">
-      <div class="close-button" (click)="hideFilters()">
-        <i class="bi bi-x-lg"></i>
-      </div>
-    </div>
-  </div>
-  <div class="filters">
-    <div class="product-form-container">
-      <form [formGroup]="productform">
-        <div class="col-12 row" style="display: flex; flex-direction: column;">
-          <div class="search-category col-12">
-            <label class="fs-6">Category</label>
-            <div class="category-checkbox-container">
-              <ng-container *ngFor="let category of categories; let i=index">
-                <div class="category-checkbox">
-                  <div class="form-check">
-                    <input type="radio" name="category_radio" id="{{i}}_category" class="form-check-input" />
-                    <label class="form-check-label" for="flexCheckDefault">
-                      {{category?.name}}
-                    </label>
-                  </div>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-          <div class="search-status col-12">
-            <label class="fs-6">Status</label>
-            <select name="" id="" class="form-select fs-6" [formControl]="isActive">
-              <option value="" disabled>Select an option</option>
-              <option value=true>Active</option>
-              <option value=false>Inactive</option>
-            </select>
-          </div>
-          <div class="search-submit col-12">
-            <button type="button" class="col-6 btn fs-6 text-dark fw-bolder" (click)="onReload()"
-              style="outline: none; border: none;">Clear Filters</button>
-            <button type="button" class="col-6 btn fs-6 bg-primary text-white fw-bolder" (click)="searchProduct()"
-              style="outline: none; border: none;">Apply Filters</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div> -->

@@ -1,4 +1,5 @@
 <div class="content container-fluid">
+
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder"> {{ editMode ? "Update Coupon" : "Add Coupon" }}</h1>
@@ -14,18 +15,19 @@
           </li>
           <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">
-              {{editMode ? "Update Coupon" : "Add Coupon"}}</a>
+              {{editMode ? "Update Coupon" : "Add Coupon"}}
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </div>
 
-
   <div class="card mt-4">
     <div class="card-body">
       <form [formGroup]="form">
         <div class="row">
+
           <div class="mb-4">
             <h2 class="form-title">Coupon Details</h2>
           </div>
@@ -77,7 +79,7 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">From Date</label>
-              <input type="date" class="form-control fs-6" formControlName="fromDate"
+              <input type="date" class="form-control fs-6" [min]="startDate" formControlName="fromDate"
                 [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
             </div>
           </div>
