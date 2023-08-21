@@ -26,7 +26,7 @@
                      <form [formGroup]="form">
 
                         <div class="col-6 form-group mb-3">
-                           <label for="detailed" class="fs-6 mb-3 required">Image</label>
+                           <label for="detailed" class="fs-6 mb-3 required">Image ( 4 : 3 or 603px x 440px)</label>
                            <div class="image-upload">
                               <input type="file" class="form-control fs-6" name="image" accept="image/*"
                                  (change)="onInputChange($event, 'hero')" required style="height: 100px;">
@@ -96,10 +96,13 @@
                            <div class="features">
                               <ng-container *ngFor="let feature of addedFeatures; let i = index">
                                  <div class="featureCard">
+                                    <div class="removeCard">
+                                       <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </div>
                                     <div class="icon">
                                        <img src="{{feature?.icon}}" alt="icon">
                                     </div>
-                                    <div class="title fs-5 fw-bolder">{{feature?.title}}</div>
+                                    <div class="mt-2 title fs-5 fw-bolder">{{feature?.title}}</div>
                                     <div class="note fs-6 text-muted">{{feature?.note}}</div>
                                  </div>
                               </ng-container>

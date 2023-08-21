@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { TimeslotsService } from 'src/app/includes/services/timeslots.service';
 
@@ -17,7 +18,8 @@ export class TimeslotsComponent implements OnInit {
 
   constructor(
     private TimeslotsService: TimeslotsService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService
   ) { }
 
   get fc() {
@@ -65,16 +67,29 @@ export class TimeslotsComponent implements OnInit {
       return
     }
 
+    console.log(this.refid);
+
     if (!this.refid) {
       this.TimeslotsService.add(this.form.value).subscribe((res: any) => {
-        if (res?.errorCode == 0) document.location.reload()
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          document.location.reload()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
       })
     } else {
       this.form.value['refid'] = this.refid
+
       this.TimeslotsService.update(this.form.value).subscribe((res: any) => {
-        if (res?.errorCode == 0) document.location.reload()
+        if (res?.errorCode == 0) {
+          this.refid = null
+          this.ToastrService.success(res?.message)
+          document.location.reload()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
       })
     }
-    this.refid = null
   }
 }

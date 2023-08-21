@@ -36,6 +36,7 @@ export class AddOrdersComponent implements OnInit {
   stores: Array<any> = []
   timeslots: Array<any> = []
   dates: Array<any> = []
+  isCustomer: boolean = true
 
   //Cart
   product: any;
@@ -182,6 +183,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   getAddress() {
+    this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
     this.customerService.getAddressDetails({ customer: this.selectedCustomer }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orderForm.get('firstlane')?.setValue(res?.result?.firstlane)
@@ -306,8 +308,9 @@ export class AddOrdersComponent implements OnInit {
   updateOrder() { }
 
   addOrder() {
-    if (!this.orderForm.valid) {
+    if (!this.orderForm.valid || !this.selectedCustomer) {
       this.toastr.error('Kindly fill required fields');
+      this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
       return;
     }
 

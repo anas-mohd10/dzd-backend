@@ -301,124 +301,6 @@
       </div>
     </div>
 
-    <div class="row mt-4">
-      <div class="col-sm-12 fs-6">
-        <div class="card">
-          <div class="card-body">
-            <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="col-12">
-                    <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
-
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="card-title">
-                      <h3 class="fs-3 text-dark fw-bolder"><i class="bi bi-credit-card fs-1 text-dark"></i> Payment
-                        Details</h3>
-                    </div>
-                    <div class="col-12 form-group">
-                      <label class="fs-6 mb-3">Order ID</label>
-                      <input type="text" class="form-control fs-6" formControlName="orderId" />
-                    </div>
-                    <div class="col-12 form-group">
-                      <label class="fs-6 mb-3">Transaction ID</label>
-                      <input type="text" class="form-control fs-6" formControlName="paymentId" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-lg-6">
-                  <div class="col-12">
-                    <h3 class="form-title fs-3 text-dark fw-bolder"><i class="bi bi-journal fs-1 text-dark"></i> Orders
-                      Status & Details</h3>
-                  </div>
-                  <div class="orderStatuses" style="background: #f6f6f6; padding: 10px 20px; border-radius: 10px;">
-                    <div class="col-12 form-group">
-                      <label class="fs-6 mb-3">Order Status</label>
-                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                        formControlName="orderStatus">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="ACCEPTED">Accepted</option>
-                        <option value="PENDING">Pending</option>
-                        <option value="PLACED">Placed</option>
-                        <option value="PACKED">Packed</option>
-                        <option value="SHIPPED">Shipped</option>
-                        <option value="DELIVERED">Delivered</option>
-                        <option value="CANCELLED">Cancelled</option>
-                        <option value="FAILED">Failed</option>
-                        <option value="PARTIAL">Partial Refunded</option>
-                        <option value="REFUNDED">Refunded</option>
-                        <option value="OUT FOR DELIVERY">Out for Delivery</option>
-                      </select>
-                    </div>
-                    <div class="col-12 form-group">
-                      <label class="fs-6 mb-3">Payment Status</label>
-                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                        formControlName="paymentStatus">
-                        <option value="disabled" disabled>-- Select an option --</option>
-                        <option value="UNPAID">Unpaid</option>
-                        <option value="PAID">Paid</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-12 form-group">
-                    <label class="fs-6 mb-3">Tracking URL</label>
-                    <input type="text" class="form-control fs-6" formControlName="trackingURL" />
-                  </div>
-                  <div class="col-12 form-group">
-                    <label class="fs-6 mb-3">Order Note</label>
-                    <textarea class="form-control fs-6" formControlName="orderNote" style="resize: none" id="orderNote"
-                      rows="5">
-                    </textarea>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <div class="col-12 form-group">
-                        <label class="fs-6 mb-3">Date Expected</label>
-                        <input class="fs-6 mb-3 form-control" type="date" formControlName="dateExpected">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="col-12 form-group">
-                        <label class="fs-6 mb-3">Out for Delivery</label>
-                        <input class="fs-6 mb-3 form-control" type="date" formControlName="outForDelivery">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <div class="col-12 form-group">
-                        <label class="fs-6 mb-3">Delivered Date</label>
-                        <input class="fs-6 mb-3 form-control" type="date" formControlName="deliveryDate">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="col-12 form-group">
-                        <label class="fs-6 mb-3">Delivery Person</label>
-                        <input class="fs-6 mb-3 form-control" type="text" formControlName="deliveryPerson">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 d-flex align-items-center justify-content-end">
-                    <a routerLink="{{ appRoute.orders.ORDERS_LIST}}"
-                      class="btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
-                      style="width: 200px; margin-right: 20px;">
-                      Cancel
-                    </a>
-                    <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                      Update
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="row mt-10" id="productDetails" #productDetails>
       <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
         <div class="card-header">
@@ -544,6 +426,124 @@
                 </div>
               </ng-container>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-sm-12 fs-6">
+        <div class="card">
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="col-12">
+                    <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
+
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="card-title">
+                      <h3 class="fs-3 text-dark fw-bolder"><i class="bi bi-credit-card fs-1 text-dark"></i> Payment
+                        Details</h3>
+                    </div>
+                    <div class="col-12 form-group">
+                      <label class="fs-6 mb-3">Order ID</label>
+                      <input type="text" class="form-control fs-6" formControlName="orderId" />
+                    </div>
+                    <div class="col-12 form-group">
+                      <label class="fs-6 mb-3">Transaction ID</label>
+                      <input type="text" class="form-control fs-6" formControlName="paymentId" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="col-12">
+                    <h3 class="form-title fs-3 text-dark fw-bolder"><i class="bi bi-journal fs-1 text-dark"></i> Orders
+                      Status & Details</h3>
+                  </div>
+                  <div class="orderStatuses" style="background: #f6f6f6; padding: 10px 20px; border-radius: 10px;">
+                    <div class="col-12 form-group">
+                      <label class="fs-6 mb-3">Order Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                        formControlName="orderStatus">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="ACCEPTED">Accepted</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="PLACED">Placed</option>
+                        <option value="PACKED">Packed</option>
+                        <option value="SHIPPED">Shipped</option>
+                        <option value="DELIVERED">Delivered</option>
+                        <option value="CANCELLED">Cancelled</option>
+                        <option value="FAILED">Failed</option>
+                        <option value="PARTIAL">Partial Refunded</option>
+                        <option value="REFUNDED">Refunded</option>
+                        <option value="OUT FOR DELIVERY">Out for Delivery</option>
+                      </select>
+                    </div>
+                    <div class="col-12 form-group">
+                      <label class="fs-6 mb-3">Payment Status</label>
+                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                        formControlName="paymentStatus">
+                        <option value="disabled" disabled>-- Select an option --</option>
+                        <option value="PENDING">Pending</option>
+                        <option value="PAID">Paid</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-12 form-group">
+                    <label class="fs-6 mb-3">Tracking URL</label>
+                    <input type="text" class="form-control fs-6" formControlName="trackingURL" />
+                  </div>
+                  <div class="col-12 form-group">
+                    <label class="fs-6 mb-3">Order Note</label>
+                    <textarea class="form-control fs-6" formControlName="orderNote" style="resize: none" id="orderNote"
+                      rows="5">
+                    </textarea>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="col-12 form-group">
+                        <label class="fs-6 mb-3">Date Expected</label>
+                        <input class="fs-6 mb-3 form-control" type="date" formControlName="dateExpected">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="col-12 form-group">
+                        <label class="fs-6 mb-3">Out for Delivery</label>
+                        <input class="fs-6 mb-3 form-control" type="date" formControlName="outForDelivery">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="col-12 form-group">
+                        <label class="fs-6 mb-3">Delivered Date</label>
+                        <input class="fs-6 mb-3 form-control" type="date" formControlName="deliveryDate">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="col-12 form-group">
+                        <label class="fs-6 mb-3">Delivery Person</label>
+                        <input class="fs-6 mb-3 form-control" type="text" formControlName="deliveryPerson">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 d-flex align-items-center justify-content-end">
+                    <a routerLink="{{ appRoute.orders.ORDERS_LIST}}"
+                      class="btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
+                      style="width: 200px; margin-right: 20px;">
+                      Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>

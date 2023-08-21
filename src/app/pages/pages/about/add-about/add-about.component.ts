@@ -96,11 +96,11 @@ export class AddAboutComponent implements OnInit {
     this.AboutService.getAboutDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.isData = res?.result ? true : false
-        this.addedFeatures = res?.result?.features
-        for (let feature of res?.result?.features) feature.icon = environment.base + "/" + feature.icon
+        this.addedFeatures = res?.result?.features ? res?.result?.features : []
+        for (let feature of this.addedFeatures) feature.icon = environment.base + "/" + feature.icon
         this.previewFile = environment.base + "/" + res?.result?.image
         res?.result?.image ? this.isFile = true : this.isFile = false
-        for (let _key of Object.keys(res?.result?.description)) this.form.get(_key)?.setValue(res?.result?.description[_key])
+        if (res?.result?.description) for (let _key of Object.keys(res?.result?.description)) this.form.get(_key)?.setValue(res?.result?.description[_key])
       }
     })
   }

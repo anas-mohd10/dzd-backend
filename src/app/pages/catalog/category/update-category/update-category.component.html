@@ -201,8 +201,6 @@
                     </div>
                   </div>
                 </ng-container>
-
-
                 <div class="imageSelectionContainer">
                   <div class="seperator">Or </div>
                   <div class="title">Select an existing image</div>
@@ -216,100 +214,96 @@
                     </ng-container>
                   </div>
                 </div>
+
+                <div class="col-12">
+                  <div class="col-12">
+                    <h3 class="form-title">Category cover image</h3>
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <div class="image-upload">
+                      <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                        (change)="bannerFile($event)" style="height: 100px;" required>
+                      <div class="image-upload-div">
+                        <div class="left-img">
+                          <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                        </div>
+                        <div class="right-text d-flex flex-column">
+                          <span class="right-text-title fs-4 fw-bolder">
+                            Click to upload
+                          </span>
+                          <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                            Upload up to 1 file
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="uploaded-image col-sm-6 mt-5" *ngIf="bannerimg">
+                    <img src="{{bannerimg}}" alt="" style="width: 200px; height: 100px">
+                  </div>
+                </div>
+                <ng-container *ngIf="loadBanner">
+                  <div class="col-12 preview-section">
+                    <div class="crop-image col-sm-6">
+                      <image-cropper class="crop-section" [imageChangedEvent]="bannerChangedEvent"
+                        [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
+                        [cropperMaxHeight]="2000" format="png" (imageCropped)="bannerCropped($event)"
+                        (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                        (loadImageFailed)="loadImageFailed()">
+                      </image-cropper>
+                    </div>
+                    <div class="uploads uploaded col-sm-6">
+                      <div class="close-icon">
+                        <i class="bi bi-x-lg text-white" (click)="removeBanner()"></i>
+                      </div>
+                      <img class="preview-img" id="previewImage" [src]="croppedBanner">
+                    </div>
+                  </div>
+                </ng-container>
               </div>
             </div>
 
-            <div class="col-12">
-              <div class="col-12">
-                <h3 class="form-title">Category cover image</h3>
-              </div>
-              <div class="form-group col-sm-6">
-                <div class="image-upload">
-                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                    (change)="bannerFile($event)" style="height: 100px;" required>
-                  <div class="image-upload-div">
-                    <div class="left-img">
-                      <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                    </div>
-                    <div class="right-text d-flex flex-column">
-                      <span class="right-text-title fs-4 fw-bolder">
-                        Click to upload
-                      </span>
-                      <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                        Upload up to 1 file
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="uploaded-image col-sm-6 mt-5" *ngIf="bannerimg">
-                <img src="{{bannerimg}}" alt="" style="width: 200px; height: 100px">
-              </div>
-            </div>
-            <ng-container *ngIf="loadBanner">
-              <div class="col-12 preview-section">
-                <div class="crop-image col-sm-6">
-                  <image-cropper class="crop-section" [imageChangedEvent]="bannerChangedEvent"
-                    [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
-                    [cropperMaxHeight]="2000" format="png" (imageCropped)="bannerCropped($event)"
-                    (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()">
-                  </image-cropper>
-                </div>
-                <div class="uploads uploaded col-sm-6">
-                  <div class="close-icon">
-                    <i class="bi bi-x-lg text-white" (click)="removeBanner()"></i>
-                  </div>
-                  <img class="preview-img" id="previewImage" [src]="croppedBanner">
-                </div>
-              </div>
-            </ng-container>
-
-            <!-- Category attributes start -->
             <div class="attributes-section tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              <div class="col-12 d-flex justify-content-between align-items-center">
-                <h2 class="form-title" style="font-weight: 600;"><span>Category Attributes</span></h2>
-                <div class="add-attributes-button">
-                  <!-- <button class="bg-primary btn text-white fs-6" (click)="showAttributeSection()">View
-                      Attributes</button> -->
-                </div>
+              <div class="col-12">
+                <h3 class="form-title">Category Attributes</h3>
               </div>
               <div class="attributes-container row">
-                <div class="col-12 col-sm-6"> <!-- Attribute name-->
+
+                <div class="col-lg-6">
                   <div class="form-group">
                     <label class="fs-6 mb-3">Attribute Name</label>
                     <input type="text" placeholder="Eg. Size" class="form-control fs-6"
                       formControlName="attributeName" />
                   </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Attribute Status?</label>
-                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                        formControlName="attributeStatus">
-                        <option value="false">Inactive</option>
-                        <option value="true">Active</option>
-                      </select>
-                    </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Attribute Status?</label>
+                    <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                      formControlName="attributeStatus">
+                      <option value="false">Inactive</option>
+                      <option value="true">Active</option>
+                    </select>
                   </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Filtered Attribute?</label>
-                      <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                        formControlName="attributeFiltered">
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                      </select>
-                    </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Filtered Attribute?</label>
+                    <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                      formControlName="attributeFiltered">
+                      <option value="false">No</option>
+                      <option value="true">Yes</option>
+                    </select>
                   </div>
                 </div>
-                <div class="col-12 col-sm-6"> <!-- Attribute type-->
+
+                <div class="col-lg-6">
                   <div class="form-group">
                     <label class="fs-6 mb-3">Attribute Type</label>
-                    <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                      formControlName="attributeType" (change)="handleAttributeType($event.target)">
+                    <select class="form-select mb-3 fs-6" formControlName="attributeType"
+                      (change)="handleAttributeType($event.target)">
                       <option value="" selected disabled>-- Select an attribute type --</option>
                       <option value="Color">Color Picker</option>
                       <option value="Text">Text</option>
@@ -317,7 +311,8 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-12 col-sm-6" *ngIf="showColorPicker"> <!-- Attribute color picker -->
+
+                <div class="col-lg-6" *ngIf="showColorPicker"> <!-- Attribute color picker -->
                   <div class="form-group">
                     <label class="fs-6 mb-3">Attribute Color</label>
                     <input type="color" placeholder="Attribute color" class="form-control fs-6" style="height: 50px;"
@@ -332,7 +327,8 @@
                     </ng-container>
                   </div>
                 </div>
-                <div class="col-12 col-sm-6" *ngIf="showTextInput"> <!-- Attribute text values -->
+
+                <div class="col-lg-6" *ngIf="showTextInput"> <!-- Attribute text values -->
                   <div class="form-group">
                     <label class="fs-6 mb-3">Attribute Text</label>
                     <input type="text" placeholder="Eg. Large" class="form-control fs-6" style="height: 50px;"
@@ -349,6 +345,7 @@
                     </ng-container>
                   </div>
                 </div>
+
                 <div class="col-12" *ngIf="showFileInput"> <!-- Attribute image values -->
                   <div class="form-group col-sm-6">
                     <div class="image-upload">
@@ -365,6 +362,7 @@
                       </div>
                     </div>
                   </div>
+
                   <ng-container *ngIf="loadAttributeImage">
                     <div class="col-12 preview-section  d-flex align-items-center justify-content-center">
                       <div class="crop-image col-sm-6">
@@ -396,14 +394,16 @@
                     </ng-container>
                   </div>
                 </div>
+
                 <div class="col-12 d-flex align-items-center justify-content-end save-attribute-btn"
                   *ngIf="showSaveButton">
                   <button class="btn bg-primary text-white fs-6 fw-bolder" (click)="saveAttribute()">Save
                     Attribute</button>
                 </div>
+
                 <div class="attr-added-container col-12" *ngIf="attributes.length > 0">
                   <div class="col-12">
-                    <h2 class="form-title" style="font-weight: 600;">Added Attributes</h2>
+                    <h3 class="form-title">Added Attributes</h3>
                   </div>
                   <div class="attr-cards col-12">
                     <ng-container *ngFor="let attribute of attributes">
