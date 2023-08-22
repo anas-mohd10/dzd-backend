@@ -323,6 +323,10 @@ export const Routing: Routes = [
         path: 'enquiries',
         component: EnquiresComponent,
         canActivate: [AuthenticationGuard]
+      }, {
+        path: 'wishlist',
+        loadChildren: () => import('./sales/wishlist/wishlist.module').then((m) => m.WishlistModule),
+        canActivate: [AuthenticationGuard]
       }
     ]
   }, {

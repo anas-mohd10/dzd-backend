@@ -1,0 +1,26 @@
+.productsWrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    .productCard {
+        width: 100%;
+        background: #ffffff;
+        box-shadow: 0 10px 10px 5px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+
+        .productDetails {
+            width: 100%;
+
+            .productName {
+                overflow: hidden;
+                -o-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+            }
+        }
+    }
+}

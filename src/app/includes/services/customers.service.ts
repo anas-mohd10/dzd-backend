@@ -75,4 +75,14 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.manage_address);
     return this.http.put(`${url}`, data)
   }
+
+  getWishlist(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.wishlist);
+    return this.http.post(`${url}`, data)
+  }
+
+  getWishlistDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.wishlist_details + `/${data}`);
+    return this.http.get(`${url}`)
+  }
 }

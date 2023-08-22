@@ -1,0 +1,56 @@
+<div class="wislist-page-container">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Wishlist Details</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.wishlist.LIST }}">Wishlist</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.wishlist.DETAILS }}" [queryParams]="{user: customer}">Wishlist
+                            Details ( {{customerDetails?.customerDetails?.name}} )</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title fw-bolder">Customer Details</h3>
+                <div class="fs-6 mb-2">Name : <span class="fs-5">{{customerDetails?.customerDetails?.name}}</span>
+                </div>
+                <div class="fs-6 mb-2">Mobile : <span class="fs-5">{{customerDetails?.customerDetails?.mobile}}</span>
+                </div>
+                <div class="fs-6">Email : <span class="fs-5">{{customerDetails?.customerDetails?.email}}</span></div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3 class="card-title fw-bolder">Wishlisted Products</h3>
+                <div class="productsWrapper">
+                    <ng-container *ngFor="let product of customerDetails?.products; let i = index">
+                        <div class="productCard d-flex p-2 align-items-center justify-content-start">
+                            <div class="productImage">
+                                <img src="{{product?.thumbnail}}" alt="Product" height="80px" width="80px"
+                                    class="rounded">
+                            </div>
+                            <div class="productDetails">
+                                <div class="productName fs-6">Name : {{product?.name}}</div>
+                                <div class="productSku">SKU : {{product?.sku}}</div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

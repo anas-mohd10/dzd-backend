@@ -46,6 +46,7 @@ const seoDetails = '/seo-details'
 const timeSlotDetails = '/time-slots'
 const stores = '/stores'
 const enquires = '/enquiries'
+const wishlist = '/wishlist'
 
 export const appRoutes = {
   BASE: environment.base + "/",
@@ -240,5 +241,9 @@ export const appRoutes = {
   },
   enquires: {
     ENQUIRY_LIST: `${app}${enquires}`
+  },
+  wishlist: {
+    LIST: `${app}${wishlist}`,
+    DETAILS: `${app}${wishlist}/details`
   }
 }
