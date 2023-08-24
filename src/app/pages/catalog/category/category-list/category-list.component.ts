@@ -50,7 +50,7 @@ export class CategoryComponent implements OnInit {
   attrfilename: any = ''
   attrfiledata: any = ''
   showSaveButton: Boolean = false
-  attributes: any = []
+  attributes: Array<any> = []
   attributerefid: any;
   categoryslug: any;
 
@@ -119,21 +119,13 @@ export class CategoryComponent implements OnInit {
     this.getCategories()
   }
 
-  showAttributesContainer(catid: any, name: any, slug: any) {
-    this.showAttributes = !this.showAttributes;
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
+  getAttributes(catid: any, name: any, slug: any) {
     this.categoryname = name
     this.catid = catid
     this.categoryslug = slug
 
     this.AttributeService.getAttributeByCategory(catid).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.attributes = res?.result
-        this.attributeslength = this.attributes.length
-      } else {
-        this.ToastrService.error(res?.message)
-      }
+      res?.errorCode == 0 ? this.attributes = res?.result : this.ToastrService.error(res?.message)
       this.ChangeDetectorRef.markForCheck()
     })
   }
@@ -144,7 +136,7 @@ export class CategoryComponent implements OnInit {
     bodyEl?.classList.toggle('overflow-hidden')
   }
 
-  showEditModal(refid: any) {
+  getAttributeDetails(refid: any) {
     this.attributerefid = refid
     this.showModal = !this.showModal
     // let bodyEl = document.querySelector('body');

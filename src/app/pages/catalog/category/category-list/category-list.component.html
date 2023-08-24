@@ -89,10 +89,12 @@
               {{category?.isActive ? 'Active' : 'Inactive'}}
             </div>
           </div>
-          <div class="category-attribute fs-6"
-            (click)="showAttributesContainer(category?.catid, category?.name, category?.slug)">
+
+          <div class="category-attribute fs-6" (click)="getAttributes(category?.catid, category?.name, category?.slug)"
+            data-bs-toggle="modal" data-bs-target="#attributeModal">
             View attributes
           </div>
+
         </div>
       </div>
     </ng-container>
@@ -130,6 +132,8 @@
 
 </div>
 
+
+
 <div class="attributes-overlay" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
 </div>
 <div class="attributes-container" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
@@ -166,7 +170,7 @@
               <div class="attribute-name fs-5">Name : <span>{{attribute?.name}}</span></div>
               <div class="attribute-type fs-6">Type : <span>{{attribute?.type}}</span></div>
             </div>
-            <div class="attribute-edit fw-bolder" (click)="showEditModal(attribute?.refid)">
+            <div class="attribute-edit fw-bolder" data-bs-toggle="modal" data-bs-target="#attributeEditModal">
               <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
             </div>
           </div>
@@ -217,129 +221,196 @@
   </div>
 </div>
 
-<div class="modal-container-overlay" [ngClass]="{'show-overlay': showModal, 'hide-overlay': !showModal}"></div>
-<div class="modal-container" [ngClass]="{'show-modal': showModal, 'hide-modal': !showModal}">
-  <div class="modal-header">
-    <div class="modal-title">Edit Attribute</div>
-    <div class="modal-close-btn" (click)="hideEditModal()"><i class="bi bi-x-lg"></i></div>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="attributeform" (keydown.Enter)="$event.preventDefault()">
-      <div class="col-12 row">
-        <div class="col-12 col-sm-6 form-group">
-          <label class="fs-6 mb-3">Attribute Name</label>
-          <input type="text" placeholder="Eg. Size" class="form-control fs-6" formControlName="attributeName" />
+
+
+<div class="modal fade" id="attributeModal" tabindex="-1" aria-labelledby="attributeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="attributeModalLabel">{{categoryname}} Attributes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center justify-content-end">
+          <button class="btn btn-secondary" routerLink="{{appRoute.category.UPDATE_CATEGORY}}"
+            [queryParams]="{'category': categoryslug}">Add Attribute</button>
         </div>
-        <div class="col-12 col-sm-6 form-group">
-          <label class="fs-6 mb-3">Attribute Status?</label>
-          <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-            formControlName="attributeStatus">
-            <option value="false">Inactive</option>
-            <option value="true">Active</option>
-          </select>
-        </div>
-        <div class="col-12 col-sm-6 form-group">
-          <label class="fs-6 mb-3">Filtered Attribute?</label>
-          <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-            formControlName="attributeFiltered">
-            <option value="false">No</option>
-            <option value="true">Yes</option>
-          </select>
-        </div>
-        <div class="col-12 form-group col-sm-6">
-          <label class="fs-6 mb-3">Attribute Type</label>
-          <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-            formControlName="attributeType" (change)="handleAttributeType($event.target)">
-            <option value="" selected disabled>-- Select an attribute type --</option>
-            <option value="Color">Color Picker</option>
-            <option value="Text">Text</option>
-            <option value="File">File</option>
-          </select>
-        </div>
-        <div class="col-12" *ngIf="showColorPicker"> <!-- Attribute color picker -->
-          <div class="form-group col-sm-6">
-            <label class="fs-6 mb-3">Attribute Color</label>
-            <input type="color" placeholder="Attribute color" class="form-control fs-6" style="height: 50px;"
-              formControlName="attributeColor" (change)="handleAttrributeValues('color', $event.target)" />
-          </div>
-          <div class="col-12 attr-color-preview" *ngIf="attributecolors.length > 0">
-            <ng-container *ngFor="let color of attributecolors">
-              <div class="attr-color-preview-div" [ngStyle]="{'background': color.value}">
-                <div class="attr-color-remove" (click)="removeAttributeValues('color', color.id)"><i
-                    class="bi bi-x-lg"></i></div>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-        <div class="col-12" *ngIf="showTextInput"> <!-- Attribute text values -->
-          <div class="form-group col-sm-6">
-            <label class="fs-6 mb-3">Attribute Text</label>
-            <input type="text" placeholder="Eg. Large" class="form-control fs-6" style="height: 50px;"
-              formControlName="attributeText" (keydown.Enter)="handleAttrributeValues('text', $event.target)" />
-            <div class="fs-6 mt-3">*Press Enter to add attribute text</div>
-          </div>
-          <div class="col-12 attr-text-preview" *ngIf="attributetexts.length > 0">
-            <ng-container *ngFor="let text of attributetexts">
-              <div class="attr-text bg-primary text-white">
-                <div class="attr-text-value">{{text.value}}</div>
-                <div class="attr-text-remove-icon" (click)="removeAttributeValues('text', text.id)"><i
-                    class="bi bi-x-lg"></i></div>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-        <div class="col-12" *ngIf="showFileInput"> <!-- Attribute image values -->
-          <div class="form-group col-sm-6">
-            <div class="image-upload">
-              <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                (change)="handleAttrInputChange($event)" style="height: 100px;" required>
-              <div class="image-upload-div">
-                <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                </div>
-                <div class="right-text d-flex flex-column">
-                  <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                  <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
-                    file</span>
+
+        <div class="attributeWrapper mt-3">
+          <ng-container *ngFor="let attribute of attributes; let i = index">
+            <div class="p-2 attributeCard">
+
+              <div class="editButton">
+                <div (click)="getAttributeDetails(attribute?.refid)" data-bs-dismiss="modal" data-bs-toggle="modal"
+                  data-bs-target="#attributeEditModal">
+                  <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                 </div>
               </div>
-            </div>
-          </div>
-          <ng-container *ngIf="loadAttributeImage">
-            <div class="col-12 preview-section  d-flex align-items-center justify-content-center">
-              <div class="crop-image col-sm-6">
-                <image-cropper class="crop-section" [imageChangedEvent]="attrImageChange" [maintainAspectRatio]="true"
-                  [aspectRatio]="3 / 3" [cropperMaxWidth]="1600" [cropperMaxHeight]="1600" format="png"
-                  (imageCropped)="attrImageCropped($event)" (imageLoaded)="attrImageLoaded()"
-                  (cropperReady)="attrCropperReady()" (loadImageFailed)="loadAttrImageFailed()">
-                </image-cropper>
-              </div>
-              <div class="uploads uploaded col-sm-6">
-                <div class="close-icon">
-                  <i class="bi bi-x-lg text-white" (click)="removeAttrImage()"></i>
+
+              <div class="fs-6 text-muted">Name : <span class="text-dark">{{attribute?.name}}</span></div>
+              <div class="fs-6 text-muted">Type : <span class="text-dark">{{attribute?.type}}</span></div>
+              <div class="d-flex align-items-center justify-content-start">
+                <div class="attributeStatus">{{attribute?.isActive ? 'Active' : 'Inactive'}}</div>
+                <svg class="me-3 ms-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-dot" viewBox="0 0 16 16">
+                  <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                </svg>
+                <div class="attributeFilterStatus">{{attribute?.isFiltered ? 'Filter Enabled' : 'Filter Disabled'}}
                 </div>
-                <img class="preview-img" id="previewImage" [src]="attributecroppped">
-                <button class="btn btn-sm fs-6 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
-                  (click)="handleAttrributeValues('file', '')">Add Image</button>
               </div>
             </div>
           </ng-container>
-          <div class="col-12 attr-image-preview">
-            <ng-container *ngFor="let image of attributeimages">
-              <div class="attr-image">
-                <div class="attr-image-value"><img src="{{image.value}}" alt="attribute-image"></div>
-                <div class="attr-image-remove-icon" (click)="removeAttributeValues('file', image.id)">
-                  <i class="bi bi-x-lg"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="attributeEditModal" tabindex="-1" aria-labelledby="attributeEditModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="attributeEditModalLabel">Edit Attribute</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="attributeform" (keydown.Enter)="$event.preventDefault()">
+
+          <div class="row">
+
+            <div class="col-lg-6 form-group">
+              <label class="fs-6 mb-3">Attribute Name</label>
+              <input type="text" placeholder="Eg. Size" class="form-control fs-6" formControlName="attributeName" />
+            </div>
+
+            <div class="col-lg-6 form-group">
+              <label class="fs-6 mb-3">Attribute Status?</label>
+              <select class="form-select mb-3 fs-6" formControlName="attributeStatus">
+                <option value="false">Inactive</option>
+                <option value="true">Active</option>
+              </select>
+            </div>
+
+            <div class="col-lg-6 form-group">
+              <label class="fs-6 mb-3">Filtered Attribute?</label>
+              <select class="form-select mb-3 fs-6" formControlName="attributeFiltered">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+
+            <div class="col-lg-6 form-group">
+              <label class="fs-6 mb-3">Attribute Type</label>
+              <select class="form-select mb-3 fs-6" formControlName="attributeType"
+                (change)="handleAttributeType($event.target)">
+                <option value="" selected disabled>-- Select an attribute type --</option>
+                <option value="Color">Color Picker</option>
+                <option value="Text">Text</option>
+                <option value="File">File</option>
+              </select>
+            </div>
+
+            <div class="col-lg-12" *ngIf="showColorPicker">
+              <div class="form-group col-lg-6">
+                <label class="fs-6 mb-3">Attribute Color</label>
+                <input type="color" placeholder="Attribute color" class="form-control fs-6" style="height: 50px;"
+                  formControlName="attributeColor" (change)="handleAttrributeValues('color', $event.target)" />
+              </div>
+
+              <div class="col-lg-12 attr-color-preview" *ngIf="attributecolors.length > 0">
+                <ng-container *ngFor="let color of attributecolors">
+                  <div class="attr-color-preview-div" [ngStyle]="{'background': color.value}">
+                    <div class="attr-color-remove" (click)="removeAttributeValues('color', color.id)"><i
+                        class="bi bi-x-lg"></i></div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-lg-12" *ngIf="showTextInput">
+              <div class="form-group col-sm-6">
+                <label class="fs-6 mb-3">Attribute Text</label>
+                <input type="text" placeholder="Eg. Large" class="form-control fs-6" style="height: 50px;"
+                  formControlName="attributeText" (keydown.Enter)="handleAttrributeValues('text', $event.target)" />
+                <div class="fs-6 mt-3 alert alert-info" role="alert">
+                  Press Enter to add attribute text!
                 </div>
               </div>
-            </ng-container>
+
+              <div class="col-lg-12 attr-text-preview" *ngIf="attributetexts.length > 0">
+                <ng-container *ngFor="let text of attributetexts">
+                  <div class="attr-text bg-primary text-white">
+                    <div class="attr-text-value fs-6">{{text.value}}</div>
+                    <div class="attr-text-remove-icon" (click)="removeAttributeValues('text', text.id)"><i
+                        class="bi bi-x-lg"></i></div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="col-lg-12" *ngIf="showFileInput">
+              <div class="form-group col-sm-6">
+                <div class="image-upload">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="handleAttrInputChange($event)" style="height: 100px;" required>
+                  <div class="image-upload-div">
+                    <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                    </div>
+                    <div class="right-text d-flex flex-column">
+                      <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                      <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
+                        file</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ng-container *ngIf="loadAttributeImage">
+                <div class="col-lg-12 preview-section  d-flex align-items-center justify-content-center">
+                  <div class="crop-image col-lg-6">
+                    <image-cropper class="crop-section" [imageChangedEvent]="attrImageChange"
+                      [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
+                      [cropperMaxHeight]="1600" format="png" (imageCropped)="attrImageCropped($event)"
+                      (imageLoaded)="attrImageLoaded()" (cropperReady)="attrCropperReady()"
+                      (loadImageFailed)="loadAttrImageFailed()">
+                    </image-cropper>
+                  </div>
+                  <div class="uploads uploaded col-lg-6">
+                    <div class="close-icon">
+                      <i class="bi bi-x-lg text-white" (click)="removeAttrImage()"></i>
+                    </div>
+                    <img class="preview-img" id="previewImage" [src]="attributecroppped">
+                    <button class="btn btn-sm fs-6 bg-dark text-white" style="width: 100%; margin: 10px 0 0 0 ;"
+                      (click)="handleAttrributeValues('file', '')">Add Image</button>
+                  </div>
+                </div>
+              </ng-container>
+
+              <div class="col-lg-12 attr-image-preview">
+                <ng-container *ngFor="let image of attributeimages">
+                  <div class="attr-image">
+                    <div class="attr-image-value"><img src="{{image.value}}" alt="attribute-image"></div>
+                    <div class="attr-image-remove-icon" (click)="removeAttributeValues('file', image.id)">
+                      <i class="bi bi-x-lg"></i>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+            </div>
+
           </div>
-        </div>
-        <div class="col-12 d-flex align-items-center justify-content-end save-attribute-btn">
-          <button class="btn bg-primary text-white fs-6" (click)="saveAttribute()">
-            Save Attribute
-          </button>
-        </div>
+        </form>
       </div>
-    </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveAttribute()">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>

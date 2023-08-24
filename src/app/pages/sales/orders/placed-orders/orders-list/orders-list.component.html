@@ -63,7 +63,7 @@
           <div class="search_input">
             <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders here"
               [formControl]="keyword" (ngModelChange)="getOrders()">
-              <img src="../../../../../assets/icons/Search.svg" alt="">
+            <img src="../../../../../assets/icons/Search.svg" alt="">
           </div>
         </div>
       </div>
@@ -83,7 +83,7 @@
             <div class="search-featured col-sm-2">
               <label class="fs-6 mb-1">Payment Method</label>
               <select class="form-select fs-6 text-dark" formControlName="paymentMethod" (change)="getOrders()">
-                <option value="" disabled>-- Select an option --</option>
+                <option value="" disabled>-- Select --</option>
                 <option value="COD">Cash On Delivery</option>
                 <option value="ONLINE">Online</option>
                 <option value="UNPAID">Unpaid</option>
@@ -94,7 +94,7 @@
             <div class="search-featured col-sm-2">
               <label class="fs-6 mb-1">Payment Status</label>
               <select class="form-select fs-6 text-dark" formControlName="paymentStatus" (change)="getOrders()">
-                <option value="" disabled>-- Select an option --</option>
+                <option value="" disabled>-- Select --</option>
                 <option value="UNPAID">Unpaid</option>
                 <option value="REJECTED">Rejected</option>
                 <option value="PAID">Paid</option>
@@ -103,7 +103,7 @@
             <div class="search-featured col-sm-2">
               <label class="fs-6 mb-1">Source</label>
               <select class="form-select fs-6 text-dark" formControlName="source" (change)="getOrders()">
-                <option value="" disabled>-- Select an option --</option>
+                <option value="" disabled>-- Select --</option>
                 <option value="WEB">Website</option>
                 <option value="ADMIN">Admin</option>
                 <option value="APP">App</option>
@@ -111,8 +111,7 @@
             </div>
             <div class="search-input col-sm-2">
               <label class="fs-6 mb-1">&nbsp;</label>
-              <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear"
-                (click)="onReload()">
+              <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear" (click)="onReload()">
             </div>
           </div>
         </form>

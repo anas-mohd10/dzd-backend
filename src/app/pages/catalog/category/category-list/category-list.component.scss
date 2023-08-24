@@ -9,6 +9,45 @@ $hover: #F0F8F7;
 $background: #e5e5e5;
 $grey: #888888;
 
+#attributeModal {
+  .modal-content {
+    min-height: 90vh;
+    overflow-x: scroll;
+
+    .modal-body {
+      .attributeWrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+
+        .attributeCard {
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+          border: 1px solid rgba(231, 231, 231, 1);
+          border-radius: 10px;
+          background: $white;
+          position: relative;
+
+          .editButton {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            height: 40px;
+            width: 40px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            border-radius: 20px;
+
+            &:hover {
+              background: $hover;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 label,
 input[type=button] {
   font-weight: normal !important;
@@ -443,7 +482,6 @@ input[type=button] {
   .attr-text-preview {
     display: flex;
     flex-wrap: wrap;
-    margin: 3.25rem 0 0 0;
 
     .attr-text {
       width: calc(20% - 0.625rem);
