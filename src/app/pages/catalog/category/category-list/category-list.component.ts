@@ -139,8 +139,6 @@ export class CategoryComponent implements OnInit {
   getAttributeDetails(refid: any) {
     this.attributerefid = refid
     this.showModal = !this.showModal
-    // let bodyEl = document.querySelector('body');
-    // bodyEl?.classList.toggle('overflow-hidden')
 
     this.AttributeService.getAttributeById(this.catid, refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -299,6 +297,16 @@ export class CategoryComponent implements OnInit {
     })
   }
 
+  closeModal() {
+    this.attributevalues = []
+    this.attributetexts = []
+    this.attributecolors = []
+    this.attributeimages = []
+    this.showColorPicker = false
+    this.showTextInput = false
+    this.showFileInput = false
+  }
+
   removeAttributeValues(key: any, id: any) {
     switch (key) {
       case 'color':
@@ -411,23 +419,10 @@ export class CategoryComponent implements OnInit {
 
     this.AttributeService.updateAttribute(data).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.AttributeService.getAttributeByCategory(res?.result?.category?.refid).subscribe((res: any) => {
-          if (res?.errorCode == 0) {
-            this.attributes = res?.result
-            this.attributeslength = this.attributes.length
-          } else {
-            this.ToastrService.error(res?.message)
-          }
-          this.ChangeDetectorRef.markForCheck()
-        })
-        this.attributevalues = []
-        this.attributetexts = []
-        this.attributecolors = []
-        this.attributeimages = []
-        this.showColorPicker = false
-        this.showTextInput = false
-        this.showFileInput = false
-        this.showModal = !this.showModal;
+        this.ToastrService.success(res?.message)
+        setTimeout(() => {
+          document.location.reload()
+        }, 1000)
         this.ChangeDetectorRef.markForCheck()
       } else {
         this.ToastrService.error(res?.message)

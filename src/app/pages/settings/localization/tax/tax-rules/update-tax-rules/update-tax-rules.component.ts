@@ -28,7 +28,7 @@ export class UpdateTaxRulesComponent implements OnInit {
     private router: Router,
     private taxRulesService: TaxRulesService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get tf() {
     return this.taxRulesForm.controls;
@@ -64,13 +64,13 @@ export class UpdateTaxRulesComponent implements OnInit {
     }
   }
 
-  getTaxRules(){
+  getTaxRules() {
     this.taxRulesService.getTaxRulesBySlug(this.taxRules).subscribe((res: any) => {
-       this.taxRuleData = res?.result[0]
-       this.taxRulesForm.get("name")?.setValue(this.taxRuleData?.name)
-       this.taxRulesForm.get("type")?.setValue(this.taxRuleData?.type)
-       this.taxRulesForm.get("rate")?.setValue(this.taxRuleData?.rate)
-       this.taxRulesForm.get("isActive")?.setValue(this.taxRuleData?.isActive)
+      this.taxRuleData = res?.result[0]
+      this.taxRulesForm.get("name")?.setValue(this.taxRuleData?.name)
+      this.taxRulesForm.get("type")?.setValue(this.taxRuleData?.type)
+      this.taxRulesForm.get("rate")?.setValue(this.taxRuleData?.rate)
+      this.taxRulesForm.get("isActive")?.setValue(this.taxRuleData?.isActive)
     })
   }
 
@@ -97,14 +97,14 @@ export class UpdateTaxRulesComponent implements OnInit {
 
     this.taxRulesService.updateTaxRules(this.taxRules, this.formData).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Tax Rule Updated Successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.taxRules.TAX_RULES_LIST]);
       }
     });
   }
 
   //Add tax rules
-  addBrand() {}
+  addBrand() { }
 }

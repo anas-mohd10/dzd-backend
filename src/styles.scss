@@ -6,9 +6,18 @@
 .reviewDetails {
   label {
     font-weight: 400 !important;
-
-
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 ngx-star-rating.ng-untouched.ng-pristine.ng-valid {

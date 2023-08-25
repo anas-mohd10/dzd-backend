@@ -48,6 +48,71 @@ $grey: #888888;
   }
 }
 
+.attrTextPreview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  .attrText {
+    .attrTextRemoveIcon {
+      cursor: pointer;
+    }
+  }
+}
+
+.attrColorPreview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+
+  .attrColorBox {
+    height: 50px;
+    width: 100%;
+    position: relative;
+
+    .attrColorBoxRemove {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      height: 25px;
+      width: 25px;
+      display: grid;
+      place-items: center;
+      background: $background;
+    }
+  }
+}
+
+.attrImagePreview {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+
+  .attrImage {
+    position: relative;
+
+    img {
+      height: auto;
+      width: 100%;
+    }
+
+    .attrImageRemoveIcon {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      height: 25px;
+      width: 25px;
+      background: $inactiveState;
+      display: grid;
+      place-items: center;
+
+      i {
+        color: $white;
+      }
+    }
+  }
+}
+
 label,
 input[type=button] {
   font-weight: normal !important;
@@ -475,31 +540,6 @@ input[type=button] {
         justify-content: center;
         box-shadow: 0 0px 8px 6px rgba(0, 0, 0, 0.06);
         cursor: pointer;
-      }
-    }
-  }
-
-  .attr-text-preview {
-    display: flex;
-    flex-wrap: wrap;
-
-    .attr-text {
-      width: calc(20% - 0.625rem);
-      margin: 0.625rem 0.625rem 0.625rem 0;
-      height: 3.875rem;
-      border-radius: 0.625rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.925rem;
-
-      .attr-text-remove-icon {
-        cursor: pointer;
-
-        i {
-          color: #ffffff;
-          font-size: 1.111rem;
-        }
       }
     }
   }

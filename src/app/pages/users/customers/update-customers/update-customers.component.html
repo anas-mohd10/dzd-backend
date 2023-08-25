@@ -107,7 +107,7 @@
                         </div>
                         <div class="addressCards">
                            <ng-container *ngFor="let address of addresses">
-                              <div class="addressCard">
+                              <div class="addressCard p-4">
                                  <div class="form-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault"
                                        id="{{address?.refid}}" [formControl]="defaultAddress" value="{{address?.refid}}"
@@ -120,10 +120,14 @@
                                           </div>
                                           <div class="address">
                                              <div class="type fs-6 mb-1">{{address?.type}}</div>
-                                             <div class="fs-6"> {{address?.firstlane}} {{address?.secondlane}}</div>
+                                             <div class="fs-6"> {{address?.firstlane}}</div>
                                              <div class="fs-6"> {{address?.area}} {{address?.city}}</div>
                                              <div class="fs-6"> {{address?.landmark}} {{address?.ppincode}}</div>
                                              <div class="fs-6"> {{address?.state}}</div>
+                                             <div class="mt-2 d-flex align-items-center justify-content-start">
+                                                <div class="btn w-50 btn-secondary me-2">Edit</div>
+                                                <div class="btn w-50 btn-danger">Delete</div>
+                                             </div>
                                           </div>
                                        </div>
                                     </label>

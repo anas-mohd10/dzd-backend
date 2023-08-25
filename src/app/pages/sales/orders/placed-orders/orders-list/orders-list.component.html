@@ -120,7 +120,7 @@
             *ngIf="orders.length > 0">
             <thead class="common_thead">
               <tr class="text-left fs-6 text-gray-400">
-                <th style="min-width: 60px">si No.</th>
+                <th style="min-width: 60px">Sl No.</th>
                 <th style="min-width: 120px">Order</th>
                 <th style="min-width: 100px">Date</th>
                 <th style="min-width: 100px">Customer</th>
@@ -132,9 +132,9 @@
               </tr>
             </thead>
             <tbody class="fs-6">
-              <ng-container *ngFor="let order of orders">
+              <ng-container *ngFor="let order of orders; let i = index">
                 <tr>
-                  <td>01</td>
+                  <td>{{i+1}}</td>
                   <td>{{order?.orderNo}}</td>
                   <td>{{order?.orderDate}}</td>
                   <td>{{order?.customerId?.name}}</td>

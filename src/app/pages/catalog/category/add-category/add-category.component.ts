@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
@@ -20,6 +20,7 @@ export class AddCategoryComponent implements OnInit {
   appRoute = appRoutes;
   categories: any = [];
   isSubmitted = false;
+  isAttrSubmitted: boolean = false
   filedata: File;
   isChecked = false;
   categoryData: any;
@@ -61,6 +62,7 @@ export class AddCategoryComponent implements OnInit {
   bannerChangedEvent: any = '';
   loadBanner: boolean;
   croppedBanner: any;
+  attributeForm!: FormGroup
 
 
   constructor(
@@ -74,6 +76,10 @@ export class AddCategoryComponent implements OnInit {
 
   get bf() {
     return this.categoryForm.controls;
+  }
+
+  get af() {
+    return this.attributeForm.controls;
   }
 
   ngOnInit(): void {
@@ -106,13 +112,14 @@ export class AddCategoryComponent implements OnInit {
       color: [''],
       fontSize: [''],
       fontWeight: [''],
-      attributeName: [''],
-      attributeType: [''],
-      attributeColor: [''],
-      attributeText: [''],
-      attributeStatus: ['true'],
-      attributeFiltered: ['false']
     });
+
+    this.attributeForm = new FormGroup({
+      attributeName: new FormControl('', [Validators.required]),
+      attributeType: new FormControl('', [Validators.required]),
+      attributeStatus: new FormControl('true'),
+      attributeFiltered: new FormControl('false')
+    })
 
     this.categoryForm.get('background')?.setValue(AppSettings.BACKGROUND)
     this.background = AppSettings.BACKGROUND
@@ -204,7 +211,7 @@ export class AddCategoryComponent implements OnInit {
     this.loadImage = true
   }
 
-  bannerFile(event:any) {
+  bannerFile(event: any) {
     this.bannerFiledata = <File>event.target.files[0];
     this.bannerFilename = this.bannerFiledata.name
     this.bannerChangedEvent = event;
@@ -265,7 +272,7 @@ export class AddCategoryComponent implements OnInit {
         this.showTextInput = false
         this.showFileInput = false
         this.attributetexts = []
-        this.categoryForm.get('attributeText')?.setValue('')
+        this.attributeForm.get('attributeText')?.setValue('')
         this.attributeimages = []
         break
       case 'Text':
@@ -273,7 +280,7 @@ export class AddCategoryComponent implements OnInit {
         this.showTextInput = true
         this.showFileInput = false
         this.attributecolors = []
-        this.categoryForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        this.attributeForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
         this.attributeimages = []
         break
       case 'File':
@@ -283,7 +290,7 @@ export class AddCategoryComponent implements OnInit {
         this.attributetexts = []
         this.categoryForm.get('attributeText')?.setValue('')
         this.attributecolors = []
-        this.categoryForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        this.attributeForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
         break
     }
   }
@@ -395,53 +402,47 @@ export class AddCategoryComponent implements OnInit {
   }
 
   saveAttribute() {
-    let name = this.categoryForm.get('attributeName')?.value
-    let type = this.attributetype
-    let status = this.categoryForm.get('attributeStatus')?.value
-    let filtered = this.categoryForm.get('attributeFiltered')?.value
+    if (!this.attributeForm.valid) {
+      this.isAttrSubmitted = true
+      return
+    }
     let len = this.attributes.length
-    if (name) {
-      if (type) {
-        if (status) {
-          if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
-            let values = []
-            if (type == 'Color') {
-              values = this.attributecolors
-            } else if (type == 'Text') {
-              values = this.attributetexts
-            } else if (type == 'File') {
-              values = this.attributeimages
-            }
-            this.attributes.push({
-              name: name,
-              type: type,
-              isActive: status,
-              isFiltered: filtered,
-              values: values,
-              id: this.attributes.length
-            })
-            let new_len = this.attributes.length
-            if (new_len == (len + 1)) {
-              this.categoryForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
-              this.categoryForm.get('attributeText')?.setValue('')
-              this.categoryForm.get('attributeName')?.setValue('')
-              this.categoryForm.get('attributeStatus')?.setValue('true')
-              this.categoryForm.get('attributeType')?.setValue('')
-              this.attributeimages = []
-              this.attributetexts = []
-              this.attributecolors = []
-              this.showSaveButton = false
-              this.showColorPicker = false
-              this.showTextInput = false
-              this.showFileInput = false
-            }
-          }
-        }
+    let type = this.attributetype
+    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
+      let values = []
+      if (type == 'Color') {
+        values = this.attributecolors
+      } else if (type == 'Text') {
+        values = this.attributetexts
+      } else if (type == 'File') {
+        values = this.attributeimages
+      }
+      this.attributes.push({
+        name: this.attributeForm.get('attributeName')?.value,
+        type: this.attributeForm.get('attributeType')?.value,
+        isActive: this.attributeForm.get('attributeStatus')?.value,
+        isFiltered: this.attributeForm.get('attributeFiltered')?.value,
+        values: values,
+        id: this.attributes.length
+      })
+      let new_len = this.attributes.length
+      if (new_len == (len + 1)) {
+        this.attributeForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
+        this.attributeForm.get('attributeText')?.setValue('')
+        this.attributeForm.get('attributeName')?.setValue('')
+        this.attributeForm.get('attributeStatus')?.setValue('true')
+        this.attributeForm.get('attributeType')?.setValue('')
+        this.attributeimages = []
+        this.attributetexts = []
+        this.attributecolors = []
+        this.showSaveButton = false
+        this.showColorPicker = false
+        this.showTextInput = false
+        this.showFileInput = false
       }
     }
   }
   //Attribute section end
-
 
   selectImage(file: any) {
     this.file = file

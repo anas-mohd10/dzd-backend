@@ -19,7 +19,7 @@ input[type=button] {
 .addressWrapper {
    .addressCards {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
 
       .addressCard {
@@ -40,15 +40,4 @@ input[type=button] {
          }
       }
    }
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-   -webkit-appearance: none;
-   appearance: none;
-   margin: 0;
-}
-
-input[type="number"] {
-   -moz-appearance: textfield;
 }

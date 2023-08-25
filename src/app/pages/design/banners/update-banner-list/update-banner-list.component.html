@@ -51,7 +51,7 @@
                      <div class="col-6 mb-3">
                         <div class="form-group">
                            <label class="fs-6 mb-3 required">Valid To</label>
-                           <input type="date" class="form-control fs-6" formControlName="validTo"
+                           <input type="date" [min]="startDate" class="form-control fs-6" formControlName="validTo"
                               [ngClass]="{ 'is-invalid': (hf.validTo.touched || isSubmitted) && hf.validTo.errors?.required }" />
                         </div>
                      </div>
@@ -70,7 +70,7 @@
 
                      <div class="col-12 mb-3">
                         <div class="form-group">
-                           <label class="fs-6 ">Banner Type</label>
+                           <label class="fs-6 required">Banner Type</label>
                            <div class="d-flex align-items-center justify-content-start" style="margin: 20px 0 0 0;">
                               <div class="form-check" style="margin: 0 10px 0 0;">
                                  <input class="form-check-input" type="radio" name="type" id="type-1"
