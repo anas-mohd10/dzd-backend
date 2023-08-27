@@ -24,9 +24,9 @@ export class NotificationsService {
     return this.http.get(`${url}`);
   }
 
-  getNotificationDetails(query: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification_details);
-    return this.http.post(`${url}`, query);
+  getNotificationDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification_details + `/${data}`);
+    return this.http.get(`${url}`);
   }
 
   searchNotifications(query: any) {
@@ -34,8 +34,8 @@ export class NotificationsService {
     return this.http.post(`${url}`, query);
   }
 
-  updateNotification(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.update_notification + "?slug=" + slug);
+  updateNotification(data: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.update_notification);
     return this.http.put(`${url}`, data);
   }
 

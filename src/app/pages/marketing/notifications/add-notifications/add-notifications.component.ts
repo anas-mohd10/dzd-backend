@@ -30,6 +30,7 @@ export class AddNotificationsComponent implements OnInit {
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
+  startDate: string = new Date().toISOString().split('T')[0];
   isTypeDisabled: boolean = false
 
   constructor(

@@ -10,9 +10,12 @@ export const customerEndpoints = {
   search_customers: '/search-customers',
   add_address: '/add-address',
   get_address: '/get-address',
-  address_details: '/address-details',
-  manage_address: '/manage-address',
+  get_address_details: '/get-address-details',
+  update_default_address: '/update-default-address',
   download_customers: '/download-customers',
   wishlist: '/wishlist',
   wishlist_details: '/wishlist-details',
+  delete_address: '/delete-address',
+  update_customer_address: '/update-customer-address',
+  get_default_address: '/get-default-address'
 }

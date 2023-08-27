@@ -86,7 +86,7 @@
                <div class="col-lg-6">
                   <div class="form-group mb-3">
                      <label class="fs-6 mb-3">Last Date</label>
-                     <input type="date" class="form-control fs-6" formControlName="lastDate"
+                     <input type="date" [min]="startDate" class="form-control fs-6" formControlName="lastDate"
                         [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
                   </div>
                </div>
@@ -112,7 +112,7 @@
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3">Products</label>
                         <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                           placeholder="Select products applicable to coupon" (change)="applyCoupon('collection')"
+                           placeholder="Select products applicable to coupon" (change)="applyCoupon('product')"
                            [multiple]=true [ngModelOptions]="{standalone: true}">
                         </ng-select>
                      </div>
@@ -132,7 +132,7 @@
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3">Category</label>
                         <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                           placeholder="Select categories applicable to coupon" (change)="applyCoupon('collection')"
+                           placeholder="Select categories applicable to coupon" (change)="applyCoupon('category')"
                            [multiple]=true [ngModelOptions]="{standalone: true}">
                         </ng-select>
                      </div>

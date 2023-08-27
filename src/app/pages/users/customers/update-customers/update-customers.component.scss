@@ -1,10 +1,10 @@
 $hover: #e3e3e3;
 $grey: #888888;
 $white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.08);
+$boxShadow: rgba(0, 0, 0, 0.04);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primaryBackground: #20BDAB40;
+$primaryBackground: #20BDAB10;
 $activeBackground: #00bdab20;
 $border: #cccccc;
 $background: #e5e5e5;
@@ -25,18 +25,21 @@ input[type=button] {
       .addressCard {
          background: $white;
          box-shadow: 0 5px 10px 5px $boxShadow;
-         padding: 10px;
-         border-radius: 10px;
+         border: 2px solid $white;
+         cursor: pointer;
+         
+         .contactDetails, .addressLane{
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+         }
 
-         .address {
-            .type {
-               background: $activeState;
-               color: $white;
-               font-weight: 600;
-               width: max-content;
-               padding: 0 5px;
-               border-radius: 5px;
-            }
+         &.defaultAddressCard{
+            border: 2px solid $activeState;
+            background: $primaryBackground;
          }
       }
    }

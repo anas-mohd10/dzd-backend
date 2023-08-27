@@ -184,7 +184,7 @@ export class AddOrdersComponent implements OnInit {
 
   getAddress() {
     this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
-    this.customerService.getAddressDetails({ customer: this.selectedCustomer }).subscribe((res: any) => {
+    this.customerService.getDefaultAddress({ customer: this.selectedCustomer }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orderForm.get('firstlane')?.setValue(res?.result?.firstlane)
         this.orderForm.get('secondlane')?.setValue(res?.result?.secondlane)

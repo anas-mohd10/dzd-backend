@@ -27,8 +27,11 @@ export class UpdateCustomersComponent implements OnInit {
   validBtn: boolean = false
   selectedID: any = ''
 
+  isAddressSubmitted: boolean = false
   addressForm: FormGroup
   defaultAddress: FormControl = new FormControl('')
+  isEditAddress: boolean = false
+  addressDetails: any = {}
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,13 +60,16 @@ export class UpdateCustomersComponent implements OnInit {
     });
 
     this.addressForm = new FormGroup({
+      name: new FormControl(''),
+      countryCode: new FormControl(''),
+      mobile: new FormControl('', [Validators.maxLength(10), Validators.minLength(10), Validators.pattern("^[0-9]{10}$")]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       city: new FormControl('', Validators.required),
-      area: new FormControl('', Validators.required),
+      area: new FormControl(''),
       landmark: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
-      pincode: new FormControl('', Validators.required),
+      pincode: new FormControl(''),
       state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
@@ -121,6 +127,11 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   addAddress() {
+    if (!this.addressForm.valid) {
+      this.isAddressSubmitted = true
+      return
+    }
+
     let payload = {
       ...this.addressForm?.value,
       coordinates: {
@@ -130,43 +141,72 @@ export class UpdateCustomersComponent implements OnInit {
       customer: this.customerData?._id
     }
 
-    this.customerService.addAddress(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.getAddress()
-        this.addressForm.reset()
-        this.toastr.success(res?.message)
-      } else {
-        this.toastr.error(res?.message)
-      }
-    })
-  }
-
-  manageAddress(refid: any) {
-    this.customerService.manageAddress({ customer: this.customerData?._id, refid: refid }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.getAddress()
-        this.toastr.success(res?.message)
-      }
-    })
+    if (!this.isEditAddress) {
+      this.customerService.addAddress(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.getAddress()
+          this.addressForm.reset()
+          this.toastr.success(res?.message)
+        } else {
+          this.toastr.error(res?.message)
+        }
+      })
+    } else {
+      payload['refid'] = this.addressDetails?.refid
+      this.customerService.updateCustomerAddress(payload).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.getAddress()
+          this.addressForm.reset()
+          this.toastr.success(res?.message)
+        } else {
+          this.toastr.error(res?.message)
+        }
+      })
+    }
   }
 
   getAddress() {
     this.customerService.getAddress({ userid: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.addresses = res?.result
-        for (let address of res?.result) {
-          if (address?.isDefault) this.defaultAddress.setValue(address?.refid)
-        }
         this.cdr.markForCheck()
       }
     })
   }
 
-  selectAddress(id: any) {
-
+  editAddress(refid: any) {
+    this.isEditAddress = true
+    this.customerService.getAddressDetails(refid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.addressDetails = res?.result
+        for (let _key of Object.keys(res?.result)) {
+          this.addressForm.get(_key)?.setValue(res?.result[_key])
+          this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
+          this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
+          this.cdr.markForCheck()
+        }
+      }
+    })
   }
 
-  removeAddress(id: any) {
+  setDefaultAddress(refid: any) {
+    this.customerService.updateDefaultAddress(refid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.getAddress()
+        this.toastr.success(res?.message)
+        this.cdr.markForCheck()
+      }
+    })
+  }
+
+  removeAddress(refid: any) {
+    this.customerService.deleteAddress(refid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.getAddress()
+        this.toastr.success(res?.message)
+        this.cdr.markForCheck()
+      }
+    })
   }
 
   getCustomerDetails() {

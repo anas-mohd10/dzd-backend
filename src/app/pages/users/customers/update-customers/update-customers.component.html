@@ -102,49 +102,41 @@
                      </div>
 
                      <div class="addressWrapper">
-                        <div class="col-12">
-                           <h3 class="form-title fs-4">Address</h3>
-                        </div>
+                        <h3 class="mb-3 fw-bolder fs-4">Address</h3>
                         <div class="addressCards">
                            <ng-container *ngFor="let address of addresses">
-                              <div class="addressCard p-4">
-                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault"
-                                       id="{{address?.refid}}" [formControl]="defaultAddress" value="{{address?.refid}}"
-                                       (click)="manageAddress(address?.refid)">
-                                    <label class="form-check-label" for="{{address?.refid}}">
-                                       <div class="details">
-                                          <div class="contactDetails">
-                                             <div class="fs-6"> {{address?.name}}</div>
-                                             <div class="fs-6"> {{address?.countryCode}} {{address?.mobile}}</div>
-                                          </div>
-                                          <div class="address">
-                                             <div class="type fs-6 mb-1">{{address?.type}}</div>
-                                             <div class="fs-6"> {{address?.firstlane}}</div>
-                                             <div class="fs-6"> {{address?.area}} {{address?.city}}</div>
-                                             <div class="fs-6"> {{address?.landmark}} {{address?.ppincode}}</div>
-                                             <div class="fs-6"> {{address?.state}}</div>
-                                             <div class="mt-2 d-flex align-items-center justify-content-start">
-                                                <div class="btn w-50 btn-secondary me-2">Edit</div>
-                                                <div class="btn w-50 btn-danger">Delete</div>
-                                             </div>
-                                          </div>
+                              <div class="addressCard p-3 rounded"
+                                 [ngClass]="{'defaultAddressCard': address?.isDefault}">
+                                 <div (click)="setDefaultAddress(address?.refid)">
+                                    <div class="contactDetails fs-6">
+                                       {{address?.name}}, {{address?.countryCode}} {{address?.mobile}}
+                                    </div>
+                                    <div class="address">
+                                       <div class="type fs-6 mb-1">{{address?.type}}</div>
+                                       <div class="fs-6 addressLane"> {{address?.firstlane}}, {{address?.secondlane}}
                                        </div>
-                                    </label>
+                                       <div class="fs-6"> {{address?.landmark}} {{address?.pincode}}</div>
+                                       <div class="fs-6"> {{address?.state}}</div>
+                                    </div>
+                                 </div>
+
+                                 <div class="mt-2 d-flex align-items-center justify-content-start">
+                                    <div class="btn w-50 btn-secondary me-2" (click)="editAddress(address?.refid)">
+                                       Edit</div>
+                                    <div class="btn w-50 btn-danger" (click)="removeAddress(address?.refid)">Delete
+                                    </div>
                                  </div>
                               </div>
                            </ng-container>
                         </div>
+
                         <ng-container *ngIf="addresses.length == 0">
                            <div>No address found</div>
                         </ng-container>
                      </div>
 
                      <div class="col-12">
-                        <h3 class="form-title fs-4"><span>Address Details</span></h3>
-                     </div>
-
-                     <div class="col-12">
+                        <h3 class="mb-3 fw-bolder fs-4">Address Details</h3>
                         <form [formGroup]="addressForm">
                            <div class="row">
                               <div class="col-6">
@@ -153,22 +145,53 @@
                                     <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                                        formControlName="type" [ngClass]="{
                                           'is-invalid':
-                                          (addressControls.type.touched || isSubmitted) &&
+                                          (addressControls.type.touched || isAddressSubmitted) &&
                                           addressControls.type.errors?.required
                                         }">
                                        <option value="" disabled>-- Select an option --</option>
                                        <option value="Home">Home</option>
                                        <option value="Work">Work</option>
-                                       <option value="Other">Other</option>
+                                       <option value="Others">Other</option>
                                     </select>
                                  </div>
                               </div>
+
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3">Name</label>
+                                    <input type="text" class="form-control fs-6" formControlName="name" />
+                                 </div>
+                              </div>
+
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3">Country Code</label>
+                                    <select class="form-select mb-3" formControlName="countryCode">
+                                       <option value="" disabled>-- Select an option --</option>
+                                       <option value="+91">+91</option>
+                                       <option value="+971">+971</option>
+                                    </select>
+                                 </div>
+                              </div>
+
+                              <div class="col-6">
+                                 <div class="form-group mb-3">
+                                    <label class="fs-6 mb-3">Mobile Number</label>
+                                    <input type="text" class="form-control fs-6" [ngClass]="{
+                                       'is-invalid': addressControls.mobile.errors?.pattern
+                                     }" formControlName="mobile" />
+                                     <div class="mt-2 p-2 alert alert-danger" *ngIf="addressControls.mobile.errors?.pattern">
+                                       Enter a valid mobile number
+                                     </div>
+                                 </div>
+                              </div>
+
                               <div class="col-6">
                                  <div class="form-group mb-3">
                                     <label class="fs-6 mb-3 required">Firstlane</label>
                                     <input type="text" class="form-control fs-6" formControlName="firstlane" [ngClass]="{
                                        'is-invalid':
-                                       (addressControls.firstlane.touched || isSubmitted) &&
+                                       (addressControls.firstlane.touched || isAddressSubmitted) &&
                                        addressControls.firstlane.errors?.required
                                      }" />
                                  </div>
@@ -190,7 +213,7 @@
                                     <label class="fs-6 mb-3 required"> City</label>
                                     <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
                                        'is-invalid':
-                                       (addressControls.city.touched || isSubmitted) &&
+                                       (addressControls.city.touched || isAddressSubmitted) &&
                                        addressControls.city.errors?.required
                                      }" />
                                  </div>
@@ -200,17 +223,17 @@
                                     <label class="fs-6 mb-3 required"> Landmark</label>
                                     <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
                                        'is-invalid':
-                                       (addressControls.landmark.touched || isSubmitted) &&
+                                       (addressControls.landmark.touched || isAddressSubmitted) &&
                                        addressControls.landmark.errors?.required
                                      }" />
                                  </div>
                               </div>
                               <div class="col-6">
                                  <div class="form-group mb-3">
-                                    <label class="fs-6 mb-3 required"> Pincode</label>
+                                    <label class="fs-6 mb-3"> Pincode</label>
                                     <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
                                        'is-invalid':
-                                       (addressControls.pincode.touched || isSubmitted) &&
+                                       (addressControls.pincode.touched || isAddressSubmitted) &&
                                        addressControls.pincode.errors?.required
                                      }" />
                                  </div>
@@ -236,7 +259,7 @@
                                     <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                                        formControlName="state" [ngClass]="{
                                           'is-invalid':
-                                          (addressControls.state.touched || isSubmitted) &&
+                                          (addressControls.state.touched || isAddressSubmitted) &&
                                           addressControls.state.errors?.required
                                         }">
                                        <option value="" disabled>-- Select an option --</option>

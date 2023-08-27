@@ -16,14 +16,13 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class UpdateNotificationsComponent implements OnInit {
 
-  notificationForm: FormGroup;
+  form: FormGroup;
   task = PageTasks.UPDATE;
   editMode = false;
   filedata: File;
   isSubmitted: boolean;
   appRoute = appRoutes;
-  customersdata: any = []
-  customers: any = []
+
   getCustomer: Boolean = false
   invalidDate: Boolean = false
   slug: any;
@@ -33,14 +32,21 @@ export class UpdateNotificationsComponent implements OnInit {
   uploadedimg: any;
   img: any
 
+  startDate: string = new Date().toISOString().split('T')[0];
   croppedImage: string | null | undefined;
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
-  base: string;
+  base: string = environment.base;
+  customersData: Array<any> = []
+  selectCustomers: boolean = false
+  notification: string = ''
+  isTypeDisabled: boolean = false
+  customers: Array<any> = []
+  notificationDetails: any = {}
 
   constructor(
-    private notificationsService: NotificationsService,
+    private NotificationsService: NotificationsService,
     private customersService: CustomersService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -50,17 +56,51 @@ export class UpdateNotificationsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.base = environment.base
     this.initForm()
     this.managePage()
-    this.slug = this.route.snapshot.queryParams.notification || ''
+    this.notification = this.route.snapshot.queryParams.notification || ''
 
     this.customersService.getActiveCustomers().subscribe((res: any) => {
-      this.customersdata = res?.result
-      this.cdr.markForCheck()
+      if (res?.errorCode == 0) {
+        this.customersData = res?.result
+        for (let customer of this.customersData) customer.title = (customer?.name ? customer?.name : '-- Incomplete Profile --') + " ( " + customer?.mobile + " )"
+        this.cdr.markForCheck()
+      }
     })
 
+    this.NotificationsService.getNotificationDetails(this.notification).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        for (let _key of Object.keys(res?.result)) {
+          this.form.get(_key)?.setValue(res?.result[_key])
+        }
+        this.notificationDetails = res?.result
+        for (let customer of res?.result?.customers) this.customers.push(customer?.id)
+        res?.result?.type == 'scheduled' ? this.isScheduled = true : this.isScheduled = false
+        !res?.result?.notifyAll ? this.selectCustomers = true : this.selectCustomers = false
+        res?.result?.image ? this.img = res?.result?.image : this.img = null
+        this.form.get('scheduledDate')?.setValue(res?.result?.scheduled?.date.split('T')[0])
+        this.form.get('scheduledTime')?.setValue(res?.result?.scheduled?.time)
+        this.cdr.markForCheck()
+      }
+    })
   }
+
+  notifyCustomers() {
+    if (this.form.get('notifyAll')?.value == 'false') {
+      this.selectCustomers = true
+    } else {
+      this.selectCustomers = false
+    }
+  }
+
+  getChannel() {
+    if (this.form.get('channel')?.value == 'app') {
+      this.isTypeDisabled = true
+    } else {
+      this.isTypeDisabled = false
+    }
+  }
+
 
   selectcustomer(event: any) {
     let val = event.value
@@ -78,7 +118,7 @@ export class UpdateNotificationsComponent implements OnInit {
 
   checkType(event: any) {
     let type = event.value
-    if (type == "Scheduled") {
+    if (type == "scheduled") {
       this.isScheduled = true
     } else {
       this.isScheduled = false
@@ -92,24 +132,24 @@ export class UpdateNotificationsComponent implements OnInit {
   }
 
   initForm() {
-    this.notificationForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: ['', Validators.required],
       channel: ['', Validators.required],
-      type: ['', Validators.required],
+      type: ['instant'],
       content: ['', Validators.required],
       scheduledDate: [''],
       scheduledTime: [''],
       file: [''],
       customer: [''],
+      redirection: [''],
       selectCustomer: [''],
-      isAllCustomer: [''],
+      notifyAll: ['', Validators.required],
       isActive: ['true', Validators.required],
-      status: ['', Validators.required],
     });
   }
 
   get nf() {
-    return this.notificationForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -163,35 +203,35 @@ export class UpdateNotificationsComponent implements OnInit {
   }
 
   updateNotification() {
-    if (!this.notificationForm.valid) {
+    if (!this.form.valid) {
       this.toastr.error("Validation error")
       return;
     }
 
-    let data = {
-      title: this.notificationForm.get('title')?.value,
-      channel: this.notificationForm.get('channel')?.value,
-      type: this.notificationForm.get('type')?.value,
-      content: this.notificationForm.get('content')?.value,
-      scheduledDate: this.notificationForm.get('scheduledDate')?.value,
-      scheduledTime: this.notificationForm.get('scheduledTime')?.value,
+    let data: any = {
+      title: this.form.get('title')?.value,
+      channel: this.form.get('channel')?.value,
+      type: this.form.get('type')?.value,
+      content: this.form.get('content')?.value,
+      scheduled: {
+        date: this.form.get('scheduledDate')?.value,
+        time: this.form.get('scheduledTime')?.value,
+      },
       filestring: this.croppedImage,
       filename: this.filename,
-      customer: this.customers,
-      isAllCustomer: this.notificationForm.get('isAllCustomer')?.value,
-      isActive: this.notificationForm.get('isActive')?.value,
-      file:  ''
+      customers: this.customers,
+      redirect: this.form.get('redirection')?.value,
+      notifyAll: this.form.get('notifyAll')?.value,
+      isActive: this.form.get('isActive')?.value,
+      refid: this.notificationDetails?.refid
     }
 
-    if (this.uploadedimg) {
-      data.file = this.uploadedimg
-    }
-
-    this.notificationsService.updateNotification(this.slug, data).subscribe((res: any) => {
+    this.img ? data['image'] = this.img : data['image'] = null
+    this.NotificationsService.updateNotification(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.result);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Notifications updated successfully');
+        this.toastr.success(res?.result);
         this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
       }
     })

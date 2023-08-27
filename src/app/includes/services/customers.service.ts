@@ -66,13 +66,28 @@ export class CustomersService {
     return this.http.post(`${url}`, data)
   }
 
+  deleteAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.delete_address + `/${data}`);
+    return this.http.get(`${url}`)
+  }
+
   getAddressDetails(data: any) {
-    const url = this.commonService.getFullUrl(this.customerEndpoints.address_details);
+    const url = this.commonService.getFullUrl(this.customerEndpoints.get_address_details + `/${data}`);
+    return this.http.get(`${url}`)
+  }
+
+  getDefaultAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.get_default_address);
     return this.http.post(`${url}`, data)
   }
 
-  manageAddress(data: any) {
-    const url = this.commonService.getFullUrl(this.customerEndpoints.manage_address);
+  updateDefaultAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.update_default_address + `/${data}`);
+    return this.http.get(`${url}`)
+  }
+
+  updateCustomerAddress(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.update_customer_address);
     return this.http.put(`${url}`, data)
   }
 
