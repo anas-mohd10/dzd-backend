@@ -52,10 +52,12 @@ export class AddAboutComponent implements OnInit {
     ]
   };
 
-  title: FormControl = new FormControl('')
-  note: FormControl = new FormControl('')
+  title: FormControl = new FormControl('', Validators.required)
+  note: FormControl = new FormControl('', Validators.required)
   previewIcon: string = ''
   iconName: string = ''
+  isIconSubmitted: boolean = false
+  isIconRequired: boolean = false
 
   constructor(
     private AboutService: AboutService,
@@ -130,17 +132,26 @@ export class AddAboutComponent implements OnInit {
         let iconReader = new FileReader();
         iconReader.onloadend = () => { this.previewIcon = iconReader.result as string };
         iconReader.readAsDataURL(icon);
+        this.isIconRequired = false
         break
     }
   }
 
   addFeature() {
-    this.addedFeatures.push({
-      title: this.title.value,
-      name: this.iconName,
-      note: this.note.value,
-      icon: this.previewIcon
-    })
+    if (!this.title.valid || !this.note.valid || !this.previewIcon) {
+      if (!this.previewIcon) this.isIconRequired = true
+      this.isIconSubmitted = true
+      return
+    }
+
+    if (this.addedFeatures.length < 3) {
+      this.addedFeatures.push({
+        title: this.title.value,
+        name: this.iconName,
+        note: this.note.value,
+        icon: this.previewIcon
+      })
+    }
 
     this.discardFeature()
   }

@@ -26,19 +26,19 @@
          </div>
       </div>
    </div>
-   <div class="row">
+   <div class="row mt-4">
       <div class="col-sm-12">
          <div class="card card-table">
             <div class="card-body">
                <div class="table-responsive">
                   <div class="pb-5">
                      <div class="row d-flex justify-content-end align-items-end">
-                        <div class="col-2">
+                        <div class="col-lg-4">
                            <label class="form-label">&nbsp;</label>
                            <input type="text" class="form-control" placeholder="Search items here"
                               [formControl]="keyword" (ngModelChange)="getCustomers()">
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-3">
                            <label class="fs-6 mb-1">Status</label>
                            <select class="form-select fs-6 text-dark" [formControl]="isActive"
                               (change)="getCustomers()">
@@ -47,7 +47,7 @@
                               <option value=true>Active</option>
                            </select>
                         </div>
-                        <div class="col-2">
+                        <div class="col-lg-2">
                            <label class="fs-6 mb-1">&nbsp;</label>
                            <input type="button" class="btn btn-secondary" value="Clear filters" (click)="clearFilter()">
                         </div>

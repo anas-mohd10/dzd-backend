@@ -70,12 +70,19 @@ export class CustomersListComponent implements OnInit {
   }
 
   downloadCustomers() {
-    this.CsvService.downloadUsers().subscribe((res: any) => {
+    let payload = {
+      keyword: this.keyword.value,
+      limit: this.limit.value,
+      page: this.page,
+      isActive: this.isActive.value
+    }
+
+    this.CsvService.downloadUsers(payload).subscribe((res: any) => {
       const blob = new Blob([res], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'data.csv';
+      a.download = 'customers.csv';
       a.click();
       window.URL.revokeObjectURL(url);
     })

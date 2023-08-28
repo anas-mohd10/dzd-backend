@@ -3,6 +3,7 @@ import * as FileSaver from 'file-saver';
 import { customerEndpoints } from 'src/app/config/endpoints';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class CsvService {
   ) { }
 
 
-  downloadUsers() {
+  downloadUsers(data: any): Observable<Blob> {
     const url = this.commonService.getFullUrl(this.customerEndpoints.download_customers);
-    return this.http.get(`${url}`)
+    return this.http.post(`${url}`, data, { responseType: 'blob' })
   }
 
   csvDownload(headers: any, data: any, name: any) {
