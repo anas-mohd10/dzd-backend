@@ -5,5 +5,6 @@ export const adminUsersEndpoints = {
      update_admin: '/update-admin-user',
      get_admin_count: '/get-admin-mail',
      admin_details: '/admin-details',
-     search_admins: '/search-admins'
+     search_admins: '/search-admins',
+     authorize: '/authorize'
 }

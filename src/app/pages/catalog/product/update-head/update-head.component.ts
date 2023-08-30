@@ -252,6 +252,8 @@ export class UpdateHeadComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.ToastrService.success(res?.message)
           document.location.reload()
+        } else {
+          this.ToastrService.error(res?.message)
         }
       })
     }

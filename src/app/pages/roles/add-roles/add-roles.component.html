@@ -23,18 +23,16 @@
     </div>
   </div>
 
-  <div class="row mt-10">
+  <div class="row mt-4">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="form">
             <div class="row">
 
-              <div class="col-12">
-                <h3 class="form-title">Role Details</h3>
-              </div>
+              <h2 class="fw-bolder">Role Details</h2>
 
-              <div class="col-6 mb-3">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3 required"> Name</label>
                   <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
@@ -45,14 +43,14 @@
                 </div>
               </div>
 
-              <div class="col-6 mb-3">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3"> Description</label>
                   <input type="text" class="form-control fs-6" formControlName="description" />
                 </div>
               </div>
 
-              <div class="col-6 mb-3">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Status</label>
                   <select class="form-select fs-6" formControlName="isActive">
@@ -62,29 +60,21 @@
                 </div>
               </div>
 
-              <div class="col-12">
+              <div class="col-lg-12">
                 <label class="fs-6 mb-3 required">Select Permissions</label>
-                <div class="d-flex align-items-center justify-content-start" *ngIf="permissions.length > 0">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="selectAll" id="selectAll"
-                      (click)="selectAllPermissions()">
-                    <label class="form-check-label fs-6" for="selectAll">
-                      Select all
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="selectAll" id="deselectAll"
-                      (click)="deselectAllPermissions()">
-                    <label class="form-check-label fs-6" for="deselectAll">
-                      Deselect all
-                    </label>
-                  </div>
+                <div class="permissionBtns d-flex align-items-center justify-content-between mb-8"
+                  *ngIf="permissions.length > 0">
+                  <div class="btn btn-secondary p-2 fs-6 rounded" (click)=selectPermissions()
+                    [ngClass]="{'disabled': isSelected}">Select all</div>
+                  <div class="btn btn-secondary p-2 fs-6 rounded" (click)="removePermissions()"
+                    [ngClass]="{'disabled': !isSelected}">Remove all</div>
                 </div>
+
                 <div class="permissionsWrapper" *ngIf="permissions.length > 0">
                   <ng-container *ngFor="let permission of permissions">
-                    <div class="permission">
-
-                    </div>
+                    <div class="permissionCard p-3 fs-6 rounded" (click)="managePermission(permission?.refid)"
+                      [ngClass]="{'selected': checkedPermissions.includes(permission?.refid)}">
+                      {{permission?.name}}</div>
                   </ng-container>
                 </div>
 
@@ -94,10 +84,10 @@
               </div>
 
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.roles.ROLES_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                <button routerLink="{{ appRoute.roles.ROLES_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">
                   Cancel
-                </a>
+                </button>
                 <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"> Add </button>
               </div>
             </div>

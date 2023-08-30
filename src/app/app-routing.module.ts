@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
 import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
+import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
     loadChildren: () => import('./shared/layout/layout.module').then((m) => m.LayoutModule),
   },
   { path: 'generate-invoice', component: GenerateInvoiceComponent },
+  { path: 'access-denied', component: AccessDeniedComponent },
   { path: 'packing-slip', component: PackingSlipComponent },
   { path: '**', redirectTo: 'error/404' },
 ];

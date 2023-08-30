@@ -22,16 +22,14 @@
     </div>
   </div>
 
-  <div class="row mt-10">
+  <div class="row mt-4">
     <div class="col-12 fs-6">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="adminForm">
             <div class="row">
 
-              <div class="col-12">
-                <h5 class="form-title fs-4">Admin User Details</h5>
-              </div>
+              <h2 class="fw-bolder">Admin User Details</h2>
 
               <div class="col-6 mb-3">
                 <div class="form-group">
@@ -90,10 +88,10 @@
               <div class="col-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3 required">Role</label>
-                  <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="roleId" [ngClass]="{
+                  <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role" [ngClass]="{
                     'is-invalid':
-                    (af.roleId.touched || isSubmitted) &&
-                    af.roleId.errors?.required
+                    (af.role.touched || isSubmitted) &&
+                    af.role.errors?.required
                   }">
                     <option value="" disabled>-- Select an option --</option>
                     <option *ngFor="let role of rolesData" value="{{ role?._id }}">

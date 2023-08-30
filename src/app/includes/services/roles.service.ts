@@ -31,8 +31,8 @@ export class RolesService {
   }
 
   getRoleDetails(data: any) {
-    const url = this.commonService.getFullUrl(this.rolesEndpoints.get_role_details);
-    return this.http.post(`${url}`, data)
+    const url = this.commonService.getFullUrl(this.rolesEndpoints.get_role_details + `/${data}`);
+    return this.http.get(`${url}`)
   }
 
   updateRoles(data: any) {

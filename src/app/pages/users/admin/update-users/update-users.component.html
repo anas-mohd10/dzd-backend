@@ -90,10 +90,10 @@
               <div class="col-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3 required">Role</label>
-                  <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="roleId" [ngClass]="{
+                  <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role" [ngClass]="{
                   'is-invalid':
-                  (af.roleId.touched || isSubmitted) &&
-                  af.roleId.errors?.required
+                  (af.role.touched || isSubmitted) &&
+                  af.role.errors?.required
                 }">
                     <option value="" disabled>-- Select an option --</option>
                     <option *ngFor="let role of rolesData" value="{{ role?._id }}">
@@ -122,16 +122,28 @@
                   }" />
                 </div>
               </div>
-              <div class="col-6 mb-3">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3 required">Status</label>
-                  <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="isActive">
+                  <select class="form-select fs-6 mb-3" formControlName="isActive">
                     <option value="" disabled>-- Select an option --</option>
                     <option value="false">Inactive</option>
                     <option value="true">Active</option>
                   </select>
                 </div>
               </div>
+
+              <div class="col-lg-6 mb-3">
+                <div class="form-group">
+                  <label class="fs-6 mb-3 required">Delete Admin?</label>
+                  <select class="form-select fs-6 mb-3" formControlName="isDelete">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                  </select>
+                </div>
+              </div>
+
               <div class="col-12 d-flex align-items-center justify-content-end">
                 <a routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary btn-sm fs-6 text-dark"
                   style="width: 200px; margin-right: 20px;">

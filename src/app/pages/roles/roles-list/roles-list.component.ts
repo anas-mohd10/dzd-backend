@@ -14,7 +14,7 @@ export class RolesListComponent implements OnInit {
   limit: FormControl = new FormControl('20')
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
-  lastPage: boolean = false
+  isLastPage: boolean = false
   roles: Array<any> = [];
 
   constructor(
@@ -53,7 +53,7 @@ export class RolesListComponent implements OnInit {
     this.RolesService.searchRoles(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.roles = res?.result?.data
-        this.lastPage = res?.result?.lastPage
+        this.isLastPage = res?.result?.isLastPage
         this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()
       }

@@ -17,7 +17,8 @@
                </div>
           </div>
      </div>
-     <div class="row">
+
+     <div class="row mt-4">
           <div class="col-sm-12">
                <div class="card card-table">
                     <div class="card-body">
@@ -25,12 +26,12 @@
                          <div class="table-responsive">
                               <div class="pb-5">
                                    <div class="row d-flex justify-content-end align-items-end">
-                                        <div class="col-2">
+                                        <div class="col-lg-4">
                                              <label class="form-label">&nbsp;</label>
                                              <input type="text" class="form-control" placeholder="Search items here"
                                                   [formControl]="keyword" (ngModelChange)="getRoles()">
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2">
                                              <label class="fs-6 mb-1">Status</label>
                                              <select class="form-select fs-6 text-dark" [formControl]="isActive"
                                                   (change)="getRoles()">
@@ -39,7 +40,7 @@
                                                   <option value=true>Active</option>
                                              </select>
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2">
                                              <label class="fs-6 mb-1">&nbsp;</label>
                                              <input type="button" class="btn btn-secondary" value="Clear filters"
                                                   (click)="clearFilters()">
@@ -69,7 +70,7 @@
                                                             {{role?.isActive ? 'Active' : 'Inactive'}}
                                                        </span>
                                                   </td>
-                                                  <td routerLink="{{appRoute.admin.UPDATE_ADMIN_USERS}}"
+                                                  <td routerLink="{{appRoute.roles.UPDATE_ROLES}}"
                                                        [queryParams]="{'role': role?.refid}">
                                                        <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                                                   </td>
@@ -105,7 +106,7 @@
                                              <img src="../../../../../../assets/icons/navigateBefore.svg" alt="Icon">
                                         </div>
                                         <div class="paginationPage">{{page}}</div>
-                                        <div class="paginationNext" [ngClass]="{'disabled': lastPage}"
+                                        <div class="paginationNext" [ngClass]="{'disabled': isLastPage}"
                                              (click)="getNextPage()">
                                              <img src="../../../../../../assets/icons/navigateNext.svg" alt="Icon">
                                         </div>

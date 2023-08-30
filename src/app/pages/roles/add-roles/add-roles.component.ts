@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { PermissionsService } from 'src/app/includes/services/permissions.service';
 import { RolesService } from 'src/app/includes/services/roles.service';
+
 @Component({
   selector: 'app-add-roles',
   templateUrl: './add-roles.component.html',
@@ -17,12 +18,9 @@ export class AddRolesComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   isSubmitted = false;
-  permissionsData: any;
-  permissionsArray: any = []
-  roleNames: any = [];
-
+  permissions: any = []
   checkedPermissions: Array<any> = []
-  permissions: Array<any> = []
+  isSelected: boolean = false
 
   constructor(
     private RolesService: RolesService,
@@ -34,21 +32,44 @@ export class AddRolesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initForm()
-    this.managePage()
-    this.getPermissions()
-  }
-
-  initForm() {
     this.form = this.FormBuilder.group({
       name: ['', Validators.required],
       description: [''],
       isActive: ['true']
     });
+
+    this.managePage()
+
+    this.PermissionsService.getPermissions().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.permissions = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
   get roleForm() {
     return this.form.controls;
+  }
+
+  managePermission(permission: any) {
+    if (!this.checkedPermissions.includes(permission)) {
+      this.checkedPermissions.push(permission)
+    } else {
+      this.checkedPermissions = this.checkedPermissions.filter((item: any) => item != permission)
+    }
+
+    if (this.checkedPermissions.length == this.permissions.length) this.isSelected = true
+  }
+
+  selectPermissions() {
+    for (let permission of this.permissions) this.checkedPermissions.push(permission?.refid)
+    this.isSelected = true
+  }
+
+  removePermissions() {
+    this.checkedPermissions = []
+    this.isSelected = false
   }
 
   managePage() {
@@ -64,37 +85,9 @@ export class AddRolesComponent implements OnInit {
     }
   }
 
-  getPermissions() {
-    this.PermissionsService.getPermissions().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.permissions = res?.result
-      }
-    })
-  }
-
-  selectAllPermissions() {
-    for (let permission of this.permissions) this.checkedPermissions.push(permission?.refid)
-  }
-
-  deselectAllPermissions() {
-    this.permissionsData = []
-  }
-
-  checkPermission(permission: any) {
-    if (!this.checkedPermissions.includes(permission)) {
-      this.checkedPermissions.push(permission)
-    } else {
-      this.checkedPermissions = this.checkedPermissions.filter(item => item != permission)
-    }
-  }
-
   onSubmit() {
     this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateRole();
-    } else {
-      this.addRole();
-    }
+    this.editMode ? this.updateRole() : this.addRole();
   }
 
   addRole() {
@@ -103,11 +96,7 @@ export class AddRolesComponent implements OnInit {
       return
     }
 
-    let payload = {
-      ...this.form.value,
-      permissions: this.checkedPermissions
-    }
-
+    let payload = { ...this.form.value, permissions: this.checkedPermissions }
     if (this.checkedPermissions.length > 0) {
       this.RolesService.addRoles(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {

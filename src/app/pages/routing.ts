@@ -5,6 +5,7 @@ import { MyAccountComponent } from './my-account/my-account.component';
 import { SeoDetailsComponent } from './settings/general/seo-details/seo-details.component';
 import { TimeslotsComponent } from './settings/general/timeslots/timeslots.component';
 import { EnquiresComponent } from './sales/enquires/enquires.component';
+import { PermissionGuard } from '../core/auth/permission.guard';
 
 export const Routing: Routes = [
   {
@@ -16,37 +17,43 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'brand',
+        path: '',
         children: [
           {
-            path: '',
+            path: 'brand',
             loadChildren: () => import('./catalog/brand/brand-list/brand-list.module').then((m) => m.BrandModule),
+            canActivate: [PermissionGuard]
           },
           {
-            path: 'add',
+            path: 'add-brand',
             loadChildren: () => import('./catalog/brand/add-brand/add-brand.module').then((m) => m.AddBrandModule),
+            canActivate: [PermissionGuard]
           },
           {
-            path: 'update',
+            path: 'update-brand',
             loadChildren: () => import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
+            canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'category',
+        path: '',
         children: [
           {
-            path: '',
+            path: 'category',
             loadChildren: () => import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
+            canActivate: [PermissionGuard]
           },
           {
-            path: 'add',
+            path: 'add-category',
             loadChildren: () => import('./catalog/category/add-category/add-category.module').then((m) => m.AddCategoryModule),
+            canActivate: [PermissionGuard]
           },
           {
-            path: 'update',
+            path: 'update-category',
             loadChildren: () => import('./catalog/category/update-category/update-category.module').then((m) => m.UpdateCategoryModule),
+            canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]
@@ -55,15 +62,15 @@ export const Routing: Routes = [
         path: 'collection',
         children: [
           {
-            path: '',
+            path: 'collection',
             loadChildren: () => import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
           },
           {
-            path: 'add',
+            path: 'add-collection',
             loadChildren: () => import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
           },
           {
-            path: 'update',
+            path: 'update-collection',
             loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
           },
         ],
@@ -106,18 +113,18 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'offer',
+        path: '',
         children: [
           {
-            path: '',
+            path: 'offer',
             loadChildren: () => import('./marketing/offer/offer-list/offer-list.module').then((m) => m.OfferModule),
           },
           {
-            path: 'add',
+            path: 'add-offer',
             loadChildren: () => import('./marketing/offer/add-offer/add-offer.module').then((m) => m.AddOfferModule),
           },
           {
-            path: 'update',
+            path: 'update-offer',
             loadChildren: () => import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
           },
         ],

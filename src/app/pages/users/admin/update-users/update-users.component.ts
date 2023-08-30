@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { RolesService } from 'src/app/includes/services/roles.service';
+
 
 @Component({
   selector: 'app-update-users',
@@ -28,50 +29,44 @@ export class UpdateUsersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private ChangeDetectorRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
-    this.initForm()
-    this.managePage()
-    this.admin = this.route.snapshot.queryParams.admin || ''
-    this.getRoles()
-    this.getAdmin()
-  }
-
-  initForm() {
     this.adminForm = this.formBuilder.group({
       firstname: ['', Validators.required],
       lastname: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       username: ['', Validators.required],
-      roleId: ['', Validators.required],
+      role: ['', Validators.required],
       firstPwd: [''],
       password: [''],
       isActive: ['true', Validators.required],
+      isDelete: ['false', Validators.required],
     });
+
+    this.managePage()
+    this.admin = this.route.snapshot.queryParams.admin || ''
+
+    this.roleService.getRoles().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ChangeDetectorRef.markForCheck()
+        this.rolesData = res?.result
+      }
+    })
+
+    this.adminService.getAdminUser(this.admin).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        for (let _key of Object.keys(res?.result)) this.adminForm.get(_key)?.setValue(res?.result[_key])
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
   get af() {
     return this.adminForm.controls;
-  }
-
-  getRoles() {
-    this.roleService.getRoles().subscribe((res: any) => {
-      this.rolesData = res?.result
-    })
-  }
-
-  getAdmin() {
-    this.adminService.getAdminUser(this.admin).subscribe((res: any) => {
-      this.adminForm.get("username")?.setValue(res?.result[0]?.username)
-      this.adminForm.get("firstname")?.setValue(res?.result[0]?.firstname)
-      this.adminForm.get("lastname")?.setValue(res?.result[0]?.lastname)
-      this.adminForm.get("email")?.setValue(res?.result[0]?.email)
-      this.adminForm.get("mobile")?.setValue(res?.result[0]?.mobile)
-      this.adminForm.get("roleId")?.setValue(res?.result[0]?.roleId)
-      this.adminForm.get("isActive")?.setValue(res?.result[0]?.isActive)
-    })
   }
 
   managePage() {

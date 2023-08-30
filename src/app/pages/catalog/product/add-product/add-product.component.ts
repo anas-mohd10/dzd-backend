@@ -812,7 +812,7 @@ export class AddProductComponent implements OnInit {
       case 'basic':
         this.showProduct = false
         this.showMedia = false
-        this.headAdded = true
+        this.headAdded = false
         window.scrollTo(0, 0);
         break
     }

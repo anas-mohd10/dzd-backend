@@ -5,13 +5,15 @@ import { authEndpoints } from '../../config/endpoints';
 import { authRoute } from '../../config/routes';
 import { Router } from '@angular/router';
 import { localstorageVariables } from 'src/app/config/localStorageVariable';
+import { adminUsersEndpoints } from 'src/app/config/endpoints/admin.users.endpoints';
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-
     authEndpoints = authEndpoints;
+    adminUsersEndpoints = adminUsersEndpoints
     authRoute = authRoute;
     isLoading$: any;
     currentUserValue: any;
@@ -41,5 +43,10 @@ export class AuthService {
     saveUserData(data: any) {
         const { permissions, token, id, ...userData } = data
         localStorage.setItem(localstorageVariables.userData, JSON.stringify(userData))
+    }
+
+    authorizeUser(data: any) {
+        const url = this.commonService.getFullUrl(this.adminUsersEndpoints.authorize + `?type=${data}`);
+        return this.http.get(url);
     }
 }

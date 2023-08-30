@@ -1,32 +1,45 @@
-$hover: #e3e3e3;
-$grey: #888888;
+$border: #f7f7f7;
 $white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
+$boxShadow: rgba(0, 0, 0, 0.05);
+$primary: #00bdab;
+$primaryBackground: #00bdab20;
 $background: #e5e5e5;
 $error: #F1416C;
 
 label,
-input[type=button] {
+input[type=button],
+.btn-secondary {
   font-weight: normal !important;
   width: 100%;
 }
 
-.permissions-input {
-  width: 100%;
+.permissionsWrapper {
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+
+  .permissionCard {
+    background: $white;
+    box-shadow: 0 10px 25px $boxShadow;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid $border;
+
+    &.selected {
+      background: $primaryBackground;
+      color: $primary;
+      border: 1px solid $primary;
+    }
+  }
 }
 
-.form-check {
-  padding-left: 20px;
-  margin: 0 20px 0 0;
+.permissionBtns {
+  .btn {
+    width: 120px;
 
-  .form-check-label {
-    margin: 0 !important;
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 }
