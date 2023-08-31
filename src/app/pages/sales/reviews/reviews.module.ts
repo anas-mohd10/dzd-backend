@@ -7,10 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxStarRatingModule } from 'ngx-star-rating';
+import { StarRatingComponent } from './reviews-list/star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
-    ReviewsListComponent
+    ReviewsListComponent,
+    StarRatingComponent
   ],
   imports: [
     CommonModule,

@@ -239,7 +239,7 @@
                     <div class="col-12 col-sm-6 form-group">
                       <label class="fs-6 mb-3 required">Price (Maximum Retail Price)</label>
                       <div class="input-group mb-3">
-                        <span class="input-group-text">Rs.</span>
+                        <span class="input-group-text">{{settings?.currency}}</span>
                         <input type="text" class="form-control" formControlName="mrpPrice" [ngClass]="{
                         'is-invalid':(pf.mrpPrice.touched || isSubmitted) &&pf.mrpPrice.errors?.required}" />
                         <span class="input-group-text">.00</span>
@@ -251,7 +251,7 @@
                     <div class="col-12 col-sm-6 form-group">
                       <label class="fs-6 mb-3">Offer Price</label>
                       <div class="input-group mb-3">
-                        <span class="input-group-text">Rs.</span>
+                        <span class="input-group-text">{{settings?.currency}}</span>
                         <input type="text" class="form-control" formControlName="offerPrice" />
                         <span class="input-group-text">.00</span>
                       </div>

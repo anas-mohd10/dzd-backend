@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -168,6 +169,7 @@ export class AddProductComponent implements OnInit {
   objFilename: any
   isValidObjFile: boolean = true;
   showObjFile: boolean = false
+  settings: any = {}
 
   constructor(
     private formBuilder: FormBuilder,
@@ -181,7 +183,8 @@ export class AddProductComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private ProductHeadService: ProductHeadService,
     private ElementRef: ElementRef,
-    private AttributeService: AttributeService
+    private AttributeService: AttributeService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   get pf() {
@@ -202,6 +205,14 @@ export class AddProductComponent implements OnInit {
     this.getTaxClassDetail();
     this.getProducts();
     this.slug = this.route.snapshot.queryParams.id || ''
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+        this.cdr.markForCheck()
+      }
+    })
+
     this.categoryService.getMainCategories().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.maincategories = res?.result
@@ -379,6 +390,12 @@ export class AddProductComponent implements OnInit {
       for (let _sel of this.selectedMainCategory) {
         if (_main?._id == _sel) {
           this.defaultcategories.push({
+            _id: _main?._id,
+            name: _main?.name,
+            catid: _main?.catid
+          })
+
+          this.subcategories.push({
             _id: _main?._id,
             name: _main?.name,
             catid: _main?.catid
@@ -833,6 +850,7 @@ export class AddProductComponent implements OnInit {
           this.productHeadId = res?.result?.prodid
           this.basicImage = ''
           this.loadBasicImage = false
+
           if (this.producthhead) {
             this.categoryService.getSubCategoriesbyId(this.producthhead?.parentCategory).subscribe((res: any) => {
               if (res?.errorCode == 0) {
@@ -980,6 +998,7 @@ export class AddProductComponent implements OnInit {
             this.cdr.markForCheck()
           }
         })
+
         this.producthhead = res?.result[0]
         this.showMainCategory = true
         for (let category of this.maincategories) {
@@ -992,6 +1011,7 @@ export class AddProductComponent implements OnInit {
             }
           }
         }
+
         this.selectedDefaultCategory = res?.result[0]?.defaultCategory['id']
         this.selectedBrand = res?.result[0]?.brand
         this.selectedTax = res?.result[0]?.tax

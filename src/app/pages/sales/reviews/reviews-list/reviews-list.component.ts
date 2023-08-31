@@ -53,7 +53,7 @@ export class ReviewsListComponent implements OnInit {
 
   selectReview(data: any) {
     this.data = data
-    this.rating.setValue(data?.rating)
+    this.rating.setValue(Number(data?.rating))
     this.ChangeDetectorRef.markForCheck()
   }
 

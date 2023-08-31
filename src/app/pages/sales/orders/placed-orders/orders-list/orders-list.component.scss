@@ -191,7 +191,7 @@ $error: #F1416C;
   border-radius: 4px;
   color: $white;
   background: #28C76F;
-  width: 47px;
+  // width: 47px;
   font-size: 13px !important;
   height: 24px;
   display: flex;
@@ -307,7 +307,7 @@ $error: #F1416C;
   background: white;
   border: none;
   outline: none;
-  font-size: 18px !important;
+  font-size: 16px !important;
   line-height: 21px;
   letter-spacing: -0.02em;
   text-transform: capitalize;
@@ -318,7 +318,7 @@ $error: #F1416C;
     color: #20BDAB;
     padding: 0;
     position: relative;
-    font-weight: 800 !important;
+    font-weight: 600 !important;
 
     &:after {
       content: "";

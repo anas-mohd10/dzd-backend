@@ -18,7 +18,7 @@ export class PermissionGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let path = state.url.split('app/')[1];
-    path.split('?')[0]
+    path = path.split('?')[0]
     return this.authService.authorizeUser(path).pipe(
       map((res: any) => {
         if (res?.errorCode === 0) {

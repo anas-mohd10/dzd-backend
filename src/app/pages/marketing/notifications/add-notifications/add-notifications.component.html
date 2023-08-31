@@ -76,7 +76,8 @@
                         <div class="col-lg-6 mb-3">
                            <div class="form-group">
                               <label class="fs-6 mb-3">Schedule Date</label>
-                              <input type="date" [min]="startDate" class="form-control fs-6" formControlName="scheduledDate" />
+                              <input type="date" [min]="startDate" class="form-control fs-6"
+                                 formControlName="scheduledDate" />
                            </div>
                         </div>
                         <div class="col-lg-6" *ngIf="!invalidDate">
@@ -108,6 +109,10 @@
                         <div class="form-group">
                            <label class="fs-6 mb-3">Redirection URL</label>
                            <input type="text" class="form-control fs-6" formControlName="redirection" />
+                        </div>
+                        <div class="mt-1 p-2 alert alert-info" role="alert">
+                           Kindly provide url endpoints <br>
+                           For eg. if the url is <code>commercecastle.com/product-listing</code>, enter <code>/product-listing</code> as the redirection url
                         </div>
                      </div>
 

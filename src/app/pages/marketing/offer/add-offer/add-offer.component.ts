@@ -38,14 +38,16 @@ export class AddOfferComponent implements OnInit {
 
   validDate: boolean = true;
 
-  productsdata: any;
-  products: []
-  categoriesdata: any = []
-  categories: any = []
-  collectionsdata: any = []
-  collections: any = []
-  isValidValue: boolean;
-  error_message: string;
+  productsdata: Array<any> = [];
+  products: Array<any> = []
+  categoriesdata: Array<any> = []
+  categories: Array<any> = []
+  collectionsdata: Array<any> = []
+  collections: Array<any> = []
+
+  isValidValue: boolean = true;
+  isProceedable: boolean = true
+  error_message: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -124,18 +126,6 @@ export class AddOfferComponent implements OnInit {
   get of() {
     return this.offerForm.controls;
   }
-
-  // dateValidation() {
-  //   const from = this.offerForm.get('fromDate')?.value
-  //   const to = this.offerForm.get('lastDate')?.value
-  //   if (from < this.from_date || from > to) {
-  //     this.toastr.error('invalid date')
-  //   } else if (to < this.to_date || to < from) {
-  //     this.toastr.error('invalid date')
-  //   } else {
-  //     this.validDate = true
-  //   }
-  // }
 
   managePage() {
     switch (this.task) {
@@ -217,17 +207,21 @@ export class AddOfferComponent implements OnInit {
       return;
     }
 
+    this.categories.length > 0 || this.products.length > 0 || this.collections.length > 0 ? this.isProceedable = true : this.isProceedable = false
     const payload = this.createPayload()
     if (payload) {
       if (this.isValidValue) {
-        this.offerService.addOffer(payload).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
-          } else if (res.errorCode == 0) {
-            this.toastr.success(res?.message);
-            this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-          }
-        });
+
+        if (this.isProceedable) {
+          this.offerService.addOffer(payload).subscribe((res: any) => {
+            if (res.errorCode != 0) {
+              this.toastr.error(res?.message);
+            } else if (res.errorCode == 0) {
+              this.toastr.success(res?.message);
+              this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+            }
+          });
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,7 @@ import { CustomersService } from 'src/app/includes/services/customers.service';
   styleUrls: ['./update-customers.component.scss']
 })
 export class UpdateCustomersComponent implements OnInit {
+  @ViewChild('deleteModal') deleteModal: ElementRef;
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes
@@ -26,6 +27,7 @@ export class UpdateCustomersComponent implements OnInit {
   address: any
   validBtn: boolean = false
   selectedID: any = ''
+  selectedAddress: string = ''
 
   isAddressSubmitted: boolean = false
   addressForm: FormGroup
@@ -199,8 +201,12 @@ export class UpdateCustomersComponent implements OnInit {
     })
   }
 
-  removeAddress(refid: any) {
-    this.customerService.deleteAddress(refid).subscribe((res: any) => {
+  selectAddress(refid: any) {
+    this.selectedAddress = refid
+  }
+
+  removeAddress() {
+    this.customerService.deleteAddress(this.selectedAddress).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress()
         this.toastr.success(res?.message)

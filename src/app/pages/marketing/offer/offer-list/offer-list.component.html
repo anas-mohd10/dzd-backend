@@ -79,7 +79,7 @@
         </div>
 
         <div class="offer-card-top">
-          <div class="offer-image me-2">
+          <div class="offer-image me-5">
             <img class="rounded" src="{{offer?.file}}" alt="Offer" />
           </div>
 
@@ -97,13 +97,14 @@
             <div class="offer-value fs-4 fw-bolder mt-2">
               {{offer?.type == 'Flat' ? 'Flat' : '%'}} {{offer?.value}}
             </div>
+            <div class="fs-6 mt-2 text-muted">
+              Offer valid from <span class="fw-bolder text-dark">{{offer?.fromDate}}</span> to <span
+                class="fw-bolder text-dark">{{offer?.lastDate}}</span>
+            </div>
           </div>
         </div>
 
-        <div class="fs-6 text-muted">
-          Offer valid from <span class="fw-bolder text-dark">{{offer?.fromDate}}</span> to <span
-            class="fw-bolder text-dark">{{offer?.lastDate}}</span>
-        </div>
+
       </div>
     </ng-container>
     <ng-container *ngIf="offers.length == 0">

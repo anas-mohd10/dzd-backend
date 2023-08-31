@@ -143,7 +143,7 @@
           <div class="fs-6 mb-3">Review by {{data?.customer?.id?.name}} on {{data?.created}}</div>
           <div class="reviewMessage fs-6"> {{data?.message}}</div>
           <div class="mt-5">
-            <ngx-star-rating [formControl]="rating" [id]="'rating'" [disabled]="true"></ngx-star-rating>
+            <app-star-rating [rating]="data?.rating"></app-star-rating>
           </div>
         </div>
       </div>

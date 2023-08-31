@@ -33,7 +33,7 @@ export class NotificationsListComponent implements OnInit {
     this.form = new FormGroup({
       keyword: new FormControl(''),
       isActive: new FormControl(''),
-      channel: new FormControl('app'),
+      channel: new FormControl(''),
       type: new FormControl(''),
       status: new FormControl(''),
     });

@@ -141,7 +141,7 @@ export class UpdateNotificationsComponent implements OnInit {
       scheduledTime: [''],
       file: [''],
       customer: [''],
-      redirection: [''],
+      redirect: [''],
       selectCustomer: [''],
       notifyAll: ['', Validators.required],
       isActive: ['true', Validators.required],
@@ -220,7 +220,7 @@ export class UpdateNotificationsComponent implements OnInit {
       filestring: this.croppedImage,
       filename: this.filename,
       customers: this.customers,
-      redirect: this.form.get('redirection')?.value,
+      redirect: this.form.get('redirect')?.value,
       notifyAll: this.form.get('notifyAll')?.value,
       isActive: this.form.get('isActive')?.value,
       refid: this.notificationDetails?.refid
