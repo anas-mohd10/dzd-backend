@@ -18,13 +18,13 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-4">
     <div class="col-sm-12">
       <div class="card card-table">
         <div class="card-body">
           <div class="pb-5">
             <div class="row d-flex justify-content-end align-items-end">
-              <div class="col-2">
+              <div class="col-lg-4">
                 <label class="form-label">&nbsp;</label>
                 <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
                   (ngModelChange)="getReviews()">
@@ -37,15 +37,15 @@
                   <option value=true>Active</option>
                 </select>
               </div>
-              <div class="col-2">
+              <div class="col-lg-2">
                 <label class="fs-6 mb-1">From</label>
                 <input type="date" class="form-control fs-6 text-dark" [formControl]="fromDate" (change)="getReviews()">
               </div>
-              <div class="col-2">
+              <div class="col-lg-2">
                 <label class="fs-6 mb-1">To</label>
                 <input type="date" class="form-control fs-6 text-dark" [formControl]="toDate" (change)="getReviews()">
               </div>
-              <div class="col-2">
+              <div class="col-lg-2">
                 <label class="fs-6 mb-1">&nbsp;</label>
                 <input type="button" class="btn btn-secondary" value="Clear filters" (click)="clearFilters()">
               </div>

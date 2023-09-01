@@ -9,7 +9,10 @@ import { contactsEndpoints } from 'src/app/config/endpoints';
 export class ContactsService {
   contactsEndpoints = contactsEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
   addContact(data: any) {
     const url = this.commonService.getFullUrl(this.contactsEndpoints.add_contact);
@@ -17,17 +20,22 @@ export class ContactsService {
   }
 
   getContacts() {
-    const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contact);
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contacts);
     return this.http.get(`${url}`);
   }
 
-  getContactBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contact_by_slug + "?slug=" + slug);
+  getContactDetails(contact: any) {
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.get_contact_details + `/${contact}`);
     return this.http.get(`${url}`);
   }
 
-  updateContact(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.contactsEndpoints.update_contact + "?slug=" + slug);
+  searchContacts(data: any) {
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.search_contacts);
+    return this.http.post(`${url}`, data);
+  }
+
+  updateContact(data: any) {
+    const url = this.commonService.getFullUrl(this.contactsEndpoints.update_contact);
     return this.http.put(`${url}`, data);
   }
 }

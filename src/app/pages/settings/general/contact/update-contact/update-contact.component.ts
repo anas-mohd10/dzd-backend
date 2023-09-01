@@ -15,11 +15,12 @@ export class UpdateContactComponent implements OnInit {
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes
-  contactsForm: FormGroup
+  form: FormGroup
   isSubmitted = false;
   uniqueEmail: boolean;
-  slug: any
-  contactData: any;
+  contact: any
+
+  contactDetails: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,29 +32,38 @@ export class UpdateContactComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.managePage()
-    this.slug = this.route.snapshot.queryParams.slug || ''
-    this.getContactBySlug()
+    this.contact = this.route.snapshot.queryParams.contact || ''
+    this.contactsService.getContactDetails(this.contact).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.contactDetails = res?.result
+        for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+        this.form.get('lat')?.setValue(res?.result?.coords?.lat)
+        this.form.get('lng')?.setValue(res?.result?.coords?.lng)
+      }
+    })
   }
 
   initForm() {
-    this.contactsForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['',[ Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      mobile: ['', [Validators.required,Validators.pattern("^[0-9]{10}$")]],
-      isActive: ['true', Validators.required],
-      firstline: ['', Validators.required],
-      secondline: [''],
+      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      countryCode: ['', Validators.required],
+      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      isActive: ['true'],
+      isPrimary: ['false'],
+      firstlane: [''],
+      secondlane: [''],
       area: [''],
-      city: ['', Validators.required],
-      pincode: ['',[ Validators.required, Validators.pattern("^[1-9]{1}[0-9]{2}[0-9]{3}$")]],
-      lat: ['', Validators.required],
-      lng: ['', Validators.required],
-      state: ['', Validators.required],
+      city: [''],
+      pincode: [''],
+      lat: [''],
+      lng: [''],
+      state: [''],
     });
   }
 
   get ctf() {
-    return this.contactsForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -69,24 +79,6 @@ export class UpdateContactComponent implements OnInit {
     }
   }
 
-  getContactBySlug() {
-    this.contactsService.getContactBySlug(this.slug).subscribe((res: any) => {
-      this.contactData = res?.result[0]
-      this.contactsForm.get("name")?.setValue(this.contactData.name)
-      this.contactsForm.get("email")?.setValue(this.contactData.email)
-      this.contactsForm.get("mobile")?.setValue(this.contactData.mobile)
-      this.contactsForm.get("firstline")?.setValue(this.contactData.address[0].firstline)
-      this.contactsForm.get("secondline")?.setValue(this.contactData.address[0].secondline)
-      this.contactsForm.get("area")?.setValue(this.contactData.address[0].area)
-      this.contactsForm.get("city")?.setValue(this.contactData.address[0].city)
-      this.contactsForm.get("pincode")?.setValue(this.contactData.address[0].pincode)
-      this.contactsForm.get("state")?.setValue(this.contactData.address[0].state)
-      this.contactsForm.get("lat")?.setValue(this.contactData.address[0].lat)
-      this.contactsForm.get("lng")?.setValue(this.contactData.address[0].lng)
-      this.contactsForm.get("isActive")?.setValue(this.contactData.isActive)
-    })
-  }
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -99,31 +91,38 @@ export class UpdateContactComponent implements OnInit {
   addContact() { }
 
   updateContact() {
-    if (!this.contactsForm.valid) {
+    if (!this.form.valid) {
       this.toastr.error('Something wrong occured');
       return;
     }
+
     let data = {
-      name: this.contactsForm.get("name")?.value,
-      email: this.contactsForm.get("email")?.value,
-      mobile: this.contactsForm.get("mobile")?.value,
-      address: [{
-        firstline: this.contactsForm.get("firstline")?.value,
-        secondline: this.contactsForm.get("secondline")?.value,
-        area: this.contactsForm.get("area")?.value,
-        city: this.contactsForm.get("city")?.value,
-        pincode: this.contactsForm.get("pincode")?.value,
-        state: this.contactsForm.get("state")?.value,
-        lat: this.contactsForm.get("lat")?.value,
-        lng: this.contactsForm.get("lng")?.value,
-      }],
-      isActive: this.contactsForm.get("isActive")?.value,
+      name: this.form.get("name")?.value,
+      email: this.form.get("email")?.value,
+      countryCode: this.form.get("countryCode")?.value,
+      mobile: this.form.get("mobile")?.value,
+      address: {
+        firstlane: this.form.get("firstlane")?.value,
+        secondlane: this.form.get("secondlane")?.value,
+        area: this.form.get("area")?.value,
+        city: this.form.get("city")?.value,
+        pincode: this.form.get("pincode")?.value,
+        state: this.form.get("state")?.value,
+        coords: {
+          lat: this.form.get("lat")?.value,
+          lng: this.form.get("lng")?.value,
+        }
+      },
+      isPrimary: this.form.get("isPrimary")?.value,
+      isActive: this.form.get("isActive")?.value,
+      refid: this.contact
     }
-    this.contactsService.updateContact(this.slug, data).subscribe((res: any) => {
+
+    this.contactsService.updateContact(data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Contact updated successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.contacts.CONTACTS_LIST]);
       }
     })

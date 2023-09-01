@@ -3,6 +3,16 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
+.menu-title-gray-800 {
+  .menu-item {
+    .menu-link {
+      .menu-title {
+        color: #000000 !important;
+      }
+    }
+  }
+}
+
 .reviewDetails {
   label {
     font-weight: 400 !important;

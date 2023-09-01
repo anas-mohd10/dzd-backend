@@ -15,7 +15,7 @@ export class AddContactComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes
-  contactsForm: FormGroup
+  form: FormGroup
   isSubmitted = false;
   uniqueEmail: boolean;
 
@@ -32,24 +32,26 @@ export class AddContactComponent implements OnInit {
   }
 
   initForm() {
-    this.contactsForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      countryCode: ['', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-      isActive: ['true', Validators.required],
-      firstline: ['', Validators.required],
-      secondline: [''],
+      isActive: ['true'],
+      isPrimary: ['false'],
+      firstlane: [''],
+      secondlane: [''],
       area: [''],
-      city: ['', Validators.required],
-      pincode: ['', [Validators.required, Validators.pattern("^[1-9]{1}[0-9]{2}[0-9]{3}$")]],
+      city: [''],
+      pincode: [''],
       lat: [''],
       lng: [''],
-      state: ['', Validators.required],
+      state: [''],
     });
   }
 
   get ctf() {
-    return this.contactsForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -75,32 +77,36 @@ export class AddContactComponent implements OnInit {
   }
 
   addContact() {
-    if (!this.contactsForm.valid) {
-      this.toastr.error('Something wrong occured');
+    if (!this.form.valid) {
       return;
     }
-    let data = {
-      name: this.contactsForm.get("name")?.value,
-      email: this.contactsForm.get("email")?.value,
-      mobile: this.contactsForm.get("mobile")?.value,
-      address: [{
-        firstline: this.contactsForm.get("firstline")?.value,
-        secondline: this.contactsForm.get("secondline")?.value,
-        area: this.contactsForm.get("area")?.value,
-        city: this.contactsForm.get("city")?.value,
-        pincode: this.contactsForm.get("pincode")?.value,
-        state: this.contactsForm.get("state")?.value,
-        lat: this.contactsForm.get("lat")?.value,
-        lng: this.contactsForm.get("lng")?.value,
-      }],
-      isActive: this.contactsForm.get("isActive")?.value,
+
+    let payload = {
+      name: this.form.get("name")?.value,
+      email: this.form.get("email")?.value,
+      countryCode: this.form.get("countryCode")?.value,
+      mobile: this.form.get("mobile")?.value,
+      address: {
+        firstlane: this.form.get("firstlane")?.value,
+        secondlane: this.form.get("secondlane")?.value,
+        area: this.form.get("area")?.value,
+        city: this.form.get("city")?.value,
+        pincode: this.form.get("pincode")?.value,
+        state: this.form.get("state")?.value,
+        coords: {
+          lat: this.form.get("lat")?.value,
+          lng: this.form.get("lng")?.value,
+        }
+      },
+      isPrimary: this.form.get("isPrimary")?.value,
+      isActive: this.form.get("isActive")?.value,
     }
 
-    this.contactsService.addContact(data).subscribe((res: any) => {
+    this.contactsService.addContact(payload).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
+        this.toastr.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success('Contact added successfully');
+        this.toastr.success(res?.message);
         this.router.navigate([this.appRoute.contacts.CONTACTS_LIST]);
       }
     })
