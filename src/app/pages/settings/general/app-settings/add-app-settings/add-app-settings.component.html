@@ -21,238 +21,209 @@
          </div>
       </div>
    </div>
-   <div class="page-container">
-      <div class="col-sm-12 fs-6 mt-10">
+
+   <div class="row mt-4">
+      <div class="col-lg-7">
          <div class="card">
             <div class="card-body">
-               <form [formGroup]="appsettingsform">
-                  <div class="col-12">
-                     <h2 class="form-title">Color Details</h2>
-                     <div class="row">
-
-                        <div class="col-12 fs-4 fw-bolder">
-                           Brand Color Details
+               <form [formGroup]="form">
+                  <h2 class="form-title">Color Settings</h2>
+                  <div class="row mt-4">
+                     <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Primary Color</label>
+                           <input type="color" placeholder="App primary color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="primary" />
                         </div>
-
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Primary Color</label>
-                              <input type="color" placeholder="App primary color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="primary" />
-                           </div>
-                        </div>
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Secondary Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="secondary" />
-                           </div>
-                        </div>
-
-                        <div class="col-12 fs-4 fw-bolder">
-                           Additional Color Details
-                        </div>
-
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Label Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="label" />
-                           </div>
-                        </div>
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Star Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="star" />
-                           </div>
-                        </div>
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Text Color</label>
-                              <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="text" />
-                           </div>
-                        </div>
-
-                        <div class="col-12 fs-4 fw-bolder">
-                           Toast Color Details
-                        </div>
-
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Toast Success Color</label>
-                              <input type="color" placeholder="App toast success color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="toastSuccess" />
-                           </div>
-                        </div>
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Toast Error Color</label>
-                              <input type="color" placeholder="App toast error color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="toastError" />
-                           </div>
-                        </div>
-                        <div class="col-sm-2">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Toast Info Color</label>
-                              <input type="color" placeholder="App toast error color" class="form-control fs-6"
-                                 style="height: 40px;" formControlName="toastInfo" />
-                           </div>
+                     </div>
+                     <div class="col-lg-6">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Secondary Color</label>
+                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="secondary" />
                         </div>
                      </div>
                   </div>
-                  <div class="col-12">
-                     <h2 class="form-title">Additional Details</h2>
-                     <div class="row">
-                        <div class="col-12 col-sm-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Items Per Page</label>
-                              <input type="number" placeholder="14" class="form-control fs-6"
-                                 formControlName="itemsPerPage" />
-                           </div>
+                  <div class="row">
+                     <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Label Color</label>
+                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="label" />
+                        </div>
+                     </div>
+                     <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Star Color</label>
+                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="star" />
+                        </div>
+                     </div>
+                     <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Text Color</label>
+                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="text" />
                         </div>
                      </div>
                   </div>
-
-                  <div class="col-12">
-                     <h2 class="form-title">Website Details</h2>
-                     <div class="row">
-                        <div class="col-12 col-sm-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Domain</label>
-                              <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
-                                 formControlName="domain" />
-                           </div>
+                  <div class="row">
+                     <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Toast Success Color</label>
+                           <input type="color" placeholder="App toast success color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="toastSuccess" />
+                        </div>
+                     </div>
+                     <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Toast Error Color</label>
+                           <input type="color" placeholder="App toast error color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="toastError" />
+                        </div>
+                     </div>
+                     <div class="col-lg-4">
+                        <div class="form-group mb-4">
+                           <label class="fs-6 mb-3">Toast Info Color</label>
+                           <input type="color" placeholder="App toast error color" class="form-control fs-6"
+                              style="height: 40px;" formControlName="toastInfo" />
                         </div>
                      </div>
                   </div>
-
-
+                  <h2 class="form-title">Additional Settings</h2>
                   <div class="col-12">
-                     <h2 class="form-title">Notes</h2>
-                     <div class="row">
-                        <div class="col-lg-12">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3 required">Packing Slip</label>
-                              <angular-editor class="form-control fs-6" formControlName="packingSlip"
-                                 [config]="editorConfig"></angular-editor>
-                           </div>
-                        </div>
+                     <div class="form-group mb-4">
+                        <label class="fs-6 mb-3 required">Packing Slip</label>
+                        <angular-editor class="form-control fs-6" formControlName="packingSlip"
+                           [config]="editorConfig"></angular-editor>
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required">Domain</label>
+                        <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
+                           formControlName="domain" />
+                     </div>
+                  </div>
+               </form>
+
+               <div class="col-12 d-flex align-items-center justify-content-end">
+                  <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
+                     class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
+                     style="width: 200px; margin-right: 20px;">
+                     Cancel
+                  </a>
+                  <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="onSubmit()">
+                     Update
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-lg-5">
+         <div class="card">
+            <div class="card-body">
+               <h2 class="form-title">General Settings</h2>
+               <form [formGroup]="form">
+                  <div class="col-12">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Currency</label>
+                        <select class="form-select fs-6" formControlName="currency">
+                           <option value="" disabled>-- Select an option --</option>
+                           <ng-container *ngFor="let currency of currencies">
+                              <option value="{{currency}}">{{currency}}</option>
+                           </ng-container>
+                        </select>
                      </div>
                   </div>
 
-                  <div class="col-12">
-                     <h2 class="form-title">Font Details</h2>
-                     <div class="col-12 col-sm-6">
-                        <div class="form-group">
-                           <label class="fs-6 mb-3">Font Family?</label>
-                           <select class="form-select form-select-lg fs-6 mb-3" aria-label=".form-select-lg"
-                              formControlName="fontFamily">
-                              <option value="">-- Select an option --</option>
-                              <option value="Manrope">Manrope</option>
-                              <option value="GeogrotesqueCyr">GeogrotesqueCyr</option>
-                              <option value="BellMT">BellMT</option>
-                              <option value="BookAntiqua">BookAntiqua</option>
-                              <option value="Active">Active</option>
-                              <option value="Hellix">Hellix</option>
-                           </select>
-                        </div>
+                  <div class="col-l12">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Font Family</label>
+                        <select class="form-select fs-6" formControlName="fontFamily">
+                           <option value="" disabled>-- Select an option --</option>
+                           <ng-container *ngFor="let font of fontFamily">
+                              <option value="{{font}}">{{font}}</option>
+                           </ng-container>
+                        </select>
                      </div>
                   </div>
 
                   <div class="col-12">
-                     <h2 class="form-title">Miscellaneous Details</h2>
-                     <div class="row">
-                        <div class="col-12 col-sm-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Currency</label>
-                              <select class="form-select form-select-lg fs-6 mb-3" aria-label=".form-select-lg"
-                                 formControlName="currency">
-                                 <option value="" disabled>-- Select an option --</option>
-                                 <ng-container *ngFor="let currency of currencies">
-                                    <option value="{{currency}}">{{currency}}</option>
-                                 </ng-container>
-                              </select>
-                           </div>
-                        </div>
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Show Out of Stock Products</label>
+                        <select class="form-select mb-3" formControlName="isOutOfStock">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="false">No</option>
+                           <option value="true">Yes</option>
+                        </select>
                      </div>
                   </div>
 
+                  <div class="col-12">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required">Items Per Page</label>
+                        <input type="number" placeholder="14" class="form-control fs-6"
+                           formControlName="itemsPerPage" />
+                     </div>
+                  </div>
 
-                  <div class="col-lg-12">
-                     <h2 class="form-title">Media Details</h2>
-                     <div class="row">
-                        <div class="col-lg-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3 required">Logo</label>
-                              <div class="image-upload">
-                                 <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                                    (change)="onInputChange('logo', $event)" style="height: 100px;" required>
-                                 <div class="image-upload-div">
-                                    <div class="left-img">
-                                       <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                                    </div>
-                                    <div class="right-text d-flex flex-column">
-                                       <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                       <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                                          Upload up to 1 file
-                                       </span>
-                                    </div>
-                                 </div>
+                  <div class="col-12">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required">Logo</label>
+                        <div class="image-upload">
+                           <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                              (change)="onInputChange('logo', $event)" style="height: 100px;" required>
+                           <div class="image-upload-div">
+                              <div class="left-img">
+                                 <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
                               </div>
-                           </div>
-
-                           <div class="logoPreview mt-5" *ngIf="logoFilePreview">
-                              <div class="logo">
-                                 <img src="{{logoFilePreview}}" alt="Logo">
-                                 <div class="logoClose fs-6 mt-2" (click)="removeLogo('logo')"> Discard </div>
-                              </div>
-                           </div>
-
-                        </div>
-                        <div class="col-lg-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3 required">Favicon</label>
-                              <div class="image-upload">
-                                 <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                                    (change)="onInputChange('favicon', $event)" style="height: 100px;" required>
-                                 <div class="image-upload-div">
-                                    <div class="left-img">
-                                       <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                                    </div>
-                                    <div class="right-text d-flex flex-column">
-                                       <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                       <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                                          Upload up to 1 file
-                                       </span>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-
-                           <div class="faviconPreview mt-5" *ngIf="faviconFilePreview">
-                              <div class="favicon">
-                                 <img src="{{faviconFilePreview}}" alt="Favicon">
-                                 <div class="faviconClose fs-6 mt-2" (click)="removeLogo('favicon')"> Discard </div>
+                              <div class="right-text d-flex flex-column">
+                                 <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                                 <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                                    Upload up to 1 file
+                                 </span>
                               </div>
                            </div>
                         </div>
                      </div>
+
+                     <div class="logoPreview mt-5" *ngIf="logoFilePreview">
+                        <div class="logo">
+                           <img src="{{logoFilePreview}}" alt="Logo">
+                           <div class="logoClose fs-6 mt-2" (click)="removeLogo('logo')"> Discard </div>
+                        </div>
+                     </div>
                   </div>
 
+                  <div class="col-12">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3 required">Favicon</label>
+                        <div class="image-upload">
+                           <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                              (change)="onInputChange('favicon', $event)" style="height: 100px;" required>
+                           <div class="image-upload-div">
+                              <div class="left-img">
+                                 <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                              </div>
+                              <div class="right-text d-flex flex-column">
+                                 <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                                 <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
+                                    Upload up to 1 file
+                                 </span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
 
-                  <div class="col-12 d-flex align-items-center justify-content-end">
-                     <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
-                        class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
-                        style="width: 200px; margin-right: 20px;">
-                        Cancel
-                     </a>
-                     <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
-                        (click)="onSubmit()">
-                        Add
-                     </button>
+                     <div class="faviconPreview mt-5" *ngIf="faviconFilePreview">
+                        <div class="favicon">
+                           <img src="{{faviconFilePreview}}" alt="Favicon">
+                           <div class="faviconClose fs-6 mt-2" (click)="removeLogo('favicon')"> Discard </div>
+                        </div>
+                     </div>
                   </div>
+
                </form>
             </div>
          </div>

@@ -1,0 +1,27 @@
+<div class="seoDetailsContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Dynamic Scripts</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.DYNAMIC_SCRIPTS.LIST}}">Dynamic Scripts</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-primary mt-4 mb-4">
+        You can add additional javascript for your webstore here.
+    </div>
+
+    <div class="col-12">
+        <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+    </div>
+</div>

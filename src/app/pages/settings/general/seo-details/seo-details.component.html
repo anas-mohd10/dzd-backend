@@ -13,32 +13,44 @@
                         <a routerLink="{{ appRoute.seo.SEO_DETAILS}}">SEO</a>
                     </li>
                 </ul>
+
+                <div class="buttonContainer">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seoModal">
+                        Add SEO Details
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="buttonContainer">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Add SEO Details
-        </button>
-    </div>
-
-    <div class="seoCards">
-        <ng-container *ngFor="let item of data; let i = index">
-            <div class="seoCard">
-                {{i+1}}
-                <div class="page">{{item?.page}}</div>
+    <div class="seoCards mt-4">
+        <ng-container *ngFor="let seoItem of seoDetails; let i = index">
+            <div class="seoCard p-3 mb-3">
+                <div class="seoEdit" (click)="getSeoDetails(seoItem?.refid)" data-bs-toggle="modal"
+                    data-bs-target="#seoModal">
+                    <svg height="24px" width="24px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M15.7279 9.57629L14.3137 8.16207L5 17.4758V18.89H6.41421L15.7279 9.57629ZM17.1421 8.16207L18.5563 6.74786L17.1421 5.33365L15.7279 6.74786L17.1421 8.16207ZM7.24264 20.89H3V16.6474L16.435 3.21233C16.8256 2.8218 17.4587 2.8218 17.8492 3.21233L20.6777 6.04075C21.0682 6.43128 21.0682 7.06444 20.6777 7.45497L7.24264 20.89Z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="page">{{seoItem?.page}}</div>
+                <div class="metaurl mt-2 mb-2"><code>{{seoItem?.url}}</code></div>
+                <div class="metaTitle">{{seoItem?.title}}</div>
+                <div class="metaDescription mt-1 fs-6">{{seoItem?.description}}</div>
+                <div class="metaDKeywords mt-4">Keywords : <code>{{seoItem?.keywords}}</code></div>
             </div>
         </ng-container>
     </div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="seoModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="seoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add SEO Details</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="seoModalLabel">SEO Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
                 <form [formGroup]="form">
@@ -51,7 +63,7 @@
                                 (fc.page.touched || !isValid) &&
                                 fc.page.errors?.required
                               }">
-                                <option selected disabled>Select a page</option>
+                                <option selected disabled>-- Select a page --</option>
                                 <option value="HOME">Home</option>
                                 <option value="ABOUT">About</option>
                                 <option value="CONTACT">Contact</option>
@@ -104,8 +116,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-                <button type="button" class="btn btn-primary" (click)="addSeoDetails()">Save changes</button>
+                <button type="button" class="btn btn-primary" (click)="manageDetails()">Save changes</button>
             </div>
         </div>
     </div>

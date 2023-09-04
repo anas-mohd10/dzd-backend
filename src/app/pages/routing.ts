@@ -6,6 +6,8 @@ import { SeoDetailsComponent } from './settings/general/seo-details/seo-details.
 import { TimeslotsComponent } from './settings/general/timeslots/timeslots.component';
 import { EnquiresComponent } from './sales/enquires/enquires.component';
 import { PermissionGuard } from '../core/auth/permission.guard';
+import { DynamicScriptsComponent } from './settings/general/dynamic-scripts/dynamic-scripts.component';
+import { AnalyticsComponent } from './settings/general/analytics/analytics.component';
 
 export const Routing: Routes = [
   {
@@ -333,6 +335,14 @@ export const Routing: Routes = [
       }, {
         path: 'wishlist',
         loadChildren: () => import('./sales/wishlist/wishlist.module').then((m) => m.WishlistModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'dynamic-scripts',
+        component: DynamicScriptsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'analytics',
+        component: AnalyticsComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

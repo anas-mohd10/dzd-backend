@@ -1,66 +1,27 @@
-.app-settings-container {
-   margin: 10px 0 0 0;
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
 
-   .items-per-page,
-   .font-family {
-      font-weight: 500;
-      margin: 10px 0 0 0;
-      color: #999999;
-   }
-}
-
-.colors {
+.colorsWrapper {
    display: grid;
    grid-template-columns: repeat(4, 1fr);
    gap: 10px;
 
-   .color-container {
-      width: 60px;
-      height: 60px;
-      border-radius: 10px;
-      margin: 0 10px 0 0;
-   }
-
    .colorCard {
-      font-size: 1.3rem;
-      background: #ffffff;
-      box-shadow: 0 10px 35px rgba($color: #000000, $alpha: 0.10);
-      padding: 20px;
-      border-radius: 10px;
-      display: flex;
-      align-items: start;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      background: $white;
 
-      .colorDetails {
-         display: flex;
-         flex-direction: column;
-
-         .colorType {
-            color: #999999;
-         }
+      .colorBox {
+         height: 40px;
+         width: 40px;
       }
-   }
-}
-
-.additinalDetails {
-   display: grid;
-   grid-template-columns: repeat(6, 1fr);
-   gap: 10px;
-}
-
-.fontDetails {
-   display: grid;
-   grid-template-columns: repeat(5, 1fr);
-   gap: 10px;
-}
-
-.detailsCard {
-   background: #ffffff;
-   box-shadow: 0 10px 35px rgba($color: #000000, $alpha: 0.10);
-   padding: 20px;
-   border-radius: 10px;
-
-   .detailsTitle {
-      color: #999999;
-      margin: 0 0 10px 0;
    }
 }

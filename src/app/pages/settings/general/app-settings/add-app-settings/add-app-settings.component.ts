@@ -15,7 +15,7 @@ export class AddAppSettingsComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes
-  appsettingsform: FormGroup
+  form: FormGroup
   isSubmitted = false;
   primary: any
   secondary: any
@@ -47,6 +47,7 @@ export class AddAppSettingsComponent implements OnInit {
     ]
   };
 
+  fontFamily: Array<any> = ['Manrope', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
   logoFile: any
   logoFilePreview: any
   faviconFile: any
@@ -66,16 +67,16 @@ export class AddAppSettingsComponent implements OnInit {
     this.secondary = AppSettings.SECONDARY_COLOR ? AppSettings.SECONDARY_COLOR : '#333333'
     this.items_per_page = AppSettings.ITEMS_PER_PAGE ? AppSettings.ITEMS_PER_PAGE : 25
     this.text = AppSettings.TEXT || "#000000"
-    this.appsettingsform.get('primary')?.setValue(this.primary)
-    this.appsettingsform.get('secondary')?.setValue(this.secondary)
-    this.appsettingsform.get('star')?.setValue("#ffa514")
-    this.appsettingsform.get('label')?.setValue(this.primary)
-    this.appsettingsform.get('text')?.setValue(this.text)
-    this.appsettingsform.get('itemsPerPage')?.setValue(this.items_per_page)
+    this.form.get('primary')?.setValue(this.primary)
+    this.form.get('secondary')?.setValue(this.secondary)
+    this.form.get('star')?.setValue("#ffa514")
+    this.form.get('label')?.setValue(this.primary)
+    this.form.get('text')?.setValue(this.text)
+    this.form.get('itemsPerPage')?.setValue(this.items_per_page)
   }
 
   initform() {
-    this.appsettingsform = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       primary: ['', Validators.required],
       secondary: ['', Validators.required],
       star: ['', Validators.required],
@@ -89,6 +90,7 @@ export class AddAppSettingsComponent implements OnInit {
       fontFamily: ['', Validators.required],
       domain: ['', Validators.required],
       packingSlip: ['', Validators.required],
+      isOutOfStock: ['false']
     })
   }
 
@@ -134,32 +136,33 @@ export class AddAppSettingsComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.appsettingsform.valid) {
+    if (!this.form.valid) {
       this.toastr.error('Validation error occured');
       return
     }
 
     const data = {
       colors: {
-        primary: this.appsettingsform.get('primary')?.value,
-        secondary: this.appsettingsform.get('secondary')?.value,
-        star: this.appsettingsform.get('star')?.value,
-        label: this.appsettingsform.get('label')?.value,
-        text: this.appsettingsform.get('text')?.value,
+        primary: this.form.get('primary')?.value,
+        secondary: this.form.get('secondary')?.value,
+        star: this.form.get('star')?.value,
+        label: this.form.get('label')?.value,
+        text: this.form.get('text')?.value,
       },
       toast: {
-        success: this.appsettingsform.get('toastSuccess')?.value,
-        error: this.appsettingsform.get('toastError')?.value,
-        info: this.appsettingsform.get('toastInfo')?.value
+        success: this.form.get('toastSuccess')?.value,
+        error: this.form.get('toastError')?.value,
+        info: this.form.get('toastInfo')?.value
       },
-      currency: this.appsettingsform.get('currency')?.value,
+      currency: this.form.get('currency')?.value,
       fonts: {
-        family: this.appsettingsform.get('fontFamily')?.value
+        family: this.form.get('fontFamily')?.value
       },
-      itemsPerPage: this.appsettingsform.get('itemsPerPage')?.value,
-      domain: this.appsettingsform.get('domain')?.value,
+      itemsPerPage: this.form.get('itemsPerPage')?.value,
+      isOutOfStock: this.form.get('isOutOfStock')?.value,
+      domain: this.form.get('domain')?.value,
       notes: {
-        packingSlip: this.appsettingsform.get('packingSlip')?.value,
+        packingSlip: this.form.get('packingSlip')?.value,
       }
     }
 

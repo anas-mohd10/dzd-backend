@@ -4,7 +4,7 @@
       <h1 class="fw-bolder">FAQs</h1>
     </div>
     <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
+      <div class="col d-flex flex-row align-items-start justify-content-between">
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -20,15 +20,34 @@
       </div>
     </div>
   </div>
-  <div class="faq-container">
-    <ng-container *ngFor="let faq of faqData">
-      <div class="faq-card {{faq?.isActive}}">
-        <div class="faq-question"> {{faq?.question}}</div>
-        <div class="faq-answer"> {{faq?.answer}}</div>
-        <div class="editButton" routerLink="{{ appRoute.faq.UPDATE_FAQ }}" [queryParams]="{slug: faq?.slug}">
-          <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+
+  <div class="faqWrapper mt-5">
+    <ng-container *ngFor="let faq of faqs; let i = index">
+      <div class="faqCard mb-3">
+        <div class="faqHeader p-3 d-flex align-items-center justify-content-between">
+          <div class="faqTitle">
+            <code>{{faq?.question}}</code>
+          </div>
+          <div class="faqButtons d-flex align-items-center justify-content-start">
+            <div class="faqButton me-1" (click)="toggleContent(i+1)" [ngClass]="{'active': i+1 == activeFaq}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-chevron-down" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+              </svg>
+            </div>
+            <div class="faqButton" routerLink="{{ appRoute.faq.UPDATE_FAQ }}" [queryParams]="{slug: faq?.slug}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path
+                  d="M15.7279 9.57629L14.3137 8.16207L5 17.4758V18.89H6.41421L15.7279 9.57629ZM17.1421 8.16207L18.5563 6.74786L17.1421 5.33365L15.7279 6.74786L17.1421 8.16207ZM7.24264 20.89H3V16.6474L16.435 3.21233C16.8256 2.8218 17.4587 2.8218 17.8492 3.21233L20.6777 6.04075C21.0682 6.43128 21.0682 7.06444 20.6777 7.45497L7.24264 20.89Z">
+                </path>
+              </svg>
+            </div>
+          </div>
         </div>
+        <div class="faqContent fs-6" [ngClass]="{'show': i+1 == activeFaq}">{{faq?.answer}}</div>
       </div>
     </ng-container>
   </div>
+
 </div>

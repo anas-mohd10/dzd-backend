@@ -48,6 +48,8 @@ export class UpdateAppSettingsComponent implements OnInit {
     ]
   };
 
+  fontFamily: Array<any> = ['Manrope', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
+
   logoFile: any
   logoFilePreview: any
   faviconFile: any
@@ -81,6 +83,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
+        this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.logoFilePreview = environment.base + "/" + res?.result?.logo
         this.faviconFilePreview = environment.base + "/" + res?.result?.favicon
@@ -104,6 +107,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       fontFamily: ['', Validators.required],
       domain: ['', Validators.required],
       packingSlip: ['', Validators.required],
+      isOutOfStock: ['false']
     })
   }
 
@@ -150,7 +154,6 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
-      this.toastr.error('Validation error occured');
       return
     }
 
@@ -170,11 +173,10 @@ export class UpdateAppSettingsComponent implements OnInit {
       currency: this.form.get('currency')?.value,
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
+      isOutOfStock: this.form.get('isOutOfStock')?.value,
       refid: this.refid,
       domain: this.form.get('domain')?.value,
-      notes: {
-        packingSlip: this.form.get('packingSlip')?.value,
-      }
+      notes: { packingSlip: this.form.get('packingSlip')?.value }
     }
 
     const formdata = new FormData();

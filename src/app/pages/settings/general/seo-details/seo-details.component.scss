@@ -1,79 +1,44 @@
-table {
-    border: 1px solid #ccc;
-    border-collapse: collapse;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    table-layout: fixed;
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.05);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
+
+code:not([class*=language-]) {
+    background-color: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
 }
 
-table tr {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: .35em;
-}
+.seoCards {
 
-table th,
-table td {
-    padding: 2rem;
-}
+    .seoCard {
+        position: relative;
+        box-shadow: 0 10px 25px $boxShadow;
+        background: $white;
+        border-radius: 10px;
 
-table th {
-    font-size: 1.075rem;
-    border-radius: 10px 10px 0 0 !important;
-}
+        .metaTitle {
+            font-size: 16px;
+            font-weight: 600;
+        }
 
-@media screen and (max-width: 600px) {
-    table {
-        border: 0;
-    }
+        .seoEdit {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            height: 30px;
+            width: 30px;
+            cursor: pointer;
+            color: $grey;
+        }
 
-    table caption {
-        font-size: 1.3em;
-    }
-
-    table thead {
-        border: none;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-    }
-
-    table tr {
-        border-bottom: 3px solid #ddd;
-        display: block;
-        margin-bottom: .625em;
-    }
-
-    table td {
-        border-bottom: 1px solid #ddd;
-        display: block;
-        font-size: .8em;
-        text-align: right;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
-    table td:last-child {
-        border-bottom: 0;
-    }
-}
-
-.seoDetailsContainer {
-    .buttonContainer {
-        margin: 10px 0;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
     }
 }

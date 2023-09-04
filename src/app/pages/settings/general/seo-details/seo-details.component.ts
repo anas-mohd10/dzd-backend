@@ -4,7 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { SeoService } from 'src/app/includes/services/seo.service';
 
-
 @Component({
   selector: 'app-seo-details',
   templateUrl: './seo-details.component.html',
@@ -12,7 +11,7 @@ import { SeoService } from 'src/app/includes/services/seo.service';
 })
 export class SeoDetailsComponent implements OnInit {
   appRoute = appRoutes
-  data: any = {}
+  seoDetails: any = []
   form: FormGroup
   isValid: boolean = true;
 
@@ -22,7 +21,9 @@ export class SeoDetailsComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
-  get fc() { return this.form.controls }
+  get fc() {
+    return this.form.controls
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -35,22 +36,27 @@ export class SeoDetailsComponent implements OnInit {
 
     this.SeoService.getSeoDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.data = res?.result
+        this.seoDetails = res?.result
         this.ChangeDetectorRef.markForCheck()
       }
     })
   }
 
-  updateSeoDetails() {
-    if (!this.form.valid) {
-      this.isValid = false
-      return
-    }
-
-
+  getSeoDetails(seo: any) {
+    this.SeoService.getSeoDetailsById(seo).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
-  addSeoDetails() {
+  closeModal() {
+    this.form.reset()
+    this.isValid = true
+  }
+
+  manageDetails() {
     if (!this.form.valid) {
       this.isValid = false
       return
@@ -59,8 +65,10 @@ export class SeoDetailsComponent implements OnInit {
     this.SeoService.addSeoDetails(this.form.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ToastrService.success(res?.message)
-        this.form.reset()
-      } else this.ToastrService.error(res?.message)
+        document.location.reload()
+      } else {
+        this.ToastrService.error(res?.message)
+      }
     }
     )
   }

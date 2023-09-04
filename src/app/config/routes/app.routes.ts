@@ -245,5 +245,11 @@ export const appRoutes = {
   wishlist: {
     LIST: `${app}${wishlist}`,
     DETAILS: `${app}${wishlist}/details`
+  },
+  DYNAMIC_SCRIPTS: {
+    LIST: `${app}/dynamic-scripts`
+  },
+  analytics: {
+    LIST: `${app}/analytics`
   }
 }

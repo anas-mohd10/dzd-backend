@@ -5,67 +5,64 @@ $inactiveBackground: #ce162610;
 $activeState: #00bdab;
 $primary: #00bdab;
 $activeBackground: #00bdab20;
-$border: #cccccc;
+$border: #eeeeee;
+$secondaryText: #888888;
 
-.faq-container {
-  margin: 50px 0;
-  width: 100%;
+code:not([class*=language-]) {
+  background-color: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
-.faq-card {
-  width: 100%;
-  margin: 0 0 10px 0;
-  background: #ffffff;
-  box-shadow: 0 10px 25px $boxShadow;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20px 30px;
-  position: relative;
+.faqWrapper {
 
-  .editButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    height: 40px;
-    width: 40px;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    border-radius: 20px;
+  .faqCard {
+    background: $white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
 
-    &:hover {
-      background: $border;
+    .faqHeader {
+
+      .faqTitle {
+
+        .disabledFaq {
+          background: $inactiveState;
+          color: $white;
+          border-radius: 5px;
+          padding: 0px 5px;
+        }
+      }
+
+      .faqButtons {
+        .faqButton {
+          height: 30px;
+          width: 30px;
+          display: grid;
+          place-items: center;
+          background: $border;
+          border-radius: 15px;
+          cursor: pointer;
+          color: $secondaryText;
+
+          &.active {
+            transform: rotate(180deg);
+            color: #000000;
+          }
+        }
+      }
+    }
+
+    .faqContent {
+      height: 0px;
+      display: none;
+      padding: 0.75rem;
+      border-top: 1px solid $border;
+
+      &.show {
+        display: block;
+        min-height: 80px;
+        height: max-content;
+      }
     }
   }
-}
-
-.faq-subject {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #868686;
-}
-
-.faq-question {
-  margin: 0 0 10px 0;
-  font-weight: 600;
-  color: #000000;
-  font-size: 1.22rem;
-}
-
-.faq-answer {
-  font-size: 1.1rem;
-}
-
-.edit-btn {
-  margin: 30px 0 0 0;
-  font-weight: 600;
-  width: 100px;
-  border-radius: 50px;
-}
-
-.faq-container .false {
-  border: 1px solid $inactiveState;
-  background: $inactiveBackground;
 }

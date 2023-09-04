@@ -24,8 +24,8 @@ export class SeoService {
   }
 
   getSeoDetailsById(data: any) {
-    const url = this.commonService.getFullUrl(this.seoEndpoints.find);
-    return this.http.post(`${url}`, data)
+    const url = this.commonService.getFullUrl(this.seoEndpoints.find + `/${data}`);
+    return this.http.get(`${url}`)
   }
 
   updateSeoDetails(data: any) {

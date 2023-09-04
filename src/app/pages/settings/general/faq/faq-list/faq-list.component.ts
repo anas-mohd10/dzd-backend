@@ -1,4 +1,4 @@
-import { ChangeDetectorRef,Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { FaqService } from 'src/app/includes/services/faq.service';
 
@@ -9,7 +9,8 @@ import { FaqService } from 'src/app/includes/services/faq.service';
 })
 export class FaqListComponent implements OnInit {
   appRoute = appRoutes
-  faqData: any
+  faqs: Array<any> = []
+  activeFaq: number = 1
 
   constructor(private faqService: FaqService,
     private cdr: ChangeDetectorRef) { }
@@ -20,9 +21,14 @@ export class FaqListComponent implements OnInit {
 
   getFaqs() {
     this.faqService.getFaqs().subscribe((res: any) => {
-      this.faqData = res?.result
-      this.cdr.markForCheck()
+      if (res?.errorCode == 0) {
+        this.faqs = res?.result
+        this.cdr.markForCheck()
+      }
     })
   }
 
+  toggleContent(index: any) {
+    this.activeFaq == index ? this.activeFaq = 0 : this.activeFaq = index
+  }
 }

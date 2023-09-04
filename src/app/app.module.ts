@@ -40,6 +40,9 @@ import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invo
 import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
 import { CDK_DRAG_CONFIG } from '@angular/cdk/drag-drop';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { DynamicScriptsComponent } from './pages/settings/general/dynamic-scripts/dynamic-scripts.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { AnalyticsComponent } from './pages/settings/general/analytics/analytics.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -63,13 +66,16 @@ const DragConfig = {
     TimeslotsComponent,
     EnquiresComponent,
     GenerateInvoiceComponent,
-    PackingSlipComponent
+    PackingSlipComponent,
+    DynamicScriptsComponent,
+    AnalyticsComponent
   ],
   imports: [
     DataTablesModule,
     BrowserModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot(),
+    MonacoEditorModule.forRoot(),
     HttpClientModule,
     ClipboardModule,
     NgMultiSelectDropDownModule.forRoot(),
