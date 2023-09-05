@@ -152,11 +152,6 @@ export const appRoutes = {
     ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   },
-  reports: {
-    PRODUCT_REPORT: `${app}${productReportRoute}`,
-    CUSTOMER_REPORT: `${app}${customerReportRoute}`,
-    ORDER_REPORT: `${app}${orderReportRoute}`,
-  },
   returns: {
     RETURN_LIST: `${app}${returnRoute}`,
     UPDATE_RETURN: `${app}${returnRoute}/update`
@@ -251,5 +246,11 @@ export const appRoutes = {
   },
   analytics: {
     LIST: `${app}/analytics`
+  },
+  feeds: {
+    LIST: `${app}/feeds`
+  },
+  reports: {
+    LIST: `${app}/reports`
   }
 }

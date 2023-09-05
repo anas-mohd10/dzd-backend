@@ -43,6 +43,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { DynamicScriptsComponent } from './pages/settings/general/dynamic-scripts/dynamic-scripts.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { AnalyticsComponent } from './pages/settings/general/analytics/analytics.component';
+import { FeedsComponent } from './pages/marketing/feeds/feeds.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -68,17 +69,20 @@ const DragConfig = {
     GenerateInvoiceComponent,
     PackingSlipComponent,
     DynamicScriptsComponent,
-    AnalyticsComponent
+    AnalyticsComponent,
+    FeedsComponent
   ],
   imports: [
     DataTablesModule,
     BrowserModule,
     BrowserAnimationsModule,
-    TranslateModule.forRoot(),
-    MonacoEditorModule.forRoot(),
     HttpClientModule,
     ClipboardModule,
+    TranslateModule.forRoot(),
+    MonacoEditorModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    InlineSVGModule.forRoot(),
+    NgHttpLoaderModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-bottom-right',
@@ -87,8 +91,6 @@ const DragConfig = {
     AppRoutingModule,
     NgApexchartsModule,
     ReactiveFormsModule,
-    InlineSVGModule.forRoot(),
-    NgHttpLoaderModule.forRoot(),
     NgbModule,
     NgSelectModule,
     LayoutModule,

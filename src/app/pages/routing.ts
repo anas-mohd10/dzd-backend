@@ -8,6 +8,7 @@ import { EnquiresComponent } from './sales/enquires/enquires.component';
 import { PermissionGuard } from '../core/auth/permission.guard';
 import { DynamicScriptsComponent } from './settings/general/dynamic-scripts/dynamic-scripts.component';
 import { AnalyticsComponent } from './settings/general/analytics/analytics.component';
+import { FeedsComponent } from './marketing/feeds/feeds.component';
 
 export const Routing: Routes = [
   {
@@ -214,21 +215,6 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'product-report',
-        loadChildren: () => import('./reports/product-report/product-report.module').then((m) => m.ProductReportModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
-        path: 'customer-report',
-        loadChildren: () => import('./reports/customer-report/customer-report.module').then((m) => m.CustomerReportModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
-        path: 'order-report',
-        loadChildren: () => import('./reports/order-report/order-report.module').then((m) => m.OrderReportModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
         path: 'return-lists',
         loadChildren: () => import('./sales/returns/returns.module').then((m) => m.ReturnsModule),
         canActivate: [AuthenticationGuard]
@@ -236,6 +222,11 @@ export const Routing: Routes = [
       {
         path: 'banners',
         loadChildren: () => import('./design/banners/banners.module').then((m) => m.BannersModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'reports',
+        loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule),
         canActivate: [AuthenticationGuard]
       },
       {
@@ -343,6 +334,10 @@ export const Routing: Routes = [
       }, {
         path: 'analytics',
         component: AnalyticsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'feeds',
+        component: FeedsComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

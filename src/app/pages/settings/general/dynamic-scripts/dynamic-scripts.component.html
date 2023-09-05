@@ -13,15 +13,22 @@
                         <a routerLink="{{ appRoute.DYNAMIC_SCRIPTS.LIST}}">Dynamic Scripts</a>
                     </li>
                 </ul>
+
+                <div class="buttonContainer">
+                    <button type="button" class="btn btn-primary" (click)="manageScriptDetails()">
+                        Save Changes
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="alert alert-primary mt-4 mb-4">
+    <div class="alert alert-primary fs-6 mt-4 mb-4">
         You can add additional javascript for your webstore here.
     </div>
 
     <div class="col-12">
-        <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
+        <ngx-monaco-editor [options]="editorOptions" style="height: 370px;" [(ngModel)]="code">
+        </ngx-monaco-editor>
     </div>
 </div>

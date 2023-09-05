@@ -10,7 +10,17 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
-button.btn.btn-secondary.cursor-pointer.fs-6 {
+.dropdown-menu{
+    width: 200px !important;
+    right: 0 !important;
+    top: -100% !important;
+    inset: unset !important;
+    transform: none !important;
+    border: 1px solid $border;
+    margin: 5px 0 0 0 !important;
+}
+
+button.btn.btn-secondary {
     font-weight: 400 !important;
 }
 

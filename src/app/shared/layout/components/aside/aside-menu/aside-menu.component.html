@@ -23,36 +23,6 @@
   </a>
 </div>
 
-<!-- <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
-  <span class="menu-link">
-    <span class="menu-icon">
-      <i class="bi bi-receipt fs-4"></i>
-    </span>
-    <span class="menu-title">Sales</span>
-    <span class="menu-arrow"></span>
-  </span>
-  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.returns.RETURN_LIST}}">
-        <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
-        </span>
-        <span class="menu-title">Returns</span>
-      </a>
-    </div>
-  </div>
-  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.shipping.SHIPPING_LIST }}">
-        <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
-        </span>
-        <span class="menu-title">Shipping</span>
-      </a>
-    </div>
-  </div>
-</div> -->
-
 <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
   <span class="menu-link">
     <span class="menu-icon">
@@ -120,7 +90,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
   <span class="menu-link">
@@ -214,6 +183,14 @@
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">Notifications</span>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.feeds.LIST }}">
+        <span class="menu-bullet">
+          <span class="bullet bullet-dot"></span>
+        </span>
+        <span class="menu-title">Feeds</span>
       </a>
     </div>
   </div>
@@ -487,43 +464,15 @@
   </div>
 </div>
 
-<div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
-  <span class="menu-link">
+<div class="menu-item">
+  <a class="menu-link without-sub" routerLink="{{ appRoute.reports.LIST }}" routerLinkActive="active">
     <span class="menu-icon">
-      <i class="bi bi-card-text fs-4"></i>
+      <i class="bi bi-journal-bookmark fs-4"></i>
     </span>
-    <span class="menu-title" data-link="/crafted/account">Reports</span>
-    <span class="menu-arrow"></span>
-  </span>
-  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.reports.PRODUCT_REPORT }}">
-        <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
-        </span>
-        <span class="menu-title">Product Report</span>
-      </a>
-    </div>
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.reports.ORDER_REPORT }}">
-        <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
-        </span>
-        <span class="menu-title">Order Report</span>
-      </a>
-    </div>
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.reports.CUSTOMER_REPORT }}">
-        <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
-        </span>
-        <span class="menu-title">Customer Report</span>
-      </a>
-    </div>
-  </div>
+    <span class="menu-title">Reports</span>
+  </a>
 </div>
 
-<!-- Roles -->
 <div class="menu-item">
   <a class="menu-link without-sub" routerLink="{{ appRoute.roles.ROLES_LIST }}" routerLinkActive="active">
     <span class="menu-icon">

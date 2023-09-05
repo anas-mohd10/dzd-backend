@@ -16,6 +16,7 @@ export class AnalyticsComponent implements OnInit {
   appRoute = appRoutes
   analytics: any = {}
   form!: FormGroup
+  isButtonHidden: boolean = true
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -33,8 +34,8 @@ export class AnalyticsComponent implements OnInit {
 
     this.AnalyticsService.getAnalyticsDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.analytics = res?.data
-        for (let _key of Object.keys(this.analytics)) this.form.get(_key)?.setValue(this.analytics[_key])
+        this.analytics = res?.result
+        if (this.analytics) for (let _key of Object.keys(this.analytics)) this.form.get(_key)?.setValue(this.analytics[_key])
         this.ChangeDetectorRef.detectChanges()
       }
     })
@@ -42,7 +43,12 @@ export class AnalyticsComponent implements OnInit {
 
   manageAnalytics() {
     this.AnalyticsService.manageAnalytics(this.form.value).subscribe((res: any) => {
-      if (res?.errorCode == 0) this.ngOnInit()
+      if (res?.errorCode == 0) {
+        this.ngOnInit()
+        this.ToastrService.success(res?.message)
+      } else {
+        this.ToastrService.error(res?.message)
+      }
     })
   }
 }

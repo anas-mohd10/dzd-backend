@@ -82,6 +82,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('domain')?.setValue(res?.result?.domain)
+        this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
@@ -106,6 +107,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required],
       domain: ['', Validators.required],
+      description: ['', Validators.required],
       packingSlip: ['', Validators.required],
       isOutOfStock: ['false']
     })
@@ -176,6 +178,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       refid: this.refid,
       domain: this.form.get('domain')?.value,
+      description: this.form.get('description')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value }
     }
 
