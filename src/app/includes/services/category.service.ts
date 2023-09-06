@@ -95,4 +95,19 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.find_categories);
     return this.http.post(`${url}`, data);
   }
+
+  getMenuCategories() {
+    const url = this.commonService.getWebUrl('mega-categories');
+    return this.http.get(`${url}`);
+  }
+
+  getCategories(data: any, query: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_categories + `?type=${query}`);
+    return this.http.post(`${url}`, data);
+  }
+
+  getSubCategories(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_sub_categories);
+    return this.http.post(`${url}`, data);
+  }
 }

@@ -9,6 +9,7 @@ import { PermissionGuard } from '../core/auth/permission.guard';
 import { DynamicScriptsComponent } from './settings/general/dynamic-scripts/dynamic-scripts.component';
 import { AnalyticsComponent } from './settings/general/analytics/analytics.component';
 import { FeedsComponent } from './marketing/feeds/feeds.component';
+import { NavigationMenuComponent } from './settings/general/navigation-menu/navigation-menu.component';
 
 export const Routing: Routes = [
   {
@@ -62,19 +63,22 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'collection',
+        path: '',
         children: [
           {
             path: 'collection',
             loadChildren: () => import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
+            canActivate: [PermissionGuard]
           },
           {
             path: 'add-collection',
             loadChildren: () => import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
+            canActivate: [PermissionGuard]
           },
           {
             path: 'update-collection',
             loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
+            canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]
@@ -338,6 +342,10 @@ export const Routing: Routes = [
       }, {
         path: 'feeds',
         component: FeedsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'navigation',
+        component: NavigationMenuComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

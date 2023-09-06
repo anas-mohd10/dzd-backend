@@ -109,7 +109,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       domain: ['', Validators.required],
       description: ['', Validators.required],
       packingSlip: ['', Validators.required],
-      isOutOfStock: ['false']
+      isOutOfStock: ['false'],
+      isNotifyStock: ['false']
     })
   }
 
@@ -176,6 +177,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       isOutOfStock: this.form.get('isOutOfStock')?.value,
+      isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,

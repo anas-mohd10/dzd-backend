@@ -18,7 +18,7 @@ export class CustomersListComponent implements OnInit {
 
   customers: Array<any> = []
   lastPage: Boolean = false
-  limit: FormControl = new FormControl(10);
+  limit: FormControl = new FormControl('20');
   page: number = 1
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
@@ -46,7 +46,7 @@ export class CustomersListComponent implements OnInit {
   clearFilter() {
     this.keyword.setValue('')
     this.isActive.setValue('')
-    this.limit.setValue('10')
+    this.limit.setValue('20')
     this.page = 1
     this.getCustomers()
   }

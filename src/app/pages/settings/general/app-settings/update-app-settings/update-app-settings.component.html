@@ -170,6 +170,17 @@
 
                   <div class="col-12">
                      <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Notify Button ( Out of Stock Products )</label>
+                        <select class="form-select mb-3" formControlName="isNotifyStock">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="false">No</option>
+                           <option value="true">Yes</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="col-12">
+                     <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required">Items Per Page</label>
                         <input type="number" placeholder="14" class="form-control fs-6"
                            formControlName="itemsPerPage" />

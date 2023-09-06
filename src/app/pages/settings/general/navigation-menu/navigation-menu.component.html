@@ -1,0 +1,131 @@
+<div class="seoDetailsContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Navigation</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.navigation}}">Navigation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="pageWrapper mt-4">
+        <div class="card megaMenuWrapper">
+            <div class="card-body">
+
+                <h3 class="fw-bolder">Choose Mega Menu Layout</h3>
+                <div class="layoutWrapper mb-4">
+                    <ng-container *ngFor="let type of types">
+                        <div class="p-4 rounded layoutCard" (click)="selectMenuType(type?.value)"
+                            [ngClass]="{'selected': menuType?.value == type?.value}">
+                            <ng-container *ngIf="type?.value == '1'">
+                                <svg height="30px" width="30px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                    <path d="M16 18V20H5V18H16ZM21 11V13H3V11H21ZM19 4V6H8V4H19Z"></path>
+                                </svg>
+                            </ng-container>
+                            <ng-container *ngIf="type?.value == '2'">
+                                <svg height="30px" width="30px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM8 5H4V19H8V5ZM10 5V19H20V5H10Z">
+                                    </path>
+                                </svg>
+                            </ng-container>
+                            <div class="fs-6">{{type?.key}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <h3 class="fw-bolder">Mega Menu Settings</h3>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="fs-6 mb-4">Available Categories</div>
+                        <input type="text" placeholder="Search category..." class="form-control fs-6"
+                            [formControl]="category" (ngModelChange)="getCategories()">
+                        <div class="categoryWrapper mt-2">
+                            <ng-container *ngIf="categories.length > 0">
+                                <ng-container *ngFor="let category of categories">
+                                    <div class="category p-3 d-flex align-items-center justify-content-between rounded mb-2"
+                                        (click)="addToMegaCategory(category)">
+                                        <div class="fs-6">
+                                            <img class="me-2 rounded" src="{{base}}/{{category?.file}}" alt="Category"
+                                                height="40px" width="40px">
+                                            {{category?.name}}
+                                        </div>
+                                        <svg height="24px" width="24px" fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                            <path
+                                                d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="categories.length == 0">
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="fs-6 mb-4">Selected Categories</div>
+                        <div class="megaMenuWrapper">
+                            <ng-container *ngIf="megaMenuCategories.length > 0">
+                                <ng-container *ngFor="let category of megaMenuCategories">
+                                    <div class="categoryCard p-3 pt-5 pb-5 rounded mb-3">
+                                        <div
+                                            class="categoryCardHeader d-flex align-items-center justify-content-between">
+                                            <div class="fs-6" (click)="getSubCategories(category)">
+                                                <svg height="24px" width="24px" fill="currentColor"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z">
+                                                    </path>
+                                                </svg>
+                                                {{category?.name}}
+                                            </div>
+                                            <div class="removeCategory" (click)="removeFromMegaCategory(category)">
+                                                <svg height="24px" width="24px" fill="currentColor"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <ng-container *ngIf="subCategories.length > 0">
+                                            <div class="subcategoryWrapper mt-2"
+                                                [ngClass]="{'show': activeCategory == category?.catid}">
+                                                <ng-container *ngFor="let subcategory of subCategories">
+                                                    <div class="subcategory p-3 rounded"
+                                                        (click)="manageMegaMenuCategory(category, subcategory)"
+                                                        [ngClass]="{'selected': subcategory?.isMegaMenu}">
+                                                        <img src="{{base}}/{{subcategory?.file}}" alt="Category"
+                                                            height="40px" width="40px" class="me-2 rounded">
+                                                        {{subcategory?.name}}
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="categories.length == 0">
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="megaMenuCategories.length == 0">
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

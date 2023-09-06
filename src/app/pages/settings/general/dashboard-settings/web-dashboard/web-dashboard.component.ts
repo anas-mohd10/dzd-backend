@@ -96,8 +96,6 @@ export class WebDashboardComponent implements OnInit {
       }
     })
 
-
-
     this.collectionForm = new FormGroup({
       name: new FormControl('', Validators.required),
       subname: new FormControl(''),

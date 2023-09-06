@@ -33,4 +33,9 @@ export class AppSettingsService {
     const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.update_general_settings);
     return this.http.put(`${url}`, data);
   }
+
+  updateSettings(data: any) {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.update_settings);
+    return this.http.put(`${url}`, data);
+  }
 }

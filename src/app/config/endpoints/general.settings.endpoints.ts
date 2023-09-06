@@ -3,4 +3,5 @@ export const generalSettingsEndpoints = {
    get_general_settings: '/get-settings',
    get_general_settings_by_id: '/settings-details',
    update_general_settings: '/update-settings',
+   update_settings: '/update-general-settings'
 }

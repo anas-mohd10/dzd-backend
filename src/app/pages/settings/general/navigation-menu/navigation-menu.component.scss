@@ -1,0 +1,80 @@
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #ebebeb;
+$background: #f1f1f1;
+$error: #F1416C;
+
+
+.megaMenuWrapper {
+
+    .layoutWrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+
+        .layoutCard {
+            cursor: pointer;
+            box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.08);
+            background: $white;
+            border: 1px solid $background;
+
+            &.selected {
+                background: #00bdab20;
+                color: $activeState;
+                border: 1px solid $activeState;
+            }
+        }
+    }
+
+    .categoryCard {
+        cursor: pointer;
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.08);
+        background: $white;
+
+        .categoryCardHeader {
+
+            .removeCategory {
+                color: $grey;
+            }
+        }
+    }
+
+    .subcategoryWrapper {
+        display: none;
+
+        &.show {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .subcategory {
+            &.selected {
+                background: #00bdab20;
+                border: 1px solid $activeState;
+            }
+        }
+    }
+
+    .categoryWrapper {
+        height: 300px;
+        max-height: 300px;
+        overflow-y: scroll;
+
+        .category {
+            cursor: pointer;
+            border: 1px solid $border;
+            background: $background;
+
+            svg {
+                color: $grey;
+            }
+        }
+    }
+}

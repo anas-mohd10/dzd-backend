@@ -112,9 +112,7 @@ export class CartListComponent implements OnInit {
     }
 
     this.cartService.sendCartNotification(payload).subscribe((res: any) => {
-      if (res?.erroCode == 0) {
-
-      }
+      res?.errorCode == 0 ? document.location.reload() : this.ToastrService.error(res?.message)
     })
   }
 }

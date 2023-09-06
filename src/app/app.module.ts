@@ -44,6 +44,7 @@ import { DynamicScriptsComponent } from './pages/settings/general/dynamic-script
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { AnalyticsComponent } from './pages/settings/general/analytics/analytics.component';
 import { FeedsComponent } from './pages/marketing/feeds/feeds.component';
+import { NavigationMenuComponent } from './pages/settings/general/navigation-menu/navigation-menu.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -70,7 +71,8 @@ const DragConfig = {
     PackingSlipComponent,
     DynamicScriptsComponent,
     AnalyticsComponent,
-    FeedsComponent
+    FeedsComponent,
+    NavigationMenuComponent
   ],
   imports: [
     DataTablesModule,
