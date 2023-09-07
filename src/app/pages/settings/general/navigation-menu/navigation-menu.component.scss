@@ -10,6 +10,9 @@ $border: #ebebeb;
 $background: #f1f1f1;
 $error: #F1416C;
 
+label, .btn-secondary {
+    font-weight: normal !important;
+}
 
 .megaMenuWrapper {
 
@@ -20,7 +23,7 @@ $error: #F1416C;
 
         .layoutCard {
             cursor: pointer;
-            box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.08);
+            box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
             background: $white;
             border: 1px solid $background;
 
@@ -34,8 +37,9 @@ $error: #F1416C;
 
     .categoryCard {
         cursor: pointer;
-        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.08);
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
         background: $white;
+        margin: 0 0 15px 0;
 
         .categoryCardHeader {
 
@@ -76,5 +80,39 @@ $error: #F1416C;
                 color: $grey;
             }
         }
+    }
+}
+
+.itemTypes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    .itemType {
+        cursor: pointer;
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
+        background: $white;
+        border: 1px solid $background;
+
+        &.is-invalid {
+            border: 1px solid $error;
+            padding-right: calc(1.5em + 1.5rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23F1416C'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23F1416C' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.375rem) center;
+            background-size: calc(0.75em + 0.75rem) calc(0.75em + 0.75rem);
+        }
+
+        &.selected {
+            background: #00bdab20;
+            color: $activeState;
+            border: 1px solid $activeState;
+        }
+    }
+}
+
+.modalButtons{
+    .btn{
+        width: 200px;
     }
 }

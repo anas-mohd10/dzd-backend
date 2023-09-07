@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Form, FormControl } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { environment } from 'src/environments/environment.prod';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -12,6 +13,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./navigation-menu.component.scss']
 })
 export class NavigationMenuComponent implements OnInit {
+  modalRef?: BsModalRef;
   appRoute = appRoutes
   categories: Array<any> = []
   subCategories: Array<any> = []
@@ -21,6 +23,7 @@ export class NavigationMenuComponent implements OnInit {
   activeCategory: string = ''
   menuType: FormControl = new FormControl('1')
   settings: any = {}
+  itemForm!: FormGroup
   types: Array<any> = [{
     key: 'Mega Menu',
     value: '1'
@@ -28,12 +31,32 @@ export class NavigationMenuComponent implements OnInit {
     key: 'Side Menu',
     value: '2'
   }]
+  itemTypes: Array<any> = [{
+    key: 'Category',
+    value: 'category'
+  }, {
+    key: 'Brand',
+    value: 'brand'
+  }, {
+    key: 'Product',
+    value: 'product'
+  }, {
+    key: 'Collection',
+    value: 'collection'
+  }]
+  isInvalidItem: boolean = false
+  savedItems: Array<any> = []
+
+  get itemControls() {
+    return this.itemForm.controls
+  }
 
   constructor(
     private CategoryService: CategoryService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private modalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +70,22 @@ export class NavigationMenuComponent implements OnInit {
     })
 
     this.getSettings()
+
+    this.itemForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      type: new FormControl('', Validators.required),
+      redirection: new FormControl(''),
+    })
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-dialog-centered modal-lg' });
+  }
+
+  closeModal() {
+    this.modalService.hide();
+    this.itemForm.reset()
+    this.isInvalidItem = false
   }
 
   selectMenuType(type: string) {
@@ -138,4 +177,22 @@ export class NavigationMenuComponent implements OnInit {
     })
   }
 
+  selectItemType(type: string) {
+    this.itemForm.get('type')?.setValue(type)
+  }
+
+  manageItem(type: any) {
+    switch (type) {
+      case 'add':
+        if (!this.itemControls.valid) {
+          this.isInvalidItem = true
+          return
+        }
+
+        
+        break
+      case 'update':
+        break
+    }
+  }
 }

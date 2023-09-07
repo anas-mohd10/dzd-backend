@@ -45,6 +45,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { AnalyticsComponent } from './pages/settings/general/analytics/analytics.component';
 import { FeedsComponent } from './pages/marketing/feeds/feeds.component';
 import { NavigationMenuComponent } from './pages/settings/general/navigation-menu/navigation-menu.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -85,6 +86,7 @@ const DragConfig = {
     NgMultiSelectDropDownModule.forRoot(),
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
+    ModalModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-bottom-right',
