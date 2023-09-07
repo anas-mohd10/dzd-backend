@@ -45,4 +45,11 @@ export class AdminUsersService {
     return this.http.post(`${url}`, data)
   }
 
+  generalSearch(data: any, query: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.general_seearch) + `?type=${query}`;
+    return this.http.post(`${url}`, data)
+  }
+
 }
+
+

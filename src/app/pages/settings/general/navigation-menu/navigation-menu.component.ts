@@ -6,6 +6,8 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { environment } from 'src/environments/environment.prod';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
+import { MenuService } from 'src/app/includes/services/menu.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -18,6 +20,7 @@ export class NavigationMenuComponent implements OnInit {
   categories: Array<any> = []
   subCategories: Array<any> = []
   category: FormControl = new FormControl('')
+  footerCategory: FormControl = new FormControl('')
   megaMenuCategories: Array<any> = []
   base: string = environment.base
   activeCategory: string = ''
@@ -46,6 +49,14 @@ export class NavigationMenuComponent implements OnInit {
   }]
   isInvalidItem: boolean = false
   savedItems: Array<any> = []
+  archivedItems: Array<any> = []
+  keyword: FormControl = new FormControl('')
+  items: Array<any> = []
+  itemProducts: Array<any> = []
+  selectedItem: any
+  itemDetails: any = {}
+  allCategories: Array<any> = []
+  footerCategories: Array<any> = []
 
   get itemControls() {
     return this.itemForm.controls
@@ -56,7 +67,10 @@ export class NavigationMenuComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
     private AppSettingsService: AppSettingsService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private AdminUsersService: AdminUsersService,
+    private MenuService: MenuService,
+
   ) { }
 
   ngOnInit(): void {
@@ -69,17 +83,46 @@ export class NavigationMenuComponent implements OnInit {
       }
     })
 
+    this.CategoryService.getCategories({}, 'footer').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.footerCategories = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+
     this.getSettings()
+
+    this.getItems()
+
+    this.getArchivedItems()
+
+    this.getAllCategories()
 
     this.itemForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
-      redirection: new FormControl(''),
+      menuType: new FormControl('', Validators.required),
+      redirection: new FormControl('', Validators.required),
     })
   }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-dialog-centered modal-lg' });
+  }
+
+  openArchivedModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-dialog-centered modal-lg' });
+    this.getArchivedItems()
+  }
+
+  openEditModal(template: TemplateRef<any>, item: any) {
+    this.modalRef = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-dialog-centered modal-lg' });
+    this.MenuService.getMenuDetails(item?.refid).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.itemDetails = res?.result
+        for (let _key of Object.keys(res?.result)) this.itemForm.get(_key)?.setValue(res?.result[_key])
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
   closeModal() {
@@ -178,21 +221,185 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   selectItemType(type: string) {
-    this.itemForm.get('type')?.setValue(type)
+    this.itemForm.get('menuType')?.setValue(type)
+    this.itemForm.get('redirection')?.setValue('')
+  }
+
+  selectItemCard(item: any) {
+    this.selectedItem = item
+    this.itemForm.get('redirection')?.setValue(item?.slug)
+    this.items = []
+    this.itemProducts = []
+    this.keyword?.setValue('')
+  }
+
+  removeItem() {
+    this.selectedItem = null
+    this.itemForm.get('redirection')?.setValue('')
+  }
+
+  searchItems() {
+    if (this.keyword.value) {
+      switch (this.itemForm.get('menuType')?.value) {
+        case 'category':
+          this.AdminUsersService.generalSearch({ keyword: this.keyword.value, page: 1, limit: 30 }, 'category').subscribe((res: any) => {
+            if (res?.errorCode == 0) {
+              this.items = res?.result?.data
+              this.ChangeDetectorRef.markForCheck()
+            }
+          })
+          break
+        case 'brand':
+          this.AdminUsersService.generalSearch({ keyword: this.keyword.value, page: 1, limit: 30 }, 'brand').subscribe((res: any) => {
+            if (res?.errorCode == 0) {
+              this.items = res?.result?.data
+              this.ChangeDetectorRef.markForCheck()
+            }
+          })
+          break
+        case 'collection':
+          this.AdminUsersService.generalSearch({ keyword: this.keyword.value, page: 1, limit: 30 }, 'collection').subscribe((res: any) => {
+            if (res?.errorCode == 0) {
+              this.items = res?.result?.data
+              this.ChangeDetectorRef.markForCheck()
+            }
+          })
+          break
+        case 'product':
+          this.AdminUsersService.generalSearch({ keyword: this.keyword.value, page: 1, limit: 30 }, 'product').subscribe((res: any) => {
+            if (res?.errorCode == 0) {
+              this.items = res?.result?.data
+              this.ChangeDetectorRef.markForCheck()
+            }
+          })
+          break
+      }
+    }
+  }
+
+  getItems() {
+    this.MenuService.getMenuItems('active').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.savedItems = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  getArchivedItems() {
+    this.MenuService.getMenuItems('inactive').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.archivedItems = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
   manageItem(type: any) {
     switch (type) {
       case 'add':
-        if (!this.itemControls.valid) {
+        if (!this.itemForm.valid) {
           this.isInvalidItem = true
           return
         }
 
-        
+        this.MenuService.addMenu(this.itemForm.value).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.closeModal()
+            this.getItems()
+            this.ChangeDetectorRef.markForCheck()
+          }
+        })
         break
       case 'update':
+        if (!this.itemForm.valid) {
+          this.isInvalidItem = true
+          return
+        }
+
+        this.MenuService.updateMenu({ ...this.itemForm.value, refid: this.itemDetails?.refid }).subscribe((res: any) => {
+          if (res?.errorCode == 0) {
+            this.closeModal()
+            this.getItems()
+            this.ChangeDetectorRef.markForCheck()
+          }
+        })
         break
     }
+  }
+
+  deleteItem(item: any) {
+    item.isDelete = true
+    this.MenuService.updateMenu(item).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.closeModal()
+        this.getItems()
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  archiveItem() {
+    this.MenuService.updateMenu({ ...this.itemForm.value, refid: this.itemDetails?.refid, isActive: false }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.closeModal()
+        this.getItems()
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  unarchiveItem(item: any) {
+    item.isActive = true
+    this.MenuService.updateMenu(item).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.closeModal()
+        this.getItems()
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  getAllCategories() {
+    this.CategoryService.searchCategory({
+      keyword: this.footerCategory.value,
+      limit: 30,
+      page: 1,
+      isActive: "true",
+      isFooter: "false"
+    }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.allCategories = res?.result?.data
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  addCategoryToFooter(category: any) {
+    this.CategoryService.updateCategory(category?.slug, {
+      catid: category?.catid,
+      name: category?.name,
+      isFooter: true
+    }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.footerCategories.push(category)
+        this.ChangeDetectorRef.markForCheck()
+        this.getAllCategories()
+      }
+    })
+  }
+
+  removeCategoryFromFooter(category: any) {
+    this.CategoryService.updateCategory(category?.slug, {
+      catid: category?.catid,
+      name: category?.name,
+      isFooter: false
+    }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.footerCategories = this.footerCategories.filter((item: any) => item?.catid != category?.catid)
+        this.ChangeDetectorRef.markForCheck()
+        this.getAllCategories()
+      }
+    })
   }
 }

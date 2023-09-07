@@ -9,8 +9,10 @@ $activeBackground: #00bdab20;
 $border: #ebebeb;
 $background: #f1f1f1;
 $error: #F1416C;
+$black: #000000;
 
-label, .btn-secondary {
+label,
+.btn-secondary {
     font-weight: normal !important;
 }
 
@@ -40,6 +42,7 @@ label, .btn-secondary {
         box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
         background: $white;
         margin: 0 0 15px 0;
+        border: 1px solid $border;
 
         .categoryCardHeader {
 
@@ -111,8 +114,97 @@ label, .btn-secondary {
     }
 }
 
-.modalButtons{
-    .btn{
+.modalButtons {
+    .btn {
         width: 200px;
+    }
+}
+
+.itemsWrapper {
+    max-height: 250px;
+    height: 250px;
+    overflow-y: scroll;
+
+    .itemCard {
+        cursor: pointer;
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
+        background: $white;
+        border: 1px solid $background;
+        margin: 0 0 10px 0;
+    }
+}
+
+.savedItems {
+
+    .savedItem {
+        cursor: pointer;
+        background: $white;
+        border: 1px solid $white;
+
+        &:hover {
+            background: #f1f1f1;
+            border: 1px solid $border;
+        }
+
+        .buttons {
+            color: $grey;
+
+            .itemButton {
+
+                &:hover {
+                    color: $black;
+                }
+            }
+        }
+    }
+}
+
+.archivedItems {
+
+    .archivedItem {
+        cursor: pointer;
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
+        background: $white;
+        border: 1px solid $background;
+        margin: 0 0 10px 0;
+
+        .buttons {
+            color: $grey;
+        }
+    }
+}
+
+.footerWrapper {
+    .categoryWrapper {
+        height: 300px;
+        max-height: 300px;
+        overflow-y: scroll;
+
+        .category {
+            cursor: pointer;
+            border: 1px solid $border;
+            background: $background;
+
+            svg {
+                color: $grey;
+            }
+        }
+    }
+
+    .megaMenuWrapper {
+        .categoryCard {
+            cursor: pointer;
+            box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
+            background: $white;
+            margin: 0 0 15px 0;
+            border: 1px solid $border;
+
+            .categoryCardHeader {
+
+                .removeCategory {
+                    color: $grey;
+                }
+            }
+        }
     }
 }

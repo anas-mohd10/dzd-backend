@@ -6,5 +6,6 @@ export const adminUsersEndpoints = {
      get_admin_count: '/get-admin-mail',
      admin_details: '/admin-details',
      search_admins: '/search-admins',
-     authorize: '/authorize'
+     authorize: '/authorize',
+     general_seearch: '/search'
 }
