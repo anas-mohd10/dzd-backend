@@ -73,7 +73,7 @@
       <div class="offer-card card-hover">
 
         <div class="editButton">
-          <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.offerid }">
+          <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.refid }">
             <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
           </div>
         </div>
@@ -84,14 +84,10 @@
           </div>
 
           <div class="offer-details">
-            <div class="fw-bolder mb-1 fs-4">{{offer?.name}}</div>
+            <div class="fw-bolder mb-1 fs-4">{{offer?.title}}</div>
             <div class="d-flex align-items-center justify-content-start">
               <div class="fs-6 offer-status" [ngClass]="{'active': offer?.isActive}">
                 {{offer?.isActive ? 'Active' : 'Inactive'}}
-              </div>
-              <div class="div-separator"> . </div>
-              <div class="fs-6 offer-featured" [ngClass]="{'featured': offer?.isFeatured}">
-                {{offer?.isFeatured ? 'Featured' : 'Not featured'}}
               </div>
             </div>
             <div class="offer-value fs-4 fw-bolder mt-2">

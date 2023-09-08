@@ -34,34 +34,31 @@
 
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3 required">Name</label>
-              <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+              <label class="fs-6 mb-3 required">Title</label>
+              <input type="text" class="form-control fs-6" placeholder="Eg. Apple Offers" formControlName="title"
+                [ngClass]="{
                     'is-invalid':
-                    (of.name.touched || isSubmitted) &&
-                    of.name.errors?.required
+                    (of.title.touched || isSubmitted) &&
+                    of.title.errors?.required
                   }" />
             </div>
           </div>
 
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3 required">Description</label>
-              <input type="text" class="form-control fs-6" formControlName="description" [ngClass]="{
-                    'is-invalid':
-                    (of.description.touched || isSubmitted) &&
-                    of.description.errors?.required
-                  }" />
+              <label class="fs-6 mb-3">Description</label>
+              <input type="text" class="form-control fs-6" formControlName="description" />
             </div>
           </div>
 
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3 required">Type</label>
-              <select class="form-select fs-6" formControlName="type" [ngClass]="{
-                         'is-invalid': (of.type.touched || isSubmitted) && of.type.errors?.required}">
+              <label class="fs-6 mb-3">Type</label>
+              <select class="form-select fs-6" formControlName="type"
+                [ngClass]="{  'is-invalid': (of.type.touched || isSubmitted) && of.type.errors?.required}">
                 <option value="" disabled>-- Select an option --</option>
-                <option value="%">%</option>
-                <option value="Flat">Flat</option>
+                <option value="percentage">Percentage</option>
+                <option value="fixed">Fixed Amount</option>
               </select>
             </div>
           </div>
@@ -69,45 +66,47 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Value</label>
-              <input type="number" min="0" class="form-control fs-6" formControlName="value"
-                (change)="validateValue($event.target)" [ngClass]="{
+              <input type="text" placeholder="Eg. 10" class="form-control fs-6" formControlName="value"
+                (change)="validateValue()" [ngClass]="{
                     'is-invalid': (of.value.touched || isSubmitted) && of.value.errors?.required}" />
               <div class="alert alert-danger p-2 mt-2" role="alert" *ngIf="!isValidValue">
-                This is a danger alert—check it out!
+                Maximum value : 100
+              </div>
+              <div class="alert alert-danger p-3 mt-2" *ngIf="of.value.errors?.pattern">This field accepts only numbers
               </div>
             </div>
           </div>
 
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3 required">Start Date</label>
-              <input type="date" class="form-control fs-6" [min]="fromDate" formControlName="fromDate" [ngClass]="{
+              <label class="fs-6 mb-3">Start Date</label>
+              <input type="date" class="form-control fs-6" [min]="minDate" formControlName="startDate" [ngClass]="{
                       'is-invalid':
-                        (of.fromDate.touched || isSubmitted) &&
-                        of.fromDate.errors?.required
+                        (of.startDate.touched || isSubmitted) &&
+                        of.startDate.errors?.required
                     }" />
             </div>
           </div>
 
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3 required">End Date</label>
-              <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
-                [ngClass]="{ 'is-invalid': (of.lastDate.touched || isSubmitted) && of.lastDate.errors?.required }" />
+              <label class="fs-6 mb-3">End Date</label>
+              <input type="date" [min]="minDate" class="form-control fs-6" formControlName="endDate"
+                [ngClass]="{ 'is-invalid': (of.endDate.touched || isSubmitted) && of.endDate.errors?.required }" />
             </div>
           </div>
 
           <div class="col-lg-12" *ngIf="!isProceedable">
-            <div class="alert alert-danger p-2 fs-6" role="alert">Select atleast one of the below
+            <div class="alert alert-danger p-3 fs-6" role="alert">Select atleast one of the below
             </div>
           </div>
 
-          <div class="col-lg-12">
+          <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
               <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                placeholder="Select products applicable to coupon" [multiple]=true
-                [ngModelOptions]="{standalone: true}">
+                placeholder="Select products applicable to this coupon" [multiple]=true
+                [ngModelOptions]="{standalone: true}" (change)="getTypes('products')">
               </ng-select>
             </div>
           </div>
@@ -116,8 +115,8 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
               <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                placeholder="Select categories applicable to offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}">
+                placeholder="Select categories applicable to this offer" [multiple]=true
+                [ngModelOptions]="{standalone: true}" (change)="getTypes('categories')">
               </ng-select>
             </div>
           </div>
@@ -126,19 +125,19 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
               <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
-                placeholder="Select collections applicable to offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}">
+                placeholder="Select collections applicable to this offer" [multiple]=true
+                [ngModelOptions]="{standalone: true}" (change)="getTypes('collections')">
               </ng-select>
             </div>
           </div>
 
           <div class="col-lg-6">
-            <div class="form-group">
-              <label class="fs-6 mb-3">Featured Offer?</label>
-              <select class="form-select mb-3 fs-6" formControlName="isFeatured">
-                <option value="true" selected>Yes</option>
-                <option value="false">No</option>
-              </select>
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Brands</label>
+              <ng-select [items]="brandsdata" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
+                placeholder="Select brands applicable to this offer" [multiple]=true
+                [ngModelOptions]="{standalone: true}" (change)="getTypes('brands')">
+              </ng-select>
             </div>
           </div>
 
@@ -146,77 +145,28 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Active Offer?</label>
               <select class="form-select mb-3 fs-6" formControlName="isActive">
-                <option value="true" selected>Yes</option>
+                <option value="" disabled> -- Select an option --</option>
+                <option value="true">Yes</option>
                 <option value="false">No</option>
               </select>
             </div>
           </div>
 
-          <div class="mb-4">
-            <h2 class="form-title">Offer Styles</h2>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Background</label>
-              <input type="color" class="form-control fs-6" style="height: 50px;" formControlName="background"
-                (change)="getColors('background', $event.target)" />
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Border</label>
-              <input type="color" class="form-control fs-6" formControlName="border" style="height: 50px;"
-                (change)="getColors('border', $event.target)" />
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Border Radius</label>
-              <input type="number" placeholder="Eg. 2" class="form-control fs-6" formControlName="radius" />
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Color</label>
-              <input type="color" class="form-control fs-6" style="height: 50px;" formControlName="color"
-                (change)="getColors('color', $event.target)" />
-              <span>{{color}}</span>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Font Weight</label>
-              <input type="number" placeholder="Eg. 400" class="form-control fs-6" formControlName="fontWeight" />
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Font Size ( in px )</label>
-              <input type="number" placeholder="Eg. 14" class="form-control fs-6" formControlName="fontSize" />
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="col-12">
-              <h3 class="required form-title">Media</h3>
-            </div>
-            <div class="form-group">
-              <div class="image-upload">
-                <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                  (change)="handleInputChange($event)" style="height: 100px;" required>
-                <div class="image-upload-div">
-                  <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+          <div class="col-lg-12">
+            <label class="fs-6 mb-3">Media</label>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="image-upload">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="handleInputChange($event)" style="height: 100px;" required>
+                  <div class="image-upload-div">
+                    <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
+                    </div>
+                    <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
+                        upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
+                        up to 1
+                        file</span></div>
                   </div>
-                  <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                      upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                      up to 1
-                      file</span></div>
                 </div>
               </div>
             </div>

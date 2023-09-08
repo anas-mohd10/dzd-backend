@@ -3,12 +3,13 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AppSettings, PageTasks } from 'src/app/config/constants';
+import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -22,19 +23,16 @@ export class AddOfferComponent implements OnInit {
   task = PageTasks.ADD;
   filedata: File;
   isSubmitted: boolean;
-  fromDate: string = new Date().toISOString().split('T')[0];
+
 
   croppedImage: string | null | undefined;
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
 
-  //Styling variables
-  background: any
-  border: any
-  color: any
-  from_date: string;
-  to_date: string;
+  minDate: string = new Date().toISOString().split('T')[0];
+  fromDate: string;
+  toDate: string;
 
   validDate: boolean = true;
 
@@ -44,6 +42,8 @@ export class AddOfferComponent implements OnInit {
   categories: Array<any> = []
   collectionsdata: Array<any> = []
   collections: Array<any> = []
+  brandsdata: Array<any> = []
+  brands: Array<any> = []
 
   isValidValue: boolean = true;
   isProceedable: boolean = true
@@ -58,16 +58,15 @@ export class AddOfferComponent implements OnInit {
     private productService: ProductService,
     private cdr: ChangeDetectorRef,
     private CategoryService: CategoryService,
-    private CollectionService: CollectionService
-
+    private CollectionService: CollectionService,
+    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
-    const get_date = new Date().getDate()
+    const getDate = new Date().getDate()
     const date = new Date()
-
-    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
-    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+    this.fromDate = new Date(date.setDate(getDate)).toISOString().split('T')[0]
+    this.toDate = new Date(date.setDate(getDate + 10)).toISOString().split('T')[0]
 
     this.initForm();
     this.managePage();
@@ -86,41 +85,27 @@ export class AddOfferComponent implements OnInit {
       this.collectionsdata = res?.result
       this.cdr.markForCheck()
     })
+
+    this.BrandService.getActiveBrands().subscribe((res: any) => {
+      this.brandsdata = res?.result
+      this.cdr.markForCheck()
+    })
   }
 
   initForm() {
     this.offerForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      title: ['', Validators.required],
       file: [''],
-      description: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      lastDate: ['', Validators.required],
-      type: ['', Validators.required],
-      value: ['', Validators.required],
-      isFeatured: ['false'],
+      description: [''],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      type: ['percentage'],
+      value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       isActive: ['true'],
-      categories: [],
-      products: [],
-      collections: [],
-      background: [''],
-      border: [''],
-      radius: [''],
-      color: [''],
-      fontSize: [''],
-      fontWeight: ['']
     });
-    this.offerForm.get('fromDate')?.setValue(this.from_date)
-    this.offerForm.get('lastDate')?.setValue(this.to_date)
 
-    this.offerForm.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.background = AppSettings.BACKGROUND
-    this.offerForm.get('border')?.setValue(AppSettings.BORDER)
-    this.border = AppSettings.BORDER
-    this.offerForm.get('color')?.setValue(AppSettings.COLOR)
-    this.color = AppSettings.COLOR
-    this.offerForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.offerForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.offerForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
+    this.offerForm.get('startDate')?.setValue(this.fromDate)
+    this.offerForm.get('endDate')?.setValue(this.toDate)
   }
 
   get of() {
@@ -140,17 +125,34 @@ export class AddOfferComponent implements OnInit {
     }
   }
 
-  validateValue(_val: any) {
-    const type = this.offerForm.get('type')?.value
-    if (type == "%") {
-      if (_val.value <= 100) {
-        this.isValidValue = true
-      } else {
-        this.isValidValue = false
-        this.error_message = 'Invalid value, kindly check and re-enter the value.'
-      }
-    } else {
-      this.isValidValue = true
+  validateValue() {
+    let type = this.offerForm.get('type')?.value
+    let value = this.offerForm.get('value')?.value
+    type == 'percentage' ? value > 100 ? this.isValidValue = false : this.isValidValue = true : this.isValidValue = true
+  }
+
+  getTypes(type: any) {
+    switch (type) {
+      case 'products':
+        this.categories = []
+        this.collections = []
+        this.brands = []
+        break
+      case 'categories':
+        this.products = []
+        this.collections = []
+        this.brands = []
+        break
+      case 'collections':
+        this.products = []
+        this.categories = []
+        this.brands = []
+        break
+      case 'brands':
+        this.products = []
+        this.categories = []
+        this.collections = []
+        break
     }
   }
 
@@ -182,16 +184,6 @@ export class AddOfferComponent implements OnInit {
     this.loadImage = false
   }
 
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -203,57 +195,31 @@ export class AddOfferComponent implements OnInit {
 
   addBrand() {
     if (!this.offerForm.valid) {
-      console.error("Validation error")
+      this.isSubmitted = true
       return;
     }
 
-    this.categories.length > 0 || this.products.length > 0 || this.collections.length > 0 ? this.isProceedable = true : this.isProceedable = false
-    const payload = this.createPayload()
-    if (payload) {
-      if (this.isValidValue) {
-
-        if (this.isProceedable) {
-          this.offerService.addOffer(payload).subscribe((res: any) => {
-            if (res.errorCode != 0) {
-              this.toastr.error(res?.message);
-            } else if (res.errorCode == 0) {
-              this.toastr.success(res?.message);
-              this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-            }
-          });
-        }
+    this.categories.length > 0 || this.products.length > 0 || this.collections.length > 0 || this.brands.length > 0 ? this.isProceedable = true : this.isProceedable = false
+    if (this.isValidValue) {
+      if (this.isProceedable) {
+        this.offerService.addOffer({
+          ...this.offerForm.value,
+          categories: this.categories.length > 0 ? this.categories : null,
+          products: this.products.length > 0 ? this.products : null,
+          collections: this.collections.length > 0 ? this.collections : null,
+          brands: this.brands.length > 0 ? this.brands : null,
+          filestring: this.croppedImage,
+          filename: this.filename,
+        }).subscribe((res: any) => {
+          if (res.errorCode != 0) {
+            this.toastr.error(res?.message);
+          } else if (res.errorCode == 0) {
+            this.toastr.success(res?.message);
+            this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+          }
+        });
       }
     }
-  }
-
-  createPayload() {
-    const data = {
-      name: this.offerForm.get('name')?.value,
-      description: this.offerForm.get('description')?.value,
-      fromDate: this.offerForm.get('fromDate')?.value,
-      lastDate: this.offerForm.get('lastDate')?.value,
-      isFeatured: this.offerForm.get('isFeatured')?.value,
-      isActive: this.offerForm.get('isActive')?.value,
-      filestring: this.croppedImage,
-      filename: this.filename,
-      value: this.offerForm.get('value')?.value,
-      type: this.offerForm.get('type')?.value,
-      categories: this.categories,
-      products: this.products,
-      collections: this.collections,
-      style: {
-        background: this.offerForm.get('background')?.value,
-        border: this.offerForm.get('border')?.value,
-        radius: this.offerForm.get('radius')?.value,
-        text: {
-          color: this.offerForm.get('color')?.value,
-          fontSize: this.offerForm.get('fontSize')?.value,
-          fontWeight: this.offerForm.get('fontWeight')?.value,
-        }
-      }
-    }
-
-    return data
   }
 
   updateBrand() { }

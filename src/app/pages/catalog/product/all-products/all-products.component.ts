@@ -41,7 +41,7 @@ export class AllProductsComponent implements OnInit {
   page: any = 1;
   type: String = ''
   name: FormControl = new FormControl('')
-  limit: FormControl = new FormControl('5')
+  limit: FormControl = new FormControl('10')
   isActive: FormControl = new FormControl('')
   isFeatured: FormControl = new FormControl('')
   stock: FormControl = new FormControl('')

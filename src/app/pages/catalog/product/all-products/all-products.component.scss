@@ -11,7 +11,8 @@ $background: #e5e5e5;
 $error: #F1416C;
 
 label,
-input[type=button] {
+input[type=button],
+.btn-secondary {
    font-weight: normal !important;
 }
 
@@ -56,6 +57,7 @@ input[type=button] {
       cursor: pointer;
 
       &.activeBtn {
+         color: $activeState;
          border: 1px solid $activeState;
       }
    }
