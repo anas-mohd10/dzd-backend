@@ -10,6 +10,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
   selector: 'app-update-offer',
@@ -19,38 +20,31 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 export class UpdateOfferComponent implements OnInit {
   offerForm: FormGroup;
   appRoute = appRoutes;
-  task = PageTasks.UPDATE;
   editMode = false;
+  task = PageTasks.UPDATE;
   filedata: File;
   isSubmitted: boolean;
-  offer: any;
-  offerData: any;
-  fromDate: any;
-  lastDate: string;
-  uploadedimg: any;
   croppedImage: string | null | undefined;
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
-  base: any;
-  startDate: string = new Date().toISOString().split('T')[0];
-
-  //Styling variables
-  background: any
-  border: any
-  color: any
-  offerStarted: boolean = false;
-  image: string;
+  minDate: string = new Date().toISOString().split('T')[0];
+  fromDate: string;
+  toDate: string;
   validDate: boolean = true;
-
-  productsdata: any;
-  products: []
-  categoriesdata: any = []
-  categories: any = []
-  collectionsdata: any = []
-  collections: any = []
-  isValidValue: boolean;
-  error_message: string;
+  productsdata: Array<any> = [];
+  products: Array<any> = []
+  categoriesdata: Array<any> = []
+  categories: Array<any> = []
+  collectionsdata: Array<any> = []
+  collections: Array<any> = []
+  brandsdata: Array<any> = []
+  brands: Array<any> = []
+  isValidValue: boolean = true;
+  isProceedable: boolean = true;
+  base: string = environment.base;
+  offer: string = ''
+  offerDetails: any = {}
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,10 +55,16 @@ export class UpdateOfferComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private productService: ProductService,
     private CategoryService: CategoryService,
-    private CollectionService: CollectionService
+    private CollectionService: CollectionService,
+    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
+    const getDate = new Date().getDate()
+    const date = new Date()
+    this.fromDate = new Date(date.setDate(getDate)).toISOString().split('T')[0]
+    this.toDate = new Date(date.setDate(getDate + 10)).toISOString().split('T')[0]
+
     this.base = environment.base
     this.offer = this.route.snapshot.queryParams.offer || '';
     this.initForm();
@@ -85,28 +85,28 @@ export class UpdateOfferComponent implements OnInit {
       this.collectionsdata = res?.result
       this.cdr.markForCheck()
     })
+
+    this.BrandService.getActiveBrands().subscribe((res: any) => {
+      this.brandsdata = res?.result
+      this.cdr.markForCheck()
+    })
   }
 
   initForm() {
     this.offerForm = this.formBuilder.group({
-      name: [''],
+      title: ['', Validators.required],
+      file: [''],
       description: [''],
-      fromDate: [''],
-      lastDate: [''],
-      categories: [],
-      type: ['', Validators.required],
-      value: ['', Validators.required],
-      products: [],
-      collections: [],
-      isFeatured: [''],
-      isActive: [''],
-      background: [''],
-      border: [''],
-      radius: [''],
-      color: [''],
-      fontSize: [''],
-      fontWeight: ['']
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      type: ['percentage'],
+      value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
+      isActive: ['true'],
+      isDelete: ['false']
     });
+
+    this.offerForm.get('startDate')?.setValue(this.fromDate)
+    this.offerForm.get('endDate')?.setValue(this.toDate)
   }
 
   get of() {
@@ -127,30 +127,36 @@ export class UpdateOfferComponent implements OnInit {
     }
   }
 
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
+  validateValue() {
+    let type = this.offerForm.get('type')?.value
+    let value = this.offerForm.get('value')?.value
+    type == 'percentage' ? value > 100 ? this.isValidValue = false : this.isValidValue = true : this.isValidValue = true
   }
 
-  validateValue(_val: any) {
-    const type = this.offerForm.get('type')?.value
-    if (type == "%") {
-      if (_val.value <= 100) {
-        this.isValidValue = true
-      } else {
-        this.isValidValue = false
-        this.error_message = 'Invalid value, kindly check and re-enter the value.'
-      }
-    } else {
-      this.isValidValue = true
+  getTypes(type: any) {
+    switch (type) {
+      case 'products':
+        this.categories = []
+        this.collections = []
+        this.brands = []
+        break
+      case 'categories':
+        this.products = []
+        this.collections = []
+        this.brands = []
+        break
+      case 'collections':
+        this.products = []
+        this.categories = []
+        this.brands = []
+        break
+      case 'brands':
+        this.products = []
+        this.categories = []
+        this.collections = []
+        break
     }
   }
-
 
   compareFn(item: any, selected: any) {
     return item._id === selected;
@@ -167,17 +173,11 @@ export class UpdateOfferComponent implements OnInit {
     this.croppedImage = event.base64;
   }
 
-  imageLoaded() {
-    // show cropper
-  }
+  imageLoaded() { }
 
-  cropperReady() {
-    // cropper ready
-  }
+  cropperReady() { }
 
-  loadImageFailed() {
-    // show message
-  }
+  loadImageFailed() { }
 
   removeImage() {
     this.croppedImage = ''
@@ -187,91 +187,54 @@ export class UpdateOfferComponent implements OnInit {
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
-      this.updateBrand();
+      this.updateOffer();
     } else {
-      this.addBrand();
+      this.addOffer();
     }
   }
 
   getOffer() {
-    this.offerService.getOfferById(this.offer).subscribe((res: any) => {
+    this.offerService.getOfferDetails(this.offer).subscribe((res: any) => {
       if (res.errorCode == 0) {
-        this.offerData = res?.result[0];
+        this.offerDetails = res?.result;
+        this.offerForm.get('title')?.setValue(this.offerDetails.title);
+        this.offerForm.get('description')?.setValue(this.offerDetails.description);
+        this.offerForm.get('isActive')?.setValue(this.offerDetails.isActive);
+        this.offerForm.get('type')?.setValue(this.offerDetails.type);
+        this.offerForm.get('value')?.setValue(this.offerDetails.value);
+        this.offerForm.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
+        this.offerForm.get('startDate')?.setValue(new Date(this.offerDetails.startDate).toISOString().split('T')[0]);
+        this.offerForm.get('endDate')?.setValue(new Date(this.offerDetails.endDate).toISOString().split('T')[0]);
+        this.products = this.offerDetails.products ? this.offerDetails.products : []
+        this.categories = this.offerDetails.categories ? this.offerDetails.categories : []
+        this.collections = this.offerDetails.collections ? this.offerDetails.collections : []
+        this.brands = this.offerDetails.brands ? this.offerDetails.brands : []
+        this.offerDetails.type == 'percentage' ? this.offerDetails.value > 100 ? this.isValidValue = false : this.isValidValue = true : this.isValidValue = true
         this.cdr.markForCheck()
-        this.image = this.base + "/" + this.offerData?.file;
-        this.uploadedimg = this.offerData?.file;
-
-        this.offerForm.get('name')?.setValue(this.offerData.name);
-        this.offerForm.get('description')?.setValue(this.offerData.description);
-        this.offerForm.get('isActive')?.setValue(this.offerData.isActive);
-        this.offerForm.get('type')?.setValue(this.offerData.type);
-        this.offerForm.get('value')?.setValue(this.offerData.value);
-        this.offerForm.get('isFeatured')?.setValue(this.offerData.isFeatured);
-
-        const today = new Date().toISOString()
-        if (today > this.offerData?.fromDate) {
-          this.offerStarted = true
-          this.offerForm.get('fromDate')?.disable()
-        }
-
-        this.fromDate = new Date(this.offerData.fromDate).toISOString().split('T')[0];
-        this.lastDate = new Date(this.offerData.lastDate).toISOString().split('T')[0];
-
-        this.offerForm.get('fromDate')?.setValue(this.fromDate);
-        this.offerForm.get('lastDate')?.setValue(this.lastDate);
-
-        this.offerForm.get('background')?.setValue(this.offerData.style.background);
-        this.offerForm.get('border')?.setValue(this.offerData.style.border);
-        this.offerForm.get('radius')?.setValue(this.offerData.style.radius);
-        this.offerForm.get('color')?.setValue(this.offerData.style.text.color);
-        this.offerForm.get('fontSize')?.setValue(this.offerData.style.text.fontSize);
-        this.offerForm.get('fontWeight')?.setValue(this.offerData.style.text.fontWeight);
-
-        this.products = this.offerData.products
-        this.categories = this.offerData.categories
-        this.collections = this.offerData.collections
-        this.color = this.offerData.style.text.color
-        this.background = this.offerData.style.background
-        this.border = this.offerData.style.border
       }
     });
   }
 
-  validateDate() {
-    const today = new Date().toISOString()
-    const fromDate = this.offerForm.get('fromDate')?.value
-    const lastDate = this.offerForm.get('lastDate')?.value
-    if (this.offerStarted) {
-      if (lastDate < fromDate || lastDate < today) {
-        this.validDate = false
-        this.toastr.error('inavlid date')
-      }
-      else {
-        this.validDate = true
-      }
-    }
-    else {
-      if (fromDate < today || fromDate > lastDate || lastDate < today) {
-        this.validDate = false
-        this.toastr.error('inavlid date')
-      }
-      else {
-        this.validDate = true
-      }
-    }
-  }
+  addOffer() { }
 
-  addBrand() { }
-
-  updateBrand() {
+  updateOffer() {
     if (!this.offerForm.valid) {
       return;
     }
 
-    const payload = this.createPayload()
-    if (payload) {
-      if (this.validDate == true) {
-        this.offerService.updateOffer(this.offer, payload).subscribe((res: any) => {
+    this.categories.length > 0 || this.products.length > 0 || this.collections.length > 0 || this.brands.length > 0 ? this.isProceedable = true : this.isProceedable = false
+    if (this.isValidValue) {
+      if (this.isProceedable) {
+        this.offerService.updateOffer(this.offer, {
+          ...this.offerForm.value,
+          categories: this.categories.length > 0 ? this.categories : null,
+          products: this.products.length > 0 ? this.products : null,
+          collections: this.collections.length > 0 ? this.collections : null,
+          brands: this.brands.length > 0 ? this.brands : null,
+          filestring: this.croppedImage,
+          filename: this.filename,
+          refid: this.offer
+        }).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
           } else if (res.errorCode == 0) {
@@ -282,39 +245,5 @@ export class UpdateOfferComponent implements OnInit {
       }
     }
   }
-
-  createPayload() {
-    const data = {
-      name: this.offerForm.get('name')?.value,
-      description: this.offerForm.get('description')?.value,
-      fromDate: this.offerForm.get('fromDate')?.value,
-      lastDate: this.offerForm.get('lastDate')?.value,
-      value: this.offerForm.get('value')?.value,
-      type: this.offerForm.get('type')?.value,
-      categories: this.categories,
-      products: this.products,
-      collections: this.collections,
-      isFeatured: this.offerForm.get('isFeatured')?.value,
-      isActive: this.offerForm.get('isActive')?.value,
-      filestring: this.croppedImage,
-      filename: this.filename,
-      file: '',
-      style: {
-        background: this.offerForm.get('background')?.value,
-        border: this.offerForm.get('border')?.value,
-        radius: this.offerForm.get('radius')?.value,
-        text: {
-          color: this.offerForm.get('color')?.value,
-          fontSize: this.offerForm.get('fontSize')?.value,
-          fontWeight: this.offerForm.get('fontWeight')?.value,
-        }
-      },
-      offerid: this.offer
-    }
-    if (this.uploadedimg) {
-      data.file = this.uploadedimg
-    }
-
-    return data
-  }
 }
+ 

@@ -72,9 +72,13 @@
 
                 <div class="permissionsWrapper" *ngIf="permissions.length > 0">
                   <ng-container *ngFor="let permission of permissions">
-                    <div class="permissionCard p-3 fs-6 rounded" (click)="managePermission(permission?.refid)"
+                    <div class="permissionCard d-flex align-items-center justify-content-start p-3 fs-6 rounded"
+                      (click)="managePermission(permission?.refid)"
                       [ngClass]="{'selected': checkedPermissions.includes(permission?.refid)}">
-                      {{permission?.name}}</div>
+                      <div class="checkbox" [ngClass]="{'checked': checkedPermissions.includes(permission?.refid)}">
+                      </div>
+                      {{permission?.name}}
+                    </div>
                   </ng-container>
                 </div>
 

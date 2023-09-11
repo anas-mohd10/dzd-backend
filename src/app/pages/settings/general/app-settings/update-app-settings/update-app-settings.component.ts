@@ -54,6 +54,8 @@ export class UpdateAppSettingsComponent implements OnInit {
   logoFilePreview: any
   faviconFile: any
   faviconFilePreview: any
+  primary: string = ''
+  secondary: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -71,6 +73,8 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId(this.refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.data = res?.result
+        this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
+        this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
         this.form.get('secondary')?.setValue("#" + res?.result?.colors?.secondary.split('FF')[1])
         this.form.get('star')?.setValue("#" + res?.result?.colors?.star.split('FF')[1])

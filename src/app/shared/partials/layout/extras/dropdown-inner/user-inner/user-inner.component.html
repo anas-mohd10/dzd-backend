@@ -9,6 +9,10 @@
   </div>
   <div class="separator my-2"></div>
   <div class="menu-item">
-    <a (click)="logout()" class="menu-link cursor-pointer fs-5"> Log out </a>
+    <a routerLink="{{appRoute.account.MY_ACCOUNT}}" class="menu-link cursor-pointer fs-6">Profile</a>
+  </div>
+  <div class="separator my-2"></div>
+  <div class="menu-item">
+    <a (click)="logout()" class="menu-link cursor-pointer fs-6"> Log out </a>
   </div>
 </ng-container>

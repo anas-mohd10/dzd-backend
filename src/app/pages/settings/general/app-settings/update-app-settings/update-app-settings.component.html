@@ -113,6 +113,27 @@
                            formControlName="description"></textarea>
                      </div>
                   </div>
+
+                  <div class="col-12">
+                     <h2 class="form-title">Button Settings</h2>
+                     <div class="row mt-2">
+                        <div class="col-lg-4 -3">
+                           <div class="button" [ngStyle]="{'background-color': primary}">
+                              Add to Cart
+                           </div>
+                        </div>
+                        <div class="col-lg-4">
+                           <div class="button outOfStock" [ngStyle]="{'background-color': primary}">
+                              Out of Stock
+                           </div>
+                        </div>
+                        <div class="col-lg-4">
+                           <div class="button notifyButton" [ngStyle]="{'border-color': primary, 'color': primary}">
+                              Notify Me
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                </form>
 
                <div class="col-12 d-flex align-items-center justify-content-end">
@@ -187,6 +208,8 @@
                      </div>
                   </div>
 
+                  <h2 class="form-title">Store Media Settings</h2>
+
                   <div class="col-12">
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required">Logo</label>
@@ -207,10 +230,17 @@
                         </div>
                      </div>
 
-                     <div class="logoPreview mt-5" *ngIf="logoFilePreview">
+                     <div class="logoPreview p-3 mt-3 rounded" *ngIf="logoFilePreview">
                         <div class="logo">
                            <img src="{{logoFilePreview}}" alt="Logo">
-                           <div class="logoClose fs-6 mt-2" (click)="removeLogo('logo')"> Discard </div>
+                        </div>
+                        <div class="logoClose" (click)="removeLogo('logo')">
+                           <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                              fill="currentColor">
+                              <path d="M0 0h24v24H0V0z" fill="none" />
+                              <path
+                                 d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                           </svg>
                         </div>
                      </div>
                   </div>
@@ -235,10 +265,18 @@
                         </div>
                      </div>
 
-                     <div class="faviconPreview mt-5" *ngIf="faviconFilePreview">
+                     <div class="faviconPreview mt-3 p-3" *ngIf="faviconFilePreview">
                         <div class="favicon">
                            <img src="{{faviconFilePreview}}" alt="Favicon">
-                           <div class="faviconClose fs-6 mt-2" (click)="removeLogo('favicon')"> Discard </div>
+                        </div>
+
+                        <div class="faviconClose" (click)="removeLogo('favicon')">
+                           <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                              fill="currentColor">
+                              <path d="M0 0h24v24H0V0z" fill="none" />
+                              <path
+                                 d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                           </svg>
                         </div>
                      </div>
                   </div>

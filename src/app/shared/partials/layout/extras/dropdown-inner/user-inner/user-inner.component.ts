@@ -1,6 +1,7 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { appRoutes } from 'src/app/config/routes';
 import { authRoute } from 'src/app/config/routes/auth.routes';
 import { AuthService } from 'src/app/includes/services/auth.service';
 
@@ -15,6 +16,7 @@ export class UserInnerComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
   userData: any;
   authRoute = authRoute;
+  appRoute = appRoutes
 
   constructor(
     public router: Router, private authService: AuthService

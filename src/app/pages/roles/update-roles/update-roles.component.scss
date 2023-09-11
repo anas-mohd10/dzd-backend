@@ -26,9 +26,35 @@ input[type=button],
     border: 1px solid $border;
 
     &.selected {
-      background: $primaryBackground;
       color: $primary;
       border: 1px solid $primary;
+    }
+
+    .checkbox {
+      position: relative;
+      height: 16px;
+      width: 16px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      margin: 0 5px 0 0;
+
+      &::after {
+        position: absolute;
+        content: '';
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 2px;
+        height: 10px;
+        width: 10px;
+      }
+
+      &.checked {
+
+        &::after {
+          background: $primary;
+        }
+      }
     }
   }
 }

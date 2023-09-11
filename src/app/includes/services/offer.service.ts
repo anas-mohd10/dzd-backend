@@ -20,8 +20,8 @@ export class OfferService {
     return this.http.get(`${url}`);
   }
 
-  getOfferById(id: any) {
-    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_by_id + "?slug=" + id);
+  getOfferDetails(offer: any) {
+    const url = this.commonService.getFullUrl(this.offerEndpoints.get_offer_by_id + `/${offer}`);
     return this.http.get(`${url}`);
   }
 
@@ -31,7 +31,7 @@ export class OfferService {
   }
 
   updateOffer(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.offerEndpoints.update_offer + "?slug=" + slug);
+    const url = this.commonService.getFullUrl(this.offerEndpoints.update_offer + "?offer=" + slug);
     return this.http.put(`${url}`, data);
   }
 

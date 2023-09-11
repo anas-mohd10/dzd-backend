@@ -23,19 +23,14 @@ export class AddOfferComponent implements OnInit {
   task = PageTasks.ADD;
   filedata: File;
   isSubmitted: boolean;
-
-
   croppedImage: string | null | undefined;
   loadImage: boolean;
   filename: string;
   imageChangedEvent: any;
-
   minDate: string = new Date().toISOString().split('T')[0];
   fromDate: string;
   toDate: string;
-
   validDate: boolean = true;
-
   productsdata: Array<any> = [];
   products: Array<any> = []
   categoriesdata: Array<any> = []
@@ -44,10 +39,8 @@ export class AddOfferComponent implements OnInit {
   collections: Array<any> = []
   brandsdata: Array<any> = []
   brands: Array<any> = []
-
   isValidValue: boolean = true;
   isProceedable: boolean = true
-  error_message: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
