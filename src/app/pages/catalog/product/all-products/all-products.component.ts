@@ -41,7 +41,7 @@ export class AllProductsComponent implements OnInit {
   page: any = 1;
   type: String = ''
   name: FormControl = new FormControl('')
-  limit: FormControl = new FormControl('10')
+  limit: FormControl = new FormControl('20')
   isActive: FormControl = new FormControl('')
   isFeatured: FormControl = new FormControl('')
   stock: FormControl = new FormControl('')
@@ -121,7 +121,7 @@ export class AllProductsComponent implements OnInit {
 
   getProductOffers() {
     for (let _product of this.products) {
-      const diff = _product?.price?.mrp - _product.price?.offer
+      const diff = _product?.price?.mrp - _product.price?.selling
       const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
       const message = {
         text: `${percentage_off} % off`,

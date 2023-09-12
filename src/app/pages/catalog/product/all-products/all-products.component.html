@@ -112,14 +112,14 @@
                   <div class="product-name mb-2 fs-4">{{product?.name}}</div>
                   <div class="product-price">
                     <div class="d-flex">
-                      <div class="product-offerprice fs-5" *ngIf="product?.price?.offer != product?.price?.mrp">
-                        {{settings?.currency}} {{product?.price?.offer}}</div>
-                      <div class="product-offerprice fs-5" *ngIf="product?.price?.offer == product?.price?.mrp">
+                      <div class="product-offerprice fs-5" *ngIf="product?.price?.selling != product?.price?.mrp">
+                        {{settings?.currency}} {{product?.price?.selling}}</div>
+                      <div class="product-offerprice fs-5" *ngIf="product?.price?.selling == product?.price?.mrp">
                         {{settings?.currency}}
                         {{product?.price?.mrp}}
                       </div>
-                      <div class="product-mrpprice" *ngIf="product?.price?.offer != product?.price?.mrp"
-                        [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.offer}">
+                      <div class="product-mrpprice" *ngIf="product?.price?.selling != product?.price?.mrp"
+                        [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.selling}">
                         {{settings?.currency}} {{product?.price?.mrp}}</div>
                     </div>
                     <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
