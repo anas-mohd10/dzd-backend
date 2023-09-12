@@ -86,15 +86,23 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('domain')?.setValue(res?.result?.domain)
+        this.form.get('name')?.setValue(res?.result?.name)
         this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
+        this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
+        this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
+        this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.logoFilePreview = environment.base + "/" + res?.result?.logo
         this.faviconFilePreview = environment.base + "/" + res?.result?.favicon
         this.cdr.markForCheck()
       }
     })
+  }
+
+  get formControls() {
+    return this.form.controls
   }
 
   initform() {
@@ -110,11 +118,15 @@ export class UpdateAppSettingsComponent implements OnInit {
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required],
+      name: ['', Validators.required],
       domain: ['', Validators.required],
       description: ['', Validators.required],
       packingSlip: ['', Validators.required],
       isOutOfStock: ['false'],
-      isNotifyStock: ['false']
+      isNotifyStock: ['false'],
+      cartButton: ['Add to Cart', Validators.required],
+      stockButton: ['Out of Stock', Validators.required],
+      notifyButton: ['Notify Me', Validators.required]
     })
   }
 
@@ -161,6 +173,7 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
+      this.isSubmitted = true
       return
     }
 
@@ -183,9 +196,15 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
+      name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,
-      notes: { packingSlip: this.form.get('packingSlip')?.value }
+      notes: { packingSlip: this.form.get('packingSlip')?.value },
+      buttons: {
+        cart: this.form.get('cartButton')?.value,
+        stock: this.form.get('stockButton')?.value,
+        notify: this.form.get('notifyButton')?.value
+      }
     }
 
     const formdata = new FormData();

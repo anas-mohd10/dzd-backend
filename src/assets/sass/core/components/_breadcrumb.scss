@@ -15,7 +15,7 @@
         display: flex;
         align-items: center;
         padding-left: 0;
-        padding-right: $breadcrumb-item-padding-x;
+        // padding-right: $breadcrumb-item-padding-x;
 
         &:last-child {
             padding-right: 0;
@@ -23,10 +23,10 @@
 
         &:after {
             content: ">";
-            color: #20BDAB;
+            color: #bbbbbb;
             padding: 0 1px;
             font-size: 25px;
-            margin-bottom: 2px;
+            // margin-bottom: 2px;
         }
 
         &:before {
