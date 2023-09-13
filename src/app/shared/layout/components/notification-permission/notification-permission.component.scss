@@ -1,0 +1,43 @@
+.overlay {
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 300;
+  background-color: rgba(0, 0, 0, 0.486);
+  .permission-container {
+    background: #fff;
+    width: 368px;
+    position: fixed;
+    left: 75px;
+    color: #212121;
+    z-index: 800;
+    border-radius: 2px;
+    transition: top 0.3s;
+    display: block;
+    top: 0px;
+  }
+  .image_block {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      filter: hue-rotate(104deg);
+    }
+  }
+
+  .allow-container {
+    position: relative;
+    top: 25%;
+    width: 350px;
+    margin: auto;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    line-height: 22px;
+  }
+}

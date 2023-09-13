@@ -46,6 +46,8 @@ import { AnalyticsComponent } from './pages/settings/general/analytics/analytics
 import { FeedsComponent } from './pages/marketing/feeds/feeds.component';
 import { NavigationMenuComponent } from './pages/settings/general/navigation-menu/navigation-menu.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { HotToastModule } from '@ngneat/hot-toast';
+import { NotificationPermissionComponent } from './shared/layout/components/notification-permission/notification-permission.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -73,7 +75,8 @@ const DragConfig = {
     DynamicScriptsComponent,
     AnalyticsComponent,
     FeedsComponent,
-    NavigationMenuComponent
+    NavigationMenuComponent,
+    NotificationPermissionComponent
   ],
   imports: [
     DataTablesModule,
@@ -92,6 +95,7 @@ const DragConfig = {
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }),
+    HotToastModule.forRoot(),
     AppRoutingModule,
     NgApexchartsModule,
     ReactiveFormsModule,
