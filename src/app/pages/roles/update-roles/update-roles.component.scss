@@ -25,10 +25,10 @@ input[type=button],
     cursor: pointer;
     border: 1px solid $border;
 
-    &.selected {
-      color: $primary;
-      border: 1px solid $primary;
-    }
+    // &.selected {
+    //   color: $primary;
+    //   border: 1px solid $primary;
+    // }
 
     .checkbox {
       position: relative;

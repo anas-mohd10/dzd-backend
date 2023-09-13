@@ -7,5 +7,7 @@ export const adminUsersEndpoints = {
      admin_details: '/admin-details',
      search_admins: '/search-admins',
      authorize: '/authorize',
-     general_seearch: '/search'
+     general_seearch: '/search',
+     reset_admin_password: '/reset-admin-password',
+     subscribe_admin: '/subscribe-admin'
 }

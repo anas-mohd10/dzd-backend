@@ -10,6 +10,7 @@ import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
   selector: 'app-update-coupons',
@@ -45,6 +46,8 @@ export class UpdateCouponsComponent implements OnInit {
   collections: any = []; //Array of collection ids
   collectionsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
+  brands: any = []; //Array of collection ids
+  brandsData: any = [];
   error_message: string;
   slug: string = ''
   base: string = environment.base
@@ -65,7 +68,8 @@ export class UpdateCouponsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +80,7 @@ export class UpdateCouponsComponent implements OnInit {
     this.getCategories()
     this.getCollections()
     this.getCouponBySlug()
+    this.getBrands()
   }
 
   initForm() {
@@ -102,6 +107,7 @@ export class UpdateCouponsComponent implements OnInit {
       isActive: ['true'],
       isDelete: ['false'],
       isVisibility: ['true'],
+      countPerUser: ['', Validators.pattern("^[0-9]*$")]
     });
   }
 
@@ -143,6 +149,12 @@ export class UpdateCouponsComponent implements OnInit {
     })
   }
 
+  getBrands() {
+    this.BrandService.getActiveBrands().subscribe((res: any) => {
+      this.brandsData = res?.result
+    })
+  }
+
   getCouponBySlug() {
     this.couponsService.getCouponDetails({ refid: this.slug }).subscribe((res: any) => {
       this.couponDetails = res?.result
@@ -159,6 +171,7 @@ export class UpdateCouponsComponent implements OnInit {
       this.form.get("couponValue")?.setValue(this.couponDetails?.details?.value)
       this.form.get("isActive")?.setValue(this.couponDetails.isActive)
       this.form.get("isVisibility")?.setValue(this.couponDetails.isVisibility)
+      this.form.get("countPerUser")?.setValue(this.couponDetails.countPerUser)
 
       const today = new Date().toISOString()
       if (today > this.couponDetails?.fromDate) {
@@ -175,6 +188,7 @@ export class UpdateCouponsComponent implements OnInit {
       this.collections = this.couponDetails.collections
       this.products = this.couponDetails.products
       this.categories = this.couponDetails.categories
+      this.brands = this.couponDetails.brands
       this.cdr.markForCheck()
       this.isValidValue = true
     })
@@ -287,9 +301,11 @@ export class UpdateCouponsComponent implements OnInit {
         minPurchase: this.form.get('minPurchase')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
-        categories: this.categories,
-        products: this.products,
-        collections: this.collections,
+        categories: this.categories ? this.categories : [],
+        products: this.products ? this.products : [],
+        collections: this.collections ? this.collections : [],
+        brands: this.brands ? this.brands : [],
+        countPerUser: this.form.get('countPerUser')?.value,
         details: {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,

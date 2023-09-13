@@ -174,9 +174,11 @@
 
                <div class="col-lg-6">
                   <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">No. of Coupons</label>
-                     <div class="input-group mb-3">
-                        <input type="number" class="form-control" formControlName="couponValue" />
+                     <label class="fs-6 mb-3">Coupon Per User</label>
+                     <input type="number" class="form-control" formControlName="countPerUser"
+                        [ngClass]="{ 'is-invalid': cf.countPerUser.errors?.pattern}" placeholder="Eg. 1" />
+                     <div class="alert alert-danger mt-1" role="alert" *ngIf="cf.couponValue.errors?.pattern">
+                        Only numbers are allowed
                      </div>
                   </div>
                </div>

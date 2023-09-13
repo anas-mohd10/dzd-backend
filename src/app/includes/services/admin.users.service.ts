@@ -35,8 +35,8 @@ export class AdminUsersService {
     return this.http.post(`${url}`, data)
   }
 
-  updateAdminUser(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin + "?slug=" + slug);
+  updateAdminUser(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.update_admin);
     return this.http.put(`${url}`, data)
   }
 
@@ -46,10 +46,19 @@ export class AdminUsersService {
   }
 
   generalSearch(data: any, query: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.general_seearch) + `?type=${query}`;
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.general_seearch + `?type=${query}`);
     return this.http.post(`${url}`, data)
   }
 
+  subscribeAdmin(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.subscribe_admin);
+    return this.http.post(`${url}`, data)
+  }
+
+  resetPassword(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.reset_admin_password);
+    return this.http.post(`${url}`, data)
+  }
 }
 
 

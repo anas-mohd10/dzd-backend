@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   hasError: boolean;
   returnUrl: string;
-  // isLoading$: Observable<boolean>;
   isSubmitted: boolean = false
   authRoute = authRoute;
   appRoute = appRoutes;
@@ -30,11 +29,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage: any;
   redirectUrl: any;
 
-
-  // private fields
-  private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-
-
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -42,11 +36,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private toastr: ToastrService
   ) {
-    // this.isLoading$ = this.authService.isLoading$;
-    // Redirect to home if already logged in
-    // if (this.authService.currentUserValue) {
-    //   this.router.navigate([this.appRoute.DASHBOARD]);
-    // }
   }
 
   ngOnInit(): void {
@@ -67,10 +56,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   submit() {
     this.isSubmitted = true;
+    
     this.userData = {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password
     }
+
     this.authService.login(this.userData).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.toastr.error(res?.message || 'Invalid username or password');
@@ -78,8 +69,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authService.saveUserData(res?.result)
         localStorage.setItem(localstorageVariables.access_token, res?.result?.token);
         localStorage.setItem(localstorageVariables.is_logged_in, 'true');
-        localStorage.setItem(localstorageVariables.pData, JSON.stringify(res?.Data?.permissions))
-        localStorage.setItem(localstorageVariables.slug, res?.result?.slug)
         this.router.navigate([this.redirectUrl]);
       }
     })

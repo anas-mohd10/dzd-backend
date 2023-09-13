@@ -116,9 +116,9 @@ export class UpdateUsersComponent implements OnInit {
     let conPwd = this.adminForm.get("password")?.value
 
     if (pwd == conPwd) {
-      this.adminService.updateAdminUser(this.admin, this.adminForm.value).subscribe((res: any) => {
+      this.adminService.updateAdminUser(this.adminForm.value).subscribe((res: any) => {
         if (res.errorCode != 0) {
-          this.toastr.error('Something went wrong');
+          this.toastr.error(res?.message);
         } else if (res.errorCode == 0) {
           this.toastr.success('Admin user added successfully');
           this.router.navigate([this.appRoute.admin.ADMIN_USERS]);

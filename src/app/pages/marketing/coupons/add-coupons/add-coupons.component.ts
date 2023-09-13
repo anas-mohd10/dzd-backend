@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
@@ -42,6 +43,8 @@ export class AddCouponsComponent implements OnInit {
   product: any = []; //Array of product name and id
   collections: any = []; //Array of collection ids
   collectionsData: any = []; //Data fetched from database
+  brands: any = []; //Array of collection ids
+  brandsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
   error_message: string;
   from_date: string;
@@ -60,7 +63,8 @@ export class AddCouponsComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private AppSettingsService: AppSettingsService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +85,7 @@ export class AddCouponsComponent implements OnInit {
     this.getProducts()
     this.getCategories()
     this.getCollections()
+    this.getBrands()
   }
 
   initForm() {
@@ -107,6 +112,7 @@ export class AddCouponsComponent implements OnInit {
       isActive: ['true'],
       isDelete: ['false'],
       isVisibility: ['true'],
+      countPerUser: ['', Validators.pattern("^[0-9]*$")]
     });
 
     this.form.get('fromDate')?.setValue(this.from_date)
@@ -154,6 +160,12 @@ export class AddCouponsComponent implements OnInit {
     })
   }
 
+  getBrands() {
+    this.BrandService.getActiveBrands().subscribe((res: any) => {
+      this.brandsData = res?.result
+    })
+  }
+
   handleInputChange(event: any) {
     this.filedata = <File>event.target.files[0];
     this.filename = this.filedata.name
@@ -181,14 +193,22 @@ export class AddCouponsComponent implements OnInit {
       case 'product':
         this.categories = []
         this.collections = []
+        this.brands = []
         break
       case 'collection':
         this.categories = []
         this.products = []
+        this.brands = []
         break
       case 'category':
         this.products = []
         this.collections = []
+        this.brands = []
+        break
+      case 'brand':
+        this.products = []
+        this.collections = []
+        this.categories = []
         break
     }
   }
@@ -246,15 +266,17 @@ export class AddCouponsComponent implements OnInit {
         minPurchase: this.form.get('minPurchase')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
-        categories: this.categories,
-        products: this.products,
-        collections: this.collections,
+        categories: this.categories ? this.categories : [],
+        products: this.products ? this.products : [],
+        collections: this.collections ? this.collections : [],
+        brands: this.brands ? this.brands : [],
         details: {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,
         },
         filestring: this.croppedImage,
         filename: this.filename,
+        countPerUser: this.form.get('countPerUser')?.value,
         isActive: this.form.get('isActive')?.value,
         isVisibility: this.form.get('isVisibility')?.value,
         style: {

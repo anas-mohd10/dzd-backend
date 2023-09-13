@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
-
 @Component({
   selector: 'app-my-account',
   templateUrl: './my-account.component.html',
@@ -17,15 +17,19 @@ export class MyAccountComponent implements OnInit {
   isResetPassword: boolean = false
   @ViewChild('username') username: ElementRef;
   @ViewChild('email') email: ElementRef;
+  isPasswordSubmitted: boolean = false
+  passwordForm: FormGroup
 
-  oldPassword: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
-  password: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
-  confirmPassword: FormControl = new FormControl('', [Validators.required, Validators.minLength(8)]);
 
   constructor(
     private AdminUsersService: AdminUsersService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService
   ) { }
+
+  get passwordControls() {
+    return this.passwordForm.controls
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -33,6 +37,12 @@ export class MyAccountComponent implements OnInit {
       lastname: new FormControl(''),
       countryCode: new FormControl(''),
       mobile: new FormControl('')
+    })
+
+    this.passwordForm = new FormGroup({
+      oldPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
     })
 
     this.AdminUsersService.getAdminDetails({}).subscribe((res: any) => {
@@ -68,6 +78,8 @@ export class MyAccountComponent implements OnInit {
         this.isResetPassword = true
         break
       case false:
+        this.passwordForm.reset()
+        this.isPasswordSubmitted = false
         this.isResetPassword = false
         break
       default:
@@ -77,7 +89,18 @@ export class MyAccountComponent implements OnInit {
   }
 
   changePassword() {
+    if (!this.passwordForm.valid) {
+      this.isPasswordSubmitted = true
+      return
+    }
 
+    this.AdminUsersService.resetPassword(this.passwordForm.value).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ToastrService.success(res?.message)
+      } else {
+        this.ToastrService.error(res?.errorMessage)
+      }
+    })
   }
 
   editDetails() {
@@ -86,12 +109,13 @@ export class MyAccountComponent implements OnInit {
       return
     }
 
-    this.AdminUsersService.updateAdminUser(this.adminDetails?.slug, this.form.value).subscribe((res: any) => {
+    this.AdminUsersService.updateAdminUser(this.form.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ngOnInit()
         this.isValid = true
+        this.isTouched = false
+        this.ToastrService.success('Details updated successfully')
       }
     })
   }
-
 }

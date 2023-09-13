@@ -8,6 +8,7 @@
   overflow: hidden;
   z-index: 300;
   background-color: rgba(0, 0, 0, 0.486);
+
   .permission-container {
     background: #fff;
     width: 368px;
@@ -15,16 +16,18 @@
     left: 75px;
     color: #212121;
     z-index: 800;
-    border-radius: 2px;
     transition: top 0.3s;
     display: block;
     top: 0px;
+    border-radius: 0 0 15px 15px;
   }
+
   .image_block {
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+
     img {
       filter: hue-rotate(104deg);
     }
@@ -40,4 +43,12 @@
     text-align: center;
     line-height: 22px;
   }
+}
+
+.btn-secondary {
+  font-weight: normal !important;
+}
+
+.btn {
+  width: 50%;
 }

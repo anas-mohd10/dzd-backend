@@ -150,40 +150,55 @@
                         </div>
                         <div class="signInMethodText">
                             <button *ngIf="!isResetPassword" type="button" class="btn btn-secondary"
-                                (click)="resetPassword(true)">Reset
-                                Password</button>
+                                (click)="resetPassword(true)">
+                                Reset Password
+                            </button>
+
                             <div class="passwordContainer" *ngIf="isResetPassword">
                                 <div class="passwordFields">
-                                    <div class="profileText">
-                                        <div class="title">Current Password</div>
-                                        <input type="email" class="form-control" formControlName="oldPassword">
-                                    </div>
-                                    <div class="profileText">
-                                        <div class="title">New Password</div>
-                                        <input type="email" class="form-control" formControlName="password">
-                                    </div>
-                                    <div class="profileText">
-                                        <div class="title">Confirm New Password</div>
-                                        <input type="email" class="form-control" formControlName="confirmPassword">
-                                    </div>
+                                    <form [formGroup]="passwordForm">
+                                        <div class="profileText">
+                                            <div class="title">Current Password</div>
+                                            <input type="password" class="form-control" formControlName="oldPassword"
+                                                [ngClass]="{
+                                                'is-invalid':
+                                                (passwordControls.oldPassword.touched || isPasswordSubmitted) &&
+                                                passwordControls.oldPassword.errors?.required
+                                              }">
+                                        </div>
+                                        <div class="profileText">
+                                            <div class="title">New Password</div>
+                                            <input type="password" class="form-control" formControlName="password"
+                                                [ngClass]="{
+                                                'is-invalid':
+                                                (passwordControls.password.touched || isPasswordSubmitted) &&
+                                                passwordControls.password.errors?.required
+                                              }">
+                                        </div>
+                                        <div class="profileText">
+                                            <div class="title">Confirm New Password</div>
+                                            <input type="password" class="form-control"
+                                                formControlName="confirmPassword" [ngClass]="{
+                                                    'is-invalid':
+                                                    (passwordControls.confirmPassword.touched || isPasswordSubmitted) &&
+                                                    passwordControls.confirmPassword.errors?.required
+                                                  }">
+                                        </div>
+                                    </form>
                                 </div>
+
                                 <div class="passwordButtons">
                                     <button type="button" class="btn btn-secondary"
                                         (click)="resetPassword(false)">Cancel</button>
-                                    <button type="button" class="btn btn-primary" (click)="changePassword()">Save
-                                        Changes</button>
+                                    <button type="button" class="btn btn-primary" (click)="changePassword()">
+                                        Save Changes
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- <div class="tab-pane fade basic-details-container" id="product-details" role="tabpanel"
-                aria-labelledby="nav-home-tab">
-                <div class="tabHeader">
-                    <div class="tabTitle">My Activity</div>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>

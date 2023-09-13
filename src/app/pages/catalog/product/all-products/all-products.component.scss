@@ -285,6 +285,10 @@ input[type=button],
          }
       }
 
+      code {
+         font-family: 'Monaco', sans-serif !important;
+      }
+
       img {
          transition: 0.3s all ease-in-out;
       }
@@ -332,6 +336,7 @@ input[type=button],
       display: -webkit-box;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
+      font-size: 1.2rem;
    }
 
    .product-type {
@@ -344,7 +349,7 @@ input[type=button],
 
    .product-offerprice {
       font-weight: 700;
-      color: #000000;
+      color: #00bdab;
       margin: 0 0.5rem 0 0;
    }
 
@@ -353,18 +358,18 @@ input[type=button],
    }
 
    .product-rating {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 500;
 
       i {
          color: #ffbb00;
-         font-size: 1.3rem;
+         font-size: 1.2rem;
       }
    }
 
    .product-offerprice span,
    .product-mrpprice span {
-      font-size: 1rem;
+      font-size: 1.2rem;
       color: #555555;
       font-weight: 400;
    }
@@ -547,6 +552,92 @@ input[type=button],
 
 .productCards {
    display: grid;
-   grid-template-columns: repeat(5, 1fr);
+   grid-template-columns: repeat(4, 1fr);
    gap: 10px;
+}
+
+.cursorPointer {
+   cursor: pointer;
+}
+
+.accordion {
+   .accordionWrapper {
+      margin: 10px 0 0 0;
+
+      .accordionHeader {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         margin: 0 0 10px 0;
+         cursor: pointer;
+
+         .title {
+            font-weight: 600;
+            font-size: 1.1rem;
+         }
+      }
+
+      &.active {
+         .accordionHeader {
+            color: #00bdab;
+
+            svg {
+               transform: rotate(180deg);
+            }
+         }
+
+         .accordionBody {
+            display: block;
+         }
+      }
+
+      .categoryWrapper {
+         max-height: 400px;
+         height: 100%;
+         overflow-y: scroll;
+      }
+
+      .accordionBody {
+         display: none;
+
+         .accordionItem {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0 0 10px 0;
+            cursor: pointer;
+
+            .accordionName {
+               font-size: 1.1rem;
+            }
+
+            .checkbox {
+               position: relative;
+               height: 16px;
+               width: 16px;
+               border: 1px solid #cccccc;
+               border-radius: 4px;
+               margin: 0 5px 0 0;
+
+               &::after {
+                  position: absolute;
+                  content: '';
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  border-radius: 2px;
+                  height: 10px;
+                  width: 10px;
+               }
+
+               &.checked {
+
+                  &::after {
+                     background: #00bdab;
+                  }
+               }
+            }
+         }
+      }
+   }
 }
