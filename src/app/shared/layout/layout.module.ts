@@ -25,11 +25,7 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: LayoutComponent,
-    children: Routing,
-  },
+  { path: '', component: LayoutComponent, children: Routing },
 ];
 
 @NgModule({
@@ -77,4 +73,5 @@ const routes: Routes = [
     EngagesComponent,
   ],
 })
+
 export class LayoutModule { }

@@ -48,12 +48,16 @@ import { NavigationMenuComponent } from './pages/settings/general/navigation-men
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { NotificationPermissionComponent } from './shared/layout/components/notification-permission/notification-permission.component';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment.prod';
 
 const DragConfig = {
   dragStartThreshold: 0,
   pointerDirectionChangeThreshold: 5,
   zIndex: 10000
 };
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,6 +83,8 @@ const DragConfig = {
     NotificationPermissionComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     DataTablesModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -117,7 +123,7 @@ const DragConfig = {
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
     { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
     AuthenticationGuard,
-    CsvService
+    CsvService,
   ],
   bootstrap: [AppComponent],
 })

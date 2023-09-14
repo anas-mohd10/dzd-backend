@@ -1,7 +1,7 @@
 <div class="card card-custom" [ngClass]="cssClass">
   <div class="view_allOrders">
     <a href="">
-      view all orders
+      View all orders
     </a>
   </div>
   <div class="card-body pt-5 pb-3">
@@ -10,7 +10,7 @@
         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
           <thead class="common_thead">
             <tr class="text-left fs-6 text-gray-400">
-              <th style="min-width: 120px">Sl No.</th>
+              <th style="min-width: 120px">&nbsp;</th>
               <th style="min-width: 120px">Order</th>
               <th style="min-width: 100px">Date</th>
               <th style="min-width: 100px">Customer</th>
@@ -22,9 +22,9 @@
             </tr>
           </thead>
           <tbody class="fs-6">
-            <ng-container *ngFor="let order of orders">
+            <ng-container *ngFor="let order of orders; let  i = index">
               <tr>
-                <td>01</td>
+                <td>{{i+1}}</td>
                 <td>{{order?.orderNo}}</td>
                 <td>{{order?.orderDate}}</td>
                 <td>{{order?.customerId?.name}}</td>

@@ -10,4 +10,13 @@ export const environment = {
   baseUrl: 'http://localhost:3000/api/v1/w/',
   base: 'http://localhost:3000',
   loginUrl: 'api',
+  firebaseConfig: {
+    apiKey: "AIzaSyCzj_q9s6UhfZ-mYSAfRdRWWlI47mOinuE",
+    authDomain: "commerce-castle-app.firebaseapp.com",
+    projectId: "commerce-castle-app",
+    storageBucket: "commerce-castle-app.appspot.com",
+    messagingSenderId: "392497910088",
+    appId: "1:392497910088:web:ecdd2acbbe577c6265637d",
+    measurementId: "G-H0K55ZER4E"
+  }
 };

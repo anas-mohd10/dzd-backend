@@ -22,7 +22,7 @@
       </div>
    </div>
 
-   <div class="row mt-4">
+   <div class="row mt-4 pageWrapper">
       <div class="col-lg-7">
          <div class="card">
             <div class="card-body">
@@ -98,25 +98,75 @@
                            [config]="editorConfig"></angular-editor>
                      </div>
                   </div>
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3 required">Domain</label>
-                        <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
-                           formControlName="domain" />
+
+                  <div class="col-12 storeWrapper">
+                     <div class="card">
+                        <div class="card-body">
+                           <h2 class="form-title">Store Details</h2>
+                           <div class="col-12">
+                              <div class="form-group mb-3">
+                                 <label class="fs-6 mb-3 required">Store Name</label>
+                                 <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
+                                    formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
+                                    formControls.name.errors?.required}" />
+                              </div>
+                           </div>
+                           <div class="col-12">
+                              <div class="form-group mb-3">
+                                 <label class="fs-6 mb-3 required">Domain</label>
+                                 <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
+                                    formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
+                                    formControls.domain.errors?.required}" />
+                              </div>
+                           </div>
+                           <div class="col-12">
+                              <div class="form-group mb-3">
+                                 <label class="fs-6 mb-3 required">Description</label>
+                                 <textarea type="text" placeholder="Eg. All in one ecommerce store"
+                                    class="form-control fs-6" formControlName="description" [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) &&
+                                    formControls.description.errors?.required}"></textarea>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-12 buttonsWrapper">
+                     <h2 class="form-title">Button Settings</h2>
+                     <p>Edit the button text as per your choice</p>
+                     <div class="row mt-2">
+                        <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.cartButton.touched || isSubmitted) &&
+                        formControls.cartButton.errors?.required}">
+                           <div class="button" [ngStyle]="{'background-color': primary}">
+                              <input type="text" formControlName="cartButton">
+                           </div>
+                        </div>
+                        <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.stockButton.touched || isSubmitted) &&
+                        formControls.stockButton.errors?.required}">
+                           <div class="button outOfStock" [ngStyle]="{'background-color': primary}">
+                              <input type="text" formControlName="stockButton">
+                           </div>
+                        </div>
+                        <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.notifyButton.touched || isSubmitted) &&
+                        formControls.notifyButton.errors?.required}">
+                           <div class="button notifyButton" [ngStyle]="{'border-color': primary, 'color': primary}">
+                              <input type="text" formControlName="notifyButton" [ngStyle]="{'color': primary}">
+                           </div>
+                        </div>
                      </div>
                   </div>
                </form>
 
                <div class="col-12 d-flex align-items-center justify-content-end">
                   <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
-                     class=" btn btn-secondary btn-sm fs-6 text-dark fw-bolder"
-                     style="width: 200px; margin-right: 20px;">
+                     class=" btn btn-secondary me-2 fs-6 text-dark fw-bolder" style="width: 200px">
                      Cancel
                   </a>
-                  <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="onSubmit()">
+                  <button type="submit" class="btn btn-primary fs-6" (click)="onSubmit()" style="width: 200px">
                      Update
                   </button>
                </div>
+
             </div>
          </div>
       </div>
@@ -162,11 +212,24 @@
 
                   <div class="col-12">
                      <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Notify Button ( Out of Stock Products )</label>
+                        <select class="form-select mb-3" formControlName="isNotifyStock">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="false">No</option>
+                           <option value="true">Yes</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="col-12">
+                     <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required">Items Per Page</label>
                         <input type="number" placeholder="14" class="form-control fs-6"
                            formControlName="itemsPerPage" />
                      </div>
                   </div>
+
+                  <h2 class="form-title">Store Media Settings</h2>
 
                   <div class="col-12">
                      <div class="form-group mb-3">
@@ -179,19 +242,23 @@
                                  <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
                               </div>
                               <div class="right-text d-flex flex-column">
-                                 <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                 <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                                    Upload up to 1 file
-                                 </span>
+                                 <span class="right-text-title fs-4 fw-bolder">Click to Upload</span>
                               </div>
                            </div>
                         </div>
                      </div>
 
-                     <div class="logoPreview mt-5" *ngIf="logoFilePreview">
-                        <div class="logo">
+                     <div class="logoPreview p-3 mt-3" *ngIf="logoFilePreview">
+                        <div class="logo d-flex align-items-center justify-content-center">
                            <img src="{{logoFilePreview}}" alt="Logo">
-                           <div class="logoClose fs-6 mt-2" (click)="removeLogo('logo')"> Discard </div>
+                        </div>
+                        <div class="logoClose" (click)="removeLogo('logo')">
+                           <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                              fill="currentColor">
+                              <path d="M0 0h24v24H0V0z" fill="none" />
+                              <path
+                                 d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                           </svg>
                         </div>
                      </div>
                   </div>
@@ -207,20 +274,25 @@
                                  <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
                               </div>
                               <div class="right-text d-flex flex-column">
-                                 <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                                 <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                                    Upload up to 1 file
-                                 </span>
+                                 <span class="right-text-title fs-4 fw-bolder">Click to Upload</span>
                               </div>
                            </div>
                         </div>
                      </div>
 
-                     <div class="faviconPreview mt-5" *ngIf="faviconFilePreview">
+                     <div class="faviconPreview mt-3 p-3" *ngIf="faviconFilePreview">
                         <div class="favicon">
                            <img src="{{faviconFilePreview}}" alt="Favicon">
-                           <div class="faviconClose fs-6 mt-2" (click)="removeLogo('favicon')"> Discard </div>
+                           <div class="faviconClose" (click)="removeLogo('favicon')">
+                              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                                 fill="currentColor">
+                                 <path d="M0 0h24v24H0V0z" fill="none" />
+                                 <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                              </svg>
+                           </div>
                         </div>
+
                      </div>
                   </div>
 

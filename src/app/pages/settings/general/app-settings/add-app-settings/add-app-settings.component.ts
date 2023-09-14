@@ -17,8 +17,6 @@ export class AddAppSettingsComponent implements OnInit {
   appRoute = appRoutes
   form: FormGroup
   isSubmitted = false;
-  primary: any
-  secondary: any
   items_per_page: any
   text: string;
   currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED']
@@ -52,6 +50,8 @@ export class AddAppSettingsComponent implements OnInit {
   logoFilePreview: any
   faviconFile: any
   faviconFilePreview: any
+  primary: string = ''
+  secondary: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,6 +75,10 @@ export class AddAppSettingsComponent implements OnInit {
     this.form.get('itemsPerPage')?.setValue(this.items_per_page)
   }
 
+  get formControls() {
+    return this.form.controls
+  }
+
   initform() {
     this.form = this.formBuilder.group({
       primary: ['', Validators.required],
@@ -82,15 +86,21 @@ export class AddAppSettingsComponent implements OnInit {
       star: ['', Validators.required],
       label: ['', Validators.required],
       toastError: ['', Validators.required],
+      currency: ['', Validators.required],
       toastSuccess: ['', Validators.required],
       toastInfo: ['', Validators.required],
       text: ['', Validators.required],
-      currency: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       fontFamily: ['', Validators.required],
+      name: ['', Validators.required],
       domain: ['', Validators.required],
+      description: ['', Validators.required],
       packingSlip: ['', Validators.required],
-      isOutOfStock: ['false']
+      isOutOfStock: ['false'],
+      isNotifyStock: ['false'],
+      cartButton: ['Add to Cart', Validators.required],
+      stockButton: ['Out of Stock', Validators.required],
+      notifyButton: ['Notify Me', Validators.required]
     })
   }
 
@@ -155,14 +165,18 @@ export class AddAppSettingsComponent implements OnInit {
         info: this.form.get('toastInfo')?.value
       },
       currency: this.form.get('currency')?.value,
-      fonts: {
-        family: this.form.get('fontFamily')?.value
-      },
+      fonts: { family: this.form.get('fontFamily')?.value },
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       isOutOfStock: this.form.get('isOutOfStock')?.value,
+      isNotifyStock: this.form.get('isNotifyStock')?.value,
+      name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,
-      notes: {
-        packingSlip: this.form.get('packingSlip')?.value,
+      description: this.form.get('description')?.value,
+      notes: { packingSlip: this.form.get('packingSlip')?.value },
+      buttons: {
+        cart: this.form.get('cartButton')?.value,
+        stock: this.form.get('stockButton')?.value,
+        notify: this.form.get('notifyButton')?.value
       }
     }
 
