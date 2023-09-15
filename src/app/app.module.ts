@@ -51,6 +51,7 @@ import { NotificationPermissionComponent } from './shared/layout/components/noti
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment.prod';
+import { SubscribersComponent } from './pages/users/subscribers/subscribers.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -80,7 +81,8 @@ const DragConfig = {
     AnalyticsComponent,
     FeedsComponent,
     NavigationMenuComponent,
-    NotificationPermissionComponent
+    NotificationPermissionComponent,
+    SubscribersComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

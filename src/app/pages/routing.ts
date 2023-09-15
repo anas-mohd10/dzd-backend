@@ -10,6 +10,7 @@ import { DynamicScriptsComponent } from './settings/general/dynamic-scripts/dyna
 import { AnalyticsComponent } from './settings/general/analytics/analytics.component';
 import { FeedsComponent } from './marketing/feeds/feeds.component';
 import { NavigationMenuComponent } from './settings/general/navigation-menu/navigation-menu.component';
+import { SubscribersComponent } from './users/subscribers/subscribers.component';
 
 export const Routing: Routes = [
   {
@@ -196,6 +197,11 @@ export const Routing: Routes = [
       {
         path: 'customers',
         loadChildren: () => import('./users/customers/customers.module').then((m) => m.CustomersModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: 'subscribers',
+        component: SubscribersComponent,
         canActivate: [AuthenticationGuard]
       },
       {

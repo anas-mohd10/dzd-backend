@@ -100,4 +100,19 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.wishlist_details + `/${data}`);
     return this.http.get(`${url}`)
   }
+
+  searchSubscribers(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.search_subscribers);
+    return this.http.post(`${url}`, data)
+  }
+
+  deleteSubscriber(subscriber: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.delete_subscriber + `/${subscriber}`);
+    return this.http.get(`${url}`)
+  }
+
+  downloadSubscribers() {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.download_subscribers);
+    return this.http.get(`${url}`)
+  }
 }
