@@ -251,7 +251,8 @@ export const appRoutes = {
     LIST: `${app}/feeds`
   },
   reports: {
-    LIST: `${app}/reports`
+    LIST: `${app}/reports`,
+    DETAILED_ORDER: `${app}/reports/detailed-orders`,
   },
   navigation: `${app}/navigation`,
   subscribers: {

@@ -1,0 +1,24 @@
+.items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    .item {
+        padding: 10px;
+        background: #ffffff;
+        height: 100px;
+        color: #00bdab;
+        border: 1px solid #eeeeee;
+        cursor: pointer;
+
+        .icon {
+            width: max-content;
+            background: #d5fffb;
+            color: #00bdab;
+        }
+
+        &:hover {
+            border: 1px solid #9ce2db;
+        }
+    }
+}

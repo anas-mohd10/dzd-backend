@@ -52,6 +52,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment.prod';
 import { SubscribersComponent } from './pages/users/subscribers/subscribers.component';
+import { DetailedOrderComponent } from './pages/reports/detailed-order/detailed-order.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -82,7 +83,8 @@ const DragConfig = {
     FeedsComponent,
     NavigationMenuComponent,
     NotificationPermissionComponent,
-    SubscribersComponent
+    SubscribersComponent,
+    DetailedOrderComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),

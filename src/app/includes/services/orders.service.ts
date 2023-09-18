@@ -56,10 +56,9 @@ export class OrdersService {
     return this.http.put(`${url}`, data)
   }
 
-  //report
-  getOrderReport() {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.get_order_report);
-    return this.http.get(`${url}`)
+  exportOrderReport(type: string, data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.detailed_report + `/${type}`);
+    return this.http.post(`${url}`, data)
   }
 
   searchOrder(query: any) {
