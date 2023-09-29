@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,13 +9,23 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
+
 @Component({
   selector: 'app-update-category',
   templateUrl: './update-category.component.html',
   styleUrls: ['./update-category.component.scss'],
 })
 export class UpdateCategoryComponent implements OnInit {
-  categoryForm: FormGroup;
+  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
+
+  selectTab(tabId: number) {
+    if (this.staticTabs?.tabs[tabId]) {
+      this.staticTabs.tabs[tabId].active = true;
+    }
+  }
+
+  form: FormGroup;
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes;
@@ -75,7 +85,7 @@ export class UpdateCategoryComponent implements OnInit {
   bannerFilename: string;
   bannerChangedEvent: any = '';
   loadBanner: boolean = false;
-  bannerimg: any;
+  banner: any;
   croppedBanner: any
   attributeForm!: FormGroup
   isAttrSubmitted: boolean = false
@@ -91,7 +101,7 @@ export class UpdateCategoryComponent implements OnInit {
   ) { }
 
   get bf() {
-    return this.categoryForm.controls;
+    return this.form.controls;
   }
 
   get af() {
@@ -99,9 +109,9 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   handleCheckBox() {
-    if (this.categoryForm.get('isRoot')?.value == 'false') {
+    if (this.form.get('isRoot')?.value == 'false') {
       this.isChecked = false;
-    } else if (this.categoryForm.get('isRoot')?.value == 'true') {
+    } else if (this.form.get('isRoot')?.value == 'true') {
       this.isChecked = true;
     }
   }
@@ -124,7 +134,7 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   initForm() {
-    this.categoryForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       name: ['', Validators.required],
       isRoot: ['check', Validators.required],
       isActive: ['true', Validators.required],
@@ -243,19 +253,19 @@ export class UpdateCategoryComponent implements OnInit {
 
       this.uploadedimg = this.categoryValues?.file;
       this.img = this.base + "/" + res?.result[0].file
-      this.bannerimg = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
-      this.categoryForm.get('name')?.setValue(this.categoryValues.name);
-      this.categoryForm.get('isRoot')?.setValue(this.categoryValues.isRoot);
-      this.categoryForm.get('isActive')?.setValue(this.categoryValues.isActive);
-      this.categoryForm.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
-      this.categoryForm.get('isArchive')?.setValue(this.categoryValues.isArchive);
-      this.categoryForm.get('parent')?.setValue(this.categoryValues.path);
-      this.categoryForm.get('background')?.setValue(this.categoryValues.style?.background);
-      this.categoryForm.get('border')?.setValue(this.categoryValues.style?.border);
-      this.categoryForm.get('radius')?.setValue(this.categoryValues.style?.radius);
-      this.categoryForm.get('color')?.setValue(this.categoryValues.style?.text?.color);
-      this.categoryForm.get('fontWeight')?.setValue(this.categoryValues.style?.text?.fontWeight);
-      this.categoryForm.get('fontSize')?.setValue(this.categoryValues.style?.text?.fontSize);
+      this.banner = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
+      this.form.get('name')?.setValue(this.categoryValues.name);
+      this.form.get('isRoot')?.setValue(this.categoryValues.isRoot);
+      this.form.get('isActive')?.setValue(this.categoryValues.isActive);
+      this.form.get('isFeatured')?.setValue(this.categoryValues.isFeatured);
+      this.form.get('isArchive')?.setValue(this.categoryValues.isArchive);
+      this.form.get('parent')?.setValue(this.categoryValues.path);
+      this.form.get('background')?.setValue(this.categoryValues.style?.background);
+      this.form.get('border')?.setValue(this.categoryValues.style?.border);
+      this.form.get('radius')?.setValue(this.categoryValues.style?.radius);
+      this.form.get('color')?.setValue(this.categoryValues.style?.text?.color);
+      this.form.get('fontWeight')?.setValue(this.categoryValues.style?.text?.fontWeight);
+      this.form.get('fontSize')?.setValue(this.categoryValues.style?.text?.fontSize);
 
       this.border = this.categoryValues.style?.border
       this.background = this.categoryValues.style?.background
@@ -363,7 +373,7 @@ export class UpdateCategoryComponent implements OnInit {
               id: this.attributetexts.length,
               value: e.value
             })
-            this.categoryForm.get('attributeText')?.setValue('')
+            this.form.get('attributeText')?.setValue('')
           } else {
             this.toastr.error('Attribute text already exists')
           }
@@ -503,7 +513,7 @@ export class UpdateCategoryComponent implements OnInit {
 
   //Update exsisting category
   updateBrand() {
-    if (!this.categoryForm.valid) {
+    if (!this.form.valid) {
       console.error('Validation error');
       return;
     }
@@ -526,13 +536,13 @@ export class UpdateCategoryComponent implements OnInit {
 
   createPayload() {
     const data = {
-      name: this.categoryForm.get('name')?.value,
-      isRoot: this.categoryForm.get('isRoot')?.value,
+      name: this.form.get('name')?.value,
+      isRoot: this.form.get('isRoot')?.value,
       root: this.root,
       parent: { refid: this.parent, catid: this.catid },
-      isActive: this.categoryForm.get('isActive')?.value,
-      isFeatured: this.categoryForm.get('isFeatured')?.value,
-      isArchive: this.categoryForm.get('isArchive')?.value,
+      isActive: this.form.get('isActive')?.value,
+      isFeatured: this.form.get('isFeatured')?.value,
+      isArchive: this.form.get('isArchive')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       path: this.path,
@@ -542,13 +552,13 @@ export class UpdateCategoryComponent implements OnInit {
       banner: this.categoryValues?.banner,
       attributes: this.attributes,
       style: {
-        background: this.categoryForm.get('background')?.value,
-        border: this.categoryForm.get('border')?.value,
-        radius: this.categoryForm.get('radius')?.value,
+        background: this.form.get('background')?.value,
+        border: this.form.get('border')?.value,
+        radius: this.form.get('radius')?.value,
         text: {
-          color: this.categoryForm.get('color')?.value,
-          fontSize: this.categoryForm.get('fontSize')?.value,
-          fontWeight: this.categoryForm.get('fontWeight')?.value,
+          color: this.form.get('color')?.value,
+          fontSize: this.form.get('fontSize')?.value,
+          fontWeight: this.form.get('fontWeight')?.value,
         }
       },
       catid: this.categoryValues.catid
@@ -575,5 +585,9 @@ export class UpdateCategoryComponent implements OnInit {
     } else {
       this.router.navigate([this.appRoute.category.ARCHIVED_CATEGORY]);
     }
+  }
+
+  removeCoverImage() {
+   
   }
 }

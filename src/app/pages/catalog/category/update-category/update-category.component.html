@@ -23,7 +23,7 @@
     </div>
   </div>
   <!-- Page Header -->
-  <div class="row mt-10">
+  <div class="row mt-4">
     <div class="card">
       <ul class="category-tabs nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -37,7 +37,56 @@
         </li>
       </ul>
       <div class="card-body">
-        <form [formGroup]=" categoryForm" (keydown.Enter)="$event.preventDefault()"
+        <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
+          <tabset #staticTabs>
+            <tab heading="Category Details">
+
+              <div class="mediaWrapper">
+                <div class="coverImageWrapper">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="bannerFile($event)" required>
+                  <img [src]="banner ? banner : '../../../../../../assets/images/Preview_Background.png'" alt="Media">
+                  <div *ngIf="banner" class="removeCover" (click)="removeCoverImage()">
+                    <svg height="20px" width="20px" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0">
+                      </path>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="mediaImageWrapper">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="handleInputChange($event)" required>
+                  <img [src]="img ? img : '../../../../../../assets/images/Preview_Background.png'" alt="Media">
+                </div>
+              </div>
+
+
+              <div class="d-flex align-items-center justify-content-end">
+                <button class="btn btn-primary" (click)="selectTab(1)">
+                  Continue
+                </button>
+              </div>
+            </tab>
+
+            <tab heading="Category Attributes">
+              <div class="d-flex align-items-center justify-content-end">
+                <button class="btn btn-secondary me-2" (click)="selectTab(0)">
+                  Back
+                </button>
+                <button class="btn btn-primary" (click)="onSubmit()">
+                  Update
+                </button>
+              </div>
+            </tab>
+          </tabset>
+        </form>
+
+
+
+        <form [formGroup]=" form" (keydown.Enter)="$event.preventDefault()"
           class="archieved-{{categoryValues?.isArchive}}">
           <div class="tab-content" id="myTabContent">
             <div class="category-details-section tab-pane fade show active" id="home" role="tabpanel"
@@ -238,8 +287,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="uploaded-image col-sm-6 mt-5" *ngIf="bannerimg">
-                    <img src="{{bannerimg}}" alt="" style="width: 200px; height: 100px">
+                  <div class="uploaded-image col-sm-6 mt-5" *ngIf="banner">
+                    <img src="{{banner}}" alt="" style="width: 200px; height: 100px">
                   </div>
                 </div>
                 <ng-container *ngIf="loadBanner">
