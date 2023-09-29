@@ -13,8 +13,8 @@
             <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.brand.ADD_BRAND }}">Add brand</button>
+        <button class="btn btn-primary w-200 fs-6" color="primary" routerLink="{{ appRoute.brand.ADD_BRAND }}">Add
+          brand</button>
       </div>
     </div>
   </div>
@@ -58,42 +58,44 @@
       <h4 class="text-white fs-6">Total {{totalCount}} brands</h4>
     </div>
     <div>
-      <button class="btn btn-secondary cursor-pointer fs-6" color="primary"
+      <button class="btn btn-secondary w-200 fs-6" color="primary"
         routerLink="{{ appRoute.brand.ARCHIVED_BRAND }}">Archived Brands</button>
     </div>
   </div>
 
-  <div class="brand-card-container view-container col-12">
+  <div class="brandsWrapper">
     <ng-container *ngFor="let brand of brands">
-      <div class="brand-card card-hover">
+
+      <div class="brandCard card-hover">
+
         <div class="editButton">
           <div routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }">
             <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
           </div>
         </div>
 
-        <div class="brand-image">
-          <img src='{{base}}/{{brand?.file}}' alt="brand image" srcset="" />
-        </div>
+        <img height="60px" width="60px" class="rounded me-3" src='{{base}}/{{brand?.file}}' alt="Image" />
 
-        <div class="brand-details">
-          <div class="brand-name fs-4 fw-bolder mb-3">{{brand?.name}}</div>
-          <div class="fs-6 brand-featured-{{brand?.isFeatured}}">
-            {{brand?.isFeatured ? 'Featured' : 'Not featured'}}
-          </div>
-          <div class="fs-6 brand-status-{{brand?.isActive}}">
-            {{brand?.isActive ? 'Active' : 'Inactive'}}
+        <div class="brandDetails h-100 d-flex flex-column justify-content-between">
+          <div class="fs-5 fw-bolder">{{brand?.name}}</div>
+          <div class="d-flex">
+            <div class="fs-6 activeStatus" [ngClass]="{'inactiveStatus': !brand?.isActive}">
+              {{brand?.isActive ? 'Active' : 'Inactive'}}
+            </div>
+            <div class="fs-6 ms-2 featured" *ngIf="brand?.isFeatured"> {{brand?.isFeatured ? 'Featured' : ''}}</div>
           </div>
         </div>
       </div>
-    </ng-container>
-    <ng-container *ngIf="brands.length == 0">
-      <div class="emptyNote">
-        <div class="fs-3 fw-bolder">No result found</div>
-        <div class="fs-6 note">We couldn't find any item based on your search</div>
-      </div>
+
     </ng-container>
   </div>
+
+  <ng-container *ngIf="brands.length == 0">
+    <div class="emptyNote">
+      <div class="fs-3 fw-bolder">No result found</div>
+      <div class="fs-6 note">We couldn't find any item based on your search</div>
+    </div>
+  </ng-container>
 
   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
     <div class="filtering">
@@ -104,6 +106,7 @@
         <option value="15">15</option>
         <option value="20">20</option>
         <option value="25">25</option>
+        <option value="40">40</option>
       </select>
       <span class="fs-6 text-dark">entries</span>
     </div>

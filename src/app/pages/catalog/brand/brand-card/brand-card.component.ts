@@ -16,7 +16,7 @@ export class BrandCardComponent implements OnInit {
   base: any
   settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl('15')
+  limit: FormControl = new FormControl('40')
   lastPage: Boolean = false;
   totalCount: number = 0
 

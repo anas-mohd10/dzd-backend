@@ -21,6 +21,16 @@ export class BrandService {
     return this.http.get(`${url}`);
   }
 
+  updateBrandMedias(data: any, type: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.updateBrandMedias + `/${type}`);
+    return this.http.put(`${url}`, data);
+  }
+
+  removeCoverMedia(brand: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.removeCoverMedia + `/${brand}`);
+    return this.http.get(`${url}`);
+  }
+
   getBrands(page: any, limit: any) {
     const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand + "?page=" + page + "&limit=" + limit);
     return this.http.get(`${url}`);

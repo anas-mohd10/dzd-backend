@@ -3,6 +3,90 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
+
+//Media upload styles ---------------
+.preview-section {
+  .uploaded {
+    .close-icon {
+      position: absolute;
+      content: '';
+      right: 0.625rem;
+      top: 0.625rem;
+      height: 2.1875rem;
+      width: 2.1875rem;
+      border-radius: 0.3125rem;
+      display: grid;
+      place-items: center;
+      background: #d43333;
+      cursor: pointer;
+    }
+  }
+
+  .uploadedMedia {
+    height: 200px;
+    width: 200px;
+    position: relative;
+
+    .removeMedia {
+      position: absolute;
+      content: '';
+      right: 0.625rem;
+      top: 0.625rem;
+      height: 2.1875rem;
+      width: 2.1875rem;
+      border-radius: 0.3125rem;
+      display: grid;
+      place-items: center;
+      background: #d43333;
+      cursor: pointer;
+    }
+
+    .previewMedia {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .uploadedMediaImage {
+    img {
+      height: 100px;
+      width: 100px;
+    }
+  }
+}
+
+.bannerPreviewSection {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 10px;
+
+  .bannerUploaded {
+    position: relative;
+
+    .bannerPreview {
+      width: 100%;
+      height: max-content;
+      object-fit: contain;
+    }
+
+    .removeIcon {
+      position: absolute;
+      content: '';
+      right: 0.625rem;
+      top: 0.625rem;
+      height: 2.1875rem;
+      width: 2.1875rem;
+      border-radius: 0.3125rem;
+      display: grid;
+      place-items: center;
+      background: #d43333;
+      cursor: pointer;
+    }
+  }
+}
+
+//Media upload styles ---------------
+
 .view-lines.monaco-mouse-cursor-text {
   font-family: Monaco, Consolas, "Courier New", monospace !important;
 }
@@ -707,21 +791,6 @@ a.page-link.page-link-disabled {
   border-radius: 6px;
 }
 
-.close-icon {
-  border-radius: 10px;
-}
-
-.close-icon i {
-  background: #eb2b2b;
-  height: 100%;
-  width: 100%;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-}
-
 //Validation text
 .text-danger {
   padding: 0 5px;
@@ -754,29 +823,6 @@ label {
 
 }
 
-.uploads {
-  position: relative;
-  height: 200px;
-  width: 200px;
-  border-radius: 10px;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.uploads .close-icon {
-  cursor: pointer;
-  position: absolute;
-  right: -12px;
-  top: -12px;
-  height: 25px;
-  width: 25px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .image-upload {
   height: 100px;
   width: 100%;
@@ -797,16 +843,6 @@ label {
   background: #e1f3ff;
 }
 
-#previewImage,
-#bannerFile,
-#mobileBannerFile {
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-  border-radius: 10px;
-}
-
-//Active text in datatable
 .active-text-view {
   height: 25px;
   width: 80px;

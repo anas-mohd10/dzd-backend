@@ -11,5 +11,7 @@ export const brandEndpoints = {
   restore_brand: '/brands/restore',
   brand_images: '/brands/images',
   brands_bulk_file_upload: '/brands/bulk-file-upload',
-  brands_bulk_image_upload: '/brands/bulk-image-upload'
+  brands_bulk_image_upload: '/brands/bulk-image-upload',
+  updateBrandMedias: '/update-brand-media',
+  removeCoverMedia: '/remove-cover-media',
 }

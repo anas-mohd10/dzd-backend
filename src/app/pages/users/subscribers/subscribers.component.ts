@@ -4,6 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ReportsService } from 'src/app/includes/services/reports.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-subscribers',
@@ -24,7 +28,8 @@ export class SubscribersComponent implements OnInit {
     private CustomersService: CustomersService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private ReportsService: ReportsService
   ) { }
 
   ngOnInit(): void {
@@ -87,13 +92,7 @@ export class SubscribersComponent implements OnInit {
   }
 
   exportSubscribers() {
-    this.CustomersService.downloadSubscribers().subscribe({
-      next: (res: any) => {
-        this.ToastrService.success(res?.message)
-      },
-      error: (err: any) => {
-        this.ToastrService.error(err?.message)
-      }
-    })
+    window.open(this.ReportsService.downloadSubscribers(), '_blank')
+
   }
 }

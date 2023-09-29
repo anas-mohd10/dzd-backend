@@ -22,7 +22,7 @@ export class AddBrandComponent implements OnInit {
   isSubmitted = false;
   params: any;
   filedata: File;
-  bannerFiledata : File
+  bannerFiledata: File
   status: boolean;
   imageArray: any;
   previewURL: any;
@@ -30,9 +30,9 @@ export class AddBrandComponent implements OnInit {
   imageChangedEvent: any = '';
   bannerChangedEvent: any = '';
   croppedImage: any;
-  croppedBanner : any
+  croppedBanner: any
   filename: any
-  bannerFilename : any
+  bannerFilename: any
   loadImage: boolean = false;
   loadBanner: boolean = false;
   images: any = []
@@ -63,7 +63,7 @@ export class AddBrandComponent implements OnInit {
     this.loadImage = true
   }
 
-  bannerFile(event:any) {
+  bannerFile(event: any) {
     this.bannerFiledata = <File>event.target.files[0];
     this.bannerFilename = this.bannerFiledata.name
     this.bannerChangedEvent = event;

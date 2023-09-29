@@ -20,16 +20,14 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10">
+  <div class="row mt-4">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
             <div class="row">
-              <div class="col-12">
-                <h2 class="form-title">Brand Details</h2>
-              </div>
-              <div class="col-sm-6">
+              <h2 class="fw-bolder">Brand Details</h2>
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label class="required fs-6 mb-3">Brand Name</label>
                   <input type="text" class="form-control fs-6" formControlName="name" placeholder="Brand name"
@@ -40,7 +38,7 @@
                     }" />
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Status</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
@@ -50,7 +48,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Featured Brand?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
@@ -60,7 +58,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Archive Brand?</label>
                   <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
@@ -73,21 +71,21 @@
               <div class="col-12">
                 <h2 class="form-title fw-bolder">Brand Styles</h2>
               </div>
-              <div class="col-sm-6 mb-3">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Background</label>
                   <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
                     formControlName="background" (change)="getColors('background', $event.target)" />
                 </div>
               </div>
-              <div class="mb-3 col-sm-6">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Border</label>
                   <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
                     style="height: 50px;" (change)="getColors('border', $event.target)" />
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Border Radius</label>
                   <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
@@ -100,22 +98,20 @@
                     formControlName="color" (change)="getColors('color', $event.target)" />
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Font Weight</label>
                   <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
                 </div>
               </div>
-              <div class="col-sm-6">
+              <div class="col-lg-6 mb-3">
                 <div class="form-group">
                   <label class="fs-6 mb-3">Font Size ( in px )</label>
                   <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
                 </div>
               </div>
-              <div class="col-sm-6">
-                <div class="col-12">
-                  <h3 class="form-title required"><span>Media</span></h3>
-                </div>
+              <div class="col-lg-6 mb-3">
+                <h3 class="form-title required">Brand Image</h3>
                 <div class="form-group">
                   <div class="image-upload">
                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
@@ -134,9 +130,11 @@
                   </div>
                 </div>
               </div>
+
               <ng-container *ngIf="loadImage">
-                <div class="col-12 preview-section">
-                  <div class="crop-image col-sm-6">
+                <div class="row preview-section">
+                  
+                  <div class="col-lg-6">
                     <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
                       [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
                       [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
@@ -144,17 +142,20 @@
                       (loadImageFailed)="loadImageFailed()">
                     </image-cropper>
                   </div>
-                  <div class="uploads uploaded col-sm-6">
-                    <div class="close-icon">
-                      <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+
+                  <div class="col-lg-6">
+                    <div class="uploadedMedia">
+                      <div class="removeMedia">
+                        <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
+                      </div>
+                      <img height="200px" width="200px" class="previewMedia" [src]="croppedImage">
                     </div>
-                    <img class="preview-img" id="previewImage" [src]="croppedImage">
                   </div>
+
                 </div>
               </ng-container>
 
-              <div class="imageSelectionContainer">
-                <div class="seperator">Or </div>
+              <div class="imageSelectionContainer mt-3">
                 <div class="title">Select an existing image</div>
                 <ng-container *ngIf="images.length == 0">No images available</ng-container>
                 <div class="postedImages">
@@ -167,10 +168,8 @@
                 </div>
               </div>
 
-              <div class="col-sm-6">
-                <div class="col-12">
-                  <h3 class="form-title"><span>Brand Banner</span></h3>
-                </div>
+              <div class="col-lg-6">
+                <h3 class="form-title">Cover Image</h3>
                 <div class="form-group">
                   <div class="image-upload">
                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
@@ -191,8 +190,8 @@
               </div>
 
               <ng-container *ngIf="loadBanner">
-                <div class="preview-section">
-                  <div class="cropImage">
+                <div class="bannerPreviewSection">
+                  <div class="bannerCroppedImage">
                     <image-cropper class="crop-section" [imageChangedEvent]="bannerChangedEvent"
                       [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
                       [cropperMaxHeight]="2000" format="png" (imageCropped)="bannerCropped($event)"
@@ -200,18 +199,18 @@
                       (loadImageFailed)="loadImageFailed()">
                     </image-cropper>
                   </div>
-                  <div class="bannerUpload">
-                    <div class="closeIcon">
+                  <div class="bannerUploaded">
+                    <div class="removeIcon">
                       <i class="bi bi-x-lg text-white" (click)="removebanner()"></i>
                     </div>
-                    <img class="preview-img" id="previewBanner" [src]="croppedBanner">
+                    <img class="bannerPreview" id="previewBanner" [src]="croppedBanner">
                   </div>
                 </div>
               </ng-container>
 
               <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                  style="width: 200px; margin-right: 20px;">
+                <a routerLink="{{ appRoute.brand.BRAND_LIST}}" class="me-2 btn btn-secondary btn-sm fs-6 text-dark"
+                  style="width: 200px;">
                   Cancel
                 </a>
                 <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">

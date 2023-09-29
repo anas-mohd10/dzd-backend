@@ -11,75 +11,63 @@ $background: #e5e5e5;
 $error: #F1416C;
 
 label,
-input[type=button] {
+input[type=button],
+.btn-secondary {
   font-weight: normal !important;
 }
 
-.brand-card-container {
+.brandsWrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-}
 
-.brand-card {
-  padding: 10px;
-  background: #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: relative;
+  .brandCard {
+    padding: 10px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
 
-  .editButton {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    height: 40px;
-    width: 40px;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    border-radius: 20px;
+    .editButton {
+      position: absolute;
+      right: 1.25rem;
+      top: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      border-radius: 0.5rem;
 
-    &:hover {
-      background: $hover;
-    }
-  }
-
-  .brand-image {
-    height: 60px;
-    width: 60px;
-
-    img {
-      height: 100%;
-      width: 100%;
-      border-radius: 10px;
-    }
-  }
-
-  .brand-details {
-    margin: 0 0 0 10px;
-
-    .brand-status-true,
-    .brand-featured-true {
-      color: #00bdab;
-      font-weight: 600;
+      &:hover {
+        background: $hover;
+      }
     }
 
-    .brand-status-false {
-      color: #ce1626;
-      font-weight: 600;
-    }
+    .brandDetails {
 
-    .brand-featured-false {
-      color: #0087bd;
-      font-weight: 600;
+      .featured {
+        background: #ddfffc;
+        color: #00bdab;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+
+      .activeStatus {
+        background: #d9fff4;
+        color: #00A676;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
     }
   }
 }
-
 
 .filteringWrapper {
   .filtering {
