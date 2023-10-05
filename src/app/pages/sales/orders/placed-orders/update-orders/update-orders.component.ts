@@ -33,6 +33,7 @@ export class UpdateOrdersComponent implements OnInit {
   processedProducts: Array<any> = []
   processProduct: FormControl = new FormControl('')
   allProduct: FormControl = new FormControl('')
+  statusList: Array<any> = []
 
   constructor(
     private orderService: OrdersService,
@@ -89,7 +90,6 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getOrderDetails() {
-
     this.orderService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.order = res?.result
@@ -99,6 +99,7 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
         this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
         this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
+        this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
         this.orderForm.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
         this.orderForm.get("paymentId")?.setValue(this.order?.payment?.referenceId)
 
@@ -116,7 +117,7 @@ export class UpdateOrdersComponent implements OnInit {
 
         for (let product of this.order?.products) {
           for (let history of product?.history) {
-            history.status = "Order " + history.status.toLowerCase()
+            history.status = history.status.charAt(0).toUpperCase() + history.status.slice(1).toLowerCase();
             history.date = new Date(history.date).toLocaleString()
           }
           let history = [...product?.history]
@@ -124,6 +125,32 @@ export class UpdateOrdersComponent implements OnInit {
         }
 
         this.cdr.markForCheck()
+      }
+    })
+  }
+
+  getStatusList(status: any) {
+    this.orderService.getStatusList(status).subscribe({
+      next: (res: any) => {
+        this.statusList = res?.result
+        this.cdr.markForCheck()
+      }, error: (err: any) => {
+        this.toastr.error("Couldn't fetch order status list")
+      }
+    })
+  }
+
+  updateOrderStatus(event: any, product: any) {
+    this.orderService.updateOrderStatus({ order: this.order.orderNo, product: product, status: event.target.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrderDetails()
+          this.toastr.success(res.message)
+        } else {
+          this.toastr.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.toastr.error(err.message)
       }
     })
   }

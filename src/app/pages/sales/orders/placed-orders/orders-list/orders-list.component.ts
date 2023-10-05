@@ -69,6 +69,9 @@ export class OrdersListComponent implements OnInit {
     status: 'Pending',
     value: 'PENDING'
   }, {
+    status: 'Partial Processed',
+    value: 'PARTIAL PROCESSED'
+  }, {
     status: 'Shipped',
     value: 'SHIPPED'
   }, {
@@ -77,6 +80,9 @@ export class OrdersListComponent implements OnInit {
   }, {
     status: 'Delivered',
     value: 'DELIVERED'
+  }, {
+    status: 'Out for Delivery',
+    value: 'OUT FOR DELIVERY'
   }, {
     status: 'Failed',
     value: 'FAILED'
@@ -89,9 +95,6 @@ export class OrdersListComponent implements OnInit {
   }, {
     status: 'Partial Refunded',
     value: 'PARTIAL REFUNDED'
-  }, {
-    status: 'Partial Processed',
-    value: 'PARTIAL PROCESSED'
   }]
   lastPage: Boolean = false
   type: any = null
@@ -112,9 +115,9 @@ export class OrdersListComponent implements OnInit {
         this.activeStatus = 'Pending'
         this.activeValue = 'PENDING'
         break
-      case 'refunded':
-        this.activeStatus = 'Refunded'
-        this.activeValue = 'REFUNDED'
+      case 'delivered':
+        this.activeStatus = 'Delivered'
+        this.activeValue = 'DELIVERED'
         break
     }
     this.initForm()

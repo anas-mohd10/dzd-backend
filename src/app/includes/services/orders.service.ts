@@ -70,4 +70,14 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.search_pending_orders);
     return this.http.post(`${url}`, query)
   }
+
+  getStatusList(status: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.getStatusList + '?status=' + status);
+    return this.http.get(`${url}`)
+  }
+
+  updateOrderStatus(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.updateOrderStatus);
+    return this.http.put(`${url}`, data)
+  }
 }
