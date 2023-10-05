@@ -118,7 +118,7 @@ export class UpdateOrdersComponent implements OnInit {
         for (let product of this.order?.products) {
           for (let history of product?.history) {
             history.status = history.status.charAt(0).toUpperCase() + history.status.slice(1).toLowerCase();
-            history.date = new Date(history.date).toLocaleString()
+            history.date = new Date(history.date).toDateString() + ' ' + new Date(history.date).toLocaleTimeString()
           }
           let history = [...product?.history]
           product.currentStatus = history.pop()

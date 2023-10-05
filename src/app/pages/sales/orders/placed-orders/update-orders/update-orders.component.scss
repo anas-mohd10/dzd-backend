@@ -212,3 +212,38 @@ $white: #ffffff;
         }
     }
 }
+
+.productsTable{
+
+    .productStatus{
+        background: #f8fffe;
+        color: #00bdab;
+        width: max-content;
+    }
+}
+
+.statusCheckbox {
+    position: relative;
+    height: 16px;
+    width: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+
+    &::after {
+      position: absolute;
+      content: '';
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 2px;
+      height: 10px;
+      width: 10px;
+    }
+
+    &.checked {
+
+      &::after {
+        background: #00bdab;
+      }
+    }
+  }

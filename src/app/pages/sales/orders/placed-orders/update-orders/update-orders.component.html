@@ -315,19 +315,59 @@
         </div>
         <div class="card-body pt-0">
           <div class="table-responsive">
+            <table class="mt-4 table table-vertical-center table-borderless productsTable">
+              <thead>
+                <tr class="text-left mb-2 fs-6 text-gray-400">
+                  <th>
+                    <div class="statusCheckbox"></div>
+                  </th>
+                  <th style="min-width: 150px">Product</th>
+                  <th style="max-width: 60px">Qty</th>
+                  <th style="min-width: 100px">Price</th>
+                  <th style="min-width: 100px">Total</th>
+                  <th style="min-width: 100px">Status</th>
+                </tr>
+              </thead>
+              <tbody class="fs-6 text-dark">
+                <ng-container *ngFor="let product of order?.products; let i =index">
+                  <tr>
+                    <td>
+                      <div class="statusCheckbox"></div>
+                    </td>
+                    <td class="d-flex align-items-start justify-content-start">
+                      <img class="me-2 productThumbnail" height="50px" width="50px"
+                        src="{{base}}/{{product?.productId?.thumbnail}}" alt="Product">
+                      <div>
+                        <div class="fw-bolder">{{product?.productId?.name}}</div>
+                        <div class="mb-1 text-gray-400 fs-6">SKU - {{product?.productId?.sku}}</div>
+                        <div class="pe-2 ps-2 fw-bolder rounded productStatus">{{product.currentStatus.status}}, {{product.currentStatus.date}} </div>
+                      </div>
+                    </td>
+                    <td>{{product?.quantity}}</td>
+                    <td>{{product?.pricePerUnit}}</td>
+                    <td>{{product?.total}}</td>
+                    <td>
+                      <select class="form-select fs-6" (click)="getStatusList(product.currentStatus.status)"
+                        (change)="updateOrderStatus($event, product?.productId?._id)">
+                        <option selected disabled>-- Select a status --</option>
+                        <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
+                      </select>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- <div class="table-responsive">
             <table class="table align-middle fs-6 gy-5 mb-0">
               <thead>
                 <tr class="text-start text-gray-400 fw-bolder fs-6 gs-0">
                   <th class="min-w-70px text-end">
-                    <div class="form-check">
-                      <input class="form-check-input" [formControl]="allProduct" value="all" type="checkbox"
-                        id="flexCheckDefault" (click)="processProducts('all', '')">
-                      <label class="form-check-label" for="flexCheckDefault">&nbsp;</label>
-                    </div>
+                    &nbsp;
                   </th>
-                  <th class="min-w-150px">Product</th>
+                  <th class="min-w-200px">Product</th>
                   <th class="min-w-150px text-end">Status</th>
-                  <th class="min-w-100px text-end">SKU</th>
                   <th class="min-w-70px text-end">Qty</th>
                   <th class="min-w-100px text-end">Unit Price</th>
                   <th class="min-w-100px text-end">Total</th>
@@ -350,20 +390,18 @@
                       </a>
                       <div class="ms-5">
                         <a class="fw-bolder text-gray-600 text-hover-primary">{{product?.productId?.name}}</a>
+                        <p class="mb-2">SKU - {{product?.productId?.sku}}</p>
+                        <p>{{product.currentStatus.status}}, {{product.currentStatus.date}} </p>
                       </div>
                     </div>
                   </td>
                   <td class="text-end">
-                    <p class="mb-3">
-                      Current Status : <strong class="text-dark">{{product.currentStatus.status}}</strong>
-                    </p>
                     <select class="form-select fs-6" (click)="getStatusList(product.currentStatus.status)"
                       (change)="updateOrderStatus($event, product?.productId?._id)">
                       <option selected disabled>-- Select a status --</option>
                       <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
                     </select>
                   </td>
-                  <td class="text-end">{{product?.productId?.sku}}</td>
                   <td class="text-end">{{product?.quantity}}</td>
                   <td class="text-end">{{product?.pricePerUnit}}</td>
                   <td class="text-end">{{product?.total}}</td>
@@ -417,7 +455,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
 
           <div class="historyWrapper mt-5">
             <h3 class="fs-3 text-dark fw-bolder">
