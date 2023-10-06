@@ -7,12 +7,15 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AttributeService {
-
   attributeEndpoints = attributeEndpoints
-  constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  getAttributeByCategory(id: any) {
-    const url = this.commonService.getFullUrl(this.attributeEndpoints.attribute_by_category + "?id=" + id);
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
+
+  getAttributes(category: any) {
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.getAttributes + "?category=" + category);
     return this.http.post(`${url}`, {})
   }
 

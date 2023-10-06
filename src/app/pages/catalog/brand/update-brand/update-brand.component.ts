@@ -48,8 +48,12 @@ export class UpdateBrandComponent implements OnInit {
 
   coverModalRef?: BsModalRef;
   mediaModalRef?: BsModalRef;
+  existModalRef?: BsModalRef;
+  quesModalRef?: BsModalRef;
   @ViewChild('coverModal') coverModal: any;
   @ViewChild('mediaModal') mediaModal: any;
+  @ViewChild('existingModal') existingModal: any;
+  @ViewChild('quesModal') quesModal: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -82,14 +86,6 @@ export class UpdateBrandComponent implements OnInit {
     })
   }
 
-  openCoverModal(template: TemplateRef<any>) {
-    this.coverModalRef = this.BsModalService.show(template);
-  }
-
-  openMediaModal(template: TemplateRef<any>) {
-    this.mediaModalRef = this.BsModalService.show(template);
-  }
-
   initForm() {
     this.brandForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -114,54 +110,9 @@ export class UpdateBrandComponent implements OnInit {
         this.editMode = true;
         break;
       default:
+
         break;
     }
-  }
-
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-    this.BsModalService.show(this.mediaModal);
-  }
-
-  bannerFile(event: any) {
-    this.bannerFiledata = <File>event.target.files[0];
-    this.bannerFilename = this.bannerFiledata.name
-    this.bannerChangedEvent = event;
-    this.loadBanner = true
-    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true },);
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  bannerCropped(event: ImageCroppedEvent) {
-    this.croppedBanner = event.base64;
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  removeBanner() {
-    this.croppedBanner = ''
-    this.loadBanner = false
   }
 
   getBrand() {
@@ -275,6 +226,50 @@ export class UpdateBrandComponent implements OnInit {
     }
   }
 
+
+  //Media managment starts
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+    this.BsModalService.show(this.mediaModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+    this.quesModalRef?.hide()
+  }
+
+  bannerFile(event: any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
+  }
+
+  openQuesModal(template: TemplateRef<any>) {
+    this.quesModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
+  openCoverModal(template: TemplateRef<any>) {
+    this.coverModalRef = this.BsModalService.show(template);
+  }
+
+  openMediaModal(template: TemplateRef<any>) {
+    this.mediaModalRef = this.BsModalService.show(template);
+  }
+
+  openExistingModal(template: TemplateRef<any>) {
+    this.existModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.quesModalRef?.hide()
+  }
+
   closeMedia(type: any) {
     if (type == 'cover') {
       this.croppedBanner = ''
@@ -283,6 +278,7 @@ export class UpdateBrandComponent implements OnInit {
       this.croppedImage = ''
       this.filename = ''
     }
+    this.BsModalService.hide()
   }
 
   saveMedia(type: any) {
@@ -309,6 +305,30 @@ export class UpdateBrandComponent implements OnInit {
     this.BsModalService.hide()
   }
 
+  saveExistingMedia(type: any, image: any) {
+    if (type == 'cover') {
+      this.brandService.updateBrandMedias({ brand: this.brand?.brandid, url: image }, type).subscribe({
+        next: (res: any) => {
+          this.getBrand()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
+    } else if (type == 'thumbnail') {
+      this.brandService.updateBrandMedias({ brand: this.brand?.brandid, url: image }, type).subscribe({
+        next: (res: any) => {
+          this.getBrand()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
+    }
+
+    this.BsModalService.hide()
+  }
+
   removeCoverImage() {
     this.brandService.removeCoverMedia(this.brand.brandid).subscribe({
       next: (res: any) => {
@@ -319,4 +339,5 @@ export class UpdateBrandComponent implements OnInit {
       }
     })
   }
+  //Media managment ends
 }

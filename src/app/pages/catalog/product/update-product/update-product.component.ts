@@ -217,7 +217,7 @@ export class UpdateProductComponent implements OnInit {
 
         this.selectedSubCategory = res?.result[0]?.category?.id
 
-        this.AttributeService.getAttributeByCategory(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
+        this.AttributeService.getAttributes(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
           if (res?.errorCode == 0) this.attributes = res?.result
           this.cdr.markForCheck()
         })

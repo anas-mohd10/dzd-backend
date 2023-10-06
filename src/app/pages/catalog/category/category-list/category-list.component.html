@@ -1,5 +1,4 @@
 <div class="category-page-container">
-  <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder">Categories</h1>
@@ -64,7 +63,36 @@
     </div>
   </div>
 
-  <div class="category-card-container view-container">
+  <div class="categoryWrapper">
+    <ng-container *ngFor="let category of categories">
+      <div class="categoryCard">
+        <div class="editButton">
+          <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
+            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+          </div>
+        </div>
+
+        <img height="60px" width="60px" class="rounded me-3" src='{{base}}/{{category?.file}}' alt="Image" />
+
+        <div class="categoryDetails h-100 d-flex flex-column justify-content-between">
+          <div class="fs-5 fw-bolder">{{category?.name}}</div>
+          <div class="d-flex mt-2">
+            <div class="fs-6 activeStatus" [ngClass]="{'inactiveStatus': !category?.isActive}">
+              {{category?.isActive ? 'Active' : 'Inactive'}}
+            </div>
+            <div class="fs-6 ms-2 featured" *ngIf="category?.isFeatured">
+              {{category?.isFeatured ? 'Featured' : ''}}
+            </div>
+          </div>
+          <div class="fs-6 mt-3" (click)="openAttributeModal(attributeModal, category)">
+            View attributes
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- <div class="category-card-container view-container">
     <ng-container *ngFor="let category of categories">
       <div class="category-card card-hover">
 
@@ -104,8 +132,7 @@
         <div class="fs-6 note">We couldn't find any item based on your search</div>
       </div>
     </ng-container>
-  </div>
-
+  </div> -->
 
   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
     <div class="filtering">
@@ -115,7 +142,7 @@
         <option value="10">10</option>
         <option value="15">15</option>
         <option value="20">20</option>
-        <option value="25">25</option>
+        <option value="40">40</option>
       </select>
       <span class="fs-6 text-dark">entries</span>
     </div>
@@ -129,12 +156,28 @@
       </div>
     </div>
   </div>
-
 </div>
 
+<ng-template #attributeModal>
+  <div class="modal-body attributeModal">
+    <h2 class="fw-bolder">{{categoryDetails.name}} Attributes</h2>
+    <ng-container *ngIf="attributes.length == 0">
+      <h3 class="fw-bolder text-gray-400">
+        No attributes found. Add <span class="more text-primary" (click)="openManageModal(manageModal)">more</span> to
+        see
+      </h3>
+    </ng-container>
+  </div>
+</ng-template>
 
+<ng-template #manageModal>
+  <div class="modal-body attributeModal">
+    <h2 class="fw-bolder">{{attributeDetails ? 'Update' : 'Add'}} Attributes</h2>
+    
+  </div>
+</ng-template>
 
-<div class="attributes-overlay" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
+<!-- <div class="attributes-overlay" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
 </div>
 <div class="attributes-container" [ngClass]="{'show-variants': showAttributes, 'hide-variants': !showAttributes }">
   <div class="attributes-header">
@@ -406,8 +449,7 @@
               <div class="col-lg-12 attrImagePreview mt-3">
                 <ng-container *ngFor="let image of attributeimages">
                   <div class="attrImage">
-                    <img class="img-fluid rounded" src="{{image.value}}"
-                      alt="attribute-image">
+                    <img class="img-fluid rounded" src="{{image.value}}" alt="attribute-image">
                     <div class="attrImageRemoveIcon rounded" (click)="removeAttributeValues('file', image.id)">
                       <i class="bi bi-x-lg"></i>
                     </div>
@@ -426,4 +468,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

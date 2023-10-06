@@ -858,7 +858,7 @@ export class AddProductComponent implements OnInit {
               }
             })
 
-            this.AttributeService.getAttributeByCategory(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
+            this.AttributeService.getAttributes(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
               if (res?.errorCode == 0) {
                 this.attributes = res?.result
                 this.cdr.markForCheck()
@@ -897,7 +897,7 @@ export class AddProductComponent implements OnInit {
               }
             })
 
-            this.AttributeService.getAttributeByCategory(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
+            this.AttributeService.getAttributes(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
               if (res?.errorCode == 0) {
                 this.attributes = res?.result
                 this.cdr.markForCheck()
@@ -1017,7 +1017,7 @@ export class AddProductComponent implements OnInit {
         this.selectedTax = res?.result[0]?.tax
         this.basicfile = environment.base + "/" + res?.result[0]?.file
         this.productheadfile = res?.result[0]?.file
-        this.AttributeService.getAttributeByCategory(res?.result[0]?.defaultCategory['refid']).subscribe((res: any) => {
+        this.AttributeService.getAttributes(res?.result[0]?.defaultCategory['refid']).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.attributes = res?.result
             this.cdr.markForCheck()

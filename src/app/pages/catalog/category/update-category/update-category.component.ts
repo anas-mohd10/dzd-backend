@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
-
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 
 @Component({
@@ -61,7 +61,10 @@ export class UpdateCategoryComponent implements OnInit {
   color: any
 
   restore = new FormControl('false');
-  isArchived: boolean;
+
+  isRoot: boolean = true
+  isArchived: boolean = false;
+
   catid: any;
 
   //Attrbiute variables
@@ -90,6 +93,15 @@ export class UpdateCategoryComponent implements OnInit {
   attributeForm!: FormGroup
   isAttrSubmitted: boolean = false
 
+  coverModalRef?: BsModalRef;
+  mediaModalRef?: BsModalRef;
+  existModalRef?: BsModalRef;
+  quesModalRef?: BsModalRef;
+  @ViewChild('coverModal') coverModal: any;
+  @ViewChild('mediaModal') mediaModal: any;
+  @ViewChild('existingModal') existingModal: any;
+  @ViewChild('quesModal') quesModal: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -97,7 +109,8 @@ export class UpdateCategoryComponent implements OnInit {
     private CategoryService: CategoryService,
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
-    private AttributeService: AttributeService
+    private AttributeService: AttributeService,
+    private BsModalService: BsModalService
   ) { }
 
   get bf() {
@@ -108,12 +121,8 @@ export class UpdateCategoryComponent implements OnInit {
     return this.attributeForm.controls;
   }
 
-  handleCheckBox() {
-    if (this.form.get('isRoot')?.value == 'false') {
-      this.isChecked = false;
-    } else if (this.form.get('isRoot')?.value == 'true') {
-      this.isChecked = true;
-    }
+  isRootCategory(event: any) {
+    event.target.value == 'false' ? this.isRoot = false : this.isRoot = true
   }
 
   ngOnInit(): void {
@@ -136,7 +145,7 @@ export class UpdateCategoryComponent implements OnInit {
   initForm() {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
-      isRoot: ['check', Validators.required],
+      isRoot: ['true', Validators.required],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
@@ -170,19 +179,7 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-  }
 
-  bannerFile(event: any) {
-    this.bannerFiledata = <File>event.target.files[0];
-    this.bannerFilename = this.bannerFiledata.name
-    this.bannerChangedEvent = event;
-    this.loadBanner = true
-  }
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
@@ -190,28 +187,6 @@ export class UpdateCategoryComponent implements OnInit {
 
   bannerCropped(event: ImageCroppedEvent) {
     this.croppedBanner = event.base64;
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  removeBanner() {
-    this.croppedBanner = ''
-    this.loadBanner = false
   }
 
   getColors(type: any, e: any) {
@@ -275,8 +250,9 @@ export class UpdateCategoryComponent implements OnInit {
       this.root = this.categoryValues?.root?._id
       this.path = this.categoryValues?.path
 
-      if (this.categoryValues.isRoot == true) this.isChecked = true;
-      if (this.categoryValues.isArchive == true) this.isArchived = true
+      this.categoryValues.isRoot ? this.isRoot = true : this.isRoot = false
+      this.categoryValues.isArchive ? this.isArchived = true : this.isArchived = false
+
       this.cdr.markForCheck()
     });
   }
@@ -326,186 +302,6 @@ export class UpdateCategoryComponent implements OnInit {
       }
     }
   }
-
-  handleAttributeType(e: any) {
-    this.attributetype = e.value
-    switch (this.attributetype) {
-      case 'Color':
-        this.showColorPicker = true
-        this.showTextInput = false
-        this.showFileInput = false
-        this.attributetexts = []
-        this.attributeForm.get('attributeText')?.setValue('')
-        this.attributeimages = []
-        break
-      case 'Text':
-        this.showColorPicker = false
-        this.showTextInput = true
-        this.showFileInput = false
-        this.attributecolors = []
-        this.attributeForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
-        this.attributeimages = []
-        break
-      case 'File':
-        this.showColorPicker = false
-        this.showTextInput = false
-        this.showFileInput = true
-        this.attributetexts = []
-        this.attributeForm.get('attributeText')?.setValue('')
-        this.attributecolors = []
-        this.attributeForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
-        break
-    }
-  }
-
-  handleAttrributeValues(key: any, e: any) {
-    switch (key) {
-      case 'color':
-        this.attributecolors.push({
-          id: this.attributecolors.length,
-          value: e.value
-        })
-        break
-      case 'text':
-        if (e.value != '') {
-          if (!this.valueExists(e.value)) {
-            this.attributetexts.push({
-              id: this.attributetexts.length,
-              value: e.value
-            })
-            this.form.get('attributeText')?.setValue('')
-          } else {
-            this.toastr.error('Attribute text already exists')
-          }
-        } else {
-          this.toastr.error('Attribute text cannot be null')
-        }
-        break
-      case 'file':
-        if (this.attributecroppped != '') {
-          if (!this.imageValueExists(this.attributecroppped)) {
-            this.attributeimages.push({
-              id: this.attributeimages.length,
-              value: this.attributecroppped,
-              name: this.attrfilename
-            })
-            this.attributecolors = ''
-            this.loadAttributeImage = false
-          }
-        }
-    }
-    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
-      this.showSaveButton = true
-    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
-      this.showSaveButton = false
-    }
-  }
-
-  valueExists(value: any) {
-    return this.attributetexts.some((check: any) => {
-      return check.value == value
-    })
-  }
-
-  imageValueExists(value: any) {
-    return this.attributeimages.some((check: any) => {
-      return check.value == value
-    })
-  }
-
-  removeAttributeValues(key: any, id: any) {
-    switch (key) {
-      case 'color':
-        this.attributecolors = this.attributecolors.filter((data: any) => data.id != id)
-        break
-      case 'text':
-        this.attributetexts = this.attributetexts.filter((data: any) => data.id != id)
-        break
-      case 'file':
-        this.attributeimages = this.attributeimages.filter((data: any) => data.id != id)
-        break
-    }
-    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
-      this.showSaveButton = true
-    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
-      this.showSaveButton = false
-    }
-  }
-
-  removeAttribute(id: any) {
-    this.attributes = this.attributes.filter((data: any) => data.id != id)
-  }
-
-  handleAttrInputChange(event: any) {
-    this.attrfiledata = <File>event.target.files[0];
-    this.attrfilename = this.attrfiledata.name
-    this.attrImageChange = event;
-    this.loadAttributeImage = true
-  }
-
-  attrImageCropped(event: ImageCroppedEvent) {
-    this.attributecroppped = event.base64;
-  }
-
-  attrImageLoaded() {
-    // show cropper
-  }
-
-  attrCropperReady() {
-    // cropper ready
-  }
-
-  loadAttrImageFailed() {
-    // show message
-  }
-
-  removeAttrImage() {
-    this.attributecroppped = ''
-    this.loadAttributeImage = false
-  }
-
-  saveAttribute() {
-    if (!this.attributeForm.valid) {
-      this.isAttrSubmitted = true
-      return
-    }
-    let len = this.attributes.length
-    let type = this.attributetype
-    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
-      let values = []
-      if (type == 'Color') {
-        values = this.attributecolors
-      } else if (type == 'Text') {
-        values = this.attributetexts
-      } else if (type == 'File') {
-        values = this.attributeimages
-      }
-      this.attributes.push({
-        name: this.attributeForm.get('attributeName')?.value,
-        type: this.attributeForm.get('attributeType')?.value,
-        isActive: this.attributeForm.get('attributeStatus')?.value,
-        isFiltered: this.attributeForm.get('attributeFiltered')?.value,
-        values: values,
-        id: this.attributes.length
-      })
-      let new_len = this.attributes.length
-      if (new_len == (len + 1)) {
-        this.attributeForm.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
-        this.attributeForm.get('attributeText')?.setValue('')
-        this.attributeForm.get('attributeName')?.setValue('')
-        this.attributeForm.get('attributeStatus')?.setValue('true')
-        this.attributeForm.get('attributeType')?.setValue('')
-        this.attributeimages = []
-        this.attributetexts = []
-        this.attributecolors = []
-        this.showSaveButton = false
-        this.showColorPicker = false
-        this.showTextInput = false
-        this.showFileInput = false
-      }
-    }
-  }
-  //Attribute section end
 
   selectImage(file: any) {
     this.file = file
@@ -587,7 +383,75 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
-  removeCoverImage() {
-   
+
+  //Media managment starts
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+    this.BsModalService.show(this.mediaModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+    this.quesModalRef?.hide()
   }
+
+  bannerFile(event: any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  openQuesModal(template: TemplateRef<any>) {
+    this.quesModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
+  openCoverModal(template: TemplateRef<any>) {
+    this.coverModalRef = this.BsModalService.show(template);
+  }
+
+  openMediaModal(template: TemplateRef<any>) {
+    this.mediaModalRef = this.BsModalService.show(template);
+  }
+
+  openExistingModal(template: TemplateRef<any>) {
+    this.existModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.quesModalRef?.hide()
+  }
+
+  closeMedia(type: any) {
+    if (type == 'cover') {
+      this.croppedBanner = ''
+      this.bannerFilename = ''
+    } else if (type == 'thumbnail') {
+      this.croppedImage = ''
+      this.filename = ''
+    }
+    this.BsModalService.hide()
+  }
+
+  saveMedia(type: any) {
+    if (type == 'cover') {
+
+    } else if (type == 'thumbnail') {
+
+    }
+
+    this.BsModalService.hide()
+  }
+
+  saveExistingMedia(type: any, image: any) {
+    if (type == 'cover') {
+
+    } else if (type == 'thumbnail') {
+
+    }
+
+    this.BsModalService.hide()
+  }
+
+  removeCoverImage() {
+
+  }
+  //Media management ends
 }

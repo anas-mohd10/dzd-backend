@@ -1,14 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
-// import { ToastService } from 'src/app/includes/services/toast.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { AppSettings } from 'src/app/config/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-category',
@@ -25,7 +25,7 @@ export class CategoryComponent implements OnInit {
   form: FormGroup;
   settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl('15')
+  limit: FormControl = new FormControl('40')
   lastPage: Boolean = false;
   totalCount: number = 0
 
@@ -50,9 +50,19 @@ export class CategoryComponent implements OnInit {
   attrfilename: any = ''
   attrfiledata: any = ''
   showSaveButton: Boolean = false
-  attributes: Array<any> = []
+
   attributerefid: any;
   categoryslug: any;
+
+  categoryDetails: any = {}
+  attributes: Array<any> = []
+  attributeDetails: any = {}
+  //Modal config starts
+  attributeModalRef?: BsModalRef;
+  @ViewChild('attributeModal') attributeModal: any;
+  manageModalRef?: BsModalRef;
+  @ViewChild('manageModal') manageModal: any;
+  //Modal config ends
 
   constructor(private CategoryService: CategoryService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -61,7 +71,8 @@ export class CategoryComponent implements OnInit {
     private ToastrService: ToastrService,
     private FormBuilder: FormBuilder,
     private ActivatedRoute: ActivatedRoute,
-    private Router: Router
+    private Router: Router,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -105,12 +116,12 @@ export class CategoryComponent implements OnInit {
     });
 
     this.attributeform = this.formBuilder.group({
-      attributeName: [''],
-      attributeType: [''],
-      attributeColor: [''],
-      attributeText: [''],
-      attributeStatus: ['true'],
-      attributeFiltered: ['false']
+      name: [''],
+      type: [''],
+      color: [''],
+      text: [''],
+      isActive: ['true'],
+      isFiltered: ['false']
     })
   }
 
@@ -119,16 +130,16 @@ export class CategoryComponent implements OnInit {
     this.getCategories()
   }
 
-  getAttributes(catid: any, name: any, slug: any) {
-    this.categoryname = name
-    this.catid = catid
-    this.categoryslug = slug
+  // getAttributes(catid: any, name: any, slug: any) {
+  //   this.categoryname = name
+  //   this.catid = catid
+  //   this.categoryslug = slug
 
-    this.AttributeService.getAttributeByCategory(catid).subscribe((res: any) => {
-      res?.errorCode == 0 ? this.attributes = res?.result : this.ToastrService.error(res?.message)
-      this.ChangeDetectorRef.markForCheck()
-    })
-  }
+  //   this.AttributeService.getAttributeByCategory(catid).subscribe((res: any) => {
+  //     res?.errorCode == 0 ? this.attributes = res?.result : this.ToastrService.error(res?.message)
+  //     this.ChangeDetectorRef.markForCheck()
+  //   })
+  // }
 
   hideAttributesContainer() {
     this.showAttributes = !this.showAttributes;
@@ -430,4 +441,30 @@ export class CategoryComponent implements OnInit {
     })
   }
   //Attribute section end
+
+
+  openAttributeModal(template: TemplateRef<any>, category: any) {
+    this.categoryDetails = category
+    console.log(category.catid);
+
+    this.AttributeService.getAttributes(category.catid).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.attributes = res?.result
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+        this.ChangeDetectorRef.markForCheck()
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
+    this.attributeModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+  }
+
+  openManageModal(template: TemplateRef<any>) {
+    this.attributeModalRef?.hide()
+    this.manageModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+  }
+
 }
