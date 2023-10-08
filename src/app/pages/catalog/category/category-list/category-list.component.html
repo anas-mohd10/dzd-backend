@@ -162,18 +162,87 @@
   <div class="modal-body attributeModal">
     <h2 class="fw-bolder">{{categoryDetails.name}} Attributes</h2>
     <ng-container *ngIf="attributes.length == 0">
-      <h3 class="fw-bolder text-gray-400">
-        No attributes found. Add <span class="more text-primary" (click)="openManageModal(manageModal)">more</span> to
+      <h4 class="text-gray-400">
+        No attributes found. Add <span class="more text-primary"
+          (click)="openManageModal(manageModal, null)">more</span> to
         see
-      </h3>
+      </h4>
     </ng-container>
+    <div class="attributesWrapper">
+      <ng-container *ngFor="let attribute of attributes; let i = index">
+        <div class="attributeCard">
+          <div class="editButton">
+            <div (click)="openManageModal(manageModal, attribute)">
+              <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+            </div>
+          </div>
+          <div>{{attribute.name}}</div>
+          <div class="d-flex mt-2">
+            <div class="fs-6 activeStatus" [ngClass]="{'inactiveStatus': !attribute?.isActive}">
+              {{attribute?.isActive ? 'Active' : 'Inactive'}}
+            </div>
+            <div class="fs-6 ms-2 featured" *ngIf="attribute?.isFiltered">
+              {{attribute?.isFiltered ? 'Filtered' : ''}}
+            </div>
+          </div>
+          <div class="fs-6 mt-3 text-gray-400">Attribute set : </div>
+          <div class="attributeValues">
+            <ng-container *ngFor="let item of attribute.values">
+              <div class="attributeValue mt-2">
+                <div class="attributeColor" *ngIf="attribute.type == 'Color'" [ngStyle]="{'background': item.value}">
+                </div>
+                <div class="attributeText fs-6" *ngIf="attribute.type == 'Text'">{{item.value}}</div>
+                <img class="attributeImage" src="{{base}}/{{item?.value}}" alt="Attribute"
+                  *ngIf="attribute.type == 'File'">
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
   </div>
 </ng-template>
 
 <ng-template #manageModal>
   <div class="modal-body attributeModal">
     <h2 class="fw-bolder">{{attributeDetails ? 'Update' : 'Add'}} Attributes</h2>
-    
+    <form [formGroup]="attributeform" (keydown.Enter)="$event.preventDefault()">
+      <div class="row">
+        <div class="col-lg-6 mb-3">
+          <div class="form-group">
+            <label class="fs-6 mb-3 required">Name</label>
+            <input type="text" placeholder="Enter attribute name" class="form-control fs-6" formControlName="name" />
+          </div>
+        </div>
+        <div class="col-lg-6 mb-3">
+          <div class="form-group">
+            <label class="fs-6 mb-3">Status</label>
+            <select class="form-select  mb-3 fs-6" formControlName="isActive">
+              <option value="false" selected>Inactive</option>
+              <option value="true">Active</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6 mb-3">
+          <div class="form-group">
+            <label class="fs-6 mb-3">Filtered</label>
+            <select class="form-select  mb-3 fs-6" formControlName="isFiltered">
+              <option value="false" selected>Unfiltered</option>
+              <option value="true">Filtered</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-12 mb-3">
+          <div class="attributeItems">
+            <ng-container *ngFor="let attributeItem of attributeDetails.values">
+              <div class="attributeItem">
+                <div class="textItem" *ngIf="attributeDetails.type == 'Text'">{{attributeItem.value}}</div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>
 

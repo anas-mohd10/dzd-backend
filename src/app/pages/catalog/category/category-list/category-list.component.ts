@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@a
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { environment } from 'src/environments/environment.prod';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { AppSettings } from 'src/app/config/constants';
@@ -56,13 +56,17 @@ export class CategoryComponent implements OnInit {
 
   categoryDetails: any = {}
   attributes: Array<any> = []
-  attributeDetails: any = {}
+  attributeDetails: any
   //Modal config starts
   attributeModalRef?: BsModalRef;
   @ViewChild('attributeModal') attributeModal: any;
   manageModalRef?: BsModalRef;
   @ViewChild('manageModal') manageModal: any;
   //Modal config ends
+
+  attributeFormControls(){
+    return this.attributeform.controls
+  }
 
   constructor(private CategoryService: CategoryService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -116,10 +120,8 @@ export class CategoryComponent implements OnInit {
     });
 
     this.attributeform = this.formBuilder.group({
-      name: [''],
-      type: [''],
-      color: [''],
-      text: [''],
+      name: ['', Validators.required],
+      type: ['', Validators.required],
       isActive: ['true'],
       isFiltered: ['false']
     })
@@ -129,17 +131,6 @@ export class CategoryComponent implements OnInit {
     this.initForm()
     this.getCategories()
   }
-
-  // getAttributes(catid: any, name: any, slug: any) {
-  //   this.categoryname = name
-  //   this.catid = catid
-  //   this.categoryslug = slug
-
-  //   this.AttributeService.getAttributeByCategory(catid).subscribe((res: any) => {
-  //     res?.errorCode == 0 ? this.attributes = res?.result : this.ToastrService.error(res?.message)
-  //     this.ChangeDetectorRef.markForCheck()
-  //   })
-  // }
 
   hideAttributesContainer() {
     this.showAttributes = !this.showAttributes;
@@ -462,9 +453,15 @@ export class CategoryComponent implements OnInit {
     this.attributeModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
   }
 
-  openManageModal(template: TemplateRef<any>) {
+  openManageModal(template: TemplateRef<any>, attribute: any) {
     this.attributeModalRef?.hide()
+    this.attributeDetails = attribute
     this.manageModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    if (attribute) {
+      for (let _key of Object.keys(attribute)) {
+        this.attributeform.get(_key) ?.setValue(attribute[_key])
+      }
+    }
   }
 
 }

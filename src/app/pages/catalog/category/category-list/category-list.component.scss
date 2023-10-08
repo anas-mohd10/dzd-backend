@@ -122,7 +122,102 @@ input[type=button],
 .attributeModal {
   min-height: 400px;
 
-  .more{
+  .more {
     cursor: pointer;
+  }
+
+  .attributesWrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    .attributeCard {
+      padding: 10px;
+      background: #ffffff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      position: relative;
+
+      .editButton {
+        position: absolute;
+        right: 1.25rem;
+        top: 1.25rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        border-radius: 0.5rem;
+  
+        &:hover {
+          background: $hover;
+        }
+      }
+
+      .featured {
+        background: #ddfffc;
+        color: #00bdab;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+
+      .activeStatus {
+        background: #d9fff4;
+        color: #00A676;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+
+      .inactiveStatus{
+        background: #ffd9d9;
+        color: #a60000;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+
+      .attributeValues:has(.attributeText) {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+
+        .attributeText{
+          background: #faf1ff;
+          color: #6600a6;
+          border-radius: 1.25rem;
+          padding: 0 0.625rem;
+          width: max-content;
+        }
+      }
+
+      .attributeValues:has(.attributeColor) {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+
+        .attributeColor{
+          background: #faf1ff;
+          height: 2rem;
+          width: 100%;
+          border-radius: .625rem;
+        }
+      }
+
+      .attributeValues:has(.attributeImage) {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+
+        .attributeImage{
+          background: #faf1ff;
+          height: 2rem;
+          width: 100%;
+          object-fit: cover;
+          border-radius: .625rem;
+        }
+      }
+    }
   }
 }
