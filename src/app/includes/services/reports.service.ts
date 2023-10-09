@@ -18,4 +18,12 @@ export class ReportsService {
     return this.commonService.getFullUrl(this.reportsEndpoints.downloadSubscribers);
   }
 
+  customerReport() {
+    return this.commonService.getFullUrl(this.reportsEndpoints.customerReport);
+  }
+
+  customerOrderReport() {
+    return this.commonService.getFullUrl(this.reportsEndpoints.customerOrderReport);
+  }
+
 }
