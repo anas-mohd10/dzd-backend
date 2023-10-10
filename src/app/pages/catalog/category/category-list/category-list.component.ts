@@ -19,7 +19,7 @@ export class CategoryComponent implements OnInit {
   appRoute = appRoutes;
   base: any = ''
   categoryform: FormGroup
-  attributeform: FormGroup
+  attributeForm: FormGroup
 
   categories: Array<any> = [];
   form: FormGroup;
@@ -57,6 +57,15 @@ export class CategoryComponent implements OnInit {
   categoryDetails: any = {}
   attributes: Array<any> = []
   attributeDetails: any
+  isSubmitted: boolean = false;
+  isText: boolean = false
+  isColor: boolean = false
+  isFile: boolean = false
+  texts: Array<any> = []
+  colors: Array<any> = []
+  files: Array<any> = []
+  values: Array<any> = []
+  text: FormControl = new FormControl('')
   //Modal config starts
   attributeModalRef?: BsModalRef;
   @ViewChild('attributeModal') attributeModal: any;
@@ -64,8 +73,8 @@ export class CategoryComponent implements OnInit {
   @ViewChild('manageModal') manageModal: any;
   //Modal config ends
 
-  attributeFormControls(){
-    return this.attributeform.controls
+  get attributeFormControls() {
+    return this.attributeForm.controls
   }
 
   constructor(private CategoryService: CategoryService,
@@ -119,279 +128,33 @@ export class CategoryComponent implements OnInit {
       isFeatured: [''],
     });
 
-    this.attributeform = this.formBuilder.group({
+    this.attributeForm = this.formBuilder.group({
       name: ['', Validators.required],
       type: ['', Validators.required],
       isActive: ['true'],
-      isFiltered: ['false']
+      isFiltered: ['false'],
+      isDelete: ['false']
     })
   }
 
-  onReload() {
-    this.initForm()
-    this.getCategories()
-  }
-
-  hideAttributesContainer() {
-    this.showAttributes = !this.showAttributes;
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-  }
-
-  getAttributeDetails(refid: any) {
-    this.attributerefid = refid
-    this.showModal = !this.showModal
-
-    this.AttributeService.getAttributeById(this.catid, refid).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.attributevalues = res?.result
-        this.attributeform.get('attributeName')?.setValue(res?.result?.head?.name)
-        this.attributeform.get('attributeStatus')?.setValue(res?.result?.head?.isActive)
-        this.attributeform.get('attributeFiltered')?.setValue(res?.result?.head?.isFiltered)
-        this.attributeform.get('attributeType')?.setValue(res?.result?.head?.type)
-        switch (res?.result?.head?.type) {
-          case 'Color':
-            this.showColorPicker = true
-            for (let value of res?.result?.value) {
-              this.attributecolors.push({
-                id: this.attributecolors.length,
-                value: value.value,
-                refid: value.refid
-              })
-            }
-            this.ChangeDetectorRef.markForCheck()
-            break
-          case 'Text':
-            this.showTextInput = true
-            for (let value of res?.result?.value) {
-              this.attributetexts.push({
-                id: this.attributetexts.length,
-                value: value.value,
-                refid: value.refid
-              })
-            }
-            this.ChangeDetectorRef.markForCheck()
-            break
-          case 'File':
-            this.showFileInput = true
-            for (let value of res?.result?.value) {
-              this.attributeimages.push({
-                id: this.attributeimages.length,
-                value: environment.base + "/" + value.value,
-                refid: value.refid
-              })
-            }
-            this.ChangeDetectorRef.markForCheck()
-            break
-        }
-      } else {
-        this.ToastrService.error(res?.message)
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  hideEditModal() {
-    this.showModal = !this.showModal
-    this.attributevalues = []
-    this.attributetexts = []
-    this.attributecolors = []
-    this.attributeimages = []
-    this.showColorPicker = false
-    this.showTextInput = false
-    this.showFileInput = false
-  }
-
-  navigateToUpdate() {
-    this.Router.navigate([this.appRoute.category.UPDATE_CATEGORY], { queryParams: { category: this.categoryslug } })
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-  }
-
-  //Attribute section start
-  showAttributeSection() {
-    this.showAttributes = !this.showAttributes
-  }
-
-  handleAttributeType(e: any) {
-    this.attributetype = e.value
-    switch (this.attributetype) {
-      case 'Color':
-        this.showColorPicker = true
-        this.showTextInput = false
-        this.showFileInput = false
-        this.attributetexts = []
-        this.attributeform.get('attributeText')?.setValue('')
-        this.attributeimages = []
-        break
-      case 'Text':
-        this.showColorPicker = false
-        this.showTextInput = true
-        this.showFileInput = false
-        this.attributecolors = []
-        this.attributeform.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
-        this.attributeimages = []
-        break
-      case 'File':
-        this.showColorPicker = false
-        this.showTextInput = false
-        this.showFileInput = true
-        this.attributetexts = []
-        this.attributeform.get('attributeText')?.setValue('')
-        this.attributecolors = []
-        this.attributeform.get('attributeColor')?.setValue(AppSettings.PRIMARY_COLOR)
-        break
-    }
-  }
-
-  handleAttrributeValues(key: any, e: any) {
-    switch (key) {
-      case 'color':
-        this.attributecolors.push({
-          id: this.attributecolors.length,
-          value: e.value
-        })
-        break
-      case 'text':
-        if (e.value != '') {
-          if (!this.valueExists(e.value)) {
-            this.attributetexts.push({
-              id: this.attributetexts.length,
-              value: e.value
-            })
-            this.attributeform.get('attributeText')?.setValue('')
-          } else {
-            this.ToastrService.error('Attribute text already exists')
-          }
+  getAttributeDetails(attribute: any) {
+    this.AttributeService.getAttributeDetails(this.categoryDetails?.catid, attribute).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.attributeDetails = res?.result
         } else {
-          this.ToastrService.error('Attribute text cannot be null')
+          this.ToastrService.error(res?.message)
         }
-        break
-      case 'file':
-        if (this.attributecroppped != '') {
-          if (!this.imageValueExists(this.attributecroppped)) {
-            this.attributeimages.push({
-              id: this.attributeimages.length,
-              value: this.attributecroppped,
-              name: this.attrfilename
-            })
-            this.attributecolors = ''
-            this.loadAttributeImage = false
-          }
-        }
-    }
-    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
-      this.showSaveButton = true
-    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
-      this.showSaveButton = false
-    }
-  }
-
-  valueExists(value: any) {
-    return this.attributetexts.some((check: any) => {
-      return check.value == value
-    })
-  }
-
-  imageValueExists(value: any) {
-    return this.attributeimages.some((check: any) => {
-      return check.value == value
-    })
-  }
-
-  closeModal() {
-    this.attributevalues = []
-    this.attributetexts = []
-    this.attributecolors = []
-    this.attributeimages = []
-    this.showColorPicker = false
-    this.showTextInput = false
-    this.showFileInput = false
-  }
-
-  removeAttributeValues(key: any, id: any) {
-    switch (key) {
-      case 'color':
-        for (let data of this.attributecolors) {
-          if (data?.id == id) {
-            if (data?.refid) {
-              this.deleteAttributeValue(data?.refid)
-            }
-          }
-        }
-        this.attributecolors = this.attributecolors.filter((data: any) => data.id != id)
-        break
-      case 'text':
-        for (let data of this.attributetexts) {
-          if (data?.id == id) {
-            if (data?.refid) {
-              this.deleteAttributeValue(data?.refid)
-            }
-          }
-        }
-        this.attributetexts = this.attributetexts.filter((data: any) => data.id != id)
-        break
-      case 'file':
-        for (let data of this.attributeimages) {
-          if (data?.id == id) {
-            if (data?.refid) {
-              this.deleteAttributeValue(data?.refid)
-            }
-          }
-        }
-        this.attributeimages = this.attributeimages.filter((data: any) => data.id != id)
-        break
-    }
-    if (this.attributecolors.length > 0 || this.attributetexts.length > 0 || this.attributeimages.length > 0) {
-      this.showSaveButton = true
-    } else if (this.attributecolors.length == 0 || this.attributetexts.length == 0 || this.attributeimages.length == 0) {
-      this.showSaveButton = false
-    }
-  }
-
-  deleteAttributeValue(id: any) {
-    this.AttributeService.deleteAttribute(id).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
+        this.ChangeDetectorRef.markForCheck()
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
       }
     })
-  }
-
-  removeAttribute(id: any) {
-    this.attributes = this.attributes.filter((data: any) => data.id != id)
-  }
-
-  handleAttrInputChange(event: any) {
-    this.attrfiledata = <File>event.target.files[0];
-    this.attrfilename = this.attrfiledata.name
-    this.attrImageChange = event;
-    this.loadAttributeImage = true
-  }
-
-  attrImageCropped(event: ImageCroppedEvent) {
-    this.attributecroppped = event.base64;
-  }
-
-  attrImageLoaded() {
-    // show cropper
-  }
-
-  attrCropperReady() {
-    // cropper ready
-  }
-
-  loadAttrImageFailed() {
-    // show message
-  }
-
-  removeAttrImage() {
-    this.attributecroppped = ''
-    this.loadAttributeImage = false
   }
 
   saveAttribute() {
     let values = []
-    switch (this.attributeform.get('attributeType')?.value) {
+    switch (this.attributeForm.get('attributeType')?.value) {
       case 'Color':
         values = this.attributecolors
         break
@@ -404,10 +167,10 @@ export class CategoryComponent implements OnInit {
     }
 
     const data = {
-      name: this.attributeform.get('attributeName')?.value,
-      type: this.attributeform.get('attributeType')?.value,
-      isActive: this.attributeform.get('attributeStatus')?.value,
-      isFilter: this.attributeform.get('attributeFiltered')?.value,
+      name: this.attributeForm.get('attributeName')?.value,
+      type: this.attributeForm.get('attributeType')?.value,
+      isActive: this.attributeForm.get('attributeStatus')?.value,
+      isFilter: this.attributeForm.get('attributeFiltered')?.value,
       values: values,
       category: {
         id: this.attributevalues?.head?.category?.id?._id,
@@ -431,13 +194,9 @@ export class CategoryComponent implements OnInit {
       }
     })
   }
-  //Attribute section end
-
 
   openAttributeModal(template: TemplateRef<any>, category: any) {
     this.categoryDetails = category
-    console.log(category.catid);
-
     this.AttributeService.getAttributes(category.catid).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
@@ -453,15 +212,107 @@ export class CategoryComponent implements OnInit {
     this.attributeModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
   }
 
-  openManageModal(template: TemplateRef<any>, attribute: any) {
+  openManageAttributeModal(template: TemplateRef<any>, attribute: any) {
     this.attributeModalRef?.hide()
     this.attributeDetails = attribute
     this.manageModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
-    if (attribute) {
-      for (let _key of Object.keys(attribute)) {
-        this.attributeform.get(_key) ?.setValue(attribute[_key])
+    for (let _key of Object.keys(attribute)) this.attributeForm.get(_key)?.setValue(attribute[_key])
+    attribute.type == 'text' ? this.isText = true : attribute.type == 'color' ? this.isColor = true : attribute.type == 'file' ? this.isFile = true : null
+    for (let item of attribute.values) {
+      switch (attribute.type) {
+        case 'text':
+          this.texts.push(item?.value)
+          break
+        case 'color':
+          this.colors.push(item?.value)
+          break
+        case 'file':
+          break
       }
     }
   }
 
+  getAttributeType(event: any) {
+    this.isText = event.target.value === 'text';
+    this.isColor = event.target.value === 'color';
+    this.isFile = event.target.value === 'file';
+  }
+
+  getAttributeValue(type: any, event: any) {
+    switch (type) {
+      case 'text':
+        if (!this.texts.includes(event.target.value) && event.target.value) this.texts.push(event.target.value)
+        this.text.setValue('')
+        break
+      case 'color':
+        if (!this.colors.includes(event.target.value) && event.target.value) this.colors.push(event.target.value)
+        break
+      case 'file':
+        break
+    }
+  }
+
+  removeAttributeValue(type: any, value: any) {
+    switch (type) {
+      case 'text':
+        this.texts = this.texts.filter((data: any) => data != value)
+        break
+      case 'color':
+        this.colors = this.colors.filter((data: any) => data != value)
+        break
+      case 'file':
+        break
+    }
+  }
+
+  closeSubmit() {
+    this.attributeDetails ? this.manageModalRef?.hide() : this.BsModalService?.hide()
+    this.resetDetails()
+  }
+
+  onSubmit() {
+    this.attributeForm.get('type')?.value == 'text' ?
+      this.values = [...this.texts] : this.attributeForm.get('type')?.value == 'color' ?
+        this.values = [...this.colors] : this.values = []
+
+    if (!this.attributeForm.valid || this.values.length == 0) {
+      this.ToastrService.error('Invalid form submission, kindly check all the fields and submit again.')
+      return
+    }
+
+    if (this.attributeDetails) {
+      this.AttributeService.updateAttribute({ ...this.attributeForm.value, values: this.values, category: this.categoryDetails?.catid, attribute: this.attributeDetails?.refid }).subscribe({
+        next: (res: any) => {
+          this.BsModalService.hide()
+          this.ToastrService.success(res?.message)
+          this.getCategories()
+          this.resetDetails()
+          this.ChangeDetectorRef.markForCheck()
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }
+      })
+    } else {
+      this.AttributeService.createAttribute({ ...this.attributeForm.value, values: this.values, category: this.categoryDetails?.catid }).subscribe({
+        next: (res: any) => {
+          this.BsModalService.hide()
+          this.ToastrService.success(res?.message)
+          this.getCategories()
+          this.resetDetails()
+          this.ChangeDetectorRef.markForCheck()
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }
+      })
+    }
+  }
+
+  resetDetails() {
+    this.attributeForm.reset()
+    this.texts = []
+    this.colors = []
+    this.files = []
+    this.values = []
+    this.text.setValue('')
+  }
 }

@@ -19,14 +19,19 @@ export class AttributeService {
     return this.http.post(`${url}`, {})
   }
 
-  getAttributeById(id: any, refid: any) {
-    const url = this.commonService.getFullUrl(this.attributeEndpoints.attribute_by_id + "?id=" + id + "&refid=" + refid);
+  getAttributeDetails(category: string, attribute: string) {
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.attributeDetails + "?category=" + category + "&attribute=" + attribute);
     return this.http.post(`${url}`, {})
   }
 
   updateAttribute(data: any) {
-    const url = this.commonService.getFullUrl(this.attributeEndpoints.update_attribute);
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.updateAttribute);
     return this.http.put(`${url}`, data)
+  }
+
+  createAttribute(data: any) {
+    const url = this.commonService.getFullUrl(this.attributeEndpoints.createAttribute);
+    return this.http.post(`${url}`, data)
   }
 
   deleteAttribute(id: any) {

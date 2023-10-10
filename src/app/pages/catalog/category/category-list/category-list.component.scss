@@ -16,6 +16,10 @@ input[type=button],
   font-weight: normal !important;
 }
 
+button {
+  width: 200px;
+}
+
 .categoryWrapper {
   width: 100%;
   display: grid;
@@ -99,9 +103,9 @@ input[type=button],
 
     .paginationBefore,
     .paginationNext {
-      height: 30px;
-      width: 30px;
-      border-radius: 15px;
+      height: 1.875rem;
+      width: 1.875rem;
+      border-radius: 0.9375rem;
       display: grid;
       place-items: center;
       background: $background;
@@ -114,13 +118,13 @@ input[type=button],
     }
 
     .paginationPage {
-      margin: 0 10px;
+      margin: 0 0.625rem;
     }
   }
 }
 
 .attributeModal {
-  min-height: 400px;
+  min-height: 25rem;
 
   .more {
     cursor: pointer;
@@ -129,26 +133,26 @@ input[type=button],
   .attributesWrapper {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 0.625rem;
 
     .attributeCard {
       padding: 10px;
       background: #ffffff;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e2e2;
       border-radius: 10px;
       position: relative;
 
       .editButton {
         position: absolute;
-        right: 1.25rem;
-        top: 1.25rem;
+        right: 0.75rem;
+        top: 0.75rem;
         width: 2.5rem;
         height: 2.5rem;
         display: grid;
         place-items: center;
         cursor: pointer;
         border-radius: 0.5rem;
-  
+
         &:hover {
           background: $hover;
         }
@@ -170,54 +174,70 @@ input[type=button],
         width: max-content;
       }
 
-      .inactiveStatus{
+      .inactiveStatus {
         background: #ffd9d9;
         color: #a60000;
         border-radius: 1.25rem;
         padding: 0 0.625rem;
         width: max-content;
       }
+    }
+  }
+}
 
-      .attributeValues:has(.attributeText) {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+.manageAttributeModal {
 
-        .attributeText{
-          background: #faf1ff;
-          color: #6600a6;
-          border-radius: 1.25rem;
-          padding: 0 0.625rem;
-          width: max-content;
-        }
-      }
+  .textWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
 
-      .attributeValues:has(.attributeColor) {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
+    .textCard {
+      background: #ddfffc;
+      color: #00bdab;
+      width: max-content;
+    }
+  }
 
-        .attributeColor{
-          background: #faf1ff;
-          height: 2rem;
-          width: 100%;
-          border-radius: .625rem;
-        }
-      }
+  .colorWrapper {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.625rem;
 
-      .attributeValues:has(.attributeImage) {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+    .colorCard {
+      border-radius: 0.375rem;
+      height: 2.5rem;
+      position: relative;
 
-        .attributeImage{
-          background: #faf1ff;
-          height: 2rem;
-          width: 100%;
-          object-fit: cover;
-          border-radius: .625rem;
+      .maskOverlay {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 50%;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        border-radius: 0 0.375rem 0.375rem 0;
+
+        .attributeRemoveIcon{
+          background: none;
+          color: $white;
         }
       }
     }
   }
+}
+
+.attributeRemoveIcon {
+  height: 1.875rem;
+  width: 1.875rem;
+  border-radius: 0.9375rem;
+  display: grid;
+  place-items: center;
+  background: $white;
+  margin: 0 0 0 0.625rem;
+  cursor: pointer;
+  color: inherit;
 }
