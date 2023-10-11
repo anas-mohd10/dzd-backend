@@ -84,55 +84,13 @@
               {{category?.isFeatured ? 'Featured' : ''}}
             </div>
           </div>
-          <div class="fs-6 mt-3" (click)="openAttributeModal(attributeModal, category)">
+          <div class="fs-6 attributesBtn mt-3" (click)="openAttributeModal(attributeModal, category)">
             View attributes
           </div>
         </div>
       </div>
     </ng-container>
   </div>
-
-  <!-- <div class="category-card-container view-container">
-    <ng-container *ngFor="let category of categories">
-      <div class="category-card card-hover">
-
-        <div class="editButton">
-          <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
-            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
-          </div>
-        </div>
-
-        <div class="category-image">
-          <img src='{{base}}/{{category?.file}}' alt="category image" srcset="" />
-        </div>
-
-        <div class="category-details">
-          <div class="category-name mb-3 fs-4">{{category?.name}}</div>
-          <div class="categoryStatus">
-            <div class="fs-6 category-featured-{{category?.isFeatured}}">
-              {{category?.isFeatured ? 'Featured' : 'Not featured'}}
-            </div>
-            <div class="statusSeperator">.</div>
-            <div class="fs-6 category-status-{{category?.isActive}}">
-              {{category?.isActive ? 'Active' : 'Inactive'}}
-            </div>
-          </div>
-
-          <div class="category-attribute fs-6" (click)="getAttributes(category?.catid, category?.name, category?.slug)"
-            data-bs-toggle="modal" data-bs-target="#attributeModal">
-            View attributes
-          </div>
-
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="categories.length == 0">
-      <div class="emptyNote">
-        <div class="fs-3 fw-bolder">No result found</div>
-        <div class="fs-6 note">We couldn't find any item based on your search</div>
-      </div>
-    </ng-container>
-  </div> -->
 
   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
     <div class="filtering">

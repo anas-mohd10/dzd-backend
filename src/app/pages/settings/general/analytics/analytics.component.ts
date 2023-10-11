@@ -29,7 +29,9 @@ export class AnalyticsComponent implements OnInit {
       isAnalyticsEnabled: new FormControl('false'),
       analyticsId: new FormControl(''),
       isTagEnabled: new FormControl('false'),
-      tagId: new FormControl('')
+      tagId: new FormControl(''),
+      isPixelEnabled: new FormControl('true'),
+      pixelId: new FormControl('')
     })
 
     this.AnalyticsService.getAnalyticsDetails().subscribe((res: any) => {

@@ -75,9 +75,6 @@ export class OrdersListComponent implements OnInit {
     status: 'Shipped',
     value: 'SHIPPED'
   }, {
-    status: 'Refunded',
-    value: 'REFUNDED'
-  }, {
     status: 'Delivered',
     value: 'DELIVERED'
   }, {
@@ -92,10 +89,7 @@ export class OrdersListComponent implements OnInit {
   }, {
     status: 'Packed',
     value: 'PACKED'
-  }, {
-    status: 'Partial Refunded',
-    value: 'PARTIAL REFUNDED'
-  }]
+  },]
   lastPage: Boolean = false
   type: any = null
 

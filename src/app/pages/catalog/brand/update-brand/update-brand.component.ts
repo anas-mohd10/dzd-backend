@@ -332,8 +332,12 @@ export class UpdateBrandComponent implements OnInit {
   removeCoverImage() {
     this.brandService.removeCoverMedia(this.brand.brandid).subscribe({
       next: (res: any) => {
-        this.getBrand()
-        this.toastr.success(res.message)
+        if (res?.errorCode == 0) {
+          this.getBrand()
+          this.toastr.success(res.message)
+        } else {
+          this.toastr.error(res.message)
+        }
       }, error: (err: any) => {
         this.toastr.error(err.message)
       }

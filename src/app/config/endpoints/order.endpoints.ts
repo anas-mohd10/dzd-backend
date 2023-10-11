@@ -13,5 +13,6 @@ export const orderEndpoints = {
    search_pending_orders: '/orders/pending/search',
    order_details: '/order-details',
    getStatusList: '/status-list',
-   updateOrderStatus: '/update-status'
+   updateOrderStatus: '/update-status',
+   cancelOrderDetails: '/cancel-order-details'
 };

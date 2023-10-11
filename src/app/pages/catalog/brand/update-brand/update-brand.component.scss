@@ -54,6 +54,9 @@ label,
       left: 4.25rem;
       height: 12.5rem;
       width: 12.5rem;
+      background: #ffffff;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      border-radius: 0.625rem;
 
       .editMediaButton {
          position: absolute;
@@ -69,7 +72,7 @@ label,
       input {
          height: 100%;
          width: 100%;
-         border-radius: 10px;
+         border-radius: 0.625rem;
       }
 
       img {
@@ -79,7 +82,7 @@ label,
          height: 100%;
          width: 100%;
          object-fit: cover;
-         border-radius: 10px;
+         border-radius: 0.625rem;
       }
    }
 }

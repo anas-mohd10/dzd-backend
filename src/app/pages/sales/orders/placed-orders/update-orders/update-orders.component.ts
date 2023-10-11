@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,7 @@ import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settin
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-update-orders',
@@ -34,16 +35,22 @@ export class UpdateOrdersComponent implements OnInit {
   processProduct: FormControl = new FormControl('')
   allProduct: FormControl = new FormControl('')
   statusList: Array<any> = []
+  orderStatus: string = ''
+  orderStatusList: Array<any> = ['PLACED', 'CANCELLED']
+  isCancelEligible: boolean = false
+  modalRef?: BsModalRef;
+  isCancelled: boolean = false
 
   constructor(
     private orderService: OrdersService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
+    private ToastrService: ToastrService,
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private invoiceService: InvoiceSettingsService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +63,7 @@ export class UpdateOrdersComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -102,7 +109,9 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
         this.orderForm.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
         this.orderForm.get("paymentId")?.setValue(this.order?.payment?.referenceId)
-
+        this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
+        this.orderStatusList.includes(res.result.orderStatus) ? this.isCancelEligible = false : this.isCancelEligible = true
+        res.result.orderStatus == 'CANCELLED' ? this.isCancelled = true : this.isCancelled = false
         let dateExpected = ''
         let outForDelivery = ''
         let deliveryDate = ''
@@ -124,7 +133,7 @@ export class UpdateOrdersComponent implements OnInit {
           product.currentStatus = history.pop()
         }
 
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -133,9 +142,9 @@ export class UpdateOrdersComponent implements OnInit {
     this.orderService.getStatusList(status).subscribe({
       next: (res: any) => {
         this.statusList = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.toastr.error("Couldn't fetch order status list")
+        this.ToastrService.error("Couldn't fetch order status list")
       }
     })
   }
@@ -145,12 +154,12 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
-          this.toastr.success(res.message)
+          this.ToastrService.success(res.message)
         } else {
-          this.toastr.error(res.message)
+          this.ToastrService.error(res.message)
         }
       }, error: (err: any) => {
-        this.toastr.error(err.message)
+        this.ToastrService.error(err.message)
       }
     })
   }
@@ -194,17 +203,38 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    if (this.processedProducts.length > 0) {
-      this.orderService.updateOrder({ ...this.orderForm.value, products: this.processedProducts, order: this.orderNumber }).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+    this.orderService.updateOrder({ ...this.orderForm.value, order: this.orderNumber }).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.ToastrService.error(res?.message);
+      } else if (res.errorCode == 0) {
+        this.ToastrService.success(res?.message);
+        this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
+      }
+    })
+  }
+
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm' });
+  }
+
+  confirm() {
+    this.orderService.cancelOrderDetails({ order: this.orderNumber }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrderDetails()
+          this.ToastrService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+          this.modalRef?.hide()
+        } else {
+          this.ToastrService.error(res?.message)
         }
-      })
-    } else {
-      this.toastr.error('Please select at least one product');
-    }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
+  }
+
+  decline() {
+    this.modalRef?.hide()
   }
 }

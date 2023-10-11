@@ -1,4 +1,5 @@
-label {
+label,
+.btn-secondary {
     font-weight: 400 !important;
 }
 
@@ -12,6 +13,16 @@ label {
     background: #f2f2f2;
 }
 
+.modal-body {
+    .btn {
+        width: 120px;
+    }
+}
+
+.cancelledWrapper {
+    pointer-events: none;
+    opacity: 0.6;
+}
 
 .toolTip {
     position: absolute;
@@ -67,6 +78,10 @@ label {
 
     .detailsWrapper {
         .deliveryType {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
             .title {
                 font-weight: 600;
                 color: #A1A5B7;
@@ -74,6 +89,10 @@ label {
         }
 
         .deliveryDate {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
             .title {
                 font-weight: 600;
                 color: #A1A5B7;
@@ -81,6 +100,10 @@ label {
         }
 
         .deliveryTime {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
             .title {
                 font-weight: 600;
                 color: #A1A5B7;
@@ -88,12 +111,7 @@ label {
         }
 
         .delivery {
-            border-bottom: 1px solid #eaeaea;
             padding: 0 0 5px 0;
-
-            &:last-child {
-                border: none;
-            }
         }
     }
 }
@@ -187,24 +205,24 @@ $background: #e5e5e5;
 $error: #F1416C;
 $white: #ffffff;
 
-.historyWrapper{
-    .productHistoryWrapper{
+.historyWrapper {
+    .productHistoryWrapper {
         background: $white;
         margin: 0 0 30px 0;
 
-        .productHistory{
+        .productHistory {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
 
-            .history{
+            .history {
                 background: $hover;
                 border: 1px solid $hover;
                 border-radius: 10px;
                 padding: 5px;
                 cursor: pointer;
 
-                &:hover{
+                &:hover {
                     background: $white;
                     border: 1px solid $hover;
                 }
@@ -213,9 +231,9 @@ $white: #ffffff;
     }
 }
 
-.productsTable{
+.productsTable {
 
-    .productStatus{
+    .productStatus {
         background: #f8fffe;
         color: #00bdab;
         width: max-content;
@@ -230,20 +248,20 @@ $white: #ffffff;
     border-radius: 4px;
 
     &::after {
-      position: absolute;
-      content: '';
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 2px;
-      height: 10px;
-      width: 10px;
+        position: absolute;
+        content: '';
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 2px;
+        height: 10px;
+        width: 10px;
     }
 
     &.checked {
 
-      &::after {
-        background: #00bdab;
-      }
+        &::after {
+            background: #00bdab;
+        }
     }
-  }
+}

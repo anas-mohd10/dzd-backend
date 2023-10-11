@@ -132,7 +132,7 @@ export class UpdateCategoryComponent implements OnInit {
     this.category = this.route.snapshot.queryParams.category || '';
     this.managePage();
     this.getCategory();
-    this.getCategoryBySlug();
+    this.getCategoryDetails();
 
     this.CategoryService.categoryImages({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -206,26 +206,9 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
-  getCategoryBySlug() {
+  getCategoryDetails() {
     this.CategoryService.getCategoryBySlug(this.category).subscribe((res: any) => {
       this.categoryValues = res?.result[0];
-
-      // this.AttributeService.getAttributeByCategory(this.categoryValues['catid']).subscribe((res: any) => {
-      //   for (let value of res?.result) {
-      //     this.attributes.push({
-      //       name: value?.name,
-      //       type: value?.type,
-      //       isActive: value?.isActive,
-      //       isFilter: value?.isFilter,
-      //       values: value?.values,
-      //       id: this.attributes.length,
-      //       refid: value?.refid
-      //     })
-      //   }
-
-      //   this.cdr.markForCheck()
-      // })
-
       this.uploadedimg = this.categoryValues?.file;
       this.img = this.base + "/" + res?.result[0].file
       this.banner = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
@@ -383,7 +366,6 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
-
   //Media managment starts
   handleInputChange(event: any) {
     this.filedata = <File>event.target.files[0];
@@ -432,9 +414,23 @@ export class UpdateCategoryComponent implements OnInit {
 
   saveMedia(type: any) {
     if (type == 'cover') {
-
+      this.CategoryService.updateCategoryMedias({ category: this.categoryValues?.catid, media: { url: this.croppedBanner, name: this.bannerFilename } }, type).subscribe({
+        next: (res: any) => {
+          this.getCategoryDetails()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
     } else if (type == 'thumbnail') {
-
+      this.CategoryService.updateCategoryMedias({ category: this.categoryValues?.catid, media: { url: this.croppedImage, name: this.filename } }, type).subscribe({
+        next: (res: any) => {
+          this.getCategoryDetails()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
     }
 
     this.BsModalService.hide()
@@ -442,16 +438,41 @@ export class UpdateCategoryComponent implements OnInit {
 
   saveExistingMedia(type: any, image: any) {
     if (type == 'cover') {
-
+      this.CategoryService.updateCategoryMedias({ category: this.categoryValues?.catid, url: image }, type).subscribe({
+        next: (res: any) => {
+          this.getCategoryDetails()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
     } else if (type == 'thumbnail') {
-
+      this.CategoryService.updateCategoryMedias({ category: this.categoryValues?.catid, url: image }, type).subscribe({
+        next: (res: any) => {
+          this.getCategoryDetails()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
     }
 
     this.BsModalService.hide()
   }
 
   removeCoverImage() {
-
+    this.CategoryService.removeCategoryCover(this.categoryValues.catid).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getCategoryDetails()
+          this.toastr.success(res.message)
+        } else {
+          this.toastr.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.toastr.error(err.message)
+      }
+    })
   }
   //Media management ends
 }

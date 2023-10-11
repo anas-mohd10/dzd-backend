@@ -1,4 +1,183 @@
+.archieved-true {
+   pointer-events: none;
+   opacity: 0.7;
+}
+
 label,
 .btn-secondary {
-  font-weight: normal !important;
+   font-weight: normal !important;
+}
+
+.mediaWrapper {
+   position: relative;
+   padding: 0 0 6.25rem 0;
+
+   .coverImageWrapper {
+      height: 400px;
+      width: 100%;
+      position: relative;
+
+      input {
+         height: 100%;
+         width: 100%;
+         border-radius: 10px;
+      }
+
+      img {
+         position: absolute;
+         top: 0;
+         left: 0;
+         height: 100%;
+         width: 100%;
+         pointer-events: none;
+         object-fit: cover;
+         border-radius: 10px;
+      }
+
+      .removeCover {
+         position: absolute;
+         top: 10px;
+         right: 10px;
+         height: 40px;
+         width: 40px;
+         border-radius: 10px;
+         display: grid;
+         place-items: center;
+         background: #d43333;
+         cursor: pointer;
+      }
+   }
+
+   .mediaImageWrapper {
+      position: absolute;
+      top: 60%;
+      left: 4.25rem;
+      height: 12.5rem;
+      width: 12.5rem;
+      background: #ffffff;
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      border-radius: 0.625rem;
+
+      .editMediaButton {
+         position: absolute;
+         top: 1rem;
+         right: 1rem;
+         z-index: 99;
+         background: #E4E6EF;
+         border-radius: 0.625rem;
+         padding: 0.625rem;
+         cursor: pointer;
+      }
+
+      input {
+         height: 100%;
+         width: 100%;
+         border-radius: 0.625rem;
+      }
+
+      img {
+         position: absolute;
+         top: 0;
+         left: 0;
+         height: 100%;
+         width: 100%;
+         object-fit: cover;
+         border-radius: 0.625rem;
+      }
+   }
+}
+
+.formWrapper {
+   padding: 0 4.25rem;
+}
+
+.mediaModal {
+   .mediaWrapper {
+      height: 31.25rem;
+      object-fit: contain;
+
+      img {
+         height: 100%;
+         width: 100%;
+         object-fit: contain;
+      }
+   }
+}
+
+.optionModal {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+
+   .optionCard {
+      display: flex;
+      height: 8.125rem;
+      padding: 1rem;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.625rem;
+      border-radius: 0.625rem;
+      background: #e7e7e7;
+      border: 1px solid #e7e7e7;
+      position: relative;
+      width: calc(50% - 5px);
+      cursor: pointer;
+
+      input {
+         height: 100%;
+         width: 100%;
+      }
+
+      .optionMask {
+         position: absolute;
+         top: 0;
+         left: 0;
+         height: 100%;
+         width: 100%;
+         background: #e7e7e7;
+         border-radius: 0.625rem;
+         pointer-events: none;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-direction: column;
+         gap: 0.625rem;
+         text-align: center;
+      }
+   }
+}
+
+.existingModal {
+   .postedImages {
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 1.25rem;
+      height: 37.5rem;
+      overflow-y: scroll;
+
+      .postedImage {
+         background: #ffffff;
+         border: 0.0625rem solid #E4E6EF;
+         border-radius: 0.9375rem;
+         padding: 0.625rem;
+         position: relative;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+
+         input {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+         }
+
+         img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+         }
+      }
+   }
 }

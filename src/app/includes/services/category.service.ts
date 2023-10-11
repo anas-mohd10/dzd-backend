@@ -110,4 +110,14 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.get_sub_categories);
     return this.http.post(`${url}`, data);
   }
+
+  updateCategoryMedias(data: any, type: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.updateCategoryMedias + `/${type}`);
+    return this.http.put(`${url}`, data);
+  }
+
+  removeCategoryCover(category: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.removeCategoryMedia + `/${category}`);
+    return this.http.get(`${url}`);
+  }
 }

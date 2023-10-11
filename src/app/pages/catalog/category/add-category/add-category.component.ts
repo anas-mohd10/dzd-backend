@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-add-category',
@@ -64,6 +65,17 @@ export class AddCategoryComponent implements OnInit {
   croppedBanner: any;
   attributeForm!: FormGroup
 
+  isRoot: boolean = true
+  img: any;
+  banner: any;
+  coverModalRef?: BsModalRef;
+  mediaModalRef?: BsModalRef;
+  existModalRef?: BsModalRef;
+  quesModalRef?: BsModalRef;
+  @ViewChild('coverModal') coverModal: any;
+  @ViewChild('mediaModal') mediaModal: any;
+  @ViewChild('existingModal') existingModal: any;
+  @ViewChild('quesModal') quesModal: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -71,7 +83,8 @@ export class AddCategoryComponent implements OnInit {
     private router: Router,
     private CategoryService: CategoryService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private BsModalService: BsModalService
   ) { }
 
   get bf() {
@@ -101,7 +114,7 @@ export class AddCategoryComponent implements OnInit {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       file: [''],
-      isRoot: ['false', Validators.required],
+      isRoot: ['true', Validators.required],
       parent: [],
       isActive: ['true', Validators.required],
       isFeatured: ['false', Validators.required],
@@ -143,6 +156,10 @@ export class AddCategoryComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  isRootCategory(event: any) {
+    event.target.value == 'false' ? this.isRoot = false : this.isRoot = true
   }
 
   getCategory() {
@@ -204,51 +221,6 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-  }
-
-  bannerFile(event: any) {
-    this.bannerFiledata = <File>event.target.files[0];
-    this.bannerFilename = this.bannerFiledata.name
-    this.bannerChangedEvent = event;
-    this.loadBanner = true
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  bannerCropped(event: ImageCroppedEvent) {
-    this.croppedBanner = event.base64;
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  removeBanner() {
-    this.croppedBanner = ''
-    this.loadBanner = false
-  }
-
-
   getColors(type: any, e: any) {
     if (type == "background") {
       this.background = e.value
@@ -259,10 +231,6 @@ export class AddCategoryComponent implements OnInit {
     }
   }
 
-  //Attribute section start
-  // showAttributeSection() {
-  //   this.showAttributes = !this.showAttributes
-  // }
 
   handleAttributeType(e: any) {
     this.attributetype = e.value
@@ -517,4 +485,71 @@ export class AddCategoryComponent implements OnInit {
 
     return data
   }
+
+  //Media starts
+  removeCoverImage() {
+    this.croppedBanner = ''
+    this.bannerFilename = ''
+  }
+
+  openQuesModal(template: TemplateRef<any>) {
+    this.quesModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
+  openExistingModal(template: TemplateRef<any>) {
+    this.existModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.quesModalRef?.hide()
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
+  }
+
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+    this.BsModalService.show(this.mediaModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+    this.quesModalRef?.hide()
+  }
+
+  bannerFile(event: any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  closeMedia(type: any) {
+    if (type == 'cover') {
+      this.croppedBanner = ''
+      this.bannerFilename = ''
+    } else if (type == 'thumbnail') {
+      this.croppedImage = ''
+      this.filename = ''
+    }
+    this.BsModalService.hide()
+  }
+
+  saveMedia(type: any) {
+    type == 'cover' ? this.banner = this.croppedBanner : this.img = this.croppedImage
+    this.BsModalService.hide()
+  }
+
+  saveExistingMedia(type: any, image: any) {
+    if (type == 'cover') {
+
+    } else if (type == 'thumbnail') {
+      this.file = image
+      this.img = environment.base + '/' + image
+    }
+    this.BsModalService.hide()
+  }
+  //Media ends
 }
