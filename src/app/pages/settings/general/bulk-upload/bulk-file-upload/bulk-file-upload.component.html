@@ -51,6 +51,10 @@
                     </div>
                 </div>
             </ng-container>
+
+            <div class="alert alert-danger mt-4" *ngIf="isValidExtension">
+                Invalid file extension, only csv files are allowed
+            </div>
         </div>
     </ng-container>
 

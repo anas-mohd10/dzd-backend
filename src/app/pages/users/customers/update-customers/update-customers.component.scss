@@ -11,9 +11,9 @@ $background: #e5e5e5;
 $error: #F1416C;
 
 label,
-input[type=button] {
+input[type=button],
+.btn-secondary {
    font-weight: normal !important;
-   width: 100%;
 }
 
 .addressWrapper {
@@ -27,8 +27,9 @@ input[type=button] {
          box-shadow: 0 5px 10px 5px $boxShadow;
          border: 2px solid $white;
          cursor: pointer;
-         
-         .contactDetails, .addressLane{
+
+         .contactDetails,
+         .addressLane {
             overflow: hidden;
             -o-text-overflow: ellipsis;
             text-overflow: ellipsis;
@@ -37,10 +38,20 @@ input[type=button] {
             -webkit-box-orient: vertical;
          }
 
-         &.defaultAddressCard{
+         &.defaultAddressCard {
             border: 2px solid $activeState;
             background: $primaryBackground;
          }
+      }
+   }
+}
+
+.modal-body {
+   .btn {
+      width: 140px;
+
+      &.btn-default {
+         font-weight: 400;
       }
    }
 }

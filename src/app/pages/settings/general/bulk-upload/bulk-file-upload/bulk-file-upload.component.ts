@@ -21,6 +21,7 @@ export class BulkFileUploadComponent implements OnInit {
   filestring: any;
   isTriggered: boolean = false;
   isValidFile: boolean = true
+  isValidExtension: boolean = false
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -53,18 +54,24 @@ export class BulkFileUploadComponent implements OnInit {
   }
 
   fileUpload(event: any) {
-    this.filedata = event.files[0]
-    this.filename = this.filedata.name
-    this.filesize = this.filedata.size / 1024
+    let extensionCheck: boolean = event.files[0]?.name.toLowerCase().endsWith('.csv');
+    if (extensionCheck) {
+      this.filedata = event.files[0]
+      this.filename = this.filedata.name
+      this.filesize = this.filedata.size / 1024
 
-    const reader = new FileReader();
-    reader.readAsDataURL(this.filedata);
-    reader.onload = () => {
-      this.filestring = reader.result
-    };
+      const reader = new FileReader();
+      reader.readAsDataURL(this.filedata);
+      reader.onload = () => {
+        this.filestring = reader.result
+      };
 
-    if (this.filesize > 50) this.isValidFile = false
-    if (this.filedata) this.isUploaded = true
+      if (this.filesize > 50) this.isValidFile = false
+      if (this.filedata) this.isUploaded = true
+      this.isValidExtension = false
+    } else {
+      this.isValidExtension = true
+    }
   }
 
   removeFileUpload() {
@@ -108,6 +115,8 @@ export class BulkFileUploadComponent implements OnInit {
         case 'users':
           break
       }
+    } else {
+
     }
   }
 

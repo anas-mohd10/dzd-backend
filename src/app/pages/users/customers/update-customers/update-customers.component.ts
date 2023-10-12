@@ -1,11 +1,12 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-update-customers',
@@ -35,13 +36,17 @@ export class UpdateCustomersComponent implements OnInit {
   isEditAddress: boolean = false
   addressDetails: any = {}
 
+  deleteModalRef?: BsModalRef
+
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomersService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private BsModalService: BsModalService
+  ) { }
 
   ngOnInit(): void {
     this.initForm()
@@ -205,7 +210,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.selectedAddress = refid
   }
 
-  removeAddress() {
+  confirm() {
     this.customerService.deleteAddress(this.selectedAddress).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress()
@@ -213,6 +218,16 @@ export class UpdateCustomersComponent implements OnInit {
         this.cdr.markForCheck()
       }
     })
+    this.deleteModalRef?.hide()
+  }
+
+  decline() {
+    this.deleteModalRef?.hide()
+  }
+
+  openModal(template: TemplateRef<any>, address: any) {
+    this.deleteModalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' });
+    this.selectedAddress = address
   }
 
   getCustomerDetails() {
