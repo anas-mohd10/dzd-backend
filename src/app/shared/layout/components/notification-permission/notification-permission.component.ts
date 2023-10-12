@@ -17,8 +17,9 @@ export class NotificationPermissionComponent implements OnInit {
   ) { }
 
   isNotificationEnabled = false;
-  nextStep = false
-  disablePrompt: boolean = false
+  nextStep = false;
+  disablePrompt: boolean = false;
+  isNotificationsBlocked: boolean = false;
 
   ngOnInit(): void {
     if (localStorage.getItem('notification_prompt') === 'false') {
@@ -40,9 +41,14 @@ export class NotificationPermissionComponent implements OnInit {
       }
     }).catch((err) => {
       this.disposePrompt()
-      alert('Sorry, an error occurred while retrieving token.')
+      // alert('Sorry, an error occurred while retrieving token.')
       console.log('An error occurred while retrieving token. ', err);
+      if (Notification.permission === 'denied') {
+        this.isNotificationsBlocked = true
+        this.ChangeDetectorRef.markForCheck()
+      }
     });
+
     // Notification.requestPermission().then((res) => {
     //   if (res === 'granted') {
     //     this.isNotificationEnabled = true

@@ -22,6 +22,28 @@
     <div>
       <img src="../../../../../assets/icons/webpusharrow.svg" class="_3SGhvp" />
     </div>
-    <span class="d-block">Almost there!</span><span>Please click on 'Allow' to enable Desktop Notifications</span>
+    <span class="d-block">Almost there!</span
+    ><span>Please click on 'Allow' to enable Desktop Notifications</span>
+  </div>
+</div>
+
+<div *ngIf="isNotificationsBlocked" class="overlay">
+  <div class="permission-container p-3">
+    <div class="image_block">
+      <img
+        style="filter: hue-rotate(0)"
+        src="../../../../../assets/icons/blocked_notifications.webp"
+        width="100%"
+      />
+      <div class="text-center fs-6 mt-4">
+        <span class="text-muted">How to Unblock</span>
+        <div class="unblock">
+          <img
+            class="sOakGN"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAsdJREFUaAXtWE1rE1EUvfeNbdqFbhSTVsUPxGXQjRuRNBGxpjRQhLqq+Ce6ENfiwv9gRVcWRKk2UcTUIK7VjQsRrahtIrppF9W2M8/7AqVvJp2ZN7mNEX0DIe/jnnPuuXdmEh6AvWwFWBVAFloDD9bOn3A9uABSnpUIB1DibonyB0r4DIhPHQH3FnKVVxpkW4ZsA/teFI+tr3k3JEApLiMSm9nRIya/ni6/i4s13WcZSNdGStL17gDIXaaCALiEjpho5GZnzDHhkW0byNSGi56LlIR0WugR60T8nbqyh26pTMs+oCsEjNaHKpXWvWQrbRlI10YPS2/9DSW30yeHcKsXeq99yc+831jfP1c6ugqrV0HC5Y215jfisoBUtp5/MO9bTzhpz0B1+C5Vd3xTC5ccEOOLhdknm2v+0UB15JwL3rR+u5H4dKPw+KI/MtkssYFm9d21D7qMI8SlxaEyPQvR18Dz4oTrebf1KHR6jjRyDz/qa0nGIkmwipWuO6ZjEPGRSfIKo+JUvI4P8ul7JuPEBhDlSZ1YCDGlz+PGwfggXxw+uJ/YgAQ5qJOgJ97q87hxMD7IF4cP7ic2QG8T3ztfpORykDRq3hIf4IvCbrWX3MBWLF1cswa6WPymdOTvQPrl2F749fM6RZ6hh+1gp5NFwE+k8QxSfVcap+5/M9ELNXBorphZkfI1JZ42IdrOGDLS6Ec8Pp8v1+N4Q5+BFQD6i/znk1cJK12lH5e82g81IKVXMCHoVIypfqgBSsz3g9WpRCN4jfSjDERw/z1b1kC3e2E7YDvArIC9hZgFZMNtB9glZBLYDjALyIbbDrBLyCSwHWAWkA23HWCXkEnwT3dggVkcLtxIP7QDiKLKzYCDN9UPNdAPMKkOmDhJtIttHmyRvgk+1EDzVCzVlyWyKfqoI7+OX0qHPjfpaDFrcirX8YSswP9Qgd/E17fzhd11OgAAAABJRU5ErkJggg=="
+          /><span>&gt; Notifications &gt; Allow</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
