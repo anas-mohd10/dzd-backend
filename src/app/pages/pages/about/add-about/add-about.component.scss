@@ -27,7 +27,7 @@ $closeBtn: #b62e2e;
       display: grid;
       place-items: center;
 
-      i{
+      i {
          color: $white;
          font-size: 24px;
       }
@@ -53,7 +53,8 @@ label {
 .heroImage {
    height: 200px;
    width: 266px;
-   border-radius: 10px;
+   border-radius: 5px;
+   object-fit: cover;
 }
 
 .features {

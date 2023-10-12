@@ -11,6 +11,9 @@ import { AnalyticsComponent } from './settings/general/analytics/analytics.compo
 import { FeedsComponent } from './marketing/feeds/feeds.component';
 import { NavigationMenuComponent } from './settings/general/navigation-menu/navigation-menu.component';
 import { SubscribersComponent } from './users/subscribers/subscribers.component';
+import { ServiceWarrantyComponent } from './pages/service-warranty/service-warranty.component';
+import { PaymentPolicyComponent } from './pages/payment-policy/payment-policy.component';
+import { ShippingPolicyComponent } from './pages/shipping-policy/shipping-policy.component';
 
 export const Routing: Routes = [
   {
@@ -352,6 +355,18 @@ export const Routing: Routes = [
       }, {
         path: 'navigation',
         component: NavigationMenuComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'shipping-policy',
+        component: ShippingPolicyComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'payment-policy',
+        component: PaymentPolicyComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'service-warranty',
+        component: ServiceWarrantyComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

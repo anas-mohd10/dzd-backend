@@ -53,6 +53,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment.prod';
 import { SubscribersComponent } from './pages/users/subscribers/subscribers.component';
 import { DetailedOrderComponent } from './pages/reports/detailed-order/detailed-order.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { PaymentPolicyComponent } from './pages/pages/payment-policy/payment-policy.component';
+import { ShippingPolicyComponent } from './pages/pages/shipping-policy/shipping-policy.component';
+import { ServiceWarrantyComponent } from './pages/pages/service-warranty/service-warranty.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -84,7 +88,10 @@ const DragConfig = {
     NavigationMenuComponent,
     NotificationPermissionComponent,
     SubscribersComponent,
-    DetailedOrderComponent
+    DetailedOrderComponent,
+    PaymentPolicyComponent,
+    ShippingPolicyComponent,
+    ServiceWarrantyComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -100,14 +107,11 @@ const DragConfig = {
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
     ModalModule.forRoot(),
-    ToastrModule.forRoot({
-      timeOut: 2000,
-      positionClass: 'toast-bottom-right',
-      preventDuplicates: true,
-    }),
+    ToastrModule.forRoot({ timeOut: 2000, positionClass: 'toast-bottom-right', preventDuplicates: true }),
     HotToastModule.forRoot(),
     AppRoutingModule,
     NgApexchartsModule,
+    AngularEditorModule,
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
@@ -117,7 +121,7 @@ const DragConfig = {
     FontAwesomeModule,
     ReactiveFormsModule,
     ImageCropperModule,
-    SwiperModule
+    SwiperModule,
   ],
   exports: [
     RouterModule,

@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { PrivacyPolicyService } from 'src/app/includes/services/privacy-policy.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+
 @Component({
   selector: 'app-add-privacy-policy',
   templateUrl: './add-privacy-policy.component.html',

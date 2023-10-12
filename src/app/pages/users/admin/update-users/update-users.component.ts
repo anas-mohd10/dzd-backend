@@ -50,7 +50,7 @@ export class UpdateUsersComponent implements OnInit {
     this.managePage()
     this.admin = this.route.snapshot.queryParams.admin || ''
 
-    this.roleService.getRoles().subscribe((res: any) => {
+    this.roleService.getActiveRoles().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ChangeDetectorRef.markForCheck()
         this.rolesData = res?.result

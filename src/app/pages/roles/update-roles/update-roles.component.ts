@@ -114,17 +114,19 @@ export class UpdateRolesComponent implements OnInit {
       return
     }
 
-    let payload = { ...this.form.value, permissions: this.checkedPermissions, refid: this.role }
     if (this.checkedPermissions.length > 0) {
-      this.RolesService.updateRoles(payload).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
-          this.Router.navigate([this.appRoute.roles.ROLES_LIST])
+      this.RolesService.updateRoles({ ...this.form.value, permissions: this.checkedPermissions, refid: this.role }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.ToastrService.success(res?.message)
+            this.Router.navigate([appRoutes.roles.ROLES_LIST])
+          } else {
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
         }
       })
-    } else {
-      this.ToastrService.error('Select atleast one permission to continue')
     }
   }
-
 }
