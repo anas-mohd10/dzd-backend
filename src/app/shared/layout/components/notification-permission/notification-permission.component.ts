@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { getMessaging, getToken } from '@angular/fire/messaging'
 import { FirebaseApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-notification-permission',
@@ -33,7 +34,7 @@ export class NotificationPermissionComponent implements OnInit {
 
   allowPrompt() {
     let messaging = getMessaging(this.fbApp);
-    getToken(messaging, { vapidKey: 'BGBVeTQBGpLoGMFZAXq4E6t5v_PBAgkv50sZBB6gYd9GbNu_9nfmQQq7V65T6Yy0Bh9LlH9JRZ3wmiK1nlHPgvc' }).then((currentToken) => {
+    getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
       console.log(currentToken)
       this.disposePrompt()
       if (currentToken) {
