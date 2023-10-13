@@ -107,6 +107,12 @@ export class AddAboutComponent implements OnInit {
     })
   }
 
+  removeFeature(index: any) {
+    if (index > -1 && index < this.addedFeatures.length) {
+      this.addedFeatures.splice(index, 1);
+    }
+  }
+
   reloadPage() {
     this.isSubmitted = false
     this.isHidden = true

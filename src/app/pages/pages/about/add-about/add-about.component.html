@@ -78,9 +78,9 @@
                                     alt="Icon">
                               </div>
                               <div class="alert alert-danger mt-1" role="alert"
-                              *ngIf="isIconRequired && isIconSubmitted">
-                              Feature icon is required
-                           </div>
+                                 *ngIf="isIconRequired && isIconSubmitted">
+                                 Feature icon is required
+                              </div>
                            </div>
 
                            <div class="col-6 mb-3">
@@ -115,7 +115,7 @@
                            <div class="features">
                               <ng-container *ngFor="let feature of addedFeatures; let i = index">
                                  <div class="featureCard">
-                                    <div class="removeCard">
+                                    <div class="removeCard" (click)="removeFeature(i)">
                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
                                     </div>
                                     <div class="icon">

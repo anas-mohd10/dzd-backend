@@ -26,6 +26,7 @@ export class NotificationPermissionComponent implements OnInit {
     if (localStorage.getItem('notification_prompt') === 'false') {
       this.disablePrompt = true
     } else {
+      this.allowPrompt()
       this.isNotificationEnabled = true
     }
 

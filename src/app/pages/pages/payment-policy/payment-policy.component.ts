@@ -26,7 +26,7 @@ export class PaymentPolicyComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter privacy policy here',
+    placeholder: 'Enter payment policy here',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
