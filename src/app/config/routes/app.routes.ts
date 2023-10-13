@@ -260,5 +260,6 @@ export const appRoutes = {
   },
   shippingPolicy: `${app}/shipping-policy`,
   serviceWarranty: `${app}/service-warranty`,
-  paymentPolicy: `${app}/payment-policy`
+  paymentPolicy: `${app}/payment-policy`,
+  refundPolicy: `${app}/refund-policy`
 }

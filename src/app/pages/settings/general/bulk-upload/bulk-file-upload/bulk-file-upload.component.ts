@@ -66,7 +66,7 @@ export class BulkFileUploadComponent implements OnInit {
         this.filestring = reader.result
       };
 
-      if (this.filesize > 50) this.isValidFile = false
+      if (this.filesize > 500) this.isValidFile = false
       if (this.filedata) this.isUploaded = true
       this.isValidExtension = false
     } else {

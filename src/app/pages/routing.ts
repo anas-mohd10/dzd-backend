@@ -14,6 +14,7 @@ import { SubscribersComponent } from './users/subscribers/subscribers.component'
 import { ServiceWarrantyComponent } from './pages/service-warranty/service-warranty.component';
 import { PaymentPolicyComponent } from './pages/payment-policy/payment-policy.component';
 import { ShippingPolicyComponent } from './pages/shipping-policy/shipping-policy.component';
+import { RefundPolicyComponent } from './pages/refund-policy/refund-policy.component';
 
 export const Routing: Routes = [
   {
@@ -367,6 +368,10 @@ export const Routing: Routes = [
       }, {
         path: 'service-warranty',
         component: ServiceWarrantyComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'refund-policy',
+        component: RefundPolicyComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

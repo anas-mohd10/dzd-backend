@@ -58,6 +58,7 @@ import { PaymentPolicyComponent } from './pages/pages/payment-policy/payment-pol
 import { ShippingPolicyComponent } from './pages/pages/shipping-policy/shipping-policy.component';
 import { ServiceWarrantyComponent } from './pages/pages/service-warranty/service-warranty.component';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+import { RefundPolicyComponent } from './pages/pages/refund-policy/refund-policy.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -92,7 +93,8 @@ const DragConfig = {
     DetailedOrderComponent,
     PaymentPolicyComponent,
     ShippingPolicyComponent,
-    ServiceWarrantyComponent
+    ServiceWarrantyComponent,
+    RefundPolicyComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

@@ -6,14 +6,14 @@ import { ContentService } from 'src/app/includes/services/content.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
-  selector: 'app-shipping-policy',
-  templateUrl: './shipping-policy.component.html',
-  styleUrls: ['./shipping-policy.component.scss']
+  selector: 'app-refund-policy',
+  templateUrl: './refund-policy.component.html',
+  styleUrls: ['./refund-policy.component.scss']
 })
-export class ShippingPolicyComponent implements OnInit {
+export class RefundPolicyComponent implements OnInit {
   appRoutes = appRoutes
   contentDetails: string = ''
-  shippingPolicy: FormControl = new FormControl('', Validators.required)
+  refundPolicy: FormControl = new FormControl('', Validators.required)
   isSubmitted: boolean = false
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -26,7 +26,7 @@ export class ShippingPolicyComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder: 'Enter shipping policy here',
+    placeholder: 'Enter refund policy here',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
@@ -49,7 +49,7 @@ export class ShippingPolicyComponent implements OnInit {
     this.ContentService.getContents().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.shippingPolicy.setValue(res?.result?.shippingPolicy)
+          this.refundPolicy.setValue(res?.result?.refundPolicy)
         } else {
           this.ToastrService.error(res?.message)
         }
@@ -61,12 +61,12 @@ export class ShippingPolicyComponent implements OnInit {
   }
 
   manage() {
-    if (!this.shippingPolicy.valid) {
+    if (!this.refundPolicy.valid) {
       this.isSubmitted = true
       return
     }
 
-    this.ContentService.manageContent({ shippingPolicy: this.shippingPolicy.value }).subscribe({
+    this.ContentService.manageContent({ refundPolicy: this.refundPolicy.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.ngOnInit()

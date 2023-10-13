@@ -1,7 +1,7 @@
 <div class="coupon-page-container">
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Shipping Policy</h1>
+            <h1 class="fw-bolder">Refund Policy</h1>
         </div>
         <div class="row align-items-center">
             <div class="col d-flex flex-row justify-content-between">
@@ -10,7 +10,7 @@
                         <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoutes.shippingPolicy }}">Shipping Policy</a>
+                        <a routerLink="{{ appRoutes.shippingPolicy }}">Refund Policy</a>
                     </li>
                 </ul>
             </div>
@@ -20,7 +20,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group">
-                    <angular-editor class="form-control fs-6" [formControl]="shippingPolicy" [config]="editorConfig">
+                    <angular-editor class="form-control fs-6" [formControl]="refundPolicy" [config]="editorConfig">
                     </angular-editor>
                 </div>
                 <div class="col-12 d-flex justify-content-end align-items-center">
