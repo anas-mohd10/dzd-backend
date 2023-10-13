@@ -49,14 +49,18 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { NotificationPermissionComponent } from './shared/layout/components/notification-permission/notification-permission.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment.prod';
 import { SubscribersComponent } from './pages/users/subscribers/subscribers.component';
 import { DetailedOrderComponent } from './pages/reports/detailed-order/detailed-order.component';
+<<<<<<< HEAD
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { PaymentPolicyComponent } from './pages/pages/payment-policy/payment-policy.component';
 import { ShippingPolicyComponent } from './pages/pages/shipping-policy/shipping-policy.component';
 import { ServiceWarrantyComponent } from './pages/pages/service-warranty/service-warranty.component';
+=======
+import { getMessaging, provideMessaging } from '@angular/fire/messaging';
+>>>>>>> 4904506abe48d22e03cbe5f5512aeb8bbe08162c
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -94,8 +98,8 @@ const DragConfig = {
     ServiceWarrantyComponent
   ],
   imports: [
-    AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideMessaging(() => getMessaging()),
     DataTablesModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -129,6 +133,7 @@ const DragConfig = {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
     { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
     AuthenticationGuard,
     CsvService,
