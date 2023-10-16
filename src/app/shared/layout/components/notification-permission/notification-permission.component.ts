@@ -28,7 +28,6 @@ export class NotificationPermissionComponent implements OnInit {
     if (localStorage.getItem('notification_prompt') === 'false') {
       this.disablePrompt = true
     } else {
-      this.allowPrompt()
       this.isNotificationEnabled = true
     }
 
@@ -36,6 +35,7 @@ export class NotificationPermissionComponent implements OnInit {
   }
 
   allowPrompt() {
+    this.nextStep = true
     let messaging = getMessaging(this.fbApp);
     getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
       this.disposePrompt()
@@ -52,7 +52,7 @@ export class NotificationPermissionComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     });
-    this.nextStep = true
+
   }
 
   disposePrompt() {
