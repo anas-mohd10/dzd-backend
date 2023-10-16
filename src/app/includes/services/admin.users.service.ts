@@ -51,7 +51,7 @@ export class AdminUsersService {
   }
 
   subscribeAdmin(data: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.subscribe_admin);
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.subscribeAdmin);
     return this.http.post(`${url}`, data)
   }
 

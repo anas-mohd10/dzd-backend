@@ -3,6 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { getMessaging, getToken } from '@angular/fire/messaging'
 import { FirebaseApp } from '@angular/fire/app';
 import { environment } from 'src/environments/environment';
+import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 
 @Component({
   selector: 'app-notification-permission',
@@ -14,7 +15,8 @@ export class NotificationPermissionComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private fbApp: FirebaseApp
+    private fbApp: FirebaseApp,
+    private AdminUsersService: AdminUsersService
   ) { }
 
   isNotificationEnabled = false;
@@ -36,31 +38,20 @@ export class NotificationPermissionComponent implements OnInit {
   allowPrompt() {
     let messaging = getMessaging(this.fbApp);
     getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
-      console.log(currentToken)
       this.disposePrompt()
       if (currentToken) {
-      } else {
+        this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
+          next: (res: any) => { }, error: (err: any) => { }
+        })
       }
     }).catch((err) => {
       this.disposePrompt()
-      // alert('Sorry, an error occurred while retrieving token.')
       console.log('An error occurred while retrieving token. ', err);
       if (Notification.permission === 'denied') {
         this.isNotificationsBlocked = true
         this.ChangeDetectorRef.markForCheck()
       }
     });
-
-    // Notification.requestPermission().then((res) => {
-    //   if (res === 'granted') {
-    //     this.isNotificationEnabled = true
-
-    //     // 
-
-
-    //     this.ChangeDetectorRef.markForCheck()
-    //   }
-    // })
     this.nextStep = true
   }
 
