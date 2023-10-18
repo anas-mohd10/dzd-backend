@@ -22,140 +22,138 @@
     </div>
   </div>
 
-  <div class="row mt-10">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="adminForm">
-            <div class="row">
+  <div class="row mt-4">
+    <div class="card">
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" [formGroup]="adminForm">
+          <div class="row">
 
-              <div class="col-12">
-                <h5 class="form-title fs-4">Admin User Details</h5>
-              </div>
+            <div class="col-12">
+              <h5 class="form-title fs-4">Admin User Details</h5>
+            </div>
 
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> First name</label>
-                  <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> First name</label>
+                <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
                     'is-invalid':
                     (af.firstname.touched || isSubmitted) &&
                     af.firstname.errors?.required
                   }" />
-                </div>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3"> Last name</label>
-                  <input type="text" class="form-control fs-6" formControlName="lastname" />
-                </div>
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3"> Last name</label>
+                <input type="text" class="form-control fs-6" formControlName="lastname" />
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Email</label>
-                  <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> Email</label>
+                <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
                     'is-invalid':
                     (af.email.touched || isSubmitted) &&
                     af.email.errors?.required
                   }" (change)="checkEmail($event.target)" />
-                </div>
-
-                <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="af.email.errors?.pattern">
-                  Please, enter valid email address
-                </div>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Mobile No.</label>
-                  <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+
+              <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="af.email.errors?.pattern">
+                Please, enter valid email address
+              </div>
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> Mobile No.</label>
+                <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
                     'is-invalid':
                     (af.mobile.touched || isSubmitted) &&
                     af.mobile.errors?.required
                   }" />
-                </div>
-
-                <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="af.mobile.errors?.pattern">
-                  Please, enter valid mobile number
-                </div>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Username</label>
-                  <input type="text" class="form-control fs-6" formControlName="username" [ngClass]="{
+
+              <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="af.mobile.errors?.pattern">
+                Please, enter valid mobile number
+              </div>
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> Username</label>
+                <input type="text" class="form-control fs-6" formControlName="username" [ngClass]="{
                     'is-invalid':
                     (af.username.touched || isSubmitted) &&
                     af.username.errors?.required
                   }" />
-                </div>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Role</label>
-                  <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role" [ngClass]="{
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Role</label>
+                <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role" [ngClass]="{
                   'is-invalid':
                   (af.role.touched || isSubmitted) &&
                   af.role.errors?.required
                 }">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let role of rolesData" value="{{ role?._id }}">
-                      {{ role?.name }}
-                    </option>
-                  </select>
-                </div>
+                  <option value="" disabled>-- Select an option --</option>
+                  <option *ngFor="let role of rolesData" value="{{ role?._id }}">
+                    {{ role?.name }}
+                  </option>
+                </select>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Password</label>
-                  <input type="password" class="form-control fs-6" formControlName="firstPwd" [ngClass]="{
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Password</label>
+                <input type="password" class="form-control fs-6" formControlName="firstPwd" [ngClass]="{
                     'is-invalid':
                     (af.firstPwd.touched || isSubmitted) &&
                     af.firstPwd.errors?.required
                   }" />
-                </div>
               </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Confirm Password</label>
-                  <input type="password" class="form-control fs-6" formControlName="password" [ngClass]="{
+            </div>
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Confirm Password</label>
+                <input type="password" class="form-control fs-6" formControlName="password" [ngClass]="{
                     'is-invalid':
                     (af.password.touched || isSubmitted) &&
                     af.password.errors?.required
                   }" />
-                </div>
-              </div>
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Status</label>
-                  <select class="form-select fs-6 mb-3" formControlName="isActive">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option value="false">Inactive</option>
-                    <option value="true">Active</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Delete Admin?</label>
-                  <select class="form-select fs-6 mb-3" formControlName="isDelete">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary btn-sm fs-6 text-dark"
-                  style="width: 200px; margin-right: 20px;">
-                  Cancel
-                </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                  Update
-                </button>
               </div>
             </div>
-          </form>
-        </div>
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Status</label>
+                <select class="form-select fs-6 mb-3" formControlName="isActive">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">Inactive</option>
+                  <option value="true">Active</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Delete Admin?</label>
+                <select class="form-select fs-6 mb-3" formControlName="isDelete">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 d-flex align-items-center justify-content-end">
+              <a routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary btn-sm fs-6 text-dark"
+                style="width: 200px; margin-right: 20px;">
+                Cancel
+              </a>
+              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

@@ -20,6 +20,7 @@ export class AdminUsersService {
     return this.http.get(`${url}`)
   }
 
+
   getAdminUserByMail(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_count);
     return this.http.post(`${url}`, data)
@@ -51,7 +52,7 @@ export class AdminUsersService {
   }
 
   subscribeAdmin(data: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.subscribe_admin);
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.subscribeAdmin);
     return this.http.post(`${url}`, data)
   }
 

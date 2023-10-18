@@ -7,7 +7,7 @@ import { environment } from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
-
+// localStorage.setItem('is_logged_in', 'true');
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));

@@ -3,13 +3,13 @@ export const environment = {
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  apiUrl: 'https://ccapi.previewbay.com/api/v1/w/admin/auth',
-  baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
-  appBaserl: 'https://ccapi.previewbay.com/api/v1/a/',
+  // apiUrl: 'https://ccapi.previewbay.com/api/v1/w/admin/auth',
+  // baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
+  // appBaserl: 'https://ccapi.previewbay.com/api/v1/a/',
   base: 'https://ccapi.previewbay.com',
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // appBaserl: 'http://localhost:3000/api/v1/a/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   // base: 'http://localhost:3000',
   loginUrl: 'api',
   
@@ -21,6 +21,7 @@ export const environment = {
     messagingSenderId: "392497910088",
     appId: "1:392497910088:web:ecdd2acbbe577c6265637d",
     measurementId: "G-H0K55ZER4E"
-  }
+  },
+  vapidKey: 'BGBVeTQBGpLoGMFZAXq4E6t5v_PBAgkv50sZBB6gYd9GbNu_9nfmQQq7V65T6Yy0Bh9LlH9JRZ3wmiK1nlHPgvc'
 };
 

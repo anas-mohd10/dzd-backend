@@ -98,6 +98,7 @@
                 <option value="UNPAID">Unpaid</option>
                 <option value="REJECTED">Rejected</option>
                 <option value="PAID">Paid</option>
+                <option value="PENDING">Pending</option>
               </select>
             </div>
             <div class="search-featured col-sm-2">
@@ -142,8 +143,10 @@
                   <td>{{order?.source}}</td>
                   <td>{{order?.paymentMethod}}</td>
                   <td>
-                    <span class="paid fs-6" [ngClass]="{'unpaid': order?.paymentStatus == 'UNPAID'}">
-                      {{order?.paymentStatus == 'PAID' ? 'Paid' : 'Pending'}}
+                    <span class="paid fs-6"
+                      [ngClass]="{'unpaid': order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'CANCELLED'}">
+                      {{order?.paymentStatus == 'PAID' ? 'Paid' : order?.paymentStatus == 'CANCELLED' ? 'Cancelled' :
+                      'Pending'}}
                     </span>
                   </td>
                   <td routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img

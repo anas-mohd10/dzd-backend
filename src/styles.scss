@@ -151,11 +151,6 @@ ngx-star-rating.ng-untouched.ng-pristine.ng-valid {
 }
 
 .angular-editor-textarea {
-  height: 200px !important;
-  min-height: 200px !important;
-}
-
-.angular-editor-textarea {
   &:focus {
     border: 1px solid #dddddd !important;
     outline: none !important;

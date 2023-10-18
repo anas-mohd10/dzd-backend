@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { getMessaging, getToken } from '@angular/fire/messaging'
 import { FirebaseApp } from '@angular/fire/app';
+import { environment } from 'src/environments/environment';
+import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 
 @Component({
   selector: 'app-notification-permission',
@@ -13,12 +15,14 @@ export class NotificationPermissionComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private fbApp: FirebaseApp
+    private fbApp: FirebaseApp,
+    private AdminUsersService: AdminUsersService
   ) { }
 
   isNotificationEnabled = false;
-  nextStep = false
-  disablePrompt: boolean = false
+  nextStep = false;
+  disablePrompt: boolean = false;
+  isNotificationsBlocked: boolean = false;
 
   ngOnInit(): void {
     if (localStorage.getItem('notification_prompt') === 'false') {
@@ -31,29 +35,24 @@ export class NotificationPermissionComponent implements OnInit {
   }
 
   allowPrompt() {
+    this.nextStep = true
     let messaging = getMessaging(this.fbApp);
-    getToken(messaging, { vapidKey: 'BGBVeTQBGpLoGMFZAXq4E6t5v_PBAgkv50sZBB6gYd9GbNu_9nfmQQq7V65T6Yy0Bh9LlH9JRZ3wmiK1nlHPgvc' }).then((currentToken) => {
-      console.log(currentToken)
+    getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
       this.disposePrompt()
       if (currentToken) {
-      } else {
+        this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
+          next: (res: any) => { }, error: (err: any) => { }
+        })
       }
     }).catch((err) => {
       this.disposePrompt()
-      alert('Sorry, an error occurred while retrieving token.')
       console.log('An error occurred while retrieving token. ', err);
+      if (Notification.permission === 'denied') {
+        this.isNotificationsBlocked = true
+        this.ChangeDetectorRef.markForCheck()
+      }
     });
-    // Notification.requestPermission().then((res) => {
-    //   if (res === 'granted') {
-    //     this.isNotificationEnabled = true
 
-    //     // 
-
-
-    //     this.ChangeDetectorRef.markForCheck()
-    //   }
-    // })
-    this.nextStep = true
   }
 
   disposePrompt() {

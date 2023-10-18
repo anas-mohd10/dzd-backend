@@ -55,7 +55,7 @@ export class AddUsersComponent implements OnInit {
   }
 
   getRoles() {
-    this.roleService.getRoles().subscribe((res: any) => {
+    this.roleService.getActiveRoles().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.rolesData = res?.result
         this.ChangeDetectorRef.markForCheck()
