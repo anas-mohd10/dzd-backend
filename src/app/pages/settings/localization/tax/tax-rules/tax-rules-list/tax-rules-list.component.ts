@@ -1,8 +1,9 @@
-import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
-import { appRoutes } from 'src/app/config/routes';
-import { DataTableDirective } from 'angular-datatables';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
-import { Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { appRoutes } from 'src/app/config/routes/app.routes';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-tax-rules',
@@ -11,34 +12,69 @@ import { Subject } from 'rxjs';
 })
 
 export class TaxRulesComponent implements OnInit {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
+  limit: FormControl = new FormControl(40);
+  page: number = 1
+  rules: Array<any> = []
+  keyword: FormControl = new FormControl('')
+  isLastPage: boolean = true
+  appRoute = appRoutes
+  modalRef?: BsModalRef
+  ruleDetails: any = {}
 
-  appRoute = appRoutes;
-  taxRulesData: any;
-  displayTable: boolean;
-
-  constructor(private taxRulesService: TaxRulesService,
-    private cdr:ChangeDetectorRef) { }
+  constructor(
+    private TaxRulesService: TaxRulesService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService,
+    private BsModalService: BsModalService
+  ) { }
 
   ngOnInit(): void {
-    this.getTaxRules()
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 5,
-      processing: true,
-    };
+    this.getRules()
   }
 
-  getTaxRules() {
-    this.taxRulesService.getTaxRules().subscribe((res: any) => {
-      this.taxRulesData = res?.result;
-      this.cdr.markForCheck()
-      this.dtTrigger.next()
-      this.displayTable = true;
-    });
+  open(template: TemplateRef<any>, rule: any) {
+    this.ruleDetails = rule
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' })
+  }
+
+  confirm() {
+    this.TaxRulesService.deleteRule(this.ruleDetails.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getRules()
+          this.modalRef?.hide()
+          this.ToastrService.success(res.message);
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message);
+      }
+    })
+  }
+
+  navBack() {
+    this.page -= 1
+  }
+
+  navNext() {
+    this.page += 1
+  }
+
+  getRules() {
+    this.TaxRulesService.searchRules({ page: this.page, limit: this.limit.value, keyword: this.keyword.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.rules = res?.result?.data;
+          this.isLastPage = res?.result?.isLastPage;
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message);
+      }
+    })
   }
 }

@@ -7,32 +7,37 @@ import { taxClassesEndpoints } from '../../config/endpoints';
   providedIn: 'root',
 })
 export class TaxClassesService {
-taxClassesEndpoints = taxClassesEndpoints;
+  taxClassesEndpoints = taxClassesEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(private http: HttpClient, private commonService: CommonService) { }
 
-  addTaxClasses(data: any) {
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.add_tax_classes);
+  addClass(data: any) {
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.addClass);
     return this.http.post(`${url}`, data);
   }
 
-  getTaxClasses(){
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.get_tax_classes);
+  getTaxClasses() {
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.getActiveClass);
     return this.http.get(`${url}`);
   }
 
-  getTaxClassesBySlug(slug: any){
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.get_tax_classes_by_slug + "/" + slug);
+  searchClass(data: any) {
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.searchClass);
+    return this.http.post(`${url}`, data);
+  }
+
+  getClassDetails(tax: any) {
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.getClassDetails + `/${tax}`);
     return this.http.get(`${url}`);
   }
 
-  getTaxRulesName(){
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.get_tax_rules_name);
-    return this.http.get(`${url}`);
-  }
-
-  updateTaxClasses(slug: any, data: any){
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.update_tax_classes + "?slug=" + slug);
+  updateClass(data: any) {
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.updateClass);
     return this.http.put(`${url}`, data);
+  }
+
+  deleteClass(tax: any) {
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.deleteClass + `/${tax}`);
+    return this.http.delete(`${url}`);
   }
 }

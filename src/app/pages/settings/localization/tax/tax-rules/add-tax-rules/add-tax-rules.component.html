@@ -2,7 +2,7 @@
   <!-- Page Header -->
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update tax rules" : "Add tax rules" }}</h1>
+      <h1 class="fw-bolder"> {{ editMode ? "Update tax rule" : "Add tax rule" }}</h1>
     </div>
     <div class="row align-items-center">
       <div class="col">
@@ -14,79 +14,60 @@
             <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST }}">Tax Rules</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.taxRules.ADD_TAX_RULES }}">{{
-              editMode ? "Update tax rules" : "Add tax rules"
-              }}</a>
+            <a routerLink="{{ appRoute.taxRules.ADD_TAX_RULES }}">
+              {{ editMode ? "Update tax rule" : "Add tax rule" }}
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <!-- /Page Header -->
-  <div class="row mt-10">
-    <div class="col-sm-12 fs-6">
-      <div class="card">
-        <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="taxRulesForm">
-            <div class="row">
-              <div class="col-12">
-                <h3 class="fw-bolder"><span>Tax Rules Details</span></h3>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
-                      'is-invalid':
-                      (tf.name.touched || isSubmitted) &&
-                      tf.name.errors?.required
-                    }" />
-                </div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Type</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                    formControlName="type">
-                    <option value="Normal" selected>Normal</option>
-                    <option value="Combine">Combine</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Rate</label>
-                  <div class="input-group">
-                    <span class="input-group-text">%</span>
-                    <input type="number" class="form-control fs-6" formControlName="rate" [ngClass]="{
-                      'is-invalid':
-                      (tf.rate.touched || isSubmitted) &&
-                      tf.rate.errors?.required
-                    }" />
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3">Status</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                    formControlName="isActive">
-                    <option value="true" selected>Active</option>
-                    <option value="false">Inactive</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 d-flex justify-content-end">
-                <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                  style="width: 200px; margin-right: 20px;">
-                  Cancel
-                </a>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                  Add
-                </button>
+
+  <div class="row mt-4">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="row">
+            <h2 class="fw-bolder">Rule Details</h2>
+
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> Name</label>
+                <input type="text" class="form-control fs-6" formControlName="name"
+                  [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
               </div>
             </div>
-          </form>
-        </div>
+
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> Rate</label>
+                <input type="text" class="form-control fs-6" formControlName="rate"
+                  [ngClass]="{'is-invalid': (formControls.rate.touched || isSubmitted) && formControls.rate.errors?.required }" />
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3">Status</label>
+                <select class="form-select mb-3 fs-6" formControlName="isActive">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="true">Enabled</option>
+                  <option value="false">Disabled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-end">
+              <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
+                style="width: 200px; margin-right: 20px;">
+                Cancel
+              </a>
+              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="add()">
+                Add
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

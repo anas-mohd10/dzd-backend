@@ -13,132 +13,73 @@ import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
   styleUrls: ['./add-tax-class.component.scss'],
 })
 export class AddTaxClassComponent implements OnInit {
-  taxClassForm: FormGroup;
-  task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  taxRuleNames: any;
-  rulesArray: any = [];
-  rulesName: any = [];
-  taxClassRate: any = 0
+  form: FormGroup;
+  task = PageTasks.ADD;
+  rules: Array<any> = []
+  ruleDetails: Array<any> = []
 
   constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private taxClassesService: TaxClassesService,
-    private toastr: ToastrService,
-    private cdr: ChangeDetectorRef,
-    private taxRulesService:TaxRulesService
+    private FormBuilder: FormBuilder,
+    private Router: Router,
+    private TaxClassesService: TaxClassesService,
+    private ToastrService: ToastrService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private TaxRulesService: TaxRulesService
   ) { }
 
-  get tf() {
-    return this.taxClassForm.controls;
+  get formControls() {
+    return this.form.controls;
   }
 
   ngOnInit(): void {
-    this.initForm();
-    this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.managePage();
-    this.getTaxRules();
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
-  initForm() {
-    this.taxClassForm = this.formBuilder.group({
+    this.form = this.FormBuilder.group({
       name: ['', Validators.required],
-      rule: [[], Validators.required],
       description: [''],
-      isActive: ['true', Validators.required],
+      rules: [[], Validators.required],
+      isActive: ['true'],
+    });
+
+    this.TaxRulesService.getActiveRules().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ruleDetails = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      } else {
+        this.ToastrService.error(res?.message)
+      }
     });
   }
 
-  getTaxRules() {
-    this.taxRulesService.getActiveTaxRules().subscribe(
-      (res: any) => {
-        this.taxRuleNames = res?.result;
-        this.cdr.markForCheck()
-        for (let i = 0; i < this.taxRuleNames.length; i++) {
-          this.taxClassForm.get('rules')?.setValue(this.taxRuleNames[i].name);
-        }
-      },
-      (error) => console.log(error)
-    );
+  selectRule(event: any) {
+    let rule = this.ruleDetails.filter((rule: any) => { if (rule._id == event.target.value) return rule })
+    !this.rules.includes(rule[0]) ? this.rules.push(rule[0]) : this.ToastrService.info('Rule already present')
+    this.form.get('rules')?.setValue(this.rules)
   }
 
-  tagRule() {
-    let rule = this.taxClassForm.get("rule")?.value
-    if (!this.rulesArray.includes(rule)) {
-      this.rulesArray.push(rule)
-      for (let i = 0; i < this.taxRuleNames.length; i++) {
-        if (this.taxRuleNames[i]._id == rule) {
-          this.rulesName.push(this.taxRuleNames[i].name)
-          this.taxClassRate = this.taxClassRate + this.taxRuleNames[i].rate
-        }
-      }
-    } else {
-      this.toastr.info("Tax rule already added")
-    }
+  removeRule(index: any) {
+    this.rules.splice(index, 1)
+    this.form.get('rules')?.setValue(this.rules)
   }
 
-  tagRemove(name: any) {
-    let index = this.rulesName.indexOf(name)
-    if (index > -1) {
-      this.rulesName.splice(index, 1);
-    }
-    for (let i = 0; i < this.taxRuleNames.length; i++) {
-      if (this.taxRuleNames[i].name == name) {
-        let idIndex = this.rulesArray.indexOf(this.taxRuleNames[i]._id)
-        if (idIndex > -1) {
-          this.rulesArray.splice(idIndex, 1);
-        }
-        this.taxClassRate = this.taxClassRate - this.taxRuleNames[i].rate
-      }
-    }
-  }
-
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateBrand();
-    } else {
-      this.addBrand();
-    }
-  }
-
-  updateBrand() { }
-
-  addBrand() {
-    if (!this.taxClassForm.valid) {
+  add() {
+    if (!this.form.valid) {
+      this.isSubmitted = true
       return;
     }
-    let data = {
-      name: this.taxClassForm.get("name")?.value,
-      description: this.taxClassForm.get("description")?.value,
-      isActive: this.taxClassForm.get("isActive")?.value,
-      rule: JSON.stringify(this.rulesArray),
-      rate: this.taxClassRate
-    }
-    this.taxClassesService.addTaxClasses(data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something Went Wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Tax Class Added Successfully');
-        this.router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
+
+    this.TaxClassesService.addClass(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.Router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST])
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
       }
-    });
+    })
   }
 }

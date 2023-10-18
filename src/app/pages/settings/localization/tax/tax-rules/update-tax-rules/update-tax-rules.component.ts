@@ -12,99 +12,62 @@ import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
   styleUrls: ['./update-tax-rules.component.scss'],
 })
 export class UpdateTaxRulesComponent implements OnInit {
-  taxRulesForm: FormGroup;
+  form: FormGroup;
   task = PageTasks.UPDATE;
-  editMode = false;
+  editMode = true;
   appRoute = appRoutes;
   isSubmitted = false;
-  status: boolean;
-  formData: any = {};
-  taxRules: any;
-  taxRuleData: any;
+  ruleDetails: any;
+  rule: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private taxRulesService: TaxRulesService,
-    private toastr: ToastrService
+    private ActivatedRoute: ActivatedRoute,
+    private Router: Router,
+    private TaxRulesService: TaxRulesService,
+    private ToastrService: ToastrService
   ) { }
 
-  get tf() {
-    return this.taxRulesForm.controls;
+  get formControls() {
+    return this.form.controls;
   }
 
   ngOnInit(): void {
-    this.initForm();
-    this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.taxRules = this.route.snapshot.queryParams.taxRules || ''
-    this.managePage();
-    this.getTaxRules()
-  }
-
-  initForm() {
-    this.taxRulesForm = this.formBuilder.group({
-      name: [''],
-      rate: [''],
-      type: [''],
-      isActive: [''],
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required],
+      rate: ['', Validators.required],
+      isActive: ['true'],
     });
-  }
 
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
+    this.rule = this.ActivatedRoute.snapshot.queryParams.tax || ''
 
-  getTaxRules() {
-    this.taxRulesService.getTaxRulesBySlug(this.taxRules).subscribe((res: any) => {
-      this.taxRuleData = res?.result[0]
-      this.taxRulesForm.get("name")?.setValue(this.taxRuleData?.name)
-      this.taxRulesForm.get("type")?.setValue(this.taxRuleData?.type)
-      this.taxRulesForm.get("rate")?.setValue(this.taxRuleData?.rate)
-      this.taxRulesForm.get("isActive")?.setValue(this.taxRuleData?.isActive)
+    this.TaxRulesService.getRuleDetails(this.rule).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ruleDetails = res?.result
+        for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+      } else {
+        this.ToastrService.error(res.message);
+      }
     })
   }
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateBrand();
-    } else {
-      this.addBrand();
-    }
-  }
-
-  //Update exsisting tax rules
-  updateBrand() {
-    if (!this.taxRulesForm.valid) {
+  update() {
+    if (!this.form.valid) {
+      this.isSubmitted = true
       return;
     }
 
-    for (const data of Object.keys(this.taxRulesForm.value)) {
-      if (this.taxRulesForm.value[data] != '' || null) {
-        this.formData[data] = this.taxRulesForm.value[data];
-      }
-    }
-
-    this.taxRulesService.updateTaxRules(this.taxRules, this.formData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.taxRules.TAX_RULES_LIST]);
+    this.TaxRulesService.updateRule({ ...this.form.value, slug: this.rule }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res.message);
+          this.Router.navigate([this.appRoute.taxRules.TAX_RULES_LIST]);
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message);
       }
     });
   }
-
-  //Add tax rules
-  addBrand() { }
 }

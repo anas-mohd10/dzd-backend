@@ -1,4 +1,4 @@
- import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { taxRulesEndpoints } from '../../config/endpoints';
@@ -7,32 +7,45 @@ import { taxRulesEndpoints } from '../../config/endpoints';
   providedIn: 'root',
 })
 export class TaxRulesService {
-    taxRulesEndpoints = taxRulesEndpoints;
+  taxRulesEndpoints = taxRulesEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) {}
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
-  addTaxRules(data: any) {
-    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.add_tax_rules);
+  addRule(data: any) {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.addRule);
     return this.http.post(`${url}`, data);
   }
 
-  getTaxRules(){
-    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.get_tax_rules);
+  getRules() {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.getRules);
     return this.http.get(`${url}`);
   }
 
-  getActiveTaxRules(){
-    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.get_active_tax_rules);
+  searchRules(data: any) {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.searchRules);
+    return this.http.post(`${url}`, data);
+  }
+
+  getActiveRules() {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.activeTaxRules);
     return this.http.get(`${url}`);
   }
 
-  getTaxRulesBySlug(slug: any){
-    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.get_tax_rules_by_slug + "?slug=" + slug);
+  getRuleDetails(tax: any) {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.getRuleDetails + `/${tax}`);
     return this.http.get(`${url}`);
   }
 
-  updateTaxRules(slug: any, data: any){
-    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.update_tax_rules + "?slug=" + slug);
+  updateRule(data: any) {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.updateRule);
     return this.http.put(`${url}`, data);
+  }
+
+  deleteRule(tax: any) {
+    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.deleteRule + `/${tax}`);
+    return this.http.delete(`${url}`);
   }
 }

@@ -1,8 +1,9 @@
-import { ChangeDetectorRef,Component, OnInit, ViewChild } from '@angular/core';
-import { appRoutes } from 'src/app/config/routes';
-import { DataTableDirective } from 'angular-datatables';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
-import { Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { appRoutes } from 'src/app/config/routes';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-tax-class',
@@ -10,38 +11,69 @@ import { Subject } from 'rxjs';
   styleUrls: ['./tax-class-list.component.scss'],
 })
 export class TaxClassComponent implements OnInit {
-  @ViewChild(DataTableDirective, { static: true })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
+  classDetails: Array<any> = []
+  keyword: FormControl = new FormControl('')
+  limit: FormControl = new FormControl(10)
+  isLastPage: boolean = true
+  page: number = 1
+  appRoute = appRoutes
+  modalRef?: BsModalRef
+  class: any = {}
 
-  appRoute = appRoutes;
-  taxClassData: any;
-  displayTable: boolean;
-
-  constructor(private taxClassService: TaxClassesService,
-    private cdr: ChangeDetectorRef) { }
+  constructor(
+    private TaxClassesService: TaxClassesService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService,
+    private BsModalService: BsModalService
+  ) { }
 
   ngOnInit(): void {
-    this.getTaxClasses()
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      lengthMenu: [5, 10, 15],
-      pageLength: 5,
-      processing: true,
-    };
+    this.getClass()
   }
 
-  getTaxClasses() {
-    this.taxClassService.getTaxClasses().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.taxClassData = res?.result;
-          this.cdr.markForCheck()
-          break;
+  open(template: TemplateRef<any>, classItem: any) {
+    this.class = classItem
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' })
+  }
+
+  confirm() {
+    this.TaxClassesService.deleteClass(this.class?.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getClass()
+          this.modalRef?.hide()
+          this.ToastrService.success(res.message);
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message);
       }
-      // this.dtTrigger.next()
-      this.displayTable = true;
-    });
+    })
+  }
+
+  navBack() {
+    this.page -= 1
+  }
+
+  navNext() {
+    this.page += 1
+  }
+
+  getClass() {
+    this.TaxClassesService.searchClass({ keyword: this.keyword.value, limit: this.limit.value, page: this.page }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.classDetails = res?.result?.data;
+          this.isLastPage = res?.result?.isLastPage;
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
   }
 }

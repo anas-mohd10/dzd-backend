@@ -2,3 +2,22 @@ label,
 .btn-secondary {
     font-weight: normal !important;
 }
+
+.rules {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    .rule {
+        background: #1a1d27;
+        color: #ffffff;
+
+        .name {
+            overflow: hidden;
+        }
+
+        .remove {
+            cursor: pointer;
+        }
+    }
+}
