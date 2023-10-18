@@ -3,28 +3,16 @@ export const environment = {
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-
-  //Internal
-  // apiUrl: 'https://ccapi-2.previewbay.com/api/v1/w/admin/auth',
-  // baseUrl: 'https://ccapi-2.previewbay.com/api/v1/w/',
-  // appBaserl: 'https://ccapi-2.previewbay.com/api/v1/a/',
-  // base: 'https://ccapi-2.previewbay.com',
-  //Internal
-
-  //Dev
   // apiUrl: 'https://ccapi.previewbay.com/api/v1/w/admin/auth',
   // baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
   // appBaserl: 'https://ccapi.previewbay.com/api/v1/a/',
-  // base: 'https://ccapi.previewbay.com',
-  //Dev
-
-  //Local
+  base: 'https://ccapi.previewbay.com',
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'http://localhost:3000/api/v1/w/',
   appBaserl: 'http://localhost:3000/api/v1/a/',
-  base: 'http://localhost:3000',
-  //Local
+  // base: 'http://localhost:3000',
   loginUrl: 'api',
+  
   firebaseConfig: {
     apiKey: "AIzaSyCzj_q9s6UhfZ-mYSAfRdRWWlI47mOinuE",
     authDomain: "commerce-castle-app.firebaseapp.com",
