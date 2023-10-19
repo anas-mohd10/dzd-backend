@@ -167,7 +167,7 @@
               <div class="accordionBody">
                 <ng-container *ngFor="let visibleItem of visibleFilters">
                   <div class="accordionItem" (click)="addFilters(visibleItem?.label, visibleItem?.value)">
-                    <div class="checkbox" [ngClass]="{'checked': sort.value == visibleItem?.value}"></div>
+                    <div class="checkbox" [ngClass]="{'checked': isVisible.value == visibleItem?.value}"></div>
                     <div class="accordionName">{{visibleItem?.key}}</div>
                   </div>
                 </ng-container>
