@@ -1,7 +1,5 @@
 <div class="loginContainer">
   <div class="loginLeft">
-    <!-- <div class="loginLeftTitle">Ecommerce, so what!</div>
-    <div class="loginLeftSubTitle">Login to access the dashboard</div> -->
     <div class="login_img">
       <img src="../../../assets/images/LoginImg.png" alt="">
     </div>
@@ -13,8 +11,8 @@
     <form class="form w-100" [formGroup]="loginForm" novalidate="novalidate" id="kt_login_signin_form"
       (ngSubmit)="submit()">
       <div class="fv-row mb-5">
-        <label  class="login_label" for="">
-          Email 
+        <label class="login_label" for="">
+          Email
         </label>
         <input class="form-control fs-6" placeholder="Email address" type="email" formControlName="email"
           autocomplete="off" [ngClass]="{
@@ -25,7 +23,7 @@
       </div>
       <div class="fv-row mb-5">
         <label class="login_label" for="">
-          Password 
+          Password
         </label>
         <input class="form-control fs-6" placeholder="Password" type="password" autocomplete="off"
           formControlName="password" [ngClass]="{
@@ -33,7 +31,7 @@
           (af.password.touched || isSubmitted) &&
           af.password.errors?.required
         }" />
-        <a class="forgot" href="">
+        <a class="forgot" (click)="forgotPassword(template)">
           Forgot Password?
         </a>
       </div>
@@ -46,3 +44,24 @@
     </form>
   </div>
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Forgot Password</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="email" class="fs-6 form-label">Email</label>
+      <input type="text" name="email" id="email" [formControl]="email" class="form-control"
+        placeholder="Enter your email address" [ngClass]="{
+          'is-invalid': (email.touched || isValidated) && email.errors?.['required']}">
+    </div>
+    <div class="mt-3 d-flex align-items-center justify-content-end">
+      <button class="btn btn-secondary me-2" (click)="modalRef?.hide()">Cancel</button>
+      <button class="btn btn-primary" (click)="confirm()">Continue</button>
+    </div>
+  </div>
+</ng-template>

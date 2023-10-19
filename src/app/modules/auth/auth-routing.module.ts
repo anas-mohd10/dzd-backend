@@ -3,25 +3,29 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthComponent } from './auth.component';
 import { LoginComponent } from './components/login/login.component';
 import { LoggedInGuard } from 'src/app/core/auth/logged.in.guard';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {
     path: '',
     component: AuthComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full',
-      },
-      {
-        path: 'login',
-        component: LoginComponent,
-        data: { returnUrl: window.location.pathname },
-        canActivate: [LoggedInGuard]
-      },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: '**', redirectTo: 'login', pathMatch: 'full' },
+    children: [{
+      path: '',
+      redirectTo: 'login',
+      pathMatch: 'full',
+    }, {
+      path: 'login',
+      component: LoginComponent,
+      data: { returnUrl: window.location.pathname },
+      canActivate: [LoggedInGuard]
+    }, {
+      path: 'forgot-password/:token',
+      component: ForgotPasswordComponent,
+      data: { returnUrl: window.location.pathname },
+      canActivate: [LoggedInGuard]
+    },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '**', redirectTo: 'login', pathMatch: 'full' },
     ],
   },
 ];

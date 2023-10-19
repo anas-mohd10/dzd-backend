@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="row search d-flex align-items-end justify-content-end">
+    <!-- <div class="row search d-flex align-items-end justify-content-end">
         <div class="col-3">
             <label class="fs-6 mb-1">&nbsp;</label>
             <input type="text" class="form-control fs-6 text-dark" [formControl]="keyword"
@@ -35,13 +35,13 @@
             <label class="fs-6 mb-1">&nbsp;</label>
             <input type="button" class="btn btn-secondary" value="Clear filters" (click)="reset()">
         </div>
-    </div>
+    </div> -->
 
     <div class="resultsContainer">
         <ng-container *ngFor="let enquiry of enquires">
             <div class="enquiryCard">
                 <div class="editButton" data-bs-toggle="modal" data-bs-target="#enquiry" (click)="getEnquiry(enquiry)">
-                    <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                    <img src="../../../../../assets/icons/view.svg" alt="Icon">
                 </div>
                 <div class="name">
                     <img src="../../../../assets/icons/user.svg" alt="Icon">

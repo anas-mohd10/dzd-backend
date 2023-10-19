@@ -41,7 +41,6 @@ export class AddCustomersComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       countryCode: ['', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
-      walletBalance: [''],
       isActive: ['true', Validators.required],
     });
   }

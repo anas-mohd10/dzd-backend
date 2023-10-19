@@ -66,29 +66,29 @@ export class OrdersListComponent implements OnInit {
     status: 'Accepted',
     value: 'ACCEPTED'
   }, {
+    status: 'Packed',
+    value: 'PACKED'
+  }, {
+    status: 'Shipped',
+    value: 'SHIPPED'
+  }, {
+    status: 'Out for Delivery',
+    value: 'OUT FOR DELIVERY'
+  }, {
+    status: 'Delivered',
+    value: 'DELIVERED'
+  }, {
     status: 'Pending',
     value: 'PENDING'
   }, {
     status: 'Partial Processed',
     value: 'PARTIAL PROCESSED'
   }, {
-    status: 'Shipped',
-    value: 'SHIPPED'
-  }, {
-    status: 'Delivered',
-    value: 'DELIVERED'
-  }, {
-    status: 'Out for Delivery',
-    value: 'OUT FOR DELIVERY'
-  }, {
     status: 'Failed',
     value: 'FAILED'
   }, {
     status: 'Cancelled',
     value: 'CANCELLED'
-  }, {
-    status: 'Packed',
-    value: 'PACKED'
   },]
   lastPage: Boolean = false
   type: any = null

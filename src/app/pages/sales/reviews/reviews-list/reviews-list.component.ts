@@ -18,7 +18,7 @@ export class ReviewsListComponent implements OnInit {
   isActive: FormControl = new FormControl('')
   fromDate: FormControl = new FormControl('')
   toDate: FormControl = new FormControl('')
-  lastPage: Boolean = false
+  isLastPage: Boolean = false
   review: FormControl = new FormControl('')
   data: any = {}
   rating: FormControl = new FormControl('')
@@ -74,20 +74,19 @@ export class ReviewsListComponent implements OnInit {
           data.created = new Date(data?.created).toDateString()
           if (data.isActive) this.review.setValue(data?.refid)
         }
-        this.page = res?.result?.page
-        this.lastPage = res?.result?.lastPage
+        this.isLastPage = res?.result?.isLastPage
         this.ChangeDetectorRef.markForCheck()
       }
     })
   }
 
   getPreviousPage() {
-    this.page -= this.page
+    this.page -= 1
     this.getReviews()
   }
 
   getNextPage() {
-    this.page += this.page
+    this.page += 1
     this.getReviews()
   }
 

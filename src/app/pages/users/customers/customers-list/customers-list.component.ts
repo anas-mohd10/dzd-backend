@@ -15,7 +15,7 @@ export class CustomersListComponent implements OnInit {
   appRoute = appRoutes;
   customersData: any;
   customersCount: any;
-
+  totalCustomers: string = ''
   customers: Array<any> = []
   lastPage: Boolean = false
   limit: FormControl = new FormControl('20');
@@ -63,6 +63,7 @@ export class CustomersListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.customers = res?.result?.data
         this.page = res?.result?.page
+        this.totalCustomers = res?.result?.totalCustomers
         this.lastPage = res?.result?.lastPage
         this.cdr.markForCheck()
       }

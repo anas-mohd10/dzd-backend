@@ -1,6 +1,6 @@
 <div class="card card-custom" [ngClass]="cssClass">
   <div class="view_allOrders">
-    <a href="">
+    <a routerLink="{{appRoutes.orders.ORDERS_LIST}}">
       View all orders
     </a>
   </div>
@@ -32,11 +32,12 @@
                 <td>{{order?.source}}</td>
                 <td>{{order?.paymentMethod}}</td>
                 <td>
-                  <span class="paid fs-6" [ngClass]="{'unpaid': order?.paymentStatus == 'UNPAID'}">
+                  <span class="paid fs-6"
+                    [ngClass]="{'unpaid': (order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING')}">
                     {{order?.paymentStatus == 'PAID' ? 'Paid' : 'Pending'}}
                   </span>
                 </td>
-                <td routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.refid}"> <img
+                <td routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img
                     src="../../../../../../../assets/icons/Edit2.svg" alt="Icon"></td>
               </tr>
             </ng-container>

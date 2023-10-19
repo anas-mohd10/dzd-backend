@@ -56,8 +56,18 @@ export class AdminUsersService {
     return this.http.post(`${url}`, data)
   }
 
-  resetPassword(data: any) {
+  resetAdminPassword(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.reset_admin_password);
+    return this.http.post(`${url}`, data)
+  }
+
+  forgotPassword(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.forgotPassword);
+    return this.http.post(`${url}`, data)
+  }
+
+  resetPassword(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.resetPassword);
     return this.http.post(`${url}`, data)
   }
 }

@@ -84,21 +84,6 @@
 
                      <div class="col-6">
                         <div class="form-group mb-3">
-                           <label class="fs-6 mb-3">Wallet Balance</label>
-                           <div class="input-group mb-3">
-                              <span class="input-group-text">Rs.</span>
-                              <input type="number" class="form-control" formControlName="walletBalance" [ngClass]="{
-                              'is-invalid':
-                              (cf.walletBalance.touched || isSubmitted) &&
-                              cf.walletBalance.errors?.required
-                            }">
-                              <span class="input-group-text">.00</span>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
                            <label class="fs-6 mb-3">Active Customer?</label>
                            <select class="form-select form-select-lg" aria-label=".form-select-lg"
                               formControlName="isActive">

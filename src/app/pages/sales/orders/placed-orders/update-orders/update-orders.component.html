@@ -330,9 +330,9 @@
             <table class="mt-4 table table-vertical-center table-borderless productsTable">
               <thead>
                 <tr class="text-left mb-2 fs-6 text-gray-400">
-                  <th>
+                  <!-- <th>
                     <div class="statusCheckbox"></div>
-                  </th>
+                  </th> -->
                   <th style="min-width: 150px">Product</th>
                   <th style="max-width: 60px">Qty</th>
                   <th style="min-width: 100px">Price</th>
@@ -343,9 +343,9 @@
               <tbody class="fs-6 text-dark">
                 <ng-container *ngFor="let product of order?.products; let i =index">
                   <tr>
-                    <td>
+                    <!-- <td>
                       <div class="statusCheckbox"></div>
-                    </td>
+                    </td> -->
                     <td class="d-flex align-items-start justify-content-start">
                       <img class="me-2 productThumbnail" height="50px" width="50px"
                         src="{{base}}/{{product?.productId?.thumbnail}}" alt="Product">

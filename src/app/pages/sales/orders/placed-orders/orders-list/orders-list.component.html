@@ -144,7 +144,7 @@
                   <td>{{order?.paymentMethod}}</td>
                   <td>
                     <span class="paid fs-6"
-                      [ngClass]="{'unpaid': order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'CANCELLED'}">
+                      [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'CANCELLED'}">
                       {{order?.paymentStatus == 'PAID' ? 'Paid' : order?.paymentStatus == 'CANCELLED' ? 'Cancelled' :
                       'Pending'}}
                     </span>
@@ -166,7 +166,7 @@
 
           <div class="d-flex align-items-center justify-content-between" *ngIf="orders.length > 0">
             <div class="filtering">
-              <span class="fs-6 text-dark">Showing</span>
+              <span class="fs-6 text-dark">Show</span>
               <select [formControl]="limit" (change)="getOrders()">
                 <option value="5">5</option>
                 <option value="10">10</option>
@@ -174,7 +174,7 @@
                 <option value="20">20</option>
                 <option value="25">25</option>
               </select>
-              <span class="fs-6 text-dark">of 50</span>
+              <span class="fs-6 text-dark">entries</span>
             </div>
             <div class="pagination">
               <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
