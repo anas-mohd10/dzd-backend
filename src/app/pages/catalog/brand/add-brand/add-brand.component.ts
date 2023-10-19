@@ -202,6 +202,7 @@ export class AddBrandComponent implements OnInit {
   //Media starts
   removeCoverImage() {
     this.croppedBanner = ''
+    this.banner = ''
     this.bannerFilename = ''
   }
 

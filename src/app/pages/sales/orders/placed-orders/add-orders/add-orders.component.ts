@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
@@ -44,6 +45,17 @@ export class AddOrdersComponent implements OnInit {
   coupon: any = ''
   productids: any = []
 
+
+  customer: FormControl = new FormControl('')
+  customers: Array<any> = []
+  addressModalRef?: BsModalRef
+  manageAddressModalRef?: BsModalRef
+  addressDetails: Array<any> = []
+  address: any
+  customerDetails: any = {}
+  addressForm!: FormGroup
+  @ViewChild('addressModal') addressModal!: TemplateRef<any>;
+
   cart: any = []
   base: string;
   subTotal: any = 0
@@ -58,13 +70,14 @@ export class AddOrdersComponent implements OnInit {
     private customerService: CustomersService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
+    private ToastrService: ToastrService,
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private couponsService: CouponsService,
     private cdr: ChangeDetectorRef,
     private StoresService: StoresService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +103,23 @@ export class AddOrdersComponent implements OnInit {
 
     this.dates = this.getNextSevenDays();
     this.deliveryDate = this.dates[0]
+
+    this.addressForm = new FormGroup({
+      type: new FormControl('Home'),
+      firstlane: new FormControl('', Validators.required),
+      secondlane: new FormControl(''),
+      area: new FormControl(''),
+      city: new FormControl('', Validators.required),
+      pincode: new FormControl(''),
+      state: new FormControl('', Validators.required),
+      landmark: new FormControl('', Validators.required),
+      latitude: new FormControl(''),
+      longitude: new FormControl(''),
+    })
+  }
+
+  get addressControls() {
+    return this.addressForm.controls
   }
 
   getNextSevenDays() {
@@ -126,17 +156,7 @@ export class AddOrdersComponent implements OnInit {
   initForm() {
     this.orderForm = this.formBuilder.group({
       paymentMethod: ['', Validators.required],
-      type: ['', Validators.required],
-      firstlane: ['', Validators.required],
-      secondlane: [''],
-      area: [''],
-      city: ['', Validators.required],
-      pincode: ['', Validators.required],
-      state: ['', Validators.required],
       gst: [''],
-      landmark: ['', Validators.required],
-      lat: [''],
-      lng: [''],
       transactionId: [''],
       additionalCharge: [''],
       products: this.formBuilder.array([]),
@@ -182,24 +202,24 @@ export class AddOrdersComponent implements OnInit {
     })
   }
 
-  getAddress() {
-    this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
-    this.customerService.getDefaultAddress({ customer: this.selectedCustomer }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.orderForm.get('firstlane')?.setValue(res?.result?.firstlane)
-        this.orderForm.get('secondlane')?.setValue(res?.result?.secondlane)
-        this.orderForm.get('type')?.setValue(res?.result?.type)
-        this.orderForm.get('area')?.setValue(res?.result?.area)
-        this.orderForm.get('city')?.setValue(res?.result?.city)
-        this.orderForm.get('landmark')?.setValue(res?.result?.landmark)
-        this.orderForm.get('pincode')?.setValue(res?.result?.pincode)
-        this.orderForm.get('state')?.setValue(res?.result?.state)
-        this.orderForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
-        this.orderForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
-        this.cdr.markForCheck()
-      }
-    })
-  }
+  // getAddress() {
+  //   this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
+  //   this.customerService.getDefaultAddress({ customer: this.selectedCustomer }).subscribe((res: any) => {
+  //     if (res?.errorCode == 0) {
+  //       this.orderForm.get('firstlane')?.setValue(res?.result?.firstlane)
+  //       this.orderForm.get('secondlane')?.setValue(res?.result?.secondlane)
+  //       this.orderForm.get('type')?.setValue(res?.result?.type)
+  //       this.orderForm.get('area')?.setValue(res?.result?.area)
+  //       this.orderForm.get('city')?.setValue(res?.result?.city)
+  //       this.orderForm.get('landmark')?.setValue(res?.result?.landmark)
+  //       this.orderForm.get('pincode')?.setValue(res?.result?.pincode)
+  //       this.orderForm.get('state')?.setValue(res?.result?.state)
+  //       this.orderForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
+  //       this.orderForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
+  //       this.cdr.markForCheck()
+  //     }
+  //   })
+  // }
 
   checkPaymentmethod(event: any) {
     const method = this.orderForm.get('paymentMethod')?.value
@@ -242,7 +262,7 @@ export class AddOrdersComponent implements OnInit {
         this.cdr.markForCheck()
       })
     } else {
-      this.toastr.error('Add atleast one product to cart')
+      this.ToastrService.error('Add atleast one product to cart')
     }
   }
 
@@ -305,11 +325,119 @@ export class AddOrdersComponent implements OnInit {
     this.deliveryDate = date
   }
 
+
+  //Customer and address management
+  getCustomers() {
+    if (this.customer.value) {
+      this.customerService.searchCustomers({ keyword: this.customer.value, page: 1, limit: 100 }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.customers = res?.result?.data
+            this.cdr.markForCheck()
+          } else {
+            this.ToastrService.error(res.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err.message)
+        }
+      })
+    } else {
+      this.customers = []
+    }
+  }
+
+  getAddress(template: TemplateRef<any>, customer: any) {
+    this.customerDetails = customer
+    this.customer.setValue(customer?.name)
+    this.addressModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' })
+    this.customerService.getAddress({ userid: customer?.userid }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addressDetails = res?.result
+          this.cdr.markForCheck()
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
+  }
+
+  selectAddress(address: any) {
+    this.address = address
+    for (let _key of Object.keys(address)) this.orderForm.get(_key)?.setValue(address[_key])
+    this.addressModalRef?.hide()
+  }
+
+  openManage(template: TemplateRef<any>) {
+    this.manageAddressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
+    this.addressModalRef?.hide()
+  }
+
+  manageAddress() {
+    if (this.address) {
+      this.customerService.updateCustomerAddress({
+        refid: this.address?.refid,
+        ...this.addressForm.value,
+        coordinates: {
+          latitude: this.addressForm.get('latitude')?.value,
+          longitude: this.addressForm.get('longitude')?.value
+        }
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.address = res?.result
+            this.manageAddressModalRef?.hide()
+          } else {
+            this.ToastrService.error(res.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err.message)
+        }
+      })
+    } else {
+      this.customerService.addAddress({
+        ...this.addressForm.value,
+        customer: this.customerDetails?._id,
+        coordinates: {
+          latitude: this.addressForm.get('latitude')?.value,
+          longitude: this.addressForm.get('longitude')?.value
+        }
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.address = res?.result
+            this.manageAddressModalRef?.hide()
+            this.BsModalService.show(this.addressModal, { class: 'modal-dialog-centered' })
+            this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
+              next: (res: any) => {
+                if (res?.errorCode == 0) {
+                  this.addressDetails = res?.result
+                  this.cdr.markForCheck()
+                } else {
+                  this.ToastrService.error(res.message)
+                }
+              }, error: (err: any) => {
+                this.ToastrService.error(err.message)
+              }
+            })
+          } else {
+            this.ToastrService.error(res.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err.message)
+        }
+      })
+    }
+  }
+  //Customer and address management
+
   updateOrder() { }
 
   addOrder() {
     if (!this.orderForm.valid || !this.selectedCustomer) {
-      this.toastr.error('Kindly fill required fields');
+      this.ToastrService.error('Kindly fill required fields');
       this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
       return;
     }
@@ -349,27 +477,27 @@ export class AddOrdersComponent implements OnInit {
         if (this.deliveryTime && this.deliveryDate) {
           this.orderService.addOrder(payload).subscribe((res: any) => {
             if (res.errorCode != 0) {
-              this.toastr.error(res?.message);
+              this.ToastrService.error(res?.message);
             } else if (res.errorCode == 0) {
-              this.toastr.success(res?.message);
+              this.ToastrService.success(res?.message);
               this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
             }
           })
         } else {
-          this.toastr.error('Choose a time to collect');
+          this.ToastrService.error('Choose a time to collect');
         }
       } else {
         this.orderService.addOrder(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
+            this.ToastrService.error(res?.message);
           } else if (res.errorCode == 0) {
-            this.toastr.success(res?.message);
+            this.ToastrService.success(res?.message);
             this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
           }
         })
       }
     } else {
-      this.toastr.error('Add atleast one product to place the order');
+      this.ToastrService.error('Add atleast one product to place the order');
     }
   }
 }

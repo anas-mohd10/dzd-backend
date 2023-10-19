@@ -44,16 +44,16 @@ export class AddStoreComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
-      firstlane: new FormControl('', Validators.required),
+      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
+      firstlane: new FormControl(''),
       secondlane: new FormControl(''),
-      area: new FormControl('', Validators.required),
-      landmark: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
+      area: new FormControl(''),
+      landmark: new FormControl(''),
+      city: new FormControl(''),
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isClickPoint: new FormControl(false),
-      countryCode: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
+      countryCode: new FormControl('', Validators.required),
       isFeatured: new FormControl(false)
     })
   }
@@ -67,12 +67,16 @@ export class AddStoreComponent implements OnInit {
   }
 
   addDetails() {
+    console.log("clicked");
+
     if (!this.form.valid) {
       this.isValid = false
+
       return
     }
 
     const payload = this.createPayload()
+
     if (payload && this.slots.length > 0) {
       this.StoresService.add(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
