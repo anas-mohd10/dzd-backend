@@ -43,6 +43,7 @@ export class AllProductsComponent implements OnInit {
   name: FormControl = new FormControl('')
   limit: FormControl = new FormControl('20')
   isActive: FormControl = new FormControl('')
+  isVisible: FormControl = new FormControl('')
   isFeatured: FormControl = new FormControl('')
   stock: FormControl = new FormControl('')
   sort: FormControl = new FormControl('')
@@ -66,6 +67,11 @@ export class AllProductsComponent implements OnInit {
   sortFilters: Array<any> = [
     { key: 'Price : High to Low', value: '0', label: 'sort' },
     { key: 'Price : Low to High', value: '1', label: 'sort' }
+  ]
+
+  visibleFilters: Array<any> = [
+    { key: 'Visible products', value: '0', label: 'visibility' },
+    { key: 'Invisible products', value: '1', label: 'visibility' }
   ]
 
   constructor(
@@ -121,6 +127,7 @@ export class AllProductsComponent implements OnInit {
       name: this.name?.value,
       isActive: this.isActive?.value,
       isFeatured: this.isFeatured?.value,
+      isVisible: this.isVisible?.value,
       stock: this.stock?.value,
       sort: this.sort?.value,
       categories: this.categoryItems,
@@ -186,6 +193,9 @@ export class AllProductsComponent implements OnInit {
         break
       case 'status':
         this.isActive?.value != value ? this.isActive?.setValue(value) : this.isActive?.setValue('')
+        break
+      case 'visibility':
+        this.isVisible?.value != value ? this.isVisible?.setValue(value) : this.isVisible?.setValue('')
         break
       case 'sort':
         this.sort?.value != value ? this.sort?.setValue(value) : this.sort?.setValue('')

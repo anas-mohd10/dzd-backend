@@ -54,7 +54,7 @@ export class AddOrdersComponent implements OnInit {
   address: any
   customerDetails: any = {}
   addressForm!: FormGroup
-  @ViewChild('addressModal') addressModal!: TemplateRef<any>;
+  @ViewChild('addressRef') addressModal!: TemplateRef<any>;
 
   cart: any = []
   base: string;

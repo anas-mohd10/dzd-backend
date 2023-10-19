@@ -26,6 +26,7 @@
                     {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
                     {{orderDetails?.address?.pincode}}
                 </h4>
+                <p *ngIf="orderDetails?.gst">For : {{orderDetails?.gst}}</p>
             </div>
             <div>
                 <label>Shipped To :</label>

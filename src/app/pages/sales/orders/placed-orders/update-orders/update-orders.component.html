@@ -330,9 +330,6 @@
             <table class="mt-4 table table-vertical-center table-borderless productsTable">
               <thead>
                 <tr class="text-left mb-2 fs-6 text-gray-400">
-                  <!-- <th>
-                    <div class="statusCheckbox"></div>
-                  </th> -->
                   <th style="min-width: 150px">Product</th>
                   <th style="max-width: 60px">Qty</th>
                   <th style="min-width: 100px">Price</th>
@@ -343,9 +340,6 @@
               <tbody class="fs-6 text-dark">
                 <ng-container *ngFor="let product of order?.products; let i =index">
                   <tr>
-                    <!-- <td>
-                      <div class="statusCheckbox"></div>
-                    </td> -->
                     <td class="d-flex align-items-start justify-content-start">
                       <img class="me-2 productThumbnail" height="50px" width="50px"
                         src="{{base}}/{{product?.productId?.thumbnail}}" alt="Product">
@@ -371,104 +365,6 @@
               </tbody>
             </table>
           </div>
-
-          <!-- <div class="table-responsive">
-            <table class="table align-middle fs-6 gy-5 mb-0">
-              <thead>
-                <tr class="text-start text-gray-400 fw-bolder fs-6 gs-0">
-                  <th class="min-w-70px text-end">
-                    &nbsp;
-                  </th>
-                  <th class="min-w-200px">Product</th>
-                  <th class="min-w-150px text-end">Status</th>
-                  <th class="min-w-70px text-end">Qty</th>
-                  <th class="min-w-100px text-end">Unit Price</th>
-                  <th class="min-w-100px text-end">Total</th>
-                </tr>
-              </thead>
-              <tbody class="fw-bold text-gray-600">
-                <tr *ngFor="let product of order?.products">
-                  <td>
-                    <div class="form-check">
-                      <input class="form-check-input" value="{{product?.productId?._id}}" [formControl]="processProduct"
-                        type="checkbox" id="flexCheckDefault"
-                        (click)="processProducts('select', product?.productId?._id)">
-                      <label class="form-check-label" for="flexCheckDefault">&nbsp;</label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <a class="symbol symbol-50px">
-                        <img src="{{base}}/{{product?.productId?.thumbnail}}" alt="" srcset="">
-                      </a>
-                      <div class="ms-5">
-                        <a class="fw-bolder text-gray-600 text-hover-primary">{{product?.productId?.name}}</a>
-                        <p class="mb-2">SKU - {{product?.productId?.sku}}</p>
-                        <p>{{product.currentStatus.status}}, {{product.currentStatus.date}} </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="text-end">
-                    <select class="form-select fs-6" (click)="getStatusList(product.currentStatus.status)"
-                      (change)="updateOrderStatus($event, product?.productId?._id)">
-                      <option selected disabled>-- Select a status --</option>
-                      <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
-                    </select>
-                  </td>
-                  <td class="text-end">{{product?.quantity}}</td>
-                  <td class="text-end">{{product?.pricePerUnit}}</td>
-                  <td class="text-end">{{product?.total}}</td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="fs-4 fw-bolder text-dark text-end">Total</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.priceAfterTax}}</td>
-                </tr>
-                <tr>
-                  <td colspan="12" class="text-end">
-                    <div class="hrLine"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fs-3 text-dark fw-bolder">Items</td>
-                  <td class="text-end fs-3 text-dark fw-bolder">Amount</td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fw-bolder text-dark">Subtotal</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.priceBeforeTax}}</td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fw-bolder text-dark">Tax</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.tax}}</td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fw-bolder text-dark">Shipping Cost</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.shippingCost}}</td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fw-bolder text-dark">Cash On Delivery Cost</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.paymentMethod == 'ONLINE' ? 0 : order?.codCost}}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fw-bolder text-dark">Discount</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.discount}}</td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="text-end fw-bolder text-dark">Additional Charge</td>
-                  <td class="text-end">{{settings?.currency}} {{order?.additionalCharge}}</td>
-                </tr>
-                <tr>
-                  <td colspan="12" class="text-end">
-                    <div class="hrLine"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="fs-4 text-dark fw-bolder text-end">Grand Total</td>
-                  <td class="text-end fs-4 text-dark fw-bolder">{{settings?.currency}} {{order?.total}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
 
           <div class="historyWrapper mt-5">
             <h3 class="fs-3 text-dark fw-bolder">
