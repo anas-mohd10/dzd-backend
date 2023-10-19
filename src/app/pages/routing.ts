@@ -204,7 +204,7 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'subscribers',
+        path: 'user-alerts',
         component: SubscribersComponent,
         canActivate: [AuthenticationGuard]
       },

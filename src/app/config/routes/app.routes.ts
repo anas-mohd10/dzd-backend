@@ -256,7 +256,7 @@ export const appRoutes = {
   },
   navigation: `${app}/navigation`,
   subscribers: {
-    SUBSCRIBERS_LIST: `${app}/subscribers`,
+    SUBSCRIBERS_LIST: `${app}/user-alerts`,
   },
   shippingPolicy: `${app}/shipping-policy`,
   serviceWarranty: `${app}/service-warranty`,
