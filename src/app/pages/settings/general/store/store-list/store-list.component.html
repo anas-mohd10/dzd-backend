@@ -43,8 +43,8 @@
                             <img src="../../../../../../assets/icons/location.svg" alt="Icon">
                             <div class="storeValue">
                                 <div class="storeLabel fs-5">Address</div>
-                                <div>{{store?.address?.firstlane}}, {{store?.address?.secondlane}},
-                                    {{store?.address?.area}}, {{store?.address?.landmark}}</div>
+                                <div>{{store?.address?.firstlane ? store?.address?.firstlane : ''}} {{store?.address?.secondlane ? ', '+store?.address?.secondlane : ''}}
+                                    {{store?.address?.area ? ', '+store?.address?.area : ''}} {{store?.address?.landmark ? ', '+store?.address?.landmark : ''}}</div>
                             </div>
                         </div>
                         <div class="storeEmail">

@@ -7,6 +7,89 @@ $activeBackground: #00bdab20;
 $border: #E4E6EF;
 $grey: #888888;
 
+.btn-primary,
+.btn-secondary {
+  width: 200px;
+  font-weight: 400 !important;
+}
+
+.btn-link {
+  color: $grey !important;
+
+  &:hover {
+    color: $grey !important;
+  }
+}
+
+.customers {
+  max-height: 25rem;
+  height: 100%;
+  overflow-y: scroll;
+
+  .customerCard {
+    margin: 0 0 0.625rem 0;
+    cursor: pointer;
+
+    &:hover {
+      background: #00bdab15;
+    }
+
+    &.active {
+      background: #00bdab;
+      color: #ffffff;
+    }
+  }
+}
+
+.addressCard {
+  border: 1px solid #E4E6EF;
+  border-radius: 0.475rem;
+  position: relative;
+
+  .manageAddress {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #E4E6EF;
+    border-radius: 5px;
+    height: 30px;
+    width: 30px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .type {
+    background: #1a1d27;
+    color: #ffffff;
+    width: max-content;
+  }
+
+  &.active {
+    background: #00bdab15;
+    border: 1px solid #00bdab;
+  }
+}
+
+.modal-body {
+  .addressCard {
+    border: 1px solid #E4E6EF;
+    border-radius: 0.475rem;
+    cursor: pointer;
+
+    .type {
+      background: #1a1d27;
+      color: #ffffff;
+      width: max-content;
+    }
+
+    &.active {
+      background: #00bdab15;
+      border: 1px solid #00bdab;
+    }
+  }
+}
+
 .timeslots {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
