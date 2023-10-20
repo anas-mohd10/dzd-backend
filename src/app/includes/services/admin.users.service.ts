@@ -70,6 +70,11 @@ export class AdminUsersService {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.resetPassword);
     return this.http.post(`${url}`, data)
   }
+
+  resetToken(data: any){
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.resetToken);
+    return this.http.post(`${url}`, data)
+  }
 }
 
 

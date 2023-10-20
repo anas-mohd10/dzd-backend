@@ -92,8 +92,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.AdminUsersService.forgotPassword({ email: this.email.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          let token = res?.result?.token;
-          this.Router.navigate([`/auth/forgot-password/${token}`])
+          this.ToastrService.success(res?.message);
+          this.email.reset()
           this.modalRef?.hide()
         } else {
           this.ToastrService.error(res?.message);

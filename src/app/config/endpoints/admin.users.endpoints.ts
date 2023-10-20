@@ -11,5 +11,6 @@ export const adminUsersEndpoints = {
      reset_admin_password: '/reset-admin-password',
      subscribeAdmin: '/subscribe-admin',
      forgotPassword: '/forgot-password',
-     resetPassword: '/reset-password'
+     resetPassword: '/reset-password',
+     resetToken: '/reset-token'
 }
