@@ -7,9 +7,17 @@ $activeBackground: #00bdab20;
 $border: #E4E6EF;
 $grey: #888888;
 
-.btn-primary,
-.btn-secondary {
-  width: 200px;
+.modal-header {
+  border-bottom: none !important;
+}
+
+.btn-secondary,
+.btn-primary {
+  width: 180px;
+}
+
+.btn-secondary,
+label {
   font-weight: 400 !important;
 }
 
@@ -29,6 +37,7 @@ $grey: #888888;
   .customerCard {
     margin: 0 0 0.625rem 0;
     cursor: pointer;
+    font-size: 14px;
 
     &:hover {
       background: #00bdab15;
@@ -41,28 +50,81 @@ $grey: #888888;
   }
 }
 
+.cartWrapper {
+
+  .cartItemswrapper {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 20px;
+    margin: 2rem 0;
+
+    .cartItemWrapper {
+      width: calc(100% - 300px);
+    }
+
+    .summaryWrapper {
+      border-radius: 15px;
+      width: 280px;
+      height: 250px;
+      padding: 2rem 1rem;
+      border: 1px solid #E4E6EF;
+
+      .summary {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .cartItem {
+    margin: 0 0 25px 0;
+
+    .deleteProduct {
+      cursor: pointer;
+    }
+
+    .updateProduct {
+
+      .decrementQuantity,
+      .incrementQuantity {
+        height: 30px;
+        width: 30px;
+        background: #E4E6EF;
+        display: grid;
+        place-items: center;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.products {
+  max-height: 25rem;
+  height: 100%;
+  overflow-y: scroll;
+
+  .productCard {
+    border: 1px solid #E4E6EF;
+    border-radius: 0.475rem;
+    font-size: 14px;
+    margin: 0 0 0.625rem 0;
+  }
+}
+
 .addressCard {
   border: 1px solid #E4E6EF;
-  border-radius: 0.475rem;
+  border-radius: 10px;
   position: relative;
+  font-size: 14px;
+  min-height: 140px;
 
-  .manageAddress {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #E4E6EF;
-    border-radius: 5px;
-    height: 30px;
-    width: 30px;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
+  .addressHeader {
+    border-bottom: 1px solid #E4E6EF;
   }
 
   .type {
-    background: #1a1d27;
-    color: #ffffff;
-    width: max-content;
+    color: $primary;
+    font-weight: 700;
   }
 
   &.active {
@@ -72,20 +134,42 @@ $grey: #888888;
 }
 
 .modal-body {
-  .addressCard {
-    border: 1px solid #E4E6EF;
-    border-radius: 0.475rem;
-    cursor: pointer;
+  .addressWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    row-gap: 15px;
+    justify-content: space-between;
+    align-items: flex-start;
 
-    .type {
-      background: #1a1d27;
-      color: #ffffff;
-      width: max-content;
-    }
+    .addressCard {
+      border: 1px solid #E4E6EF;
+      border-radius: 10px;
+      cursor: pointer;
+      min-height: 140px;
+      width: calc(50% - 15px);
 
-    &.active {
-      background: #00bdab15;
-      border: 1px solid #00bdab;
+      .addAddress {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        height: 140px;
+        flex-direction: column;
+      }
+
+      .addressHeader {
+        border-bottom: 1px solid #E4E6EF;
+      }
+
+      .type {
+        color: $primary;
+        font-weight: 700;
+      }
+
+      &.active {
+        background: #00bdab15;
+        border: 1px solid #00bdab;
+      }
     }
   }
 }
@@ -155,10 +239,6 @@ $grey: #888888;
   .active {
     border: 1px solid $primary;
   }
-}
-
-label {
-  font-weight: normal !important;
 }
 
 .cart-items {

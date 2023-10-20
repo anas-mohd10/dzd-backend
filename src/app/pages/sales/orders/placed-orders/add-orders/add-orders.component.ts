@@ -55,15 +55,25 @@ export class AddOrdersComponent implements OnInit {
   customerDetails: any = {}
   addressForm!: FormGroup
   @ViewChild('addressRef') addressModal!: TemplateRef<any>;
+  productsModalRef?: BsModalRef
+  keyword: FormControl = new FormControl('')
+  products: Array<any> = []
+  base: string = environment.base
+  cartItems: any = []
+  addressMode: string = 'add'
+  cartSubtotal: number = 0
+  cartTotal: number = 0
+  cartDiscount: number = 0
 
   cart: any = []
-  base: string;
+
   subTotal: any = 0
   showTransactionId: boolean = false;
   store: FormControl = new FormControl('')
   deliveryTime: any = null;
   deliveryDate: any = null;
   settings: any = {}
+
 
   constructor(
     private orderService: OrdersService,
@@ -202,25 +212,6 @@ export class AddOrdersComponent implements OnInit {
     })
   }
 
-  // getAddress() {
-  //   this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
-  //   this.customerService.getDefaultAddress({ customer: this.selectedCustomer }).subscribe((res: any) => {
-  //     if (res?.errorCode == 0) {
-  //       this.orderForm.get('firstlane')?.setValue(res?.result?.firstlane)
-  //       this.orderForm.get('secondlane')?.setValue(res?.result?.secondlane)
-  //       this.orderForm.get('type')?.setValue(res?.result?.type)
-  //       this.orderForm.get('area')?.setValue(res?.result?.area)
-  //       this.orderForm.get('city')?.setValue(res?.result?.city)
-  //       this.orderForm.get('landmark')?.setValue(res?.result?.landmark)
-  //       this.orderForm.get('pincode')?.setValue(res?.result?.pincode)
-  //       this.orderForm.get('state')?.setValue(res?.result?.state)
-  //       this.orderForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
-  //       this.orderForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
-  //       this.cdr.markForCheck()
-  //     }
-  //   })
-  // }
-
   checkPaymentmethod(event: any) {
     const method = this.orderForm.get('paymentMethod')?.value
     if (method == 'ONLINE') {
@@ -231,39 +222,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   add() {
-    if (this.product) {
-      let cartLength = this.cart.length
-      this.productService.getProductById({ id: this.product }).subscribe((res: any) => {
-        let productData = res?.result[0]
-        let price = productData?.price
-        let total = (price?.mrp > price?.offer ? price?.offer : price?.mrp) * Number(this.quantity?.value)
-        this.cart.push({
-          productId: this.product,
-          quantity: this.quantity?.value,
-          name: productData?.name,
-          total: total,
-          refid: productData?.prodid,
-          id: this.cart.length,
-          image: productData?.thumbnail,
-          brand: productData?.product?.id?.brand?.name,
-          price: { mrp: productData?.price?.mrp, offer: productData?.price?.offer }
-        })
 
-        this.subTotal = this.subTotal + total
-        if (!this.productids.includes(this.product)) this.productids.push(this.product)
-        if (this.productids.length > 0) this.getCoupons(this.productids)
-        this.isProducts = true
-        document.querySelector('.added-to-cart')?.classList.add('show-added')
-        let newCartLength = this.cart.length
-        if (newCartLength > cartLength) this.product = null
-        setTimeout(() => {
-          document.querySelector('.added-to-cart')?.classList.remove('show-added')
-        }, 2000)
-        this.cdr.markForCheck()
-      })
-    } else {
-      this.ToastrService.error('Add atleast one product to cart')
-    }
   }
 
   getCoupons(data: any) {
@@ -325,6 +284,79 @@ export class AddOrdersComponent implements OnInit {
     this.deliveryDate = date
   }
 
+  //Products management
+  openProducts(template: TemplateRef<any>) {
+    this.productsModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
+  }
+
+  getProducts() {
+    if (this.keyword.value) {
+      this.productService.searchProducts({
+        page: 1, limit: 100,
+        name: this.keyword.value, 'isActive': 'true', isArchive: 'false'
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.products = res?.result?.data
+            this.cdr.markForCheck()
+          } else {
+            this.ToastrService.error(res.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err.message)
+        }
+      })
+    } else {
+      this.products = []
+    }
+  }
+
+  addToCart(product: any) {
+    let isExists: boolean = this.cartItems.some((item: any) => item?._id == product?._id)
+    if (isExists) {
+      this.ToastrService.error('Product already exists in the cart')
+    } else {
+      this.cartItems.push({ ...product, quantity: 1 })
+      this.cartSubtotal = this.cartSubtotal + product?.price?.selling
+      this.cartTotal = this.cartSubtotal - this.cartDiscount
+      this.productsModalRef?.hide()
+    }
+  }
+
+  updateQuantity(type: any, product: any) {
+    switch (type) {
+      case 'increment':
+        this.cartItems = this.cartItems.map((item: any) => {
+          if (item._id == product._id) {
+            this.cartSubtotal = this.cartSubtotal + product?.price?.selling
+            this.cartTotal = this.cartSubtotal - this.cartDiscount
+            this.ToastrService.success('Product quantity updated')
+            return { ...item, quantity: item.quantity + 1 }
+          } else {
+            return item
+          }
+        })
+        break
+      case 'decrement':
+        this.cartItems = this.cartItems.map((item: any) => {
+          if (item._id == product._id && item.quantity > 1) {
+            this.cartSubtotal = this.cartSubtotal - product?.price?.selling
+            this.cartTotal = this.cartSubtotal - this.cartDiscount
+            this.ToastrService.success('Product quantity updated')
+            return { ...item, quantity: item.quantity - 1 }
+          } else {
+            return item
+          }
+        })
+        break
+    }
+  }
+
+  deleteProduct(product: any) {
+    this.cartItems = this.cartItems.filter((item: any) => item._id != product._id)
+    this.cartSubtotal = this.cartSubtotal - (product?.price?.selling * product?.quantity)
+  }
+  //Products managament
 
   //Customer and address management
   getCustomers() {
@@ -349,7 +381,7 @@ export class AddOrdersComponent implements OnInit {
   getAddress(template: TemplateRef<any>, customer: any) {
     this.customerDetails = customer
     this.customer.setValue(customer?.name)
-    this.addressModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' })
+    this.addressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
     this.customerService.getAddress({ userid: customer?.userid }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -366,69 +398,78 @@ export class AddOrdersComponent implements OnInit {
 
   selectAddress(address: any) {
     this.address = address
-    for (let _key of Object.keys(address)) this.orderForm.get(_key)?.setValue(address[_key])
     this.addressModalRef?.hide()
   }
 
   openManage(template: TemplateRef<any>) {
     this.manageAddressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
     this.addressModalRef?.hide()
+    this.address ? this.addressMode = 'update' : this.addressMode = 'add'
+    if (this.address) {
+      for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key])
+    }
   }
 
   manageAddress() {
-    if (this.address) {
-      this.customerService.updateCustomerAddress({
-        refid: this.address?.refid,
-        ...this.addressForm.value,
-        coordinates: {
-          latitude: this.addressForm.get('latitude')?.value,
-          longitude: this.addressForm.get('longitude')?.value
-        }
-      }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.address = res?.result
-            this.manageAddressModalRef?.hide()
-          } else {
-            this.ToastrService.error(res.message)
+    switch (this.addressMode) {
+      case 'add':
+        this.customerService.addAddress({
+          ...this.addressForm.value,
+          customer: this.customerDetails?._id,
+          coordinates: {
+            latitude: this.addressForm.get('latitude')?.value,
+            longitude: this.addressForm.get('longitude')?.value
           }
-        }, error: (err: any) => {
-          this.ToastrService.error(err.message)
-        }
-      })
-    } else {
-      this.customerService.addAddress({
-        ...this.addressForm.value,
-        customer: this.customerDetails?._id,
-        coordinates: {
-          latitude: this.addressForm.get('latitude')?.value,
-          longitude: this.addressForm.get('longitude')?.value
-        }
-      }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.address = res?.result
-            this.manageAddressModalRef?.hide()
-            this.BsModalService.show(this.addressModal, { class: 'modal-dialog-centered' })
-            this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
-              next: (res: any) => {
-                if (res?.errorCode == 0) {
-                  this.addressDetails = res?.result
-                  this.cdr.markForCheck()
-                } else {
-                  this.ToastrService.error(res.message)
+        }).subscribe({
+          next: (res: any) => {
+            if (res?.errorCode == 0) {
+              this.address = res?.result
+              this.ToastrService.success(res?.message)
+              this.manageAddressModalRef?.hide()
+              this.BsModalService.show(this.addressModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+              this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
+                next: (res: any) => {
+                  if (res?.errorCode == 0) {
+                    this.addressDetails = res?.result
+                    this.cdr.markForCheck()
+                  } else {
+                    this.ToastrService.error(res.message)
+                  }
+                }, error: (err: any) => {
+                  this.ToastrService.error(err.message)
                 }
-              }, error: (err: any) => {
-                this.ToastrService.error(err.message)
-              }
-            })
-          } else {
-            this.ToastrService.error(res.message)
+              })
+            } else {
+              this.ToastrService.error(res.message)
+            }
+          }, error: (err: any) => {
+            this.ToastrService.error(err.message)
           }
-        }, error: (err: any) => {
-          this.ToastrService.error(err.message)
-        }
-      })
+        })
+        break
+      case 'update':
+        this.customerService.updateCustomerAddress({
+          refid: this.address?.refid,
+          ...this.addressForm.value,
+          coordinates: {
+            latitude: this.addressForm.get('latitude')?.value,
+            longitude: this.addressForm.get('longitude')?.value
+          }
+        }).subscribe({
+          next: (res: any) => {
+            if (res?.errorCode == 0) {
+              this.address = res?.result
+              this.cdr.markForCheck()
+              this.manageAddressModalRef?.hide()
+              this.ToastrService.success(res?.message)
+            } else {
+              this.ToastrService.error(res.message)
+            }
+          }, error: (err: any) => {
+            this.ToastrService.error(err.message)
+          }
+        })
+        break
     }
   }
   //Customer and address management
@@ -436,7 +477,7 @@ export class AddOrdersComponent implements OnInit {
   updateOrder() { }
 
   addOrder() {
-    if (!this.orderForm.valid || !this.selectedCustomer) {
+    if (!this.orderForm.valid) {
       this.ToastrService.error('Kindly fill required fields');
       this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
       return;
@@ -446,7 +487,7 @@ export class AddOrdersComponent implements OnInit {
     let payload = {
       customerId: this.selectedCustomer,
       address: {
-        type: data?.type,
+        type: this.orderForm.get,
         firstlane: data.firstlane,
         secondlane: data.secondlane,
         area: data.area,
