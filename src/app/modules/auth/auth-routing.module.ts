@@ -22,7 +22,6 @@ const routes: Routes = [
       path: 'forgot-password/:token',
       component: ForgotPasswordComponent,
       data: { returnUrl: window.location.pathname },
-      canActivate: [LoggedInGuard]
     },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: '**', redirectTo: 'login', pathMatch: 'full' },

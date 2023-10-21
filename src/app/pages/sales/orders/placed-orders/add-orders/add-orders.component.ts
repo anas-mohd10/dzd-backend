@@ -45,7 +45,6 @@ export class AddOrdersComponent implements OnInit {
   coupon: any = ''
   productids: any = []
 
-
   customer: FormControl = new FormControl('')
   customers: Array<any> = []
   addressModalRef?: BsModalRef
@@ -64,9 +63,7 @@ export class AddOrdersComponent implements OnInit {
   cartSubtotal: number = 0
   cartTotal: number = 0
   cartDiscount: number = 0
-
   cart: any = []
-
   subTotal: any = 0
   showTransactionId: boolean = false;
   store: FormControl = new FormControl('')
@@ -74,17 +71,16 @@ export class AddOrdersComponent implements OnInit {
   deliveryDate: any = null;
   settings: any = {}
 
-
   constructor(
-    private orderService: OrdersService,
+    private OrderService: OrdersService,
     private customerService: CustomersService,
-    private route: ActivatedRoute,
-    private router: Router,
+    private ActivatedRoute: ActivatedRoute,
+    private Router: Router,
     private ToastrService: ToastrService,
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private couponsService: CouponsService,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
@@ -93,7 +89,6 @@ export class AddOrdersComponent implements OnInit {
   ngOnInit(): void {
     this.base = environment.base
     this.initForm()
-    this.managePage()
     this.getActiveCustomers()
     this.getActiveProducts()
     this.getActiveCoupons()
@@ -101,7 +96,7 @@ export class AddOrdersComponent implements OnInit {
     this.StoresService.getClickPoints().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.stores = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
 
@@ -113,6 +108,8 @@ export class AddOrdersComponent implements OnInit {
 
     this.dates = this.getNextSevenDays();
     this.deliveryDate = this.dates[0]
+    this.orderForm.get('deliveryDate')?.setValue(this.deliveryDate)
+
 
     this.addressForm = new FormGroup({
       type: new FormControl('Home'),
@@ -161,15 +158,55 @@ export class AddOrdersComponent implements OnInit {
     for (let store of this.stores) {
       if (store?.refid == e.value) this.timeslots.push(...store?.slots)
     }
+    const providedDate = new Date(this.orderForm.get('deliveryDate')?.value);
+    const currentDate = new Date();
+
+    if (providedDate.getDate() === currentDate.getDate() &&
+      providedDate.getMonth() === currentDate.getMonth() && providedDate.getFullYear() === currentDate.getFullYear()
+    ) {
+      const filteredTimeSlots = this.filterPassedTimeSlots(this.timeslots);
+      this.timeslots = [...filteredTimeSlots]
+    }
+
+    this.timeslots.sort((a, b) => {
+      const timeA = new Date(`1970-01-01T${a.from}`);
+      const timeB = new Date(`1970-01-01T${b.from}`);
+      if (timeA < timeB) {
+        return -1;
+      } else if (timeA > timeB) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    this.deliveryTime = this.timeslots[0]['refid']
+  }
+
+  filterPassedTimeSlots(timeslots: any = []) {
+    const currentTime = new Date();
+    const formattedCurrentTime = currentTime.getHours() + ':' + currentTime.getMinutes();
+    const filteredTimeSlots = timeslots.filter((slot: any) => {
+      const slotEndTime = slot.to;
+      const slotStartTime = slot.from;
+      return slotEndTime > formattedCurrentTime || slotStartTime > formattedCurrentTime;
+    });
+
+    return filteredTimeSlots;
   }
 
   initForm() {
     this.orderForm = this.formBuilder.group({
       paymentMethod: ['', Validators.required],
       gst: [''],
+      customerId: ['', Validators.required],
       transactionId: [''],
       additionalCharge: [''],
-      products: this.formBuilder.array([]),
+      products: [[], Validators.required],
+      clickPoint: [''],
+      deliveryTime: [''],
+      deliveryDate: [''],
+      deliveryType: ['0'],
     });
   }
 
@@ -177,38 +214,25 @@ export class AddOrdersComponent implements OnInit {
     return this.orderForm.controls;
   }
 
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
   getActiveCustomers() {
     this.customerService.getActiveCustomers().subscribe((res: any) => {
       this.activeCustomersData = res?.result
       for (let customer of this.activeCustomersData) customer.name = (customer?.name ? customer?.name : ' ') + " ( " + customer?.mobile + " )"
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
   }
 
   getActiveProducts() {
     this.productService.getActiveProduct().subscribe((res: any) => {
       this.activeProducts = res?.result
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
   }
 
   getActiveCoupons() {
     this.couponsService.getActiveCoupons().subscribe((res: any) => {
       this.activeCoupons = res?.result
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
   }
 
@@ -221,10 +245,6 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  add() {
-
-  }
-
   getCoupons(data: any) {
     this.couponsService.getProductCoupons({ products: data }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -233,55 +253,25 @@ export class AddOrdersComponent implements OnInit {
     })
   }
 
-  removeQuantity(i: number) {
-    this.cart().removeAt(i);
-  }
-
-  removeQty(i: number) {
-    this.cart[i]['quantity'] = this.cart[i]['quantity'] - 1
-    this.cart[i]['total'] = this.cart[i]['total'] - (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
-    this.subTotal = this.subTotal - (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
-    if (this.cart[i]['quantity'] == 0) this.cart.splice(i, 1)
-    let products = []
-    for (let item of this.cart) products.push(item?.productId)
-    if (this.cart.length == 0) this.isProducts = false
-    this.getCoupons(products)
-  }
-
-  removeProduct(i: number) {
-    this.cart.splice(i, 1)
-    if (this.cart.length == 0) this.isProducts = false
-  }
-
-  addOty(i: number) {
-    this.cart[i]['quantity'] = this.cart[i]['quantity'] + 1
-    this.cart[i]['total'] = this.cart[i]['total'] + (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
-    this.subTotal = this.subTotal + (this.cart[i]?.price?.mrp > this.cart[i]?.price?.offer ? this.cart[i]?.price?.offer : this.cart[i]?.price?.mrp)
-  }
-
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateOrder();
-    } else {
-      this.addOrder();
-    }
-  }
-
   selectDeliveryType(type: any) {
-    this.store?.setValue(null)
+    if (type == '0') {
+      this.orderForm.get('clickPoint')?.setValue('')
+      this.orderForm.get('deliveryTime')?.setValue('')
+      this.orderForm.get('deliveryDate')?.setValue('')
+      this.timeslots = []
+    }
     this.deliveryType = type
-    this.deliveryTime = null
-    this.deliveryDate = null
-    this.timeslots = []
+    this.orderForm.get('deliveryType')?.setValue(type)
   }
 
   selectDeliveryTime(time: any) {
     this.deliveryTime = time
+    this.orderForm.get('deliveryTime')?.setValue(time)
   }
 
   selectDeliveryDate(date: any) {
     this.deliveryDate = date
+    this.orderForm.get('deliveryDate')?.setValue(date)
   }
 
   //Products management
@@ -298,7 +288,7 @@ export class AddOrdersComponent implements OnInit {
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.products = res?.result?.data
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           } else {
             this.ToastrService.error(res.message)
           }
@@ -365,7 +355,7 @@ export class AddOrdersComponent implements OnInit {
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.customers = res?.result?.data
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           } else {
             this.ToastrService.error(res.message)
           }
@@ -386,7 +376,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.addressDetails = res?.result
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res.message)
         }
@@ -398,7 +388,13 @@ export class AddOrdersComponent implements OnInit {
 
   selectAddress(address: any) {
     this.address = address
+    this.orderForm.get('customerId')?.setValue(this.customerDetails?._id)
     this.addressModalRef?.hide()
+    for (let _key of Object.keys(address)) {
+      this.addressForm.get(_key)?.setValue(address[_key])
+      this.orderForm.get('latitude')?.setValue(address?.coordinates?.latitude)
+      this.orderForm.get('longitude')?.setValue(address?.coordinates?.longitude)
+    }
   }
 
   openManage(template: TemplateRef<any>) {
@@ -431,7 +427,7 @@ export class AddOrdersComponent implements OnInit {
                 next: (res: any) => {
                   if (res?.errorCode == 0) {
                     this.addressDetails = res?.result
-                    this.cdr.markForCheck()
+                    this.ChangeDetectorRef.markForCheck()
                   } else {
                     this.ToastrService.error(res.message)
                   }
@@ -459,7 +455,7 @@ export class AddOrdersComponent implements OnInit {
           next: (res: any) => {
             if (res?.errorCode == 0) {
               this.address = res?.result
-              this.cdr.markForCheck()
+              this.ChangeDetectorRef.markForCheck()
               this.manageAddressModalRef?.hide()
               this.ToastrService.success(res?.message)
             } else {
@@ -474,71 +470,36 @@ export class AddOrdersComponent implements OnInit {
   }
   //Customer and address management
 
-  updateOrder() { }
+  createOrder() {
+    this.orderForm.get('customerId')?.setValue(this.customerDetails?._id)
+    this.orderForm.get('products')?.setValue(this.cartItems)
 
-  addOrder() {
     if (!this.orderForm.valid) {
-      this.ToastrService.error('Kindly fill required fields');
-      this.selectedCustomer ? this.isCustomer = true : this.isCustomer = false
+      this.isSubmitted = true
       return;
     }
 
-    let data = this.orderForm.value
     let payload = {
-      customerId: this.selectedCustomer,
-      address: {
-        type: this.orderForm.get,
-        firstlane: data.firstlane,
-        secondlane: data.secondlane,
-        area: data.area,
-        city: data.city,
-        pincode: data.pincode,
-        state: data.state,
-        coordinates: {
-          lat: data.lat,
-          lng: data.lng,
-        },
-        landmark: data.landmark,
-      },
-      couponId: this.coupon ? this.coupon : '',
-      products: this.cart,
-      gst: data.gst,
-      paymentMethod: data.paymentMethod,
-      payment: {
-        transactionId: data?.transactionId
-      },
-      deliveryType: this.deliveryType,
-      deliveryTime: this.deliveryTime,
-      deliveryDate: this.deliveryDate,
-      additionalCharge: data.additionalCharge
+      address: this.addressForm.value,
+      ...this.orderForm.value
     }
 
-    if (this.cart.length != 0) {
-      if (this.deliveryType == '1') {
-        if (this.deliveryTime && this.deliveryDate) {
-          this.orderService.addOrder(payload).subscribe((res: any) => {
-            if (res.errorCode != 0) {
-              this.ToastrService.error(res?.message);
-            } else if (res.errorCode == 0) {
-              this.ToastrService.success(res?.message);
-              this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
-            }
-          })
-        } else {
-          this.ToastrService.error('Choose a time to collect');
-        }
-      } else {
-        this.orderService.addOrder(payload).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.ToastrService.error(res?.message);
-          } else if (res.errorCode == 0) {
-            this.ToastrService.success(res?.message);
-            this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
-          }
-        })
-      }
-    } else {
-      this.ToastrService.error('Add atleast one product to place the order');
+    payload.address['coords'] = {
+      latitude: this.addressForm.get('latitude')?.value,
+      longitude: this.addressForm.get('longitude')?.value
     }
+
+    this.OrderService.addOrder(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate([this.appRoute.orders.ORDERS_LIST])
+          this.ToastrService.success(res.message)
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
   }
 }

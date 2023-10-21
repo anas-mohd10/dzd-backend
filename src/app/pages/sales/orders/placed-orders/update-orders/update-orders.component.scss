@@ -19,6 +19,26 @@ label,
     }
 }
 
+.pageWrapper{
+    position: relative;
+
+    .cancelledOrderDetails{
+        position: absolute;
+        z-index: 99;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
+
+        p{
+            font-size: 16px;
+        }
+    }
+}
+
 .cancelledWrapper {
     pointer-events: none;
     opacity: 0.6;
@@ -175,15 +195,27 @@ td {
     justify-content: start;
 }
 
-.orderTopContainer {
+.orderDetailsWrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+
+    .itemDetails{
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 10px 0;
+        font-weight: 600;
+
+        .itemTitle{
+            color: #A1A5B7;
+        }
+    }
 }
 
 .card {
     .card-body {
-        padding: 0 2rem 0.8rem 2rem;
 
         .text-muted {
             font-weight: 600;
@@ -205,6 +237,22 @@ $background: #e5e5e5;
 $error: #F1416C;
 $white: #ffffff;
 
+.tinyEdit{
+    height: 26px;
+    width: 26px;
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: #f5fbfb;
+    color: #111111;
+    margin: 0 0 0 5px;
+}
+
+.productRow{
+    margin: 0 0 10px 0;
+}
+
 .historyWrapper {
     .productHistoryWrapper {
         background: $white;
@@ -218,7 +266,7 @@ $white: #ffffff;
             .history {
                 background: $hover;
                 border: 1px solid $hover;
-                border-radius: 10px;
+                border-radius: 5px;
                 padding: 5px;
                 cursor: pointer;
 
@@ -231,11 +279,23 @@ $white: #ffffff;
     }
 }
 
+.card{
+    .card-body{
+        padding: 2rem !important;
+    }
+}
+
 .productsTable {
 
     .productStatus {
         background: #f8fffe;
         color: #00bdab;
+        width: max-content;
+    }
+
+    .failedStatus {
+        background: #fff8f8;
+        color: #bd0000;
         width: max-content;
     }
 }

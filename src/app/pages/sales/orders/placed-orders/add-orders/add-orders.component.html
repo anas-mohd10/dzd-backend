@@ -21,301 +21,256 @@
     </div>
   </div>
 
-  <div class="row mt-10">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          <form [formGroup]="orderForm">
-            <div class="row">
+  <div class="mt-4">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="orderForm">
+          <div class="row">
 
-              <div class="form-group col-lg-6">
-                <label class="fs-6 mb-3 required">Customers</label>
-                <input type="text" placeholder="Search customers here" class="form-control" [formControl]="customer"
-                  (ngModelChange)="getCustomers()">
+            <div class="form-group col-lg-6">
+              <label class="fs-6 mb-3 required">Customers</label>
+              <input type="text" placeholder="Search customers here" class="form-control" [formControl]="customer"
+                (ngModelChange)="getCustomers()"
+                [ngClass]="{ 'is-invalid': (of.customerId.touched || isSubmitted) && of.customerId.errors?.required}">
 
-                <ng-container *ngIf="customers.length > 0">
-                  <div class="customers mt-3">
-                    <ng-container *ngFor="let customer of customers; let i = index">
-                      <div class="customerCard p-2 d-flex align-items-center justify-content-between"
-                        (click)="getAddress(addressRef, customer)"
-                        [ngClass]="{'active': customerDetails?._id == customer?._id}">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="index me-3">{{i + 1}}</div>
-                          <div class="name">{{customer?.name}}</div>
-                          <div class="mobile ms-3">{{customer?.countryCode}} {{customer?.mobile}}</div>
-                        </div>
-                        <div class="name">{{customer?.email}}</div>
+              <ng-container *ngIf="customers.length > 0">
+                <div class="customers mt-3">
+                  <ng-container *ngFor="let customer of customers; let i = index">
+                    <div class="customerCard p-2 d-flex align-items-center justify-content-between"
+                      (click)="getAddress(addressRef, customer)"
+                      [ngClass]="{'active': customerDetails?._id == customer?._id}">
+                      <div class="d-flex align-items-center justify-content-between">
+                        <div class="index me-3">{{i + 1}}</div>
+                        <div class="name">{{customer?.name}}</div>
+                        <div class="mobile ms-3">{{customer?.countryCode}} {{customer?.mobile}}</div>
                       </div>
-                    </ng-container>
-                  </div>
-                </ng-container>
-              </div>
+                      <div class="name">{{customer?.email}}</div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </div>
 
-              <div class="col-lg-6" *ngIf="address">
-                <div class="fs-5 fw-bolder mb-3">Selected Address</div>
-                <div class="addressCard mb-3">
-                  <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
-                    <div class="type pe-2 ps-2">{{address?.type}}</div>
-                    <div class="manageAddress p-1" (click)="openManage(manageRef)">
-                      <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="p-3">
-                    <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
-                    <div class="lane">
-                      {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
-                    </div>
-                    <div class="area">{{address?.area}} {{address?.landmark}}</div>
-                    <div class="city">{{address?.city}} {{address?.state}} {{address?.pincode}}</div>
+            <div class="col-lg-6" *ngIf="address">
+              <div class="fs-5 fw-bolder mb-3">Selected Address</div>
+              <div class="addressCard mb-3">
+                <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
+                  <div class="type pe-2 ps-2">{{address?.type}}</div>
+                  <div class="manageAddress p-1" (click)="openManage(manageRef)">
+                    <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
                   </div>
                 </div>
+                <div class="p-3">
+                  <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
+                  <div class="lane">
+                    {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
+                  </div>
+                  <div class="area">{{address?.area}} {{address?.landmark}}</div>
+                  <div class="city">{{address?.city}} {{address?.state}} {{address?.pincode}}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cartWrapper mt-3">
+              <div class="d-flex align-items-center justify-content-end" *ngIf="cartItems.length > 0">
+                <button type="button" class="btn btn-primary" (click)="openProducts(productsRef)">
+                  Add Products
+                </button>
               </div>
 
-              <div class="cartWrapper mt-3">
-                <div class="d-flex align-items-center justify-content-end" *ngIf="cartItems.length > 0">
-                  <button type="button" class="btn btn-primary" (click)="openProducts(productsRef)">
+              <ng-container *ngIf="cartItems.length == 0">
+                <div class="emptyCart-container">
+                  <img src="../../../../../../assets/icons/emptyCart.gif" style="height: 150px;" alt="Icon">
+                  <button type="button" class="mt-5 btn btn-primary" (click)="openProducts(productsRef)">
                     Add Products
                   </button>
                 </div>
+              </ng-container>
 
-                <ng-container *ngIf="cartItems.length == 0">
-                  <div class="emptyCart-container">
-                    <img src="../../../../../../assets/icons/emptyCart.gif" style="height: 150px;" alt="Icon">
-                    <button type="button" class="mt-5 btn btn-primary" (click)="openProducts(productsRef)">
-                      Add Products
-                    </button>
-                  </div>
-                </ng-container>
-
-                <div class="row cartItemswrapper" *ngIf="cartItems.length > 0">
-                  <div class="cartItemWrapper p-4">
-                    <div class="cartTitle fs-5 fw-bolder mb-4">Cart</div>
-                    <ng-container *ngFor="let cart of cartItems; let  i = index">
-                      <div class="cartItem d-flex align-items-center justify-content-between">
-                        <div class="productDetails d-flex align-items-center justify-content-start">
-                          <div class="index me-2">{{i + 1}}</div>
-                          <img src="{{base}}/{{cart?.thumbnail}}" alt="Product" height="70px" width="70px">
-                          <div class="name fs-5 ms-4 fw-bolder">{{cart?.name}}</div>
+              <div class="row cartItemswrapper" *ngIf="cartItems.length > 0">
+                <div class="cartItemWrapper p-4">
+                  <div class="cartTitle fs-5 fw-bolder mb-4">Cart</div>
+                  <ng-container *ngFor="let cart of cartItems; let  i = index">
+                    <div class="cartItem d-flex align-items-center justify-content-between">
+                      <div class="productDetails d-flex align-items-center justify-content-start">
+                        <div class="index me-2">{{i + 1}}</div>
+                        <img src="{{base}}/{{cart?.thumbnail}}" alt="Product" height="70px" width="70px">
+                        <div class="name fs-5 ms-4 fw-bolder">{{cart?.name}}</div>
+                      </div>
+                      <div class="productPrice">
+                        <div class="productSelling fw-bolder fs-5">{{settings?.currency}} {{cart?.price?.selling}}
                         </div>
-                        <div class="productPrice">
-                          <div class="productSelling fw-bolder fs-5">{{settings?.currency}} {{cart?.price?.selling}}
-                          </div>
-                          <div class="productPrice text-muted"><s>{{settings?.currency}} {{cart?.price?.mrp}}</s></div>
-                        </div>
+                        <div class="productPrice text-muted"><s>{{settings?.currency}} {{cart?.price?.mrp}}</s></div>
+                      </div>
 
-                        <div class="manageProduct d-flex align-items-center justify-content-end flex-column">
-                          <div class="updateProduct mb-4 d-flex align-items-center justify-content-between">
-                            <div class="decrementQuantity me-2" (click)="updateQuantity('decrement', cart)">
-                              <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
-                              </svg>
-                            </div>
-                            <div class="productQuantity">{{cart?.quantity}}</div>
-                            <div class="incrementQuantity ms-2" (click)="updateQuantity('increment', cart)">
-                              <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                              </svg>
-                            </div>
-                          </div>
-                          <div class="deleteProduct" (click)="deleteProduct(cart)">
-                            <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      <div class="manageProduct d-flex align-items-center justify-content-end flex-column">
+                        <div class="updateProduct mb-4 d-flex align-items-center justify-content-between">
+                          <div class="decrementQuantity me-2" (click)="updateQuantity('decrement', cart)">
+                            <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" fill="none"
                               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                            </svg>
+                          </div>
+                          <div class="productQuantity">{{cart?.quantity}}</div>
+                          <div class="incrementQuantity ms-2" (click)="updateQuantity('increment', cart)">
+                            <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" fill="none"
+                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
                           </div>
                         </div>
-                      </div>
-                    </ng-container>
-                  </div>
-
-                  <div class="summaryWrapper p-4">
-                    <div class="mb-4">
-                      <div class="fs-5 fw-bolder mb-2">Coupon</div>
-                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Enter coupon code">
+                        <div class="deleteProduct" (click)="deleteProduct(cart)">
+                          <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                    <div class="mt-4 summary">
-                      <div class="fs-5 fw-bolder mb-2">Summary</div>
-                      <div class="mb-3 d-flex align-items-center justify-content-between">
-                        <div>Sub total</div>
-                        <div class="fw-bolder">{{settings?.currency}} {{cartSubtotal.toFixed(2)}}</div>
-                      </div>
-                      <div class="mb-3 d-flex align-items-center justify-content-between">
-                        <div>Discount</div>
-                        <div class="fw-bolder">{{settings?.currency}} {{cartDiscount.toFixed(2)}}</div>
-                      </div>
-                      <div class="mb-3 d-flex align-items-center justify-content-between">
-                        <div>Total</div>
-                        <div class="fs-4 fw-bolder">{{settings?.currency}} {{cartTotal.toFixed(2)}}</div>
-                      </div>
+                  </ng-container>
+                </div>
+
+                <div class="summaryWrapper p-4">
+                  <div class="mb-4">
+                    <div class="fs-5 fw-bolder mb-2">Coupon</div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" placeholder="Enter coupon code">
+                    </div>
+                  </div>
+                  <div class="mt-4 summary">
+                    <div class="fs-5 fw-bolder mb-2">Summary</div>
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                      <div>Sub total</div>
+                      <div class="fw-bolder">{{settings?.currency}} {{cartSubtotal.toFixed(2)}}</div>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                      <div>Discount</div>
+                      <div class="fw-bolder">{{settings?.currency}} {{cartDiscount.toFixed(2)}}</div>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center justify-content-between">
+                      <div>Total</div>
+                      <div class="fs-4 fw-bolder">{{settings?.currency}} {{cartTotal.toFixed(2)}}</div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div class="mb-4">
-                <label class="fs-6 mb-3">How do you want to delivery your order?</label>
-                <div class="col-6 deliveryTypeWrapper">
-                  <div class="typeBox" [ngClass]="{'active': deliveryType == '0' }" (click)="selectDeliveryType('0')">
-                    <svg height="30px" width="30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                    </svg>
-                    <div class="typeTitle fs-5">Delivery</div>
-                    <div class="typeNote fs-6 text-muted">Ship order to given address</div>
-                  </div>
-                  <div class="typeBox" [ngClass]="{'active': deliveryType == '1' }" (click)="selectDeliveryType('1')">
-                    <svg height="30px" width="30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
-                    </svg>
-                    <div class="typeTitle fs-5">Click and Collect</div>
-                    <div class="typeNote fs-6 text-muted">Collect package from nearest outlet</div>
-                  </div>
-                </div>
-              </div>
-
-              <ng-container *ngIf="deliveryType == '1'">
-                <div class="form-group">
-                  <label class="fs-6 mb-3">Choose a location</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                    [formControl]="store" (change)="getTimeSlots($event.target)">
-                    <option value="" disabled>-- Select an option --</option>
-                    <ng-container *ngFor="let store of stores; let i = index">
-                      <option value="{{store?.refid}}">{{store?.address?.city}}
-                      </option>
-                    </ng-container>
-                  </select>
-                </div>
-              </ng-container>
-
-              <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
-                <div class="col-12">
-                  <label class="fs-6 mb-3">Select a pickup dates</label>
-                  <div class="dates">
-                    <ng-container *ngFor="let date of dates">
-                      <div class="date" (click)="selectDeliveryDate(date)" [ngClass]="{'active': deliveryDate == date}">
-                        <div> {{date}}</div>
-                      </div>
-                    </ng-container>
-                  </div>
-                </div>
-              </ng-container>
-
-              <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
-                <div class="col-12">
-                  <label class="fs-6 mb-3">Available timeslots</label>
-                  <div class="timeslots">
-                    <ng-container *ngFor="let time of timeslots">
-                      <div class="timeslot" (click)="selectDeliveryTime(time?.refid)"
-                        [ngClass]="{'active': deliveryTime == time?.refid}">
-                        <img src="../../../../../../assets/icons/clock.svg" alt="Icon">
-                        <div> {{time?.from}} - {{time?.to}}</div>
-                      </div>
-                    </ng-container>
-                  </div>
-                </div>
-              </ng-container>
-
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Payment Method</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                    formControlName="paymentMethod" (change)="checkPaymentmethod($event.target)"
-                    [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option value="COD">Cash On Delivery</option>
-                    <option value="UNPAID">Unpaid</option>
-                    <option value="ONLINE">Online</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3">Additional Charge</label>
-                  <input type="text" formControlName="additionalCharge" class="form-control fs-6">
-                </div>
-              </div>
-
-              <div class="col-6 mb-3" *ngIf="showTransactionId">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required">Transaction ID</label>
-                  <input type="text" formControlName="transactionId" class="form-control fs-6">
-                </div>
-              </div>
-
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3">GST</label>
-                  <input type="text" formControlName="gst" class="form-control fs-6">
-                </div>
-              </div>
-
-              <div class="col-12 d-flex align-items-center justify-content-end">
-                <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary me-2">
-                  Cancel
-                </button>
-                <button type="submit" class="btn btn-primary" (click)="onSubmit()">
-                  Place Order
-                </button>
-              </div>
-
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
+            <div class="mb-4">
+              <label class="fs-6 mb-3">How do you want to delivery your order?</label>
+              <div class="col-6 deliveryTypeWrapper">
+                <div class="typeBox" [ngClass]="{'active': deliveryType == '0' }" (click)="selectDeliveryType('0')">
+                  <svg height="30px" width="30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                  </svg>
+                  <div class="typeTitle fs-5">Delivery</div>
+                  <div class="typeNote fs-6 text-muted">Ship order to given address</div>
+                </div>
+                <div class="typeBox" [ngClass]="{'active': deliveryType == '1' }" (click)="selectDeliveryType('1')">
+                  <svg height="30px" width="30px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+                  </svg>
+                  <div class="typeTitle fs-5">Click and Collect</div>
+                  <div class="typeNote fs-6 text-muted">Collect package from nearest outlet</div>
+                </div>
+              </div>
+            </div>
 
-<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-6" id="cartModalLabel">Add Products</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="normal-text">{{cart?.length}} products in cart</div>
-          <div class="col-12">
-            <label class="fs-6 mb-3 required">Product</label>
-            <ng-select [items]="activeProducts" bindLabel="name" bindValue="_id" [(ngModel)]="product"
-              placeholder="Select product" [multiple]=false [ngModelOptions]="{standalone: true}"
-              style="font-size: 1.1rem;">
-            </ng-select>
-          </div>
-          <div class="col-12">
-            <label class="fs-6 mb-3 required">Quantity</label>
-            <input type="number" class="form-control fs-6" id="quantity" [formControl]="quantity"
-              placeholder="Enter product quantity">
-          </div>
-        </div>
+            <ng-container *ngIf="deliveryType == '1'">
+              <div class="form-group">
+                <label class="fs-6 mb-3">Choose a location</label>
+                <select class="form-select mb-3 fs-6" formControlName="clickPoint"
+                  (change)="getTimeSlots($event.target)">
+                  <option value="" disabled>-- Select an option --</option>
+                  <ng-container *ngFor="let store of stores; let i = index">
+                    <option value="{{store?.refid}}">{{store?.address?.city}}
+                    </option>
+                  </ng-container>
+                </select>
+              </div>
+            </ng-container>
 
-        <div class="added-to-cart" [ngClass]="{'show-added': isCartAdded}">
-          <div class="cart-icon">
-            <img src="../../../../../../assets/media/11-dark.png" style="height: 250px;" alt="">
+            <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
+              <div class="col-12">
+                <label class="fs-6 mb-3">Select a pickup dates</label>
+                <div class="dates">
+                  <ng-container *ngFor="let date of dates">
+                    <div class="date" (click)="selectDeliveryDate(date)" [ngClass]="{'active': deliveryDate == date}">
+                      <div> {{date}}</div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="deliveryType == '1' && timeslots.length > 0">
+              <div class="col-12">
+                <label class="fs-6 mb-3">Available timeslots</label>
+                <div class="timeslots">
+                  <ng-container *ngFor="let time of timeslots">
+                    <div class="timeslot" (click)="selectDeliveryTime(time?.refid)"
+                      [ngClass]="{'active': deliveryTime == time?.refid}">
+                      <img src="../../../../../../assets/icons/clock.svg" alt="Icon">
+                      <div> {{time?.from}} - {{time?.to}}</div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Payment Method</label>
+                <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+                  formControlName="paymentMethod" (change)="checkPaymentmethod($event.target)"
+                  [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="COD">Cash On Delivery</option>
+                  <option value="ONLINE">Online</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3">Additional Charge</label>
+                <input type="text" formControlName="additionalCharge" class="form-control fs-6">
+              </div>
+            </div>
+
+            <div class="col-6 mb-3" *ngIf="showTransactionId">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Transaction ID</label>
+                <input type="text" formControlName="transactionId" class="form-control fs-6">
+              </div>
+            </div>
+
+            <div class="col-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3">GST</label>
+                <input type="text" formControlName="gst" class="form-control fs-6">
+              </div>
+            </div>
+
+            <div class="col-12 d-flex align-items-center justify-content-end">
+              <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary me-2">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" (click)="createOrder()">
+                Place Order
+              </button>
+            </div>
           </div>
-          <div class="added-text">
-            Product added to cart
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="add()">Add to Cart</button>
+        </form>
       </div>
     </div>
   </div>

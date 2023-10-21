@@ -86,16 +86,12 @@
                 <option value="" disabled>-- Select --</option>
                 <option value="COD">Cash On Delivery</option>
                 <option value="ONLINE">Online</option>
-                <option value="UNPAID">Unpaid</option>
-                <option value="SPLIT">Split</option>
-                <option value="CARD">Card</option>
               </select>
             </div>
             <div class="search-featured col-sm-2">
               <label class="fs-6 mb-1">Payment Status</label>
               <select class="form-select fs-6 text-dark" formControlName="paymentStatus" (change)="getOrders()">
                 <option value="" disabled>-- Select --</option>
-                <option value="UNPAID">Unpaid</option>
                 <option value="REJECTED">Rejected</option>
                 <option value="PAID">Paid</option>
                 <option value="PENDING">Pending</option>

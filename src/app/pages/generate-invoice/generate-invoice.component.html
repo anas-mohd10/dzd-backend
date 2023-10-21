@@ -118,7 +118,7 @@
                             Additional Charges
                         </td>
                         <td>
-                            {{settings?.currency}} {{orderDetails?.additionalCharge}}
+                            {{settings?.currency}} {{orderDetails?.additionalCharge ? orderDetails?.additionalCharge : '0.00'}}
                         </td>
                     </tr>
                     <tr>

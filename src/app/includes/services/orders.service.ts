@@ -85,4 +85,9 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.cancelOrderDetails);
     return this.http.put(`${url}`, data)
   }
+
+  updateOrderProducts(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.updateOrderProducts);
+    return this.http.put(`${url}`, data)
+  }
 }

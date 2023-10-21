@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
@@ -21,7 +21,7 @@ export class UpdateOrdersComponent implements OnInit {
   order: any;
   productCount: any
   orderNumber: any;
-  orderForm: FormGroup
+  form: FormGroup
   task = PageTasks.UPDATE
   editMode = false;
   totalProductCost: number;
@@ -37,9 +37,23 @@ export class UpdateOrdersComponent implements OnInit {
   statusList: Array<any> = []
   orderStatus: string = ''
   orderStatusList: Array<any> = ['PLACED', 'DELIVERED', 'CANCELLED']
+  orderStatusCheck: Array<any> = ['Placed', 'Delivered', 'Cancelled']
   isCancelEligible: boolean = false
   modalRef?: BsModalRef;
   isCancelled: boolean = false
+
+  deliveryPerson: FormControl = new FormControl('', Validators.required)
+  dateExpected: FormControl = new FormControl('', Validators.required)
+  trackingURL: FormControl = new FormControl('')
+  trackingNo: FormControl = new FormControl('')
+  minimumDate: string = new Date().toISOString().split('T')[0]
+  expectedModalRef?: BsModalRef
+  @ViewChild('execptedDelivery') expectedDeliveryModal: TemplateRef<any>
+  deliveryModalRef?: BsModalRef
+  @ViewChild('deliveryStaff') deliveryModal: TemplateRef<any>
+  isDateSubmitted: boolean = false
+  productReference: string = ''
+  reason: FormControl = new FormControl('')
 
   constructor(
     private orderService: OrdersService,
@@ -69,15 +83,8 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   initForm() {
-    this.orderForm = this.formBuilder.group({
-      orderStatus: [''],
-      trackingURL: [''],
-      orderNote: [''],
+    this.form = this.formBuilder.group({
       paymentStatus: [''],
-      deliveryPerson: [''],
-      deliveryDate: [''],
-      outForDelivery: [''],
-      dateExpected: [''],
       orderId: [''],
       paymentId: [''],
     });
@@ -103,26 +110,15 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderNumber = res?.result?.orderNo
         this.productCount = this.order.products.length
         this.order.orderDate = new Date(this.order.orderDate).toDateString()
-        this.orderForm.get("trackingURL")?.setValue(this.order?.trackingURL)
-        this.orderForm.get("orderNote")?.setValue(this.order?.orderNote)
-        this.orderForm.get("paymentStatus")?.setValue(this.order?.paymentStatus)
-        this.orderForm.get("orderStatus")?.setValue(this.order?.orderStatus)
-        this.orderForm.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
-        this.orderForm.get("paymentId")?.setValue(this.order?.payment?.referenceId)
+        this.form.get("paymentStatus")?.setValue(this.order?.paymentStatus)
+        this.form.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
+        this.form.get("paymentId")?.setValue(this.order?.payment?.referenceId)
         this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
         this.orderStatusList.includes(res.result.orderStatus) ? this.isCancelEligible = false : this.isCancelEligible = true
         res.result.orderStatus == 'CANCELLED' ? this.isCancelled = true : this.isCancelled = false
-        let dateExpected = ''
-        let outForDelivery = ''
-        let deliveryDate = ''
-        if (this.order?.delivery?.dateExpected) dateExpected = new Date(this.order?.delivery?.dateExpected).toISOString().split('T')[0];
-        if (this.order?.delivery?.outForDelivery) outForDelivery = new Date(this.order?.delivery?.outForDelivery).toISOString().split('T')[0];
-        if (this.order?.delivery?.deliveryDate) deliveryDate = new Date(this.order?.delivery?.deliveryDate).toISOString().split('T')[0];
-
-        this.orderForm.get("deliveryPerson")?.setValue(this.order?.delivery?.deliveryPerson)
-        this.orderForm.get("dateExpected")?.setValue(dateExpected)
-        this.orderForm.get("outForDelivery")?.setValue(outForDelivery)
-        this.orderForm.get("deliveryDate")?.setValue(deliveryDate)
+        if(this.order.orderStatus == 'CANCELLED'){
+          if(this.order.cancel.date)  this.order.cancel.date = new Date(this.order.cancel.date).toDateString()
+        }
 
         for (let product of this.order?.products) {
           for (let history of product?.history) {
@@ -130,6 +126,7 @@ export class UpdateOrdersComponent implements OnInit {
             history.date = new Date(history.date).toDateString() + ' ' + new Date(history.date).toLocaleTimeString()
           }
           let history = [...product?.history]
+          if (product?.dateExpected) product.dateExpected = new Date(product?.dateExpected).toDateString()
           product.currentStatus = history.pop()
         }
 
@@ -150,10 +147,25 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateOrderStatus(event: any, product: any) {
-    this.orderService.updateOrderStatus({ order: this.order.orderNo, product: product, status: event.target.value }).subscribe({
+    this.productReference = product
+    this.orderService.updateOrderStatus({
+      order: this.order.orderNo,
+      product: product,
+      status: event.target.value
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
+          switch (event.target.value) {
+            case 'ACCEPTED':
+              this.expectedModalRef = this.BsModalService.show(this.expectedDeliveryModal,
+                { class: 'modal-dialog-centered', ignoreBackdropClick: true })
+              break
+            case 'OUT FOR DELIVERY':
+              this.deliveryModalRef = this.BsModalService.show(this.deliveryModal,
+                { class: 'modal-dialog-centered', ignoreBackdropClick: true })
+              break
+          }
           this.ToastrService.success(res.message)
         } else {
           this.ToastrService.error(res.message)
@@ -164,30 +176,65 @@ export class UpdateOrdersComponent implements OnInit {
     })
   }
 
-  processProducts(type: any, product: any) {
+  updateOrderDetails(type: any) {
     switch (type) {
-      case 'all':
-        if (this.order?.products.length == this.processedProducts.length) {
-          this.processedProducts = []
-          this.processProduct.setValue('')
-          this.allProduct.setValue('')
-        } else {
-          for (let product of this.order.products) {
-            this.processProduct.setValue(product?.productId?._id)
-            this.processedProducts.push(product?.productId?._id)
-            this.allProduct.setValue('all')
+      case 'accepted':
+        if (!this.dateExpected.valid) {
+          this.isDateSubmitted = true
+          return
+        }
+
+        this.orderService.updateOrderProducts({
+          order: this.order.orderNo, product: this.productReference,
+          dateExpected: this.dateExpected.value, trackingURL: this.trackingURL.value,
+          trackingNo: this.trackingNo.value
+        }).subscribe({
+          next: (res: any) => {
+            if (res?.errorCode == 0) {
+              this.getOrderDetails()
+              this.expectedModalRef?.hide()
+              this.ToastrService.success(res.message)
+            } else {
+              this.ToastrService.error(res.message)
+            }
+          }, error: (err: any) => {
+            this.ToastrService.error(err.message)
           }
-        }
+        })
         break
-      case 'select':
-        if (this.processedProducts.includes(product)) {
-          this.processedProducts = this.processedProducts.filter(item => item !== product)
-          this.allProduct.setValue('')
-        } else {
-          this.processedProducts.push(product)
-        }
+      case 'outForDelivery':
+        this.orderService.updateOrderProducts({
+          order: this.order.orderNo, product: this.productReference,
+          deliveryPerson: this.deliveryPerson.value
+        }).subscribe({
+          next: (res: any) => {
+            if (res?.errorCode == 0) {
+              this.getOrderDetails()
+              this.deliveryModalRef?.hide()
+              this.ToastrService.success(res.message)
+            } else {
+              this.ToastrService.error(res.message)
+            }
+          }, error: (err: any) => {
+            this.ToastrService.error(err.message)
+          }
+        })
         break
     }
+  }
+
+  openOrderAcceptance(template: TemplateRef<any>, productDetails: any) {
+    this.expectedModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' })
+    this.dateExpected.setValue(new Date(productDetails?.dateExpected).toISOString().split('T')[0])
+    this.trackingURL.setValue(productDetails?.trackingURL)
+    this.trackingNo.setValue(productDetails?.trackingNo)
+    this.productReference = productDetails?.productId?._id
+  }
+
+  openOrderForDelivery(template: TemplateRef<any>, productDetails: any) {
+    this.deliveryModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' })
+    this.deliveryPerson.setValue(productDetails?.deliveryPerson)
+    this.productReference = productDetails?.productId?._id
   }
 
   onSubmit() {
@@ -203,7 +250,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    this.orderService.updateOrder({ ...this.orderForm.value, order: this.orderNumber }).subscribe((res: any) => {
+    this.orderService.updateOrder({ ...this.form.value, order: this.orderNumber }).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.ToastrService.error(res?.message);
       } else if (res.errorCode == 0) {
@@ -214,11 +261,11 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
   }
 
   confirm() {
-    this.orderService.cancelOrderDetails({ order: this.orderNumber }).subscribe({
+    this.orderService.cancelOrderDetails({ order: this.orderNumber, reason: this.reason.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
