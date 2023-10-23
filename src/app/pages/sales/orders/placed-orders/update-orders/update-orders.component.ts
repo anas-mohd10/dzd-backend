@@ -116,8 +116,8 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
         this.orderStatusList.includes(res.result.orderStatus) ? this.isCancelEligible = false : this.isCancelEligible = true
         res.result.orderStatus == 'CANCELLED' ? this.isCancelled = true : this.isCancelled = false
-        if(this.order.orderStatus == 'CANCELLED'){
-          if(this.order.cancel.date)  this.order.cancel.date = new Date(this.order.cancel.date).toDateString()
+        if (this.order.orderStatus == 'CANCELLED') {
+          if (this.order.cancel.date) this.order.cancel.date = new Date(this.order.cancel.date).toDateString()
         }
 
         for (let product of this.order?.products) {
@@ -136,7 +136,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getStatusList(status: any) {
-    this.orderService.getStatusList(status).subscribe({
+    this.orderService.getStatusList(status, this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
       next: (res: any) => {
         this.statusList = res?.result
         this.ChangeDetectorRef.markForCheck()

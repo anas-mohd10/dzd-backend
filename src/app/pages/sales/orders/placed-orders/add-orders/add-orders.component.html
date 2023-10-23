@@ -336,10 +336,13 @@
               <div class="details">
                 <div class="name">{{product?.name}}</div>
                 <div class="price">{{settings?.currency}} {{product?.price?.selling}}</div>
+                <div class="stock mt-1" [ngClass]="{'outOfStock': product?.stock == 0}">{{product?.stock > 0 ? 'In stock
+                  (' + product?.stock + ')' : 'Out of stock'}}</div>
               </div>
             </div>
             <div>
-              <button class="btn btn-primary" (click)="addToCart(product)">Add to cart</button>
+              <button class="btn btn-primary" (click)="addToCart(product)" *ngIf="product?.stock > 0">Add to
+                cart</button>
             </div>
           </div>
         </ng-container>

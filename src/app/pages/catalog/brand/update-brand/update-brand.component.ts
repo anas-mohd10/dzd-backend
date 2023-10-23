@@ -54,6 +54,7 @@ export class UpdateBrandComponent implements OnInit {
   @ViewChild('mediaModal') mediaModal: any;
   @ViewChild('existingModal') existingModal: any;
   @ViewChild('quesModal') quesModal: any;
+  coverImage: FormControl = new FormControl('');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,8 +64,7 @@ export class UpdateBrandComponent implements OnInit {
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private BsModalService: BsModalService
-  ) {
-  }
+  ) { }
 
   get bf() {
     return this.brandForm.controls;
@@ -335,6 +335,7 @@ export class UpdateBrandComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getBrand()
           this.toastr.success(res.message)
+          this.coverImage.reset()
         } else {
           this.toastr.error(res.message)
         }

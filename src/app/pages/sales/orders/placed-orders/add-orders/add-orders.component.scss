@@ -108,6 +108,20 @@ label {
     border-radius: 0.475rem;
     font-size: 14px;
     margin: 0 0 0.625rem 0;
+
+    .details{
+      .stock{
+        background: #00bd71;
+        color: $white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        width: max-content;
+
+        &.outOfStock{
+        background: #bd0900;
+        }
+      }
+    }
   }
 }
 

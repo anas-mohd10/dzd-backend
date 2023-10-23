@@ -209,6 +209,7 @@ export class UpdateProductComponent implements OnInit {
 
         this.productform.get('mrpPrice')?.setValue(res?.result[0]?.price?.mrp)
         this.productform.get('offerPrice')?.setValue(res?.result[0]?.price?.offer)
+        this.productform.get('sellingPrice')?.setValue(res?.result[0]?.price?.selling)
 
         this.categoryService.getSubCategoriesbyId(res?.result[0]?.product?.id?.parentCategory?.id).subscribe((res: any) => {
           if (res?.errorCode == 0) this.subcategories = res?.result
@@ -294,6 +295,7 @@ export class UpdateProductComponent implements OnInit {
       sku: ['', Validators.required],
       mrpPrice: ['', Validators.required],
       offerPrice: [''],
+      sellingPrice: [''],
       stock: ['', Validators.required],
       moq: ['', Validators.required],
       maxOrderQuantity: ['', Validators.required],
@@ -581,6 +583,7 @@ export class UpdateProductComponent implements OnInit {
       price: {
         mrp: this.productform.get('mrpPrice')?.value,
         offer: this.productform.get('offerPrice')?.value,
+        selling: this.productform.get('sellingPrice')?.value,
       },
       style: {
         background: this.productform.get('background')?.value,

@@ -29,7 +29,7 @@
           <div class="mediaWrapper">
 
             <div class="coverImageWrapper">
-              <input type="file" class="form-control fs-6" name="image" accept="image/*" (change)="bannerFile($event)"
+              <input type="file" class="form-control fs-6" name="image" accept="image/*" [formControl]="coverImage" (change)="bannerFile($event)"
                 required>
               <img [src]="banner ? banner : '../../../../../../assets/images/Preview_Background.png'" alt="Media">
               <div *ngIf="banner" class="removeCover" (click)="removeCoverImage()">

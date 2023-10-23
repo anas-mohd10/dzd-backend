@@ -71,8 +71,8 @@ export class OrdersService {
     return this.http.post(`${url}`, query)
   }
 
-  getStatusList(status: string) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.getStatusList + '?status=' + status);
+  getStatusList(status: string, delivery: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.getStatusList + '?status=' + status + '&delivery=' + delivery);
     return this.http.get(`${url}`)
   }
 
@@ -89,5 +89,10 @@ export class OrdersService {
   updateOrderProducts(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.updateOrderProducts);
     return this.http.put(`${url}`, data)
+  }
+
+  getOrderCounts(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.orderCounts);
+    return this.http.post(`${url}`, data)
   }
 }

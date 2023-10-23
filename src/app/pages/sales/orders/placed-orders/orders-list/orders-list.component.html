@@ -53,7 +53,7 @@
               <ng-template swiperSlide>
                 <button class="nav_btn fs-6" [ngClass]="{'active': status?.status == activeStatus}"
                   (click)="getStatus(status)">
-                  {{status?.status}}
+                  {{status?.status}} ({{status?.count}})
                 </button>
               </ng-template>
             </ng-container>
@@ -117,7 +117,7 @@
             *ngIf="orders.length > 0">
             <thead class="common_thead">
               <tr class="text-left fs-6 text-gray-400">
-                <th style="min-width: 60px">Sl No.</th>
+                <th style="min-width: 60px">#</th>
                 <th style="min-width: 120px">Order</th>
                 <th style="min-width: 100px">Date</th>
                 <th style="min-width: 100px">Customer</th>

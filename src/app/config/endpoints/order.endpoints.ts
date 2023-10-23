@@ -15,5 +15,6 @@ export const orderEndpoints = {
    getStatusList: '/status-list',
    updateOrderStatus: '/update-status',
    cancelOrderDetails: '/cancel-order-details',
-   updateOrderProducts: '/update-order-products'
+   updateOrderProducts: '/update-order-products',
+   orderCounts: '/order-counts'
 };

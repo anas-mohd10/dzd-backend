@@ -58,37 +58,52 @@ export class OrdersListComponent implements OnInit {
   activeStatus: String = 'All Orders'
   orderStatus: Array<any> = [{
     status: 'All Orders',
-    value: ''
+    value: '',
+    count: 0
   }, {
     status: 'Placed',
-    value: 'PLACED'
+    value: 'PLACED',
+    count: 0
   }, {
     status: 'Accepted',
-    value: 'ACCEPTED'
+    value: 'ACCEPTED',
+    count: 0
   }, {
     status: 'Packed',
-    value: 'PACKED'
+    value: 'PACKED',
+    count: 0
   }, {
     status: 'Shipped',
-    value: 'SHIPPED'
+    value: 'SHIPPED',
+    count: 0
   }, {
     status: 'Out for Delivery',
-    value: 'OUT FOR DELIVERY'
+    value: 'OUT FOR DELIVERY',
+    count: 0
   }, {
     status: 'Delivered',
-    value: 'DELIVERED'
+    value: 'DELIVERED',
+    count: 0
+  }, {
+    status: 'Collected',
+    value: 'COLLECTED',
+    count: 0
   }, {
     status: 'Pending',
-    value: 'PENDING'
+    value: 'PENDING',
+    count: 0
   }, {
     status: 'Partial Processed',
-    value: 'PARTIAL PROCESSED'
+    value: 'PARTIAL PROCESSED',
+    count: 0
   }, {
     status: 'Failed',
-    value: 'FAILED'
+    value: 'FAILED',
+    count: 0
   }, {
     status: 'Cancelled',
-    value: 'CANCELLED'
+    value: 'CANCELLED',
+    count: 0
   },]
   lastPage: Boolean = false
   type: any = null
@@ -96,11 +111,23 @@ export class OrdersListComponent implements OnInit {
   constructor(
     private ordersService: OrdersService,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router
-  ) { }
+  ) {
+    this.ordersService.getOrderCounts({ status: this.orderStatus }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.orderStatus = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.toastr.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.toastr.error(err.message)
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.type = this.ActivatedRoute.snapshot.queryParams.type || ''
@@ -159,7 +186,7 @@ export class OrdersListComponent implements OnInit {
         this.totalrevenues = res?.result?.total_revenue
         this.lastPage = res?.result?.lastPage
         this.page = res?.result?.page
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -205,7 +232,7 @@ export class OrdersListComponent implements OnInit {
         for (let order of this.orders) {
           order.orderDate = new Date(order.orderDate).toDateString()
         }
-        this.cdr.markForCheck();
+        this.ChangeDetectorRef.markForCheck();
         this.dtTrigger.next()
       }
     })

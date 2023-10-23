@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
@@ -23,7 +23,7 @@ export class AddBrandComponent implements OnInit {
   isSubmitted = false;
   params: any;
   filedata: File;
-  bannerFiledata: File
+  bannerFiledata: any
   status: boolean;
   imageArray: any;
   previewURL: any;
@@ -54,6 +54,7 @@ export class AddBrandComponent implements OnInit {
   @ViewChild('mediaModal') mediaModal: any;
   @ViewChild('existingModal') existingModal: any;
   @ViewChild('quesModal') quesModal: any;
+  coverImage: FormControl = new FormControl('');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -204,6 +205,7 @@ export class AddBrandComponent implements OnInit {
     this.croppedBanner = ''
     this.banner = ''
     this.bannerFilename = ''
+    this.coverImage.reset()
   }
 
   openQuesModal(template: TemplateRef<any>) {

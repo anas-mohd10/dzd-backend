@@ -1,74 +1,132 @@
+$hover: #e3e3e3;
+$grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primary: #00bdab;
+$primaryBackground: #20BDAB40;
 $activeBackground: #00bdab20;
 $border: #cccccc;
-$hover: #F0F8F7;
-$grey: #888888;
+$background: #e5e5e5;
+$error: #F1416C;
 
-.brand-card-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+label,
+input[type=button],
+.btn-secondary {
+  font-weight: normal !important;
 }
 
-.brand-card {
-  padding: 10px;
-  background: #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: relative;
+button {
+  width: 200px;
+}
 
-  .editButton {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    height: 40px;
-    width: 40px;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    border-radius: 20px;
+.brandsWrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 
-    &:hover {
-      background: $hover;
+  .brandCard {
+    padding: 10px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+
+    .editButton {
+      position: absolute;
+      right: 1.25rem;
+      top: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      border-radius: 0.5rem;
+
+      &:hover {
+        background: $hover;
+      }
+    }
+
+    .brandDetails {
+
+      .featured {
+        background: #ddfffc;
+        color: #00bdab;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+
+      .inactiveStatus {
+        background: #ffd9d9;
+        color: #a60000;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+
+      .activeStatus {
+        background: #d9fff4;
+        color: #00A676;
+        border-radius: 1.25rem;
+        padding: 0 0.625rem;
+        width: max-content;
+      }
+    }
+  }
+}
+
+.filteringWrapper {
+  .filtering {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: #8B909A;
+      line-height: 18px;
+    }
+
+    select {
+      border: 1px solid #E8E8E8;
+      border-radius: 6px;
+      padding: 5px;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 
-  .brand-image {
-    height: 60px;
-    width: 60px;
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    img {
-      height: 100%;
-      width: 100%;
-      border-radius: 10px;
-    }
-  }
+    .paginationBefore,
+    .paginationNext {
+      height: 30px;
+      width: 30px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: $background;
+      cursor: pointer;
 
-  .brand-details {
-    margin: 0 0 0 10px;
-
-    .brand-status-true,
-    .brand-featured-true {
-      color: #00bdab;
-      font-weight: 600;
-    }
-
-    .brand-status-false {
-      color: #ce1626;
-      font-weight: 600;
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
     }
 
-    .brand-featured-false {
-      color: #0087bd;
-      font-weight: 600;
+    .paginationPage {
+      margin: 0 10px;
     }
   }
 }

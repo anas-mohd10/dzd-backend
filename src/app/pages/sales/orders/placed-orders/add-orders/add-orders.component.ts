@@ -181,6 +181,7 @@ export class AddOrdersComponent implements OnInit {
     });
 
     this.deliveryTime = this.timeslots[0]['refid']
+    this.orderForm.get('deliveryTime')?.setValue(this.timeslots[0]['refid'])
   }
 
   filterPassedTimeSlots(timeslots: any = []) {
@@ -306,8 +307,8 @@ export class AddOrdersComponent implements OnInit {
     if (isExists) {
       this.ToastrService.error('Product already exists in the cart')
     } else {
-      this.cartItems.push({ ...product, quantity: 1 })
-      this.cartSubtotal = this.cartSubtotal + product?.price?.selling
+      this.cartItems.push({ ...product, quantity: product?.moq })
+      this.cartSubtotal = this.cartSubtotal + product?.price?.selling * product?.moq
       this.cartTotal = this.cartSubtotal - this.cartDiscount
       this.productsModalRef?.hide()
     }
@@ -318,10 +319,15 @@ export class AddOrdersComponent implements OnInit {
       case 'increment':
         this.cartItems = this.cartItems.map((item: any) => {
           if (item._id == product._id) {
-            this.cartSubtotal = this.cartSubtotal + product?.price?.selling
-            this.cartTotal = this.cartSubtotal - this.cartDiscount
-            this.ToastrService.success('Product quantity updated')
-            return { ...item, quantity: item.quantity + 1 }
+            if (product?.maxOrderQuantity < item.quantity + 1) {
+              this.ToastrService.error(`Maximum order quantity (${product?.maxOrderQuantity}) has been reached`)
+              return item
+            } else {
+              this.cartSubtotal = this.cartSubtotal + product?.price?.selling
+              this.cartTotal = this.cartSubtotal - this.cartDiscount
+              this.ToastrService.success('Product quantity updated')
+              return { ...item, quantity: item.quantity + 1 }
+            }
           } else {
             return item
           }
@@ -330,10 +336,15 @@ export class AddOrdersComponent implements OnInit {
       case 'decrement':
         this.cartItems = this.cartItems.map((item: any) => {
           if (item._id == product._id && item.quantity > 1) {
-            this.cartSubtotal = this.cartSubtotal - product?.price?.selling
-            this.cartTotal = this.cartSubtotal - this.cartDiscount
-            this.ToastrService.success('Product quantity updated')
-            return { ...item, quantity: item.quantity - 1 }
+            if(product?.moq > item.quantity - 1){
+              this.ToastrService.error(`Minimum required quantity (${product?.moq}) has been reached`)
+              return item
+            }else{
+              this.cartSubtotal = this.cartSubtotal - product?.price?.selling
+              this.cartTotal = this.cartSubtotal - this.cartDiscount
+              this.ToastrService.success('Product quantity updated')
+              return { ...item, quantity: item.quantity - 1 }
+            }
           } else {
             return item
           }
