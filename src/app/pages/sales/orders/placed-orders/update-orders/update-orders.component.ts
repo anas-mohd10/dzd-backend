@@ -56,7 +56,7 @@ export class UpdateOrdersComponent implements OnInit {
   reason: FormControl = new FormControl('')
 
   constructor(
-    private orderService: OrdersService,
+    private OrdersService: OrdersService,
     private route: ActivatedRoute,
     private router: Router,
     private ToastrService: ToastrService,
@@ -104,7 +104,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getOrderDetails() {
-    this.orderService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
+    this.OrdersService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.order = res?.result
         this.orderNumber = res?.result?.orderNo
@@ -136,7 +136,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getStatusList(status: any) {
-    this.orderService.getStatusList(status, this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
+    this.OrdersService.getStatusList(status, this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
       next: (res: any) => {
         this.statusList = res?.result
         this.ChangeDetectorRef.markForCheck()
@@ -148,7 +148,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   updateOrderStatus(event: any, product: any) {
     this.productReference = product
-    this.orderService.updateOrderStatus({
+    this.OrdersService.updateOrderStatus({
       order: this.order.orderNo,
       product: product,
       status: event.target.value
@@ -184,7 +184,7 @@ export class UpdateOrdersComponent implements OnInit {
           return
         }
 
-        this.orderService.updateOrderProducts({
+        this.OrdersService.updateOrderProducts({
           order: this.order.orderNo, product: this.productReference,
           dateExpected: this.dateExpected.value, trackingURL: this.trackingURL.value,
           trackingNo: this.trackingNo.value
@@ -203,7 +203,7 @@ export class UpdateOrdersComponent implements OnInit {
         })
         break
       case 'outForDelivery':
-        this.orderService.updateOrderProducts({
+        this.OrdersService.updateOrderProducts({
           order: this.order.orderNo, product: this.productReference,
           deliveryPerson: this.deliveryPerson.value
         }).subscribe({
@@ -221,6 +221,20 @@ export class UpdateOrdersComponent implements OnInit {
         })
         break
     }
+  }
+
+  updateProductPayment(event: any, product: any) {
+    this.OrdersService.updateProductPayment({ order: this.order.orderNo, product: product.productId._id, status: event.target.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrderDetails()
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
   }
 
   openOrderAcceptance(template: TemplateRef<any>, productDetails: any) {
@@ -250,7 +264,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    this.orderService.updateOrder({ ...this.form.value, order: this.orderNumber }).subscribe((res: any) => {
+    this.OrdersService.updateOrder({ ...this.form.value, order: this.orderNumber }).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.ToastrService.error(res?.message);
       } else if (res.errorCode == 0) {
@@ -265,7 +279,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirm() {
-    this.orderService.cancelOrderDetails({ order: this.orderNumber, reason: this.reason.value }).subscribe({
+    this.OrdersService.cancelOrderDetails({ order: this.orderNumber, reason: this.reason.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()

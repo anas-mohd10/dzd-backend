@@ -28,14 +28,6 @@
                 <input type="text" class="form-control" placeholder="Search cart here" [formControl]="keyword"
                   (ngModelChange)="seachCart()">
               </div>
-              <!-- <div class="col-2">
-                <label class="fs-6 mb-1">Status</label>
-                <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="seachCart()">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value=false>Inactive</option>
-                  <option value=true>Active</option>
-                </select>
-              </div> -->
               <div class="col-2">
                 <label class="fs-6 mb-1">Type</label>
                 <select class="form-select fs-6 text-dark" [formControl]="type" (change)="seachCart()">
@@ -156,7 +148,7 @@
       </div>
       <div class="row mb-3">
         <div class="col-lg-9 form-group">
-          <label for="coupon" class="form-label">Coupon Code</label>
+          <label for="coupon" class="form-label">Special coupon code</label>
           <input type="text" placeholder="Coupon code" name="coupon" id="coupon" formControlName="couponCode"
             class="form-control">
         </div>

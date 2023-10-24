@@ -75,7 +75,7 @@
                 {{orderStatus}}
               </span>
             </h3>
-  
+
             <div class="itemDetails">
               <div class="itemTitle">Order Placed on</div>
               <div class="itemResponse">{{order?.orderDate}}, {{order?.orderTime}}</div>
@@ -112,7 +112,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="card addressCard">
           <div class="card-body">
             <div class="mb-4">
@@ -133,7 +133,7 @@
                 {{order?.address?.pincode}}
               </div>
             </div>
-  
+
             <div class="mt-4 mb-4">
               <h3 class="fs-3 text-dark fw-bolder">
                 <i class="bi bi-truck fs-3 text-dark"></i> Shipping Address
@@ -151,7 +151,7 @@
                 {{order?.address?.pincode}}
               </div>
             </div>
-  
+
             <div class="mt-4 orderDeliveryWrapper">
               <h3 class="fw-bolder fs-3 text-dark"><i class="bi bi-truck fs-3 text-dark"></i> Click and Collect Details
               </h3>
@@ -174,17 +174,17 @@
                   </span>
                 </div>
               </div>
-  
+
               <div class="alert alert-info mt-3" *ngIf="order?.shippingNote">
                 <span class="title fs-6">Shipping Note :</span>
                 <span class="fs-6">{{order?.shippingNote}}</span>
               </div>
             </div>
-  
+
           </div>
         </div>
       </div>
-  
+
       <div class="card mt-4">
         <div class="card-body">
           <h3 class="fs-3 mt-4 text-dark fw-bolder">
@@ -197,10 +197,11 @@
                 <tr class="text-left mb-2 fs-6 text-gray-400">
                   <th style="max-width: 20px">&nbsp;</th>
                   <th style="min-width: 150px">Product</th>
-                  <th style="max-width: 60px">Qty</th>
+                  <th style="max-width: 50px">Qty</th>
                   <th style="min-width: 100px">Price</th>
                   <th style="min-width: 100px">Total</th>
                   <th style="min-width: 100px">Status</th>
+                  <th style="min-width: 80px">Payment</th>
                 </tr>
               </thead>
               <tbody class="fs-6 text-dark">
@@ -258,16 +259,29 @@
                     <td>
                       <select class="form-select fs-6" (click)="getStatusList(product.currentStatus.status)"
                         (change)="updateOrderStatus($event, product?.productId?._id)">
-                        <option selected disabled>-- Select a status --</option>
+                        <option disabled>-- Select a status --</option>
+                        <option selected disabled>{{product.currentStatus.status}}</option>
                         <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
                       </select>
+                    </td>
+                    <td>
+                      <ng-container *ngIf="product?.paymentStatus == 'PENDING'">
+                        <select name="payment" class="form-select fs-6" id="payment"
+                          (change)="updateProductPayment($event, product)">
+                          <option selected disabled>-- Select an option --</option>
+                          <option value="PAID">Paid</option>
+                        </select>
+                      </ng-container>
+                      <ng-container *ngIf="product?.paymentStatus == 'PAID'">
+                        <div class="alert alert-success p-1" style="max-width: max-content;">Paid</div>
+                      </ng-container>
                     </td>
                   </tr>
                 </ng-container>
               </tbody>
             </table>
           </div>
-  
+
           <div class="historyWrapper mt-5">
             <h3 class="fs-3 text-dark fw-bolder">
               <i class="bi bi-bag-check fs-1 text-dark"></i>
@@ -289,7 +303,7 @@
               </ng-container>
             </div>
           </div>
-  
+
           <div class="paymentDetails mt-4 mb-4">
             <h3 class="fs-3 mt-4 text-dark fw-bolder">
               <i class="bi bi-credit-card fs-1 text-dark"></i>

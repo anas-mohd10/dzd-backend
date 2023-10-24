@@ -95,4 +95,9 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.orderCounts);
     return this.http.post(`${url}`, data)
   }
+
+  updateProductPayment(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.updateProductPayement);
+    return this.http.put(`${url}`, data)
+  }
 }
