@@ -52,11 +52,27 @@ $grey: #888888;
                     top: 55px;
                     height: 40px;
                     width: 40px;
-                    display: grid;
-                    place-items: center;
                     cursor: pointer;
                     border-radius: 20px;
-                    background: $border;
+                    background: #e4e4e4;
+
+                    .featuredIcon {
+                        position: relative;
+                        height: 100%;
+                        width: 100%;
+                        display: grid;
+                        place-items: center;
+
+                        &:hover {
+
+                            .tooltipWrapper {
+                                top: -45px;
+                                opacity: 1;
+                                visibility: visible;
+                                pointer-events: auto;
+                            }
+                        }
+                    }
                 }
 
                 .clickPoint {
@@ -65,11 +81,27 @@ $grey: #888888;
                     top: 10px;
                     height: 40px;
                     width: 40px;
-                    display: grid;
-                    place-items: center;
                     cursor: pointer;
                     border-radius: 20px;
-                    background: $border;
+                    background: #e4e4e4;
+
+                    .clickIcon {
+                        position: relative;
+                        height: 100%;
+                        width: 100%;
+                        display: grid;
+                        place-items: center;
+
+                        &:hover {
+
+                            .tooltipWrapper {
+                                top: -45px;
+                                opacity: 1;
+                                visibility: visible;
+                                pointer-events: auto;
+                            }
+                        }
+                    }
                 }
 
                 .storeCity.fs-5 {
@@ -121,4 +153,30 @@ $grey: #888888;
             }
         }
     }
+}
+
+.tooltipWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 13px;
+    background: #fff;
+    color: #00bdab;
+    border-radius: 3px;
+    padding: 5px 8px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -moz-transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -ms-transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -o-transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    width: max-content;
+    z-index: 100;
 }

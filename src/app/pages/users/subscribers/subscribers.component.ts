@@ -22,6 +22,7 @@ export class SubscribersComponent implements OnInit {
   keyword: FormControl = new FormControl('')
   subscribers: Array<any> = []
   subscriber: string = ''
+  totalResults: string = ''
   modalRef?: BsModalRef;
 
   constructor(
@@ -45,6 +46,7 @@ export class SubscribersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.subscribers = res?.result?.data
+          this.totalResults = res?.result?.totalResults
           this.lastPage = res?.result?.lastPage
           this.ChangeDetectorRef.markForCheck()
         }

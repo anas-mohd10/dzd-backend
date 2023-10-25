@@ -19,6 +19,7 @@ export class EnquiresComponent implements OnInit {
   form: FormGroup
   enquiry: any = {}
   lastPage: Boolean = false
+  totalResults: string = ''
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -45,6 +46,7 @@ export class EnquiresComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.enquires = res?.result?.data
         this.lastPage = res?.result?.lastPage
+        this.totalResults = res?.result?.totalResults
         this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()
       }

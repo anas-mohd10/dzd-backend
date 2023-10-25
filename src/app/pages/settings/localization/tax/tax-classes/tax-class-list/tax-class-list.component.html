@@ -51,9 +51,9 @@
                   <td>{{class?.name }}</td>
                   <td>{{class?.rate}}</td>
                   <td>
-                    <div class="status p-1" [ngClass]="{'enabled' : class?.isActive, 'disabled': !class?.isActive}">
-                      {{class?.isActive ? 'Enabled' : 'Disabled'}}
-                    </div>
+                    <span class="alert alert-success p-1" [ngClass]="{'alert-danger': !class?.isActive}">
+                      {{class?.isActive ? 'Active' : 'Inactive'}}
+                    </span>
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
@@ -100,6 +100,10 @@
                 <option value="40">40</option>
               </select>
               <span class="fs-6 text-dark">entries</span>
+            </div>
+            <div class="filteringResultCount fs-6">
+              Showing <span class="me-1 ms-1">{{classDetails.length}}</span> of <span
+                class="ms-1">{{totalResults}}</span>
             </div>
             <div class="pagination">
               <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="navBack()">

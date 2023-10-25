@@ -75,9 +75,6 @@
             </div>
             <div class="product-details">
                <div class="product-details-head">
-                  <div class="product-brand mb-1" *ngIf="product?.brand">
-                     <img src="{{base}}/{{product?.brand?.file}}" alt="Brand">
-                  </div>
                   <div class="product-name fs-4 mb-3">{{product?.name}}</div>
                   <div class="product-status-{{product?.isActive}} fs-6">
                      {{product?.isActive ? 'Active' : 'Inactive'}}

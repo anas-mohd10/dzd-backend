@@ -96,8 +96,7 @@
               </div>
             </div>
 
-            <div class="filteringWrapper d-flex align-items-center justify-content-between col-12"
-              *ngIf="carts.length > 0">
+            <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
               <div class="filtering">
                 <span class="fs-6 text-dark">Show</span>
                 <select [formControl]="limit" (change)="seachCart()">
@@ -108,6 +107,9 @@
                   <option value="25">25</option>
                 </select>
                 <span class="fs-6 text-dark">entries</span>
+              </div>
+              <div class="filteringResultCount fs-6">
+                Showing <span class="me-1 ms-1">{{carts.length}}</span> of <span class="ms-1">{{totalResults}}</span>
               </div>
               <div class="pagination">
                 <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">

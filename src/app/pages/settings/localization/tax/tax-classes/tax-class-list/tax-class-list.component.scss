@@ -107,20 +107,6 @@ input[type=button],
                 img {
                     cursor: pointer;
                 }
-
-                .status {
-                    color: $white;
-                    width: max-content;
-                }
-
-                .enabled {
-                    background: $activeState;
-
-                }
-
-                .disabled {
-                    background: $inactiveState;
-                }
             }
         }
     }

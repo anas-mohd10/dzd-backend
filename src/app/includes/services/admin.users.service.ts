@@ -71,8 +71,18 @@ export class AdminUsersService {
     return this.http.post(`${url}`, data)
   }
 
-  resetToken(data: any){
+  resetToken(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.resetToken);
+    return this.http.post(`${url}`, data)
+  }
+
+  getDuplicateEmail(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.duplicateEmail);
+    return this.http.post(`${url}`, data)
+  }
+
+  deleteAdmin(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.deleteAdmin);
     return this.http.post(`${url}`, data)
   }
 }

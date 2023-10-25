@@ -21,6 +21,7 @@ export class ReviewsListComponent implements OnInit {
   isLastPage: Boolean = false
   review: FormControl = new FormControl('')
   data: any = {}
+  totalResults: string = ''
   rating: FormControl = new FormControl('')
 
   constructor(
@@ -70,6 +71,7 @@ export class ReviewsListComponent implements OnInit {
     this.ReviewService.searchReviews(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.reviews = res?.result?.data
+        this.totalResults = res?.result?.totalResults
         for (let data of this.reviews) {
           data.created = new Date(data?.created).toDateString()
           if (data.isActive) this.review.setValue(data?.refid)

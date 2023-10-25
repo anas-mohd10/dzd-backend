@@ -30,6 +30,7 @@ export class CartListComponent implements OnInit {
   couponForm!: FormGroup
   isInvalid: boolean = false
   @ViewChild('notification') notificationModal: TemplateRef<any>
+  totalResults: string = ''
 
   constructor(
     private cartService: CartService,
@@ -96,6 +97,7 @@ export class CartListComponent implements OnInit {
     this.cartService.getCarts(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.carts = res?.result?.data
+        this.totalResults = res?.result?.totalItems
         this.lastPage = res?.result?.lastPage
         this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()

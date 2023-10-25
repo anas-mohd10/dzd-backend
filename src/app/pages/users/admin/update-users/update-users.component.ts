@@ -22,6 +22,8 @@ export class UpdateUsersComponent implements OnInit {
   rolesData: any;
   admin: any;
   uniqueEmail: boolean = false;
+  isMobileEditable: boolean = false
+  isEmailEditable: boolean = false
 
   constructor(
     private adminService: AdminUsersService,
@@ -38,6 +40,7 @@ export class UpdateUsersComponent implements OnInit {
       firstname: ['', Validators.required],
       lastname: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      countryCode: ['', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       username: ['', Validators.required],
       role: ['', Validators.required],
@@ -95,6 +98,19 @@ export class UpdateUsersComponent implements OnInit {
         this.uniqueEmail = true
       }
     })
+  }
+
+  toggleEdit(type: any) {
+    type == 'email' ? this.isEmailEditable = !this.isEmailEditable : this.isMobileEditable = !this.isMobileEditable
+  }
+
+  saveDetails(type: any) {
+    switch (type) {
+      case 'mobile':
+        break
+      case 'email':
+        break
+    }
   }
 
   onSubmit() {

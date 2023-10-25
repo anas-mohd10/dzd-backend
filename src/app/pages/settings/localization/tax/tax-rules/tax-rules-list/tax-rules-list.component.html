@@ -51,9 +51,9 @@
                   <td>{{rule?.name }}</td>
                   <td>{{rule?.rate}}</td>
                   <td>
-                    <div class="status p-1" [ngClass]="{'enabled' : rule?.isActive, 'disabled': !rule?.isActive}">
-                      {{rule?.isActive ? 'Enabled' : 'Disabled'}}
-                    </div>
+                    <span class="alert alert-success p-1" [ngClass]="{'alert-danger': !rule?.isActive}">
+                      {{rule?.isActive ? 'Active' : 'Inactive'}}
+                    </span>
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
@@ -100,6 +100,9 @@
                 <option value="40">40</option>
               </select>
               <span class="fs-6 text-dark">entries</span>
+            </div>
+            <div class="filteringResultCount fs-6">
+              Showing <span class="me-1 ms-1">{{rules.length}}</span> of <span class="ms-1">{{totalResults}}</span>
             </div>
             <div class="pagination">
               <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="navBack()">

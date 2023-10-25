@@ -94,6 +94,10 @@
                             </select>
                             <span class="fs-6 text-dark">entries</span>
                         </div>
+                        <div class="filteringResultCount fs-6">
+                            Showing <span class="me-1 ms-1">{{customers.length}}</span> of <span
+                                class="ms-1">{{totalResults}}</span>
+                        </div>
                         <div class="pagination">
                             <div class="paginationBefore" [ngClass]="{'disabled': page == 1}"
                                 (click)="getPreviousPage()">

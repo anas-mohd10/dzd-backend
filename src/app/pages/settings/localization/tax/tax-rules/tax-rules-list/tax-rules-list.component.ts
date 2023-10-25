@@ -20,6 +20,7 @@ export class TaxRulesComponent implements OnInit {
   appRoute = appRoutes
   modalRef?: BsModalRef
   ruleDetails: any = {}
+  totalResults: string = ''
 
   constructor(
     private TaxRulesService: TaxRulesService,
@@ -67,6 +68,7 @@ export class TaxRulesComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.rules = res?.result?.data;
+          this.totalResults = res?.result?.totalResults;
           this.isLastPage = res?.result?.isLastPage;
           this.ChangeDetectorRef.markForCheck()
         } else {

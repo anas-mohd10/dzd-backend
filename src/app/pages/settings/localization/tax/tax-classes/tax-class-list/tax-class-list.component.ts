@@ -19,6 +19,7 @@ export class TaxClassComponent implements OnInit {
   appRoute = appRoutes
   modalRef?: BsModalRef
   class: any = {}
+  totalResults: string = ''
 
   constructor(
     private TaxClassesService: TaxClassesService,
@@ -66,6 +67,7 @@ export class TaxClassComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.classDetails = res?.result?.data;
+          this.totalResults = res?.result?.totalResults;
           this.isLastPage = res?.result?.isLastPage;
           this.ChangeDetectorRef.markForCheck()
         } else {

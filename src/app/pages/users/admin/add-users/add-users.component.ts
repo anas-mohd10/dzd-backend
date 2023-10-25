@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
@@ -16,46 +16,35 @@ export class AddUsersComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes
-  adminForm: FormGroup;
+  form: FormGroup;
   isSubmitted = false;
   rolesData: any;
-  uniqueEmail: boolean = true;
+  isDuplicate: boolean = false;
+  showPassword: boolean = false
 
   constructor(
-    private adminService: AdminUsersService,
-    private roleService: RolesService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService,
+    private AdminUsersService: AdminUsersService,
+    private RolesService: RolesService,
+    private FormBuilder: FormBuilder,
+    private Router: Router,
+    private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.initForm()
-    this.getRoles()
-  }
-
-  initForm() {
-    this.adminForm = this.formBuilder.group({
+    this.form = this.FormBuilder.group({
       firstname: ['', Validators.required],
       lastname: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      countryCode: ['', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       username: ['', Validators.required],
       role: ['', Validators.required],
-      firstPwd: ['', Validators.required],
       password: ['', Validators.required],
       isActive: ['true', Validators.required],
     });
-  }
 
-  get af() {
-    return this.adminForm.controls;
-  }
-
-  getRoles() {
-    this.roleService.getActiveRoles().subscribe((res: any) => {
+    this.RolesService.getActiveRoles().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.rolesData = res?.result
         this.ChangeDetectorRef.markForCheck()
@@ -63,66 +52,52 @@ export class AddUsersComponent implements OnInit {
     })
   }
 
-  checkEmail(e: any) {
-    const data = { email: '' }
-    if (e.value) {
-      data.email = e.value
-    }
-    this.adminService.getAdminUserByMail(data).subscribe((res: any) => {
-      if (res?.result.length != 0) {
-        this.uniqueEmail = false
-        this.toastr.error("Email already exists")
-      } else {
-        this.uniqueEmail = true
-      }
-    })
+  get formControls() {
+    return this.form.controls;
   }
 
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
+  verifyEmailAddress() {
+    if (this.form.get('email')?.value) {
+      this.AdminUsersService.getDuplicateEmail({ email: this.form.get('email')?.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.isDuplicate = false
+          } else {
+            this.isDuplicate = true
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }
+      })
     }
   }
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateAdmin();
-    } else {
-      this.addAdmin();
-    }
+  togglePassword() {
+    this.showPassword = !this.showPassword
   }
-
-  updateAdmin() { }
 
   addAdmin() {
-    if (!this.adminForm.valid) {
+    if (!this.form.valid) {
+      this.isSubmitted = true;
       return;
     }
-    let pwd = this.adminForm.get("firstPwd")?.value
-    let conPwd = this.adminForm.get("password")?.value
-    if (this.uniqueEmail == true) {
-      if (pwd == conPwd) {
-        this.adminService.addAdminUsers(this.adminForm.value).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error('Something went wrong');
-          } else if (res.errorCode == 0) {
-            this.toastr.success('Admin user added successfully');
-            this.router.navigate([this.appRoute.admin.ADMIN_USERS]);
+
+    if (!this.isDuplicate) {
+      this.AdminUsersService.addAdminUsers(this.form.value).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.ToastrService.success(res?.message);
+            this.Router.navigate([this.appRoute.admin.ADMIN_USERS]);
+          } else {
+            this.ToastrService.error(res?.message);
           }
-        })
-      } else {
-        this.toastr.error("Password doesn't match")
-      }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }
+      })
     } else {
-      this.toastr.error('Email already exists');
+      this.ToastrService.error('This email cannot be used at this time');
     }
   }
 }

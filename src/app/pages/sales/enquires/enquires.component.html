@@ -17,26 +17,6 @@
         </div>
     </div>
 
-    <!-- <div class="row search d-flex align-items-end justify-content-end">
-        <div class="col-3">
-            <label class="fs-6 mb-1">&nbsp;</label>
-            <input type="text" class="form-control fs-6 text-dark" [formControl]="keyword"
-                (ngModelChange)="getEnquiries()" placeholder="Search enquiries here">
-        </div>
-        <div class="col-2">
-            <label class="fs-6 mb-1">Status</label>
-            <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="getEnquiries()">
-                <option value="" disabled>-- Select an option --</option>
-                <option value=false>Inactive</option>
-                <option value=true>Active</option>
-            </select>
-        </div>
-        <div class="col-2">
-            <label class="fs-6 mb-1">&nbsp;</label>
-            <input type="button" class="btn btn-secondary" value="Clear filters" (click)="reset()">
-        </div>
-    </div> -->
-
     <div class="resultsContainer">
         <ng-container *ngFor="let enquiry of enquires">
             <div class="enquiryCard">
@@ -80,6 +60,9 @@
                 <option value="25">25</option>
             </select>
             <span class="fs-6 text-dark">entries</span>
+        </div>
+        <div class="filteringResultCount fs-6">
+            Showing <span class="me-1 ms-1">{{enquires.length}}</span> of <span class="ms-1">{{totalResults}}</span>
         </div>
         <div class="pagination">
             <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">

@@ -65,8 +65,8 @@
                                                   <td>{{i + 1}}</td>
                                                   <td>{{role?.name}}</td>
                                                   <td>
-                                                       <span class="active fs-6"
-                                                            [ngClass]="{'inactive': !role?.isActive}">
+                                                       <span class="alert alert-success p-1"
+                                                            [ngClass]="{'alert-danger': !role?.isActive}">
                                                             {{role?.isActive ? 'Active' : 'Inactive'}}
                                                        </span>
                                                   </td>
@@ -87,8 +87,7 @@
                                    </div>
                               </div>
 
-                              <div class="filteringWrapper d-flex align-items-center justify-content-between"
-                                   *ngIf="roles.length > 0">
+                              <div class="filteringWrapper d-flex align-items-center justify-content-between">
                                    <div class="filtering">
                                         <span class="fs-6 text-dark">Show</span>
                                         <select [formControl]="limit" (change)="getRoles()">
@@ -99,6 +98,10 @@
                                              <option value="25">25</option>
                                         </select>
                                         <span class="fs-6 text-dark">entries</span>
+                                   </div>
+                                   <div class="filteringResultCount fs-6">
+                                        Showing <span class="me-1 ms-1">{{roles.length}}</span> of <span
+                                             class="ms-1">{{totalResults}}</span>
                                    </div>
                                    <div class="pagination">
                                         <div class="paginationBefore" [ngClass]="{'disabled': page == 1}"

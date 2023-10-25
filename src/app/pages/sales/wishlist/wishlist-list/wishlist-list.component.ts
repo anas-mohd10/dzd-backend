@@ -16,6 +16,7 @@ export class WishlistListComponent implements OnInit {
   customers: Array<any> = []
   keyword: FormControl = new FormControl('')
   sort: FormControl = new FormControl('')
+  totalResults: string = ''
 
   constructor(
     private CustomersService: CustomersService,
@@ -54,6 +55,7 @@ export class WishlistListComponent implements OnInit {
     this.CustomersService.getWishlist(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.customers = res?.result?.data
+        this.totalResults = res?.result?.totalResults
         this.isLastPage = res?.result?.isLastPage
         this.ChangeDetectorRef.markForCheck()
       }

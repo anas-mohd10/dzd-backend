@@ -75,7 +75,7 @@
                               <td>{{customer?.email}}</td>
                               <td>{{customer?.mobile}}</td>
                               <td>
-                                 <span class="active fs-6" [ngClass]="{'inactive': !customer?.isActive}">
+                                 <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
                                     {{customer?.isActive ? 'Active' : 'Inactive'}}
                                  </span>
                               </td>
@@ -96,8 +96,7 @@
                      </div>
                   </div>
 
-                  <div class="filteringWrapper d-flex align-items-center justify-content-between"
-                     *ngIf="customers.length > 0">
+                  <div class="filteringWrapper d-flex align-items-center justify-content-between">
                      <div class="filtering">
                         <span class="fs-6 text-dark">Show</span>
                         <select [formControl]="limit" (change)="getCustomers()">
