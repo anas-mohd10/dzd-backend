@@ -1,33 +1,18 @@
-<div class="card-body p-0">
-  <div class="d-flex flex-stack card-p flex-grow-1">
-    <div class="main_form">
-      <div class="duration_time">
-        <div class="Duration">
-          <span> Duration </span>
-          <select class="form-select mb-3" [formControl]="duration">
-            <option value="" disabled>-- Select an option --</option>
-            <option value="1">1 month</option>
-            <option value="6">6 months</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="chart_details">
-      <div class="total_sales">
-        <h6>
-          AED 50
-        </h6>
-        <h5>
-          Total sales
-        </h5>
-      </div>
+<div class="card-body">
+  <div class="mb-4 d-flex justify-content-end align-items-center">
+    <div class="form-group">
+      <label class="fs-6 mb-1">Duration</label>
+      <select class="form-select fs-6 pt-1 pb-1" name="type" id="type" [formControl]="revenueType"
+        (ngModelChange)="getMonthlyRevenue()">
+        <option value="3">3 months</option>
+        <option value="6">6 months</option>
+        <option value="12">1 year</option>
+      </select>
     </div>
   </div>
 
-  <div id="chart">
-    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
-      [stroke]="chartOptions.stroke" [dataLabels]="chartOptions.dataLabels" [yaxis]="chartOptions.yaxis"
-      [labels]="chartOptions.labels" [legend]="chartOptions.legend" [title]="chartOptions.title"
-      [subtitle]="chartOptions.subtitle"></apx-chart>
-  </div>
+  <apx-chart [series]="chartOptions?.series" [chart]="chartOptions?.chart" [xaxis]="chartOptions?.xaxis"
+    [stroke]="chartOptions?.stroke" [dataLabels]="chartOptions?.dataLabels" [yaxis]="chartOptions?.yaxis"
+    [labels]="chartOptions?.labels" [legend]="chartOptions?.legend" [title]="chartOptions?.title"
+    [subtitle]="chartOptions?.subtitle"></apx-chart>
 </div>

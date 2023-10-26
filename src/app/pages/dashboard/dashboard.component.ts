@@ -3,6 +3,7 @@ import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { AuthService } from 'src/app/includes/services/auth.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexYAxis, ApexTitleSubtitle, ApexLegend } from "ng-apexcharts";
+import { FormControl } from '@angular/forms';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -77,7 +78,7 @@ export class DashboardComponent implements OnInit {
 
     this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.monthlyRevenue = res?.result?.monthly
+        this.monthlyRevenue = res?.result?.monthlyResults
         this.orders = res?.result?.orders
         this.sales = res?.result?.sales
         this.saleDifference = res?.result?.sales?.saleDifference
@@ -105,14 +106,16 @@ export class DashboardComponent implements OnInit {
           this.dayValues.push(dayItem?.revenue)
         }
         this.chartOptions = {
-          series: [{ name: "Revenue", data: this.dayValues }],
+          series: [{ name: "Revenue", data: this.dayValues, color: '#00bdab' }],
           chart: {
             type: "area",
             height: 350,
             zoom: { enabled: false },
             fontFamily: 'Sen, sans-serif'
           },
-          dataLabels: { enabled: true },
+          dataLabels: {
+            enabled: true, style: { colors: ['#1a1d27'] }
+          },
           stroke: { curve: "smooth" },
           labels: this.dayLabels,
           xaxis: { type: "datetime" },

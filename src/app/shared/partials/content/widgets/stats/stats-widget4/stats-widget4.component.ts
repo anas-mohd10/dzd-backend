@@ -18,13 +18,15 @@ export type ChartOptions = {
 @Component({
   selector: 'app-stats-widget4',
   templateUrl: './stats-widget4.component.html',
+  styleUrls: ['./stats-widget4.component.scss'],
 })
+
 export class StatsWidget4Component implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
-  public chartOptions: any;
-  months: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  revenues: Array<any> = ['0', '0', '0', '0', '0', '0']
-  duration: FormControl = new FormControl('6')
+  chartOptions: any;
+  monthlyLables: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+  monthlyValues: Array<any> = ['0', '0', '0', '0', '0', '0']
+  revenueType: FormControl = new FormControl('6')
 
   constructor(
     private DashboardService: DashboardService,
@@ -32,45 +34,36 @@ export class StatsWidget4Component implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {
+    this.getMonthlyRevenue()
+  }
+
+  getMonthlyRevenue() {
+    this.DashboardService.getMonthlyRevenue({ type: this.revenueType.value }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.months = []
-        this.revenues = []
-        for (let _item of res?.result?.monthly) {
-          this.months.push(_item?.name.slice(0, 3))
-          this.revenues.push(_item?.revenue)
+        this.monthlyLables = []
+        this.monthlyValues = []
+
+        for (let _item of res?.result?.monthlyResults) {
+          this.monthlyLables.push(_item?.name.slice(0, 3))
+          this.monthlyValues.push(_item?.revenue)
         }
 
         this.chartOptions = {
-          series: [
-            {
-              name: "Revenue",
-              data: this.revenues
-            }
-          ],
+          series: [{ name: "Revenue", data: this.monthlyValues, color: '#00bdab' }],
           chart: {
             type: "area",
             height: 350,
-            zoom: {
-              enabled: false
-            }
+            zoom: { enabled: false },
+            fontFamily: 'Sen, sans-serif'
           },
           dataLabels: {
-            enabled: true
+            enabled: true, style: { colors: ['#1a1d27'] }
           },
-          stroke: {
-            curve: "smooth"
-          },
-          labels: this.months,
-          xaxis: {
-            type: "text"
-          },
-          yaxis: {
-            opposite: true
-          },
-          legend: {
-            horizontalAlign: "left"
-          }
+          stroke: { curve: "smooth" },
+          labels: this.monthlyLables,
+          xaxis: { type: "category", },
+          yaxis: { opposite: false },
+          legend: { horizontalAlign: "left" }
         };
 
         this.ChangeDetectorRef.markForCheck()
