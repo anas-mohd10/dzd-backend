@@ -21,12 +21,12 @@ input[type=button] {
 
    .product-card-container {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       margin: 10px 0 0 0;
+      gap: 10px;
    }
 
    .product-card {
-      margin: 10px 10px;
       padding: 10px;
       background: #ffffff;
       box-shadow: 0 10px 25px rgb(0 0 0 / 5%);
@@ -36,41 +36,9 @@ input[type=button] {
       align-items: flex-start;
       position: relative;
 
-      .editButton {
-         position: absolute;
-         right: 10px;
-         top: 10px;
-         height: 40px;
-         width: 40px;
-         display: grid;
-         place-items: center;
-         cursor: pointer;
-         border-radius: 20px;
-
-         &:hover {
-            background: $hover;
-         }
-      }
-
-      .viewButton {
-         position: absolute;
-         right: 10px;
-         top: 50px;
-         height: 40px;
-         width: 40px;
-         display: grid;
-         place-items: center;
-         cursor: pointer;
-         border-radius: 20px;
-
-         &:hover {
-            background: $hover;
-         }
-      }
-
       .product-image {
-         height: 100px;
-         width: 100px;
+         height: 80px;
+         width: 80px;
 
          img {
             height: 100%;
@@ -80,34 +48,47 @@ input[type=button] {
          }
       }
 
+      .editButton {
+         position: absolute;
+         right: 10px;
+         top: 10px;
+         width: 2.5rem;
+         height: 2.5rem;
+         display: grid;
+         place-items: center;
+         cursor: pointer;
+         border-radius: 0.5rem;
+         background: $hover;
+      }
+
+      .viewButton {
+         position: absolute;
+         right: 10px;
+         bottom: 10px;
+         width: 2.5rem;
+         height: 2.5rem;
+         display: grid;
+         place-items: center;
+         cursor: pointer;
+         border-radius: 0.5rem;
+         background: $hover;
+      }
+
       .product-details {
-         width: calc(100% - 100px);
-         margin: 0 0 0 10px;
+         width: calc(100% - 80px);
 
-         .product-details-head {
-            .product-brand {
-               img {
-                  height: 25px;
-                  margin: 0 0 5px 0;
-                  width: 25px;
-                  border-radius: 50px;
-                  box-shadow: 0 10px 25px rgb(0 0 0 / 10%);
-               }
-            }
+         .product-name {
+            font-weight: 600;
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+         }
 
-            .product-name {
-               font-weight: 600;
-            }
-
-            .product-status-true {
-               color: $activeState;
-               font-weight: 600;
-            }
-
-            .product-status-false {
-               color: $inactiveState;
-               font-weight: 600;
-            }
+         .alert {
+            width: max-content;
          }
       }
    }
