@@ -62,7 +62,7 @@ export class StatsWidget4Component implements OnInit {
           stroke: { curve: "smooth" },
           labels: this.monthlyLables,
           xaxis: { type: "category", },
-          yaxis: { opposite: false },
+          yaxis: { opposite: true },
           legend: { horizontalAlign: "left" }
         };
 

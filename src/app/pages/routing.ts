@@ -26,20 +26,20 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: '',
+        path: 'brand',
         children: [
           {
-            path: 'brand',
+            path: '',
             loadChildren: () => import('./catalog/brand/brand-list/brand-list.module').then((m) => m.BrandModule),
             canActivate: [PermissionGuard]
           },
           {
-            path: 'add-brand',
+            path: 'add',
             loadChildren: () => import('./catalog/brand/add-brand/add-brand.module').then((m) => m.AddBrandModule),
             canActivate: [PermissionGuard]
           },
           {
-            path: 'update-brand',
+            path: 'update',
             loadChildren: () => import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
             canActivate: [PermissionGuard]
           },
@@ -47,20 +47,20 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: '',
+        path: 'category',
         children: [
           {
-            path: 'category',
+            path: '',
             loadChildren: () => import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
             canActivate: [PermissionGuard]
           },
           {
-            path: 'add-category',
+            path: 'add',
             loadChildren: () => import('./catalog/category/add-category/add-category.module').then((m) => m.AddCategoryModule),
             canActivate: [PermissionGuard]
           },
           {
-            path: 'update-category',
+            path: 'update',
             loadChildren: () => import('./catalog/category/update-category/update-category.module').then((m) => m.UpdateCategoryModule),
             canActivate: [PermissionGuard]
           },
@@ -68,20 +68,20 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: '',
+        path: 'collection',
         children: [
           {
-            path: 'collection',
+            path: '',
             loadChildren: () => import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
             canActivate: [PermissionGuard]
           },
           {
-            path: 'add-collection',
+            path: 'add',
             loadChildren: () => import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
             canActivate: [PermissionGuard]
           },
           {
-            path: 'update-collection',
+            path: 'update',
             loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
             canActivate: [PermissionGuard]
           },

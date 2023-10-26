@@ -100,15 +100,15 @@
                             <div class="attribute-name">{{attribute?.name}}</div>
                             <div class="attribute-values">
                               <ng-container *ngFor="let value of attribute?.values">
-                                <div *ngIf="attribute?.type == 'Text'"
+                                <div *ngIf="attribute?.type == 'text'"
                                   (click)="selectAttribute(attribute?.type, attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
                                   class="attr-value attr-text">
                                   {{value?.value}}
                                 </div>
-                                <div *ngIf="attribute?.type == 'Color'"
+                                <div *ngIf="attribute?.type == 'color'"
                                   (click)="selectAttribute(attribute?.type, attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
                                   class="attr-value attr-color" [ngStyle]="{'background': value?.value}"></div>
-                                <div *ngIf="attribute?.type == 'File'">
+                                <div *ngIf="attribute?.type == 'file'">
                                   <img src="{{base}}/{{value?.value}}"
                                     (click)="selectAttribute(attribute?.type,attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
                                     alt="" srcset=""
@@ -124,14 +124,14 @@
                         <h2 class="form-title fw-bolder" *ngIf="attributesValues.length > 0">Selected Attributes</h2>
                         <div class="selectedAttributes" *ngIf="attributesValues.length > 0">
                           <ng-container *ngFor="let selected of attributesValues; let i=index">
-                            <ng-container *ngIf="selected?.head?.type == 'Text'">
+                            <ng-container *ngIf="selected?.head?.type == 'text'">
                               <div class="attributeCard">
                                 <div class="attributeName">{{selected?.head?.name}}</div>
                                 <div class="textAttribute"> {{selected?.value?.name}}</div>
                               </div>
                             </ng-container>
 
-                            <ng-container *ngIf="selected?.head?.type == 'Color'">
+                            <ng-container *ngIf="selected?.head?.type == 'color'">
                               <div class="attributeCard">
                                 <div class="attributeName">{{selected?.head?.name}}</div>
                                 <div class="colorAttribute" [ngStyle]="{'background': selected?.value?.name}"></div>

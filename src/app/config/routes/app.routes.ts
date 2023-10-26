@@ -52,16 +52,16 @@ export const appRoutes = {
   BASE: environment.base + "/",
   DASHBOARD: `${app}${dashboardRoute}`,
   brand: {
-    ADD_BRAND: `${app}/add-brand`,
+    ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,
-    ACTIVE_BRAND_LIST: `${catalogRoute}/active-brand`,
-    UPDATE_BRAND: `${app}/update-brand`,
+    ACTIVE_BRAND_LIST: `${catalogRoute} /active-brand`,
+    UPDATE_BRAND: `${app}${brandRoute}/update`,
     ARCHIVED_BRAND: `${app}${brandRoute}/archive`
   },
   category: {
-    ADD_CATEGORY: `${app}/add-category`,
+    ADD_CATEGORY: `${app}${categoryRoute}/add`,
     CATEGORY_LIST: `${app}${categoryRoute}`,
-    UPDATE_CATEGORY: `${app}/update-category`,
+    UPDATE_CATEGORY: `${app}${categoryRoute}/update`,
     ARCHIVED_CATEGORY: `${app}${categoryRoute}/archive`
   },
   attribute: {
@@ -83,9 +83,9 @@ export const appRoutes = {
     UPDATE_VARIANT_PRODUCT: `${app}${variantProductRoute}/update`,
   },
   collection: {
-    ADD_COLLECTION: `${app}/add-collection`,
+    ADD_COLLECTION: `${app}${collectionRoute}/add`,
     COLLECTION_LIST: `${app}${collectionRoute}`,
-    UPDATE_COLLECTION: `${app}/update-collection`,
+    UPDATE_COLLECTION: `${app}${collectionRoute}/update`,
     ARCHIVED_COLLECTION: `${app}${collectionRoute}/archive`
   },
   offer: {
