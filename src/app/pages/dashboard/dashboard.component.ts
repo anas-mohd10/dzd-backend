@@ -1,7 +1,22 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { AuthService } from 'src/app/includes/services/auth.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexYAxis, ApexTitleSubtitle, ApexLegend } from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  dataLabels: ApexDataLabels;
+  yaxis: ApexYAxis;
+  title: ApexTitleSubtitle;
+  labels: string[];
+  legend: ApexLegend;
+  subtitle: ApexTitleSubtitle;
+};
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -10,7 +25,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 export class DashboardComponent implements OnInit {
   data: any
   monthlyRevenue: any = [];
-  daysRevenue: any = []
+  daysDetails: any = {}
   lastMonthRevenue: void;
   userData: any
   products: Array<any> = []
@@ -22,6 +37,13 @@ export class DashboardComponent implements OnInit {
   settings: any = {}
   saleDifference: Number = 0
   saleUp: Boolean = false
+
+  //Revenue by days
+  @ViewChild("chart") chart: ChartComponent;
+  chartOptions: any;
+  dayLabels: Array<any> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  dayValues: Array<any> = ['0', '0', '0', '0', '0', '0', '0']
+  //Revenue by days
 
   constructor(
     private DashboardService: DashboardService,
@@ -76,7 +98,28 @@ export class DashboardComponent implements OnInit {
 
     this.DashboardService.getDaysRevenue({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.daysRevenue = res?.result
+        this.dayLabels = []
+        this.dayValues = []
+        for (let dayItem of res?.result?.data) {
+          this.dayLabels.push(dayItem?.date)
+          this.dayValues.push(dayItem?.revenue)
+        }
+        this.chartOptions = {
+          series: [{ name: "Revenue", data: this.dayValues }],
+          chart: {
+            type: "area",
+            height: 350,
+            zoom: { enabled: false },
+            fontFamily: 'Sen, sans-serif'
+          },
+          dataLabels: { enabled: true },
+          stroke: { curve: "smooth" },
+          labels: this.dayLabels,
+          xaxis: { type: "datetime" },
+          yaxis: { opposite: true },
+          legend: { horizontalAlign: "left" }
+        };
+        this.daysDetails = res?.result
         this.ChangeDetectorRef.markForCheck()
       }
     })

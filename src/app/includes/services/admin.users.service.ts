@@ -32,8 +32,13 @@ export class AdminUsersService {
   }
 
   addAdminUsers(data: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.register_admin);
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.addAdmin);
     return this.http.post(`${url}`, data)
+  }
+
+  updateAdminDetails(data: any){
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.updateAdmin);
+    return this.http.put(`${url}`, data)
   }
 
   updateAdminUser(data: any) {
@@ -84,6 +89,21 @@ export class AdminUsersService {
   deleteAdmin(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.deleteAdmin);
     return this.http.post(`${url}`, data)
+  }
+
+  updateAdminEmail(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.updateAdminEmail);
+    return this.http.put(`${url}`, data)
+  }
+
+  updateAdminMobile(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.updateAdminMobile);
+    return this.http.put(`${url}`, data)
+  }
+
+  changePassword(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.changePassword);
+    return this.http.put(`${url}`, data)
   }
 }
 

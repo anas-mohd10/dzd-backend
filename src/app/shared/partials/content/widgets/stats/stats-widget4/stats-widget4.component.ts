@@ -29,8 +29,7 @@ export class StatsWidget4Component implements OnInit {
   constructor(
     private DashboardService: DashboardService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {

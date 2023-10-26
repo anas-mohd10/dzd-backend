@@ -121,18 +121,29 @@
   </div>
 </div>
 
-<div class="row mb-5 mt-10">
+<div class="row mb-5 mt-5">
   <div class="col-xl-8 apex_chart">
     <div class="stats5Months" *ngIf="monthlyRevenue.length > 0">
-      <div class="fs-4 fw-bolder  mb-lg-5 info_head">Analytics </div>
-      <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
-        color="success">
-      </app-stats-widget4>
+      <div class="fs-4 fw-bolder mb-lg-5 info_head">Analytics </div>
+      <div class="card daysRevenueWrapper">
+        <div class="card-body">
+          <div class="fs-3 daysRevenue text-primary">
+            {{daysDetails?.totalRevenue}}
+          </div>
+          <p>
+            Last 7 days sales
+          </p>
+          <apx-chart [series]="chartOptions?.series" [chart]="chartOptions?.chart" [xaxis]="chartOptions?.xaxis"
+            [stroke]="chartOptions?.stroke" [dataLabels]="chartOptions?.dataLabels" [yaxis]="chartOptions?.yaxis"
+            [labels]="chartOptions?.labels" [legend]="chartOptions?.legend" [title]="chartOptions?.title"
+            [subtitle]="chartOptions?.subtitle"></apx-chart>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="col-xl-4">
-    <div class="fs-4 fw-bolder  mb-lg-5 info_head">Top selling products</div>
+    <div class="fs-4 fw-bolder mb-lg-5 info_head">Top selling products</div>
     <div class="selling_box">
       <ng-container *ngFor="let product of products">
         <div class="selling_products">
@@ -155,8 +166,8 @@
   </div>
 </div>
 
-<div class="row mb-5 mt-10">
-  <div class="col-xl-8">
+<div class="row mb-5 mt-5">
+  <div class="col-xl-12">
     <div class="stats5Months" *ngIf="monthlyRevenue.length > 0">
       <app-stats-widget4 svgIcon="./assets/media/icons/duotune/general/gen025.svg" class="card card-xl-stretch mb-xl-8"
         color="success">
@@ -164,7 +175,7 @@
     </div>
   </div>
 
-  <div class="col-xl-4 monthly_chartParent">
+  <!-- <div class="col-xl-4 monthly_chartParent">
     <div class="monthly_comparison_box">
       <h4>
         Monthly sales comparison
@@ -198,7 +209,7 @@
         View Details
       </a>
     </div>
-  </div>
+  </div> -->
 </div>
 
 <div class="row mb-5">
