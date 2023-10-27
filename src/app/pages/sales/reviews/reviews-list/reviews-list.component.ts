@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { ReviewService } from 'src/app/includes/services/review.service';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
+import { ProductService } from 'src/app/includes/services/product.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
 @Component({
   selector: 'app-reviews-list',
   templateUrl: './reviews-list.component.html',
@@ -24,14 +26,30 @@ export class ReviewsListComponent implements OnInit {
   totalResults: string = ''
   rating: FormControl = new FormControl('')
 
+  productKeyword: FormControl = new FormControl('')
+  productStatus: FormControl = new FormControl('')
+  productLimit: FormControl = new FormControl(20)
+  productPage: number = 1
+  products: Array<any> = []
+  isProductLastPage: boolean = false
+  totalProducts: string = ''
+  productReviews: Array<any> = []
+  totalReviews: string = ''
+  modalRef?: BsModalRef
+  productDetails: any = {}
+  reviewKeyword: FormControl = new FormControl('')
+
   constructor(
     private ReviewService: ReviewService,
     private ToastrService: ToastrService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ProductService: ProductService,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
     this.getReviews()
+    this.getProducts()
   }
 
   updateReview(data: any) {
@@ -39,6 +57,7 @@ export class ReviewsListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.ToastrService.success(res?.message)
         this.getReviews()
+        this.getProductReviews()
       }
     })
   }
@@ -92,6 +111,16 @@ export class ReviewsListComponent implements OnInit {
     this.getReviews()
   }
 
+  getProductsPreviousPage() {
+    this.productPage -= 1
+    this.getProducts()
+  }
+
+  getProductsNextPage() {
+    this.productPage += 1
+    this.getProducts()
+  }
+
   clearFilters() {
     this.keyword.setValue('')
     this.isActive.setValue('')
@@ -100,5 +129,62 @@ export class ReviewsListComponent implements OnInit {
     this.getReviews()
     this.limit.setValue(20)
     this.page = 1
+  }
+
+  open(template: TemplateRef<any>, productDetails: any) {
+    this.productDetails = productDetails
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+    this.getProductReviews()
+  }
+
+  getProductReviews() {
+    this.ReviewService.productReviews({ product: this.productDetails?.prodid, keyword: this.reviewKeyword?.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.productReviews = res?.result?.reviews
+          this.totalReviews = res?.result?.totalReviews
+          for (let review of this.productReviews) review.created = new Date(review?.created).toDateString()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
+  }
+
+  close() {
+    this.productDetails = {}
+    this.modalRef?.hide()
+  }
+
+  clearProductFilters() {
+    this.productKeyword.setValue('')
+    this.productStatus.setValue('')
+    this.productLimit.setValue(20)
+    this.productPage = 1
+    this.getProducts()
+  }
+
+  getProducts() {
+    this.ProductService.searchProducts({
+      name: this.productKeyword?.value,
+      isActive: this.productStatus?.value,
+      page: this.productPage,
+      limit: this.productLimit?.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.products = res?.result?.data
+          this.totalProducts = res?.result?.totalResults
+          this.isProductLastPage = res?.result?.isLastPage
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
   }
 }

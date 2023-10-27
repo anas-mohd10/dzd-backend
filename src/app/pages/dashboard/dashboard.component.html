@@ -127,12 +127,28 @@
       <div class="fs-4 fw-bolder mb-lg-5 info_head">Analytics </div>
       <div class="card daysRevenueWrapper">
         <div class="card-body">
-          <div class="fs-3 daysRevenue text-primary">
-            {{daysDetails?.totalRevenue}}
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="details">
+              <div class="fs-3 daysRevenue text-primary">
+                {{daysDetails?.totalRevenue}}
+              </div>
+              <p>
+                Last 7 days sales
+              </p>
+            </div>
+            <div class="d-flex">
+              <div class="form-group me-1">
+                <label class="fs-6 mb-1" for="startDate">Start date</label>
+                <input type="date" [formControl]="startDate" class="form-control p-1"
+                  (ngModelChange)="getDailyRevenues()">
+              </div>
+              <div class="form-group ms-1">
+                <label class="fs-6 mb-1" for="startDate">End date</label>
+                <input type="date" [formControl]="endDate" class="form-control p-1"
+                  (ngModelChange)="getDailyRevenues()">
+              </div>
+            </div>
           </div>
-          <p>
-            Last 7 days sales
-          </p>
           <apx-chart [series]="chartOptions?.series" [chart]="chartOptions?.chart" [xaxis]="chartOptions?.xaxis"
             [stroke]="chartOptions?.stroke" [dataLabels]="chartOptions?.dataLabels" [yaxis]="chartOptions?.yaxis"
             [labels]="chartOptions?.labels" [legend]="chartOptions?.legend" [title]="chartOptions?.title"
@@ -167,48 +183,22 @@
 <div class="row mb-5 mt-5">
   <div class="col-xl-12">
     <div class="stats5Months">
-      <div class="fs-4 fw-bolder mb-lg-5 info_head">Detailed analytics </div>
+      <div class="fs-4 fw-bolder mb-lg-5 info_head">Monthly analytics </div>
       <div class="card">
-        <app-stats-widget4> </app-stats-widget4>
+        <app-month-stats></app-month-stats>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- <div class="col-xl-4 monthly_chartParent">
-    <div class="monthly_comparison_box">
-      <h4>
-        Monthly sales comparison
-      </h4>
-      <h6>
-        View details comparison of sales and order in detail
-      </h6>
-      <a href="">
-        View Details
-      </a>
+<div class="row mb-5 mt-5">
+  <div class="col-xl-12">
+    <div class="stats5Months">
+      <div class="card">
+        <app-stats-widget4></app-stats-widget4>
+      </div>
     </div>
-    <div class="monthly_comparison_box">
-      <h4>
-        monthly sales comparison
-      </h4>
-      <h6>
-        View details comparison of sales and order in detail
-      </h6>
-      <a href="">
-        View Details
-      </a>
-    </div>
-    <div class="monthly_comparison_box">
-      <h4>
-        monthly sales comparison
-      </h4>
-      <h6>
-        View details comparison of sales and order in detail
-      </h6>
-      <a href="">
-        View Details
-      </a>
-    </div>
-  </div> -->
+  </div>
 </div>
 
 <div class="row mb-5">

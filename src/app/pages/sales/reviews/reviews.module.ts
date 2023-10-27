@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import { StarRatingComponent } from './reviews-list/star-rating/star-rating.component';
+import { TabsModule } from 'ngx-bootstrap/tabs'
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { StarRatingComponent } from './reviews-list/star-rating/star-rating.comp
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
+    TabsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

@@ -16,6 +16,23 @@ input[type=button] {
    width: 100%;
 }
 
+.viewButton {
+   cursor: pointer;
+}
+
+.productReview {
+   border-radius: 10px;
+   background: #ffffff;
+   border: 1px solid #E4E6EF;
+
+   .userIcon {
+      height: 34px;
+      width: 34px;
+      display: grid;
+      place-items: center;
+   }
+}
+
 .filteringWrapper {
    .filtering {
       display: flex;

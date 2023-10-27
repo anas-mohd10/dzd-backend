@@ -110,7 +110,7 @@ const DragConfig = {
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
     ModalModule.forRoot(),
-    ToastrModule.forRoot({ timeOut: 2000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
+    ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
     HotToastModule.forRoot(),
     AppRoutingModule,
     NgApexchartsModule,

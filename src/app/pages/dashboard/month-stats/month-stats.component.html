@@ -1,0 +1,20 @@
+<div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <div class="fs-3 daysRevenue text-primary"> {{totalRevenue}} </div>
+            <p><span class="text-primary"> {{month}}</span> sales </p>
+        </div>
+        <div class="form-group">
+            <label for="month" class="form-label m-0">Month</label>
+            <select name="month" id="month" class="form-select p-1 fs-6">
+                <option value="" disabled>-- Select an option --</option>
+                <option *ngFor="let month of months" value="{{month?.key}}">{{month?.value}}</option>
+            </select>
+        </div>
+    </div>
+    <apx-chart [series]="chartOptions?.series" [chart]="chartOptions?.chart" [xaxis]="chartOptions?.xaxis"
+        [stroke]="chartOptions?.stroke" [dataLabels]="chartOptions?.dataLabels" [yaxis]="chartOptions?.yaxis"
+        [labels]="chartOptions?.labels" [legend]="chartOptions?.legend" [title]="chartOptions?.title"
+        [subtitle]="chartOptions?.subtitle">
+    </apx-chart>
+</div>

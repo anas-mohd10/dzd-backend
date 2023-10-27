@@ -28,4 +28,9 @@ export class ReviewService {
     const url = this.commonService.getFullUrl(this.reviewsEndpoints.search_reviews);
     return this.http.post(`${url}`, data);
   }
+
+  productReviews(data: any) {
+    const url = this.commonService.getFullUrl(this.reviewsEndpoints.productReviews);
+    return this.http.post(`${url}`, data);
+  }
 }

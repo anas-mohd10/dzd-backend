@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
@@ -7,6 +7,7 @@ import { ProductHeadService } from 'src/app/includes/services/product.head.servi
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-product-card',
@@ -60,6 +61,9 @@ export class ProductCardComponent implements OnInit {
   page: number = 1
   lastPage: Boolean = false
 
+  modalRef?: BsModalRef
+  productDetails: any = {}
+
   constructor(
     private productService: ProductService,
     private formBuilder: FormBuilder,
@@ -68,7 +72,8 @@ export class ProductCardComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private ProductHeadService: ProductHeadService,
     private CategoryService: CategoryService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private BsModalService: BsModalService,
   ) { }
 
   ngOnInit(): void {
@@ -236,5 +241,15 @@ export class ProductCardComponent implements OnInit {
   openModal(id: any) {
     this.isUpdateModal = true
     this.sendId = id
+  }
+
+  open(template: TemplateRef<any>, productDetails: any) {
+    this.productDetails = productDetails
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
+  }
+
+  close() {
+    this.modalRef?.hide()
+    this.productDetails = {}
   }
 }

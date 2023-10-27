@@ -56,4 +56,9 @@ export class DashboardService {
     const url = this.commonService.getFullUrl(this.dashboardEndpoints.new_orders);
     return this.http.post(`${url}`, data)
   }
+
+  currentRevenues() {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.currentRevenues);
+    return this.http.get(`${url}`)
+  }
 }

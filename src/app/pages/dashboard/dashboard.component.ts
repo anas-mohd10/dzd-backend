@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/includes/services/auth.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexYAxis, ApexTitleSubtitle, ApexLegend } from "ng-apexcharts";
 import { FormControl } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -46,14 +48,25 @@ export class DashboardComponent implements OnInit {
   dayValues: Array<any> = ['0', '0', '0', '0', '0', '0', '0']
   //Revenue by days
 
+  startDate: FormControl = new FormControl('')
+  endDate: FormControl = new FormControl('')
+
   constructor(
     private DashboardService: DashboardService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private AuthService: AuthService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
+    const today = new Date();
+    const sevenDaysFromToday = new Date();
+    sevenDaysFromToday.setDate(sevenDaysFromToday.getDate() - 6);
+
+    this.startDate.setValue(sevenDaysFromToday.toISOString().split('T')[0])
+    this.endDate.setValue(today.toISOString().split('T')[0])
+
     this.userData = this.AuthService.getCurrentUser();
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
@@ -97,34 +110,52 @@ export class DashboardComponent implements OnInit {
       }
     })
 
-    this.DashboardService.getDaysRevenue({}).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.dayLabels = []
-        this.dayValues = []
-        for (let dayItem of res?.result?.data) {
-          this.dayLabels.push(dayItem?.date)
-          this.dayValues.push(dayItem?.revenue)
+    this.getDailyRevenues()
+  }
+
+  getDailyRevenues() {
+
+    if (this.startDate?.value < this.endDate?.value) {
+      this.DashboardService.getDaysRevenue({
+        startDate: this.startDate?.value,
+        endDate: this.endDate?.value
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.dayLabels = []
+            this.dayValues = []
+            for (let dayItem of res?.result?.data) {
+              this.dayLabels.push(dayItem?.date)
+              this.dayValues.push(dayItem?.revenue)
+            }
+            this.chartOptions = {
+              series: [{ name: "Revenue", data: this.dayValues, color: '#00bdab' }],
+              chart: {
+                type: "area",
+                height: 350,
+                zoom: { enabled: false },
+                fontFamily: 'Sen, sans-serif'
+              },
+              dataLabels: {
+                enabled: true, style: { colors: ['#1a1d27'] }
+              },
+              stroke: { curve: "smooth" },
+              labels: this.dayLabels,
+              xaxis: { type: "datetime" },
+              yaxis: { opposite: true },
+              legend: { horizontalAlign: "left" }
+            };
+            this.daysDetails = res?.result
+            this.ChangeDetectorRef.markForCheck()
+          } else {
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
         }
-        this.chartOptions = {
-          series: [{ name: "Revenue", data: this.dayValues, color: '#00bdab' }],
-          chart: {
-            type: "area",
-            height: 350,
-            zoom: { enabled: false },
-            fontFamily: 'Sen, sans-serif'
-          },
-          dataLabels: {
-            enabled: true, style: { colors: ['#1a1d27'] }
-          },
-          stroke: { curve: "smooth" },
-          labels: this.dayLabels,
-          xaxis: { type: "datetime" },
-          yaxis: { opposite: true },
-          legend: { horizontalAlign: "left" }
-        };
-        this.daysDetails = res?.result
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+      })
+    } else {
+      this.ToastrService.error('The entered date is not valid. Please check and try again.')
+    }
   }
 }

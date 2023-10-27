@@ -26,8 +26,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     if (Notification.permission === 'granted') {
-      console.log('enabled');
-
       this.isNotificationEnabled = true;
       let messaging = getMessaging(this.FirebaseApp);
       getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
@@ -40,12 +38,7 @@ export class AppComponent implements OnInit {
       }).catch((err) => {
         console.log('An error occurred while retrieving token. ', err);
       });
-    } else {
-      console.log('disabled');
-
     }
-
-
 
     if ($(".datatable").length > 0) {
       $(".datatable").DataTable({

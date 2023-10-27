@@ -18,11 +18,12 @@
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="col-sm-12">
-      <div class="card card-table">
-        <div class="card-body">
-          <div class="pb-5">
+  <div class="mt-4">
+    <div class="card card-table">
+      <div class="card-body">
+
+        <tabset>
+          <tab heading="Customer wise" id="tab1">
             <div class="row d-flex justify-content-end align-items-end">
               <div class="col-lg-4">
                 <label class="form-label">&nbsp;</label>
@@ -50,91 +51,182 @@
                 <input type="button" class="btn btn-secondary" value="Clear filters" (click)="clearFilters()">
               </div>
             </div>
-          </div>
 
-          <div class="table-responsive">
-            <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-              *ngIf="reviews.length > 0">
-              <thead class="common_thead">
-                <tr class="text-left fs-6 text-gray-400">
-                  <th style="min-width: 120px">&nbsp;</th>
-                  <th style="min-width: 120px">Customer</th>
-                  <th style="min-width: 100px">Order</th>
-                  <th style="min-width: 100px">Product</th>
-                  <th style="min-width: 100px">Review</th>
-                  <th style="min-width: 100px">Date</th>
-                  <th style="min-width: 100px">Action</th>
-                </tr>
-              </thead>
-              <tbody class="fs-6">
-                <ng-container *ngFor="let review of reviews; let i = index">
-                  <tr>
-                    <td>{{i+1}}</td>
-                    <td>{{review?.customer?.id?.name}}</td>
-                    <td>{{review?.order?.id?.orderNo}}</td>
-                    <td class="product-name">{{review?.product?.id?.name}}</td>
-                    <td>
-                      <div class="fs-6 viewText text-muted fw-bolder" data-bs-toggle="modal"
-                        data-bs-target="#reviewModal" (click)="selectReview(review)">View</div>
-                    </td>
-                    <td>{{review?.created}} </td>
-                    <td>
-                      <div class="manageButton">
-                        <div (click)="updateReview(review?.refid)" *ngIf="review?.isActive">
-                          <img src="../../../../../assets/icons/visibility.svg" alt="Icon">
-                        </div>
-                        <div (click)="updateReview(review?.refid)" *ngIf="!review?.isActive">
-                          <img src="../../../../../assets/icons/visibilityOff.svg" alt="Icon">
-                        </div>
-                      </div>
-                    </td>
+            <div class="table-responsive mt-4">
+              <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
+                *ngIf="reviews.length > 0">
+                <thead class="common_thead">
+                  <tr class="text-left fs-6 text-gray-400">
+                    <th style="min-width: 120px">&nbsp;</th>
+                    <th style="min-width: 120px">Customer</th>
+                    <th style="min-width: 100px">Order</th>
+                    <th style="min-width: 100px">Product</th>
+                    <th style="min-width: 100px">Review</th>
+                    <th style="min-width: 100px">Date</th>
+                    <th style="min-width: 100px">Action</th>
                   </tr>
-                </ng-container>
-              </tbody>
-            </table>
+                </thead>
+                <tbody class="fs-6">
+                  <ng-container *ngFor="let review of reviews; let i = index">
+                    <tr>
+                      <td>{{i+1}}</td>
+                      <td>{{review?.customer?.id?.name}}</td>
+                      <td>{{review?.order?.id?.orderNo}}</td>
+                      <td class="product-name">{{review?.product?.id?.name}}</td>
+                      <td>
+                        <div class="fs-6 viewText text-muted fw-bolder" data-bs-toggle="modal"
+                          data-bs-target="#reviewModal" (click)="selectReview(review)">View</div>
+                      </td>
+                      <td>{{review?.created}} </td>
+                      <td>
+                        <div class="manageButton">
+                          <div (click)="updateReview(review?.refid)" *ngIf="review?.isActive">
+                            <img src="../../../../../assets/icons/visibility.svg" alt="Icon">
+                          </div>
+                          <div (click)="updateReview(review?.refid)" *ngIf="!review?.isActive">
+                            <img src="../../../../../assets/icons/visibilityOff.svg" alt="Icon">
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
 
-            <div *ngIf="reviews.length == 0">
-              <div class="emptyNote">
-                <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
-                <div class="fs-3 fw-bolder">No result found</div>
-                <div class="fs-5 note">We couldn't find any item based on your search.</div>
+              <div *ngIf="reviews.length == 0">
+                <div class="emptyNote">
+                  <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                  <div class="fs-3 fw-bolder">No result found</div>
+                  <div class="fs-5 note">We couldn't find any item based on your search.</div>
+                </div>
+              </div>
+
+              <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+                <div class="filtering">
+                  <span class="fs-6 text-dark">Show</span>
+                  <select [formControl]="limit" (change)="getReviews()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                  </select>
+                  <span class="fs-6 text-dark">entries</span>
+                </div>
+                <div class="filteringResultCount fs-6">
+                  Showing <span class="me-1 ms-1">{{reviews.length}}</span> of <span class="ms-1">{{totalResults ?
+                    totalResults : '0'}}</span>
+                </div>
+                <div class="pagination">
+                  <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
+                    <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                  </div>
+                  <div class="paginationPage">{{page}}</div>
+                  <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
+                    <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-              <div class="filtering">
-                <span class="fs-6 text-dark">Show</span>
-                <select [formControl]="limit" (change)="getReviews()">
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                  <option value="25">25</option>
+          </tab>
+          <tab heading="Product wise">
+            <div class="row d-flex justify-content-end align-items-end">
+              <div class="col-lg-4">
+                <label class="form-label">&nbsp;</label>
+                <input type="text" class="form-control" placeholder="Search products here"
+                  [formControl]="productKeyword" (ngModelChange)="getProducts()">
+              </div>
+              <div class="col-2">
+                <label class="fs-6 mb-1">Status</label>
+                <select class="form-select fs-6 text-dark" [formControl]="productStatus" (change)="getProducts()">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">Inactive</option>
+                  <option value="true">Active</option>
                 </select>
-                <span class="fs-6 text-dark">entries</span>
               </div>
-              <div class="filteringResultCount fs-6">
-                Showing <span class="me-1 ms-1">{{reviews.length}}</span> of <span class="ms-1">{{totalResults}}</span>
+              <div class="col-lg-2">
+                <label class="fs-6 mb-1">&nbsp;</label>
+                <input type="button" class="btn btn-secondary" value="Clear filters" (click)="clearProductFilters()">
               </div>
-              <div class="pagination">
-                <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-                  <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+            </div>
+
+            <div class="table-responsive mt-4">
+              <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
+                *ngIf="products.length > 0">
+                <thead class="common_thead">
+                  <tr class="text-left fs-6 text-gray-400">
+                    <th style="min-width: 120px">&nbsp;</th>
+                    <th style="min-width: 120px">Product</th>
+                    <th style="min-width: 100px">Status</th>
+                    <th style="min-width: 100px">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="fs-6">
+                  <ng-container *ngFor="let product of products; let i = index">
+                    <tr>
+                      <td>{{i+1}}</td>
+                      <td>{{product?.name}}</td>
+                      <td>
+                        <span class="alert alert-success p-1" [ngClass]="{'alert-danger': !product?.isActive}">
+                          {{product?.isActive ? 'Active' : 'Inactive'}}
+                        </span>
+                      </td>
+                      <td>
+                        <div class="viewButton" (click)="open(reviewDetails, product)">
+                          View reviews
+                        </div>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+
+              <div *ngIf="products.length == 0">
+                <div class="emptyNote">
+                  <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                  <div class="fs-3 fw-bolder">No result found</div>
+                  <div class="fs-5 note">We couldn't find any item based on your search.</div>
                 </div>
-                <div class="paginationPage">{{page}}</div>
-                <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
-                  <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+              </div>
+
+              <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+                <div class="filtering">
+                  <span class="fs-6 text-dark">Show</span>
+                  <select [formControl]="productLimit" (change)="getProducts()">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                  </select>
+                  <span class="fs-6 text-dark">entries</span>
+                </div>
+                <div class="filteringResultCount fs-6">
+                  Showing <span class="me-1 ms-1">{{products.length}}</span> of <span class="ms-1">{{totalProducts ?
+                    totalProducts : '0'}}</span>
+                </div>
+                <div class="pagination">
+                  <div class="paginationBefore" [ngClass]="{'disabled': productPage == 1}"
+                    (click)="getProductsPreviousPage()">
+                    <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                  </div>
+                  <div class="paginationPage">{{productPage}}</div>
+                  <div class="paginationNext" [ngClass]="{'disabled': isProductLastPage}"
+                    (click)="getProductsNextPage()">
+                    <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </tab>
+        </tabset>
       </div>
     </div>
   </div>
 </div>
 
 <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Review details</h5>
@@ -145,10 +237,54 @@
           <div class="fs-6 mb-3">Review by {{data?.customer?.id?.name}} on {{data?.created}}</div>
           <div class="reviewMessage fs-6"> {{data?.message}}</div>
           <div class="mt-5">
-            <app-star-rating [rating]="data?.rating"></app-star-rating>
+            <!-- <app-star-rating [rating]="data?.rating"></app-star-rating> -->
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #reviewDetails>
+  <div class="modal-header pb-0">
+    <div class="fs-4 fw-bolder"><span class="text-primary">{{productDetails?.name}}</span> reviews ({{totalReviews ?
+      totalReviews : '0'}})
+    </div>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <input type="text" placeholder="Search reviews here" [formControl]="reviewKeyword"
+      (ngModelChange)="getProductReviews()" class="form-control mb-3">
+    <ng-container *ngFor="let review of productReviews; let i = index">
+      <div class="productReview p-4 mb-2">
+        <div class="reviewMessage">{{review?.message}}</div>
+        <div class="reviewedCustomer fw-bolder d-flex align-items-center justify-content-start">
+          <span class="me-1">
+            <svg height="20px" width="20px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z">
+              </path>
+            </svg>
+          </span>
+          {{review?.customer?.id?.name}}
+        </div>
+        <div class="mt-4 d-flex align-items-center justify-content-between">
+          <div>{{review?.created}}</div>
+          <div class="form-group">
+            <label for="review" class="form-label m-0">Update status</label>
+            <select name="review" id="review" class="form-select p-1 fs-6 text-dark"
+              (change)="updateReview(review?.refid)">
+              <option value="" disabled>-- Select an option --</option>
+              <option value="" disabled selected>{{review?.isActive ? 'Visible' : 'Hidden'}}</option>
+              <option value="false" *ngIf="!review?.isActive">Visible</option>
+              <option value="true" *ngIf="review?.isActive">Hidden</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

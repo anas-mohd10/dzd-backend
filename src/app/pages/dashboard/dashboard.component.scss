@@ -8,6 +8,10 @@ $white: #ffffff;
     .daysRevenue{
       font-weight: 600;
     }
+
+    label{
+      font-weight: 400;
+    }
   }
 }
 
@@ -77,7 +81,6 @@ $white: #ffffff;
           display: flex;
           justify-content: start;
           align-items: start;
-          margin-bottom: 3rem;
 
           .sales_content {
             .sale_cards {
