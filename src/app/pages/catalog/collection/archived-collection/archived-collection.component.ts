@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { environment } from 'src/environments/environment';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-archived-collection',
@@ -12,154 +11,65 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./archived-collection.component.scss']
 })
 export class ArchivedCollectionComponent implements OnInit {
-
   appRoute = appRoutes;
-  base: any
-  collectionform: FormGroup;
-  collections: any;
-
-  //Page and limit for query
-  page: any = 1;
-  pages: any = []
-  nextpages: any = []
-  currpage: any = 1;
-  limit: any = 8;
-  selectedpage: any = 1
-  max: any = 3
-
-  //Total no. of data from backend
-  totalcount: any;
-  totaldata: any;
-  count: any = 0
-
-  //Conditions
-  isData: boolean = true;
-  showBtn: boolean = true;
-  showLessBtn: boolean = false;
-  isNext: boolean = true
-
-  //Filters array
-  filters: any = [];
-  show: any;
-  shifted: any
+  base: any = environment.base
+  form: FormGroup;
+  collections: Array<any> = [];
+  page: number = 1
+  limit: FormControl = new FormControl(20)
+  isLastPage: boolean = false
+  totalResults: string = ''
+  totalPages: string = ''
+  keyword: FormControl = new FormControl('')
 
   constructor(
-    private collectionService: CollectionService,
-    private cdr: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
+    private CollectionService: CollectionService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.initForm()
     this.base = environment.base
-    setTimeout(() => {
-      this.setPages()
-    })
-
-    this.collectionService.archiveCollection(this.collectionform.value, this.page).subscribe((res: any) => {
-      this.collections = res?.result?.data
-      this.count = this.collections.length
-      this.totalcount = res?.result?.total_item
-      this.limit = res?.result?.items_per_page
-      this.totaldata = Math.ceil(this.totalcount / this.limit)
-      this.setPages()
-      this.cdr.markForCheck();
-    });
   }
 
-  initForm() {
-    this.collectionform = this.formBuilder.group({
-      name: [''],
-    });
+  clearFilters() {
+    this.keyword?.setValue('')
+    this.getCollections()
   }
 
-  onReload() {
-    this.collectionform.get('name')?.setValue('')
-    this.searchCollection()
+  getNextPage() {
+    this.page += 1
+    this.getCollections()
   }
 
-  searchCollection() {
-    this.currpage = 1
-    this.collectionService.archiveCollection(this.collectionform.value, this.page).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.collections = res?.result?.data
-        this.count = this.collections.length
-        this.totalcount = res?.result?.total_item
-        this.totaldata = Math.ceil(this.totalcount / this.limit)
-        this.setPages()
-        this.cdr.markForCheck();
-        this.isData = true
-      }
-    })
+  getPreviousPage() {
+    this.page -= 1
+    this.getCollections()
   }
 
-  fetchCollection(page: any, limit: any) {
-    this.selectedpage = page
-    this.currpage = page
-    this.getData(this.collectionform.value, page)
-  }
-
-  loadNext() {
-    this.currpage += 1
-    this.selectedpage += 1
-    if (this.currpage <= 3) {
-      if (this.currpage <= this.totaldata) {
-        this.getData(this.collectionform.value, this.currpage)
-      } else {
-        this.isNext = false
-      }
-    } else {
-      this.shifted = this.pages.shift() //Captures the shifted number from pagination array
-      this.pages.push(this.currpage)
-      if (this.currpage <= this.totaldata) {
-        this.getData(this.collectionform.value, this.currpage)
-      } else {
-        this.isNext = false
-      }
+  getCollections() {
+    let payload = {
+      keyword: this.keyword?.value,
+      isArchive: true,
+      page: this.page,
+      limit: this.limit.value
     }
-  }
 
-  loadPrevious() {
-    this.currpage -= 1
-    this.selectedpage -= 1
-    if (this.currpage > 3 && this.currpage <= this.totaldata && this.currpage > 0) {
-      this.getData(this.collectionform.value, this.currpage)
-    }
-    else {
-      if (this.pages[0] != 1) {
-        this.pages.pop()
-        this.pages.unshift(this.shifted)
-        this.shifted -= 1
-        this.getData(this.collectionform.value, this.currpage)
-      } else {
-        this.getData(this.collectionform.value, this.currpage)
-      }
-    }
-  }
-
-  setPages() {
-    this.currpage = 1
-    this.selectedpage = 1
-    this.pages.length = 0
-    if (this.totaldata > 3) {
-      for (let i = 1; i <= this.max; i++) {
-        this.pages.push(i)
-      }
-    } else {
-      for (let i = 1; i <= this.totaldata; i++) {
-        this.pages.push(i)
-      }
-    }
-  }
-
-  getData(data: any, page: any) {
-    this.collectionService.archiveCollection(data, page).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.collections = res?.result?.data
-        this.count = this.collections.length
-        this.cdr.markForCheck();
+    this.CollectionService.searchCollection(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.collections = res?.result?.data
+          this.isLastPage = res?.result?.isLastPage
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
       }
     })
-    this.isNext = true
   }
+
 }

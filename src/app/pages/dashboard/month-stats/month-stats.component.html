@@ -6,7 +6,8 @@
         </div>
         <div class="form-group">
             <label for="month" class="form-label m-0">Month</label>
-            <select name="month" id="month" class="form-select p-1 fs-6">
+            <select name="month" id="month" class="form-select p-1 fs-6" [formControl]="filterMonth"
+                (change)="getDetails()">
                 <option value="" disabled>-- Select an option --</option>
                 <option *ngFor="let month of months" value="{{month?.key}}">{{month?.value}}</option>
             </select>

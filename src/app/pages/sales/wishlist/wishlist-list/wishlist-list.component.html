@@ -21,19 +21,16 @@
         <div class="card card-table">
             <div class="card-body">
 
-                <div class="row d-flex align-items-center justify-content-between mb-2">
+                <div class="row d-flex align-items-center justify-content-end mb-2">
                     <div class="col-lg-4">
                         <label class="form-label">&nbsp;</label>
                         <input type="text" class="form-control" placeholder="Search customers here"
                             [formControl]="keyword" (ngModelChange)="searchCustomers()">
                     </div>
-
-                    <div class="col-lg-6 d-flex align-items-center justify-content-end row">
-                        <div class="col-lg-4">
-                            <label class="fs-6 mb-1">&nbsp;</label>
-                            <input type="button" class="btn btn-secondary" value="Clear filters"
-                                (click)="clearFilters()">
-                        </div>
+                    <div class="col-lg-2">
+                        <label class="fs-6 mb-1">&nbsp;</label>
+                        <input type="button" class="btn btn-secondary" value="Clear filters"
+                            (click)="clearFilters()">
                     </div>
                 </div>
 

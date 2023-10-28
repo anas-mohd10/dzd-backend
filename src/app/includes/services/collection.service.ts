@@ -41,8 +41,8 @@ export class CollectionService {
     return this.http.get(`${url}`);
   }
 
-  searchCollection(query: any, page: any) {
-    const url = this.commonService.getFullUrl(this.collectionEndpoints.search_collection + "?page=" + page);
+  searchCollection(query: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.search_collection);
     return this.http.post(`${url}`, query);
   }
 

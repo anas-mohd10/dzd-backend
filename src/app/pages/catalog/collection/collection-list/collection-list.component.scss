@@ -1,12 +1,20 @@
+$hover: #e3e3e3;
+$grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primary: #00bdab;
+$primaryBackground: #20BDAB40;
 $activeBackground: #00bdab20;
 $border: #cccccc;
-$hover: #F0F8F7;
-$grey: #888888;
+$background: #e5e5e5;
+$error: #F1416C;
+
+label,
+input[type=button],
+.btn-secondary {
+  font-weight: normal !important;
+}
 
 .collection-card-container {
   display: grid;
@@ -33,7 +41,7 @@ $grey: #888888;
     display: grid;
     place-items: center;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 5px;
 
     &:hover {
       background: $hover;
@@ -70,22 +78,53 @@ $grey: #888888;
   -webkit-box-orient: vertical;
 }
 
-.collection-status-true {
-  color: #00bdab;
-  font-weight: 600;
-}
 
-.collection-status-false {
-  color: #ce1626;
-  font-weight: 600;
-}
+.filteringWrapper {
+  .filtering {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
 
-.collection-featured-true {
-  color: #00bdab;
-  font-weight: 600;
-}
+    span {
+      color: #8B909A;
+      line-height: 18px;
+    }
 
-.collection-featured-false {
-  color: #0087bd;
-  font-weight: 600;
+    select {
+      border: 1px solid #E8E8E8;
+      border-radius: 6px;
+      padding: 5px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .paginationBefore,
+    .paginationNext {
+      height: 30px;
+      width: 30px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: $background;
+      cursor: pointer;
+
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+
+    .paginationPage {
+      margin: 0 10px;
+    }
+  }
 }

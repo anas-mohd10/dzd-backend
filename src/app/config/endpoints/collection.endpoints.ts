@@ -8,7 +8,7 @@ export const collectionEndpoints = {
     update_collection: '/update-collection',
     get_collection_count: '/collections/count',
     //Filter APIs
-    search_collection: '/collections/search',
+    search_collection: '/search-collections',
     archive_collection: '/collections/archive',
     restore_collection: '/collections/restore',
     collection_images: '/collections/images',

@@ -86,7 +86,7 @@ export class UpdatePageLimitsComponent implements OnInit {
     //   this.cdr.markForCheck();
     // });
 
-    this.CollectionService.searchCollection({ isActive: true, isDelete: false }, this.page).subscribe((res: any) => {
+    this.CollectionService.searchCollection({ isActive: true, isDelete: false }).subscribe((res: any) => {
       this.collections = res?.result?.data
       this.collectionscount = res?.result?.total
       this.cdr.markForCheck();

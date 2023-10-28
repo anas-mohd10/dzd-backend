@@ -17,8 +17,9 @@ export class BrandCardComponent implements OnInit {
   settings: any = {}
   page: number = 1
   limit: FormControl = new FormControl('40')
-  lastPage: Boolean = false;
-  totalCount: number = 0
+  isLastPage: Boolean = false;
+  totalResults: string = ''
+  totalPages: string = ''
 
   constructor(
     private BrandService: BrandService,
@@ -65,8 +66,9 @@ export class BrandCardComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
         this.page = res?.result?.page
-        this.totalCount = res?.result?.total_item
-        this.lastPage = res?.result?.lastPage
+        this.totalResults = res?.result?.totalResults
+        this.isLastPage = res?.result?.isLastPage
+        this.totalPages = res?.result?.totalPages
         this.ChangeDetectorRef.markForCheck()
       }
     })

@@ -158,6 +158,15 @@ export class ReviewsListComponent implements OnInit {
     this.modalRef?.hide()
   }
 
+  updateProductReview(refid: any) {
+    this.ReviewService.updateReview({ refid: refid }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ToastrService.success(res?.message)
+        this.getProductReviews()
+      }
+    })
+  }
+
   clearProductFilters() {
     this.productKeyword.setValue('')
     this.productStatus.setValue('')

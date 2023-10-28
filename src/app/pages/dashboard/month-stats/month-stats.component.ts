@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexYAxis, ApexTitleSubtitle, ApexLegend } from "ng-apexcharts";
+import { FormControl } from '@angular/forms';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -31,6 +32,7 @@ export class MonthStatsComponent implements OnInit {
   chartOptions: any;
   dayLabels: Array<any> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   dayValues: Array<any> = ['0', '0', '0', '0', '0', '0', '0']
+  filterMonth: FormControl = new FormControl('')
   months = [
     { key: 0, value: 'January' },
     { key: 1, value: 'February' },
@@ -52,9 +54,17 @@ export class MonthStatsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.DashboardService.currentRevenues().subscribe({
+    let dateItem = new Date()
+    this.filterMonth.setValue(dateItem.getMonth())
+    this.getDetails()
+  }
+
+  getDetails() {
+    this.DashboardService.currentRevenues({ month: this.filterMonth?.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
+          this.labels = []
+          this.values = []
           for (let revenue of res?.result?.revenues) {
             this.labels.push(revenue?.key)
             this.values.push(revenue?.value)
@@ -78,6 +88,7 @@ export class MonthStatsComponent implements OnInit {
             yaxis: { opposite: true },
             legend: { horizontalAlign: "left" }
           };
+
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res?.message)

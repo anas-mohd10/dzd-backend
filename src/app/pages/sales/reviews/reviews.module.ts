@@ -6,13 +6,11 @@ import { ReviewsListComponent } from './reviews-list/reviews-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
-import { StarRatingComponent } from './reviews-list/star-rating/star-rating.component';
 import { TabsModule } from 'ngx-bootstrap/tabs'
 
 @NgModule({
   declarations: [
-    ReviewsListComponent,
-    StarRatingComponent
+    ReviewsListComponent
   ],
   imports: [
     CommonModule,

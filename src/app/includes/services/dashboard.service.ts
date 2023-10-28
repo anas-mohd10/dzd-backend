@@ -57,8 +57,8 @@ export class DashboardService {
     return this.http.post(`${url}`, data)
   }
 
-  currentRevenues() {
+  currentRevenues(data: any) {
     const url = this.commonService.getFullUrl(this.dashboardEndpoints.currentRevenues);
-    return this.http.get(`${url}`)
+    return this.http.post(`${url}`, data)
   }
 }

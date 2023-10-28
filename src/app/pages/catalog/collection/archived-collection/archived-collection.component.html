@@ -1,109 +1,111 @@
 <div class="collection-page-container">
    <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder">Collections</h1>
-      </div>
-      <div class="row">
-         <div class="col d-flex  align-items-start justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION }}">Archived Collections</a>
-               </li>
-            </ul>
-         </div>
-      </div>
+     <div class="page-title">
+       <h1 class="fw-bolder">Collections</h1>
+     </div>
+     <div class="row">
+       <div class="col d-flex align-items-start justify-content-between">
+         <ul class="breadcrumb">
+           <li class="breadcrumb-item fs-6">
+             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+           </li>
+           <li class="breadcrumb-item active fs-6">
+             <a routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION }}">Archived collections</a>
+           </li>
+         </ul>
+       </div>
+     </div>
    </div>
    <div class="collection-form-container">
-      <form [formGroup]="collectionform">
-         <div class="col-12 row align-items-end justify-content-end">
-            <div class="search-input col-sm-4" style="padding: 0;">
-               <input type="text" placeholder="Search for collections here..." class="form-control fs-6"
-                  formControlName="name" (ngModelChange)="searchCollection()">
-            </div>
-            <div class="search-submit col-sm-2">
-               <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="onReload()"
-                  style="outline: none; border: none;">Clear</button>
-            </div>
+     <form [formGroup]="form">
+       <div class="row align-items-end justify-content-end">
+         <div class="search-input col-lg-4" style="padding: 0;">
+           <input type="text" placeholder="Search collections here..." class="form-control fs-6" formControlName="keyword"
+             (ngModelChange)="getCollections()">
          </div>
-      </form>
+         <div class="search-submit col-lg-2">
+           <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="clearFilters()"
+             style="outline: none; border: none;">Clear filters</button>
+         </div>
+       </div>
+     </form>
    </div>
-   <div class="col-12 d-flex justify-content-between">
-      <div class="total-count-container col-sm-3 bg-dark">
-         <h4 class="text-white">Total {{totalcount ? totalcount : 0}} collections</h4>
-      </div>
+ 
+   <div class="mb-3 mt-3 d-flex align-items-center justify-content-between">
+     <div class="total-count-container col-lg-3 bg-dark">
+       <h4 class="text-white fs-6">Total {{totalResults ? totalResults : 0}} collections</h4>
+     </div>
+     <div>
+       <button class="btn btn-secondary cursor-pointer fs-6" color="primary"
+         routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION}}">Archived Collections</button>
+     </div>
    </div>
+ 
    <div class="collection-card-container view-container">
-      <ng-container *ngFor="let collection of collections">
-         <div class="collection-card card-hover">
-            <div class="collection-details">
-               <div class="collection-image">
-                  <img src='{{base}}/{{collection?.file}}' alt="collection image" srcset="" />
-               </div>
-               <div class="flex-1">
-                  <div class="collection-name fs-4">{{collection?.name}}</div>
-                  <div class="collection-subname fs-6">{{collection?.subname}}</div>
-                  <div class="collection-featured-{{collection?.isFeatured}}">
-                     <ng-container *ngIf="collection?.isFeatured == true">Featured</ng-container>
-                     <ng-container *ngIf="collection?.isFeatured == false">Not Featured</ng-container>
-                  </div>
-                  <div class="card-edit-btn">
-                     <button routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-                        [queryParams]="{ collection: collection?.slug }" class="fs-6 cursor-pointer text-darker">
-                        Edit
-                     </button>
-                  </div>
-               </div>
-            </div>
-            <div class="flex-21">
-               <div class="collection-status-{{collection?.isActive}}">
-                  <ng-container *ngIf="collection?.isActive == true">Active</ng-container>
-                  <ng-container *ngIf="collection?.isActive == false">Inactive</ng-container>
-               </div>
-            </div>
+     <ng-container *ngFor="let collection of collections">
+       <div class="collection-card card-hover">
+         <div class="editButton">
+           <div routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+             [queryParams]="{ collection: collection?.slug }">
+             <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+           </div>
          </div>
-      </ng-container>
-      <ng-container *ngIf="count == 0">
-         <div class="no-data-container">
-            <div class="no-data-image"><img src="../../../../../assets/media/searching.svg" alt="" srcset=""></div>
-            <h2 class="fw-bolder">Sorry, we haven't found any data</h2>
+ 
+         <div class="collection-image">
+           <img src='{{base}}/{{collection?.file}}' alt="Image" />
          </div>
-      </ng-container>
+ 
+         <div class="collectionDetails">
+           <div class="mb-3">
+             <div class="collection-name fs-4">{{collection?.name}}</div>
+             <div class="collection-subname fs-6">{{collection?.subname ? collection?.subname : '-'}}</div>
+           </div>
+           <div class="d-flex align-items-center justify-content-between">
+             <div class="fs-6 alert alert-success p-1" [ngClass]="{'alert-danger': !collection?.isActive}">
+               {{collection?.isActive ? 'Active' : 'Inactive'}}
+             </div>
+             <div class="fs-6 alert alert-info p-1" *ngIf="collection?.isFeatured">
+               {{collection?.isFeatured ? 'Featured' : null}}
+             </div>
+           </div>
+         </div>
+ 
+       </div>
+     </ng-container>
    </div>
-   <!-- Pagination start -->
-   <nav aria-label="Page navigation example" *ngIf="count != 0">
-      <ul class="pagination-container">
-         <div class="page-change-icon" *ngIf="selectedpage != 1 &&  selectedpage > 0">
-            <a class="page-link" (click)="loadPrevious()" aria-label="Previous">
-               <i class="bi bi-arrow-left-circle"></i>
-            </a>
-         </div>
-         <div class="page-change-icon" *ngIf="selectedpage == 1">
-            <a class="page-link page-link-disabled" aria-label="Previous">
-               <i class="bi bi-arrow-left-circle"></i>
-            </a>
-         </div>
-         <li class="page-item" *ngFor="let key of pages">
-            <a *ngIf="selectedpage != key" class="page-link" (click)="fetchCollection(key, limit)">{{key}}</a>
-            <a *ngIf="selectedpage == key" class="page-link page-active"
-               (click)="fetchCollection(key, limit)">{{key}}</a>
-         </li>
-         <div class="page-change-icon" *ngIf="selectedpage != totaldata">
-            <a class="page-link" (click)="loadNext()" aria-label="Next">
-               <i class="bi bi-arrow-right-circle"></i>
-            </a>
-         </div>
-         <div class="page-change-icon" *ngIf="selectedpage == totaldata">
-            <a class="page-link page-link-disabled" aria-label="Next">
-               <i class="bi bi-arrow-right-circle"></i>
-            </a>
-         </div>
-      </ul>
-   </nav>
-   <!-- Pagination end -->
-</div>
+ 
+   <ng-container *ngIf="collections.length == 0">
+     <div class="emptyNote">
+       <div class="fs-3 fw-bolder">No result found</div>
+       <div class="fs-6 note">We couldn't find any item based on your search</div>
+     </div>
+   </ng-container>
+ 
+   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+     <div class="filtering">
+       <span class="fs-6 text-dark">Show</span>
+       <select [formControl]="limit" (change)="getCollections()">
+         <option value="5">5</option>
+         <option value="10">10</option>
+         <option value="15">15</option>
+         <option value="20">20</option>
+         <option value="40">40</option>
+       </select>
+       <span class="fs-6 text-dark">entries</span>
+     </div>
+     <div class="filteringResultCount fs-6">
+       Showing <span class="me-1 ms-1">{{collections.length}}</span> of <span class="ms-1">{{totalResults ?
+         totalResults : '0'}}</span>
+     </div>
+     <div class="pagination">
+       <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
+         <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+       </div>
+       <div class="paginationPage">{{page}} of {{totalPages}}</div>
+       <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
+         <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+       </div>
+     </div>
+   </div>
+ 
+ </div>

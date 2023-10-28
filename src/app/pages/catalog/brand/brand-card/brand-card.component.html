@@ -53,9 +53,9 @@
     </form>
   </div>
 
-  <div class="col-12 d-flex justify-content-between">
+  <div class="mt-3 mb-3 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white fs-6">Total {{totalCount}} brands</h4>
+      <h4 class="text-white fs-6">Total {{totalResults ? totalResults : 0}} brands</h4>
     </div>
     <div>
       <button class="btn btn-secondary w-200 fs-6" color="primary"
@@ -109,12 +109,16 @@
       </select>
       <span class="fs-6 text-dark">entries</span>
     </div>
+    <div class="filteringResultCount fs-6">
+      Showing <span class="me-1 ms-1">{{brands.length}}</span> of <span class="ms-1">{{totalResults ?
+        totalResults : '0'}}</span>
+    </div>
     <div class="pagination">
       <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
         <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
       </div>
-      <div class="paginationPage">{{page}}</div>
-      <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
+      <div class="paginationPage">{{page}} of {{totalPages}}</div>
+      <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
         <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
       </div>
     </div>

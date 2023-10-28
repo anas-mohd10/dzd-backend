@@ -265,16 +265,15 @@
                       </select>
                     </td>
                     <td>
-                      <ng-container *ngIf="product?.paymentStatus == 'PENDING'">
-                        <select name="payment" class="form-select fs-6" id="payment"
-                          (change)="updateProductPayment($event, product)">
-                          <option selected disabled>-- Select an option --</option>
-                          <option value="PAID">Paid</option>
-                        </select>
-                      </ng-container>
-                      <ng-container *ngIf="product?.paymentStatus == 'PAID'">
-                        <div class="alert alert-success p-1" style="max-width: max-content;">Paid</div>
-                      </ng-container>
+                      <select name="payment" class="form-select fs-6" id="payment"
+                        (change)="updateProductPayment($event, product)">
+                        <option disabled>-- Select an option --</option>
+                        <option selected disabled>
+                          {{product?.paymentStatus == 'PENDING' ? 'Pending' : 'Paid'}}
+                        </option>
+                        <option *ngIf="product?.paymentStatus == 'PENDING'" value="PAID">Paid</option>
+                        <option *ngIf="product?.paymentStatus == 'PAID'" value="PENDING">Pending</option>
+                      </select>
                     </td>
                   </tr>
                 </ng-container>
