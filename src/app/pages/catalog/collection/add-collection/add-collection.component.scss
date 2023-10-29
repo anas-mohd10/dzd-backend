@@ -45,22 +45,12 @@ label {
     }
 
     td {
-      padding: 14px;
+      padding: 8px;
 
-      .btn-sm {
-        width: 150px;
+      .btn{
+        width: 120px;
       }
     }
-
-
-    tbody {
-      tr {
-        &:nth-child(odd) {
-          background: #f2f2f2;
-        }
-      }
-    }
-
   }
 }
 

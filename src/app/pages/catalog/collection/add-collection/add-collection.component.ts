@@ -42,8 +42,10 @@ export class AddCollectionComponent implements OnInit {
   base: any
   page: any = 1
   selectedProducts: any = []
-  featured: Boolean = false
-  grid: Boolean = false
+
+
+  isFeatured: boolean = false
+  isGrid: boolean = false
 
   images: any = []
   file: any
@@ -97,7 +99,7 @@ export class AddCollectionComponent implements OnInit {
       isHighlighted: ['false', Validators.required],
       isActive: ['true', Validators.required],
       type: ['slider'],
-      count: ['0'],
+      count: ['3'],
       background: [''],
       border: [''],
       radius: [''],
@@ -184,16 +186,12 @@ export class AddCollectionComponent implements OnInit {
     this.loadBanner = false
   }
 
-  checkFeatured(e: any) {
-    if (e.value == "true") {
-      this.featured = !this.featured
-    }
+  getType(event: any) {
+    event.value == 'grid' ? this.isGrid = !this.isGrid : null
   }
 
-  checkGrid(e: any) {
-    if (e.value == "grid") {
-      this.grid = !this.grid
-    }
+  getFeatured(event: any) {
+    event.value == 'true' ? this.isFeatured = true : this.isFeatured = false
   }
 
   onSubmit() {
