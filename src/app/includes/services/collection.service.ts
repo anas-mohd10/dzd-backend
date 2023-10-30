@@ -80,4 +80,14 @@ export class CollectionService {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.collection_bulk_image_upload);
     return this.http.post(`${url}`, data);
   }
+
+  updateMedias(data: any, type: any) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.updateMedias + `/${type}`);
+    return this.http.put(`${url}`, data);
+  }
+
+  removeCoverImage(collection: string) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.removeCoverImage + `/${collection}`);
+    return this.http.delete(`${url}`);
+  }
 }

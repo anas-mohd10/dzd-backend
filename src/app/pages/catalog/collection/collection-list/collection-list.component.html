@@ -24,12 +24,13 @@
     <form [formGroup]="form">
       <div class="row align-items-end justify-content-end">
         <div class="search-input col-sm-4" style="padding: 0;">
-          <input type="text" placeholder="Search collections here..." class="form-control fs-6" formControlName="keyword"
-            (ngModelChange)="getCollections()">
+          <input type="text" placeholder="Search collections here..." class="form-control fs-6"
+            formControlName="keyword" (ngModelChange)="getCollections()">
         </div>
         <div class="search-status col-lg-2">
           <label for="isActive" class="fs-6 mb-1">Status</label>
-          <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive" (change)="getCollections()">
+          <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
+            (change)="getCollections()">
             <option value="" disabled>--Select an option--</option>
             <option value=true>Active</option>
             <option value=false>Inactive</option>
@@ -37,7 +38,8 @@
         </div>
         <div class="search-featured col-lg-2">
           <label for="isFeatured" class="fs-6 mb-1">Featured</label>
-          <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured" (change)="getCollections()">
+          <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured"
+            (change)="getCollections()">
             <option value="" disabled>--Select an option--</option>
             <option value=true>Featured</option>
             <option value=false>Non featured</option>
@@ -80,11 +82,11 @@
             <div class="collection-name fs-4">{{collection?.name}}</div>
             <div class="collection-subname fs-6">{{collection?.subname ? collection?.subname : '-'}}</div>
           </div>
-          <div class="d-flex align-items-center justify-content-between">
-            <div class="fs-6 alert alert-success p-1" [ngClass]="{'alert-danger': !collection?.isActive}">
+          <div class="d-flex align-items-center justify-content-start">
+            <div class="fs-6 me-1 alert alert-success p-1" [ngClass]="{'alert-danger': !collection?.isActive}">
               {{collection?.isActive ? 'Active' : 'Inactive'}}
             </div>
-            <div class="fs-6 alert alert-info p-1" *ngIf="collection?.isFeatured">
+            <div class="fs-6 ms-1 alert alert-info p-1" *ngIf="collection?.isFeatured">
               {{collection?.isFeatured ? 'Featured' : null}}
             </div>
           </div>

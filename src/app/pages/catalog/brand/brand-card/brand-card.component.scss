@@ -38,8 +38,8 @@ button {
 
     .editButton {
       position: absolute;
-      right: 1.25rem;
-      top: 1.25rem;
+      right: .625rem;
+      top: .625rem;
       width: 2.5rem;
       height: 2.5rem;
       display: grid;
@@ -49,33 +49,6 @@ button {
 
       &:hover {
         background: $hover;
-      }
-    }
-
-    .brandDetails {
-
-      .featured {
-        background: #ddfffc;
-        color: #00bdab;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-
-      .inactiveStatus {
-        background: #ffd9d9;
-        color: #a60000;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-
-      .activeStatus {
-        background: #d9fff4;
-        color: #00A676;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
       }
     }
   }

@@ -1,4 +1,4 @@
-<div class="product-page-container" [ngClass]="{'hide-product-page': showVariants}">
+<div class="product-page-container">
    <div class="page-header">
       <div class="page-title">
          <h1 class="fw-bolder">Product Head</h1>
@@ -21,35 +21,37 @@
       </div>
    </div>
 
-   <div class="row mt-3 d-flex align-items-center justify-content-end">
-      <div class="search-input col-3">
-         <label class="fs-6">&nbsp;</label>
-         <input type="text" placeholder="Search for products here" class="form-control fs-6" [formControl]="keyword"
-            (ngModelChange)="getHeads()">
+   <form [formGroup]="form">
+      <div class="row mt-3 d-flex align-items-center justify-content-end">
+         <div class="search-input col-3">
+            <label class="fs-6">&nbsp;</label>
+            <input type="text" placeholder="Search products here" class="form-control fs-6" formControlName="keyword"
+               (ngModelChange)="getProductHeads()">
+         </div>
+         <div class="search-status col-2">
+            <label class="fs-6">Status</label>
+            <select class="form-select fs-6" formControlName="isActive" (change)="getProductHeads()">
+               <option value="" disabled>Select an option</option>
+               <option value=true>Active</option>
+               <option value=false>Inactive</option>
+            </select>
+         </div>
+         <div class="search-status col-2">
+            <label class="fs-6">Categories</label>
+            <select class="form-select fs-6" formControlName="category" (change)="getProductHeads()">
+               <option value="" disabled>Select an option</option>
+               <ng-container *ngFor="let category of categories">
+                  <option value={{category?.catid}}>{{category?.name}}</option>
+               </ng-container>
+            </select>
+         </div>
+         <div class="search-input col-2">
+            <label class="fs-6 mb-1">&nbsp;</label>
+            <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
+               (click)="clearFilters()">
+         </div>
       </div>
-      <div class="search-status col-2">
-         <label class="fs-6">Status</label>
-         <select class="form-select fs-6" [formControl]="isActive" (change)="getHeads()">
-            <option value="" disabled>Select an option</option>
-            <option value=true>Active</option>
-            <option value=false>Inactive</option>
-         </select>
-      </div>
-      <div class="search-status col-2">
-         <label class="fs-6">Categories</label>
-         <select class="form-select fs-6" [formControl]="category" (change)="getHeads()">
-            <option value="" disabled>Select an option</option>
-            <ng-container *ngFor="let category of categories">
-               <option value={{category?.catid}}>{{category?.name}}</option>
-            </ng-container>
-         </select>
-      </div>
-      <div class="search-input col-2">
-         <label class="fs-6 mb-1">&nbsp;</label>
-         <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
-            (click)="clearFilters()">
-      </div>
-   </div>
+   </form>
 
    <div class="col-12 d-flex justify-content-between">
       <div class="total-count-container col-sm-3 bg-dark">
@@ -62,25 +64,25 @@
          <div class="product-card card-hover">
 
             <div class="editButton">
-               <div (click)="openModal(product?.prodid)">
+               <div (click)="open(template, product)">
                   <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                </div>
             </div>
 
             <div class="viewButton">
-               <div (click)="getProducts(product?.name, product?.prodid)">
+               <div (click)="openProducts(productTemplate, product)">
                   <img src="../../../../../assets/icons/view.svg" alt="Icon">
                </div>
             </div>
-            
+
             <div class="product-image">
                <img src='{{base}}/{{product?.file}}' alt="Product" />
             </div>
             <div class="product-details ms-1">
-                  <div class="product-name fs-4 mb-3">{{product?.name}}</div>
-                  <div class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !product.isActive}">
-                     {{product?.isActive ? 'Active' : 'Inactive'}}
-                  </div>
+               <div class="product-name fs-4 mb-3">{{product?.name}}</div>
+               <div class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !product.isActive}">
+                  {{product?.isActive ? 'Active' : 'Inactive'}}
+               </div>
             </div>
          </div>
       </ng-container>
@@ -95,7 +97,7 @@
    <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
       <div class="filtering">
          <span class="fs-6 text-dark">Show</span>
-         <select [formControl]="limit" (change)="getHeads()">
+         <select [formControl]="limit" (change)="getProductHeads()">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="15">15</option>
@@ -109,55 +111,56 @@
             <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
          </div>
          <div class="paginationPage">{{page}}</div>
-         <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
+         <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
             <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
          </div>
       </div>
    </div>
 </div>
 
-<div class="variant-products-overlay" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
+<!-- <div class="variant-products-overlay" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
 </div>
 <div class="variant-products-container" [ngClass]="{'show-variants': showVariants, 'hide-variants': !showVariants }">
 
    <div class="variant-products-header">
       <div class="variant-products-header-left fs-2">
-         Products under <span>{{productName}}</span> product head
+         Products under product head
       </div>
       <div class="variant-products-header-right">
-         <div class="close-button" (click)="hideVariantProducts()">
+         <div class="close-button">
             <i class="bi bi-x-lg"></i>
          </div>
       </div>
    </div>
 
    <div class="variant-product-filters col-12">
-      <form [formGroup]="variantProductform">
+      <form [formGroup]="productForm">
          <div class="row align-items-end justify-content-end">
-            <div class="search-input col-2" style="padding: 0;">
+            <div class="col-lg-2">
                <label class="fs-6 mb-1">&nbsp;</label>
                <input type="text" placeholder="Search products here..." class="form-control fs-6" formControlName="name"
-                  (ngModelChange)="searchProducts()">
+                  (ngModelChange)="getProducts()">
             </div>
-            <div class="search-status col-2">
+            <div class="col-lg-2">
                <label class="fs-6 mb-1">Status</label>
-               <select class="form-select fs-6" formControlName="isActive" (change)="searchProducts()">
+               <select class="form-select fs-6" formControlName="isActive" (change)="getProducts()">
                   <option value="" disabled>-- Select an option --</option>
                   <option value=true>Active</option>
                   <option value=false>Inactive</option>
                </select>
             </div>
-            <div class="search-featured col-2">
+            <div class="col-lg-2">
                <label class="fs-6 mb-1">Featured</label>
-               <select class="form-select fs-6" formControlName="isFeatured" (change)="searchProducts()">
+               <select class="form-select fs-6" formControlName="isFeatured" (change)="getProducts()">
                   <option value="" disabled>-- Select an option --</option>
                   <option value=true>Featured</option>
                   <option value=false>Normal</option>
                </select>
             </div>
-            <div class="search-submit col-2">
+            <div class="col-lg-2">
+               <label class="fs-6 mb-1">&nbsp;</label>
                <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
-                  (click)="clearVariantFilters()">
+                  (click)="clearChildFilters()">
             </div>
          </div>
       </form>
@@ -165,18 +168,18 @@
 
    <div class="d-flex justify-content-between" style="margin: 20px 0;">
       <div class="total-count-container bg-dark col-2">
-         <h4 class="text-white fs-6">Total {{variantTotalCount ? variantTotalCount : 0}} products</h4>
+         <h4 class="text-white fs-6">Total {{childProducts.length > 0 ? childProducts.length : 0}} products</h4>
       </div>
       <div class="total-count-buttons">
-         <button class="btn btn-primary fs-6" (click)="navigateToAdd()" style="width: 200px;">
+         <button class="btn btn-primary fs-6" style="width: 200px;">
             Add Products
          </button>
       </div>
    </div>
 
    <div class="productsWrapper">
-      <ng-container *ngFor="let product of variantProducts">
-         <div class="product-card card-hover" (click)="navigateToUpdate(product?.prodid)">
+      <ng-container *ngFor="let product of childProducts">
+         <div class="product-card card-hover">
             <div class="product-image">
                <img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
             </div>
@@ -215,7 +218,7 @@
          </div>
       </ng-container>
 
-      <ng-container *ngIf="variantProducts.length == 0">
+      <ng-container *ngIf="childProducts.length == 0">
          <div class="emptyNote">
             <div class="fs-3 fw-bolder">No result found</div>
             <div class="fs-5 note">We couldn't find any item based on your search.</div>
@@ -226,27 +229,63 @@
    <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
       <div class="filtering">
          <span class="fs-6 text-dark">Show</span>
-         <select [formControl]="variantPageLimit" (change)="searchProducts()">
+         <select [formControl]="productLimit" (change)="getProducts()">
             <option value="5">5</option>
             <option value="10">10</option>
-            <option value="15">15</option>
             <option value="20">20</option>
-            <option value="25">25</option>
+            <option value="40">40</option>
          </select>
          <span class="fs-6 text-dark">entries</span>
       </div>
       <div class="pagination">
-         <div class="paginationBefore" [ngClass]="{'disabled': variantPage == 1}" (click)="getVariantPreviousPage()">
+         <div class="paginationBefore" [ngClass]="{'disabled': productPage == 1}" (click)="getChildPreviousPage()">
             <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
          </div>
-         <div class="paginationPage">{{variantPage}}</div>
-         <div class="paginationNext" [ngClass]="{'disabled': variantLastPage}" (click)="getVariantNextPage()">
+         <div class="paginationPage">{{productPage}}</div>
+         <div class="paginationNext" [ngClass]="{'disabled': isLastProduct}" (click)="getChildNextPage()">
             <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
          </div>
       </div>
    </div>
-</div>
+</div> -->
 
-<ng-container *ngIf="isUpdateModal">
+<ng-template #template>
+   <div class="modal-header">
+      <h4 class="modal-title pull-left">Modal</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      This is a modal.
+   </div>
+</ng-template>
+
+<ng-template #productTemplate>
+   <div class="modal-header pb-0">
+      <div class="fs-4 fw-bolder pull-left">{{productDetails?.name}} products</div>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeProducts()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <form [formGroup]="productForm">
+         <div class="row">
+            <div class="col-lg-6">
+               <div class="form-group">
+                  <label for="productKeyword" class="form-label">&nbsp;</label>
+                  <input type="text" placeholder="Search products here..." name="productKeyword" id="productKeyword"
+                     formControlName="keyword" (ngModelChange)="getProducts()" class="form-control">
+               </div>
+            </div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2"></div>
+         </div>
+      </form>
+   </div>
+</ng-template>
+
+<!-- <ng-container *ngIf="isUpdateModal">
    <app-update-head (close)="closeEventHandler($event)" [prodid]='sendId'></app-update-head>
-</ng-container>
+</ng-container> -->

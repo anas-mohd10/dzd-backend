@@ -20,6 +20,7 @@
       </div>
     </div>
   </div>
+  
   <div class="row mt-4">
     <div class="col-12">
       <div class="card">
@@ -27,7 +28,6 @@
           <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
 
             <div class="mediaWrapper">
-
               <div class="coverImageWrapper">
                 <input type="file" class="form-control fs-6" name="image" accept="image/*" [formControl]="coverImage" (change)="bannerFile($event)"
                   required>
@@ -53,9 +53,7 @@
                 </div>
                 <img [src]="img ? img : '../../../../../../assets/images/Preview_Background.png'" alt="Media">
               </div>
-
             </div>
-
 
             <div class="row">
               <h2 class="fw-bolder">Brand Details</h2>

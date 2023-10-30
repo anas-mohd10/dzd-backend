@@ -8,6 +8,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-card',
@@ -16,231 +17,159 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class ProductCardComponent implements OnInit {
   appRoute = appRoutes;
-  products: Array<any> = [];
-  productform: any;
-  variantProductform: any;
-  base: any
 
-  showVariants: Boolean = false
-  variantproduct: any
-
-  variantProducts: any = [];
-  productName: String = ''
-  productProdid: any = null
-  variantTotalcount: any
-  variantLastPage: Boolean = false
-  variantPage: number = 1;
-  variantPageLimit: FormControl = new FormControl('20')
-  settings: any = {}
-
-  variantPages: any = []
-  vairnatNextPages: any = []
-  variantCurrpage: any = 1;
-  variantLimit: any = 8;
-  variantSelectedpage: any = 1
-  variantMax: any = 3
-
-  variantTotalCount: any;
-  variantTotalData: any;
-  variantCount: any = 0
-  prodid: any;
-  categories: any = [];
-
-  showFilter: Boolean = false
-  inputText: any = 'name';
-  isUpdateModal: Boolean = false
-  sendId: any
-  isClose: any
-  checkstatus: boolean = true;
-
-
-  isActive: FormControl = new FormControl('')
-  keyword: FormControl = new FormControl('')
-  limit: FormControl = new FormControl('20')
-  category: FormControl = new FormControl('')
+  limit: FormControl = new FormControl('40')
   page: number = 1
-  lastPage: Boolean = false
+  isLastPage: boolean = false
+  products: Array<any> = []
+  productResults: string = ''
 
+  childProducts: Array<any> = []
+  childResults: string = ''
+  isLastProduct: boolean = false
+  productLimit: FormControl = new FormControl('40')
+  productPage: number = 1
+
+  form: FormGroup
+  productForm: FormGroup
   modalRef?: BsModalRef
+  productRef?: BsModalRef
   productDetails: any = {}
+  base: string = environment.base
+  settings: any = {}
+  categories: Array<any> = []
 
   constructor(
-    private productService: ProductService,
-    private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
+    private ProductService: ProductService,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private Router: Router,
     private ActivatedRoute: ActivatedRoute,
     private ProductHeadService: ProductHeadService,
     private CategoryService: CategoryService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.base = environment.base
-    this.initForm()
-    this.getHeads()
+    this.form = new FormGroup({
+      name: new FormControl(''),
+      isActive: new FormControl(''),
+      isFeatured: new FormControl(''),
+      category: new FormControl('')
+    });
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-        this.cdr.markForCheck();
-      }
-    })
-
-    this.CategoryService.getMainCategories().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.categories = res?.result
-        this.cdr.markForCheck();
-      }
-    })
-  }
-
-  closeEventHandler($event: any) {
-    console.log($event);
-    this.isUpdateModal = false
-    this.isClose = $event
-    console.log(this.isClose), "close";
-  }
-
-  initForm() {
-    this.variantProductform = new FormGroup({
+    this.productForm = new FormGroup({
       name: new FormControl(''),
       isActive: new FormControl(''),
       isFeatured: new FormControl(''),
     });
+
+    this.getProductHeads()
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
+
+    this.CategoryService.getMainCategories().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.categories = res?.result
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
   }
 
   getNextPage() {
     this.page += 1
-    this.getHeads()
+    this.getProductHeads()
   }
 
   getPreviousPage() {
     this.page -= 1
-    this.getHeads()
+    this.getProductHeads()
   }
 
-  clearFilters() {
-    this.keyword.setValue('')
-    this.limit.setValue('20')
-    this.category.setValue('')
-    this.isActive.setValue('')
-    this.page = 1
-    this.getHeads()
-  }
-
-  getHeads() {
+  getProductHeads() {
     let payload = {
       limit: this.limit.value,
       page: this.page,
-      keyword: this.keyword.value,
-      isActive: this.isActive.value,
-      category: this.category.value
+      ...this.form.value
     }
 
-    this.ProductHeadService.searchProductHead(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.products = res?.result?.data
-        this.page = res?.result?.page
-        this.lastPage = res?.result?.lastPage
-        this.cdr.markForCheck()
+    this.ProductHeadService.searchProductHead(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.products = res?.result?.data
+          this.productResults = res?.result?.totalItems
+          this.isLastPage = res?.result?.lastPage
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
       }
     })
   }
 
-  getProducts(name: any, prodid: any) {
-    this.showVariants = !this.showVariants;
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-    this.productName = name
-    this.productProdid = prodid
-    this.searchProducts()
-    this.cdr.markForCheck();
+  clearFilters() {
+    this.productForm.reset()
+    this.limit.setValue('40')
+    this.page = 1
+    this.getProductHeads()
   }
 
-  searchProducts() {
+  getChildNextPage() {
+    this.productPage += 1
+    this.getProducts()
+  }
+
+  getChildPreviousPage() {
+    this.productPage -= 1
+    this.getProducts()
+  }
+
+
+  getProducts() {
     let payload = {
-      ...this.variantProductform.value,
-      parent: this.productProdid,
-      page: this.variantPage,
-      limit: this.variantPageLimit?.value
+      ...this.productForm.value,
+      page: this.productPage,
+      limit: this.productLimit?.value,
+      parent: this.productDetails?.prodid
     }
-    this.productService.searchProducts(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.variantProducts = res?.result?.data
-        this.variantTotalcount = res?.result?.total_item
-        this.variantLastPage = res?.result?.lastPage
-        this.variantPage = res?.result?.page
-        this.cdr.markForCheck();
+
+    this.ProductService.searchProducts(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.childProducts = res?.result?.data
+          this.childResults = res?.result?.totalResults
+          this.isLastProduct = res?.result?.lastPage
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
       }
     })
   }
 
-  getProductOffers() {
-    for (let _product of this.variantProducts) {
-      const diff = _product?.price?.mrp - _product.price?.offer
-      const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
-      const message = {
-        text: `${percentage_off} % off`,
-      }
-      _product['message'] = message
-    }
-  }
-
-  getVariantPreviousPage() {
-    this.variantPage -= 1
-    this.searchProducts()
-  }
-
-  getVariantNextPage() {
-    this.variantPage += 1
-    this.searchProducts()
-  }
-
-  hideVariantProducts() {
-    this.showVariants = !this.showVariants;
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-  }
-
-  navigateToAdd() {
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-    this.Router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: this.productProdid } })
-  }
-
-  navigateToUpdate(id: any) {
-    this.inputText = "edit"
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-    this.Router.navigate([this.appRoute.product.UPDATE_PRODUCT], { queryParams: { id: id } })
-  }
-
-  clearVariantFilters() {
-    this.variantProductform.get('name')?.setValue('')
-    this.variantProductform.get('isActive')?.setValue('')
-    this.variantProductform.get('isFeatured')?.setValue('')
-    this.variantPage = 1
-    this.variantPageLimit?.setValue('20')
-    this.searchProducts()
-  }
-
-  showFilters() {
-    this.showFilter = !this.showFilter
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-  }
-
-  hideFilters() {
-    this.showFilter = !this.showFilter
-    let bodyEl = document.querySelector('body');
-    bodyEl?.classList.toggle('overflow-hidden')
-  }
-
-  openModal(id: any) {
-    this.isUpdateModal = true
-    this.sendId = id
+  clearChildFilters() {
+    this.productForm.reset()
+    this.productPage = 1
+    this.productLimit?.setValue('20')
+    this.getProducts()
   }
 
   open(template: TemplateRef<any>, productDetails: any) {
@@ -250,6 +179,16 @@ export class ProductCardComponent implements OnInit {
 
   close() {
     this.modalRef?.hide()
+    this.productDetails = {}
+  }
+
+  openProducts(template: TemplateRef<any>, productDetails: any) {
+    this.productDetails = productDetails
+    this.productRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+  }
+
+  closeProducts() {
+    this.productRef?.hide()
     this.productDetails = {}
   }
 }

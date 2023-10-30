@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-update-collection',
@@ -46,8 +47,10 @@ export class UpdateCollectionComponent implements OnInit {
   restore = new FormControl('false');
   isArchived: boolean;
   selectedProducts: any = []
-  featured: Boolean = false
-  grid: Boolean = false
+
+  isFeatured: boolean = false
+  isGrid: boolean = false
+
   images: any = []
   file: any
 
@@ -65,6 +68,18 @@ export class UpdateCollectionComponent implements OnInit {
   productIds: Array<any> = [];
   productDetails: Array<any> = []
 
+  img: any;
+  banner: any;
+  coverModalRef?: BsModalRef;
+  mediaModalRef?: BsModalRef;
+  existModalRef?: BsModalRef;
+  quesModalRef?: BsModalRef;
+  @ViewChild('coverModal') coverModal: any;
+  @ViewChild('mediaModal') mediaModal: any;
+  @ViewChild('existingModal') existingModal: any;
+  @ViewChild('quesModal') quesModal: any;
+  coverImage: FormControl = new FormControl('');
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -72,7 +87,8 @@ export class UpdateCollectionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -143,8 +159,8 @@ export class UpdateCollectionComponent implements OnInit {
       switch (res?.errorCode) {
         case 0:
           this.collectionData = res?.result[0];
-          this.uploadedimg = this.collectionData?.file
-          this.bannerimg = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
+          this.img = this.base + "/" + res?.result[0].file
+          this.banner = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
           for (let key of Object.keys(this.collectionData)) {
             this.collectionForm.get(key)?.setValue(this.collectionData[key])
           }
@@ -161,8 +177,8 @@ export class UpdateCollectionComponent implements OnInit {
           this.border = this.collectionData?.style.border
           this.selectedProducts = this.collectionData?.products
           for (let product of this.collectionData?.products) this.productIds.push(product?._id)
-          if (this.collectionData?.isFeatured == true) this.featured = !this.featured
-          if (this.collectionData?.type == 'grid') this.grid = !this.grid
+          if (this.collectionData?.isFeatured == true) this.isFeatured = !this.isFeatured
+          if (this.collectionData?.type == 'grid') this.isGrid = !this.isGrid
           if (this.collectionData.isArchive == true) this.isArchived = true
           this.productDetails = [...this.collectionData?.products]
           this.cdr.markForCheck()
@@ -171,7 +187,9 @@ export class UpdateCollectionComponent implements OnInit {
     });
   }
 
-  toggleProductMethod(type: any) { this.isAutoCompleteEnabled = type }
+  toggleProductMethod(type: any) {
+    this.isAutoCompleteEnabled = type
+  }
 
   getProducts() {
     if (this.product.value) {
@@ -200,51 +218,6 @@ export class UpdateCollectionComponent implements OnInit {
     this.productDetails = [...products]
   }
 
-  compareFn(item: any, selected: any) {
-    return item._id === selected._id;
-  }
-
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-  }
-
-  bannerFile(event: any) {
-    this.bannerFiledata = <File>event.target.files[0];
-    this.bannerFilename = this.bannerFiledata.name
-    this.bannerChangedEvent = event;
-    this.loadBanner = true
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  bannerCropped(event: ImageCroppedEvent) {
-    this.croppedBanner = event.base64;
-  }
-
-  imageLoaded() {
-  }
-
-  cropperReady() {
-  }
-
-  loadImageFailed() {
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  removeBanner() {
-    this.croppedBanner = ''
-    this.loadBanner = false
-  }
-
   getColors(type: any, e: any) {
     if (type == "background") {
       this.background = e.value
@@ -255,16 +228,12 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
-  checkFeatured(e: any) {
-    if (e.value == "true") {
-      this.featured = !this.featured
-    }
+  getType(event: any) {
+    event.value == 'grid' ? this.isGrid = !this.isGrid : null
   }
 
-  checkGrid(e: any) {
-    if (e.value == "grid") {
-      this.grid = !this.grid
-    }
+  getFeatured(event: any) {
+    event.value == 'true' ? this.isFeatured = true : this.isFeatured = false
   }
 
   onSubmit() {
@@ -353,4 +322,123 @@ export class UpdateCollectionComponent implements OnInit {
 
     return data
   }
+
+  //Media management starts
+  handleInputChange(event: any) {
+    this.filedata = <File>event.target.files[0];
+    this.filename = this.filedata.name
+    this.imageChangedEvent = event;
+    this.loadImage = true
+    this.BsModalService.show(this.mediaModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+    this.quesModalRef?.hide()
+  }
+
+  bannerFile(event: any) {
+    this.bannerFiledata = <File>event.target.files[0];
+    this.bannerFilename = this.bannerFiledata.name
+    this.bannerChangedEvent = event;
+    this.loadBanner = true
+    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
+  }
+
+  openQuesModal(template: TemplateRef<any>) {
+    this.quesModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
+  openCoverModal(template: TemplateRef<any>) {
+    this.coverModalRef = this.BsModalService.show(template);
+  }
+
+  openMediaModal(template: TemplateRef<any>) {
+    this.mediaModalRef = this.BsModalService.show(template);
+  }
+
+  openExistingModal(template: TemplateRef<any>) {
+    this.existModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.quesModalRef?.hide()
+  }
+
+  closeMedia(type: any) {
+    if (type == 'cover') {
+      this.croppedBanner = ''
+      this.bannerFilename = ''
+    } else if (type == 'thumbnail') {
+      this.croppedImage = ''
+      this.filename = ''
+    }
+    this.BsModalService.hide()
+  }
+
+  saveMedia(type: any) {
+    if (type == 'cover') {
+      this.collectionService.updateMedias({ collection: this.collectionData?.colid, media: { url: this.croppedBanner, name: this.bannerFilename } }, type).subscribe({
+        next: (res: any) => {
+          this.getCollection()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
+    } else if (type == 'thumbnail') {
+      this.collectionService.updateMedias({ collection: this.collectionData?.colid, media: { url: this.croppedImage, name: this.filename } }, type).subscribe({
+        next: (res: any) => {
+          this.getCollection()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
+    }
+
+    this.BsModalService.hide()
+  }
+
+  saveExistingMedia(type: any, image: any) {
+    if (type == 'cover') {
+      this.collectionService.updateMedias({ collection: this.collectionData?.colid, url: image }, type).subscribe({
+        next: (res: any) => {
+          this.getCollection()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
+    } else if (type == 'thumbnail') {
+      this.collectionService.updateMedias({ collection: this.collectionData?.colid, url: image }, type).subscribe({
+        next: (res: any) => {
+          this.getCollection()
+          this.toastr.success(res.message)
+        }, error: (err: any) => {
+          this.toastr.error(err.message)
+        }
+      })
+    }
+
+    this.BsModalService.hide()
+  }
+
+  removeCoverImage() {
+    this.collectionService.removeCoverImage(this.collectionData.colid).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getCollection()
+          this.toastr.success(res.message)
+          this.coverImage.reset()
+        } else {
+          this.toastr.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.toastr.error(err.message)
+      }
+    })
+  }
+  //Media management ends
 }

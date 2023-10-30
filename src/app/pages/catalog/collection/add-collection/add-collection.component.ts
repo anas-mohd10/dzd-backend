@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-add-collection',
@@ -64,6 +65,18 @@ export class AddCollectionComponent implements OnInit {
   productIds: Array<any> = [];
   productDetails: Array<any> = []
 
+  img: any;
+  banner: any;
+  coverModalRef?: BsModalRef;
+  mediaModalRef?: BsModalRef;
+  existModalRef?: BsModalRef;
+  quesModalRef?: BsModalRef;
+  @ViewChild('coverModal') coverModal: any;
+  @ViewChild('mediaModal') mediaModal: any;
+  @ViewChild('existingModal') existingModal: any;
+  @ViewChild('quesModal') quesModal: any;
+  coverImage: FormControl = new FormControl('');
+
   constructor(
     private collectionService: CollectionService,
     private productService: ProductService,
@@ -71,14 +84,14 @@ export class AddCollectionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
     this.base = environment.base
     this.managePage();
     this.initForm();
-    this.getProduct();
 
     this.collectionService.collectionImages({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -136,54 +149,13 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
-  getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.products = res?.result
-          break;
-      }
-    });
-  }
-
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  bannerCropped(event: ImageCroppedEvent) {
-    this.croppedBanner = event.base64;
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  removeBanner() {
-    this.croppedBanner = ''
-    this.loadBanner = false
+  getColors(type: any, event: any) {
+    type == 'background' ?
+      this.background = event.value :
+      type == 'border' ?
+        this.border = event.value :
+        type == 'color' ?
+          this.color = event.value : null
   }
 
   getType(event: any) {
@@ -203,11 +175,31 @@ export class AddCollectionComponent implements OnInit {
     }
   }
 
+  //Media management
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+  }
+
+  bannerCropped(event: ImageCroppedEvent) {
+    this.croppedBanner = event.base64;
+  }
+
+  openQuesModal(template: TemplateRef<any>) {
+    this.quesModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
+  openExistingModal(template: TemplateRef<any>) {
+    this.existModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.quesModalRef?.hide()
+  }
+
   handleInputChange(event: any) {
     this.filedata = <File>event.target.files[0];
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
+    this.BsModalService.show(this.mediaModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+    this.quesModalRef?.hide()
   }
 
   bannerFile(event: any) {
@@ -215,11 +207,42 @@ export class AddCollectionComponent implements OnInit {
     this.bannerFilename = this.bannerFiledata.name
     this.bannerChangedEvent = event;
     this.loadBanner = true
+    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
   }
 
-  selectImage(file: any) {
-    this.file = file
+  removeCoverImage() {
+    this.croppedBanner = ''
+    this.banner = ''
+    this.bannerFilename = ''
+    this.coverImage.reset()
   }
+
+  closeMedia(type: any) {
+    if (type == 'cover') {
+      this.croppedBanner = ''
+      this.bannerFilename = ''
+    } else if (type == 'thumbnail') {
+      this.croppedImage = ''
+      this.filename = ''
+    }
+    this.BsModalService.hide()
+  }
+
+  saveMedia(type: any) {
+    type == 'cover' ? this.banner = this.croppedBanner : this.img = this.croppedImage
+    this.BsModalService.hide()
+  }
+
+  saveExistingMedia(type: any, image: any) {
+    if (type == 'cover') {
+
+    } else if (type == 'thumbnail') {
+      this.file = image
+      this.img = environment.base + '/' + image
+    }
+    this.BsModalService.hide()
+  }
+  //Media management
 
   getProducts() {
     if (this.product.value) {
@@ -232,7 +255,9 @@ export class AddCollectionComponent implements OnInit {
     } else { this.searchProducts = [] }
   }
 
-  toggleProductMethod(type: any) { this.isAutoCompleteEnabled = type }
+  toggleProductMethod(type: any) {
+    this.isAutoCompleteEnabled = type
+  }
 
   addProductSku(product: any) {
     if (!this.productIds.includes(product?._id)) {
@@ -246,7 +271,6 @@ export class AddCollectionComponent implements OnInit {
 
   addCollection() {
     if (!this.collectionForm.valid) {
-      this.toastr.error('Validation failed. Kindly try again with proper values.')
       return;
     }
 

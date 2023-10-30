@@ -77,11 +77,11 @@
         <div class="categoryDetails h-100 d-flex flex-column justify-content-between">
           <div class="fs-5 fw-bolder">{{category?.name}}</div>
           <div class="d-flex mt-2">
-            <div class="fs-6 activeStatus" [ngClass]="{'inactiveStatus': !category?.isActive}">
+            <div class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
               {{category?.isActive ? 'Active' : 'Inactive'}}
             </div>
-            <div class="fs-6 ms-2 featured" *ngIf="category?.isFeatured">
-              {{category?.isFeatured ? 'Featured' : ''}}
+            <div class="fs-6 ms-1 p-1 alert alert-info" *ngIf="category?.isFeatured">
+              {{category?.isFeatured ? 'Featured' : null}}
             </div>
           </div>
           <div class="fs-6 attributesBtn mt-3" (click)="openAttributeModal(attributeModal, category)">
