@@ -60,6 +60,8 @@ import { ServiceWarrantyComponent } from './pages/pages/service-warranty/service
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { RefundPolicyComponent } from './pages/pages/refund-policy/refund-policy.component';
 import { SupportEmailVerificationComponent } from './pages/support-email-verification/support-email-verification.component';
+import { MobileAppsComponent } from './pages/settings/general/mobile-apps/mobile-apps.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -96,7 +98,8 @@ const DragConfig = {
     ShippingPolicyComponent,
     ServiceWarrantyComponent,
     RefundPolicyComponent,
-    SupportEmailVerificationComponent
+    SupportEmailVerificationComponent,
+    MobileAppsComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -127,6 +130,7 @@ const DragConfig = {
     ReactiveFormsModule,
     ImageCropperModule,
     SwiperModule,
+    TabsModule.forRoot()
   ],
   exports: [
     RouterModule,

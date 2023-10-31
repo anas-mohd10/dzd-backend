@@ -25,7 +25,8 @@ export class SupportEmailVerificationComponent implements OnInit {
     this.Service.verifyEmail({ token: this.token }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-
+          this.Router.navigate([appRoutes.helpcenter.HELPCENTER])
+          this.ToastrService.success(res.message)
         } else {
           this.ToastrService.error(res.message)
         }

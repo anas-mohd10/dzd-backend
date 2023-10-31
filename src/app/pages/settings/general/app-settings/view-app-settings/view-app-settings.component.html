@@ -10,15 +10,15 @@
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
                <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST}}">App Settings</a>
+                  <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS}}">App Settings</a>
                </li>
             </ul>
             <button *ngIf="generalSettingsCount == 0" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
-               routerLink="{{ appRoute.appSettings.ADD_APP_SETTINGS }}">
+               routerLink="{{ appRoute.storeSettings.ADD_APP_SETTINGS }}">
                Add Configurations
             </button>
             <button *ngIf="generalSettingsCount != 0" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
-               routerLink="{{ appRoute.appSettings.UPDATE_APP_SETTINGS}}" [queryParams]="{id: slug}">
+               routerLink="{{ appRoute.storeSettings.UPDATE_APP_SETTINGS }}" [queryParams]="{id: slug}">
                Edit Configurations
             </button>
          </div>

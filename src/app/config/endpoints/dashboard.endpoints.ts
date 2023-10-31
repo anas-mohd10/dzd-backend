@@ -7,5 +7,6 @@ export const dashboardEndpoints = {
   publish_dashboard: '/publish-dashboard',
   preview_dashboard: '/preview-dashboard',
   dashboard_config: '/dashboard-config',
-  currentRevenues: '/current-revenues'
+  currentRevenues: '/current-revenues',
+  sourceDetails: '/source-details'
 }

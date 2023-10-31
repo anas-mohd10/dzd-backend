@@ -80,7 +80,7 @@ export class MonthStatsComponent implements OnInit {
               fontFamily: 'Sen, sans-serif'
             },
             dataLabels: {
-              enabled: true, style: { colors: ['#1a1d27'] }
+              enabled: false, style: { colors: ['#1a1d27'] }
             },
             stroke: { curve: "smooth" },
             labels: this.labels,

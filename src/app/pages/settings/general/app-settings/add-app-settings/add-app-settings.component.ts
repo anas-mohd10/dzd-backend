@@ -188,7 +188,7 @@ export class AddAppSettingsComponent implements OnInit {
     this.AppSettingsService.addGeneralSettings(formdata).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.appSettings.APP_SETTINGS_LIST])
+        this.router.navigate([this.appRoute.storeSettings.STORE_SETTINGS])
       } else {
         this.toastr.error(res?.message);
       }

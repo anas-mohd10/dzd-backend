@@ -6,7 +6,6 @@ import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabe
 import { FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -47,6 +46,17 @@ export class DashboardComponent implements OnInit {
   dayLabels: Array<any> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   dayValues: Array<any> = ['0', '0', '0', '0', '0', '0', '0']
   //Revenue by days
+
+  //Pie chart
+  @ViewChild("chart") pieChart: ChartComponent;
+  pieChartOptions: any = {
+    series: [],
+    chart: { type: '', fontFamily: '' },
+    labels: [],
+    responsive: []
+  };
+  barChartOptions: any
+  //Pie chart
 
   startDate: FormControl = new FormControl('')
   endDate: FormControl = new FormControl('')
@@ -111,10 +121,56 @@ export class DashboardComponent implements OnInit {
     })
 
     this.getDailyRevenues()
+
+    this.DashboardService.sourceDetails({}).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          let values = []
+          let labels = []
+          let revenues = []
+          for (let _item of res?.result) {
+            labels.push(_item?.key)
+            values.push(_item?.value)
+            revenues.push(_item?.revenue)
+          }
+
+          this.pieChartOptions = {
+            series: values,
+            chart: { type: "donut", fontFamily: 'Sen, sans-serif' },
+            labels: labels,
+            responsive: [{
+              breakpoint: 480,
+              options: { chart: { width: 200 }, legend: { position: "bottom" } }
+            }]
+          }
+
+          this.barChartOptions = {
+            series: [{ name: "Revenue", data: revenues }],
+            chart: { type: "bar", height: 200, fontFamily: 'Sen, sans-serif', fontSize: 14 },
+            plotOptions: { bar: { horizontal: true, borderRadius: 5 } },
+            dataLabels: { enabled: false },
+            xaxis: {
+              categories: labels,
+              labels: { style: { fontSize: 14 } },
+            },
+            yaxis: {
+              labels: {
+                style: { fontSize: '14px' },
+              },
+            },
+          }
+
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
   }
 
   getDailyRevenues() {
-
     if (this.startDate?.value < this.endDate?.value) {
       this.DashboardService.getDaysRevenue({
         startDate: this.startDate?.value,
@@ -137,7 +193,7 @@ export class DashboardComponent implements OnInit {
                 fontFamily: 'Sen, sans-serif'
               },
               dataLabels: {
-                enabled: true, style: { colors: ['#1a1d27'] }
+                enabled: false, style: { colors: ['#1a1d27'] }
               },
               stroke: { curve: "smooth" },
               labels: this.dayLabels,

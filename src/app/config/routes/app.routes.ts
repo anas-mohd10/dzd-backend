@@ -39,7 +39,7 @@ const helpcenterRoute = "/help-center"
 const privacypolicyRoute = "/privacy-policy"
 const termsconditionsRoute = "/terms-conditions"
 const pageLimitsRoutes = "/page-limits"
-const generalSettingsRoutes = "/app-settings"
+const storeSettings = "/store-settings"
 const dashboardSettings = "/home-settings"
 const myAccount = '/my-account'
 const seoDetails = '/seo-details'
@@ -210,10 +210,10 @@ export const appRoutes = {
     ADD_PAGE_LIMITS: `${app}${pageLimitsRoutes}/add`,
     UPDATE_PAGE_LIMITS: `${app}${pageLimitsRoutes}/update`,
   },
-  appSettings: {
-    APP_SETTINGS_LIST: `${app}${generalSettingsRoutes}`,
-    ADD_APP_SETTINGS: `${app}${generalSettingsRoutes}/add`,
-    UPDATE_APP_SETTINGS: `${app}${generalSettingsRoutes}/update`,
+  storeSettings: {
+    STORE_SETTINGS: `${app}${storeSettings}`,
+    ADD_APP_SETTINGS: `${app}${storeSettings}/add`,
+    UPDATE_APP_SETTINGS: `${app}${storeSettings}/update`,
   },
   dashboardSettings: {
     DASHBOARD_SETTINGS_LIST: `${app}${dashboardSettings}`,
@@ -261,5 +261,6 @@ export const appRoutes = {
   shippingPolicy: `${app}/shipping-policy`,
   serviceWarranty: `${app}/service-warranty`,
   paymentPolicy: `${app}/payment-policy`,
-  refundPolicy: `${app}/refund-policy`
+  refundPolicy: `${app}/refund-policy`,
+  mobileApps: `${app}/mobile-apps`
 }

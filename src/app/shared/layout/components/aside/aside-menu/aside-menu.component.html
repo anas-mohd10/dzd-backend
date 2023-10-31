@@ -306,7 +306,7 @@
 </div>
 
 <div class="menu-item">
-  <a class="menu-link without-sub" routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}" routerLinkActive="active">
+  <a class="menu-link without-sub" routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}" routerLinkActive="active">
     <span class="menu-icon">
       <i class="bi bi-gear"></i>
     </span>
@@ -349,6 +349,15 @@
           <span class="bullet bullet-dot"></span>
         </span>
         <span class="menu-title">SEO</span>
+      </a>
+    </div>
+
+    <div class="menu-item">
+      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{appRoute.mobileApps}}">
+        <span class="menu-bullet">
+          <span class="bullet bullet-dot"></span>
+        </span>
+        <span class="menu-title">Apps</span>
       </a>
     </div>
 

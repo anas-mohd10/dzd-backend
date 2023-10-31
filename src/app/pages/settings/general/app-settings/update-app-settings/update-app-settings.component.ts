@@ -215,7 +215,7 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.AppSettingsService.updateGeneralSettings(formdata).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.toastr.success(res?.message);
-        this.Router.navigate([this.appRoute.appSettings.APP_SETTINGS_LIST])
+        this.Router.navigate([this.appRoute.storeSettings.STORE_SETTINGS])
       } else {
         this.toastr.error(res?.message);
       }

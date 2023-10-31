@@ -11,10 +11,10 @@
                   <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                </li>
                <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}">App Settings</a>
+                  <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}">App Settings</a>
                </li>
                <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.appSettings.UPDATE_APP_SETTINGS }}">
+                  <a routerLink="{{ appRoute.storeSettings.UPDATE_APP_SETTINGS }}">
                      {{ editMode ? "Update App Settings" : "Add App Settings"}}
                   </a>
                </li>
@@ -159,7 +159,7 @@
                </form>
 
                <div class="col-12 d-flex align-items-center justify-content-end">
-                  <a routerLink="{{ appRoute.appSettings.APP_SETTINGS_LIST }}"
+                  <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}"
                      class=" btn btn-secondary me-2 fs-6 text-dark fw-bolder" style="width: 200px">
                      Cancel
                   </a>

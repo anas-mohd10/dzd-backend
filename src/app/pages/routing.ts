@@ -15,6 +15,7 @@ import { ServiceWarrantyComponent } from './pages/service-warranty/service-warra
 import { PaymentPolicyComponent } from './pages/payment-policy/payment-policy.component';
 import { ShippingPolicyComponent } from './pages/shipping-policy/shipping-policy.component';
 import { RefundPolicyComponent } from './pages/refund-policy/refund-policy.component';
+import { MobileAppsComponent } from './settings/general/mobile-apps/mobile-apps.component';
 
 export const Routing: Routes = [
   {
@@ -302,8 +303,12 @@ export const Routing: Routes = [
         loadChildren: () => import('./settings/general/page-limits/page-limits.module').then((m) => m.PageLimitsModule),
         canActivate: [AuthenticationGuard]
       }, {
-        path: 'app-settings',
+        path: 'store-settings',
         loadChildren: () => import('./settings/general/app-settings/app-settings.module').then((m) => m.AppSettingsModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'mobile-apps',
+        component: MobileAppsComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'home-settings',

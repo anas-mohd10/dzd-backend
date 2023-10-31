@@ -192,10 +192,24 @@
 </div>
 
 <div class="row mb-5 mt-5">
-  <div class="col-xl-12">
+  <div class="col-xl-8">
     <div class="stats5Months">
-      <div class="card">
+      <div class="card h-100">
         <app-stats-widget4></app-stats-widget4>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card h-100">
+      <div class="card-body">
+        <div class="fs-4 fw-bolder">Source</div>
+        <apx-chart [series]="pieChartOptions.series" [chart]="pieChartOptions.chart" [labels]="pieChartOptions.labels"
+          [responsive]="pieChartOptions.responsive"></apx-chart>
+
+        <div class="fs-4 fw-bolder mt-3">Revenue by source</div>
+        <apx-chart [series]="barChartOptions?.series" [chart]="barChartOptions?.chart"
+          [dataLabels]="barChartOptions?.dataLabels" [plotOptions]="barChartOptions?.plotOptions"
+          [xaxis]="barChartOptions?.xaxis"></apx-chart>
       </div>
     </div>
   </div>
