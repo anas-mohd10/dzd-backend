@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataTableDirective } from 'angular-datatables';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-
 @Component({
   selector: 'app-add-help-center',
   templateUrl: './add-help-center.component.html',
@@ -16,16 +13,10 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 })
 export class AddHelpCenterComponent implements OnInit {
   appRoute = appRoutes
-  aboutData: any;
-  displayTable: boolean;
-  helpcenterForm: FormGroup
-  task = PageTasks.ADD;
-  editMode = false;
   isSubmitted: boolean;
-  isData: Boolean = false
-  isHidden: Boolean = true
-  slug: any;
-
+  isDetected: Boolean = false
+  form: FormGroup
+  details: any
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -51,89 +42,83 @@ export class AddHelpCenterComponent implements OnInit {
   };
 
   constructor(
-    private helpcenterService: HelpCenterService,
+    private Service: HelpCenterService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private toastr: ToastrService
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ToastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.initForm()
-    this.managePage()
-    this.getAbout()
-  }
-
-  initForm() {
-    this.helpcenterForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       description: ['', Validators.required],
+      countryCode: ['', Validators.required],
       phone: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
     });
-  }
 
-  get hf() {
-    return this.helpcenterForm.controls;
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
-  getAbout() {
-    this.helpcenterService.getHelpCenter().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.isData = res?.result.length > 0 ? true : false
-        this.slug = res?.result[0].slug
-        this.helpcenterForm.get("description")?.setValue(res?.result[0].description)
-        this.helpcenterForm.get("phone")?.setValue(res?.result[0].phone)
-        this.helpcenterForm.get("email")?.setValue(res?.result[0].email)
+    this.Service.getDetails().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.details = res?.result
+          for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
       }
     })
   }
 
-  reloadPage() {
+  get formControls() {
+    return this.form.controls;
+  }
+
+  cancel() {
     this.isSubmitted = false
-    this.isHidden = true
+    this.isDetected = false
     this.ngOnInit()
   }
 
-  showButton() {
-    this.isHidden = false
+  detectChanges() {
+    this.isDetected = true
   }
 
   onSubmit() {
-    if (!this.helpcenterForm.valid) {
+    if (!this.form.valid) {
       this.isSubmitted = true
       return;
     }
-    if (!this.isData) {
-      this.helpcenterService.createHelpCenter(this.helpcenterForm.value).subscribe((res: any) => {
-        this.afterResult(res?.errorCode, res?.message)
-      })
-    } else {
-      this.helpcenterService.updateHelpCenter(this.slug, this.helpcenterForm.value).subscribe((res: any) => {
-        this.afterResult(res?.errorCode, res?.message)
-      })
-    }
+
+    this.Service.manage(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ngOnInit()
+          this.ChangeDetectorRef.markForCheck()
+          this.isSubmitted = false
+          this.isDetected = false
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
   }
 
-  afterResult(errorcode: any, message: any) {
-    if (errorcode != 0) {
-      this.toastr.error(message);
-    } else if (errorcode == 0) {
-      this.toastr.success(message);
-      this.isHidden = true
-      this.ngOnInit()
-    }
+  sendVerification() {
+    this.Service.shareVerification().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
   }
-
 }

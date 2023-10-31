@@ -1,0 +1,17 @@
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    height: 100vh;
+    text-align: center;
+
+    svg {
+        width: 100px;
+    }
+
+    p{
+        width: 300px;
+    }
+}

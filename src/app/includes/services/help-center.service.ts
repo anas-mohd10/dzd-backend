@@ -7,23 +7,30 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class HelpCenterService {
-  helpcenterEndpoints = helpcenterEndpoints
+  endpoints = helpcenterEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
-  createHelpCenter(data: any) {
-    const url = this.commonService.getFullUrl(this.helpcenterEndpoints.create_help_center);
+  manage(data: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.manage);
     return this.http.post(`${url}`, data)
   }
 
-  getHelpCenter() {
-    const url = this.commonService.getFullUrl(this.helpcenterEndpoints.get_help_center);
+  getDetails() {
+    const url = this.commonService.getFullUrl(this.endpoints.getDetails);
     return this.http.get(`${url}`)
   }
 
-  updateHelpCenter(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.helpcenterEndpoints.update_help_center + "?slug=" + slug);
-    return this.http.put(`${url}`, data)
+  shareVerification(){
+    const url = this.commonService.getFullUrl(this.endpoints.shareVerification);
+    return this.http.get(`${url}`)
   }
-  
+
+  verifyEmail(data: any){
+    const url = this.commonService.getFullUrl(this.endpoints.verifyEmail);
+    return this.http.post(`${url}`, data)
+  }
 }

@@ -3,13 +3,29 @@
    resize: none;
 }
 
-.errorMessage {
-   margin: 20px 0;
-   color: #d81b1b;
-   font-size: 16px;
-   font-weight: 600;
+label,
+.btn-secondary {
+   font-weight: normal !important;
 }
 
-label {
-   font-weight: normal !important;
+.emailUnverified{
+   color: #cf2525;
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+
+   p {
+      margin: 0;
+   }
+}
+
+.emailVerified {
+   color: #1a9042;
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+
+   p {
+      margin: 0;
+   }
 }

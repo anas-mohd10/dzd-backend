@@ -52,7 +52,7 @@ export class GenerateInvoiceComponent implements OnInit {
       }
     })
 
-    this.HelpCenterService.getHelpCenter().subscribe((res: any) => {
+    this.HelpCenterService.getDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.helpCenter = res?.result
         this.ChangeDetectorRef.markForCheck()
