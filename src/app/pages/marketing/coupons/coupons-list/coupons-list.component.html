@@ -61,20 +61,23 @@
 
    <div class="coupon-card-container view-container col-lg-12">
       <ng-container *ngFor="let coupon of coupons">
-         <div class="couponCard card-hover d-flex align-items-start justify-content-start">
-            <div class="editButton">
+         <div class="couponCard card-hover d-flex align-items-start justify-content-start"
+            [ngClass]="{'completed': coupon?.isCompleted }">
+            <div class="editButton" *ngIf="!coupon?.isCompleted">
                <div routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{ coupon: coupon?.refid }">
                   <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                </div>
             </div>
+            <div class="completedBadge alert alert-info p-1" *ngIf="coupon?.isCompleted">
+               Completed
+            </div>
             <div class="couponImage me-2">
-               <img src="{{coupon?.file}}" alt="Coupon">
+               <img src="{{coupon?.file}}" alt="Coupon" onerror="this.src = '../../../../../assets/images/default.png'">
             </div>
             <div class="couponDetails">
-               <div class="couponName fs-6">{{coupon?.title}}</div>
                <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
                <div class="fs-6">{{coupon?.message}}</div>
-               <div class="fs-6 mt-2 couponStatus" [ngClass]="{'inactive': !coupon?.isActive}">
+               <div class="fs-6 mt-2 alert alert-success p-1 m-0" [ngClass]="{'alert-danger': !coupon?.isActive}">
                   {{coupon?.isActive ? 'Active' : 'Inactive'}}
                </div>
             </div>
@@ -92,13 +95,17 @@
       <div class="filtering">
          <span class="fs-6 text-dark">Show</span>
          <select [formControl]="limit" (change)="getCoupons()">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
+            <option value="6">6</option>
+            <option value="12">12</option>
+            <option value="18">18</option>
+            <option value="24">24</option>
+            <option value="30">30</option>
          </select>
          <span class="fs-6 text-dark">entries</span>
+      </div>
+      <div class="filteringResultCount fs-6">
+         Showing <span class="me-1 ms-1">{{coupons.length}}</span> of <span class="ms-1">{{totalResults ?
+            totalResults : '0'}}</span>
       </div>
       <div class="pagination">
          <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">

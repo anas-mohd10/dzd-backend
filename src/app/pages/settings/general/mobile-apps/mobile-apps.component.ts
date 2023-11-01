@@ -4,6 +4,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { AppsService } from 'src/app/includes/services/apps.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-mobile-apps',
@@ -20,6 +22,8 @@ export class MobileAppsComponent implements OnInit {
   isIosDetected: boolean = false
   settings: any = {}
   currentTab: string = 'android'
+  base: string = environment.base
+
   splashIcon: any
   splashFile: any
 
@@ -32,11 +36,14 @@ export class MobileAppsComponent implements OnInit {
   appRef?: BsModalRef
   @ViewChild('appConfirmation') appModal: TemplateRef<any>
 
+  colors: Array<any> = []
+
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
     private AppSettingsService: AppSettingsService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private AppsService: AppsService
   ) { }
 
   ngOnInit(): void {
@@ -45,9 +52,13 @@ export class MobileAppsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+        this.androidForm.get('splashBackground')?.setValue(this.settings?.colors?.primary)
+        this.iosForm.get('splashBackground')?.setValue(this.settings?.colors?.primary)
         this.ChangeDetectorRef.markForCheck()
       }
     })
+
+    this.getDetails()
   }
 
   initForm() {
@@ -60,7 +71,8 @@ export class MobileAppsComponent implements OnInit {
       buildName: new FormControl(''),
       buildCode: new FormControl(''),
       appIcon: new FormControl(''),
-      splashIcon: new FormControl('')
+      splashIcon: new FormControl(''),
+      splashBackground: new FormControl('')
     })
 
     this.iosForm = new FormGroup({
@@ -73,21 +85,42 @@ export class MobileAppsComponent implements OnInit {
       buildCode: new FormControl(''),
       appIcon: new FormControl(''),
       splashIcon: new FormControl(''),
-      itunesId: new FormControl('')
+      itunesId: new FormControl(''),
+      splashBackground: new FormControl('')
     })
   }
 
   getDetails() {
-
+    this.AppsService.getApps().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.details = res?.result
+          for (let _key of Object.keys(res?.result?.android)) this.androidForm.get(_key)?.setValue(res?.result?.android[_key])
+          for (let _key of Object.keys(res?.result?.ios)) this.iosForm.get(_key)?.setValue(res?.result?.ios[_key])
+          if (this.currentTab == 'android') {
+            this.appIcon = res?.result?.android?.appIcon ? this.base + '/' + res?.result?.android?.appIcon : null
+            this.splashIcon = res?.result?.android?.splashIcon ? this.base + '/' + res?.result?.android?.splashIcon : null
+          } else {
+            this.appIcon = res?.result?.ios?.appIcon ? this.base + '/' + res?.result?.ios?.appIcon : null
+            this.splashIcon = res?.result?.ios?.splashIcon ? this.base + '/' + res?.result?.ios?.splashIcon : null
+          }
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
   }
 
   toggleTab(tab: string) {
-    console.log('Yes', tab)
     tab == 'android' ? this.currentTab = 'android' : this.currentTab = 'ios'
     this.splashFile = null
     this.splashIcon = null
     this.appFile = null
     this.appIcon = null
+    this.initForm()
     this.getDetails()
     this.isIosDetected = false
     this.isAndroidDetected = false
@@ -129,7 +162,23 @@ export class MobileAppsComponent implements OnInit {
   }
 
   confirmSplash() {
-
+    let formdata = new FormData()
+    formdata.append('file', this.splashFile)
+    formdata.append('type', this.currentTab)
+    this.AppsService.splashIcons(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getDetails()
+          this.splashRef?.hide()
+          this.ToastrService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
   }
 
   declineSplash() {
@@ -138,7 +187,23 @@ export class MobileAppsComponent implements OnInit {
   }
 
   confirmApp() {
-
+    let formdata = new FormData()
+    formdata.append('file', this.appFile)
+    formdata.append('type', this.currentTab)
+    this.AppsService.appIcons(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getDetails()
+          this.appRef?.hide()
+          this.ToastrService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
   }
 
   declineApp() {
@@ -158,11 +223,30 @@ export class MobileAppsComponent implements OnInit {
     this.getDetails()
   }
 
-  saveAndroid() {
+  manageApps() {
+    let payload = {
+      android: { ...this.androidForm.value },
+      ios: { ...this.iosForm.value }
+    }
 
-  }
-
-  saveIos() {
-
+    this.AppsService.manageApps(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.splashFile = null
+          this.splashIcon = null
+          this.appFile = null
+          this.appIcon = null
+          this.isIosDetected = false
+          this.isAndroidDetected = false
+          this.getDetails()
+          this.ToastrService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
   }
 }

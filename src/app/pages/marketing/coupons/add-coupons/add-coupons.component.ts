@@ -52,6 +52,7 @@ export class AddCouponsComponent implements OnInit {
   isValidValue: boolean = true
   settings: any = {}
   startDate: string = new Date().toISOString().split('T')[0];
+  isLimited: boolean = true
 
   constructor(
     private productService: ProductService,
@@ -112,7 +113,7 @@ export class AddCouponsComponent implements OnInit {
       isActive: ['true'],
       isDelete: ['false'],
       isVisibility: ['true'],
-      countPerUser: ['', Validators.pattern("^[0-9]*$")]
+      countPerUser: ['1', Validators.pattern("^[0-9]*$")]
     });
 
     this.form.get('fromDate')?.setValue(this.from_date)
@@ -224,6 +225,11 @@ export class AddCouponsComponent implements OnInit {
     } else {
       this.isValidValue = true
     }
+  }
+
+  handleCouponType() {
+    let type = this.form.get('couponType')?.value
+    type == 'limited' ? this.isLimited = true : this.isLimited = false
   }
 
   onSubmit() {

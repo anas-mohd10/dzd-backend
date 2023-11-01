@@ -24,7 +24,7 @@ input[type=button] {
     padding: 10px;
     border-radius: 10px;
     background: $white;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     position: relative;
 
     .editButton {
@@ -36,46 +36,10 @@ input[type=button] {
       display: grid;
       place-items: center;
       cursor: pointer;
-      border-radius: 20px;
+      border-radius: 5px;
 
       &:hover {
         background: $hover;
-      }
-    }
-
-    .offer-card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-
-      .offer-image {
-        height: 100px;
-        width: 100px;
-
-        img {
-          height: 100%;
-          width: 100%;
-        }
-      }
-
-      .offer-details {
-        width: calc(100% - 100px);
-
-        .featured {
-          color: $activeState;
-        }
-
-        .offer-status {
-          color: $inactiveState;
-
-          &.active {
-            color: $activeState;
-          }
-        }
-
-        .div-separator {
-          margin: 0 5px;
-        }
       }
     }
   }

@@ -16,8 +16,9 @@ export class CouponsListComponent implements OnInit {
   base: any
   settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl('20')
+  limit: FormControl = new FormControl('18')
   lastPage: Boolean = false;
+  totalResults: string = ''
 
   constructor(
     private CouponsService: CouponsService,
@@ -71,6 +72,7 @@ export class CouponsListComponent implements OnInit {
         this.coupons = res?.result?.data
         this.page = res?.result?.page
         this.lastPage = res?.result?.lastPage
+        this.totalResults = res?.result?.totalResults
         for (let coupon of this.coupons) {
           coupon.fromDate = new Date(coupon.fromDate).toLocaleDateString()
           coupon.lastDate = new Date(coupon.lastDate).toLocaleDateString()

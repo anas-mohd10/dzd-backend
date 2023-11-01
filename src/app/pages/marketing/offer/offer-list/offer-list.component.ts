@@ -16,8 +16,9 @@ export class OfferListComponent implements OnInit {
   base: any
   settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl('20')
+  limit: FormControl = new FormControl("18")
   lastPage: Boolean = false;
+  totalResults: string = ''
 
   constructor(
     private OfferService: OfferService,
@@ -41,7 +42,6 @@ export class OfferListComponent implements OnInit {
     this.form = this.FormBuilder.group({
       name: [''],
       isActive: [''],
-      isFeatured: [''],
       fromDate: [''],
       lastDate: [''],
     });
@@ -68,6 +68,7 @@ export class OfferListComponent implements OnInit {
         this.offers = res?.result?.data
         this.page = res?.result?.page
         this.lastPage = res?.result?.lastPage
+        this.totalResults = res?.result?.totalResults
         for (let offer of this.offers) {
           offer.fromDate = new Date(offer?.fromDate).toDateString()
           offer.lastDate = new Date(offer?.lastDate).toDateString()

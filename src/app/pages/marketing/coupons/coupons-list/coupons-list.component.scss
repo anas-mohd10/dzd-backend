@@ -77,17 +77,28 @@ input[type=button] {
     border-radius: 10px;
     position: relative;
 
+    &.completed {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .completedBadge {
+      position: absolute;
+      top: .625rem;
+      right: .625rem;
+    }
+
     .editButton {
       position: absolute;
-      right: 10px;
-      top: 10px;
-      height: 40px;
-      width: 40px;
+      top: .625rem;
+      right: .625rem;
+      height: 30px;
+      width: 30px;
       display: grid;
       place-items: center;
       cursor: pointer;
-      border-radius: 20px;
-  
+      border-radius: 5px;
+
       &:hover {
         background: $hover;
       }
@@ -101,15 +112,8 @@ input[type=button] {
       }
     }
 
-    .couponDetails{
-
-      .couponStatus{
-        color: $activeState;
-
-        &.inactive{
-          color: $inactiveState;
-        }
-      }
+    .alert {
+      width: max-content;
     }
   }
 }

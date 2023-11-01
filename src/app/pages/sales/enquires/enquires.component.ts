@@ -13,7 +13,7 @@ export class EnquiresComponent implements OnInit {
   enquires: Array<any> = []
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
-  limit: FormControl = new FormControl("20")
+  limit: FormControl = new FormControl("18")
   query: any = {}
   page: number = 1
   form: FormGroup

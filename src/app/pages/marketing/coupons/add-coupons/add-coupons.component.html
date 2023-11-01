@@ -175,7 +175,8 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Coupon Type</label>
-              <select class="form-select form-select-lg mb-3" formControlName="couponType">
+              <select class="form-select form-select-lg mb-3" formControlName="couponType"
+                (change)="handleCouponType()">
                 <option value="" disabled>-- Select an option --</option>
                 <option value="limited">Limited</option>
                 <option value="unlimited">Unlimited</option>
@@ -183,7 +184,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6" *ngIf="isLimited">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">No. of Coupons</label>
               <div class="input-group mb-3">

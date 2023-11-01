@@ -13,8 +13,8 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.offer.ADD_OFFER }}">Add offer</button>
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="{{ appRoute.offer.ADD_OFFER }}"
+          style="width: 200px;">Add offer</button>
       </div>
     </div>
   </div>
@@ -22,12 +22,12 @@
   <div class="offer-form-container">
     <form [formGroup]="form">
       <div class="row d-flex align-items-end justify-content-between">
-        <div class="search-input col-2">
+        <div class="search-input col-lg-4">
           <label class="fs-6">&nbsp;</label>
           <input type="text" placeholder="Search for offers here" class="form-control fs-6" formControlName="name"
             (ngModelChange)="getOffers()">
         </div>
-        <div class="search-status col-2">
+        <div class="search-status col-lg-2">
           <label class="fs-6">Status</label>
           <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
             (change)="getOffers()">
@@ -36,24 +36,15 @@
             <option value=false>Inactive</option>
           </select>
         </div>
-        <div class="search-featured col-2">
-          <label class="fs-6 form-title">Featured</label>
-          <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured"
-            (change)="getOffers()">
-            <option value="" disabled>-- Select an option --</option>
-            <option value=true>Featured</option>
-            <option value=false>Non featured</option>
-          </select>
-        </div>
-        <div class="search-featured col-2">
+        <div class="search-featured col-lg-2">
           <label class="fs-6 form-title">Start Date</label>
           <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getOffers()">
         </div>
-        <div class="search-featured col-2">
+        <div class="search-featured col-lg-2">
           <label class="fs-6 form-title">End Date</label>
           <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getOffers()">
         </div>
-        <div class="search-input col-2">
+        <div class="search-input col-lg-2">
           <label class="fs-6 mb-1">&nbsp;</label>
           <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
             (click)="clearFilters()">
@@ -78,28 +69,21 @@
           </div>
         </div>
 
-        <div class="offer-card-top">
-          <div class="offer-image me-5">
-            <img class="rounded" src="{{offer?.file}}" alt="Offer" />
-          </div>
-
-          <div class="offer-details">
-            <div class="fw-bolder mb-1 fs-4">{{offer?.title}}</div>
-            <div class="d-flex align-items-center justify-content-start">
-              <div class="fs-6 offer-status" [ngClass]="{'active': offer?.isActive}">
-                {{offer?.isActive ? 'Active' : 'Inactive'}}
-              </div>
-            </div>
-            <div class="offer-value fs-4 fw-bolder mt-2">
-              {{offer?.type == 'Flat' ? 'Flat' : '%'}} {{offer?.value}}
-            </div>
-            <div class="fs-6 mt-2 text-muted">
-              Offer valid from <span class="fw-bolder text-dark">{{offer?.fromDate}}</span> to <span
-                class="fw-bolder text-dark">{{offer?.lastDate}}</span>
-            </div>
+        <div class="d-flex align-items-center justify-content-start">
+          <div>{{offer?.title}}</div>
+          <div class="ms-2 fs-6 alert m-0 alert-success p-1" [ngClass]="{'alert-danger': !offer?.isActive}">
+            {{offer?.isActive ? 'Active' : 'Inactive'}}
           </div>
         </div>
 
+        <div class="offer-value fs-4 fw-bolder">
+          {{ offer?.type == 'Flat' ? 'Flat' : null }} {{offer?.value}} {{ offer?.type == 'Flat' ? null : '%' }}
+        </div>
+
+        <div class="fs-6 text-muted">
+          Valid from <span class="fw-bolder text-dark">{{offer?.fromDate}}</span> to <span
+            class="fw-bolder text-dark">{{offer?.lastDate}}</span>
+        </div>
 
       </div>
     </ng-container>
@@ -115,13 +99,17 @@
     <div class="filtering">
       <span class="fs-6 text-dark">Show</span>
       <select [formControl]="limit" (change)="getOffers()">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="25">25</option>
+        <option value="6">6</option>
+        <option value="12">12</option>
+        <option value="18">18</option>
+        <option value="24">24</option>
+        <option value="30">30</option>
       </select>
       <span class="fs-6 text-dark">entries</span>
+    </div>
+    <div class="filteringResultCount fs-6">
+      Showing <span class="me-1 ms-1">{{offers.length}}</span> of <span class="ms-1">{{totalResults ?
+        totalResults : '0'}}</span>
     </div>
     <div class="pagination">
       <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">

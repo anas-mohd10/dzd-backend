@@ -22,9 +22,9 @@
             <div>
 
                 <tabset>
-                    <tab heading="Android">
+                    <tab heading="Android" (selectTab)="toggleTab('android')">
                         <div class="d-flex justify-content-end" *ngIf="isAndroidDetected">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary" (click)="manageApps()">
                                 Save Changes
                             </button>
                         </div>
@@ -191,9 +191,9 @@
                             </div>
                         </form>
                     </tab>
-                    <tab heading="iOS" (click)="toggleTab('ios')">
+                    <tab heading="iOS" (selectTab)="toggleTab('ios')">
                         <div class="d-flex justify-content-end" *ngIf="isIosDetected">
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary" (click)="manageApps()">
                                 Save Changes
                             </button>
                         </div>
