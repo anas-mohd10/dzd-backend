@@ -228,6 +228,7 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
+          this.ToastrService.success(res.message)
         } else {
           this.ToastrService.error(res.message)
         }

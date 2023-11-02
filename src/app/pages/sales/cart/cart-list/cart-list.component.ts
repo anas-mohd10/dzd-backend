@@ -5,6 +5,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 import { CouponsService } from 'src/app/includes/services/coupons.service';
+import { environment } from 'src/environments/environment.prod';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+
 
 @Component({
   selector: 'app-cart-list',
@@ -31,13 +34,18 @@ export class CartListComponent implements OnInit {
   isInvalid: boolean = false
   @ViewChild('notification') notificationModal: TemplateRef<any>
   totalResults: string = ''
+  productsModalRef?: BsModalRef
+  cartDetails: any = {}
+  base: string = environment.base
+  settings: any = {}
 
   constructor(
     private cartService: CartService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
     private BsModalService: BsModalService,
-    private CouponsService: CouponsService
+    private CouponsService: CouponsService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   get formControls() {
@@ -61,6 +69,15 @@ export class CartListComponent implements OnInit {
       minPurchase: new FormControl(0),
       isVisibility: new FormControl(false),
       forUser: new FormControl('', Validators.required)
+    })
+
+    this.AppSettingsService.getGeneralSettingsbyId({ refid: '1' }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      } else {
+        this.ToastrService.error(res?.message)
+      }
     })
   }
 
@@ -193,5 +210,26 @@ export class CartListComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     })
+  }
+
+  openProducts(template: TemplateRef<any>, cart: any) {
+    this.cartService.getCartProducts({ cart: cart?.refid }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.cartDetails = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
+    this.productsModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  closeProducts() {
+    this.productsModalRef?.hide()
+    this.cartDetails = null
   }
 }
