@@ -7,7 +7,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { environment } from 'src/environments/environment.prod';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cart-list',
@@ -38,6 +38,8 @@ export class CartListComponent implements OnInit {
   cartDetails: any = {}
   base: string = environment.base
   settings: any = {}
+  cartQuery: any
+  @ViewChild('cartProducts') productsModal: TemplateRef<any>
 
   constructor(
     private cartService: CartService,
@@ -45,7 +47,8 @@ export class CartListComponent implements OnInit {
     private ToastrService: ToastrService,
     private BsModalService: BsModalService,
     private CouponsService: CouponsService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private ActivatedRoute: ActivatedRoute
   ) { }
 
   get formControls() {
@@ -59,6 +62,22 @@ export class CartListComponent implements OnInit {
   ngOnInit(): void {
     this.seachCart()
     this.initForm()
+    this.cartQuery = this.ActivatedRoute.snapshot.queryParams.query || null
+    if (this.cartQuery) {
+      this.cartService.getCartProducts({ cart: this.cartQuery }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.cartDetails = res?.result
+            this.ChangeDetectorRef.markForCheck()
+          } else {
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.error?.message)
+        }
+      })
+      this.productsModalRef = this.BsModalService.show(this.productsModal, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+    }
 
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),

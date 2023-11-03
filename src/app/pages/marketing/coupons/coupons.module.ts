@@ -9,6 +9,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ImageCropperModule,
     FormsModule,
     ReactiveFormsModule,
+    TabsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

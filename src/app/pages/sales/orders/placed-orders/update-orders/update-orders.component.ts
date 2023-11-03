@@ -36,8 +36,8 @@ export class UpdateOrdersComponent implements OnInit {
   allProduct: FormControl = new FormControl('')
   statusList: Array<any> = []
   orderStatus: string = ''
-  orderStatusList: Array<any> = ['PLACED', 'DELIVERED', 'CANCELLED']
-  orderStatusCheck: Array<any> = ['Placed', 'Delivered', 'Cancelled']
+  orderStatusList: Array<any> = ['PLACED', 'DELIVERED', 'CANCELLED', 'COLLECTED']
+  orderStatusCheck: Array<any> = ['Placed', 'Delivered', 'Cancelled', 'Collected']
   isCancelEligible: boolean = false
   modalRef?: BsModalRef;
   isCancelled: boolean = false

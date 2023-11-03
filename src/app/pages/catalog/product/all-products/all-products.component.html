@@ -189,7 +189,8 @@
               <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
                 [queryParams]="{id: product?.prodid}">
                 <div class="product-image">
-                  <img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+                  <img src='{{base}}/{{product?.thumbnail}}' alt="product image"
+                    onerror="this.src = '../../../../../assets/images/default.png'" />
                   <div class="p-2 product-status-{{product?.isActive}} fs-6">
                     {{product?.isActive ? 'Active' : 'Inactive'}}
                   </div>

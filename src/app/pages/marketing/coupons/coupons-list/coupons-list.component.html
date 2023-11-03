@@ -60,35 +60,68 @@
    </div>
 
    <div class="coupon-card-container view-container col-lg-12">
-      <ng-container *ngFor="let coupon of coupons">
-         <div class="couponCard card-hover d-flex align-items-start justify-content-start"
-            [ngClass]="{'completed': coupon?.isCompleted }">
-            <div class="editButton" *ngIf="!coupon?.isCompleted">
-               <div routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{ coupon: coupon?.refid }">
-                  <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+      <tabset>
+         <tab heading="Active">
+            <div class="mt-4 couponCards">
+               <ng-container *ngFor="let coupon of coupons">
+                  <div class="couponCard card-hover d-flex align-items-start justify-content-start"
+                     *ngIf="!coupon?.isCompleted">
+                     <div class="editButton">
+                        <div routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}"
+                           [queryParams]="{ coupon: coupon?.refid }">
+                           <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+                        </div>
+                     </div>
+                     <div class="couponImage me-2">
+                        <img src="{{coupon?.file}}" alt="Coupon"
+                           onerror="this.src = '../../../../../assets/images/default.png'">
+                     </div>
+                     <div class="couponDetails">
+                        <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
+                        <div class="fs-6">{{coupon?.message}}</div>
+                        <div class="fs-6 mt-2 alert alert-success p-1 m-0"
+                           [ngClass]="{'alert-danger': !coupon?.isActive}">
+                           {{coupon?.isActive ? 'Active' : 'Inactive'}}
+                        </div>
+                     </div>
+                  </div>
+               </ng-container>
+            </div>
+            <ng-container *ngIf="coupons.length == 0">
+               <div class="emptyNote">
+                  <div class="fs-3 fw-bolder">No result found</div>
+                  <div class="fs-6 note">We couldn't find any item based on your search</div>
                </div>
+            </ng-container>
+         </tab>
+         <tab heading="Expired">
+            <div class="couponCards mt-4">
+               <ng-container *ngFor="let coupon of coupons">
+                  <div class="couponCard card-hover d-flex align-items-start justify-content-start"
+                     *ngIf="coupon?.isCompleted">
+                     <div class="couponImage me-2">
+                        <img src="{{coupon?.file}}" alt="Coupon"
+                           onerror="this.src = '../../../../../assets/images/default.png'">
+                     </div>
+                     <div class="couponDetails">
+                        <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
+                        <div class="fs-6">{{coupon?.message}}</div>
+                        <div class="fs-6 mt-2 alert alert-success p-1 m-0"
+                           [ngClass]="{'alert-danger': !coupon?.isActive}">
+                           {{coupon?.isActive ? 'Active' : 'Inactive'}}
+                        </div>
+                     </div>
+                  </div>
+               </ng-container>
             </div>
-            <div class="completedBadge alert alert-info p-1" *ngIf="coupon?.isCompleted">
-               Completed
-            </div>
-            <div class="couponImage me-2">
-               <img src="{{coupon?.file}}" alt="Coupon" onerror="this.src = '../../../../../assets/images/default.png'">
-            </div>
-            <div class="couponDetails">
-               <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
-               <div class="fs-6">{{coupon?.message}}</div>
-               <div class="fs-6 mt-2 alert alert-success p-1 m-0" [ngClass]="{'alert-danger': !coupon?.isActive}">
-                  {{coupon?.isActive ? 'Active' : 'Inactive'}}
+            <ng-container *ngIf="coupons.length == 0">
+               <div class="emptyNote">
+                  <div class="fs-3 fw-bolder">No result found</div>
+                  <div class="fs-6 note">We couldn't find any item based on your search</div>
                </div>
-            </div>
-         </div>
-      </ng-container>
-      <ng-container *ngIf="coupons.length == 0">
-         <div class="emptyNote">
-            <div class="fs-3 fw-bolder">No result found</div>
-            <div class="fs-6 note">We couldn't find any item based on your search</div>
-         </div>
-      </ng-container>
+            </ng-container>
+         </tab>
+      </tabset>
    </div>
 
    <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">

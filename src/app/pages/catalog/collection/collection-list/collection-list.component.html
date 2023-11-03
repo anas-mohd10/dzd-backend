@@ -74,7 +74,8 @@
         </div>
 
         <div class="collection-image">
-          <img src='{{base}}/{{collection?.file}}' alt="Image" />
+          <img src='{{base}}/{{collection?.file}}' alt="Image"
+            onerror="this.src = '../../../../../assets/images/default.png'" />
         </div>
 
         <div class="collectionDetails">

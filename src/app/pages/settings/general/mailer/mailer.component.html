@@ -19,6 +19,122 @@
     <div class="mt-4 card">
         <div class="card-body">
             <p>Subscribe to channels to recieve updates!</p>
+            <div class="mt-4">
+                <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
+                    <div class="mailerWrapper mb-5">
+                        <div class="fs-5 fw-bolder">Order transaction mailers </div>
+                        <div class="form-group mt-3">
+                            <input class="form-control" type="text" placeholder="Email address"
+                                (keyup.Enter)="addMailer($event, 'orderTransactions')"
+                                formControlName="orderTransactions"
+                                [ngClass]="{'is-invalid': formControls.orderTransactions.errors?.pattern}">
+                        </div>
+                        <div class="mailers mt-2">
+                            <ng-container *ngFor="let mail of mailers.orderTransactions; let i = index">
+                                <div class="mailer">
+                                    {{mail}}
+                                    <span class="ms-1" (click)="removeMailer(mail, 'orderTransactions')">
+                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mailerWrapper mb-5">
+                        <div class="fs-5 fw-bolder">Cancelled or Return order mailers </div>
+                        <div class="form-group mt-3">
+                            <input class="form-control" type="text" placeholder="Email address"
+                                (keyup.Enter)="addMailer($event, 'cancelledOrders')" formControlName="cancelledOrders"
+                                [ngClass]="{'is-invalid': formControls.cancelledOrders.errors?.pattern}">
+                        </div>
+                        <div class="mailers mt-2">
+                            <ng-container *ngFor="let mail of mailers.cancelledOrders; let i = index">
+                                <div class="mailer">
+                                    {{mail}}
+                                    <span class="ms-1" (click)="removeMailer(mail, 'cancelledOrders')">
+                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mailerWrapper mb-5">
+                        <div class="fs-5 fw-bolder">Abandoned carts </div>
+                        <div class="form-group mt-3">
+                            <input class="form-control" type="text" placeholder="Email address"
+                                (keyup.Enter)="addMailer($event, 'abandonedCarts')" formControlName="abandonedCarts"
+                                [ngClass]="{'is-invalid': formControls.abandonedCarts.errors?.pattern}">
+                        </div>
+                        <div class="mailers mt-2">
+                            <ng-container *ngFor="let mail of mailers.abandonedCarts; let i = index">
+                                <div class="mailer">
+                                    {{mail}}
+                                    <span class="ms-1" (click)="removeMailer(mail, 'abandonedCarts')">
+                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mailerWrapper mb-5">
+                        <div class="fs-5 fw-bolder">Daily reports </div>
+                        <div class="form-group mt-3">
+                            <input class="form-control" type="text" placeholder="Email address"
+                                (keyup.Enter)="addMailer($event, 'dailyReports')" formControlName="dailyReports"
+                                [ngClass]="{'is-invalid': formControls.dailyReports.errors?.pattern}">
+                        </div>
+                        <div class="mailers mt-2">
+                            <ng-container *ngFor="let mail of mailers.dailyReports; let i = index">
+                                <div class="mailer">
+                                    {{mail}}
+                                    <span class="ms-1" (click)="removeMailer(mail, 'dailyReports')">
+                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mailerWrapper mb-5">
+                        <div class="fs-5 fw-bolder">Subscribers </div>
+                        <div class="form-group mt-3">
+                            <input class="form-control" type="text" placeholder="Email address"
+                                (keyup.Enter)="addMailer($event, 'subscribers')" formControlName="subscribers"
+                                [ngClass]="{'is-invalid': formControls.subscribers.errors?.pattern}">
+                        </div>
+                        <div class="mailers mt-2">
+                            <ng-container *ngFor="let mail of mailers.subscribers; let i = index">
+                                <div class="mailer">
+                                    {{mail}}
+                                    <span class="ms-1" (click)="removeMailer(mail, 'subscribers')">
+                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="mailerWrapper mb-5">
+                        <div class="fs-5 fw-bolder">Newsletters </div>
+                        <div class="form-group mt-3">
+                            <input class="form-control" type="text" placeholder="Email address"
+                                (keyup.Enter)="addMailer($event, 'newsletters')" formControlName="newsletters"
+                                [ngClass]="{'is-invalid': formControls.newsletters.errors?.pattern}">
+                        </div>
+                        <div class="mailers mt-2">
+                            <ng-container *ngFor="let mail of mailers.newsletters; let i = index">
+                                <div class="mailer">
+                                    {{mail}}
+                                    <span class="ms-1" (click)="removeMailer(mail, 'newsletters')">
+                                        <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end" *ngIf="isChangeDetected">
+                        <button class="btn btn-primary" (click)="manageMailer()">Save changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,20 @@
+.mailers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+
+    .mailer {
+        width: max-content;
+        border-radius: 1.25rem;
+        padding: 0.5rem;
+        background: #dbdbdb;
+
+        img {
+            cursor: pointer;
+        }
+    }
+}
+
+.btn-primary {
+    font-weight: 400 !important;
+}

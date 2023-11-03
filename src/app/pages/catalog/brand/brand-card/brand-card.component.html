@@ -74,7 +74,8 @@
           </div>
         </div>
 
-        <img height="60px" width="60px" class="rounded me-3" src='{{base}}/{{brand?.file}}' alt="Image" />
+        <img height="60px" width="60px" class="rounded me-3" src='{{base}}/{{brand?.file}}' alt="Image"
+          onerror="this.src = '../../../../../assets/images/default.png'" />
 
         <div class="brandDetails h-100 d-flex flex-column justify-content-between">
           <div class="fs-5 fw-bolder">{{brand?.name}}</div>
