@@ -16,6 +16,7 @@ import { PaymentPolicyComponent } from './pages/payment-policy/payment-policy.co
 import { ShippingPolicyComponent } from './pages/shipping-policy/shipping-policy.component';
 import { RefundPolicyComponent } from './pages/refund-policy/refund-policy.component';
 import { MobileAppsComponent } from './settings/general/mobile-apps/mobile-apps.component';
+import { MailerComponent } from './settings/general/mailer/mailer.component';
 
 export const Routing: Routes = [
   {
@@ -325,6 +326,10 @@ export const Routing: Routes = [
       }, {
         path: 'my-account',
         component: MyAccountComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'mailer-subscriptions',
+        component: MailerComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'seo-details',

@@ -262,5 +262,6 @@ export const appRoutes = {
   serviceWarranty: `${app}/service-warranty`,
   paymentPolicy: `${app}/payment-policy`,
   refundPolicy: `${app}/refund-policy`,
-  mobileApps: `${app}/mobile-apps`
+  mobileApps: `${app}/mobile-apps`,
+  mailerSubscriptions: `${app}/mailer-subscriptions`
 }
