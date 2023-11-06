@@ -35,7 +35,8 @@ export class UpdateCustomersComponent implements OnInit {
   defaultAddress: FormControl = new FormControl('')
   isEditAddress: boolean = false
   addressDetails: any = {}
-
+  focusedAddress: any = {}
+  modalRef?: BsModalRef
   deleteModalRef?: BsModalRef
 
   constructor(
@@ -88,6 +89,29 @@ export class UpdateCustomersComponent implements OnInit {
 
   get addressControls() {
     return this.addressForm.controls;
+  }
+
+  open(template: TemplateRef<any>, address: any) {
+    if (address) {
+      this.isEditAddress = true
+      this.customerService.getAddressDetails(address).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.addressDetails = res?.result
+          for (let _key of Object.keys(res?.result)) {
+            this.addressForm.get(_key)?.setValue(res?.result[_key])
+            this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
+            this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
+            this.cdr.markForCheck()
+          }
+        }
+      })
+    }
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  close() {
+    this.modalRef?.hide()
+    this.addressForm.reset()
   }
 
   managePage() {
@@ -153,6 +177,7 @@ export class UpdateCustomersComponent implements OnInit {
           this.getAddress()
           this.addressForm.reset()
           this.toastr.success(res?.message)
+          this.modalRef?.hide()
         } else {
           this.toastr.error(res?.message)
         }
@@ -164,6 +189,7 @@ export class UpdateCustomersComponent implements OnInit {
           this.getAddress()
           this.addressForm.reset()
           this.toastr.success(res?.message)
+          this.modalRef?.hide()
         } else {
           this.toastr.error(res?.message)
         }
