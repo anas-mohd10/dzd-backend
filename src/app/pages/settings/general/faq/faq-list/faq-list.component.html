@@ -14,7 +14,7 @@
           </li>
         </ul>
         <button class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.faq.ADD_FAQ }}">
+          routerLink="{{ appRoute.faq.ADD_FAQ }}" style="width: 200px;">
           Add FAQ
         </button>
       </div>
@@ -25,9 +25,7 @@
     <ng-container *ngFor="let faq of faqs; let i = index">
       <div class="faqCard mb-3">
         <div class="faqHeader p-3 d-flex align-items-center justify-content-between">
-          <div class="faqTitle">
-            <code>{{faq?.question}}</code>
-          </div>
+          <div class="faqTitle">{{faq?.question}} </div>
           <div class="faqButtons d-flex align-items-center justify-content-start">
             <div class="faqButton me-1" (click)="toggleContent(i+1)" [ngClass]="{'active': i+1 == activeFaq}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

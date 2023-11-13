@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-add-banner-list',
@@ -44,6 +45,8 @@ export class AddBannerListComponent implements OnInit {
   isCarousel: Boolean = false
   isHeightConstraint: string = '1'
   startDate: string = new Date().toISOString().split('T')[0];
+  modalRef?: BsModalRef;
+  bannerDetails: any
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,7 +54,8 @@ export class AddBannerListComponent implements OnInit {
     private bannerService: BannerService,
     private toastr: ToastrService,
     private ProductService: ProductService,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -188,6 +192,7 @@ export class AddBannerListComponent implements OnInit {
 
   addFiles() {
     let data = {
+      id: this.files.length,
       file: this.file,
       name: this.name,
       title: this.title?.value,
@@ -197,6 +202,7 @@ export class AddBannerListComponent implements OnInit {
     if (this.redirectionType == 'category') data.redirection.url = this.category
     if (this.redirectionType == 'external') data.redirection.url = this.external?.value
     this.files.push(data)
+    this.isImage = false
   }
 
   removeBanner(name: any) {
@@ -239,6 +245,16 @@ export class AddBannerListComponent implements OnInit {
         }
       })
     }
+  }
+
+  open(template: TemplateRef<any>, bannerDetails: any) {
+    this.bannerDetails = bannerDetails
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  close() {
+    this.bannerDetails = null
+    this.modalRef?.hide()
   }
 
   createPayload() {

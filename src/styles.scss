@@ -3,8 +3,12 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
+.menu-state-title-primary .menu-item .menu-link.active {
+  color: #ffffff !important;
+}
 
 //Media upload styles ---------------
+
 .preview-section {
   .uploaded {
     .close-icon {

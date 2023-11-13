@@ -81,16 +81,19 @@
                     </td>
                     <td>
                       <div class="d-flex align-items-center justify-content-start">
-                        <div class="me-1" (click)="openNotify(notification, cart)">
+                        <div class="me-1 btns-sx" (click)="openNotify(notification, cart)">
                           <svg height="20px" width="20px" fill="none" stroke="currentColor" stroke-width="1.5"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
                               d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5">
                             </path>
                           </svg>
+                          <div class="toolTip">
+                            Send notification
+                          </div>
                         </div>
 
-                        <div class="ms-1" (click)="openProducts(cartProducts, cart)">
+                        <div class="ms-1 btns-sx" (click)="openProducts(cartProducts, cart)">
                           <svg height="20px" width="20px" fill="none" stroke="currentColor" stroke-width="1.5"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -99,6 +102,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
                             </path>
                           </svg>
+                          <div class="toolTip">
+                            View products
+                          </div>
                         </div>
                       </div>
                     </td>

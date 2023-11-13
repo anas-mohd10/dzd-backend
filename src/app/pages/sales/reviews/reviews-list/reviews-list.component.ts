@@ -57,7 +57,9 @@ export class ReviewsListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.ToastrService.success(res?.message)
         this.getReviews()
-        this.getProductReviews()
+        if (this.productDetails?.prodid) this.getProductReviews()
+      } else {
+        this.ToastrService.error(res?.message)
       }
     })
   }

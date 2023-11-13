@@ -139,14 +139,10 @@
                         <div class="uploadedBanners">
                            <ng-container *ngFor="let banner of files; let i = index">
                               <div class="bannerCard">
-                                 <div class="close" (click)="removeBanner(banner?.name)">
-                                    <img src="../../../../../assets/icons/close.svg" alt="Icon">
-                                 </div>
-                                 <div class="banner">
-                                    <img src="{{banner?.file}}" alt="Banner">
-                                    <p>{{banner?.title}}</p>
-                                    <p>{{banner?.redirection}}</p>
-                                 </div>
+                                 <img src="{{banner?.file}}" alt="Banner">
+                                 <button class="btn btn-secondary" (click)="open(template, banner)">
+                                    View details
+                                 </button>
                               </div>
                            </ng-container>
                         </div>
@@ -342,135 +338,51 @@
    </div>
 </div>
 
-<!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-   aria-labelledby="staticBackdropLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h1 class="modal-title fs-6" id="staticBackdropLabel">Upload Web Banner</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body">
-            <div class="web-banner-title col-12">
-               <div class="form-group">
-                  <div class="image-upload">
-                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                        (change)="handleInputChange($event, 'web')" required style="height: 100px;">
-                     <div class="image-upload-div">
-                        <div class="left-img">
-                           <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                        </div>
-                        <div class="right-text d-flex flex-column">
-                           <span class="right-text-title fs-4 fw-bolder">Select Files</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <ng-container *ngIf="webLoadImage">
-                  <div class="col-12 preview-section">
-                     <div class="crop-image col-sm-6">
-                        <image-cropper *ngIf="!isGrid" class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
-                           [maintainAspectRatio]="true" [aspectRatio]="2 / 1" [cropperMaxWidth]="4000"
-                           [cropperMaxHeight]="2000" format="png" (imageCropped)="imageCroppedWeb($event)"
-                           (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
-                           (loadImageFailed)="loadImageWebFailed()">
-                        </image-cropper>
+<ng-template #template>
+   <div class="modal-header">
+      <h4 class="modal-title pull-left">Banner details</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body pt-0">
+      <div class="form-title fs-4">
+         Redirection
+         <span class="fs-7 text-muted">(optional)</span>
+      </div>
 
-                        <image-cropper *ngIf="isGrid" class="crop-section" [imageChangedEvent]="imageWebChangedEvent"
-                           [maintainAspectRatio]="true" [aspectRatio]="2 / 2" [cropperMaxWidth]="4000"
-                           [cropperMaxHeight]="4000" format="png" (imageCropped)="imageCroppedWeb($event)"
-                           (imageLoaded)="imageWebLoaded()" (cropperReady)="cropperWebReady()"
-                           (loadImageFailed)="loadImageWebFailed()">
-                        </image-cropper>
-                     </div>
-                  </div>
-               </ng-container>
-            </div>
+      <div class="form-group mt-4">
+         <label class="fs-6 mb-3">Redirection type?</label>
+         <select class="form-select fs-6" (change)="getRedirectionType($event.target)">
+            <option value="" selected disabled>-- Select an option --</option>
+            <option value="category">Products by category</option>
+            <option value="product">Product details</option>
+            <option value="external">External</option>
+         </select>
+      </div>
 
-            <div class="dividerNote">Or</div>
-            <div class="previousBannersContainer">
-               <div class="previousBanners">
-                  <ng-container *ngFor="let banner of previousBanners">
-                     <div class="previousBannerCard">
-                        <img src="{{banner}}" alt="Banner">
-                     </div>
-                  </ng-container>
-                  <ng-container *ngIf="previousBanners.length == 0">
-                     <h5 class="fs-2 fw-bolder d-flex align-items-center justify-content-center">No banners found</h5>
-                  </ng-container>
-               </div>
-            </div>
+      <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'product'">
+         <label class="fs-6 mb-2">Products</label>
+         <ng-select [items]="products" bindLabel="name" bindValue="slug" [(ngModel)]="product"
+            placeholder="-- Select product --" [multiple]=false [ngModelOptions]="{standalone: true}">
+         </ng-select>
+      </div>
 
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Continue</button>
-         </div>
+      <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'category'">
+         <label class="fs-6 mb-2">Catgeory</label>
+         <ng-select [items]="categories" bindLabel="name" bindValue="slug" [(ngModel)]="category"
+            placeholder="-- Select category --" [multiple]=false [ngModelOptions]="{standalone: true}">
+         </ng-select>
+      </div>
+
+      <div class="form-group mt-3 col-12" *ngIf="redirectionType == 'external'">
+         <label class="fs-6 mb-2">External URL</label>
+         <input type="text" class="form-control" [formControl]="external" placeholder="Enter external url here">
       </div>
    </div>
-</div> -->
 
-
-<!-- <div class="modal fade" id="staticMobileBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-   aria-labelledby="staticBackdropLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h1 class="modal-title fs-6" id="staticBackdropLabel">Upload Mobile Banner</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-         </div>
-         <div class="modal-body">
-            <div class="mobile-banner-title">
-               <div class="form-group">
-                  <div class="image-upload">
-                     <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                        (change)="handleInputChange($event, 'mobile')" required style="height: 100px;">
-                     <div class="image-upload-div">
-                        <div class="left-img">
-                           <img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                        </div>
-                        <div class="right-text d-flex flex-column">
-                           <span class="right-text-title fs-4 fw-bolder">Select Files</span>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <ng-container *ngIf="mobileLoadImage">
-                  <div class="col-12 preview-section">
-                     <div class="crop-image col-sm-6">
-                        <image-cropper *ngIf="!isGrid" class="crop-section"
-                           [imageChangedEvent]="imageMobileChangedEvent " [maintainAspectRatio]="true"
-                           [aspectRatio]="6 / 3" [cropperMaxWidth]="600" [cropperMaxHeight]="300" format="png"
-                           (imageCropped)="imageCroppedMobile($event)" (imageLoaded)="imageMobileLoaded()"
-                           (cropperReady)="cropperMobileReady()" (loadImageFailed)="loadImageMobileFailed()">
-                        </image-cropper>
-
-                        <image-cropper *ngIf="isGrid" class="crop-section"
-                           [imageChangedEvent]="imageMobileChangedEvent " [maintainAspectRatio]="true"
-                           [aspectRatio]="6 / 6" [cropperMaxWidth]="1000" [cropperMaxHeight]="1000" format="png"
-                           (imageCropped)="imageCroppedMobile($event)" (imageLoaded)="imageMobileLoaded()"
-                           (cropperReady)="cropperMobileReady()" (loadImageFailed)="loadImageMobileFailed()">
-                        </image-cropper>
-                     </div>
-                  </div>
-               </ng-container>
-            </div>
-            <div class="dividerNote">Or</div>
-            <div class="previousBannersContainer">
-               <div class="previousBanners">
-                  <ng-container *ngFor="let banner of previousBanners">
-                     <div class="previousBannerCard">
-                        <img src="{{banner}}" alt="Banner">
-                     </div>
-                  </ng-container>
-                  <ng-container *ngIf="previousBanners.length == 0">
-                     <h5 class="fs-2 fw-bolder d-flex align-items-center justify-content-center">No banners found</h5>
-                  </ng-container>
-               </div>
-            </div>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal">Continue</button>
-         </div>
-      </div>
+   <div class="form-group mt-3 col-12">
+      <label class="fs-6 mb-2">Title ( Optional )</label>
+      <input type="text" class="form-control" [formControl]="title" placeholder="Enter banner title here">
    </div>
-</div> -->
+</ng-template>

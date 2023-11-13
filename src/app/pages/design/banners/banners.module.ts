@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgSelectModule,
     ImageCropperModule,
     ReactiveFormsModule,
+    ModalModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

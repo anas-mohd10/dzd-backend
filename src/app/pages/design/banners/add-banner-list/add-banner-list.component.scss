@@ -102,6 +102,15 @@
    grid-template-columns: repeat(4, 1fr);
    gap: 10px;
    width: max-content;
+   margin: 0 0 20px 0;
+
+   .bannerCard {
+
+      img {
+         border-radius: 0.475rem;
+         margin: 0 0 5px 0;
+      }
+   }
 }
 
 label {
@@ -156,4 +165,10 @@ button.btn.btn-secondary {
    display: flex;
    align-items: center;
    justify-content: center;
+}
+
+.modal-body{
+   img{
+      width: 100%;
+   }
 }
