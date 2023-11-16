@@ -43,8 +43,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Manrope' },
-      { class: 'Manrope', name: 'Manrope' },
+      { class: 'sen', name: 'Sen' },
     ]
   };
 
@@ -90,10 +89,12 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
+        this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
+        this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
         this.logoFilePreview = environment.base + "/" + res?.result?.logo
         this.faviconFilePreview = environment.base + "/" + res?.result?.favicon
         this.cdr.markForCheck()
@@ -126,7 +127,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       isNotifyStock: ['false'],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
-      notifyButton: ['Notify Me', Validators.required]
+      notifyButton: ['Notify Me', Validators.required],
+      shippingCost: ['highest', Validators.required]
     })
   }
 
@@ -199,6 +201,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,
+      shippingCost: this.form.get('shippingCost')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
         cart: this.form.get('cartButton')?.value,

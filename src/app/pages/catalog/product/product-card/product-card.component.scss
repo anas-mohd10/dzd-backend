@@ -17,6 +17,59 @@ input[type=button] {
 }
 
 
+//Brands
+.brands_wrapper {
+   height: 200px;
+   overflow-y: scroll;
+
+   .brand_card {
+      cursor: pointer;
+      padding: 6px 8px;
+      margin: 5px 0;
+
+      &:hover {
+         background: $hover;
+      }
+   }
+}
+
+//Brands
+
+//Products modal
+.products_wrapper {
+   display: grid;
+   grid-template-columns: repeat(6, 1fr);
+   gap: 10px;
+
+   .product_card {
+      cursor: pointer;
+
+      img {
+         width: 100%;
+         aspect-ratio: 1;
+         object-fit: cover;
+      }
+
+      .product_name {
+         overflow: hidden;
+         -o-text-overflow: ellipsis;
+         text-overflow: ellipsis;
+         display: -webkit-box;
+         -webkit-line-clamp: 2;
+         -webkit-box-orient: vertical;
+      }
+
+      .cut_price {
+         text-decoration: line-through;
+      }
+
+
+   }
+}
+
+//Products modal
+
+
 .product-page-container {
 
    .product-card-container {

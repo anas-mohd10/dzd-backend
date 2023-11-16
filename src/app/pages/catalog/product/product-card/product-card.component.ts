@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from 'src/app/includes/services/category.service';
@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
   selector: 'app-product-card',
@@ -29,15 +31,21 @@ export class ProductCardComponent implements OnInit {
   isLastProduct: boolean = false
   productLimit: FormControl = new FormControl('40')
   productPage: number = 1
+  isSubmitted: boolean = false
 
   form: FormGroup
   productForm: FormGroup
+  editForm: FormGroup
+
   modalRef?: BsModalRef
   productRef?: BsModalRef
   productDetails: any = {}
   base: string = environment.base
   settings: any = {}
   categories: Array<any> = []
+  taxes: Array<any> = []
+  brands: Array<any> = []
+  brand: FormControl = new FormControl('')
 
   constructor(
     private ProductService: ProductService,
@@ -48,7 +56,9 @@ export class ProductCardComponent implements OnInit {
     private CategoryService: CategoryService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
-    private ToastrService: ToastrService
+    private ToastrService: ToastrService,
+    private TaxClassesService: TaxClassesService,
+    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
@@ -63,6 +73,20 @@ export class ProductCardComponent implements OnInit {
       name: new FormControl(''),
       isActive: new FormControl(''),
       isFeatured: new FormControl(''),
+    });
+
+    this.editForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      isActive: new FormControl('true'),
+      shippingMethod: new FormControl('Unpaid'),
+      shippingCost: new FormControl('0'),
+      returnable: new FormControl('Unpaid'),
+      returnDays: new FormControl('0'),
+      cod: new FormControl('Unpaid'),
+      codCharge: new FormControl('0'),
+      tax: new FormControl('', Validators.required),
+      sku: new FormControl('', Validators.required),
+      hsn: new FormControl(''),
     });
 
     this.getProductHeads()
@@ -90,6 +114,21 @@ export class ProductCardComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     })
+
+    this.TaxClassesService.getTaxClasses().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.taxes = res?.result
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    });
+  }
+
+  get formControls() {
+    return this.editForm.controls
   }
 
   getNextPage() {
@@ -140,7 +179,6 @@ export class ProductCardComponent implements OnInit {
     this.getProducts()
   }
 
-
   getProducts() {
     let payload = {
       ...this.productForm.value,
@@ -166,7 +204,12 @@ export class ProductCardComponent implements OnInit {
   }
 
   clearChildFilters() {
-    this.productForm.reset()
+    this.productForm = new FormGroup({
+      name: new FormControl(''),
+      isActive: new FormControl(''),
+      isFeatured: new FormControl(''),
+    });
+
     this.productPage = 1
     this.productLimit?.setValue('20')
     this.getProducts()
@@ -185,10 +228,34 @@ export class ProductCardComponent implements OnInit {
   openProducts(template: TemplateRef<any>, productDetails: any) {
     this.productDetails = productDetails
     this.productRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.getProducts()
   }
 
   closeProducts() {
     this.productRef?.hide()
     this.productDetails = {}
+  }
+
+  getBrands() {
+    if (this.brand.value) {
+      this.BrandService.searchBrand({ page: 1, limit: '50', keyword: this.brand.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.brands = res?.result?.data
+            this.ChangeDetectorRef.markForCheck();
+          } else {
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }
+      })
+    } else {
+      this.brands = []
+    }
+  }
+
+  selectBrand(brand: any) {
+
   }
 }
