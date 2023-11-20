@@ -263,5 +263,6 @@ export const appRoutes = {
   paymentPolicy: `${app}/payment-policy`,
   refundPolicy: `${app}/refund-policy`,
   mobileApps: `${app}/mobile-apps`,
-  mailerSubscriptions: `${app}/mailer-subscriptions`
+  mailerSubscriptions: `${app}/mailer-subscriptions`,
+  shippingSettings: `${app}/shipping-settings`
 }

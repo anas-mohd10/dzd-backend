@@ -17,6 +17,7 @@ import { ShippingPolicyComponent } from './pages/shipping-policy/shipping-policy
 import { RefundPolicyComponent } from './pages/refund-policy/refund-policy.component';
 import { MobileAppsComponent } from './settings/general/mobile-apps/mobile-apps.component';
 import { MailerComponent } from './settings/general/mailer/mailer.component';
+import { ShippingComponent } from './settings/general/shipping/shipping.component';
 
 export const Routing: Routes = [
   {
@@ -382,6 +383,10 @@ export const Routing: Routes = [
       }, {
         path: 'refund-policy',
         component: RefundPolicyComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'shipping-settings',
+        component: ShippingComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

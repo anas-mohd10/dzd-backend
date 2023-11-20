@@ -96,7 +96,7 @@
                            <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
                         </div>
 
-                        <div class="addressCards">
+                        <div class="addressCards mt-3">
                            <ng-container *ngFor="let address of addresses">
                               <div class="addressCard p-3 rounded"
                                  [ngClass]="{'defaultAddressCard': address?.isDefault}">

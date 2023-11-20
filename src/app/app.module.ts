@@ -63,6 +63,7 @@ import { SupportEmailVerificationComponent } from './pages/support-email-verific
 import { MobileAppsComponent } from './pages/settings/general/mobile-apps/mobile-apps.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { MailerComponent } from './pages/settings/general/mailer/mailer.component';
+import { ShippingComponent } from './pages/settings/general/shipping/shipping.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -101,7 +102,8 @@ const DragConfig = {
     RefundPolicyComponent,
     SupportEmailVerificationComponent,
     MobileAppsComponent,
-    MailerComponent
+    MailerComponent,
+    ShippingComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
