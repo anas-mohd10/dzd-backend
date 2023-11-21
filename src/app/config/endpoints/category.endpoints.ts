@@ -19,7 +19,7 @@ export const categoryEndpoints = {
   find_categories: '/find-categories',
   mega_categories: '/mega-categories',
   get_categories: '/get-categories',
-
+  childCategories: '/child-categories',
   updateCategoryMedias: '/update-category-media',
   removeCategoryMedia: '/remove-category-cover',
 }

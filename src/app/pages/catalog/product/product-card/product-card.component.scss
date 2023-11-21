@@ -16,6 +16,25 @@ input[type=button] {
    width: 100%;
 }
 
+.productCategories {
+   display: flex;
+   width: 850px;
+   overflow-y: scroll;
+
+   .productCategory {
+      min-width: max-content;
+      cursor: pointer;
+   }
+}
+
+.categoryDropdown {
+   transition: 0.3s all ease-in-out;
+   cursor: pointer;
+
+   &.active {
+      transform: rotate(180deg);
+   }
+}
 
 //Brands
 .brands_wrapper {

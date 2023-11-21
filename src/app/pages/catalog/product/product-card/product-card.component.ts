@@ -42,10 +42,15 @@ export class ProductCardComponent implements OnInit {
   productDetails: any = {}
   base: string = environment.base
   settings: any = {}
-  categories: Array<any> = []
+
   taxes: Array<any> = []
   brands: Array<any> = []
   brand: FormControl = new FormControl('')
+  categories: Array<any> = []
+  category: FormControl = new FormControl('')
+  productCategory: Array<any> = []
+  defaultCategories: Array<any> = []
+  isCategoryDropdown: boolean = false
 
   constructor(
     private ProductService: ProductService,
@@ -60,6 +65,10 @@ export class ProductCardComponent implements OnInit {
     private TaxClassesService: TaxClassesService,
     private BrandService: BrandService
   ) { }
+
+  get editFormControls() {
+    return this.editForm.controls
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -79,14 +88,17 @@ export class ProductCardComponent implements OnInit {
       name: new FormControl('', Validators.required),
       isActive: new FormControl('true'),
       shippingMethod: new FormControl('Unpaid'),
-      shippingCost: new FormControl('0'),
-      returnable: new FormControl('Unpaid'),
-      returnDays: new FormControl('0'),
-      cod: new FormControl('Unpaid'),
-      codCharge: new FormControl('0'),
+      shipping: new FormControl('true'),
+      shippingCost: new FormControl(1, Validators.pattern("^[1-9]*")),
+      returnable: new FormControl('false'),
+      returnDays: new FormControl(1, Validators.pattern("^[1-9]*")),
+      cod: new FormControl('false'),
+      codCharge: new FormControl(1, Validators.pattern("^[1-9]*")),
       tax: new FormControl('', Validators.required),
       sku: new FormControl('', Validators.required),
       hsn: new FormControl(''),
+      parentCategory: new FormControl('', Validators.required),
+      defaultCategory: new FormControl('', Validators.required),
     });
 
     this.getProductHeads()
@@ -217,7 +229,7 @@ export class ProductCardComponent implements OnInit {
 
   open(template: TemplateRef<any>, productDetails: any) {
     this.productDetails = productDetails
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
   }
 
   close() {
@@ -227,7 +239,7 @@ export class ProductCardComponent implements OnInit {
 
   openProducts(template: TemplateRef<any>, productDetails: any) {
     this.productDetails = productDetails
-    this.productRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.productRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
     this.getProducts()
   }
 
@@ -255,7 +267,56 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
+  getCategories() {
+    if (this.brand.value) {
+      this.CategoryService.searchCategory({ page: 1, limit: '50', keyword: this.category.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.brands = res?.result?.data
+            this.ChangeDetectorRef.markForCheck();
+          } else {
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }
+      })
+    } else {
+      this.brands = []
+    }
+  }
+
   selectBrand(brand: any) {
 
+  }
+
+  toggleCategoy(category: any) {
+    this.isElementAlreadyPresent(this.productCategory, category) ?
+      this.productCategory = this.productCategory.filter((item: any) => item.catid !== category.catid) :
+      this.productCategory.push(category)
+
+    let categories = []
+    for (let category of this.productCategory) categories.push(category?._id)
+
+    this.CategoryService.childCategories(categories).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = res?.result
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
+  }
+
+  isElementAlreadyPresent(array: any = [], element: any) {
+    return array.some((item: any) => item.catid === element.catid);
+  }
+
+  toggleDropdown() {
+    this.isCategoryDropdown = !this.isCategoryDropdown
   }
 }

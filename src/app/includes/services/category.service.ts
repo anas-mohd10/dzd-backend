@@ -71,6 +71,11 @@ export class CategoryService {
     return this.http.post(`${url}`, data);
   }
 
+  childCategories(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.childCategories);
+    return this.http.post(`${url}`, data);
+  }
+
   restoreCategory(data: any) {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.restore_category);
     return this.http.post(`${url}`, data);
