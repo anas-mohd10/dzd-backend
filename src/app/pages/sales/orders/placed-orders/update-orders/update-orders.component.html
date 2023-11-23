@@ -60,10 +60,12 @@
   </div>
 
   <div class="pageWrapper mt-4">
-    <div class="cancelledOrderDetails" *ngIf="isCancelled">
-      <h2 class="fw-bolder">Unfortunately this order has been cancelled</h2>
-      <p>Reason for cancellation : {{order?.cancel?.reason ? order?.cancel?.reason : 'Not available'}}</p>
-      <p>Cancelled on {{order?.cancel?.date}}</p>
+    <div class="cancelledOrderDetails shadow" *ngIf="isCancelled">
+      <div class="alert m-0 alert-danger">
+        <div class="fs-3 mb-3 fw-bolder">Unfortunately this order has been cancelled</div>
+        <p>Reason for cancellation : {{order?.cancel?.reason ? order?.cancel?.reason : 'Not available'}}</p>
+        <p>Cancelled on {{order?.cancel?.date}}</p>
+      </div>
     </div>
     <div [ngClass]="{'cancelledWrapper': isCancelled}">
       <div class="orderDetailsWrapper">
@@ -83,6 +85,10 @@
             <div class="itemDetails">
               <div class="itemTitle">Payment Method</div>
               <div class="itemResponse">{{order?.paymentMethod}}</div>
+            </div>
+            <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">
+              <div class="itemTitle">Gateway Status</div>
+              <div class="itemResponse">{{order?.gatewayStatus}}</div>
             </div>
             <div class="itemDetails">
               <div class="itemTitle">Payment Status</div>

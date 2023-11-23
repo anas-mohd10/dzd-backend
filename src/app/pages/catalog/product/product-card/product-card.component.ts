@@ -93,7 +93,7 @@ export class ProductCardComponent implements OnInit {
       returnable: new FormControl('false'),
       returnDays: new FormControl(1, Validators.pattern("^[1-9]*")),
       cod: new FormControl('false'),
-      codCharge: new FormControl(1, Validators.pattern("^[1-9]*")),
+      codCharge: new FormControl(0, Validators.pattern("^[0-9]*")),
       tax: new FormControl('', Validators.required),
       sku: new FormControl('', Validators.required),
       hsn: new FormControl(''),
@@ -298,7 +298,7 @@ export class ProductCardComponent implements OnInit {
     let categories = []
     for (let category of this.productCategory) categories.push(category?._id)
 
-    this.CategoryService.childCategories(categories).subscribe({
+    this.CategoryService.childCategories({ categories: categories }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.defaultCategories = res?.result

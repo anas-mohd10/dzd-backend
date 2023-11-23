@@ -140,9 +140,8 @@
                   <td>{{order?.paymentMethod}}</td>
                   <td>
                     <span class="paid fs-6"
-                      [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'CANCELLED'}">
-                      {{order?.paymentStatus == 'PAID' ? 'Paid' : order?.paymentStatus == 'CANCELLED' ? 'Cancelled' :
-                      'Pending'}}
+                      [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'Pending' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'Cancelled'}">
+                      {{order?.paymentStatus == 'PAID' || order?.paymentStatus == 'Paid' ? 'Paid' : order?.paymentStatus == 'CANCELLED' ? 'Cancelled' :'Pending'}}
                     </span>
                   </td>
                   <td routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img

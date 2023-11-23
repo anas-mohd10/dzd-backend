@@ -26,22 +26,21 @@ label,
         position: absolute;
         z-index: 99;
         top: 40px;
-        left: 50%;
-        transform: translateX(-50%);
+        right: 40px;
         background: #ffffff;
         padding: 2rem;
         border-radius: 0.75rem;
-        box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
 
         p{
-            font-size: 16px;
+            font-size: 14px;
+            margin: 0;
         }
     }
 }
 
 .cancelledWrapper {
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.4;
 }
 
 .toolTip {

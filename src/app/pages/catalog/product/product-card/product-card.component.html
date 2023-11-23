@@ -194,15 +194,14 @@
                </div>
             </div>
 
-            <div>
-               <div class="col-lg-6">
-                  <label class="fs-6 mb-3" for="defaultCategory">Default category</label>
-                  <select name="defaultCategory" id="defaultCategory" formControlName="defaultCategory"
-                     class="form-select">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option *ngFor="let category of defaultCategories" value={{category}}>{{category?.name}}</option>
-                  </select>
-               </div>
+
+            <div class="col-lg-6 mb-3">
+               <label class="fs-6 mb-3" for="defaultCategory">Default category</label>
+               <select name="defaultCategory" id="defaultCategory" formControlName="defaultCategory"
+                  class="form-select">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option *ngFor="let category of defaultCategories" value={{category}}>{{category?.name}}</option>
+               </select>
             </div>
 
             <div class="row">

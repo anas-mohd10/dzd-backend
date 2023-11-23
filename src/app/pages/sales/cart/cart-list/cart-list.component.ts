@@ -62,22 +62,7 @@ export class CartListComponent implements OnInit {
   ngOnInit(): void {
     this.seachCart()
     this.initForm()
-    this.cartQuery = this.ActivatedRoute.snapshot.queryParams.query || null
-    if (this.cartQuery) {
-      this.cartService.getCartProducts({ cart: this.cartQuery }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.cartDetails = res?.result
-            this.ChangeDetectorRef.markForCheck()
-          } else {
-            this.ToastrService.error(res?.message)
-          }
-        }, error: (err: any) => {
-          this.ToastrService.error(err?.error?.message)
-        }
-      })
-      this.productsModalRef = this.BsModalService.show(this.productsModal, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
-    }
+    this.cartQuery = this.ActivatedRoute.snapshot.queryParams.query || ''
 
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -231,8 +216,9 @@ export class CartListComponent implements OnInit {
     })
   }
 
-  openProducts(template: TemplateRef<any>, cart: any) {
-    this.cartService.getCartProducts({ cart: cart?.refid }).subscribe({
+  openProducts(template: TemplateRef<any>, cart: any, cartQuery: string) {
+    let cartId = cart ? cart?.refid : cartQuery
+    this.cartService.getCartProducts({ cart: cartId }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.cartDetails = res?.result
