@@ -95,7 +95,7 @@ export class UpdateHeadComponent implements OnInit {
   }
 
   getProductHead() {
-    this.ProductHeadService.getproductHead(this.prodid).subscribe((res: any) => {
+    this.ProductHeadService.productHeadDetails(this.prodid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.basicdetails = res?.result[0]
         this.basicrawfile = this.basicdetails?.file

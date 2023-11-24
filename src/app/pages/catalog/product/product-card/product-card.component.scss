@@ -11,19 +11,22 @@ $background: #e5e5e5;
 $error: #F1416C;
 
 label,
-input[type=button] {
+input[type=button],
+.btn-primary,
+.btn-secondary {
    font-weight: normal !important;
    width: 100%;
 }
 
 .productCategories {
    display: flex;
-   width: 850px;
    overflow-y: scroll;
+   cursor: pointer;
 
    .productCategory {
       min-width: max-content;
       cursor: pointer;
+      font-weight: 400;
    }
 }
 
@@ -53,6 +56,30 @@ input[type=button] {
 }
 
 //Brands
+
+//Category
+.categories_wrapper {
+   max-height: 200px;
+   height: max-content;
+   overflow-y: scroll;
+   position: absolute;
+   top: 100%;
+   width: 480px;
+   z-index: 100;
+   box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 40px !important;
+
+   .category_card {
+      cursor: pointer;
+      padding: 6px 8px;
+      margin: 5px 0;
+
+      &:hover {
+         background: $hover;
+      }
+   }
+}
+
+//Category
 
 //Products modal
 .products_wrapper {
@@ -150,7 +177,7 @@ input[type=button] {
          width: calc(100% - 80px);
 
          .product-name {
-            font-weight: 600;
+            font-weight: 500;
             overflow: hidden;
             -o-text-overflow: ellipsis;
             text-overflow: ellipsis;

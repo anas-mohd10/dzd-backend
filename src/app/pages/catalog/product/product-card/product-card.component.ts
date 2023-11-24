@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ElementRef, HostListener } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
@@ -51,6 +51,8 @@ export class ProductCardComponent implements OnInit {
   productCategory: Array<any> = []
   defaultCategories: Array<any> = []
   isCategoryDropdown: boolean = false
+  brandDetails: any
+  headDetails: any
 
   constructor(
     private ProductService: ProductService,
@@ -63,8 +65,17 @@ export class ProductCardComponent implements OnInit {
     private BsModalService: BsModalService,
     private ToastrService: ToastrService,
     private TaxClassesService: TaxClassesService,
-    private BrandService: BrandService
+    private BrandService: BrandService,
+    private ElementRef: ElementRef
   ) { }
+
+  // @HostListener('document:click', ['$event'])
+  // onClick(event: Event): void {
+  //   if (!this.ElementRef.nativeElement.contains(event.target)) {
+  //     // Clicked outside the parent div, close the dropdown
+  //     this.isCategoryDropdown = false;
+  //   }
+  // }
 
   get editFormControls() {
     return this.editForm.controls
@@ -99,6 +110,7 @@ export class ProductCardComponent implements OnInit {
       hsn: new FormControl(''),
       parentCategory: new FormControl('', Validators.required),
       defaultCategory: new FormControl('', Validators.required),
+      brand: new FormControl('', Validators.required),
     });
 
     this.getProductHeads()
@@ -229,12 +241,50 @@ export class ProductCardComponent implements OnInit {
 
   open(template: TemplateRef<any>, productDetails: any) {
     this.productDetails = productDetails
+    this.ProductHeadService.getDetails(productDetails?.prodid).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.headDetails = res?.result
+          for (let _key of Object.keys(res?.result)) {
+            this.editForm.get(_key)?.setValue(res?.result[_key])
+          }
+          if (res?.result?.brand) {
+            this.brandDetails = res?.result?.brand
+            this.editForm.get('brand')?.setValue(res?.result?.brand?._id)
+          }
+          this.editForm.get('tax')?.setValue(res?.result?.tax?._id)
+          this.editForm.get('returnable')?.setValue(String(res?.result?.return?.isPresent))
+          this.editForm.get('cod')?.setValue(String(res?.result?.cod?.isPresent))
+          this.editForm.get('shipping')?.setValue(String(res?.result?.shipping?.isPresent))
+          if (res?.result?.shipping?.isPresent == true) {
+            this.editForm.get('shippingCost')?.setValue(res?.result?.shipping?.value)
+          }
+          if (res?.result?.return?.isPresent == true) {
+            this.editForm.get('returnDays')?.setValue(res?.result?.return?.value)
+          }
+          if (res?.result?.cod?.isPresent == true) {
+            this.editForm.get('codCharge')?.setValue(res?.result?.cod?.value)
+          }
+          let categories = res?.result?.parentCategory?.id?.map((category: any) => { return category._id })
+          this.productCategory = res?.result?.parentCategory?.id
+          this.getChildCategory(categories)
+          this.editForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id)
+
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
     this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
   }
 
   close() {
     this.modalRef?.hide()
     this.productDetails = {}
+    this.isCategoryDropdown = false
   }
 
   openProducts(template: TemplateRef<any>, productDetails: any) {
@@ -286,18 +336,45 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
-  selectBrand(brand: any) {
-
+  toggleBrand(brand: any) {
+    if (this.brandDetails) {
+      if (this.brandDetails._id == brand?._id) {
+        this.brandDetails = null
+        this.editForm.get('brand')?.setValue('')
+      } else {
+        this.brandDetails = brand
+        this.editForm.get('brand')?.setValue(brand?._id)
+      }
+    } else {
+      this.brandDetails = brand
+      this.editForm.get('brand')?.setValue(brand?._id)
+    }
+    this.brand.setValue('')
+    this.brands = []
   }
 
-  toggleCategoy(category: any) {
-    this.isElementAlreadyPresent(this.productCategory, category) ?
-      this.productCategory = this.productCategory.filter((item: any) => item.catid !== category.catid) :
+  toggleCategoy(category: any, event?: any) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    if (this.isElementAlreadyPresent(this.productCategory, category)) {
+      this.productCategory = this.productCategory.filter((item: any) => item.catid !== category.catid)
+      this.categories.push(category)
+    } else {
       this.productCategory.push(category)
+      this.categories = this.categories.filter((item: any) => item.catid != category.catid)
+    }
 
     let categories = []
     for (let category of this.productCategory) categories.push(category?._id)
 
+    if (categories.length > 0) this.editForm.get('parentCategory')?.setValue(categories)
+    this.getChildCategory(categories)
+  }
+
+  getChildCategory(categories: Array<any>) {
     this.CategoryService.childCategories({ categories: categories }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -318,5 +395,62 @@ export class ProductCardComponent implements OnInit {
 
   toggleDropdown() {
     this.isCategoryDropdown = !this.isCategoryDropdown
+  }
+
+  updateProduct() {
+    let parentCategory = this.productCategory.map((category) => { return category._id })
+    let parentRefid = this.productCategory.map((category) => { return category.catid })
+    if (parentCategory.length > 0) this.editForm.get('parentCategory')?.setValue(parentCategory)
+    if (!this.editForm.valid) {
+      this.isSubmitted = true
+      return
+    }
+
+    let payload = {
+      ...this.editForm.value,
+      parentCategory: {
+        id: parentCategory,
+        refid: parentRefid
+      },
+      shipping: {
+        value: this.editForm.value.shippingCost,
+        isPresent: this.editForm.value.shipping
+      },
+      cod: {
+        value: this.editForm.value.codCharge,
+        isPresent: this.editForm.value.cod
+      },
+      prodid: this.headDetails?.prodid,
+      return: {
+        value: this.editForm.value.returnDays,
+        isPresent: this.editForm.value.returnable
+      },
+      defaultCategory: {
+        id: this.editForm.value.defaultCategory,
+        refid: ''
+      }
+    }
+
+    for (let category of this.defaultCategories) {
+      if (this.editForm.value.defaultCategory == category?._id) {
+        payload.defaultCategory.refid = category?.catid
+        break
+      }
+    }
+
+    this.ProductHeadService.updateProductHead(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.modalRef?.hide()
+          this.productDetails = {}
+          this.ToastrService.success(res?.message)
+          this.getProductHeads()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
   }
 }

@@ -21,8 +21,13 @@ export class ProductHeadService {
     return this.http.post(`${url}`, data);
   }
 
-  getproductHead(id: any) {
-    const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head + "?id=" + id);
+  productHeadDetails(product: string) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head + `/${product}`);
+    return this.http.get(`${url}`);
+  }
+
+  getDetails(product: string) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.getDetails + `/${product}`);
     return this.http.get(`${url}`);
   }
 

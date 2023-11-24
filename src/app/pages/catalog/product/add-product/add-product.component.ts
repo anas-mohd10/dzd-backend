@@ -974,7 +974,7 @@ export class AddProductComponent implements OnInit {
   }
 
   getProductHead(id: any) {
-    this.ProductHeadService.getproductHead(id).subscribe((res: any) => {
+    this.ProductHeadService.productHeadDetails(id).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.productheadform.get('name')?.setValue(res?.result[0]?.name)
         this.productheadform.get('hsn')?.setValue(res?.result[0]?.hsn)
