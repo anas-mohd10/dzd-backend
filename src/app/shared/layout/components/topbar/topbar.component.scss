@@ -68,8 +68,11 @@
 }
 
 
-.symbol.symbol-md-40px > img {
+.symbol.symbol-md-40px>img {
     width: 30px !important;
-    height: 30px !important
-    ;
+    height: 30px !important;
+}
+
+.btn-primary {
+    font-weight: 400 !important;
 }
