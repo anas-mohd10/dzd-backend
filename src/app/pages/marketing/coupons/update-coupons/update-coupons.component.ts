@@ -102,6 +102,7 @@ export class UpdateCouponsComponent implements OnInit {
       color: [''],
       fontSize: [''],
       fontWeight: [''],
+      minimumType: ['cart'],
       couponType: ['limited', Validators.required],
       couponValue: [10, Validators.required],
       isActive: ['true'],
@@ -167,6 +168,7 @@ export class UpdateCouponsComponent implements OnInit {
       this.form.get("lastDate")?.setValue(this.couponDetails.lastDate.split('T')[0])
       this.form.get("maxDiscount")?.setValue(this.couponDetails.maxDiscount)
       this.form.get("minPurchase")?.setValue(this.couponDetails.minPurchase)
+      this.form.get("minimumType")?.setValue(this.couponDetails.minimumType)
       this.form.get("couponType")?.setValue(this.couponDetails?.details?.type)
       this.form.get("couponValue")?.setValue(this.couponDetails?.details?.value)
       this.form.get("isActive")?.setValue(this.couponDetails.isActive)
@@ -299,6 +301,7 @@ export class UpdateCouponsComponent implements OnInit {
         fromDate: this.form.get('fromDate')?.value,
         lastDate: this.form.get('lastDate')?.value,
         minPurchase: this.form.get('minPurchase')?.value,
+        minimumType: this.form.get('minimumType')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
         categories: this.categories ? this.categories : [],

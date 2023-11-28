@@ -111,9 +111,10 @@ export class AddCouponsComponent implements OnInit {
       couponType: ['limited', Validators.required],
       couponValue: [10, Validators.required],
       isActive: ['true'],
+      minimumType: ['cart'],
       isDelete: ['false'],
       isVisibility: ['true'],
-      countPerUser: ['1', Validators.pattern("^[0-9]*$")]
+      countPerUser: ['1', Validators.pattern("^[0-9]*$")],
     });
 
     this.form.get('fromDate')?.setValue(this.from_date)
@@ -270,6 +271,7 @@ export class AddCouponsComponent implements OnInit {
         fromDate: this.form.get('fromDate')?.value,
         lastDate: this.form.get('lastDate')?.value,
         minPurchase: this.form.get('minPurchase')?.value,
+        minimumType: this.form.get('minimumType')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
         categories: this.categories ? this.categories : [],
@@ -280,6 +282,7 @@ export class AddCouponsComponent implements OnInit {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,
         },
+        couponType: 'partial',
         filestring: this.croppedImage,
         filename: this.filename,
         countPerUser: this.form.get('countPerUser')?.value,
