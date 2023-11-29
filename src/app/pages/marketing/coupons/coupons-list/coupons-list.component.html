@@ -61,7 +61,7 @@
 
    <div class="coupon-card-container view-container col-lg-12">
       <tabset>
-         <tab heading="Active">
+         <tab heading="Active" (click)="toggleTab('active')">
             <div class="mt-4 couponCards">
                <ng-container *ngFor="let coupon of coupons">
                   <div class="couponCard card-hover d-flex align-items-start justify-content-start"
@@ -94,7 +94,7 @@
                </div>
             </ng-container>
          </tab>
-         <tab heading="Expired">
+         <tab heading="Expired" (click)="toggleTab('expired')">
             <div class="couponCards mt-4">
                <ng-container *ngFor="let coupon of coupons">
                   <div class="couponCard card-hover d-flex align-items-start justify-content-start"

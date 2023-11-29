@@ -5,6 +5,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexYAxis, ApexTitleSubtitle, ApexLegend } from "ng-apexcharts";
 import { FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { appRoutes } from 'src/app/config/routes';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -58,6 +59,7 @@ export class DashboardComponent implements OnInit {
   barChartOptions: any
   //Pie chart
 
+  appRoutes = appRoutes
   startDate: FormControl = new FormControl('')
   endDate: FormControl = new FormControl('')
 

@@ -264,5 +264,6 @@ export const appRoutes = {
   refundPolicy: `${app}/refund-policy`,
   mobileApps: `${app}/mobile-apps`,
   mailerSubscriptions: `${app}/mailer-subscriptions`,
-  shippingSettings: `${app}/shipping-settings`
+  shippingSettings: `${app}/shipping-settings`,
+  monthlyComparison: `${app}/monthly-comparison`
 }

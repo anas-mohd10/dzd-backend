@@ -100,4 +100,9 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.updateProductPayement);
     return this.http.put(`${url}`, data)
   }
+
+  manageTags(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.manageTags);
+    return this.http.post(`${url}`, data)
+  }
 }

@@ -1,12 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, TemplateRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { DataTableDirective } from 'angular-datatables'
 import { Subject } from 'rxjs';
 import SwiperCore, { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 Router
 
 @Component({
@@ -108,23 +109,62 @@ export class OrdersListComponent implements OnInit {
   lastPage: Boolean = false
   type: any = null
 
+  tagRef?: BsModalRef
+  tagOrder: string = ''
+  tag: FormControl = new FormControl('', [Validators.required, Validators.maxLength(10)])
+  isTagSubmitted: boolean = false
+
   constructor(
-    private ordersService: OrdersService,
-    private toastr: ToastrService,
+    private OrdersService: OrdersService,
+    private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
-    private Router: Router
+    private Router: Router,
+    private BsModalService: BsModalService
   ) {
-    this.ordersService.getOrderCounts({ status: this.orderStatus }).subscribe({
+    this.OrdersService.getOrderCounts({ status: this.orderStatus }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.orderStatus = res?.result
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.toastr.error(res.message)
+          this.ToastrService.error(res.message)
         }
       }, error: (err: any) => {
-        this.toastr.error(err.message)
+        this.ToastrService.error(err.message)
+      }
+    })
+  }
+
+  openTag(template: TemplateRef<any>, order: string) {
+    this.tagRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+    this.tagOrder = order
+  }
+
+  closeTag() {
+    this.tagRef?.hide()
+    this.tagOrder = ''
+  }
+
+  addTag() {
+    if (!this.tag.valid) {
+      this.isTagSubmitted = true
+      return
+    }
+
+    this.OrdersService.manageTags({ order: this.tagOrder, tag: this.tag.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrders()
+          this.tagRef?.hide()
+          this.ToastrService.success(res.message)
+          this.tagOrder = ''
+          this.tag.setValue('')
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
       }
     })
   }
@@ -177,7 +217,7 @@ export class OrdersListComponent implements OnInit {
       source: this.orderform.get('source')?.value,
       paymentStatus: this.orderform.get('paymentStatus')?.value
     }
-    this.ordersService.getOrders(payload).subscribe((res: any) => {
+    this.OrdersService.getOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
         for (let order of this.orders) order.orderDate = new Date(order.orderDate).toDateString()
@@ -207,7 +247,7 @@ export class OrdersListComponent implements OnInit {
     if (toDate) {
       if (toDate < fromDate) {
         this.isDateValid = false
-        this.toastr.error("Kindly enter a valid To date")
+        this.ToastrService.error("Kindly enter a valid To date")
       } else {
         this.isDateValid = true
       }
@@ -225,7 +265,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   searchOrder() {
-    this.ordersService.searchOrder(this.orderform.value).subscribe((res: any) => {
+    this.OrdersService.searchOrder(this.orderform.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.dtTrigger.unsubscribe()
         this.orders = res?.result?.data

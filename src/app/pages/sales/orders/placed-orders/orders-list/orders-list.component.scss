@@ -8,21 +8,49 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+.modal-body {
+  .form-label {
+    font-weight: 400;
+  }
+
+  .form-control {
+    color: #111111 !important;
+  }
+
+  .btn-primary {
+    font-weight: 400;
+  }
+}
+
+.tags {
+  .addTag {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tag {
+    display: grid;
+    place-items: center;
+    margin: 0.3125rem 0 0 0;
+  }
+}
+
 .order-cards {
   .card-body {
     background: $white;
 
-    .fs-6 {
-      color: #797979;
-      font-size: 16px !important;
-      font-weight: 500;
+    .fs-2 {
+      color: #111111;
+      font-weight: 600;
     }
   }
 }
 
 
 .top-form-container {
-  margin: 0 0 43px 0;
+  margin: 0 0 2.6875rem 0;
 }
 
 .orderStatus {
@@ -32,7 +60,7 @@ $error: #F1416C;
 }
 
 .row.order-cards {
-  gap: 20px;
+  gap: 1.25rem;
   margin-left: 0;
 }
 

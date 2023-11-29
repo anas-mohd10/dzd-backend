@@ -57,6 +57,10 @@ export class CouponsListComponent implements OnInit {
     this.getCoupons()
   }
 
+  toggleTab(type: string) {
+    console.log(type);
+  }
+
   getCoupons() {
     let payload = {
       title: this.form.get('title')?.value,

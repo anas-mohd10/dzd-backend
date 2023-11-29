@@ -18,6 +18,7 @@ import { RefundPolicyComponent } from './pages/refund-policy/refund-policy.compo
 import { MobileAppsComponent } from './settings/general/mobile-apps/mobile-apps.component';
 import { MailerComponent } from './settings/general/mailer/mailer.component';
 import { ShippingComponent } from './settings/general/shipping/shipping.component';
+import { MonthlyComparisonComponent } from './monthly-comparison/monthly-comparison.component';
 
 export const Routing: Routes = [
   {
@@ -335,6 +336,10 @@ export const Routing: Routes = [
       }, {
         path: 'seo-details',
         component: SeoDetailsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'monthly-comparison',
+        component: MonthlyComparisonComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'time-slots',

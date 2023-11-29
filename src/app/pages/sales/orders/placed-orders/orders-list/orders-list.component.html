@@ -25,19 +25,19 @@
     <div class="row order-cards">
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-3 mb-2 text-primary fw-bolder"> {{ count }}</div>
+          <div class="fs-2 mb-2 text-dark fw-bold"> {{ count }}</div>
           <div class="fs-6">Total orders</div>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-3 mb-2 text-primary fw-bolder"> {{ totalrevenues }}</div>
+          <div class="fs-2 mb-2 text-dark"> {{ totalrevenues }}</div>
           <div class="fs-6">Total revenue</div>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-3 mb-2 text-primary fw-bolder"> {{ averagesales }}</div>
+          <div class="fs-2 mb-2 text-dark"> {{ averagesales }}</div>
           <div class="fs-6">Average sales</div>
         </div>
       </div>
@@ -123,6 +123,7 @@
                 <th style="min-width: 100px">Customer</th>
                 <th style="min-width: 100px">Total</th>
                 <th style="min-width: 100px">Source</th>
+                <th style="min-width: 100px">Tags</th>
                 <th style="min-width: 100px">Payment method</th>
                 <th style="min-width: 100px">Payment status</th>
                 <th style="min-width: 100px">Action</th>
@@ -137,11 +138,29 @@
                   <td>{{order?.customerId?.name}}</td>
                   <td>{{order?.total}}</td>
                   <td>{{order?.source}}</td>
+                  <td>
+                    <div class="tags">
+                      <div class="addTag p-1 border border-secondary rounded"
+                        (click)="openTag(tagTemplate, order.orderNo)">
+                        Add tag
+                        <span>
+                          <svg height="14px" width="14px" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <ng-container *ngFor="let tag of order?.tags; let j = index">
+                        <div class="p-1 bg-secondary rounded tag">{{tag}}</div>
+                      </ng-container>
+                    </div>
+                  </td>
                   <td>{{order?.paymentMethod}}</td>
                   <td>
                     <span class="paid fs-6"
                       [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'Pending' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'Cancelled'}">
-                      {{order?.paymentStatus == 'PAID' || order?.paymentStatus == 'Paid' ? 'Paid' : order?.paymentStatus == 'CANCELLED' ? 'Cancelled' :'Pending'}}
+                      {{order?.paymentStatus == 'PAID' || order?.paymentStatus == 'Paid' ? 'Paid' : order?.paymentStatus
+                      == 'CANCELLED' ? 'Cancelled' :'Pending'}}
                     </span>
                   </td>
                   <td routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img
@@ -186,3 +205,28 @@
     </div>
   </div>
 </div>
+
+<ng-template #tagTemplate>
+  <div class="modal-header pb-0">
+    <h4 class="modal-title pull-left">Order tag for {{tagOrder}}</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeTag()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="form-group">
+        <label for="tag" class="form-label required">Tag</label>
+        <input type="text" placeholder="Eg. processed" [formControl]="tag" class="text-dark p-2 form-control"
+          [ngClass]="{'is-invalid': ( tag.touched || isTagSubmitted) && tag.errors?.required || tag.errors?.maxLength}">
+        <div class="text-danger" *ngIf="tag.errors?.maxLength">
+          The word you entered exceeds the maximum allowed length of 10 letters.
+          Please enter a word with 10 letters or fewer.
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 d-flex align-items-center justify-content-end">
+      <button class="btn btn-primary" (click)="addTag()">Continue</button>
+    </div>
+  </div>
+</ng-template>
