@@ -8,5 +8,6 @@ export const dashboardEndpoints = {
   preview_dashboard: '/preview-dashboard',
   dashboard_config: '/dashboard-config',
   currentRevenues: '/current-revenues',
-  sourceDetails: '/source-details'
+  sourceDetails: '/source-details',
+  monthlyComparison: '/monthly-comparison',
 }

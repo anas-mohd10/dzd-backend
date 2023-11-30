@@ -1,0 +1,69 @@
+<div class="profilePageContainer">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Store popup</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.storePopup }}">Store popup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="form-group">
+                    <label for="visible" class="form-label">Popup visibility</label>
+                    <select name="visible" id="visible" class="form-select" [formControl]="isVisible">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="true">Visible</option>
+                        <option value="false">Hidden</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="btn btn-primary">Show preview</button>
+                </div>
+            </div>
+            <div class="my-4 row">
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <div class="mask">
+                            <div class="upload-text">
+                                <div class="fs-4">Drag and drop file</div>
+                                <div class="my-2">or</div>
+                                <button class="btn btn-primary">Browse here</button>
+                            </div>
+                        </div>
+                        <input type="file" id="upload" accept="image/*" [formControl]="file"
+                            (change)="addMedia($event)">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="{{preview}}" alt="Website" class="web-popup">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #previewTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Popup Details</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="previewRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="w-100">
+            <img src="{{preview}}" alt="Website" class="popupPreview">
+        </div>
+    </div>
+</ng-template>

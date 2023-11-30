@@ -66,4 +66,9 @@ export class DashboardService {
     const url = this.commonService.getFullUrl(this.dashboardEndpoints.sourceDetails);
     return this.http.post(`${url}`, data)
   }
+
+  monthlyComparison(data: any) {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.monthlyComparison);
+    return this.http.post(`${url}`, data)
+  }
 }

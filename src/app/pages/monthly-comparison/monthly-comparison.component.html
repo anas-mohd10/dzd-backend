@@ -1,7 +1,7 @@
 <div class="profilePageContainer">
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Monthly Comparison</h1>
+            <h1 class="fw-bold">Monthly comparison</h1>
         </div>
         <div class="row">
             <div class="col d-flex align-items-start justify-content-between">
@@ -10,14 +10,14 @@
                         <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.monthlyComparison }}">Monthly Comparison</a>
+                        <a routerLink="{{ appRoute.monthlyComparison }}">Monthly comparison</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <div class="card mt-4">
+    <div class="card my-4">
         <div class="card-body">
             <div>
                 <form [formGroup]="form">
@@ -26,15 +26,17 @@
                             <div class="fs-5 mb-2 text-primary">Start</div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="me-2 form-group">
-                                    <label for="start" class="form-label">Month</label>
-                                    <select name="start" id="start" formControlName="startMonth" class="form-select">
+                                    <label for="start" class="form-label">Select start month</label>
+                                    <select name="start" id="start" formControlName="startMonth" class="form-select"
+                                        (change)="getDetails()">
                                         <option value="" disabled>-- Select an option --</option>
                                         <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
                                     </select>
                                 </div>
                                 <div class="ms-2 form-group">
-                                    <label for="start" class="form-label">Year</label>
-                                    <select name="start" id="start" formControlName="startYear" class="form-select">
+                                    <label for="start" class="form-label">Select start year</label>
+                                    <select name="start" id="start" formControlName="startYear" class="form-select"
+                                        (change)="getDetails()">
                                         <option value="" disabled>-- Select an option --</option>
                                         <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
                                     </select>
@@ -45,15 +47,17 @@
                             <div class="fs-5 mb-2 text-primary">End</div>
                             <div class="d-flex align-items-center justify-content-start">
                                 <div class="me-2 form-group">
-                                    <label for="start" class="form-label">Month</label>
-                                    <select name="start" id="start" formControlName="endMonth" class="form-select">
+                                    <label for="start" class="form-label">Select end month</label>
+                                    <select name="start" id="start" formControlName="endMonth" class="form-select"
+                                        (change)="getDetails()">
                                         <option value="" disabled>-- Select an option --</option>
                                         <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
                                     </select>
                                 </div>
                                 <div class="ms-2 form-group">
-                                    <label for="start" class="form-label">Year</label>
-                                    <select name="start" id="start" formControlName="endYear" class="form-select">
+                                    <label for="start" class="form-label">Select end year</label>
+                                    <select name="start" id="start" formControlName="endYear" class="form-select"
+                                        (change)="getDetails()">
                                         <option value="" disabled>-- Select an option --</option>
                                         <option *ngFor="let year of years" value="{{year}}">{{year}}</option>
                                     </select>
@@ -62,6 +66,210 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="fs-4 mb-3 text-primary">Order Summary</div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('startMonth')?.value}} {{form.get('startYear')?.value}} </p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Orders</th>
+                                <th>Sales</th>
+                                <th>Average</th>
+                            </tr>
+                            <tr>
+                                <td>{{ form.get('startMonth')?.value == month ? today : null}}</td>
+                                <td>{{summaryDetails.start.orders}}</td>
+                                <td>{{settings?.currency}} {{summaryDetails.start.sales}}</td>
+                                <td>{{settings?.currency}} {{summaryDetails.start.average}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mt-2 alert alert-success p-2" *ngIf="summaryDetails.start.isProfit">
+                        Great news! 🚀 Sales have increased by
+                        <span class="fs-5 fw-bold">{{settings?.currency}}
+                            {{summaryDetails.start.salesDifference.toFixed(2)}}</span>
+                        compared to {{form.get('endMonth')?.value}} {{form.get('endYear')?.value}}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('endMonth')?.value}} {{form.get('endYear')?.value}}</p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Orders</th>
+                                <th>Sales</th>
+                                <th>Average</th>
+                            </tr>
+                            <tr>
+                                <td>{{ form.get('endMonth')?.value == month ? today : null}}</td>
+                                <td>{{summaryDetails.end.orders}}</td>
+                                <td>{{settings?.currency}} {{summaryDetails.end.sales}}</td>
+                                <td>{{settings?.currency}} {{summaryDetails.end.average}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mt-2 alert alert-success p-2" *ngIf="summaryDetails.end.isProfit">
+                        Great news! 🚀 Sales have increased by
+                        <span class="fs-5 fw-bold">{{settings?.currency}}
+                            {{summaryDetails.end.salesDifference.toFixed(2)}}</span>
+                        compared to {{form.get('startMonth')?.value}} {{form.get('startYear')?.value}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="fs-4 mb-3 text-primary">Cancelled & Returned Summary</div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('startMonth')?.value}} {{form.get('startYear')?.value}} </p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Orders</th>
+                                <th>Sales</th>
+                                <th>Average</th>
+                            </tr>
+                            <tr>
+                                <td>{{ form.get('startMonth')?.value == month ? today : null}}</td>
+                                <td>{{cancelledDetails.start.orders}}</td>
+                                <td>{{settings?.currency}} {{cancelledDetails.start.sales}}</td>
+                                <td>{{settings?.currency}} {{cancelledDetails.start.average}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('endMonth')?.value}} {{form.get('endYear')?.value}}</p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Orders</th>
+                                <th>Sales</th>
+                                <th>Average</th>
+                            </tr>
+                            <tr>
+                                <td>{{ form.get('endMonth')?.value == month ? today : null}}</td>
+                                <td>{{cancelledDetails.end.orders}}</td>
+                                <td>{{settings?.currency}} {{cancelledDetails.end.sales}}</td>
+                                <td>{{settings?.currency}} {{cancelledDetails.end.average}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="fs-4 mb-3 text-primary">Orders</div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('startMonth')?.value}} {{form.get('startYear')?.value}} </p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Status</th>
+                                <th>Orders</th>
+                            </tr>
+                            <tr>
+                                <td>Confirmed</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Delivered </td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Cancelled</td>
+                                <td>1</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('endMonth')?.value}} {{form.get('endYear')?.value}}</p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Status</th>
+                                <th>Orders</th>
+                            </tr>
+                            <tr>
+                                <td>Confirmed</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Delivered </td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>Cancelled</td>
+                                <td>1</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="fs-4 mb-3 text-primary">Customer Registration</div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('startMonth')?.value}} {{form.get('startYear')?.value}} </p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Website</th>
+                                <th>Mobile App</th>
+                            </tr>
+                            <tr>
+                                <td>{{ form.get('startMonth')?.value == month ? today : null}}</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <p class="fs-5">{{form.get('endMonth')?.value}} {{form.get('endYear')?.value}}</p>
+                    <div>
+                        <table>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Website</th>
+                                <th>Mobile App</th>
+                            </tr>
+                            <tr>
+                                <td>{{ form.get('endMonth')?.value == month ? today : null}}</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>0</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

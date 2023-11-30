@@ -65,6 +65,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { MailerComponent } from './pages/settings/general/mailer/mailer.component';
 import { ShippingComponent } from './pages/settings/general/shipping/shipping.component';
 import { MonthlyComparisonComponent } from './pages/monthly-comparison/monthly-comparison.component';
+import { StorePopupComponent } from './pages/marketing/store-popup/store-popup.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -105,7 +106,8 @@ const DragConfig = {
     MobileAppsComponent,
     MailerComponent,
     ShippingComponent,
-    MonthlyComparisonComponent
+    MonthlyComparisonComponent,
+    StorePopupComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
