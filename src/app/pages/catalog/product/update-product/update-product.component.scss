@@ -15,6 +15,98 @@ label {
 }
 
 
+.video-wrapper {
+
+  .btn-primary {
+    font-weight: 400 !important;
+  }
+
+  .video-container {
+    height: 230px;
+    width: 100%;
+    position: relative;
+
+    .video-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      pointer-events: none;
+      background: #f0f0f0;
+      border: 0.2rem dotted #00bdab;
+      border-radius: 0.9375rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input {
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 0.9375rem;
+    }
+  }
+
+  .video-preview {
+    height: 200px;
+    width: 200px;
+
+    .video-player {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+
+    position: relative;
+
+    .delete-remove {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      height: 2.1875rem;
+      width: 2.1875rem;
+      border-radius: 0.625rem;
+      display: grid;
+      place-items: center;
+      background: rgb(201, 44, 44);
+      cursor: pointer;
+    }
+  }
+}
+
+.product-images {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.625rem;
+
+  .product-image {
+    height: auto;
+    width: 100%;
+    position: relative;
+
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 2.875rem;
+    }
+
+    .delete-image {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 0.5rem;
+      background: rgb(201, 44, 44);
+      display: grid;
+      place-items: center;
+    }
+  }
+}
 
 
 .video-player-container {

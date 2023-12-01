@@ -15,9 +15,9 @@ export class PopupService {
   ) { }
 
 
-  managePopup() {
+  managePopup(data: any) {
     const url = this.commonService.getFullUrl(this.endpoints.managePopup);
-    return this.http.get(`${url}`);
+    return this.http.post(`${url}`, data);
   }
 
   popupDetails() {
@@ -25,4 +25,8 @@ export class PopupService {
     return this.http.get(`${url}`);
   }
 
+  removePopup(type: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.removePopup + `/${type}`);
+    return this.http.put(`${url}`, {});
+  }
 }

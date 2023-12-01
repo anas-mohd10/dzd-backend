@@ -14,20 +14,27 @@ import { environment } from 'src/environments/environment';
 export class StorePopupComponent implements OnInit {
   appRoute = appRoutes
   details: any = {}
-  filedata: any
+  @ViewChild('template') templateRef: TemplateRef<any>
+  modalRef?: BsModalRef
   preview: any
-  file: FormControl = new FormControl('')
-  redirection: FormControl = new FormControl('')
-  isVisible: FormControl = new FormControl("false")
-  previewRef?: BsModalRef
-  @ViewChild('previewTemplate') previewTemplate: TemplateRef<any>
+  popupType: string
+
+  mobileFile: any
+  webFile: any
+  webPreview: any
+  mobilePreview: any
+  webFileInput: FormControl = new FormControl('')
+  mobileFileInput: FormControl = new FormControl('')
+  webRedirection: FormControl = new FormControl('')
+  mobileRedirection: FormControl = new FormControl('')
+  isWeb: boolean = false
+  isMobile: boolean = false
 
   constructor(
     private PopupService: PopupService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
-    private BsModalService: BsModalService,
-    private BsModalRef: BsModalRef
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -35,30 +42,77 @@ export class StorePopupComponent implements OnInit {
   }
 
   open(template: TemplateRef<any>) {
-    this.previewRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
   }
 
-  addMedia(event: any) {
-    this.filedata = event?.target?.files[0]
-    let reader = new FileReader();
-    reader.onload = (e: any) => { this.preview = e.target.result };
-    reader.readAsDataURL(this.filedata);
-    this.open(this.previewTemplate)
-  }
-
-  removeMedia() {
-    this.file.setValue('')
-    this.filedata = null
+  close() {
+    this.modalRef?.hide()
     this.preview = null
+    this.webFile = null
+    this.mobileFile = null
+  }
+
+  handleWebChange(event: any) {
+    this.webFile = event?.target?.files[0]
+    let webReader = new FileReader();
+    webReader.onload = (e: any) => { this.preview = e.target.result };
+    webReader.readAsDataURL(this.webFile);
+    this.preview = this.webPreview
+    this.ChangeDetectorRef.markForCheck()
+    this.open(this.templateRef)
+  }
+
+  handleMobileChange(event: any) {
+    this.mobileFile = event?.target?.files[0]
+    let mobileReader = new FileReader();
+    mobileReader.onload = (e: any) => { this.preview = e.target.result };
+    mobileReader.readAsDataURL(this.mobileFile);
+    this.ChangeDetectorRef.markForCheck()
+    this.open(this.templateRef)
+  }
+
+  removeMedia(type: string) {
+    switch (type) {
+      case 'website':
+        this.webFileInput.setValue('')
+        this.webFile = null
+        this.webPreview = null
+        break
+      case 'mobile':
+        this.mobileFileInput.setValue('')
+        this.mobileFile = null
+        this.mobilePreview = null
+        break
+    }
+
+    this.PopupService.removePopup(type).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }, complete: () => {
+        this.getDetails()
+      }
+    })
   }
 
   getDetails() {
     this.PopupService.popupDetails().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.details = res?.data
-          this.isVisible.setValue(this.details?.isVisible)
-          this.details?.file ? this.preview = environment.base + '/' + this.details?.file : null
+          this.details = res?.result
+          this.webRedirection.setValue(this.details?.websiteRedirect)
+          this.mobileRedirection.setValue(this.details?.mobileRedirect)
+          this.details?.website ? this.webPreview = environment.base + '/' + this.details?.website : null
+          this.details?.mobile ? this.mobilePreview = environment.base + '/' + this.details?.mobile : null
+
+          this.details?.website ? this.isWeb = true : this.isWeb = false
+          this.details?.mobile ? this.isMobile = true : this.isMobile = false
+
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res?.message)
@@ -71,7 +125,26 @@ export class StorePopupComponent implements OnInit {
 
   onSubmit() {
     let formdata = new FormData()
-    this.filedata ? formdata.append('file', this.filedata) : null
-    formdata.append('isVisible', this.isVisible.value)
+    this.webFile ? formdata.append('website', this.webFile) : null
+    this.mobileFile ? formdata.append('mobile', this.mobileFile) : null
+    formdata.append('websiteRedirect', this.webRedirection.value)
+    formdata.append('mobileRedirect', this.mobileRedirection.value)
+
+    this.PopupService.managePopup(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.webFile = null
+          this.mobileFile = null
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }, complete: () => {
+        this.getDetails()
+        this.modalRef?.hide()
+      }
+    })
   }
 }

@@ -5,7 +5,7 @@
 
 .image-container {
     position: relative;
-    width: 450px;
+    width: 100%;
     height: 150px;
 
     .mask {
@@ -33,10 +33,38 @@
     }
 }
 
-
 .web-popup {
     width: 100%;
     overflow: hidden;
-    height: auto;
+    height: 18.75rem;
+    border-radius: 0.9375rem;
     object-fit: cover;
+}
+
+.remove-popup {
+    position: absolute;
+    top: 1.625rem;
+    right: 1.625rem;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 0.625rem;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: rgb(201, 44, 44);
+}
+
+.store-title {
+    width: max-content;
+}
+
+.modal-body {
+
+    .popup-image {
+        height: 18.75rem;
+        width: 100%;
+        object-fit: cover;
+        overflow: hidden;
+        border-radius: 0.9375rem;
+    }
 }

@@ -7,7 +7,7 @@ import { ProductService } from '../../../../includes/services/product.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr'
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
@@ -157,6 +157,16 @@ export class UpdateProductComponent implements OnInit {
     ]
   };
 
+
+  videoData: any
+  videoPreview: any
+  videoInput: FormControl = new FormControl('')
+  videoThumbData: any
+  videoThumbPreview: any
+  videoThumbInput: FormControl = new FormControl('')
+  productDetails: any = {}
+  productImages: Array<string> = []
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -165,8 +175,8 @@ export class UpdateProductComponent implements OnInit {
     private brandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
-    private toastr: ToastrService,
-    private cdr: ChangeDetectorRef,
+    private ToastrService: ToastrService,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private AttributeService: AttributeService,
     private AppSettingsService: AppSettingsService
   ) { }
@@ -175,11 +185,104 @@ export class UpdateProductComponent implements OnInit {
     return this.productform.controls;
   }
 
+
+  //Product video management
+  handleVideo(event: any) {
+    this.videoData = event.target.files[0]
+    let reader = new FileReader();
+    reader.onload = (e: any) => { this.videoPreview = e.target.result };
+    reader.readAsDataURL(this.videoData);
+  }
+
+  removeVideo() {
+    this.videoInput.setValue('')
+    this.videoData = null
+    this.videoPreview = null
+  }
+
+  handleVideoThumb(event: any) {
+    this.videoThumbData = event.target.files[0]
+    let reader = new FileReader();
+    reader.onload = (e: any) => { this.videoThumbPreview = e.target.result };
+    reader.readAsDataURL(this.videoThumbData);
+  }
+
+  removeVideoThumb() {
+    this.videoThumbInput.setValue('')
+    this.videoThumbData = null
+    this.videoThumbPreview = null
+  }
+
+  addVideo() {
+    let formdata = new FormData()
+    this.videoData ? formdata.append("video", this.videoData) : ''
+    this.videoThumbData ? formdata.append("thumbnail", this.videoThumbData) : ''
+    formdata.append("product", this.productDetails?.slug)
+    this.productService.productVideo(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.videoData = null
+          this.videoThumbData = null
+          this.videoThumbInput.setValue('')
+          this.videoInput.setValue('')
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }, complete: () => {
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  deleteVideo() {
+    this.productService.deleteVideo(this.productDetails?.slug).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.videoData = null
+          this.videoThumbData = null
+          this.videoPreview = null
+          this.videoThumbPreview = null
+          this.videoThumbInput.setValue('')
+          this.videoInput.setValue('')
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }, complete: () => {
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+  //Product video management
+
+  //Product image management
+  deleteImage(file: string) {
+    this.productService.deleteImage(this.productDetails?.slug, file).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }, complete: () => {
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+  //Product image management
+
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
     this.initForm();
@@ -197,13 +300,23 @@ export class UpdateProductComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.maincategories = res?.result
         this.subcategories = [...this.maincategories, ...this.subcategories]
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
 
     this.productService.getProductbyId({ prodid: this.prodid }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.isUnit = true
+        this.productDetails = res?.result[0]
+
+        //Product video
+        this.videoPreview = res?.result[0]?.video ? environment.base + '/' + res?.result[0]?.video : null
+        this.videoThumbPreview = res?.result[0]?.videoThumbnail ? environment.base + '/' + res?.result[0]?.videoThumbnail : null
+        //Product video
+
+        //Product images
+        this.productImages = res?.result[0]?.files ? res?.result[0]?.files : []
+        //Product images
 
         this.productform.get('name')?.setValue(res?.result[0]?.name)
 
@@ -213,14 +326,14 @@ export class UpdateProductComponent implements OnInit {
 
         this.categoryService.getSubCategoriesbyId(res?.result[0]?.product?.id?.parentCategory?.id).subscribe((res: any) => {
           if (res?.errorCode == 0) this.subcategories = res?.result
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         })
 
         this.selectedSubCategory = res?.result[0]?.category?.id
 
         this.AttributeService.getAttributes(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
           if (res?.errorCode == 0) this.attributes = res?.result
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         })
 
         if (res?.result[0]?.attributes.length > 0) {
@@ -275,7 +388,7 @@ export class UpdateProductComponent implements OnInit {
           this.files.push({ url: file, id: this.files.length })
         }
 
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -420,7 +533,7 @@ export class UpdateProductComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
-    this.cdr.markForCheck()
+    this.ChangeDetectorRef.markForCheck()
   }
 
   handleInputThumbnailChange(event: any) {
@@ -428,7 +541,7 @@ export class UpdateProductComponent implements OnInit {
     this.thumbnailFilename = this.fileThumbnaildata.name
     this.imageThumbnailChangedEvent = event;
     this.loadThumbnailImage = true
-    this.cdr.markForCheck()
+    this.ChangeDetectorRef.markForCheck()
   }
 
   imageCropped(event: ImageCroppedEvent) {
@@ -482,15 +595,15 @@ export class UpdateProductComponent implements OnInit {
       let reader = new FileReader()
       reader.readAsDataURL(event.target.files[0])
       reader.onload = (e: any) => {
-        this.toastr.info('Video uploading in progress', '', { timeOut: 2000 })
+        this.ToastrService.info('Video uploading in progress', '', { timeOut: 2000 })
         setTimeout(() => {
           this.video = e.target.result
-          this.toastr.success('Video successfully uploaded', '', { timeOut: 2000 })
+          this.ToastrService.success('Video successfully uploaded', '', { timeOut: 2000 })
           this.videoFile = {
             video: this.video,
             name: event.target.files[0].name
           }
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         }, 2000)
       }
     }
@@ -549,11 +662,11 @@ export class UpdateProductComponent implements OnInit {
       setTimeout(() => {
         this.productService.updateProduct(this.prodid, payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
+            this.ToastrService.error(res?.message);
             this.submitting = false
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           } else {
-            this.toastr.success(res?.message);
+            this.ToastrService.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
           }
         });
@@ -631,10 +744,10 @@ export class UpdateProductComponent implements OnInit {
     if (this.restore.value == 'true') {
       this.productService.restoreProducts({ prodid: this.prodid }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          this.toastr.success(res?.message);
+          this.ToastrService.success(res?.message);
           this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
         } else {
-          this.toastr.error(res?.message);
+          this.ToastrService.error(res?.message);
         }
       })
     } else {

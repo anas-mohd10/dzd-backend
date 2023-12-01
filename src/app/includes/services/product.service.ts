@@ -111,4 +111,19 @@ export class ProductService {
     return this.http.post(`${url}`, query);
   }
 
+  productVideo(data: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.productVideo);
+    return this.http.put(`${url}`, data);
+  }
+
+  deleteVideo(product: string) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.deleteVideo + `/${product}`);
+    return this.http.put(`${url}`, {});
+  }
+
+  deleteImage(product: string, file: string) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.deleteImage + `/${product}`);
+    return this.http.put(`${url}`, { file: file });
+  }
+
 }
