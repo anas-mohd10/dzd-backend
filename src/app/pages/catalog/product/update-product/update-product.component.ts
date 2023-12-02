@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-update-product',
@@ -40,7 +41,7 @@ export class UpdateProductComponent implements OnInit {
   taxClassData: any;
   productsData: any;
 
-  searchKeyowrds: any = [];
+
   categoryNames: any = [];
   categoryid: any = [];
 
@@ -152,12 +153,10 @@ export class UpdateProductComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Manrope' },
+      { class: 'figtree', name: 'Figtree' },
       { class: 'Manrope', name: 'Manrope' },
     ]
   };
-
-
   videoData: any
   videoPreview: any
   videoInput: FormControl = new FormControl('')
@@ -166,6 +165,8 @@ export class UpdateProductComponent implements OnInit {
   videoThumbInput: FormControl = new FormControl('')
   productDetails: any = {}
   productImages: Array<string> = []
+  searchKeywords: Array<string> = [];
+  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -185,8 +186,16 @@ export class UpdateProductComponent implements OnInit {
     return this.productform.controls;
   }
 
+  get formControls() {
+    return this.productform.controls;
+  }
 
-  //Product video management
+  selectTab(tabId: number) {
+    if (this.staticTabs?.tabs[tabId]) {
+      this.staticTabs.tabs[tabId].active = true;
+    }
+  }
+
   handleVideo(event: any) {
     this.videoData = event.target.files[0]
     let reader = new FileReader();
@@ -258,9 +267,7 @@ export class UpdateProductComponent implements OnInit {
       }
     })
   }
-  //Product video management
 
-  //Product image management
   deleteImage(file: string) {
     this.productService.deleteImage(this.productDetails?.slug, file).subscribe({
       next: (res: any) => {
@@ -276,7 +283,13 @@ export class UpdateProductComponent implements OnInit {
       }
     })
   }
-  //Product image management
+
+  addKeywords(event: any) {
+    if (event.target.value && event.target.value.trim().length > 0) {
+      if (!this.searchKeywords.includes(event.target.value)) this.searchKeywords.push(event.target.value)
+      this.productform.get('searchKeywords')?.setValue('');
+    }
+  }
 
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
@@ -360,7 +373,7 @@ export class UpdateProductComponent implements OnInit {
         this.productform.get('unit')?.setValue(res?.result[0]?.unit?.type)
         this.productform.get('value')?.setValue(res?.result[0]?.unit?.value)
 
-        this.searchKeyowrds = res?.result[0]?.searchKeywords
+        this.searchKeywords = res?.result[0]?.searchKeywords
         this.selectedProducts = res?.result[0]?.relatedProducts
         this.productform.get('isFeatured')?.setValue(res?.result[0]?.isFeatured)
         this.productform.get('isActive')?.setValue(res?.result[0]?.isActive)
@@ -452,14 +465,14 @@ export class UpdateProductComponent implements OnInit {
     let _value = event.value
     if (_value) {
       if (this.productform.get('searchKeywords')?.value != ' ' || '' || null) {
-        this.searchKeyowrds.push(this.productform.get('searchKeywords')?.value);
+        this.searchKeywords.push(this.productform.get('searchKeywords')?.value);
         this.productform.get('searchKeywords')?.setValue('');
       }
     }
   }
 
   tagRemove(value: any) {
-    this.searchKeyowrds = this.searchKeyowrds.filter((_data: any) => _data != value)
+    this.searchKeywords = this.searchKeywords.filter((_data: any) => _data != value)
   }
 
   managePage() {
@@ -729,7 +742,7 @@ export class UpdateProductComponent implements OnInit {
       isArchive: this.productform.get('isArchive')?.value,
       isVisible: this.productform.get('isVisible')?.value,
       isFeatured: this.productform.get('isFeatured')?.value,
-      searchKeywords: this.searchKeyowrds,
+      searchKeywords: this.searchKeywords,
       relatedProducts: this.selectedProducts,
       files: this.files,
       video: this.videoFile,

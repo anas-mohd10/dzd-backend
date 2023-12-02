@@ -9,6 +9,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [UpdateProductComponent],
@@ -20,6 +21,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ImageCropperModule,
     DragDropModule,
     NgSelectModule,
+    TabsModule,
     AngularEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
