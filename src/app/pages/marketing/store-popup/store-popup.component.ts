@@ -21,14 +21,19 @@ export class StorePopupComponent implements OnInit {
 
   mobileFile: any
   webFile: any
+  appFile: any
   webPreview: any
   mobilePreview: any
+  appPreview: any
   webFileInput: FormControl = new FormControl('')
   mobileFileInput: FormControl = new FormControl('')
+  appFileInput: FormControl = new FormControl('')
   webRedirection: FormControl = new FormControl('')
   mobileRedirection: FormControl = new FormControl('')
+  appRedirection: FormControl = new FormControl('')
   isWeb: boolean = false
   isMobile: boolean = false
+  isApp: boolean = false
 
   constructor(
     private PopupService: PopupService,
@@ -57,9 +62,9 @@ export class StorePopupComponent implements OnInit {
     let webReader = new FileReader();
     webReader.onload = (e: any) => { this.preview = e.target.result };
     webReader.readAsDataURL(this.webFile);
-    this.preview = this.webPreview
     this.ChangeDetectorRef.markForCheck()
     this.open(this.templateRef)
+    this.popupType = 'website'
   }
 
   handleMobileChange(event: any) {
@@ -69,6 +74,17 @@ export class StorePopupComponent implements OnInit {
     mobileReader.readAsDataURL(this.mobileFile);
     this.ChangeDetectorRef.markForCheck()
     this.open(this.templateRef)
+    this.popupType = 'mobile'
+  }
+
+  handleAppChange(event: any) {
+    this.appFile = event?.target?.files[0]
+    let appReader = new FileReader();
+    appReader.onload = (e: any) => { this.preview = e.target.result };
+    appReader.readAsDataURL(this.appFile);
+    this.ChangeDetectorRef.markForCheck()
+    this.open(this.templateRef)
+    this.popupType = 'app'
   }
 
   removeMedia(type: string) {
@@ -82,6 +98,11 @@ export class StorePopupComponent implements OnInit {
         this.mobileFileInput.setValue('')
         this.mobileFile = null
         this.mobilePreview = null
+        break
+      case 'app':
+        this.appFileInput.setValue('')
+        this.appFile = null
+        this.appPreview = null
         break
     }
 
@@ -107,10 +128,13 @@ export class StorePopupComponent implements OnInit {
           this.details = res?.result
           this.webRedirection.setValue(this.details?.websiteRedirect)
           this.mobileRedirection.setValue(this.details?.mobileRedirect)
+          this.appRedirection.setValue(this.details?.appRedirect)
           this.details?.website ? this.webPreview = environment.base + '/' + this.details?.website : null
           this.details?.mobile ? this.mobilePreview = environment.base + '/' + this.details?.mobile : null
+          this.details?.app ? this.appPreview = environment.base + '/' + this.details?.app : null
 
           this.details?.website ? this.isWeb = true : this.isWeb = false
+          this.details?.app ? this.isApp = true : this.isApp = false
           this.details?.mobile ? this.isMobile = true : this.isMobile = false
 
           this.ChangeDetectorRef.markForCheck()
@@ -127,8 +151,10 @@ export class StorePopupComponent implements OnInit {
     let formdata = new FormData()
     this.webFile ? formdata.append('website', this.webFile) : null
     this.mobileFile ? formdata.append('mobile', this.mobileFile) : null
+    this.appFile ? formdata.append('app', this.appFile) : null
     formdata.append('websiteRedirect', this.webRedirection.value)
     formdata.append('mobileRedirect', this.mobileRedirection.value)
+    formdata.append('appRedirect', this.appRedirection.value)
 
     this.PopupService.managePopup(formdata).subscribe({
       next: (res: any) => {
@@ -136,6 +162,7 @@ export class StorePopupComponent implements OnInit {
           this.ToastrService.success(res?.message)
           this.webFile = null
           this.mobileFile = null
+          this.appFile = null
         } else {
           this.ToastrService.error(res?.message)
         }

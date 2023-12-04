@@ -22,5 +22,7 @@ export const productEndpoints = {
     products_bulk_thumbnail_upload: '/thumbnail-images',
     productVideo: '/product-video',
     deleteVideo: '/delete-video',
-    deleteImage: '/delete-product-image'
+    deleteImage: '/delete-product-image',
+    addProductCover: '/add-productcover',
+    removeProductCover: '/remove-productcover'
 }

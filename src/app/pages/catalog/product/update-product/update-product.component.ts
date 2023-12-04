@@ -167,6 +167,9 @@ export class UpdateProductComponent implements OnInit {
   productImages: Array<string> = []
   searchKeywords: Array<string> = [];
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
+  coverData: any
+  coverPreview: any
+  coverInput: FormControl = new FormControl('')
 
   constructor(
     private formBuilder: FormBuilder,
@@ -291,6 +294,37 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
+  handleCover(event: any) {
+    this.coverData = event.target.files[0]
+    let reader = new FileReader();
+    reader.onload = (e: any) => { this.coverPreview = e.target.result };
+    reader.readAsDataURL(this.coverData);
+  }
+
+  removeCover() {
+    if (this.productDetails.cover) {
+      this.productService.removeProductCover({ slug: this.productDetails?.slug }).subscribe({
+        next: (res: any) => {
+          if (res.errorCode == 0) {
+            this.coverPreview = null
+            this.coverData = null
+            this.coverInput.setValue('')
+          } else {
+            this.ToastrService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err?.message)
+        }, complete: () => {
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    } else {
+      this.coverPreview = null
+      this.coverData = null
+      this.coverInput.setValue('')
+    }
+  }
+
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -330,6 +364,10 @@ export class UpdateProductComponent implements OnInit {
         //Product images
         this.productImages = res?.result[0]?.files ? res?.result[0]?.files : []
         //Product images
+
+        //Product cover
+        this.coverPreview = this.productDetails?.cover ? environment.base + '/' + this.productDetails?.cover : null
+        //Product cover
 
         this.productform.get('name')?.setValue(res?.result[0]?.name)
 

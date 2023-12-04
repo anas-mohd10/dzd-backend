@@ -66,6 +66,7 @@ import { MailerComponent } from './pages/settings/general/mailer/mailer.componen
 import { ShippingComponent } from './pages/settings/general/shipping/shipping.component';
 import { MonthlyComparisonComponent } from './pages/monthly-comparison/monthly-comparison.component';
 import { StorePopupComponent } from './pages/marketing/store-popup/store-popup.component';
+import { ActivitiesComponent } from './pages/settings/general/activities/activities.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -107,7 +108,8 @@ const DragConfig = {
     MailerComponent,
     ShippingComponent,
     MonthlyComparisonComponent,
-    StorePopupComponent
+    StorePopupComponent,
+    ActivitiesComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

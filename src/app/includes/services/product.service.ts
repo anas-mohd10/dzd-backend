@@ -126,4 +126,14 @@ export class ProductService {
     return this.http.put(`${url}`, { file: file });
   }
 
+  addProductCover(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.addProductCover);
+    return this.http.put(`${url}`, query);
+  }
+
+  removeProductCover(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.removeProductCover);
+    return this.http.put(`${url}`, query);
+  }
+
 }

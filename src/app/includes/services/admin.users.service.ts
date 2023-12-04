@@ -36,7 +36,7 @@ export class AdminUsersService {
     return this.http.post(`${url}`, data)
   }
 
-  updateAdminDetails(data: any){
+  updateAdminDetails(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.updateAdmin);
     return this.http.put(`${url}`, data)
   }
@@ -104,6 +104,11 @@ export class AdminUsersService {
   changePassword(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.changePassword);
     return this.http.put(`${url}`, data)
+  }
+
+  getActivities(data: any) {
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.getActivities);
+    return this.http.post(`${url}`, data)
   }
 }
 

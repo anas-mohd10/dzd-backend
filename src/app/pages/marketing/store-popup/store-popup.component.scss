@@ -41,10 +41,32 @@
     object-fit: cover;
 }
 
+.app-popup {
+    width: 22.5rem;
+    height: 40rem;
+    border-radius: 0.9375rem;
+    object-fit: cover;
+    overflow: hidden;
+}
+
 .remove-popup {
     position: absolute;
     top: 1.625rem;
     right: 1.625rem;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 0.625rem;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: rgb(201, 44, 44);
+}
+
+.remove-app-popup {
+    position: absolute;
+    top: 1.625rem;
+    left: 50%;
+    transform: translateX(-50%);
     height: 2.5rem;
     width: 2.5rem;
     border-radius: 0.625rem;
@@ -63,6 +85,14 @@
     .popup-image {
         height: 18.75rem;
         width: 100%;
+        object-fit: contain;
+        overflow: hidden;
+        border-radius: 0.9375rem;
+    }
+
+    .app-popup-image {
+        width: 19.4375rem;
+        height: 30.9375rem;
         object-fit: cover;
         overflow: hidden;
         border-radius: 0.9375rem;

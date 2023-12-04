@@ -20,6 +20,7 @@ import { MailerComponent } from './settings/general/mailer/mailer.component';
 import { ShippingComponent } from './settings/general/shipping/shipping.component';
 import { MonthlyComparisonComponent } from './monthly-comparison/monthly-comparison.component';
 import { StorePopupComponent } from './marketing/store-popup/store-popup.component';
+import { ActivitiesComponent } from './settings/general/activities/activities.component';
 
 export const Routing: Routes = [
   {
@@ -341,6 +342,10 @@ export const Routing: Routes = [
       }, {
         path: 'monthly-comparison',
         component: MonthlyComparisonComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'activity-logs',
+        component: ActivitiesComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'store-popup',

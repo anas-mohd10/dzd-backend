@@ -18,5 +18,6 @@ export const adminUsersEndpoints = {
      deleteAdmin: '/delete-admin',
      updateAdminEmail: '/update-admin-email',
      updateAdminMobile: '/update-admin-mobile',
-     changePassword: '/change-password'
+     changePassword: '/change-password',
+     getActivities: '/get-activities',
 }

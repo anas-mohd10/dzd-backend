@@ -266,5 +266,6 @@ export const appRoutes = {
   mailerSubscriptions: `${app}/mailer-subscriptions`,
   shippingSettings: `${app}/shipping-settings`,
   monthlyComparison: `${app}/monthly-comparison`,
-  storePopup: `${app}/store-popup`
+  storePopup: `${app}/store-popup`,
+  activityLogs: `${app}/activity-logs`,
 }
