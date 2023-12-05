@@ -268,4 +268,5 @@ export const appRoutes = {
   monthlyComparison: `${app}/monthly-comparison`,
   storePopup: `${app}/store-popup`,
   activityLogs: `${app}/activity-logs`,
+  mediaLibrary: `${app}/media-library`,
 }

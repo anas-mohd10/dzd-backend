@@ -110,7 +110,7 @@ const DragConfig = {
     ShippingComponent,
     MonthlyComparisonComponent,
     StorePopupComponent,
-    ActivitiesComponent
+    ActivitiesComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

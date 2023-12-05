@@ -356,6 +356,10 @@ export const Routing: Routes = [
         component: TimeslotsComponent,
         canActivate: [AuthenticationGuard]
       }, {
+        path: 'media-library',
+        loadChildren: () => import('./media-library/media-library.module').then((m) => m.MediaLibraryModule),
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'stores',
         loadChildren: () => import('./settings/general/store/store.module').then((m) => m.StoreModule),
         canActivate: [AuthenticationGuard]
