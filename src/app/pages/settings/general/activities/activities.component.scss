@@ -1,0 +1,71 @@
+$bg-color: #f5f5f5;
+$white: #ffffff;
+$border-color: #e5e5e5;
+$background: #e5e5e5;
+
+.btn-secondary,
+label {
+    font-weight: 400 !important;
+}
+
+.activities {
+
+    .activity {
+        border: 1px solid $border-color;
+
+
+        &:hover {
+            background: $bg-color;
+        }
+    }
+}
+
+.filteringWrapper {
+    .filtering {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        gap: 8px;
+
+        span {
+            color: #8B909A;
+            line-height: 18px;
+        }
+
+        select {
+            border: 1px solid #E8E8E8;
+            border-radius: 6px;
+            padding: 5px;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .paginationBefore,
+        .paginationNext {
+            height: 30px;
+            width: 30px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            background: $background;
+            cursor: pointer;
+
+            &.disabled {
+                opacity: 0.5;
+                pointer-events: none;
+            }
+        }
+
+        .paginationPage {
+            margin: 0 10px;
+        }
+    }
+}

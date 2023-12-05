@@ -67,6 +67,7 @@ import { ShippingComponent } from './pages/settings/general/shipping/shipping.co
 import { MonthlyComparisonComponent } from './pages/monthly-comparison/monthly-comparison.component';
 import { StorePopupComponent } from './pages/marketing/store-popup/store-popup.component';
 import { ActivitiesComponent } from './pages/settings/general/activities/activities.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -124,6 +125,7 @@ const DragConfig = {
     NgMultiSelectDropDownModule.forRoot(),
     InlineSVGModule.forRoot(),
     NgHttpLoaderModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
     HotToastModule.forRoot(),

@@ -19,15 +19,55 @@
     <div class="mt-4 card">
         <div class="card-body">
 
-            <div class="activities">
+            <div class="my-3">
+                <div class="row d-flex justify-content-end align-items-end">
+                    <div class="col-lg-3 form-group">
+                        <label for="admin" class="form-label">User</label>
+                        <select name="admin" id="admin" [formControl]="admin" class="form-select"
+                            (change)="getActivities()">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let admin of admins" value="{{admin?._id}}">{{admin?.email}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 form-group">
+                        <label for="date" class="form-label">Date</label>
+                        <input id="date" name="date" type="text" placeholder="-- Select a date --" class="form-control"
+                            bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                            [(ngModel)]="date" (ngModelChange)="getActivities()">
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <label for="date" class="form-label">&nbsp;</label>
+                        <input class="form-control btn btn-secondary" type="button" value="Clear filters" (click)="clearFilters()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="activities my-4">
                 <ng-container *ngFor="let activity of activities; let i = index">
-                    <div class="shadow p-3 mb-3 b-white rounded">
+                    <div class="p-3 mb-3 b-white rounded activity">
                         <div>{{activity.createdAt}}, {{activity.time}}</div>
-                        <div class="my-2 fs-5 fw-bold text-dark">{{activity.activity}}</div>
-                        <div class="text-primary">{{activity.admin.email}}</div>
+                        <div class="my-2 fs-5 fw-bold text-dark">{{activity.activity}} by <span
+                                class="fw-normal text-primary">{{activity.admin.email}}</span></div>
                     </div>
                 </ng-container>
             </div>
+
+            <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="activities.length == 0">
+                <div class="fs-4 fw-bold">No activities found</div>
+                <p class="text-muted">We couldn't find any item based on your search</p>
+            </div>
+
+            <div class="filteringWrapper d-flex align-items-center justify-content-end">
+                <div class="pagination">
+                  <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="navBack()">
+                    <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                  </div>
+                  <div class="paginationPage">{{page}} of {{totalPages}}</div>
+                  <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="navNext()">
+                    <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                  </div>
+                </div>
+              </div>
         </div>
     </div>
 </div>
