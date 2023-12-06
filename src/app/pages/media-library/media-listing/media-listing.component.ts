@@ -20,6 +20,10 @@ export class MediaListingComponent implements OnInit {
   totalPages: number = 1
   totalResults: number = 0
   base: string = environment.base
+  checkedMedias: Array<any> = []
+  date: any
+  keyword: FormControl = new FormControl('')
+  type: FormControl = new FormControl('')
 
   constructor(
     private MediaService: MediaService,
@@ -41,11 +45,18 @@ export class MediaListingComponent implements OnInit {
     this.getMedias()
   }
 
+  check(media: string) {
+    this.checkedMedias.includes(media) ?
+      this.checkedMedias = this.checkedMedias.filter(item => item != media) :
+      this.checkedMedias.push(media)
+  }
+
   getMedias() {
     this.MediaService.getMedias({ page: this.page, limit: this.limit.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.medias = res?.result?.data
+          for(let media of this.medias) media.createdAt = new Date(media.createdAt).toDateString() + ' ' + new Date(media.createdAt).toLocaleTimeString()
           this.lastPage = res?.result?.lastPage
           this.totalPages = res?.result?.totalPages
           this.totalResults = res?.result?.totalResults

@@ -19,13 +19,40 @@
 
     <div class="card my-4">
         <div class="card-body">
+            <div class="mb-6 row">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <input type="text" placeholder="Search medias" class="form-control" [formControl]="keyword">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <select name="type" id="type" class="form-select" [formControl]="type">
+                        <option disabled>-- Select an option --</option>
+                        <option value="">All items</option>
+                        <option value="image">Images</option>
+                        <option value="video">Videos</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <input id="date" name="date" type="text" placeholder="All dates" class="form-control"
+                    bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                    [(ngModel)]="date" (ngModelChange)="getMedias()">
+                </div>
+            </div>
             <div class="medias-wrapper">
                 <ng-container *ngFor="let media of medias">
                     <div class="media">
-                        <img src="{{base}}/{{media.path}}" alt={{media.altTitle}}>
-                        <div class="p-3 details">
-                            <div>{{media.title}}</div>
+                        <div class="checkbox" (click)="check(media.refid)">
+
                         </div>
+                        <a routerLink="{{appRoute.mediaLibrary + '/' + media.refid}}">
+                            <img src="{{base}}/{{media.path}}" alt={{media.altTitle}}>
+                            <div class="p-3 details">
+                                <div>{{media.title}}</div>
+                                <div class="text-muted">{{media.createdAt}}</div>
+                                <div class="text-muted">{{media.size}} MB</div>
+                            </div>
+                        </a>
                     </div>
                 </ng-container>
             </div>

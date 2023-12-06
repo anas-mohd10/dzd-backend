@@ -1,0 +1,30 @@
+.media-details {
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0 0 .625rem 0;
+
+        .value {
+            margin: 0 0 0 .3125rem;
+        }
+    }
+}
+
+label,
+.btn-dark,
+.btn-secondary {
+    font-weight: 400 !important;
+}
+
+.media{
+    max-height: 400px;
+    height: 100%;
+
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+    }
+}

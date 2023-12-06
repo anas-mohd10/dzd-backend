@@ -5,7 +5,7 @@ import { MediaDetailsComponent } from './media-details/media-details.component';
 
 const routes: Routes = [
   { path: '', component: MediaListingComponent },
-  { path: '/:media', component: MediaDetailsComponent }
+  { path: ':media', component: MediaDetailsComponent }
 ];
 
 @NgModule({
