@@ -128,7 +128,9 @@ const DragConfig = {
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
-    HotToastModule.forRoot(),
+    HotToastModule.forRoot({
+      position: 'bottom-center'
+    }),
     AppRoutingModule,
     NgApexchartsModule,
     AngularEditorModule,

@@ -19,8 +19,18 @@ export class MediaService {
     return this.http.post(`${url}`, data)
   }
 
-  getMediaDetails(params: any) {
+  getMediaDetails(params: string) {
     const url = this.commonService.getFullUrl(this.endpoints.medias + `/${params}`);
+    return this.http.get(`${url}`)
+  }
+
+  updateMedia(params: string, data: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.updateMedia + `/${params}`);
+    return this.http.put(`${url}`, data)
+  }
+
+  downloadMedia(params: string) {
+    const url = this.commonService.getFullUrl(this.endpoints.downloadMedia + `/${params}`);
     return this.http.get(`${url}`)
   }
 }

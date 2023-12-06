@@ -21,12 +21,16 @@
         <div class="card my-4">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <div class="media">
-                            <img src="{{mediaDetails.path}}" alt="{{mediaDetails.altTitle}}">
+                            <img src="{{mediaDetails.path}}" alt="{{mediaDetails.altTitle}}"
+                                onerror="this.src = '../../../assets/media/Media_Preview.png'">
+                            <div class="d-flex justify-content-center mt-6">
+                                <button class="edit-btn btn btn-primary">Edit file</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="media-details fs-6">
                             <div class="item">
                                 <div class="key">Uploaded on</div>
@@ -58,15 +62,26 @@
                                 <div class="value">{{mediaDetails?.size}} MB</div>
                             </div>
                         </div>
-                        <div>
-                            <div class="form-group">
+                        <div class="my-4 media-form py-6">
+                            <div class="form-group mb-3">
                                 <label for="url" class="form-label">File URL</label>
                                 <input type="text" placeholder="File URL" [formControl]="mediaUrl" class="form-control">
                                 <button class="btn mt-3 btn-dark" (click)="copyToClipboard()">Copy URL</button>
                             </div>
+                            <div class="form-group mb-3">
+                                <label for="url" class="form-label">Title</label>
+                                <input type="text" placeholder="File title" [formControl]="title" class="form-control"
+                                    (change)="saveDetails()"
+                                    [ngClass]="{'is-invalid': (title.errors?.['required']  || isSubmitted) && title.touched || title.errors?.['pattern']}">
+                            </div>
+                            <div class="form-group">
+                                <label for="url" class="form-label">Alternative Title</label>
+                                <textarea type="text" placeholder="Alternative title" [formControl]="altTitle"
+                                    class="form-control" (change)="saveDetails()"></textarea>
+                            </div>
                         </div>
                         <div class="mt-6 d-flex align-items-center justify-content-between">
-                            <button class="btn btn-secondary me-1">Download file</button>
+                            <a class="btn btn-secondary me-1" href="{{mediaDownload}}">Download file</a>
                             <button class="btn btn-danger ms-1">Delete file</button>
                         </div>
                     </div>
