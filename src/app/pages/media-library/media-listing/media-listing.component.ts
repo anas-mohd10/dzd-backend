@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
 import { MediaService } from 'src/app/includes/services/media-library.service';
 import { environment } from 'src/environments/environment';
@@ -24,15 +25,24 @@ export class MediaListingComponent implements OnInit {
   date: any
   keyword: FormControl = new FormControl('')
   type: FormControl = new FormControl('')
+  modalRef?: BsModalRef
+  deleteRef?: BsModalRef
+  urls: FormControl = new FormControl('', [Validators.required])
+  isUrlSubmitted: boolean = false
 
   constructor(
     private MediaService: MediaService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private Toast: HotToastService,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
     this.getMedias()
+  }
+
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
   }
 
   navNext() {
@@ -46,26 +56,61 @@ export class MediaListingComponent implements OnInit {
   }
 
   check(media: string) {
-    this.checkedMedias.includes(media) ?
-      this.checkedMedias = this.checkedMedias.filter(item => item != media) :
-      this.checkedMedias.push(media)
+    if (this.checkedMedias.includes(media)) {
+      this.checkedMedias = this.checkedMedias.filter(item => item != media)
+    } else {
+      if (this.checkedMedias.length < 10) {
+        this.checkedMedias.push(media)
+      } else {
+        this.Toast.error('You can only select 10 media at a time')
+      }
+    }
   }
 
   getMedias() {
-    this.MediaService.getMedias({ page: this.page, limit: this.limit.value }).subscribe({
+    this.MediaService.getMedias({
+      page: this.page,
+      limit: this.limit.value,
+      type: this.type.value,
+      date: this.date,
+      keyword: this.keyword.value,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.medias = res?.result?.data
-          for(let media of this.medias) media.createdAt = new Date(media.createdAt).toDateString() + ' ' + new Date(media.createdAt).toLocaleTimeString()
+          for (let media of this.medias) media.createdAt = new Date(media.createdAt).toDateString() + ' ' + new Date(media.createdAt).toLocaleTimeString()
           this.lastPage = res?.result?.lastPage
           this.totalPages = res?.result?.totalPages
           this.totalResults = res?.result?.totalResults
         } else {
-          this.ToastrService.error(res.message)
+          this.Toast.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.error.message)
+        this.Toast.error(err.error.message)
         this.medias = []
+      }, complete: () => {
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  saveUrls() {
+    if (!this.urls.valid) {
+      this.isUrlSubmitted = true
+      return
+    }
+
+    this.MediaService.saveMediaUrls({ urls: this.urls.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res.message)
+          this.modalRef?.hide()
+          this.getMedias()
+        } else {
+          this.Toast.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.error.message)
       }, complete: () => {
         this.ChangeDetectorRef.markForCheck()
       }

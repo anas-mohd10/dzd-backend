@@ -7,6 +7,8 @@ import { MediaDetailsComponent } from './media-details/media-details.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     CommonModule,
     MediaLibraryRoutingModule,
     FormsModule,
+    TabsModule,
+    ModalModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
     ClipboardModule

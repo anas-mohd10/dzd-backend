@@ -13,37 +13,63 @@
                         <a routerLink="{{ appRoute.mediaLibrary }}">Media library</a>
                     </li>
                 </ul>
+                <button class="btn btn-primary w-200 fs-6" (click)="open(template)">
+                    Add new assets
+                </button>
             </div>
         </div>
     </div>
 
     <div class="card my-4">
         <div class="card-body">
-            <div class="mb-6 row">
-                <div class="col-lg-3">
-                    <div class="form-group">
-                        <input type="text" placeholder="Search medias" class="form-control" [formControl]="keyword">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search medias" class="form-control" [formControl]="keyword"
+                                (ngModelChange)="getMedias()" />
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <select name="type" id="type" class="form-select" [formControl]="type" (change)="getMedias()">
+                            <option disabled>-- Select an option --</option>
+                            <option value="">All items</option>
+                            <option value="image">Images</option>
+                            <option value="video">Videos</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <input id="date" name="date" type="text" placeholder="All dates" class="form-control"
+                            bsDatepicker
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                            [(ngModel)]="date" (ngModelChange)="getMedias()">
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <select name="type" id="type" class="form-select" [formControl]="type">
-                        <option disabled>-- Select an option --</option>
-                        <option value="">All items</option>
-                        <option value="image">Images</option>
-                        <option value="video">Videos</option>
-                    </select>
-                </div>
-                <div class="col-lg-2">
-                    <input id="date" name="date" type="text" placeholder="All dates" class="form-control"
-                    bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
-                    [(ngModel)]="date" (ngModelChange)="getMedias()">
+                <div class="d-flex align-items-center justify-content-end" *ngIf="checkedMedias.length > 0">
+                    <div class="me-2">{{ checkedMedias.length }}
+                        <ng-container [ngPlural]="checkedMedias.length">
+                            <ng-template ngPluralCase="=1">asset</ng-template>
+                            <ng-template ngPluralCase="other">assets</ng-template>
+                        </ng-container>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger">
+                            <svg height="22px" width="22px" fill="none" stroke="#ffffff" stroke-width="1.5"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Delete
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="medias-wrapper">
                 <ng-container *ngFor="let media of medias">
                     <div class="media">
                         <div class="checkbox" (click)="check(media.refid)">
-
+                            <div [ngClass]="{'checked': checkedMedias.includes(media.refid)}">
+                            </div>
                         </div>
                         <a routerLink="{{appRoute.mediaLibrary + '/' + media.refid}}">
                             <img src="{{base}}/{{media.path}}" alt={{media.altTitle}}>
@@ -56,6 +82,33 @@
                     </div>
                 </ng-container>
             </div>
+            <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="medias.length == 0">
+                <div class="fs-4 fw-bold">No medias found</div>
+                <p class="text-muted">We couldn't find any item based on your search</p>
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #template>
+    <div class="modal-header pb-0">
+        <h4 class="modal-title pull-left">Add new assets</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <tabset>
+                <tab heading="Browse files" id="tab1">Browse files</tab>
+                <tab heading="From URL">
+                    <textarea class="mt-3 form-control" [formControl]="urls" placeholder="Urls"
+                        [ngClass]="{'is-invalid': (urls.errors?.['required']  || isUrlSubmitted) && urls.touched || urls.errors?.['pattern']}"></textarea>
+                    <div class="d-flex align-items-center justify-content-end mt-4">
+                        <button class="btn btn-primary" (click)="saveUrls()">Add assets</button>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</ng-template>
