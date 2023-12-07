@@ -38,7 +38,7 @@ export class MediaDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.mediaQuery = this.ActivatedRoute.snapshot.params.media || ''
     this.getMediaDetails()
-    this.mediaDownload = environment.apiUrl + mediaEndpoints.downloadMedia + `/${this.mediaQuery}`
+    this.mediaDownload = environment.base + mediaEndpoints.downloadMedia + `/${this.mediaQuery}`
   }
 
   getMediaDetails() {
@@ -86,20 +86,6 @@ export class MediaDetailsComponent implements OnInit {
       }, complete: () => {
         this.getMediaDetails()
         this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  downloadMedia() {
-    this.MediaService.downloadMedia(this.mediaQuery).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.Toast.success(res?.message)
-        } else {
-          this.Toast.error(res?.message)
-        }
-      }, error: (err: any) => {
-
       }
     })
   }

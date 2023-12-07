@@ -269,4 +269,5 @@ export const appRoutes = {
   storePopup: `${app}/store-popup`,
   activityLogs: `${app}/activity-logs`,
   mediaLibrary: `${app}/media-library`,
+  salesAnalytics: `${app}/sales-analytics`,
 }

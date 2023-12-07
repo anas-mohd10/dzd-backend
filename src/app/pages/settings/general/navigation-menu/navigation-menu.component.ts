@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment.prod';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { MenuService } from 'src/app/includes/services/menu.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -57,6 +58,7 @@ export class NavigationMenuComponent implements OnInit {
   itemDetails: any = {}
   allCategories: Array<any> = []
   footerCategories: Array<any> = []
+  headerText: FormControl = new FormControl('')
 
   get itemControls() {
     return this.itemForm.controls
@@ -70,7 +72,7 @@ export class NavigationMenuComponent implements OnInit {
     private modalService: BsModalService,
     private AdminUsersService: AdminUsersService,
     private MenuService: MenuService,
-
+    private Toast: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -136,6 +138,8 @@ export class NavigationMenuComponent implements OnInit {
     this.AppSettingsService.updateSettings({ menuType: this.menuType.value, refid: this.settings?.refid }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getSettings()
+        this.Toast.success('Menu type updated successfully')
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -144,6 +148,7 @@ export class NavigationMenuComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.menuType.setValue(res?.result?.menuType)
+        this.headerText.setValue(res?.result?.headerText)
         this.settings = res?.result
         this.ChangeDetectorRef.markForCheck()
       }
@@ -399,6 +404,23 @@ export class NavigationMenuComponent implements OnInit {
         this.footerCategories = this.footerCategories.filter((item: any) => item?.catid != category?.catid)
         this.ChangeDetectorRef.markForCheck()
         this.getAllCategories()
+      }
+    })
+  }
+
+  saveText() {
+    this.AppSettingsService.updateSettings({ headerText: this.headerText.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }, complete: () => {
+        this.getSettings()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }

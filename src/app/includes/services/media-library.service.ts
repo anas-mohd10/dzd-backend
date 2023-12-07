@@ -28,9 +28,4 @@ export class MediaService {
     const url = this.commonService.getFullUrl(this.endpoints.updateMedia + `/${params}`);
     return this.http.put(`${url}`, data)
   }
-
-  downloadMedia(params: string) {
-    const url = this.commonService.getFullUrl(this.endpoints.downloadMedia + `/${params}`);
-    return this.http.get(`${url}`)
-  }
 }

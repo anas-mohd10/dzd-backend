@@ -30,7 +30,7 @@
                 <div class="layoutWrapper mb-4">
                     <ng-container *ngFor="let type of types">
                         <div class="p-4 rounded layoutCard" (click)="selectMenuType(type?.value)"
-                            [ngClass]="{'selected': menuType?.value == type?.value}">
+                            [ngClass]="{'selected': menuType.value == type?.value}">
                             <ng-container *ngIf="type?.value == '1'">
                                 <svg height="30px" width="30px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24">
@@ -191,6 +191,18 @@
                         </ng-container>
                     </div>
                 </ng-container>
+
+                <div class="my-4">
+                    <h3 class="fw-bolder">Header Additional Text</h3>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <input class="form-control" placeholder="Header additional text" [formControl]="headerText"/>
+                        </div>
+                        <div class="col-lg-3">
+                            <button class="w-100 btn btn-primary" (click)="saveText()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

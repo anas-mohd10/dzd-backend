@@ -21,6 +21,7 @@ import { ShippingComponent } from './settings/general/shipping/shipping.componen
 import { MonthlyComparisonComponent } from './monthly-comparison/monthly-comparison.component';
 import { StorePopupComponent } from './marketing/store-popup/store-popup.component';
 import { ActivitiesComponent } from './settings/general/activities/activities.component';
+import { SalesAnalyticsComponent } from './sales-analytics/sales-analytics.component';
 
 export const Routing: Routes = [
   {
@@ -342,6 +343,10 @@ export const Routing: Routes = [
       }, {
         path: 'monthly-comparison',
         component: MonthlyComparisonComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'sales-analytics',
+        component: SalesAnalyticsComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'activity-logs',

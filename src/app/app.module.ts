@@ -68,6 +68,7 @@ import { MonthlyComparisonComponent } from './pages/monthly-comparison/monthly-c
 import { StorePopupComponent } from './pages/marketing/store-popup/store-popup.component';
 import { ActivitiesComponent } from './pages/settings/general/activities/activities.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SalesAnalyticsComponent } from './pages/sales-analytics/sales-analytics.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -111,6 +112,7 @@ const DragConfig = {
     MonthlyComparisonComponent,
     StorePopupComponent,
     ActivitiesComponent,
+    SalesAnalyticsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
