@@ -1,0 +1,55 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">{{editMode ? "Update more offers" : "Add more offers"}}</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.moreOffers.list }}">More offers</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.moreOffers.add }}">
+                            {{editMode ? "Update more offers" : "Add more offers"}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <form [formGroup]="form">
+                <div class="form-group mb-3">
+                    <label for="title" class="form-label required">Title</label>
+                    <input type="text" name="title" id="title" placeholder="Title" formControlName="title"
+                        class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="description" class="form-label required">Description</label>
+                    <input type="text" name="description" id="description" placeholder="Description"
+                        formControlName="description" class="form-control">
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-6">
+                        <label for="startDate" class="form-label">Start date</label>
+                        <input id="date" name="date" type="text" placeholder="-- Select a date --" class="form-control"
+                            bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                            [(ngModel)]="startDate">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="startDate" class="form-label">End date</label>
+                        <input id="date" name="date" type="text" placeholder="-- Select a date --" class="form-control"
+                            bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                            [(ngModel)]="endDate">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

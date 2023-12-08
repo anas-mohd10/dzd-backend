@@ -20,6 +20,7 @@
         <div class="addressFlex">
             <div>
                 <label>Bill To :</label>
+                <p>{{orderDetails?.customerId?.name}}</p>
                 <h4>
                     {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
                     {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
@@ -30,6 +31,7 @@
             </div>
             <div>
                 <label>Shipped To :</label>
+                <p> {{orderDetails?.customerId?.name}}</p>
                 <h4>
                     {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
                     {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
@@ -64,9 +66,11 @@
                     <ng-container *ngFor="let product of orderDetails?.products">
                         <tr>
                             <td>
-                                <img class="me-1 productImage" src="{{base}}/{{product?.productId?.thumbnail}}"
-                                    alt="Product">
-                                {{product?.productId?.name}}
+                                <div class="d-flex align-items-center justify-content-start">
+                                    <img class="me-1 productImage" src="{{base}}/{{product?.productId?.thumbnail}}"
+                                        alt="Product">
+                                    <div class="ms-1">{{product?.productId?.name}}</div>
+                                </div>
                             </td>
                             <td>
                                 {{settings?.currency}} {{product?.pricePerUnit}}

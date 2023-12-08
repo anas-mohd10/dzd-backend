@@ -270,4 +270,9 @@ export const appRoutes = {
   activityLogs: `${app}/activity-logs`,
   mediaLibrary: `${app}/media-library`,
   salesAnalytics: `${app}/sales-analytics`,
+  moreOffers: {
+    list: `${app}/more-offers`,
+    add: `${app}/more-offers/add`,
+    update: `${app}/more-offers/update`
+  }
 }

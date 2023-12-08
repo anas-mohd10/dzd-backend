@@ -377,6 +377,10 @@ export const Routing: Routes = [
         loadChildren: () => import('./sales/wishlist/wishlist.module').then((m) => m.WishlistModule),
         canActivate: [AuthenticationGuard]
       }, {
+        path: 'more-offers',
+        loadChildren: () => import('./marketing/more-offers/more-offers.module').then((m) => m.MoreOffersModule),
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'dynamic-scripts',
         component: DynamicScriptsComponent,
         canActivate: [AuthenticationGuard]

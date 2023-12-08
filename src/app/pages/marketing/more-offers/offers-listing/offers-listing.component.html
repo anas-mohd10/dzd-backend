@@ -1,0 +1,23 @@
+<div class="brand-page-container">
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">More offers</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.moreOffers.list }}">More offers</a>
+                    </li>
+                </ul>
+                <button class="btn btn-primary w-200 fs-6" color="primary"
+                    routerLink="{{ appRoute.moreOffers.add }}">
+                    Add more offers
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

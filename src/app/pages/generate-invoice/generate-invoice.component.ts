@@ -58,6 +58,16 @@ export class GenerateInvoiceComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
+
+    this.OrdersService.invoiceDetails(this.order).subscribe({
+      next: (res: any) => {
+
+      }, error: (err: any) => {
+
+      }, complete: () => {
+
+      }
+    })
   }
 
   print(content: any) {

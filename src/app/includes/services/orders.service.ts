@@ -105,4 +105,9 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.manageTags);
     return this.http.post(`${url}`, data)
   }
+
+  invoiceDetails(order: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.invoiceDetails + `/${order}`);
+    return this.http.get(`${url}`)
+  }
 }

@@ -18,5 +18,6 @@ export const orderEndpoints = {
    updateOrderProducts: '/update-order-products',
    orderCounts: '/order-counts',
    updateProductPayement: '/update-product-payment',
-   manageTags: '/manage-tags'
+   manageTags: '/manage-tags',
+   invoiceDetails: '/invoice-details'
 };

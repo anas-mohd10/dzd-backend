@@ -162,7 +162,6 @@ label {
 }
 
 .storeLocation {
-
     padding-bottom: 20px;
     border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
@@ -187,6 +186,14 @@ label {
 }
 
 .productImage {
-    height: 50px !important;
-    width: 50px !important;
+    height: 35px !important;
+    width: 35px !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd){
+    height: max-content !important;
+}
+
+.table-striped tbody tr:nth-of-type(even){
+    height: max-content !important;
 }
