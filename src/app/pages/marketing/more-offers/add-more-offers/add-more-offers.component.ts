@@ -15,7 +15,18 @@ export class AddMoreOffersComponent implements OnInit {
   isSubmitted: boolean = false
   startDate: string;
   endDate: string;
-
+  applicableItems: Array<any> = [
+    { key: 'cart', value: 'Cart' },
+    { key: 'product', value: 'Product' },
+    { key: 'category', value: 'Category' },
+    { key: 'brand', value: 'Brand' }
+  ]
+  applicableItem: string;
+  getItems: Array<any> = [
+    { key: 'product', value: 'Product' },
+    { key: 'category', value: 'Category' },
+    { key: 'brand', value: 'Brand' }
+  ]
 
   constructor(
     private Toast: HotToastService,
@@ -31,10 +42,21 @@ export class AddMoreOffersComponent implements OnInit {
       endDate: new FormControl('', Validators.required),
       type: new FormControl('percentage'),
       amount: new FormControl('100', Validators.required),
+      applicableItem: new FormControl('product', Validators.required),
     })
   }
 
-  getProducts(){
+  handleApplicableItem(event: any) {
+    this.applicableItem = event.target.value
+  }
+
+  handleOfferType() {
+    this.form.get('type')?.value == 'flat'
+      ? this.form.get('amount')?.setValue(0)
+      : this.form.get('amount')?.setValue(100)
+  }
+
+  getProducts() {
 
   }
 

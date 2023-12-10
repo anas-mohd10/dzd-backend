@@ -39,14 +39,54 @@
                     <div class="col-lg-6">
                         <label for="startDate" class="form-label">Start date</label>
                         <input id="date" name="date" type="text" placeholder="-- Select a date --" class="form-control"
-                            bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                            bsDatepicker
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
                             [(ngModel)]="startDate">
                     </div>
                     <div class="col-lg-6">
                         <label for="startDate" class="form-label">End date</label>
                         <input id="date" name="date" type="text" placeholder="-- Select a date --" class="form-control"
-                            bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                            bsDatepicker
+                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
                             [(ngModel)]="endDate">
+                    </div>
+                </div>
+                <div class="row my-6">
+                    <div class="col-lg-4">
+                        <div class="fs-5 mb-4">Apply this offer</div>
+                        <div class="form-group mb-3">
+                            <label for="applicableItem" class="form-label">Type</label>
+                            <select name="applicableItem" id="applicableItem" formControlName="applicableItem" class="form-select" (change)="handleApplicableItem($event)">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let item of applicableItems" value={{item.key}}>{{item.value}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3" *ngIf="form.get('applicableItem')?.value != 'cart'">
+                            <label for="type" class="form-label">Search {{applicableItem}}</label>
+                            <input type="text" placeholder="Search here" class="form-control">
+                        </div>
+                        <div class="form-group mb-3" *ngIf="form.get('applicableItem')?.value == 'cart'">
+                            <label for="type" class="form-label">Minimum amount</label>
+                            <input type="text" placeholder="Eg. 100" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fs-5 mb-4">Offer type</div>
+                        <div class="form-group mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select name="type" id="type" formControlName="type" class="form-select" (change)="handleOfferType()">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option value="percentage">Percentage</option>
+                                <option value="flat">Flat</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="type" class="form-label">Amount</label>
+                            <input type="text" placeholder="Eg. 100" formControlName="amount" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fs-5 mb-4">Get this offer</div>
                     </div>
                 </div>
             </form>
