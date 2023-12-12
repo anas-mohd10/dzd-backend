@@ -1,0 +1,32 @@
+.customers {
+    height: max-content;
+    max-height: 300px;
+    overflow: scroll;
+
+    .customer {
+        cursor: pointer;
+    }
+}
+
+.gift-card {
+    background: url("../../../../../assets/images/giftcard.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 32px;
+    border-radius: 16px;
+    text-align: center;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #ffffff;
+
+    .amount {
+        font-size: 2rem;
+    }
+}
+
+label,
+.btn-primary {
+    font-weight: normal !important;
+}
