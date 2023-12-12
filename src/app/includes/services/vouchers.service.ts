@@ -7,42 +7,35 @@ import { voucherEndpoints } from 'src/app/config/endpoints';
   providedIn: 'root'
 })
 export class VouchersService {
-  voucherEndpoints = voucherEndpoints
+  endpoints = voucherEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
-  addVoucher(data: any) {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.add_voucher);
+  createVoucher(data: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.createVoucher);
     return this.http.post(`${url}`, data);
   }
 
-  getVouchers() {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.get_vouchers);
+  getVoucherDetails(voucher: string) {
+    const url = this.commonService.getFullUrl(this.endpoints.getVoucherDetails + `/${voucher}`);
     return this.http.get(`${url}`);
   }
 
-  getVoucher(slug: any) {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.get_voucher_by_slug + "?slug=" + slug);
-    return this.http.get(`${url}`);
-  }
-
-  updateVoucher(data: any, slug: any) {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.update_voucher + "?slug=" + slug);
+  updateVoucher(data: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.updateVoucher);
     return this.http.put(`${url}`, data);
   }
 
-  getVoucherCount() {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.get_vouchers_count);
-    return this.http.get(`${url}`);
+  deleteVoucher(voucher: string) {
+    const url = this.commonService.getFullUrl(this.endpoints.deleteVoucher + `/${voucher}`);
+    return this.http.delete(`${url}`);
   }
 
-  getVoucherByPage(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.get_voucher_page + "?page=" + page + "&limit=" + limit);
-    return this.http.get(`${url}`);
-  }
-
-  searchVoucher(data: any, page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.voucherEndpoints.search_voucher + "?page=" + page + "&limit=" + limit);
+  searchVoucher(data: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.searchVouchers);
     return this.http.post(`${url}`, data);
   }
 }

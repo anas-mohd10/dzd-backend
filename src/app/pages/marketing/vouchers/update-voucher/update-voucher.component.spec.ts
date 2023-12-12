@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateVouchersComponent } from './update-vouchers.component';
+import { UpdateVoucherComponent } from './update-voucher.component';
 
-describe('UpdateVouchersComponent', () => {
-  let component: UpdateVouchersComponent;
-  let fixture: ComponentFixture<UpdateVouchersComponent>;
+describe('UpdateVoucherComponent', () => {
+  let component: UpdateVoucherComponent;
+  let fixture: ComponentFixture<UpdateVoucherComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UpdateVouchersComponent ]
+      declarations: [ UpdateVoucherComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateVouchersComponent);
+    fixture = TestBed.createComponent(UpdateVoucherComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

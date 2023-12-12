@@ -261,11 +261,6 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'vouchers',
-        loadChildren: () => import('./sales/vouchers/vouchers.module').then((m) => m.VouchersModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
         path: 'reviews',
         loadChildren: () => import('./sales/reviews/reviews.module').then((m) => m.ReviewsModule),
         canActivate: [AuthenticationGuard]
@@ -363,6 +358,10 @@ export const Routing: Routes = [
       }, {
         path: 'media-library',
         loadChildren: () => import('./media-library/media-library.module').then((m) => m.MediaLibraryModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'vouchers',
+        loadChildren: () => import('./marketing/vouchers/vouchers.module').then((m) => m.VouchersModule),
         canActivate: [AuthenticationGuard]
       }, {
         path: 'stores',

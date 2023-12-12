@@ -173,11 +173,6 @@ export const appRoutes = {
   review: {
     REVIEW_LIST: `${app}${reviewRoute}`,
   },
-  vouchers: {
-    VOUCHERS_LIST: `${app}${vouchersRoute}`,
-    ADD_VOUCHERS_LIST: `${app}${vouchersRoute}/add`,
-    UPDATE_VOUCHERS_LIST: `${app}${vouchersRoute}/update`
-  },
   faq: {
     FAQ_LIST: `${app}${faqRoute}`,
     ADD_FAQ: `${app}${faqRoute}/add`,
@@ -274,5 +269,10 @@ export const appRoutes = {
     list: `${app}/more-offers`,
     add: `${app}/more-offers/add`,
     update: `${app}/more-offers/update`
+  },
+  vouchers: {
+    list: `${app}/vouchers`,
+    add: `${app}/vouchers/create`,
+    update: `${app}/vouchers/update`
   }
 }
