@@ -13,9 +13,9 @@
                         <a routerLink="{{ appRoute.mediaLibrary }}">Media library</a>
                     </li>
                 </ul>
-                <!-- <button class="btn btn-primary w-200 fs-6" (click)="open(template)">
+                <button class="btn btn-primary w-200 fs-6" (click)="open(template)">
                     Add new assets
-                </button> -->
+                </button>
             </div>
         </div>
     </div>
@@ -53,25 +53,20 @@
                         </ng-container>
                     </div>
                     <div>
-                        <button class="btn btn-danger">
-                            <svg height="22px" width="22px" fill="none" stroke="#ffffff" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                        <button class="btn btn-danger" (click)="deleteMedias()">
                             Delete
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="medias-wrapper">
+            <div class=" medias-wrapper">
                 <ng-container *ngFor="let media of medias">
                     <div class="media">
-                        <div class="checkbox" (click)="check(media.refid)">
-                            <div [ngClass]="{'checked': checkedMedias.includes(media.refid)}">
+                        <div class="checkbox" (click)="selectMedia(media.slug)">
+                            <div [ngClass]="{'checked': checkedMedias.includes(media.slug)}">
                             </div>
                         </div>
-                        <a routerLink="{{appRoute.mediaLibrary + '/' + media.refid}}">
+                        <a routerLink="{{appRoute.mediaLibrary + '/' + media.slug}}">
                             <img src="{{base}}/{{media.path}}" alt={{media.altTitle}}>
                             <div class="p-3 details">
                                 <div>{{media.title}}</div>

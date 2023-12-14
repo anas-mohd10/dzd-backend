@@ -55,7 +55,7 @@ export class MediaListingComponent implements OnInit {
     this.getMedias()
   }
 
-  check(media: string) {
+  selectMedia(media: string) {
     if (this.checkedMedias.includes(media)) {
       this.checkedMedias = this.checkedMedias.filter(item => item != media)
     } else {
@@ -105,6 +105,7 @@ export class MediaListingComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.Toast.success(res.message)
           this.modalRef?.hide()
+          this.urls.reset()
           this.getMedias()
         } else {
           this.Toast.error(res.message)
@@ -113,6 +114,27 @@ export class MediaListingComponent implements OnInit {
         this.Toast.error(err.error.message)
       }, complete: () => {
         this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  deleteMedias() {
+    let medias = []
+    for (let media of this.medias) if (this.checkedMedias.includes(media.slug)) medias.push({
+      path: media.path, slug: media.slug
+    })
+    this.MediaService.deleteMedias({ files: medias }).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.checkedMedias = []
+          this.Toast.success(res.message)
+          this.getMedias()
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.error.message)
       }
     })
   }
