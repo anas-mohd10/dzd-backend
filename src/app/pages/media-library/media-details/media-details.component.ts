@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { MediaService } from 'src/app/includes/services/media-library.service';
@@ -25,6 +25,7 @@ export class MediaDetailsComponent implements OnInit {
   isSubmitted: boolean = false;
   timestamp: string
   mediaDownload: string;
+  mediaPath: string = ''
 
   constructor(
     private MediaService: MediaService,
@@ -32,7 +33,8 @@ export class MediaDetailsComponent implements OnInit {
     private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ClipboardService: ClipboardService,
-    private Toast: HotToastService
+    private Toast: HotToastService,
+    private Router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +49,7 @@ export class MediaDetailsComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.mediaDetails = res?.result
           this.mediaDetails.createdAt = new Date(this.mediaDetails.createdAt).toDateString() + ", " + new Date(this.mediaDetails.createdAt).toLocaleTimeString()
+          this.mediaPath = this.mediaDetails.path
           this.mediaDetails.path = this.base + '/' + this.mediaDetails.path
           this.mediaUrl.setValue(this.mediaDetails.path)
           let match = this.mediaDetails.title.match(/^\d+-/);
@@ -93,5 +96,23 @@ export class MediaDetailsComponent implements OnInit {
   copyToClipboard() {
     this.ClipboardService.copyFromContent(this.mediaUrl.value)
     this.Toast.success('Copied to clipboard')
+  }
+
+  deleteMedia() {
+    this.MediaService.deleteMedias({
+      files: [{ path: this.mediaPath, slug: this.mediaDetails.slug }]
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.Router.navigateByUrl(this.appRoute.mediaLibrary)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
   }
 }
