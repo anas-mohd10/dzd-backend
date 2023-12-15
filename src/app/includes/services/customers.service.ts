@@ -101,6 +101,11 @@ export class CustomersService {
     return this.http.get(`${url}`)
   }
 
+  getTopWishlisted() {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.topWishlisted);
+    return this.http.get(`${url}`)
+  }
+
   searchSubscribers(data: any) {
     const url = this.commonService.getFullUrl(this.customerEndpoints.search_subscribers);
     return this.http.post(`${url}`, data)

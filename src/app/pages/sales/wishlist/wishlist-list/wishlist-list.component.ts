@@ -17,6 +17,7 @@ export class WishlistListComponent implements OnInit {
   keyword: FormControl = new FormControl('')
   sort: FormControl = new FormControl('')
   totalResults: string = ''
+  topWishlisted: Array<any> = []
 
   constructor(
     private CustomersService: CustomersService,
@@ -25,6 +26,13 @@ export class WishlistListComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchCustomers()
+
+    this.CustomersService.getTopWishlisted().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.topWishlisted = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
   clearFilters() {

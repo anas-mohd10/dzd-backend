@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { VouchersService } from 'src/app/includes/services/vouchers.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -20,11 +22,15 @@ export class CreateVoucherComponent implements OnInit {
   settings: any
   base: string = environment.base
   isSubmitted: boolean = false
+  file: any
+  preview: string = ''
 
   constructor(
     private CustomersService: CustomersService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private VouchersService: VouchersService,
+    private Toast: HotToastService
   ) { }
 
   get formControls() {
@@ -78,6 +84,27 @@ export class CreateVoucherComponent implements OnInit {
     this.customers = []
     this.keyword = ''
     this.optedCustomer = customer
+  }
+
+  createVoucher() {
+    if (!this.form.valid) {
+      this.isSubmitted = true
+      return
+    }
+
+    let formdata = new FormData()
+    formdata.append("file", this.file)
+    for (let _key of Object.keys(this.form.value)) formdata.append(_key, this.form.value[_key])
+
+    this.VouchersService.createVoucher(formdata).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.form.reset()
+        this.ChangeDetectorRef.markForCheck()
+        this.Toast.success(res.message)
+      } else {
+
+      }
+    })
   }
 
 }

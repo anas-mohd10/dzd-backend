@@ -15,6 +15,7 @@ export const customerEndpoints = {
   download_customers: '/download-customers',
   wishlist: '/wishlist',
   wishlist_details: '/wishlist-details',
+  topWishlisted: '/top-wishlisted',
   delete_address: '/delete-address',
   update_customer_address: '/update-customer-address',
   get_default_address: '/get-default-address',

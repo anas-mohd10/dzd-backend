@@ -10,6 +10,15 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+.wishlistProduct {
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 label,
 input[type=button] {
     font-weight: normal !important;
