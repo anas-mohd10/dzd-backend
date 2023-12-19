@@ -16,6 +16,16 @@ $grey: #888888;
   width: 180px;
 }
 
+.deliverySlots {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.625rem;
+
+  .deliverySlot {
+    cursor: pointer;
+  }
+}
+
 .btn-secondary,
 .btn-primary,
 label {
@@ -110,16 +120,16 @@ label {
     font-size: 14px;
     margin: 0 0 0.625rem 0;
 
-    .details{
-      .stock{
+    .details {
+      .stock {
         background: #00bd71;
         color: $white;
         padding: 0.25rem 0.5rem;
         border-radius: 0.25rem;
         width: max-content;
 
-        &.outOfStock{
-        background: #bd0900;
+        &.outOfStock {
+          background: #bd0900;
         }
       }
     }

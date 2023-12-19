@@ -185,6 +185,19 @@
               </div>
             </div>
 
+            <div class="my-4" *ngIf="deliverySlots.length > 0">
+              <p>Select a delivery time on your availability</p>
+              <div class="deliverySlots">
+                <ng-container *ngFor="let slot of deliverySlots">
+                  <div
+                    class="fs-5 d-flex align-items-center rounded deliverySlot justify-content-center p-3 bg-white border border-secondary"
+                    (click)="toggleSlot(slot)" [ngClass]="{'border-primary': deliverySlot?.refid == slot.refid}">
+                    {{slot.from}} - {{slot.to}}
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+
             <ng-container *ngIf="deliveryType == '1'">
               <div class="form-group">
                 <label class="fs-6 mb-3">Choose a location</label>

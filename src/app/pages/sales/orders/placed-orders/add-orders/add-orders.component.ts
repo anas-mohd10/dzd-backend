@@ -131,6 +131,17 @@ export class AddOrdersComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.deliverySlots = res?.result
         this.ChangeDetectorRef.markForCheck()
+        this.deliverySlots.sort((a, b) => {
+          const timeA = new Date(`1970-01-01T${a.from}`);
+          const timeB = new Date(`1970-01-01T${b.from}`);
+          if (timeA < timeB) {
+            return -1;
+          } else if (timeA > timeB) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
       }
     })
   }
