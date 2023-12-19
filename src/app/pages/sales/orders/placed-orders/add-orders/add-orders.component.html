@@ -2,7 +2,7 @@
 
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update Orders" : "Add Orders" }}</h1>
+      <h1 class="fw-bold"> {{ editMode ? "Update Orders" : "Add Orders" }}</h1>
     </div>
     <div class="row">
       <div class="col d-flex align-items-start justify-content-between">
@@ -331,7 +331,7 @@
             <div class="d-flex align-items-center justify-content-between">
               <div class="index me-2">{{i + 1}}</div>
               <div class="image me-2">
-                <img height="30px" width="30px" src="{{base}}/{{product?.thumbnail}}" alt="">
+                <img height="30px" width="30px" src="{{base}}/{{product?.thumbnail}}" alt={{product?.name}}>
               </div>
               <div class="details">
                 <div class="name">{{product?.name}}</div>

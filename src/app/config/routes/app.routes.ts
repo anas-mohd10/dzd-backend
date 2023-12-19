@@ -274,5 +274,6 @@ export const appRoutes = {
     list: `${app}/vouchers`,
     add: `${app}/vouchers/create`,
     update: `${app}/vouchers/update`
-  }
+  },
+  deliverySlots: `${app}/delivery-slots`
 }

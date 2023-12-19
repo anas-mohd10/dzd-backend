@@ -22,6 +22,7 @@ import { MonthlyComparisonComponent } from './monthly-comparison/monthly-compari
 import { StorePopupComponent } from './marketing/store-popup/store-popup.component';
 import { ActivitiesComponent } from './settings/general/activities/activities.component';
 import { SalesAnalyticsComponent } from './sales-analytics/sales-analytics.component';
+import { DeliverySlotsComponent } from './settings/general/delivery-slots/delivery-slots.component';
 
 export const Routing: Routes = [
   {
@@ -354,6 +355,10 @@ export const Routing: Routes = [
       }, {
         path: 'time-slots',
         component: TimeslotsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'delivery-slots',
+        component: DeliverySlotsComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'media-library',

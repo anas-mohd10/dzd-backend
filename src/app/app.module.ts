@@ -69,6 +69,7 @@ import { StorePopupComponent } from './pages/marketing/store-popup/store-popup.c
 import { ActivitiesComponent } from './pages/settings/general/activities/activities.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SalesAnalyticsComponent } from './pages/sales-analytics/sales-analytics.component';
+import { DeliverySlotsComponent } from './pages/settings/general/delivery-slots/delivery-slots.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -113,6 +114,7 @@ const DragConfig = {
     StorePopupComponent,
     ActivitiesComponent,
     SalesAnalyticsComponent,
+    DeliverySlotsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

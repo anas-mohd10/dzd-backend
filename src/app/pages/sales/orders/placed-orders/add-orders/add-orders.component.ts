@@ -8,6 +8,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { DeliverySlotsService } from 'src/app/includes/services/delivery-slots.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
@@ -70,6 +71,8 @@ export class AddOrdersComponent implements OnInit {
   deliveryTime: any = null;
   deliveryDate: any = null;
   settings: any = {}
+  deliverySlots: Array<any> = []
+  deliverySlot: any;
 
   constructor(
     private OrderService: OrdersService,
@@ -83,7 +86,8 @@ export class AddOrdersComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private DeliveryService: DeliverySlotsService
   ) { }
 
   ngOnInit(): void {
@@ -110,7 +114,6 @@ export class AddOrdersComponent implements OnInit {
     this.deliveryDate = this.dates[0]
     this.orderForm.get('deliveryDate')?.setValue(this.deliveryDate)
 
-
     this.addressForm = new FormGroup({
       type: new FormControl('Home'),
       firstlane: new FormControl('', Validators.required),
@@ -122,6 +125,13 @@ export class AddOrdersComponent implements OnInit {
       landmark: new FormControl('', Validators.required),
       latitude: new FormControl(''),
       longitude: new FormControl(''),
+    })
+
+    this.DeliveryService.activeSlots().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.deliverySlots = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
     })
   }
 
@@ -208,11 +218,16 @@ export class AddOrdersComponent implements OnInit {
       deliveryTime: [''],
       deliveryDate: [''],
       deliveryType: ['0'],
+      deliverySlot: ['']
     });
   }
 
   get of() {
     return this.orderForm.controls;
+  }
+
+  toggleSlot(slot: any) {
+    this.deliverySlot ? this.deliverySlot = null : this.deliverySlot = slot._id
   }
 
   getActiveCustomers() {
@@ -336,10 +351,10 @@ export class AddOrdersComponent implements OnInit {
       case 'decrement':
         this.cartItems = this.cartItems.map((item: any) => {
           if (item._id == product._id && item.quantity > 1) {
-            if(product?.moq > item.quantity - 1){
+            if (product?.moq > item.quantity - 1) {
               this.ToastrService.error(`Minimum required quantity (${product?.moq}) has been reached`)
               return item
-            }else{
+            } else {
               this.cartSubtotal = this.cartSubtotal - product?.price?.selling
               this.cartTotal = this.cartSubtotal - this.cartDiscount
               this.ToastrService.success('Product quantity updated')
