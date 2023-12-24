@@ -128,6 +128,7 @@ export class UpdateBlogComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list])
           this.Toast.success(res.message)
+          this.modalRef?.hide()
         } else {
           this.Toast.error(res.message)
         }

@@ -238,7 +238,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   toggleSlot(slot: any) {
-    this.deliverySlot ? this.deliverySlot = null : this.deliverySlot = slot._id
+    this.deliverySlot == slot?._id ? this.deliverySlot = null : this.deliverySlot = slot?._id
+    this.orderForm.get('deliverySlot')?.setValue(this.deliverySlot)
   }
 
   getActiveCustomers() {

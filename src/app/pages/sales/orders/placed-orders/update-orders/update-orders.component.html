@@ -100,7 +100,7 @@
             </div>
             <div class="itemDetails">
               <div class="itemTitle">Order Source</div>
-              <div class="itemResponse">{{order?.source == 'WEB' ? 'Web' : order?.source == 'APP' ? 'App' : 'Admin'}}
+              <div class="itemResponse">{{order?.source}}
               </div>
             </div>
             <div class="itemDetails">
@@ -115,6 +115,10 @@
               <div class="itemTitle">Delivery</div>
               <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">{{order?.deliveryType == '1' ? 'Click
                 and collect' : 'Home delivery' }}</div>
+            </div>
+            <div class="itemDetails">
+              <div class="itemTitle">Delivery slot</div>
+              <div class="itemResponse">{{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}</div>
             </div>
           </div>
         </div>
@@ -233,14 +237,17 @@
                               <img src="../../../../../../assets/icons/tinyEdit.svg" alt="Icon">
                             </span>
                           </div>
-                          <div class="mt-2 d-flex align-items-center">
-                            Track order :
-                            <a class="ms-1" target="_blank" href="{{product?.trackingURL}}">{{product?.trackingURL ?
-                              product?.trackingURL : '-'}}</a>
-                            <span *ngIf="!orderStatusCheck.includes(product.currentStatus.status)" class="tinyEdit"
-                              (click)="openOrderAcceptance(execptedDelivery, product)">
-                              <img src="../../../../../../assets/icons/tinyEdit.svg" alt="Icon">
-                            </span>
+                          <div class="mt-2">
+                            <div>Track this order here</div>
+                            <div class="d-flex items-center">
+                              <a class="ms-1" target="_blank" href="{{product?.trackingURL}}">{{product?.trackingURL ?
+                                product?.trackingURL : '-'}}
+                              </a>
+                              <span *ngIf="!orderStatusCheck.includes(product.currentStatus.status)" class="tinyEdit"
+                                (click)="openOrderAcceptance(execptedDelivery, product)">
+                                <img src="../../../../../../assets/icons/tinyEdit.svg" alt="Icon">
+                              </span>
+                            </div>
                           </div>
                           <div class="mt-2 d-flex align-items-center">
                             Tracking Reference : {{product?.trackingNo ? product?.trackingNo : '-'}}
@@ -250,7 +257,7 @@
                             </span>
                           </div>
                           <div class="mt-2 d-flex align-items-center">
-                            Assigned to : {{product?.deliveryPerson ? product?.deliveryPerson : 'none'}}
+                            {{product?.deliveryPerson ? 'Assigned to : ' + product?.deliveryPerson : null}}
                             <span *ngIf="product.currentStatus.status == 'Out for delivery'" class="tinyEdit"
                               (click)="openOrderForDelivery(deliveryStaff, product)">
                               <img src="../../../../../../assets/icons/tinyEdit.svg" alt="Icon">

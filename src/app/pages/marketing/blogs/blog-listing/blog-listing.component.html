@@ -30,6 +30,10 @@
             [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
             [(ngModel)]="date" (ngModelChange)="getBlogs()">
         </div>
+        <div class="col-lg-3">
+          <input type="button" value="Clear filters" class="btn btn-secondary w-100"
+            (click)="clear()">
+        </div>
       </div>
       <div class="blogs my-6" *ngIf="blogs.length > 0">
         <ng-container *ngFor="let blog of blogs">
@@ -43,6 +47,10 @@
             </div>
           </a>
         </ng-container>
+      </div>
+      <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="blogs.length == 0">
+        <div class="fs-4 fw-bold">No blogs found</div>
+        <p class="text-muted">We couldn't find any item based on your search</p>
       </div>
       <div class="filteringWrapper d-flex align-items-center justify-content-between">
         <div class="filtering">

@@ -185,13 +185,13 @@
               </div>
             </div>
 
-            <div class="my-4" *ngIf="deliverySlots.length > 0">
+            <div class="my-4" *ngIf="deliverySlots.length > 0 && deliveryType == '0'">
               <p>Select a delivery time on your availability</p>
               <div class="deliverySlots">
                 <ng-container *ngFor="let slot of deliverySlots">
                   <div
-                    class="fs-5 d-flex align-items-center rounded deliverySlot justify-content-center p-3 bg-white border border-secondary"
-                    (click)="toggleSlot(slot)" [ngClass]="{'border-primary': deliverySlot?.refid == slot.refid}">
+                    class="fs-5 d-flex align-items-center rounded deliverySlot justify-content-center p-3 bg-white border"
+                    (click)="toggleSlot(slot)" [ngClass]="{'border-primary': deliverySlot == slot?._id, 'border-secondary': deliverySlot != slot?._id}">
                     {{slot.from}} - {{slot.to}}
                   </div>
                 </ng-container>

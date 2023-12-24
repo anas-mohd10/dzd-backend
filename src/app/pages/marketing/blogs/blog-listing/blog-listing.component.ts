@@ -38,6 +38,12 @@ export class BlogListingComponent implements OnInit {
     this.getBlogs()
   }
 
+  clear(){
+    this.keyword.setValue('')
+    this.date = ''
+    this.getBlogs()
+  }
+
   getBlogs() {
     this.BlogService.blogs({
       page: this.page,
@@ -56,6 +62,4 @@ export class BlogListingComponent implements OnInit {
       }
     })
   }
-
-
 }
