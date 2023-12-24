@@ -1,0 +1,92 @@
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
+.form-label,
+.btn-primary,
+.btn-secondary {
+  font-weight: 400 !important;
+}
+
+.blogs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5625rem;
+
+  .blog {
+    cursor: pointer;
+
+    img {
+      height: auto;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+
+    .title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+}
+
+.filteringWrapper {
+  .filtering {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      color: #8B909A;
+      line-height: 18px;
+    }
+
+    select {
+      border: 1px solid #E8E8E8;
+      border-radius: 6px;
+      padding: 5px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .paginationBefore,
+    .paginationNext {
+      height: 30px;
+      width: 30px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      background: $background;
+      cursor: pointer;
+
+      &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
+
+    .paginationPage {
+      margin: 0 10px;
+    }
+  }
+}

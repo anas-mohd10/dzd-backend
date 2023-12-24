@@ -1,0 +1,130 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Create blog</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.blogs.list }}">Blogs</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.blogs.create }}">Create blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="my-4 card">
+        <div class="card-body">
+            <div class="position-relative cover mb-3">
+                <input type="file" class="rounded" accept="image/*" (change)="handleCover($event)">
+                <img *ngIf="previews.cover" src={{previews.cover}} alt="Blog" class="rounded">
+                <div *ngIf="!previews.cover" class="mask rounded">
+                    <svg height="48px" width="48px" data-slot="icon" fill="none" stroke-width="1.5" stroke="#a1a1a1"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z">
+                        </path>
+                    </svg>
+                </div>
+                <button *ngIf="previews.cover" class="btn btn-danger" (click)="removeMedia('cover')">
+                    <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="1.5"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                    </svg>
+                    Delete
+                </button>
+            </div>
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="position-relative rounded thumbnail mb-3">
+                            <input class="rounded" type="file" accept="image/*" (change)="handleThumbnail($event)">
+                            <img class="rounded" *ngIf="previews.thumbnail" src={{previews.thumbnail}} alt="Blog">
+                            <div *ngIf="!previews.thumbnail" class="mask rounded">
+                                <svg height="48px" width="48px" data-slot="icon" fill="none" stroke-width="1.5"
+                                    stroke="#a1a1a1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <button *ngIf="previews.thumbnail" class="btn btn-danger p-2"
+                                (click)="removeMedia('thumbnail')">
+                                <svg height="24px" width="24px" data-slot="icon" fill="none" stroke-width="1.5"
+                                    stroke="#ffffff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="category" class="form-label required">Category</label>
+                            <input type="text" id="category" formControlName="category" placeholder="Eg. Fashion"
+                                class="form-control"
+                                [ngClass]="{
+                                    'is-invalid':  (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="isActive" class="form-label">Status</label>
+                            <select formControlName="isActive" class="form-select" id="isActive">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="form-group mb-3">
+                            <label for="title" class="form-label required">Title</label>
+                            <input type="text" id="title" formControlName="title" class="form-control"
+                                [ngClass]="{
+                                'is-invalid':  (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="description" class="form-label required">Description</label>
+                            <angular-editor id="description" class="form-control" formControlName="description"
+                                [config]="editorConfig"
+                                [ngClass]="{
+                                    'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
+                        </div>
+                        <div class="p-4 rounded border border-secondary">
+                            <div class="fw-bold fs-2 mb-6">SEO details</div>
+                            <div class="form-group mb-3">
+                                <label for="seoTitle" class="form-label">Title</label>
+                                <input type="text" id="seoTitle" formControlName="seoTitle" class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="seoDescription" class="form-label">Description</label>
+                                <input type="text" id="seoDescription" formControlName="seoDescription"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="seoKeywords" class="form-label">Keywords</label>
+                                <input type="text" id="seoKeywords" formControlName="seoKeywords" class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="canonicalUrl" class="form-label">Canonical URL</label>
+                                <input type="text" id="canonicalUrl" formControlName="canonicalUrl"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end my-4">
+                    <a class="btn btn-secondary me-2" routerLink="{{appRoute.blogs.list}}">Cancel</a>
+                    <button class="btn btn-primary ms-2" (click)="onSubmit()">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

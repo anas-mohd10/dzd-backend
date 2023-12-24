@@ -257,6 +257,11 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
+        path: 'blogs',
+        loadChildren: () => import('./marketing/blogs/blogs.module').then((m) => m.BlogsModule),
+        canActivate: [AuthenticationGuard]
+      },
+      {
         path: 'cart',
         loadChildren: () => import('./sales/cart/cart.module').then((m) => m.CartModule),
         canActivate: [AuthenticationGuard]

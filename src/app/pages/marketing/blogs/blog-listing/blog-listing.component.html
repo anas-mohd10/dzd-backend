@@ -1,0 +1,73 @@
+<div>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Blogs ({{totalResults}})</h1>
+    </div>
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.blogs.list }}">Blogs</a>
+          </li>
+        </ul>
+        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+          routerLink="{{ appRoute.blogs.create }}">Create blog</button>
+      </div>
+    </div>
+  </div>
+  <div class="card my-4">
+    <div class="card-body">
+      <div class="row justify-content-end">
+        <div class="col-lg-4">
+          <input type="text" placeholder="Search blogs here" [formControl]="keyword" class="form-control"
+            (ngModelChange)="getBlogs()">
+        </div>
+        <div class="col-lg-3">
+          <input id="date" name="date" type="text" placeholder="Select blog date" class="form-control" bsDatepicker
+            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+            [(ngModel)]="date" (ngModelChange)="getBlogs()">
+        </div>
+      </div>
+      <div class="blogs my-6" *ngIf="blogs.length > 0">
+        <ng-container *ngFor="let blog of blogs">
+          <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog.slug}}">
+            <img src={{blog?.thumbnail}} alt={{blog?.title}} class="rounded"
+              onerror="this.src = '../../../../../assets/images/default.png'">
+            <div class="mt-4">
+              <div>{{blog?.category}}</div>
+              <div class="fs-5 title">{{blog?.title}}</div>
+              <div class="text-muted">{{blog?.createdAt}}</div>
+            </div>
+          </a>
+        </ng-container>
+      </div>
+      <div class="filteringWrapper d-flex align-items-center justify-content-between">
+        <div class="filtering">
+          <span class="fs-6 text-dark">Show</span>
+          <select [formControl]="limit" (change)="getBlogs()">
+            <option value="4">4</option>
+            <option value="16">16</option>
+            <option value="40">40</option>
+            <option value="80">80</option>
+          </select>
+          <span class="fs-6 text-dark">entries</span>
+        </div>
+        <div class="filteringResultCount fs-6">
+          Showing <span class="me-1 ms-1">{{blogs.length}}</span> of <span class="ms-1">{{totalResults}}</span>
+        </div>
+        <div class="pagination">
+          <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="previous()">
+            <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+          </div>
+          <div class="paginationPage">{{page}} of {{totalPages}}</div>
+          <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="next()">
+            <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
