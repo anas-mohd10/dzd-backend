@@ -1,18 +1,80 @@
-<div class="profilePageContainer">
+<div>
     <div class="page-header">
-        <div class="page-title d-flex align-items-center justify-content-start">
-            <div class="me-1">
-                <svg height="20px" width="20px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"></path>
-                </svg>
-            </div>
+        <div class="page-title">
             <h1 class="fw-bold">Sales analytics</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.salesAnalytics }}">Sales analytics</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
-    <div class="card my-4">
-        <div class="card-body">
+    <div class="my-2">
+        <div class="card my-2">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-3 form-group">
+                        <label for="duration" class="form-label">Duration</label>
+                        <select [formControl]="duration" id="duration" class="form-select"
+                            (change)="getDuration(template)">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="current">This month</option>
+                            <option value="15">Last 15 days</option>
+                            <option value="30">Last 30 days</option>
+                            <option value="60">Last 60 days</option>
+                            <option value="date-range">Date range</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="order-cards">
+                    <ng-container *ngFor="let order of orders">
+                        <div class="order-card p-4 border border-secondary rounded">
+                            <div>
+                                <div class="fs-5 text-muted">{{order?.title}}</div>
+                                <div class="fs-1 mt-3 fw-bolder text-primary">{{order?.value}}</div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center order-icon rounded">
+                                <svg height="24px" width="24px" data-slot="icon" fill="none" stroke-width="1.5"
+                                    stroke="#ffffff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<ng-template #template>
+    <div class="modal-header pb-0 border-none">
+        <h4 class="modal-title pull-left">Select date range</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group mb-3">
+            <input type="text" placeholder="Select date range" class="form-control" bsDaterangepicker
+                [bsConfig]="{ adaptivePosition: true }">
+        </div>
+    </div>
+</ng-template>

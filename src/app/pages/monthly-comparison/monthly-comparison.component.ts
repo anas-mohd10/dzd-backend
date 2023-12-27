@@ -18,6 +18,10 @@ export class MonthlyComparisonComponent implements OnInit {
   today: string = new Date().toDateString()
   month: string = ''
   settings: any = {}
+  orders: any = {
+    starting: [{ title: '', value: '' }],
+    ending: [{ title: '', value: '' }]
+  }
   summaryDetails: any = {
     start: { orders: 0, sales: '', average: '', isProfit: false, salesDifference: 0 },
     end: { orders: 0, sales: '', average: '', isProfit: false, salesDifference: 0 }
@@ -76,6 +80,7 @@ export class MonthlyComparisonComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.summaryDetails = res?.result?.summary
+          this.orders = res?.result?.orders
           this.cancelledDetails = res?.result?.cancelled
           this.ChangeDetectorRef.markForCheck()
         } else {

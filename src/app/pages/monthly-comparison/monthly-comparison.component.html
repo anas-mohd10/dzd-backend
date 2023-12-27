@@ -186,18 +186,12 @@
                                 <th>Status</th>
                                 <th>Orders</th>
                             </tr>
-                            <tr>
-                                <td>Confirmed</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Delivered </td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Cancelled</td>
-                                <td>1</td>
-                            </tr>
+                            <ng-container *ngFor="let item of orders.starting">
+                                <tr>
+                                    <td>{{item.title}}</td>
+                                    <td>{{item.value}}</td>
+                                </tr>
+                            </ng-container>
                         </table>
                     </div>
                 </div>
@@ -209,18 +203,12 @@
                                 <th>Status</th>
                                 <th>Orders</th>
                             </tr>
-                            <tr>
-                                <td>Confirmed</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Delivered </td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Cancelled</td>
-                                <td>1</td>
-                            </tr>
+                            <ng-container *ngFor="let item of orders.ending">
+                                <tr>
+                                    <td>{{item.title}}</td>
+                                    <td>{{item.value}}</td>
+                                </tr>
+                            </ng-container>
                         </table>
                     </div>
                 </div>
