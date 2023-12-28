@@ -10,21 +10,21 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
-.widgetTooltip{
+.widgetTooltip {
   background: $background;
 }
 
 .form-label,
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-dark {
   font-weight: 400 !important;
 }
 
 .widgets {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: .625rem;
-  overflow: scroll;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.625rem;
 
   .widget {
     cursor: pointer;
@@ -39,7 +39,6 @@ $error: #F1416C;
 
     &:hover {
       color: #00bdab;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     }
   }
 }
@@ -70,9 +69,10 @@ $error: #F1416C;
     position: relative;
     border-bottom: 1px solid #ececec;
 
-    .catalog-type{
-      width: max-content;
+    .remove {
+      position: absolute;
+      top: 0.625rem;
+      right: 0.625rem;
     }
   }
 }
-

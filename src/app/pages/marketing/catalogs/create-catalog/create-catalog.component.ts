@@ -8,6 +8,7 @@ import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk
 
 interface Widget {
   name: string
+  description: string;
   type: string
 }
 
@@ -43,9 +44,12 @@ export class CreateCatalogComponent implements OnInit {
   items: Array<any> = []
   products: Array<any> = []
   widgets: Array<Widget> = [
-    { name: 'Products grid', type: 'products-grid' },
-    { name: 'Products slider', type: 'products-slider' },
-    { name: 'Content description', type: 'description' },
+    { name: 'Products grid', description: "This widget is designed for featuring products in a grid format, showcasing product cards with the same design as used on the website.", type: 'products-grid' },
+    { name: 'Products slider', description: "This widget is designed for featuring products in a slider format, showcasing product cards with the same design as used on the website.", type: 'products-slider' },
+    { name: 'Content description', description: "This widget is crafted to showcase dynamic content within the catalog.", type: 'description' },
+    { name: 'Custom HTML', description: "This widget allows the inclusion of custom HTML to create a display element.", type: 'custom-html' },
+    { name: 'Banner', description: "This widget is used to showcase banner and carousel with only image.", type: 'banner' },
+    { name: 'Video', description: "This widget is used to showcase full width video only.", type: 'video' },
   ]
   positions: Array<{ key: String, value: String }> = [
     { key: 'Left', value: 'left' },
@@ -63,9 +67,10 @@ export class CreateCatalogComponent implements OnInit {
   //Modals
   productRef?: BsModalRef
   designRef?: BsModalRef
+  widgetRef?: BsModalRef
   @ViewChild('productTemplate') productTemplate: TemplateRef<any>
   //Modals
-  activeWidget: Widget = { name: '', type: '' };
+  activeWidget: Widget = { name: '', description: '', type: '' };
   productKeyword: FormControl = new FormControl('')
   activeDesignWidget: any = {
     details: {},
@@ -109,6 +114,15 @@ export class CreateCatalogComponent implements OnInit {
     })
   }
 
+  updateWidgetDesign() {
+    let details = {
+      ...this.activeDesignWidget.details,
+      ...this.designForm.value
+    }
+    this.items[this.activeDesignWidget.index] = details
+    this.designRef?.hide()
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     console.log(event.previousIndex, event.currentIndex);
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
@@ -137,12 +151,13 @@ export class CreateCatalogComponent implements OnInit {
   checkWidget(widget: Widget) {
     this.activeWidget = widget;
     let widgetDetails = this.getWidgetDetails(widget)
-    if (['products-grid', 'products-slider'].includes(widget.type)) {
-      delete widgetDetails.files
-      delete widgetDetails.content
-      this.productRef = this.BsModalService.show(this.productTemplate, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
-    }
     this.items.push(widgetDetails)
+    this.widgetRef?.hide()
+    this.activeWidget = { name: '', description: '', type: '' };
+  }
+
+  deleteWidget(index: number) {
+    this.items.splice(index, 1)
   }
 
   get formControls() {
@@ -159,12 +174,16 @@ export class CreateCatalogComponent implements OnInit {
     this.activeDesignWidget = { details: {}, index: Number }
   }
 
+  openWidgetRef(template: TemplateRef<any>) {
+    this.widgetRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
   close(type: string) {
     if (type == 'products-template') {
       this.productKeyword.reset()
       this.productRef?.hide()
     }
-    this.activeWidget = { name: '', type: '' };
+    this.activeWidget = { name: '', description: '', type: '' };
   }
 
   getProducts() {

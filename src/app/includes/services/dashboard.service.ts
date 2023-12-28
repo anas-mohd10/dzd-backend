@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { dashboardEndpoints } from 'src/app/config/endpoints/dashboard.endpoints';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,8 @@ import { dashboardEndpoints } from 'src/app/config/endpoints/dashboard.endpoints
 
 export class DashboardService {
   dashboardEndpoints = dashboardEndpoints
+  private revenues = new Subject<any>();
+  revenue$ = this.revenues.asObservable();
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
@@ -70,5 +73,14 @@ export class DashboardService {
   monthlyComparison(data: any) {
     const url = this.commonService.getFullUrl(this.dashboardEndpoints.monthlyComparison);
     return this.http.post(`${url}`, data)
+  }
+
+  salesAnalytics(data: any) {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.salesAnalytics);
+    return this.http.post(`${url}`, data)
+  }
+
+  sendRevenues(revenues: any) {
+    this.revenues.next(revenues);
   }
 }
