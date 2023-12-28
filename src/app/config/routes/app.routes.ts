@@ -280,5 +280,10 @@ export const appRoutes = {
     list: `${app}/blogs`,
     create: `${app}/blogs/create-blog`,
     update: `${app}/blogs/update-blog`
+  },
+  catalogs: {
+    list: `${app}/catalogs`,
+    create: `${app}/catalogs/create-catalog`,
+    update: `${app}/catalogs/update-catalog`
   }
 }

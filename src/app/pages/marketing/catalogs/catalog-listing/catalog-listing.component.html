@@ -1,0 +1,71 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Catalogs ({{totalResults}})</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.catalogs.list }}">Catalogs</a>
+                    </li>
+                </ul>
+                <button class="btn btn-primary cursor-pointer fs-6" color="primary"
+                    routerLink="{{ appRoute.catalogs.create }}">Create catalog</button>
+            </div>
+        </div>
+    </div>
+    <div class="row my-4 justify-content-end">
+        <div class="col-lg-3 form-group">
+            <label for="keyword" class="form-label">&nbsp;</label>
+            <input type="text" id="keyword" placeholder="Search catalogs" [formControl]="keyword"
+                (ngModelChange)="getCatalogs()" class="form-control">
+        </div>
+        <div class="col-lg-3 form-group">
+            <label for="date" class="form-label">Date</label>
+            <input type="text" id="date" [formControl]="date" placeholder="Select catalog date" class="form-control"
+                bsDatepicker [bsConfig]="{ isAnimated: true }" (change)="getCatalogs()">
+        </div>
+        <div class="col-lg-3 form-group">
+            <label for="clearFilter" class="form-label">&nbsp;</label>
+            <input type="button" id="clearFilter" value="Clear filters" (click)="clear()"
+                class="btn btn-secondary form-control">
+        </div>
+    </div>
+    <div class="my-4 card" *ngIf="catalogs.length > 0">
+        <div class="card-body">
+
+        </div>
+    </div>
+    <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="catalogs.length == 0">
+        <div class="fs-4 fw-bold">No catalogs found</div>
+        <p class="text-muted">We couldn't find any item based on your search</p>
+    </div>
+    <div class="filteringWrapper d-flex align-items-center justify-content-between">
+        <div class="filtering">
+            <span class="fs-6 text-dark">Show</span>
+            <select [formControl]="limit" (change)="getCatalogs()">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="40">40</option>
+                <option value="80">80</option>
+            </select>
+            <span class="fs-6 text-dark">entries</span>
+        </div>
+        <div class="filteringResultCount fs-6">
+            Showing <span class="me-1 ms-1">{{catalogs.length}}</span> of <span class="ms-1">{{totalResults}}</span>
+        </div>
+        <div class="pagination">
+            <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="previous()">
+                <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+            </div>
+            <div class="paginationPage">{{page}} of {{totalPages}}</div>
+            <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="next()">
+                <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,440 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Create catalog</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.catalogs.list }}">Catalogs</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.catalogs.create }}">Create catalog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <form [formGroup]="form">
+                <div class="my-8">
+                    <div class="form-group mb-3">
+                        <label for="title" class="form-label required">Title</label>
+                        <input type="text" placeholder="Eg. Find the best products" class="form-control"
+                            formControlName="title"
+                            [ngClass]="{'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="title" class="form-label">Description</label>
+                        <textarea type="text" placeholder="Eg. New catalog page to find the best products"
+                            class="form-control" formControlName="description" rows="2"></textarea>
+                    </div>
+                    <div class="my-6">
+                        <div class="fs-5">Catalog widgets ({{widgets.length}})</div>
+                        <div class="widgets mt-2 mb-6">
+                            <ng-container *ngFor="let widget of widgets; let i = index">
+                                <div class="widget rounded p-3" (click)="checkWidget(widget)"
+                                    [ngClass]="{'active-widget': activeWidget.name == widget.name}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                        class="bi bi-box-seam" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                                    </svg>
+                                    <div class="mt-2 fs-6">{{widget.name}}</div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="fs-5">Catalog widgets ({{items.length}})</div>
+
+                            <div class="mt-3 mb-6">
+                                <div *ngIf="items.length > 0">
+                                    <button class="btn btn-primary w-100">
+                                        <svg height="18px" width="18px" data-slot="icon" fill="none" stroke-width="1.5"
+                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 4.5v15m7.5-7.5h-15">
+                                            </path>
+                                        </svg>
+                                        Add new widget
+                                    </button>
+                                </div>
+
+                                <div *ngIf="items.length == 0">
+                                    <div class="text-center mb-2">No widgtes added yet. Add your first widget here</div>
+                                    <button class="btn btn-primary w-100">
+                                        <svg height="18px" width="18px" data-slot="icon" fill="none" stroke-width="1.5"
+                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 4.5v15m7.5-7.5h-15">
+                                            </path>
+                                        </svg>
+                                        Add new widget
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div cdkDropList class="catalog-items rounded" (cdkDropListDropped)="drop($event)">
+                                <div class="catalog-item" *ngFor="let item of items; let i = index" cdkDrag>
+                                    <div class="d-flex align-items-center justify-content-start">
+                                        <img src="../../../../../assets/icons/widget.svg" alt="Widget">
+                                        <div class="ms-1 text-primary fs-5 fw-medium">#{{i+1}}:</div>
+                                    </div>
+                                    <div class="fs-5">{{item.title ? item.title : ''}}</div>
+                                    <div>Visible in : <span class="fw-bold">{{item.visibility}}</span></div>
+                                    <div class="mt-2 row">
+                                        <div class="col-lg-6">
+                                            <button class="btn btn-secondary p-2 w-100"
+                                                tooltip="Customize the widget design" containerClass="widgetTooltip"
+                                                placement="bottom" (click)="openDesignRef(designTemplate, i)">
+                                                <svg height="16px" width="16px" data-slot="icon" fill="none"
+                                                    stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42">
+                                                    </path>
+                                                </svg>
+                                                Design
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <button class="btn btn-secondary p-2 w-100"
+                                                tooltip="Manage content which you want to show in this widget"
+                                                containerClass="widgetTooltip" placement="bottom">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-body-text" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5" />
+                                                </svg>
+                                                Content
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 d-flex align-items-center justify-content-end" *ngIf="items.length > 0">
+                    <a routerLink="{{ appRoute.catalogs.list }}" class="me-1 btn btn-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="ms-1 btn btn-primary" (click)="submit()">
+                        Create catalog
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #productTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Products</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close"
+            (click)="close('products-template')">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <input type="text" placeholder="Search products" [formControl]="productKeyword" (ngModelChange)="getProducts()"
+            class="form-control">
+        <div class="products mt-2">
+            <ng-container *ngFor="let product of products; let i = index">
+                <div class="product my-1 py-1 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center justify-content-start">
+                        <img class="rounded" src="{{base}}/{{product.thumbnail}}" alt={{product.name}}
+                            onerror="this.src='../../../../../assets/images/default.png'">
+                        <div class="ms-2">{{product.name}}</div>
+                    </div>
+                    <button class="btn btn-primary p-1">Select</button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #designTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left"><span class="text-primary">
+                #{{activeDesignWidget.index + 1}}</span> Widget design
+        </h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeDesignRef()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="designForm">
+            <div>
+                <div class="fs-4 mb-2">Header title</div>
+                <div class="row mb-3" formGroupName="header">
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" id="title" placeholder="Christmas offers" formControlName="title"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="position" class="form-label">Position</label>
+                            <select formControlName="position" id="position" class="form-select">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option *ngFor="let position of positions" value={{position.value}}>
+                                    {{position.key}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Font size</label>
+                            <input type="number" id="title" placeholder="18" formControlName="size"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Font weight</label>
+                            <input type="text" id="title" placeholder="400" formControlName="weight"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="family" class="form-label">Font family</label>
+                            <select formControlName="family" id="family" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let family of families" value={{family.value}}>
+                                    {{family.key}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="color" class="form-label">Font color</label>
+                            <input type="color" id="color" formControlName="color" class="form-control"
+                                style="height: 50px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="fs-4 mb-2">Header description</div>
+                <div class="row mb-3" formGroupName="description">
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Description</label>
+                            <input type="text" id="title" placeholder="Christmas early bird offers are live now"
+                                formControlName="title" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="position" class="form-label">Position</label>
+                            <select formControlName="position" id="position" class="form-select">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option *ngFor="let position of positions" value={{position.value}}>
+                                    {{position.key}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Font size</label>
+                            <input type="number" id="title" placeholder="18" formControlName="size"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Font weight</label>
+                            <input type="text" id="title" placeholder="400" formControlName="weight"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="family" class="form-label">Font family</label>
+                            <select formControlName="family" id="family" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let family of families" value={{family.value}}>
+                                    {{family.key}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="color" class="form-label">Font color</label>
+                            <input type="color" id="color" formControlName="color" class="form-control"
+                                style="height: 50px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="fs-4 mb-2">Header button</div>
+                <div class="row mb-3" formGroupName="button">
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" id="title" placeholder="View more" formControlName="title"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="position" class="form-label">Position</label>
+                            <select formControlName="position" id="position" class="form-select">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option *ngFor="let position of positions" value={{position.value}}>
+                                    {{position.key}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="form-group mb-3">
+                            <label for="redirection" class="form-label">Redirection</label>
+                            <input type="text" id="redirection"
+                                placeholder="https://commercecastle.com/products/grocery" formControlName="redirection"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-3">
+                        <div class="form-group">
+                            <label for="enabled" class="form-label">Button enabled</label>
+                            <select formControlName="isEnabled" id="enabled" class="form-select">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="fs-4 mb-2">Margin, Padding, Background and Border style</div>
+                <div class="row" formGroupName="style">
+                    <div class="col-lg-6 mb-3">
+                        <div class="fs-5 mb-2">Margin</div>
+                        <div class="row" formGroupName="margin">
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="top" class="form-label">Top</label>
+                                    <input type="number" id="top" placeholder="0" formControlName="top"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="right" class="form-label">Right</label>
+                                    <input type="number" id="right" placeholder="0" formControlName="right"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="left" class="form-label">Left</label>
+                                    <input type="number" id="left" placeholder="0" formControlName="left"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="bottom" class="form-label">Bottom</label>
+                                    <input type="number" id="bottom" placeholder="0" formControlName="bottom"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="fs-5 mb-2">Padding</div>
+                        <div class="row" formGroupName="padding">
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="top" class="form-label">Top</label>
+                                    <input type="number" id="top" placeholder="0" formControlName="top"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="right" class="form-label">Right</label>
+                                    <input type="number" id="right" placeholder="0" formControlName="right"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="left" class="form-label">Left</label>
+                                    <input type="number" id="left" placeholder="0" formControlName="left"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="bottom" class="form-label">Bottom</label>
+                                    <input type="number" id="bottom" placeholder="0" formControlName="bottom"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="fs-5 mb-2">Border</div>
+                        <div class="row" formGroupName="border">
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="width" class="form-label">Width</label>
+                                    <input type="number" id="width" placeholder="0" formControlName="width"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="color" class="form-label">Color</label>
+                                    <input type="color" id="color" formControlName="color" class="form-control"
+                                        style="height: 50px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-3">
+                        <div class="fs-5 mb-2">Background</div>
+                        <div formGroupName="background">
+                            <div class="mb-3">
+                                <div class="form-group">
+                                    <label for="color" class="form-label">Color</label>
+                                    <input type="color" id="color" formControlName="color" class="form-control"
+                                        style="height: 50px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</ng-template>
