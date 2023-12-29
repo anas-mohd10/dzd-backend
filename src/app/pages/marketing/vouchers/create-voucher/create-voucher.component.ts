@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { VouchersService } from 'src/app/includes/services/vouchers.service';
 import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-create-voucher',
@@ -30,7 +32,8 @@ export class CreateVoucherComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private AppSettingsService: AppSettingsService,
     private VouchersService: VouchersService,
-    private Toast: HotToastService
+    private Toast: HotToastService,
+    private Router: Router
   ) { }
 
   get formControls() {
@@ -38,19 +41,15 @@ export class CreateVoucherComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCustomers()
-
     this.form = new FormGroup({
-      user: new FormControl('', [Validators.required]),
-      amount: new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9]*)$')]),
-      name: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      countryCode: new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9]*)$')]),
-      mobile: new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9]*)$')]),
-      message: new FormControl('')
+      user: new FormControl('', Validators.required),
+      amount: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.required),
+      countryCode: new FormControl('', Validators.required),
+      mobile: new FormControl('', Validators.required),
+      message: new FormControl('Hope you enjoy this Gift Card!')
     })
-
-    this.form.get('user')?.disable()
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -64,6 +63,16 @@ export class CreateVoucherComponent implements OnInit {
     this.isToggle = !this.isToggle
   }
 
+  handleInput(event: any) {
+    this.file = event?.target?.files[0]
+    let reader = new FileReader()
+    reader.onload = (e: any) => {
+      this.preview = e.target.result
+      this.ChangeDetectorRef.markForCheck()
+    }
+    reader.readAsDataURL(this.file)
+  }
+
   getCustomers() {
     if (this.keyword) {
       this.CustomersService.searchCustomers({ page: 1, limit: 50, keyword: this.keyword }).subscribe({
@@ -71,7 +80,7 @@ export class CreateVoucherComponent implements OnInit {
           if (res?.errorCode == 0) {
             this.customers = res?.result?.data
             this.ChangeDetectorRef.markForCheck()
-          } 
+          }
         }
       })
     } else {
@@ -83,25 +92,31 @@ export class CreateVoucherComponent implements OnInit {
     this.customers = []
     this.keyword = ''
     this.optedCustomer = customer
+    this.form.get('user')?.setValue(customer?.name)
   }
 
-  createVoucher() {
+  onSubmit() {
+    this.form.get('user')?.setValue(this.optedCustomer?._id)
     if (!this.form.valid) {
       this.isSubmitted = true
       return
     }
 
     let formdata = new FormData()
-    formdata.append("file", this.file)
     for (let _key of Object.keys(this.form.value)) formdata.append(_key, this.form.value[_key])
+    this.file ? formdata.append("file", this.file) : null
+    formdata.append("paymentStatus", "success")
 
-    this.VouchersService.createVoucher(formdata).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.form.reset()
-        this.ChangeDetectorRef.markForCheck()
-        this.Toast.success(res.message)
-      } else {
-
+    this.VouchersService.createVoucher(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate([appRoutes.vouchers.list])
+          this.Toast.success(res.message)
+        } else {
+          this.Toast.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.error.message)
       }
     })
   }

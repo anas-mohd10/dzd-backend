@@ -1,7 +1,7 @@
 <div>
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Add voucher</h1>
+            <h1 class="fw-bold">Add voucher</h1>
         </div>
         <div class="row align-items-center">
             <div class="col d-flex align-items-start justify-content-between">
@@ -24,6 +24,20 @@
 
     <div class="card mt-4">
         <div class="card-body">
+            <div class="my-6">
+                <div class="gift-card">
+                    <img *ngIf="preview" src={{preview}} alt="Gift">
+                    <input type="file" accept="image/*" class="form-control" (change)="handleInput($event)">
+                    <div *ngIf="!preview" class="mask d-flex flex-column align-items-center justify-content-center">
+                        <svg height="48px" width="48px" data-slot="icon" fill="none" stroke-width="1.5" stroke="#a1a1a1"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group mb-3">
@@ -42,59 +56,65 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="form-group mb-3">
-                        <label for="user" class="form-label">&nbsp;</label>
-                        <input type="text" id="user" class="form-control" formControlName="user"
-                            [ngClass]="{'is-invalid': (formControls.user.touched || isSubmitted) && formControls.user.errors?.required}">
-                    </div>
-                </div>
             </div>
             <form [formGroup]="form">
+
                 <div class="row">
-                    <div class="col-lg-8 form-group mb-3">
+                    <div class="col-lg-6 form-group mb-3">
+                        <label for="user" class="form-label">&nbsp;</label>
+                        <input type="text" class="form-control" formControlName="user" id="user" [readonly]="true"
+                            [ngClass]="{'is-invalid': (formControls.user.touched || isSubmitted) && formControls.user.errors?.required}">
+                    </div>
+                    <div class="col-lg-6 form-group mb-3">
                         <label for="amount" class="form-label required">Amount</label>
                         <input type="text" placeholder="Enter gift card amount" class="form-control"
-                            formControlName="amount">
+                            formControlName="amount"
+                            [ngClass]="{
+                                'is-invalid':  (formControls.amount.touched || isSubmitted) && formControls.amount.errors?.required}">
                     </div>
                     <div class="col-lg-6 form-group mb-3">
                         <label for="amount" class="form-label required">Name</label>
-                        <input type="text" placeholder="Enter name" class="form-control" formControlName="name">
+                        <input type="text" placeholder="Enter name" class="form-control" formControlName="name"
+                            [ngClass]="{
+                            'is-invalid':  (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}">
                     </div>
                     <div class="col-lg-6 form-group mb-3">
                         <label for="email" class="form-label required">Email</label>
                         <input type="text" id="email" placeholder="Enter email address" class="form-control"
-                            formControlName="email">
+                            formControlName="email"
+                            [ngClass]="{
+                                'is-invalid':  (formControls.email.touched || isSubmitted) && formControls.email.errors?.required}">
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group mb-3">
                                 <label for="country" class="form-label required">Country code</label>
                                 <input type="text" placeholder="Enter country code" class="form-control"
-                                    formControlName="countryCode">
+                                    formControlName="countryCode"
+                                    [ngClass]="{
+                                        'is-invalid':  (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
                             </div>
                         </div>
                         <div class="col-lg-9">
                             <div class="form-group mb-3">
                                 <label for="amount" class="form-label required">Mobile</label>
-                                <input type="text" placeholder="Enter email address" class="form-control"
-                                    formControlName="email">
+                                <input type="text" placeholder="Enter mobile number" class="form-control"
+                                    formControlName="mobile"
+                                    [ngClass]="{
+                                        'is-invalid':  (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required}">
                             </div>
                         </div>
                     </div>
+                    <div class="form-group mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea type="text" id="message" placeholder="Enter message" class="form-control"
+                            formControlName="message" rows="4"></textarea>
+                    </div>
                 </div>
             </form>
-            <div class="my-6">
-                <p *ngIf="optedCustomer">Gift card by {{optedCustomer?.name}}</p>
-                <div class="gift-card">
-                    <img *ngIf="preview" src={{preview}} alt="Gift card">
-                    <div class="d-flex align-items-center justify-content-end">
-                        <div class="amount fw-bolder">{{settings?.currency}} {{form.get('amount')?.value}}</div>
-                    </div>
-                    <div>
-                        <div>{{form.get('name')?.value}}</div>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center justify-content-end my-4">
+                <a class="btn btn-secondary me-2" routerLink="{{appRoute.vouchers.list}}">Cancel</a>
+                <button class="btn btn-primary ms-2" (click)="onSubmit()">Save changes</button>
             </div>
         </div>
     </div>

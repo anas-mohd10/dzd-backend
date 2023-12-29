@@ -3,7 +3,17 @@ $darkGrey: #333333;
 $mediumGrey: #555555;
 $white: #ffffff;
 
-.btn-secondary{
+.store-tip {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .fix-now {
+    cursor: pointer;
+  }
+}
+
+.btn-secondary {
   font-weight: 400 !important;
 }
 
@@ -17,8 +27,12 @@ $white: #ffffff;
     max-height: 240px;
     overflow-y: scroll;
 
-    .search-link{
+    .search-link {
       cursor: pointer;
+
+      &:hover {
+        color: #00BDAB;
+      }
     }
   }
 }

@@ -1,0 +1,53 @@
+.customers {
+    height: max-content;
+    max-height: 300px;
+    overflow: scroll;
+    z-index: 99;
+
+    .customer {
+        cursor: pointer;
+    }
+}
+
+.btn-secondary {
+    font-weight: 400 !important;
+}
+
+.gift-card {
+    background: rgb(255, 255, 255);
+    border-radius: 8px;
+    aspect-ratio: 4/1;
+    position: relative;
+
+    img,
+    .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: 11;
+        border-radius: 8px;
+        aspect-ratio: 4/1;
+        pointer-events: none;
+        background: #f1f1f1;
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: 10;
+        border-radius: 8px;
+        aspect-ratio: 4/1;
+    }
+}
+
+label,
+.btn-primary {
+    font-weight: normal !important;
+}

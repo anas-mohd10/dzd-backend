@@ -80,6 +80,11 @@ export class DashboardService {
     return this.http.post(`${url}`, data)
   }
 
+  storeTips() {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.storeTips);
+    return this.http.get(`${url}`)
+  }
+
   sendRevenues(revenues: any) {
     this.revenues.next(revenues);
   }

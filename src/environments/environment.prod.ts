@@ -7,12 +7,22 @@ export const environment = {
   // baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
   // appBaserl: 'https://ccapi.previewbay.com/api/v1/a/',
   base: 'https://ccapi.previewbay.com',
+
+  //Local
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'http://localhost:3000/api/v1/w/',
   appBaserl: 'http://localhost:3000/api/v1/a/',
   // base: 'http://localhost:3000',
+  //Local
+
+  //Storedada
+  // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
+  // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
+  // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
+  // base: 'https://api.demo.storedada.com',
+  //Storedada
+
   loginUrl: 'api',
-  
   firebaseConfig: {
     apiKey: "AIzaSyCzj_q9s6UhfZ-mYSAfRdRWWlI47mOinuE",
     authDomain: "commerce-castle-app.firebaseapp.com",

@@ -128,7 +128,6 @@ export class UpdateAppSettingsComponent implements OnInit {
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
-      shippingCost: ['highest', Validators.required]
     })
   }
 

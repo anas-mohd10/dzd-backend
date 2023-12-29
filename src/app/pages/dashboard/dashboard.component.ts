@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, TemplateRef } from '@angular/core';
 import { DashboardService } from 'src/app/includes/services/dashboard.service';
 import { AuthService } from 'src/app/includes/services/auth.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -6,6 +6,8 @@ import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabe
 import { FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -65,6 +67,9 @@ export class DashboardComponent implements OnInit {
   startDate: FormControl = new FormControl('')
   endDate: FormControl = new FormControl('')
 
+  modalRef?: BsModalRef
+  storeTips: any;
+
   items: Array<any> = [
     { title: 'Create catalog', description: 'Create a new dynamic catalog page as per your needs', redirection: appRoutes.catalogs.create },
     { title: 'View products', description: 'View all your products here', redirection: appRoutes.product.ALL_PRODUCTS },
@@ -79,12 +84,23 @@ export class DashboardComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private AuthService: AuthService,
     private AppSettingsService: AppSettingsService,
-    private ToastrService: ToastrService
+    private ToastrService: ToastrService,
+    private BsModalService: BsModalService,
+    private Router: Router
   ) { }
 
   ngOnInit(): void {
     let adminDetails = localStorage.getItem('UserData') || '{}'
     this.email = JSON.parse(adminDetails)?.email
+
+    this.DashboardService.storeTips().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.storeTips = res?.result
+        }
+      }
+    })
+
 
     const today = new Date();
     const sevenDaysFromToday = new Date();
@@ -186,6 +202,10 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+  }
+
   searchLinks(keyword: string) {
     this.searchResults = this.items.filter((item: any) => item.title.toLowerCase().includes(keyword.toLowerCase()))
     if (!keyword) this.searchResults = []
@@ -234,5 +254,10 @@ export class DashboardComponent implements OnInit {
     } else {
       this.ToastrService.error('The entered date is not valid. Please check and try again.')
     }
+  }
+
+  navigate(route: any) {
+    this.Router.navigate([route])
+    this.modalRef?.hide()
   }
 }

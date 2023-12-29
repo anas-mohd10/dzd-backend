@@ -9,19 +9,41 @@
     }
 }
 
-.gift-card {
-    background: rgb(42, 164, 93);
-    padding: 32px;
-    border-radius: 8px;
-    text-align: center;
-    aspect-ratio: 4/1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: #ffffff;
+.btn-secondary {
+    font-weight: 400 !important;
+}
 
-    .amount {
-        font-size: 2rem;
+.gift-card {
+    background: rgb(255, 255, 255);
+    border-radius: 8px;
+    aspect-ratio: 4/1;
+    position: relative;
+
+    img,
+    .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: 11;
+        border-radius: 8px;
+        aspect-ratio: 4/1;
+        pointer-events: none;
+        background: #f1f1f1;
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: 10;
+        border-radius: 8px;
+        aspect-ratio: 4/1;
     }
 }
 
