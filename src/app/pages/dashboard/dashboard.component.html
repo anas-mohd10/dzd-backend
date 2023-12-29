@@ -1,5 +1,39 @@
-<div class="d-flex align-items-center justify-content-center">
-  <input class="search-bar form-control" type="text" placeholder="Search items"/>
+<div class="my-8 card">
+  <div class="card-body">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-start">
+        <div class="me-2">
+          <div class="fs-4">Welcome</div>
+          <div class="fs-3 text-primary fw-bolder">{{email}}</div>
+        </div>
+        <div class="ms-2">
+          <div class="search-bar position-relative">
+            <input class="form-control" type="text" placeholder="Search items" [(ngModel)]="keyword"
+              (ngModelChange)="searchLinks(keyword)" />
+            <div class="position-absolute shadow bg-white p-4 rounded search-results" *ngIf="searchResults.length > 0">
+              <ng-container *ngFor="let searchResult of searchResults; let i = index">
+                <div class="search-link my-2" routerLink={{searchResult.redirection}}>
+                  <div class="fs-5">{{searchResult.title}}</div>
+                  <p class="text-muted">{{searchResult.description}}</p>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-secondary">
+          <svg height="18px" width="18px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18">
+            </path>
+          </svg>
+          Store tips
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 

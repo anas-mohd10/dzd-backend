@@ -41,6 +41,7 @@ export class CreateVoucherComponent implements OnInit {
     this.getCustomers()
 
     this.form = new FormGroup({
+      user: new FormControl('', [Validators.required]),
       amount: new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9]*)$')]),
       name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -48,6 +49,8 @@ export class CreateVoucherComponent implements OnInit {
       mobile: new FormControl('', [Validators.required, Validators.pattern('^(0|[1-9]*)$')]),
       message: new FormControl('')
     })
+
+    this.form.get('user')?.disable()
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -68,11 +71,7 @@ export class CreateVoucherComponent implements OnInit {
           if (res?.errorCode == 0) {
             this.customers = res?.result?.data
             this.ChangeDetectorRef.markForCheck()
-          } else {
-
-          }
-        }, error: (err: any) => {
-
+          } 
         }
       })
     } else {

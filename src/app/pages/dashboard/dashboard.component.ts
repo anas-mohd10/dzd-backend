@@ -40,6 +40,8 @@ export class DashboardComponent implements OnInit {
   settings: any = {}
   saleDifference: Number = 0
   saleUp: Boolean = false
+  email: string = ''
+  keyword: string = ''
 
   //Revenue by days
   @ViewChild("chart") chart: ChartComponent;
@@ -63,6 +65,15 @@ export class DashboardComponent implements OnInit {
   startDate: FormControl = new FormControl('')
   endDate: FormControl = new FormControl('')
 
+  items: Array<any> = [
+    { title: 'Create catalog', description: 'Create a new dynamic catalog page as per your needs', redirection: appRoutes.catalogs.create },
+    { title: 'View products', description: 'View all your products here', redirection: appRoutes.product.ALL_PRODUCTS },
+    { title: 'Create order', description: 'Place order on behalf of your custsomer', redirection: appRoutes.orders.ADD_ORDER_LIST },
+    { title: 'View orders', description: 'Manage your latest orders', redirection: appRoutes.orders.ORDERS_LIST },
+    { title: 'Create coupons', description: 'Create new coupon code and give discounts to customers', redirection: appRoutes.coupons.ADD_COUPONS_LIST },
+  ]
+  searchResults: Array<any> = []
+
   constructor(
     private DashboardService: DashboardService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -72,6 +83,9 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    let adminDetails = localStorage.getItem('UserData') || '{}'
+    this.email = JSON.parse(adminDetails)?.email
+
     const today = new Date();
     const sevenDaysFromToday = new Date();
     sevenDaysFromToday.setDate(sevenDaysFromToday.getDate() - 6);
@@ -170,6 +184,11 @@ export class DashboardComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     })
+  }
+
+  searchLinks(keyword: string) {
+    this.searchResults = this.items.filter((item: any) => item.title.toLowerCase().includes(keyword.toLowerCase()))
+    if (!keyword) this.searchResults = []
   }
 
   getDailyRevenues() {

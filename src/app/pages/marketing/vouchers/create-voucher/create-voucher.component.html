@@ -41,45 +41,55 @@
                             </div>
                         </div>
                     </div>
-                    <form [formGroup]="form">
-                        <div class="form-group mb-3">
-                            <label for="amount" class="form-label required">Amount</label>
-                            <input type="text" placeholder="Enter gift card amount" class="form-control"
-                                formControlName="amount">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="amount" class="form-label required">Name</label>
-                            <input type="text" placeholder="Enter name" class="form-control" formControlName="name">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="email" class="form-label required">Email</label>
-                            <input type="text" id="email" placeholder="Enter email address" class="form-control"
-                                formControlName="email">
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="form-group mb-3">
-                                    <label for="country" class="form-label required">Country code</label>
-                                    <input type="text" placeholder="Enter country code" class="form-control"
-                                        formControlName="countryCode">
-                                </div>
-                            </div>
-                            <div class="col-lg-9">
-                                <div class="form-group mb-3">
-                                    <label for="amount" class="form-label required">Mobile</label>
-                                    <input type="text" placeholder="Enter email address" class="form-control"
-                                        formControlName="email">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group mb-3">
+                        <label for="user" class="form-label">&nbsp;</label>
+                        <input type="text" id="user" class="form-control" formControlName="user"
+                            [ngClass]="{'is-invalid': (formControls.user.touched || isSubmitted) && formControls.user.errors?.required}">
+                    </div>
                 </div>
             </div>
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-8 form-group mb-3">
+                        <label for="amount" class="form-label required">Amount</label>
+                        <input type="text" placeholder="Enter gift card amount" class="form-control"
+                            formControlName="amount">
+                    </div>
+                    <div class="col-lg-6 form-group mb-3">
+                        <label for="amount" class="form-label required">Name</label>
+                        <input type="text" placeholder="Enter name" class="form-control" formControlName="name">
+                    </div>
+                    <div class="col-lg-6 form-group mb-3">
+                        <label for="email" class="form-label required">Email</label>
+                        <input type="text" id="email" placeholder="Enter email address" class="form-control"
+                            formControlName="email">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group mb-3">
+                                <label for="country" class="form-label required">Country code</label>
+                                <input type="text" placeholder="Enter country code" class="form-control"
+                                    formControlName="countryCode">
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group mb-3">
+                                <label for="amount" class="form-label required">Mobile</label>
+                                <input type="text" placeholder="Enter email address" class="form-control"
+                                    formControlName="email">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="my-6">
                 <p *ngIf="optedCustomer">Gift card by {{optedCustomer?.name}}</p>
                 <div class="gift-card">
+                    <img *ngIf="preview" src={{preview}} alt="Gift card">
                     <div class="d-flex align-items-center justify-content-end">
-                        <div class="amount fw-bold">{{settings?.currency}} {{form.get('amount')?.value}}</div>
+                        <div class="amount fw-bolder">{{settings?.currency}} {{form.get('amount')?.value}}</div>
                     </div>
                     <div>
                         <div>{{form.get('name')?.value}}</div>
