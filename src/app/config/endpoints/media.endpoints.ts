@@ -5,4 +5,5 @@ export const mediaEndpoints = {
     downloadMedia: '/download-media',
     mediaUrls: '/media-urls',
     deleteMedias: '/delete-medias',
+    addMedias: '/add-medias'
 };

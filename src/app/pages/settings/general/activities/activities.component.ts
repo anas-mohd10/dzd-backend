@@ -11,14 +11,15 @@ import { AdminUsersService } from 'src/app/includes/services/admin.users.service
 export class ActivitiesComponent implements OnInit {
   appRoute = appRoutes
   activities: Array<any> = []
-  lastPage: boolean = true
+  totalResults: number = 0
+  totalPages: number = 1
   page: number = 1
+  limit: number = 40
   admin: FormControl = new FormControl('')
   date: any
   todayActivites: Array<any> = []
   yesterdayActivities: Array<any> = []
   admins: Array<any> = []
-  totalPages: number = 1
 
   constructor(
     private AdminUsersService: AdminUsersService,
@@ -42,13 +43,9 @@ export class ActivitiesComponent implements OnInit {
     })
   }
 
-  navBack() {
-    this.page--
-    this.getActivities()
-  }
-
-  navNext() {
-    this.page++
+  onPageTrigger(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = Number(event.pageSize)
     this.getActivities()
   }
 
@@ -60,7 +57,12 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getActivities() {
-    this.AdminUsersService.getActivities({ page: this.page, admin: this.admin.value, date: this.date }).subscribe({
+    this.AdminUsersService.getActivities({
+      page: this.page,
+      limit: this.limit,
+      admin: this.admin.value,
+      date: this.date
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.activities = res?.result?.data
@@ -68,7 +70,7 @@ export class ActivitiesComponent implements OnInit {
             activity.createdAt = new Date(activity.createdAt).toDateString()
           }
           this.totalPages = res?.result?.totalPages
-          this.lastPage = res?.result?.lastPage
+          this.totalResults = res?.result?.totalResults
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.activities = []

@@ -1,0 +1,42 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-pagination',
+  templateUrl: './pagination.component.html',
+  styleUrls: ['./pagination.component.scss']
+})
+export class PaginationComponent implements OnInit {
+  @Input('pageIndex') pageIndex: number = 1;
+  @Input('pageSize') pageSize?: number;
+  @Input('totalResults') totalResults: number = 0;
+  @Input('totalPages') totalPages: number = 1;
+  @Output('pageTrigger') pageTrigger = new EventEmitter<any>();
+  limit: FormControl = new FormControl("20");
+  limits: Array<string> = ["5", "10", "20", "30", "40", "50", "100", "200"];
+
+  constructor() { }
+
+  ngOnInit(): void {
+    this.limit.setValue(this.pageSize ? this.pageSize : "20")
+  }
+
+  onPageSizeChange() {
+    this.pageSize = this.limit.value;
+    this.pageIndex = 1;
+    this.pageTrigger.emit({ pageIndex: this.pageIndex, pageSize: this.limit?.value });
+  }
+
+  onPageIndexChange(page: number) {
+    this.pageIndex = page
+    this.pageTrigger.emit({ pageIndex: this.pageIndex, pageSize: this.limit?.value });
+  }
+
+  getPages(): number[] {
+    const pages: number[] = [];
+    for (let i = Math.max(1, this.pageIndex - 1); i <= Math.min(this.totalPages, this.pageIndex + 1); i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+}

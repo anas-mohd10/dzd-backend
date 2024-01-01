@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
 export class MediaListingComponent implements OnInit {
   appRoute = appRoutes
   page: number = 1
-  limit: FormControl = new FormControl('40')
+  limit: number = 20
   lastPage: boolean = false
   medias: Array<any> = []
   totalPages: number = 1
@@ -29,6 +29,8 @@ export class MediaListingComponent implements OnInit {
   deleteRef?: BsModalRef
   urls: FormControl = new FormControl('', [Validators.required])
   isUrlSubmitted: boolean = false
+  files: Array<any> = []
+  previews: Array<any> = []
 
   constructor(
     private MediaService: MediaService,
@@ -42,16 +44,12 @@ export class MediaListingComponent implements OnInit {
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
   }
 
-  navNext() {
-    this.page++
-    this.getMedias()
-  }
-
-  navBack() {
-    this.page--
+  onPageTrigger(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = Number(event.pageSize)
     this.getMedias()
   }
 
@@ -69,10 +67,8 @@ export class MediaListingComponent implements OnInit {
 
   getMedias() {
     this.MediaService.getMedias({
-      page: this.page,
-      limit: this.limit.value,
-      type: this.type.value,
-      date: this.date,
+      page: this.page, limit: this.limit,
+      type: this.type.value, date: this.date,
       keyword: this.keyword.value,
     }).subscribe({
       next: (res: any) => {
@@ -106,6 +102,53 @@ export class MediaListingComponent implements OnInit {
           this.Toast.success(res.message)
           this.modalRef?.hide()
           this.urls.reset()
+          this.getMedias()
+        } else {
+          this.Toast.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.error.message)
+      }, complete: () => {
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  onMediaChange(event: any) {
+    let file = event.target.files[0]
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      this.previews.push({
+        url: e.target?.result,
+        title: file.name
+      })
+      this.files.push(file)
+    }
+    reader.readAsDataURL(file)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  cancelMedias() {
+    this.files = []
+    this.previews = []
+  }
+
+  deleteMedia(index: number) {
+    this.files.splice(index, 1)
+    this.previews.splice(index, 1)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  addMedias() {
+    let formdata = new FormData()
+    for (let file of this.files) formdata.append('file', file)
+    this.MediaService.addMedias(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res.message)
+          this.modalRef?.hide()
+          this.files = []
+          this.previews = []
           this.getMedias()
         } else {
           this.Toast.error(res.message)

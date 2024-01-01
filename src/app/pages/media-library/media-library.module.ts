@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ModalModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
-    ClipboardModule
+    ClipboardModule,
+    SharedModule
   ]
 })
 export class MediaLibraryModule { }

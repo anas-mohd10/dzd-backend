@@ -38,4 +38,9 @@ export class MediaService {
     const url = this.commonService.getFullUrl(this.endpoints.deleteMedias);
     return this.http.post(`${url}`, data)
   }
+
+  addMedias(data: any) {
+    const url = this.commonService.getFullUrl(this.endpoints.addMedias);
+    return this.http.post(`${url}`, data)
+  }
 }

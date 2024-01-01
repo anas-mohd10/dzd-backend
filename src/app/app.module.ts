@@ -70,6 +70,7 @@ import { ActivitiesComponent } from './pages/settings/general/activities/activit
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SalesAnalyticsComponent } from './pages/sales-analytics/sales-analytics.component';
 import { DeliverySlotsComponent } from './pages/settings/general/delivery-slots/delivery-slots.component';
+import { SharedModule } from './pages/shared/shared.module';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -148,7 +149,8 @@ const DragConfig = {
     ReactiveFormsModule,
     ImageCropperModule,
     SwiperModule,
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
+    SharedModule
   ],
   exports: [
     RouterModule,
