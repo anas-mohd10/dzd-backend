@@ -57,6 +57,7 @@ export class NotificationPermissionComponent implements OnInit {
 
   disposePrompt() {
     this.disablePrompt = true
+    this.nextStep = false
     localStorage.setItem('notification_prompt', 'false')
     document.body?.classList.toggle('overflow-hidden')
     this.ChangeDetectorRef.markForCheck()
