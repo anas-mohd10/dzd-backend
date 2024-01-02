@@ -21,7 +21,10 @@
     </div>
     <div class="my-4 card">
         <div class="card-body">
-            <div class="position-relative cover mb-3">
+            <div class="cover w-100 mb-3">
+                <app-assets (mediaClicked)="handleCover($event)" [image]="'cover'" [previewDetails]="previews?.cover"></app-assets>
+            </div>
+            <!-- <div class="position-relative cover mb-3">
                 <input type="file" class="rounded" accept="image/*" (change)="handleCover($event)">
                 <img *ngIf="previews.cover" src={{previews.cover}} alt="Blog" class="rounded">
                 <div *ngIf="!previews.cover" class="mask rounded">
@@ -40,11 +43,14 @@
                     </svg>
                     Delete
                 </button>
-            </div>
+            </div> -->
             <form [formGroup]="form">
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="position-relative rounded thumbnail mb-3">
+                        <div class="ratio ratio-1x1 h-auto w-100 rounded mb-3">
+                            <app-assets (mediaClicked)="handleThumbnail($event)" [previewDetails]="previews?.thumbnail"></app-assets>
+                        </div>
+                        <!-- <div class="position-relative rounded thumbnail mb-3">
                             <input class="rounded" type="file" accept="image/*" (change)="handleThumbnail($event)">
                             <img class="rounded" *ngIf="previews.thumbnail" src={{previews.thumbnail}} alt="Blog">
                             <div *ngIf="!previews.thumbnail" class="mask rounded">
@@ -66,7 +72,7 @@
                                     </path>
                                 </svg>
                             </button>
-                        </div>
+                        </div> -->
                         <div class="form-group mb-3">
                             <label for="category" class="form-label required">Category</label>
                             <input type="text" id="category" formControlName="category" placeholder="Eg. Fashion"

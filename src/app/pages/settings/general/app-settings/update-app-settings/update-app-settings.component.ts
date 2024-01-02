@@ -2,11 +2,24 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AppSettings, PageTasks } from 'src/app/config/constants';
+import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { environment } from 'src/environments/environment.prod';
+
+interface Media {
+  title: string;
+  _id: string;
+  size: string;
+  path: string;
+  slug: string;
+  tag: string;
+  type: string;
+  uploadedBy: string;
+  uploadedDescription: string;
+  uploadedTo: string;
+  createdAt: string;
+}
 
 @Component({
   selector: 'app-update-app-settings',
@@ -49,16 +62,15 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   fontFamily: Array<any> = ['Manrope', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
 
-  logoFile: any
-  logoFilePreview: any
-  faviconFile: any
-  faviconFilePreview: any
+  logo?: string
+  favicon?: string
+
   primary: string = ''
   secondary: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
     private AppSettingsService: AppSettingsService,
@@ -72,6 +84,8 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId(this.refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.data = res?.result
+        this.logo = res?.result?.logo?.path
+        this.favicon = res?.result?.favicon?.path
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
@@ -95,9 +109,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
-        this.logoFilePreview = environment.base + "/" + res?.result?.logo
-        this.faviconFilePreview = environment.base + "/" + res?.result?.favicon
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -133,53 +145,12 @@ export class UpdateAppSettingsComponent implements OnInit {
     })
   }
 
-  onInputChange(type: any, event: any) {
-    switch (type) {
-      case 'logo':
-        this.logoFile = event.target.files[0]
-        const reader = new FileReader();
-        reader.onload = (e: any) => { this.logoFilePreview = e.target.result };
-        reader.readAsDataURL(this.logoFile);
-        break
-      case 'favicon':
-        this.faviconFile = event.target.files[0]
-        const favReader = new FileReader();
-        favReader.onload = (e: any) => { this.faviconFilePreview = e.target.result };
-        favReader.readAsDataURL(event.target.files[0]);
-        const image = new Image();
-        image.src = URL.createObjectURL(event.target.files[0]);
-        image.onload = () => {
-          let height = image.width;
-          let width = image.height;
-          if (height != width && height != 16 && width != 16) {
-            this.toastr.error('The specified file' + event.target.files[0].name + ' could not be uploaded');
-            this.faviconFile = null
-            this.faviconFilePreview = null
-          }
-        };
-        break
-    }
-  }
-
   handleStoreLogo(event: any) {
     this.form.get('logo')?.setValue(event._id)
   }
 
   handleStoreFavicon(event: any) {
     this.form.get('favicon')?.setValue(event._id)
-  }
-
-  removeLogo(type: any) {
-    switch (type) {
-      case 'logo':
-        this.logoFile = null
-        this.logoFilePreview = null
-        break
-      case 'favicon':
-        this.faviconFile = null
-        this.faviconFilePreview = null
-        break
-    }
   }
 
   onSubmit() {

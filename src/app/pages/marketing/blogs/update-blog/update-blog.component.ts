@@ -8,6 +8,20 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { environment } from 'src/environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
+interface Media {
+  title: string;
+  _id: string;
+  size: string;
+  path: string;
+  slug: string;
+  tag: string;
+  type: string;
+  uploadedBy: string;
+  uploadedDescription: string;
+  uploadedTo: string;
+  createdAt: string;
+}
+
 @Component({
   selector: 'app-update-blog',
   templateUrl: './update-blog.component.html',
@@ -70,6 +84,8 @@ export class UpdateBlogComponent implements OnInit {
       seoDescription: new FormControl(''),
       seoKeywords: new FormControl(''),
       canonicalUrl: new FormControl(''),
+      thumbnail: new FormControl('', Validators.required),
+      cover: new FormControl(''),
     })
 
     this.blogQuery = this.ActivatedRoute.snapshot.params.blog || ''
@@ -80,42 +96,50 @@ export class UpdateBlogComponent implements OnInit {
           for (let key of Object.keys(this.blogDetails)) {
             this.form.get(key)?.setValue(this.blogDetails[key])
           }
-          this.previews.thumbnail = environment.base + "/" + this.blogDetails.thumbnail.path
-          this.previews.cover = environment.base + "/" + this.blogDetails.cover.path
+          this.previews.thumbnail = this.blogDetails.thumbnail?.path
+          this.previews.cover = this.blogDetails.cover?.path
           this.ChangeDetectorRef.markForCheck()
         }
       }
     })
   }
 
-  handleThumbnail(event: any) {
-    this.files.thumbnail = event?.target?.files[0]
-    let reader = new FileReader();
-    reader.onload = (e: any) => { this.previews.thumbnail = e.target.result };
-    reader.readAsDataURL(this.files.thumbnail);
-    this.ChangeDetectorRef.detectChanges()
-  }
+  // handleThumbnail(event: any) {
+  //   this.files.thumbnail = event?.target?.files[0]
+  //   let reader = new FileReader();
+  //   reader.onload = (e: any) => { this.previews.thumbnail = e.target.result };
+  //   reader.readAsDataURL(this.files.thumbnail);
+  //   this.ChangeDetectorRef.detectChanges()
+  // }
+
+  // handleCover(event: any) {
+  //   this.files.cover = event?.target?.files[0]
+  //   let reader = new FileReader();
+  //   reader.onload = (e: any) => { this.previews.cover = e.target.result };
+  //   reader.readAsDataURL(this.files.cover);
+  //   this.ChangeDetectorRef.detectChanges()
+  // }
+
+  // removeMedia(type?: string) {
+  //   if (type == 'thumbnail') {
+  //     this.previews.thumbnail = ''
+  //     this.files.thumbnail = null
+  //     this.ChangeDetectorRef.detectChanges()
+  //     return;
+  //   } else if (type == 'cover') {
+  //     this.previews.cover = ''
+  //     this.files.cover = null
+  //     this.ChangeDetectorRef.detectChanges()
+  //     return;
+  //   }
+  // }
 
   handleCover(event: any) {
-    this.files.cover = event?.target?.files[0]
-    let reader = new FileReader();
-    reader.onload = (e: any) => { this.previews.cover = e.target.result };
-    reader.readAsDataURL(this.files.cover);
-    this.ChangeDetectorRef.detectChanges()
+    this.form.get('cover')?.setValue(event._id)
   }
 
-  removeMedia(type?: string) {
-    if (type == 'thumbnail') {
-      this.previews.thumbnail = ''
-      this.files.thumbnail = null
-      this.ChangeDetectorRef.detectChanges()
-      return;
-    } else if (type == 'cover') {
-      this.previews.cover = ''
-      this.files.cover = null
-      this.ChangeDetectorRef.detectChanges()
-      return;
-    }
+  handleThumbnail(event: any) {
+    this.form.get('thumbnail')?.setValue(event._id)
   }
 
   open(template: TemplateRef<any>) {

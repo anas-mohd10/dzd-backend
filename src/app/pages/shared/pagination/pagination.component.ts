@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, OnChanges {
   @Input('pageIndex') pageIndex: number = 1;
   @Input('pageSize') pageSize?: number;
   @Input('totalResults') totalResults: number = 0;
@@ -17,8 +17,12 @@ export class PaginationComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.limit.setValue(this.pageSize ? this.pageSize : "20")
+  }
+
+  ngOnInit(): void {
+
   }
 
   onPageSizeChange() {

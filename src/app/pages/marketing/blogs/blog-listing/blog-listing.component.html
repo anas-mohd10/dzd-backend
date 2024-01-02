@@ -52,30 +52,8 @@
         <div class="fs-4 fw-bold">No blogs found</div>
         <p class="text-muted">We couldn't find any item based on your search</p>
       </div>
-      <div class="filteringWrapper d-flex align-items-center justify-content-between">
-        <div class="filtering">
-          <span class="fs-6 text-dark">Show</span>
-          <select [formControl]="limit" (change)="getBlogs()">
-            <option value="4">4</option>
-            <option value="16">16</option>
-            <option value="40">40</option>
-            <option value="80">80</option>
-          </select>
-          <span class="fs-6 text-dark">entries</span>
-        </div>
-        <div class="filteringResultCount fs-6">
-          Showing <span class="me-1 ms-1">{{blogs.length}}</span> of <span class="ms-1">{{totalResults}}</span>
-        </div>
-        <div class="pagination">
-          <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="previous()">
-            <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-          </div>
-          <div class="paginationPage">{{page}} of {{totalPages}}</div>
-          <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="next()">
-            <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-          </div>
-        </div>
-      </div>
+      <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
+      [pageIndex]="page" [pageSize]="limit"></app-pagination>
     </div>
   </div>
 </div>

@@ -24,7 +24,7 @@
    </div>
 
    <div class="row mt-4 pageWrapper">
-      <div class="col-lg-7">
+      <div class="col-lg-9">
          <div class="card">
             <div class="card-body">
                <form [formGroup]="form">
@@ -157,21 +157,11 @@
                      </div>
                   </div>
                </form>
-
-               <div class="col-12 d-flex align-items-center justify-content-end">
-                  <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}"
-                     class=" btn btn-secondary me-2 fs-6 text-dark fw-bolder" style="width: 200px">
-                     Cancel
-                  </a>
-                  <button type="submit" class="btn btn-primary fs-6" (click)="onSubmit()" style="width: 200px">
-                     Update
-                  </button>
-               </div>
-
             </div>
          </div>
       </div>
-      <div class="col-lg-5">
+
+      <div class="col-lg-3">
          <div class="card">
             <div class="card-body">
                <h2 class="form-title">General Settings</h2>
@@ -235,19 +225,29 @@
                      <div class="my-3">
                         <div class="fs-5 mb-2 required">Logo / Emblem / Symbol</div>
                         <div class="h-auto ratio ratio-1x1 w-100">
-                           <app-assets (mediaClicked)="handleStoreLogo($event)"></app-assets>
+                           <app-assets (mediaClicked)="handleStoreLogo($event)" [previewDetails]="logo"></app-assets>
                         </div>
                      </div>
                      <div>
                         <div class="fs-5 mb-2 required">Favicon</div>
                         <div class="h-auto ratio ratio-1x1 w-100">
-                           <app-assets (mediaClicked)="handleStoreFavicon($event)"></app-assets>
+                           <app-assets (mediaClicked)="handleStoreFavicon($event)"
+                              [previewDetails]="favicon"></app-assets>
                         </div>
                      </div>
                   </div>
                </form>
             </div>
          </div>
+      </div>
+      <div class="mt-4 d-flex align-items-center justify-content-end">
+         <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}"
+            class=" btn btn-secondary me-2 text-dark">
+            Cancel
+         </a>
+         <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+            Update
+         </button>
       </div>
    </div>
 </div>

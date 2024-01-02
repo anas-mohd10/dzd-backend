@@ -14,7 +14,7 @@ export class BlogListingComponent implements OnInit {
   date: string
   blogs: Array<any> = []
   page: number = 1
-  limit: FormControl = new FormControl('16')
+  limit: number = 20
   isLastPage: boolean = false
   totalResults: number = 0
   totalPages: number = 0
@@ -28,17 +28,13 @@ export class BlogListingComponent implements OnInit {
     this.getBlogs()
   }
 
-  next() {
-    this.page += 1
+  onPageTriggered(event: any) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getBlogs()
   }
 
-  previous() {
-    this.page -= 1
-    this.getBlogs()
-  }
-
-  clear(){
+  clear() {
     this.keyword.setValue('')
     this.date = ''
     this.getBlogs()
@@ -47,7 +43,7 @@ export class BlogListingComponent implements OnInit {
   getBlogs() {
     this.BlogService.blogs({
       page: this.page,
-      limit: this.limit.value,
+      limit: this.limit,
       keyword: this.keyword.value,
       date: this.date
     }).subscribe({

@@ -20,6 +20,7 @@
         border: 1px solid rgba(149, 157, 165, 0.15);
         cursor: pointer;
         position: relative;
+        overflow: hidden;
 
         img {
             height: 10rem;
@@ -35,6 +36,15 @@
             justify-content: flex-start;
             border-radius: 0 0 .625rem .625rem;
             border-top: 1px solid rgba(149, 157, 165, 0.15);
+        }
+
+        .asset-details {
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
         }
 
         .checkbox {
