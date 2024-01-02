@@ -128,6 +128,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
+      logo: ['', Validators.required],
+      favicon: ['', Validators.required]
     })
   }
 
@@ -157,6 +159,14 @@ export class UpdateAppSettingsComponent implements OnInit {
         };
         break
     }
+  }
+
+  handleStoreLogo(event: any) {
+    this.form.get('logo')?.setValue(event._id)
+  }
+
+  handleStoreFavicon(event: any) {
+    this.form.get('favicon')?.setValue(event._id)
   }
 
   removeLogo(type: any) {
@@ -201,6 +211,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,
       shippingCost: this.form.get('shippingCost')?.value,
+      logo: this.form.get('logo')?.value,
+      favicon: this.form.get('favicon')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
         cart: this.form.get('cartButton')?.value,
@@ -211,8 +223,6 @@ export class UpdateAppSettingsComponent implements OnInit {
 
     const formdata = new FormData();
     formdata.append('data', JSON.stringify(data))
-    formdata.append('file', this.logoFile)
-    formdata.append('favicon', this.faviconFile)
 
     this.AppSettingsService.updateGeneralSettings(formdata).subscribe((res: any) => {
       if (res?.errorCode == 0) {

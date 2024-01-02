@@ -1,1 +1,45 @@
-<p>assets works!</p>
+<div class="position-relative h-auto ratio ratio-1x1 w-100" (click)="open(template)">
+    <img *ngIf="preview" src="{{base}}{{preview?.path}}" alt={{preview?.title}}
+        class="bg-white top-0 start-0 position-absolute border border-secondary preview w-100 h-100 rounded">
+    <div *ngIf="!preview"
+        class="mask bg-white border fs-5 top-0 start-0 border-secondary border-2 rounded h-100 w-100 position-absolute text-muted d-flex flex-column align-items-center justify-content-center">
+        <div class="rounded-circle p-4 bg-secondary">
+            <svg height="32px" width="32px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+                </path>
+            </svg>
+        </div>
+        <div class="mt-2">
+            <span class="mx-2 text-primary">Browse files</span> here
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Asset details</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="assets">
+            <ng-container *ngFor="let media of medias; let i = index">
+                <div class="asset border border-secondary rounded position-relative">
+                    <div class="position-absolute border border-secondary bg-white asset-checkbox rounded"
+                        (click)="onMediaClickedHandler(media)">
+                    </div>
+                    <img src="{{base}}{{media?.path}}" alt={{media?.title}}
+                        onerror="this.src = '../../../../assets/images/default.png'">
+                    <div class="p-2 asset-details border-top border-secondary">
+                        {{media?.title}}
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
+            [pageIndex]="page" [pageSize]="limit"></app-pagination>
+    </div>
+</ng-template>

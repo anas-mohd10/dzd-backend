@@ -8,6 +8,7 @@ import { UpdateAppSettingsComponent } from './update-app-settings/update-app-set
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AppSettingsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     AngularEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

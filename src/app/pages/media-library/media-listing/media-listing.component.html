@@ -86,7 +86,7 @@
 </div>
 
 <ng-template #template>
-    <div class="modal-header pb-0">
+    <div class="modal-header">
         <h4 class="modal-title pull-left">Add new assets</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
@@ -94,7 +94,7 @@
     </div>
     <div class="modal-body">
         <div>
-            <tabset>
+            <tabset [justified]="true" type="pills">
                 <tab heading="Browse files" id="tab1">
                     <div class="position-relative rounded mt-4 uploader" *ngIf="previews.length == 0">
                         <div class="mask fs-5 rounded d-flex align-items-center justify-content-center text-muted">

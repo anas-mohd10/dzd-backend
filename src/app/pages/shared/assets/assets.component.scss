@@ -1,0 +1,39 @@
+.assets {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+
+    .asset {
+        overflow: hidden;
+
+        img {
+            height: 200px;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .asset-checkbox{
+            height: 2rem;
+            width: 2rem;
+            top: 0.8rem;
+            left: 0.8rem;
+        }
+
+        .asset-details {
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
+
+.preview{
+    object-fit: contain;
+}
+
+.ratio{
+    cursor: pointer;
+}

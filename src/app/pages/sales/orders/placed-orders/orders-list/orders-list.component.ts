@@ -185,6 +185,10 @@ export class OrdersListComponent implements OnInit {
     this.getOrders()
   }
 
+  exportOrders(){
+    
+  }
+
   getLimit() {
     this.getOrders()
   }
