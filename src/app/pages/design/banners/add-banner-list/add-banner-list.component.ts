@@ -9,6 +9,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { environment } from 'src/environments/environment';
 
 interface Media {
   title: string;
@@ -65,8 +66,10 @@ export class AddBannerListComponent implements OnInit {
   @ViewChild('detailsTemplate') detailsTemplate: TemplateRef<any>;
   objectFit: string = 'cover'
   details: FormGroup
+  redirectionDetails: FormGroup
   files: Array<any> = []
   activeMediaDetails: any
+  base: string = environment.base + '/'
 
   constructor(
     private formBuilder: FormBuilder,
@@ -130,9 +133,8 @@ export class AddBannerListComponent implements OnInit {
   }
 
   confirm() {
-    // this.files.length > this.ro
     this.files.push({
-      file: this.activeMediaDetails.path,
+      file: this.activeMediaDetails,
       title: this.details.get('title')?.value,
       redirection: {
         type: this.details.get('type')?.value,
@@ -143,12 +145,6 @@ export class AddBannerListComponent implements OnInit {
     this.modalRef?.hide()
     this.activeMediaDetails = null
   }
-
-  // addMediaDetails() {
-  //   if (this.form.get("slides")?.value <) {
-
-  //   }
-  // }
 
   constraintHandler() {
     this.form.get("heightConstraint")?.value == 'slider' ? this.objectFit = 'cover' : this.objectFit = ''

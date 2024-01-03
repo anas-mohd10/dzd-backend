@@ -13,6 +13,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SharedModule } from '../../shared/shared.module';
+import { CarouselModule } from 'ngx-bootstrap/carousel';;
+
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { SharedModule } from '../../shared/shared.module';
     BannersRoutingModule,
     DataTablesModule,
     FormsModule,
+    CarouselModule,
     NgSelectModule,
     ImageCropperModule,
     ReactiveFormsModule,

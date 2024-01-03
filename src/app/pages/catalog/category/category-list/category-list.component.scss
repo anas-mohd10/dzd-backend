@@ -54,6 +54,15 @@ button {
 
     .categoryDetails {
 
+      .category-name {
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+      }
+
       .featured {
         background: #ddfffc;
         color: #00bdab;

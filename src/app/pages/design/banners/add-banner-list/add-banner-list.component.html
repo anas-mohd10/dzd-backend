@@ -64,6 +64,50 @@
                      </select>
                   </div>
                </div>
+
+               <div class="row">
+                  <div class="col-lg-3">
+                     <div class="h-auto ratio ratio-1x1 w-100" *ngIf="form.get('type')?.value">
+                        <app-assets [image]="objectFit" (mediaClicked)="mediaHandler($event)"></app-assets>
+                     </div>
+                  </div>
+               </div>
+               <ng-container *ngIf="files.length > 0 && form.get('type')?.value == '1'">
+                  <div class="my-4">
+                     <carousel>
+                        <ng-container *ngFor="let file of files; let i = index">
+                           <slide>
+                              <img class="slide" src="{{base}}{{file?.file?.path}}" alt="Marketing Details">
+                           </slide>
+                        </ng-container>
+                     </carousel>
+                  </div>
+               </ng-container>
+
+               <ng-container *ngIf="files.length > 0 && form.get('type')?.value == '2'">
+                  <div class="my-4">
+                     <div class="row twogrids">
+                        <ng-container *ngFor="let file of files; let i = index">
+                           <div class="col-lg-6 h-100">
+                              <img class="w-100" src="{{base}}{{file?.file?.path}}" alt="Marketing Details">
+                           </div>
+                        </ng-container>
+                     </div>
+                  </div>
+               </ng-container>
+
+               <ng-container *ngIf="files.length > 0 && form.get('type')?.value == '3'">
+                  <div class="my-4">
+                     <div class="row threegrids">
+                        <ng-container *ngFor="let file of files; let i = index">
+                           <div class="col-lg-4 h-100">
+                              <img class="w-100" src="{{base}}{{file?.file?.path}}" alt="Marketing Details">
+                           </div>
+                        </ng-container>
+                     </div>
+                  </div>
+               </ng-container>
+
                <div class="col-lg-4 form-group mb-3">
                   <label class="form-label mb-3">Status</label>
                   <select class="form-select fs-6 mb-3" formControlName="isActive">
@@ -73,9 +117,6 @@
                   </select>
                </div>
 
-               <div class="slider w-100" *ngIf="form.get('type')?.value == '1'">
-                  <app-assets [image]="objectFit" (mediaClicked)="mediaHandler($event)"></app-assets>
-               </div>
 
                <div class="col-12 mb-3">
                   <div class="form-group">
@@ -322,10 +363,10 @@
                </div>
 
                <div class="d-flex align-items-center justify-content-end">
-                  <a routerLink="{{ appRoute.banner.BANNER_LIST }}" class=" btn btn-secondary">
+                  <a routerLink="{{ appRoute.banner.BANNER_LIST }}" class="me-1 btn btn-secondary">
                      Cancel
                   </a>
-                  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+                  <button type="submit" class="ms-1 btn btn-primary" (click)="onSubmit()">
                      Add
                   </button>
                </div>
@@ -350,8 +391,8 @@
          </div>
          <div class="row">
             <div class="col-lg-6 form-group mb-3">
-               <label for="title" class="form-label">Redirection</label>
-               <select class="form-select mb-3" formControlName="type">
+               <label for="title" class="form-label mb-3">Redirection</label>
+               <select class="form-select" formControlName="type">
                   <option value="" disabled>-- Select an option --</option>
                   <option *ngFor="let type of ['product', 'category', 'external']" value={{type}}>{{type}}
                   </option>
@@ -359,21 +400,29 @@
             </div>
             <div class="col-lg-6">
                <div class="form-group mb-3" *ngIf="details.get('type')?.value == 'product'">
-                  <label class="fs-6 mb-2">Products</label>
-                  <ng-select [items]="products" bindLabel="name" bindValue="slug" [(ngModel)]="product"
+                  <label for="products" class="form-label mb-3">Product</label>
+                  <select id="products" class="form-select" formControlName="url">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option *ngFor="let product of products" value={{product?.slug}}>{{product?.name}}</option>
+                  </select>
+                  <!-- <ng-select [items]="products" bindLabel="name" bindValue="slug" [(ngModel)]="product"
                      placeholder="-- Select product --" [multiple]=false [ngModelOptions]="{standalone: true}">
-                  </ng-select>
+                  </ng-select> -->
                </div>
 
                <div class="form-group mb-3" *ngIf="details.get('type')?.value == 'category'">
-                  <label class="fs-6 mb-2">Catgeory</label>
-                  <ng-select [items]="categories" bindLabel="name" bindValue="slug" [(ngModel)]="category"
+                  <label for="products" class="form-label mb-3">Category</label>
+                  <select id="products" class="form-select" formControlName="url">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option *ngFor="let category of categories" value={{category?.slug}}>{{category?.name}}</option>
+                  </select>
+                  <!-- <ng-select [items]="categories" bindLabel="name" bindValue="slug" [(ngModel)]="category"
                      placeholder="-- Select category --" [multiple]=false [ngModelOptions]="{standalone: true}">
-                  </ng-select>
+                  </ng-select> -->
                </div>
 
                <div class="form-group mb-3" *ngIf="details.get('type')?.value == 'external'">
-                  <label class="fs-6 mb-2">External URL</label>
+                  <label class="fs-6 mb-3">External URL</label>
                   <input type="text" class="form-control" [formControl]="external"
                      placeholder="Enter external url here">
                </div>

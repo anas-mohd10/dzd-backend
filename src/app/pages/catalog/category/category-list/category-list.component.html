@@ -76,7 +76,7 @@
           onerror="this.src = '../../../../../assets/images/default.png'" />
 
         <div class="categoryDetails h-100 d-flex flex-column justify-content-between">
-          <div class="fs-5 fw-bolder">{{category?.name}}</div>
+          <div class="fs-5 category-name fw-bolder">{{category?.name}}</div>
           <div class="d-flex mt-2">
             <div class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
               {{category?.isActive ? 'Active' : 'Inactive'}}

@@ -158,6 +158,7 @@ export class ReviewsListComponent implements OnInit {
   close() {
     this.productDetails = {}
     this.modalRef?.hide()
+    this.reviewKeyword.setValue('')
   }
 
   updateProductReview(refid: any) {
