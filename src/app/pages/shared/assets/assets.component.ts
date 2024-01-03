@@ -38,7 +38,6 @@ export class AssetsComponent implements OnInit, OnChanges {
   files: Array<any> = []
   previews: Array<any> = []
   @Output('mediaClicked') onMediaClicked = new EventEmitter<any>();
-
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
 
   selectTab(tabId: number) {

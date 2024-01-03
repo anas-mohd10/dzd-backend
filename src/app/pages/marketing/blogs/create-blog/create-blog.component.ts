@@ -75,37 +75,7 @@ export class CreateBlogComponent implements OnInit {
   handleThumbnail(event: any) {
     this.form.get('thumbnail')?.setValue(event._id)
   }
-
-  // handleThumbnail(event: any) {
-  //   this.files.thumbnail = event?.target?.files[0]
-  //   let reader = new FileReader();
-  //   reader.onload = (e: any) => { this.previews.thumbnail = e.target.result };
-  //   reader.readAsDataURL(this.files.thumbnail);
-  //   this.ChangeDetectorRef.detectChanges()
-  // }
-
-  // handleCover(event: any) {
-  //   this.files.cover = event?.target?.files[0]
-  //   let reader = new FileReader();
-  //   reader.onload = (e: any) => { this.previews.cover = e.target.result };
-  //   reader.readAsDataURL(this.files.cover);
-  //   this.ChangeDetectorRef.detectChanges()
-  // }
-
-  // removeMedia(type?: string) {
-  //   if (type == 'thumbnail') {
-  //     this.previews.thumbnail = ''
-  //     this.files.thumbnail = null
-  //     this.ChangeDetectorRef.detectChanges()
-  //     return;
-  //   } else if (type == 'cover') {
-  //     this.previews.cover = ''
-  //     this.files.cover = null
-  //     this.ChangeDetectorRef.detectChanges()
-  //     return;
-  //   }
-  // }
-
+  
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true

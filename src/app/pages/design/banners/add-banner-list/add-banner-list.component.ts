@@ -1,14 +1,28 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageTasks } from 'src/app/config/constants/page-tasks';
 import { appRoutes } from 'src/app/config/routes';
 import { BannerService } from 'src/app/includes/services/banner.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
+interface Media {
+  title: string;
+  _id: string;
+  size: string;
+  path: string;
+  slug: string;
+  tag: string;
+  type: string;
+  uploadedBy: string;
+  uploadedDescription: string;
+  uploadedTo: string;
+  createdAt: string;
+}
 
 @Component({
   selector: 'app-add-banner-list',
@@ -22,13 +36,13 @@ export class AddBannerListComponent implements OnInit {
   form: FormGroup
   isSubmitted = false;
   imageWebChangedEvent: any = '';
-  to_date: string = '';
-  from_date: string = '';
+  toDate: string = '';
+  fromDate: string = '';
   fullWidth: Boolean = false
   halfWidth: Boolean = false
   thirdWidth: Boolean = false
   quarterWidth: Boolean = false
-  files: Array<any> = []
+  // files: Array<any> = []
   bannerType: any;
   products: Array<any> = []
   product: string = ''
@@ -48,6 +62,12 @@ export class AddBannerListComponent implements OnInit {
   modalRef?: BsModalRef;
   bannerDetails: any
 
+  @ViewChild('detailsTemplate') detailsTemplate: TemplateRef<any>;
+  objectFit: string = 'cover'
+  details: FormGroup
+  files: Array<any> = []
+  activeMediaDetails: any
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -59,10 +79,10 @@ export class AddBannerListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const get_date = new Date().getDate()
+    const getDate = new Date().getDate()
     const date = new Date()
-    this.from_date = new Date(date.setDate(get_date + 1)).toISOString().split('T')[0]
-    this.to_date = new Date(date.setDate(get_date + 3)).toISOString().split('T')[0]
+    this.fromDate = new Date(date.setDate(getDate + 1)).toISOString().split('T')[0]
+    this.toDate = new Date(date.setDate(getDate + 10)).toISOString().split('T')[0]
     this.initForm()
     this.managePage()
 
@@ -84,12 +104,58 @@ export class AddBannerListComponent implements OnInit {
       title: [''],
       validFrom: ['', Validators.required],
       validTo: ['', Validators.required],
-      redirection: [''],
+      type: ['', Validators.required],
+      slides: ['1'],
+      heightConstraint: ['slider', Validators.required],
       isActive: ['true', Validators.required]
     });
 
-    this.form.get('validFrom')?.setValue(this.from_date)
-    this.form.get('validTo')?.setValue(this.to_date)
+    this.details = new FormGroup({
+      title: new FormControl(''),
+      type: new FormControl(''),
+      url: new FormControl(''),
+    })
+
+    this.form.get('validFrom')?.setValue(this.fromDate)
+    this.form.get('validTo')?.setValue(this.toDate)
+  }
+
+  mediaHandler(event: any) {
+    this.activeMediaDetails = event
+    this.modalRef = this.BsModalService.show(this.detailsTemplate, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  decline() {
+    this.activeMediaDetails = null
+  }
+
+  confirm() {
+    // this.files.length > this.ro
+    this.files.push({
+      file: this.activeMediaDetails.path,
+      title: this.details.get('title')?.value,
+      redirection: {
+        type: this.details.get('type')?.value,
+        url: this.details.get('url')?.value
+      }
+    })
+
+    this.modalRef?.hide()
+    this.activeMediaDetails = null
+  }
+
+  // addMediaDetails() {
+  //   if (this.form.get("slides")?.value <) {
+
+  //   }
+  // }
+
+  constraintHandler() {
+    this.form.get("heightConstraint")?.value == 'slider' ? this.objectFit = 'cover' : this.objectFit = ''
+  }
+
+  get formControls() {
+    return this.form.controls;
   }
 
   get hf() {

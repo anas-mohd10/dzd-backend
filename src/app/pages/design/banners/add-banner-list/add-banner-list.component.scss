@@ -1,3 +1,12 @@
+.btn-secondary,
+.btn-primary {
+   font-weight: 400 !important;
+}
+
+.slider{
+   height: 400px;
+}
+
 .mobile-banner-title .preview-section,
 .web-banner-title .preview-section {
    margin: 40px 0 0 0;
@@ -167,8 +176,8 @@ button.btn.btn-secondary {
    justify-content: center;
 }
 
-.modal-body{
-   img{
+.modal-body {
+   img {
       width: 100%;
    }
 }
