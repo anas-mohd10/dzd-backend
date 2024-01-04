@@ -23,6 +23,7 @@ import { StorePopupComponent } from './marketing/store-popup/store-popup.compone
 import { ActivitiesComponent } from './settings/general/activities/activities.component';
 import { SalesAnalyticsComponent } from './sales-analytics/sales-analytics.component';
 import { DeliverySlotsComponent } from './settings/general/delivery-slots/delivery-slots.component';
+import { LoyaltyComponent } from './marketing/loyalty/loyalty.component';
 
 export const Routing: Routes = [
   {
@@ -401,6 +402,10 @@ export const Routing: Routes = [
       }, {
         path: 'analytics',
         component: AnalyticsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'loyalty',
+        component: LoyaltyComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'feeds',
