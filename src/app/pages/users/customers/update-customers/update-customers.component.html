@@ -1,7 +1,7 @@
 <div class="content container-fluid">
    <div class="page-header">
       <div class="page-title">
-         <h1 class="fw-bolder"> {{ editMode ? "Update Customers" : "Add Customers"}}</h1>
+         <h1 class="fw-bold"> {{ editMode ? "Update Customers" : "Add Customers"}}</h1>
       </div>
       <div class="row align-items-center">
          <div class="col d-flex align-items-start justify-content-between">
@@ -29,13 +29,56 @@
                <form [formGroup]="customersForm">
                   <div class="row">
 
-                     <div class="mb-4">
-                        <h2 class="form-title">Customers Details</h2>
+                     <div class="d-flex justify-content-end">
+                        <button class="btn btn-secondary" (click)="openWallet(walletTemplate)">Wallet
+                           transactions</button>
                      </div>
 
-                     <div class=" col-6">
+                     <div class="addressWrapper">
+                        <div class="d-flex align-items-center justify-content-between">
+                           <h3 class="mb-3 fw-bold fs-4">Address details</h3>
+                           <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
+                        </div>
+
+                        <div class="addressCards mt-3">
+                           <ng-container *ngFor="let address of addresses">
+                              <div class="addressCard p-3 rounded"
+                                 [ngClass]="{'defaultAddressCard': address?.isDefault}">
+                                 <div (click)="setDefaultAddress(address?.refid)">
+                                    <div class="contactDetails fs-6">
+                                       {{address?.name}}, {{address?.countryCode}}{{address?.mobile}}
+                                    </div>
+                                    <div class="address">
+                                       <div class="type fs-6 mb-1">{{address?.type}}</div>
+                                       <div class="fs-6 addressLane"> {{address?.firstlane}}, {{address?.secondlane}}
+                                       </div>
+                                       <div class="fs-6"> {{address?.landmark}} {{address?.pincode}}</div>
+                                       <div class="fs-6"> {{address?.state}}</div>
+                                    </div>
+                                 </div>
+
+                                 <div class="mt-2 d-flex align-items-center justify-content-start">
+                                    <div class="btn w-50 btn-secondary me-2"
+                                       (click)="open(addressTemplate, address?.refid)">
+                                       Edit</div>
+                                    <div class="btn w-50 btn-danger" (click)="openModal(delete, address?.refid)">Delete
+                                    </div>
+                                 </div>
+                              </div>
+                           </ng-container>
+                        </div>
+
+                        <ng-container *ngIf="addresses.length == 0">
+                           <div class="my-8 d-flex flex-column align-items-center justify-content-center">
+                              <div class="fs-4 fw-bold">No address found</div>
+                              <p class="text-muted">We couldn't find any item based on your search</p>
+                           </div>
+                        </ng-container>
+                     </div>
+
+                     <div class="col-6">
                         <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required">First Name</label>
+                           <label class="fs-6 mb-3 required">Name</label>
                            <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
                               'is-invalid':
                               (cf.name.touched || isSubmitted) &&
@@ -90,43 +133,11 @@
                         </div>
                      </div>
 
-                     <div class="addressWrapper">
-                        <div class="d-flex align-items-center justify-content-between">
-                           <h3 class="mb-3 fw-bolder fs-4">Address</h3>
-                           <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
+                     <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3">Referral code</label>
+                           <input type="text" class="form-control fs-6" [formControl]="referralCode" />
                         </div>
-
-                        <div class="addressCards mt-3">
-                           <ng-container *ngFor="let address of addresses">
-                              <div class="addressCard p-3 rounded"
-                                 [ngClass]="{'defaultAddressCard': address?.isDefault}">
-                                 <div (click)="setDefaultAddress(address?.refid)">
-                                    <div class="contactDetails fs-6">
-                                       {{address?.name}}, {{address?.countryCode}} {{address?.mobile}}
-                                    </div>
-                                    <div class="address">
-                                       <div class="type fs-6 mb-1">{{address?.type}}</div>
-                                       <div class="fs-6 addressLane"> {{address?.firstlane}}, {{address?.secondlane}}
-                                       </div>
-                                       <div class="fs-6"> {{address?.landmark}} {{address?.pincode}}</div>
-                                       <div class="fs-6"> {{address?.state}}</div>
-                                    </div>
-                                 </div>
-
-                                 <div class="mt-2 d-flex align-items-center justify-content-start">
-                                    <div class="btn w-50 btn-secondary me-2"
-                                       (click)="open(addressTemplate, address?.refid)">
-                                       Edit</div>
-                                    <div class="btn w-50 btn-danger" (click)="openModal(delete, address?.refid)">Delete
-                                    </div>
-                                 </div>
-                              </div>
-                           </ng-container>
-                        </div>
-
-                        <ng-container *ngIf="addresses.length == 0">
-                           <div>No address found</div>
-                        </ng-container>
                      </div>
 
                      <div class="col-12 d-flex align-items-center justify-content-end">
@@ -307,5 +318,69 @@
             </button>
          </div>
       </form>
+   </div>
+</ng-template>
+
+<ng-template #walletTemplate>
+   <div class="modal-header">
+      <h4 class="modal-title pull-left">Wallet</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeWallet()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div>
+         <div class="text-primary">Wallet balance</div>
+         <div class="fs-2">{{settings?.currency}} {{customerData?.walletBalance}}</div>
+      </div>
+
+      <div class="row my-8">
+         <div class="col-lg-4">
+            <div class="form-group mb-3">
+               <label for="amount" class="form-label mb-3 required">Amount</label>
+               <input type="text" id="amount" [formControl]="amount" placeholder="Wallet amount" class="form-control"
+                  [ngClass]="{'is-invalid': (amount.touched || isWalletSubmitted) && amount.errors?.required }">
+            </div>
+            <div class="form-group mb-3">
+               <label for="description" class="form-label mb-3">Description</label>
+               <input type="text" id="description" [formControl]="description" placeholder="Type any reason"
+                  class="form-control">
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+               <button class="btn btn-secondary w-50 me-1" (click)="addToWallet('debit')">Withdraw</button>
+               <button class="btn btn-primary w-50 ms-1" (click)="addToWallet('credit')">Add to Wallet</button>
+            </div>
+         </div>
+         <div class="col-lg-8">
+            <div class="mb-4 d-flex justify-content-between align-items-center">
+               <div class="fs-5 text-muted">Wallet transactions</div>
+               <div class="form-group">
+                  <label for="transactionType" class="form-label">Type</label>
+                  <select [formControl]="transactionType" id="transactionType" class="form-select"
+                     (change)="getTransactions()">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option *ngFor="let type of ['all', 'credit', 'debit']" value="{{type}}">{{type}}</option>
+                  </select>
+               </div>
+            </div>
+            <div class="transactions">
+               <ng-container *ngFor="let transaction of transactions">
+                  <div class="p-4 bg-white rounded border border-secondary my-2">
+                     <div class="mb-2 fs-5">An amount of <span class="text-primary">{{settings?.currency}}
+                           {{transaction?.amount}}</span> has been <span
+                           class="text-primary">{{transaction?.message}}.</span></div>
+                     <div *ngIf="transaction?.description">{{transaction?.description}}</div>
+                     <div class="text-muted">{{transaction?.transactionDate}}</div>
+                  </div>
+               </ng-container>
+            </div>
+            <ng-container *ngIf="transactions.length == 0">
+               <div class="my-8 d-flex flex-column align-items-center justify-content-center">
+                  <div class="fs-4 fw-bold">No transactions found</div>
+                  <p class="text-muted">We couldn't find any item based on your search</p>
+               </div>
+            </ng-container>
+         </div>
+      </div>
    </div>
 </ng-template>

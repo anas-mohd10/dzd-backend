@@ -7,6 +7,8 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HotToastService } from '@ngneat/hot-toast';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-update-customers',
@@ -38,15 +40,25 @@ export class UpdateCustomersComponent implements OnInit {
   focusedAddress: any = {}
   modalRef?: BsModalRef
   deleteModalRef?: BsModalRef
+  walletRef?: BsModalRef
+  transactions: Array<any> = []
+  amount: FormControl = new FormControl('', Validators.required)
+  description: FormControl = new FormControl('')
+  isWalletSubmitted: boolean = false
+  settings: any = {}
+  referralCode: FormControl = new FormControl('')
+  transactionType: FormControl = new FormControl('all')
 
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomersService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private toastr: ToastrService,
-    private BsModalService: BsModalService
+    private Toast: HotToastService,
+    private BsModalService: BsModalService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -55,6 +67,12 @@ export class UpdateCustomersComponent implements OnInit {
     this.slug = this.route.snapshot.queryParams.customer || ''
     this.getCustomerDetails()
     this.getAddress()
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.settings = res?.result
+      }
+    })
   }
 
   initForm() {
@@ -91,6 +109,58 @@ export class UpdateCustomersComponent implements OnInit {
     return this.addressForm.controls;
   }
 
+  openWallet(template: TemplateRef<any>) {
+    this.walletRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+    this.getTransactions()
+  }
+
+  closeWallet() {
+    this.walletRef?.hide()
+    this.amount?.reset()
+    this.description?.reset()
+    this.isWalletSubmitted = false
+  }
+
+  getTransactions() {
+    this.customerService.getTransactions(this.customerData?.slug, this.transactionType.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.transactions = res?.result
+        }
+      }
+    })
+  }
+
+  addToWallet(type: string) {
+    if (!this.amount.value) {
+      this.isWalletSubmitted = true
+      return
+    }
+
+    this.customerService.createTransaction({
+      amount: this.amount.value,
+      user: this.customerData?._id,
+      description: this.description.value,
+      type: type
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.amount?.reset()
+          this.description?.reset()
+          this.getTransactions()
+          this.getCustomerDetails()
+          this.isWalletSubmitted = false
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.message)
+      }
+    })
+  }
+
   open(template: TemplateRef<any>, address: any) {
     if (address) {
       this.isEditAddress = true
@@ -101,7 +171,7 @@ export class UpdateCustomersComponent implements OnInit {
             this.addressForm.get(_key)?.setValue(res?.result[_key])
             this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
             this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           }
         }
       })
@@ -135,7 +205,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.customerService.getCustomerByMail(data).subscribe((res: any) => {
       if (res?.result.length != 0) {
         this.uniqueEmail = false
-        this.toastr.error("Email already exists")
+        this.Toast.error("Email already exists")
       } else {
         this.uniqueEmail = true
       }
@@ -149,7 +219,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.customerService.getCustomerByNum(data).subscribe((res: any) => {
       if (res?.result.length != 0) {
         this.uniqueNum = false
-        this.toastr.error("Mobile number already exists")
+        this.Toast.error("Mobile number already exists")
       } else {
         this.uniqueNum = true
       }
@@ -176,10 +246,10 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getAddress()
           this.addressForm.reset()
-          this.toastr.success(res?.message)
+          this.Toast.success(res?.message)
           this.modalRef?.hide()
         } else {
-          this.toastr.error(res?.message)
+          this.Toast.error(res?.message)
         }
       })
     } else {
@@ -188,10 +258,10 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getAddress()
           this.addressForm.reset()
-          this.toastr.success(res?.message)
+          this.Toast.success(res?.message)
           this.modalRef?.hide()
         } else {
-          this.toastr.error(res?.message)
+          this.Toast.error(res?.message)
         }
       })
     }
@@ -201,7 +271,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.customerService.getAddress({ userid: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.addresses = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -215,7 +285,7 @@ export class UpdateCustomersComponent implements OnInit {
           this.addressForm.get(_key)?.setValue(res?.result[_key])
           this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat)
           this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng)
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         }
       }
     })
@@ -225,8 +295,8 @@ export class UpdateCustomersComponent implements OnInit {
     this.customerService.updateDefaultAddress(refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress()
-        this.toastr.success(res?.message)
-        this.cdr.markForCheck()
+        this.Toast.success(res?.message)
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -239,8 +309,8 @@ export class UpdateCustomersComponent implements OnInit {
     this.customerService.deleteAddress(this.selectedAddress).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress()
-        this.toastr.success(res?.message)
-        this.cdr.markForCheck()
+        this.Toast.success(res?.message)
+        this.ChangeDetectorRef.markForCheck()
       }
     })
     this.deleteModalRef?.hide()
@@ -258,13 +328,15 @@ export class UpdateCustomersComponent implements OnInit {
   getCustomerDetails() {
     this.customerService.getCustomerBySlug(this.slug).subscribe((res: any) => {
       this.customerData = res?.result[0]
+      this.referralCode.setValue(res?.result[0]?.referralCode)
+      this.referralCode.disable()
       this.customersForm.get("name")?.setValue(this.customerData.name)
       this.customersForm.get("mobile")?.setValue(this.customerData.mobile)
       this.customersForm.get("email")?.setValue(this.customerData.email)
       this.customersForm.get("countryCode")?.setValue(this.customerData.countryCode)
       this.customersForm.get("isActive")?.setValue(this.customerData.isActive)
       this.customersForm.get("walletBalance")?.setValue(this.customerData.walletBalance)
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
   }
 
@@ -293,9 +365,9 @@ export class UpdateCustomersComponent implements OnInit {
     }
     this.customerService.updateCustomer(this.slug, data).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
+        this.Toast.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
+        this.Toast.success(res?.message);
         this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
       }
     })

@@ -29,6 +29,14 @@
    }
 }
 
+.fourgrids{
+   img {
+      height: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+   }
+}
+
 .mobile-banner-title .preview-section,
 .web-banner-title .preview-section {
    margin: 40px 0 0 0;

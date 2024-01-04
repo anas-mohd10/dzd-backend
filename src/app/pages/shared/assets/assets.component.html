@@ -3,7 +3,7 @@
         class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
         [ngClass]="{'object-fit-cover': image == 'cover', 'object-fit-contain': !image}">
     <div *ngIf="!preview"
-        class="mask bg-white border fs-5 top-0 start-0 border-secondary border-2 rounded h-100 w-100 position-absolute text-muted d-flex flex-column align-items-center justify-content-center">
+        class="mask bg-white border fs-5 top-0 start-0 border-secondary border-1 rounded h-100 w-100 position-absolute text-muted d-flex flex-column align-items-center justify-content-center">
         <div class="rounded-circle p-4 bg-secondary">
             <svg height="32px" width="32px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

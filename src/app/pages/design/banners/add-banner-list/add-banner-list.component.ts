@@ -70,6 +70,7 @@ export class AddBannerListComponent implements OnInit {
   files: Array<any> = []
   activeMediaDetails: any
   base: string = environment.base + '/'
+  preview: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -129,6 +130,8 @@ export class AddBannerListComponent implements OnInit {
   }
 
   decline() {
+    this.modalRef?.hide()
+    this.preview = ''
     this.activeMediaDetails = null
   }
 
@@ -136,12 +139,10 @@ export class AddBannerListComponent implements OnInit {
     this.files.push({
       file: this.activeMediaDetails,
       title: this.details.get('title')?.value,
-      redirection: {
-        type: this.details.get('type')?.value,
-        url: this.details.get('url')?.value
-      }
+      redirection: { type: this.details.get('type')?.value, url: this.details.get('url')?.value }
     })
 
+    this.preview = ''
     this.modalRef?.hide()
     this.activeMediaDetails = null
   }

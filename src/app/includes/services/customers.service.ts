@@ -120,4 +120,14 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.download_subscribers);
     return this.http.get(`${url}`)
   }
+
+  createTransaction(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.addToWallet);
+    return this.http.post(`${url}`, data)
+  }
+
+  getTransactions(customer: string, type: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.getWalletTransactions + `/${customer}` + `?type=` + type);
+    return this.http.get(`${url}`)
+  }
 }

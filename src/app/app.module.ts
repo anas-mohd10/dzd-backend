@@ -71,6 +71,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SalesAnalyticsComponent } from './pages/sales-analytics/sales-analytics.component';
 import { DeliverySlotsComponent } from './pages/settings/general/delivery-slots/delivery-slots.component';
 import { SharedModule } from './pages/shared/shared.module';
+import { LoyaltyComponent } from './pages/marketing/loyalty/loyalty.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -116,6 +117,7 @@ const DragConfig = {
     ActivitiesComponent,
     SalesAnalyticsComponent,
     DeliverySlotsComponent,
+    LoyaltyComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

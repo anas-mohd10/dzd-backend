@@ -4,7 +4,7 @@ $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.04);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primaryBackground: #20BDAB10;
+$primaryBackground: #20BDAB05;
 $activeBackground: #00bdab20;
 $border: #cccccc;
 $background: #e5e5e5;
@@ -17,6 +17,8 @@ input[type=button],
 }
 
 .addressWrapper {
+   margin: 1.875rem 0;
+   
    .addressCards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -24,8 +26,7 @@ input[type=button],
 
       .addressCard {
          background: $white;
-         box-shadow: 0 5px 10px 5px $boxShadow;
-         border: 2px solid $white;
+         border: 1px solid #eeeeee;
          cursor: pointer;
 
          .contactDetails,
@@ -39,16 +40,21 @@ input[type=button],
          }
 
          &.defaultAddressCard {
-            border: 2px solid $activeState;
+            border: 1px solid $activeState;
             background: $primaryBackground;
          }
       }
    }
 }
 
+.transactions{
+   overflow-y: scroll;
+   max-height: 360px;
+   height: max-content;
+}
+
 .modal-body {
    .btn {
-      width: 140px;
 
       &.btn-default {
          font-weight: 400;

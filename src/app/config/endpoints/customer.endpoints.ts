@@ -22,4 +22,6 @@ export const customerEndpoints = {
   search_subscribers: '/search-subscribers',
   delete_subscriber: '/delete-subscriber',
   download_subscribers: '/download-subscribers',
+  addToWallet: '/create-transaction',
+  getWalletTransactions: '/transactions',
 }

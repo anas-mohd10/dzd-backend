@@ -54,7 +54,6 @@ export class AssetsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes, this.previewDetails);
     this.previewDetails ? this.preview = { path: this.previewDetails } : null
     this.ChangeDetectorRef.markForCheck()
   }
