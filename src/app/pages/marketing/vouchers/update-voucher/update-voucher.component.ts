@@ -57,14 +57,14 @@ export class UpdateVoucherComponent implements OnInit {
       countryCode: new FormControl('', Validators.required),
       voucher: new FormControl('', Validators.required),
       mobile: new FormControl('', Validators.required),
-      message: new FormControl('')
+      message: new FormControl(''),
     })
 
     this.VouchersService.getVoucherDetails(this.voucherQuery).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.vocuherDetails = res?.result
         for (let key of Object.keys(res?.result)) this.form.get(key)?.setValue(res?.result[key])
-        this.vocuherDetails?.background ? this.preview = this.base + '/' + this.vocuherDetails?.background : null
+        this.vocuherDetails?.background ? this.preview = this.base + '/' + this.vocuherDetails?.background?.path : null
         this.form.get('user')?.setValue(res?.result?.user?.name)
         this.ChangeDetectorRef.markForCheck()
       }
@@ -82,14 +82,8 @@ export class UpdateVoucherComponent implements OnInit {
     this.isToggle = !this.isToggle
   }
 
-  handleInput(event: any) {
-    this.file = event?.target?.files[0]
-    let reader = new FileReader()
-    reader.onload = (e: any) => {
-      this.preview = e.target.result
-      this.ChangeDetectorRef.markForCheck()
-    }
-    reader.readAsDataURL(this.file)
+  handleMedia(event: any) {
+    this.form.get('background')?.setValue(event?._id)
   }
 
   getCustomers() {

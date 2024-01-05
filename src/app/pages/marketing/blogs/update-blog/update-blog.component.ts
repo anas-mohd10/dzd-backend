@@ -104,36 +104,6 @@ export class UpdateBlogComponent implements OnInit {
     })
   }
 
-  // handleThumbnail(event: any) {
-  //   this.files.thumbnail = event?.target?.files[0]
-  //   let reader = new FileReader();
-  //   reader.onload = (e: any) => { this.previews.thumbnail = e.target.result };
-  //   reader.readAsDataURL(this.files.thumbnail);
-  //   this.ChangeDetectorRef.detectChanges()
-  // }
-
-  // handleCover(event: any) {
-  //   this.files.cover = event?.target?.files[0]
-  //   let reader = new FileReader();
-  //   reader.onload = (e: any) => { this.previews.cover = e.target.result };
-  //   reader.readAsDataURL(this.files.cover);
-  //   this.ChangeDetectorRef.detectChanges()
-  // }
-
-  // removeMedia(type?: string) {
-  //   if (type == 'thumbnail') {
-  //     this.previews.thumbnail = ''
-  //     this.files.thumbnail = null
-  //     this.ChangeDetectorRef.detectChanges()
-  //     return;
-  //   } else if (type == 'cover') {
-  //     this.previews.cover = ''
-  //     this.files.cover = null
-  //     this.ChangeDetectorRef.detectChanges()
-  //     return;
-  //   }
-  // }
-
   handleCover(event: any) {
     this.form.get('cover')?.setValue(event._id)
   }
@@ -168,12 +138,7 @@ export class UpdateBlogComponent implements OnInit {
       return
     }
 
-    let formdata = new FormData()
-    for (let key of Object.keys(this.form.value)) formdata.append(key, this.form.value[key])
-    this.files.thumbnail && formdata.append('thumbnail', this.files.thumbnail)
-    this.files.cover && formdata.append('cover', this.files.cover)
-    formdata.append("slug", this.blogQuery)
-    this.BlogService.updateBlog(formdata).subscribe({
+    this.BlogService.updateBlog({ ...this.form.value, slug: this.blogQuery }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list])

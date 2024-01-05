@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 import SwiperCore, { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-Router
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-orders-list',
@@ -120,6 +120,7 @@ export class OrdersListComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
+    private Toast: HotToastService,
     private BsModalService: BsModalService
   ) {
     this.OrdersService.getOrderCounts({ status: this.orderStatus }).subscribe({
@@ -128,10 +129,10 @@ export class OrdersListComponent implements OnInit {
           this.orderStatus = res?.result
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res.message)
+          this.Toast.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.Toast.error(err.message)
       }
     })
   }
@@ -157,14 +158,14 @@ export class OrdersListComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getOrders()
           this.tagRef?.hide()
-          this.ToastrService.success(res.message)
+          this.Toast.success(res.message)
           this.tagOrder = ''
-          this.tag.setValue('')
+          this.tag.reset()
         } else {
-          this.ToastrService.error(res.message)
+          this.Toast.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.Toast.error(err.message)
       }
     })
   }
@@ -185,8 +186,8 @@ export class OrdersListComponent implements OnInit {
     this.getOrders()
   }
 
-  exportOrders(){
-    
+  exportOrders() {
+
   }
 
   getLimit() {

@@ -161,6 +161,15 @@ export class MediaListingComponent implements OnInit {
     })
   }
 
+  clear() {
+    this.type?.setValue('')
+    this.keyword?.setValue('')
+    this.date = null
+    this.page = 1
+    this.limit = 20
+    this.getMedias()
+  }
+
   deleteMedias() {
     let medias = []
     for (let media of this.medias) if (this.checkedMedias.includes(media.slug)) medias.push({
