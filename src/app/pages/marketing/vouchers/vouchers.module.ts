@@ -6,7 +6,7 @@ import { VoucherListingComponent } from './voucher-listing/voucher-listing.compo
 import { CreateVoucherComponent } from './create-voucher/create-voucher.component';
 import { UpdateVoucherComponent } from './update-voucher/update-voucher.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     VouchersRoutingModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule
   ]
 })

@@ -46,6 +46,7 @@
                             <th>Recepient</th>
                             <th>Voucher code</th>
                             <th>Amount</th>
+                            <th>Status</th>
                             <th>Payment status</th>
                             <th>Action</th>
                         </tr>
@@ -62,6 +63,7 @@
                                     </div>
                                 </td>
                                 <td>{{voucher?.amount}}</td>
+                                <td>{{voucher?.isAvailed == true ? 'Reedemed' : '-'}}</td>
                                 <td>
                                     <div class="p-2 rounded status"
                                         [ngClass]="{'awaiting': voucher?.paymentStatus == 'awaiting', 'success': voucher?.paymentStatus == 'success'}">

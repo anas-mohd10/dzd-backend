@@ -48,6 +48,7 @@ export class CreateVoucherComponent implements OnInit {
       email: new FormControl('', Validators.required),
       countryCode: new FormControl('', Validators.required),
       mobile: new FormControl('', Validators.required),
+      background: new FormControl(''),
       message: new FormControl('Hope you enjoy this Gift Card!')
     })
 
@@ -59,18 +60,12 @@ export class CreateVoucherComponent implements OnInit {
     })
   }
 
-  toggleDropdown() {
-    this.isToggle = !this.isToggle
+  handleMedia(event: any) {
+    this.form.get('background')?.setValue(event?._id)
   }
 
-  handleInput(event: any) {
-    this.file = event?.target?.files[0]
-    let reader = new FileReader()
-    reader.onload = (e: any) => {
-      this.preview = e.target.result
-      this.ChangeDetectorRef.markForCheck()
-    }
-    reader.readAsDataURL(this.file)
+  toggleDropdown() {
+    this.isToggle = !this.isToggle
   }
 
   getCustomers() {
@@ -102,12 +97,7 @@ export class CreateVoucherComponent implements OnInit {
       return
     }
 
-    let formdata = new FormData()
-    for (let _key of Object.keys(this.form.value)) formdata.append(_key, this.form.value[_key])
-    this.file ? formdata.append("file", this.file) : null
-    formdata.append("paymentStatus", "success")
-
-    this.VouchersService.createVoucher(formdata).subscribe({
+    this.VouchersService.createVoucher({ ...this.form.value, paymentStatus: "success" }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.vouchers.list])

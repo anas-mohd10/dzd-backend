@@ -32,6 +32,7 @@ export class AssetsComponent implements OnInit, OnChanges {
   totalResults: number = 0
   medias: Array<any> = []
   @Input('previewDetails') previewDetails?: string;
+  @Input('aspectRatio') aspectRatio: string;
   @Input('image') image?: any;
   base: string = environment.base + '/'
   preview: any;

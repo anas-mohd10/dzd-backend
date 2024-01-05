@@ -13,25 +13,32 @@
                         <a routerLink="{{ appRoute.loyalty }}">Loyalty</a>
                     </li>
                 </ul>
-                <button class="btn btn-primary fs-6" (click)="open(template)">Update loyalty system</button>
+                <button class="btn btn-primary fs-6" (click)="open(template)">Update loyalty</button>
             </div>
         </div>
     </div>
     <div class="card my-4">
         <div class="card-body">
-            <div class="my-4">
-                <div class="fs-4 fw-bold">Earning points</div>
+            <div class="my-8 d-flex justify-content-center align-items-center">
                 <div>
-                    For every {{settings?.currency}} {{loyaltyDetails?.earning?.amount}} ,
-                    the customer receives {{loyaltyDetails?.earning?.points}} point in their loyalty points wallet. This
+                    <img class="loyalty-image" src="../../../../assets/icons/loyalty.svg" alt="Loyalty">
+                </div>
+            </div>
+            <div class="my-4">
+                <div class="fs-4 fw-bold mb-1">Earning points</div>
+                <div>
+                    For every <span class="text-primary">{{settings?.currency}}
+                        {{loyaltyDetails?.earning?.amount}}</span>,
+                    the customer receives <span class="text-primary">{{loyaltyDetails?.earning?.points}}</span> point in
+                    their loyalty points wallet. This
                     means that customers earn points based on their purchases.
                 </div>
             </div>
             <div class="my-4">
-                <div class="fs-4 fw-bold">Point conversion</div>
+                <div class="fs-4 fw-bold mb-1">Point conversion</div>
                 <div>
-                    {{loyaltyDetails?.conversion?.points}} wallet points are worth {{settings?.currency}}
-                    {{loyaltyDetails?.conversion?.worth}}.
+                    <span class="text-primary">{{loyaltyDetails?.conversion?.points}}</span> wallet points are worth
+                    <span class="text-primary">{{settings?.currency}} {{loyaltyDetails?.conversion?.worth}}</span>.
                     Customers can use this conversion ratio to determine the worth of their loyalty points.
                 </div>
             </div>
@@ -50,7 +57,7 @@
         <form [formGroup]="form">
             <div class="mb-2">
                 <div class="mb-4">
-                    <div class="fs-5 fw-bold">Earning</div>
+                    <div class="fs-5 fw-bold mb-2">Earning</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="earningAmount" class="form-label mb-3">Amount</label>
@@ -63,7 +70,7 @@
                     </div>
                 </div>
                 <div class="mb-4">
-                    <div class="fs-5 fw-bold">Conversion</div>
+                    <div class="fs-5 fw-bold mb-2">Conversion</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="conversionPoints" class="form-label mb-3">Points</label>
