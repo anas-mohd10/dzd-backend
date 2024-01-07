@@ -8,6 +8,10 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+.btn-secondary{
+  font-weight: 400 !important;
+}
+
 .modal-body {
   .form-label {
     font-weight: 400;
@@ -34,6 +38,7 @@ $error: #F1416C;
     display: grid;
     place-items: center;
     margin: 0.3125rem 0 0 0;
+    cursor: pointer;
   }
 }
 

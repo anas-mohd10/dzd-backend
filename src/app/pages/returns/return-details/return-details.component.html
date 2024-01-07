@@ -1,0 +1,136 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Return details</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.returns }}">Returns</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.returns + '/' + returnRef }}">Return details</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body" *ngIf="returnDetails">
+            <h1 class="fw-bold">Return #{{returnDetails?.reference}}</h1>
+            <div class="fs-5 fw-bold">Order {{returnDetails?.order?.orderNo}}</div>
+            <div class="fs-6">Request submitted on {{returnDetails?.createdAt}}</div>
+            <div class="my-6 row fs-6">
+                <div class="col-lg-3 fw-bold d-flex justify-content-between">
+                    <div>Customer details</div>
+                    <div>:</div>
+                </div>
+                <div class="col-lg-9">
+                    <div>{{returnDetails?.customer?.name}}</div>
+                    <div>
+                        {{returnDetails?.customer?.countryCode}}
+                        {{returnDetails?.customer?.mobile}},
+                        {{returnDetails?.customer?.email}}
+                    </div>
+                </div>
+            </div>
+            <div class="my-8">
+                <hr>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="fs-6 text-muted mb-2">Name</div>
+                        <div class="d-flex align-items-center justify-content-start">
+                            <img class="rounded" height="50px" width="50px"
+                                src="{{base + '/' +returnDetails?.product?.thumbnail}}"
+                                alt="{{returnDetails?.product?.name}}">
+                            <div class="ms-2 product">{{returnDetails?.product?.name}}</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fs-6 text-muted mb-2">Quantity</div>
+                        <div>{{returnDetails?.quantity}}</div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="fs-6 text-muted mb-2">Amount</div>
+                        <div>{{returnDetails?.returnAmount}}</div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="row mb-2 fs-6">
+                <div class="col-lg-3 fw-bold d-flex justify-content-between">
+                    <div>Reason</div>
+                    <div>:</div>
+                </div>
+                <div class="col-lg-9">{{returnDetails?.reason}}</div>
+            </div>
+            <div class="row mb-2 fs-6">
+                <div class="col-lg-3 fw-bold d-flex justify-content-between">
+                    <div>Comments</div>
+                    <div>:</div>
+                </div>
+                <div class="col-lg-9">{{returnDetails?.comments}}</div>
+            </div>
+            <div class="row mb-2 fs-6">
+                <div class="col-lg-3 d-flex justify-content-between">
+                    <div>File attachments</div>
+                    <div>:</div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="images">
+                        <ng-container *ngFor="let image of returnDetails?.images">
+                            <div class="image" (click)="open(template, image)" tooltip="Click to view"
+                                placement="bottom">
+                                <img src="{{image}}">
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-8 fs-6">
+                <div class="col-lg-3 fw-bold d-flex justify-content-between">
+                    <div>Refund status</div>
+                    <div>:</div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <select [formControl]="isRefunded" id="isRefunded" class="form-select"
+                            (change)="update(confirmation)">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let item of [true, false]" value="{{item}}">
+                                {{item == true ? 'Refunded' : 'Not refunded'}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">File attachment #{{returnDetails?.reference}}</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="image">
+            <img src="{{file}}">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #confirmation>
+    <div class="modal-body text-center">
+        <p>Do you want to confirm?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+</ng-template>

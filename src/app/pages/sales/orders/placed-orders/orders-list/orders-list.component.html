@@ -1,7 +1,7 @@
 <div class="brand-page-container">
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder">Orders</h1>
+      <h1 class="fw-bold">Orders</h1>
     </div>
     <div class="row">
       <div class="col d-flex align-items-start justify-content-between">
@@ -13,10 +13,15 @@
             <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
-          Add Orders
-        </button>
+        <div>
+          <button class="btn btn-secondary me-1" (click)="exportOrders()">
+            Export orders
+          </button>
+          <button class="btn btn-primary ms-1" routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
+            Add Orders
+          </button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -31,26 +36,20 @@
       </div>
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-2 mb-2 text-dark"> {{ totalrevenues }}</div>
+          <div class="fs-2 fw-bold mb-2 text-dark"> {{ totalrevenues }}</div>
           <div class="fs-6">Total revenue</div>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-2 mb-2 text-dark"> {{ averagesales }}</div>
+          <div class="fs-2 mb-2 text-dark fw-bold"> {{ averagesales }}</div>
           <div class="fs-6">Average sales</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-secondary" (click)="exportOrders()">
-      Export orders
-    </button>
-  </div>
-
-  <div class="row order_row">
+  <div class="order_row">
     <div class="card card-table">
       <div class="row nav_row">
         <div class="col-9 arrow_flex">
@@ -157,7 +156,18 @@
                         </span>
                       </div>
                       <ng-container *ngFor="let tag of order?.tags; let j = index">
-                        <div class="p-1 bg-secondary rounded tag">{{tag}}</div>
+                        <div class="p-1 bg-secondary rounded tag d-flex align-items-center justify-content-center"
+                          (click)="removeTag(order.orderNo, tag)">
+                          {{tag}}
+                          <div class="ms-1">
+                            <svg height="15px" width="15px" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                            </svg>
+                          </div>
+                        </div>
                       </ng-container>
                     </div>
                   </td>
@@ -223,9 +233,10 @@
     <div>
       <div class="form-group">
         <label for="tag" class="form-label required">Tag</label>
-        <input type="text" placeholder="Eg. processed" [formControl]="tag" class="text-dark p-2 form-control" maxLength="10"
+        <input type="text" placeholder="Eg. processed" [formControl]="tag" class="text-dark p-2 form-control"
+          maxLength="10"
           [ngClass]="{'is-invalid': (tag.touched || isTagSubmitted) && (tag.errors?.required || tag.errors?.maxLength)}">
-        <div class="text-danger" *ngIf="tag.errors?.maxLength" >
+        <div class="text-danger" *ngIf="tag.errors?.maxLength">
           The word you entered exceeds the maximum allowed length of 10 letters.
           Please enter a word with 10 letters or fewer.
         </div>

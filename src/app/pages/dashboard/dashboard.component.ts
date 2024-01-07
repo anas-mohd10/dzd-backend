@@ -203,7 +203,7 @@ export class DashboardComponent implements OnInit {
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
   }
 
   searchLinks(keyword: string) {

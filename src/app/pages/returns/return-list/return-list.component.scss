@@ -1,0 +1,65 @@
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
+.btn-secondary {
+    font-weight: 400 !important;
+}
+
+.product {
+    max-width: 300px;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.emptyNote {
+    margin: 0 0 20px 0;
+    display: grid;
+    place-items: center;
+
+    .note {
+        font-weight: normal;
+    }
+}
+
+
+.table-responsive {
+
+    .common_thead {
+        background: #20BDAB;
+
+        th {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 15px;
+            text-transform: capitalize;
+            color: #FFFFFF;
+        }
+    }
+
+    tr {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    tbody {
+        tr {
+            td {
+                img {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

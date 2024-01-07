@@ -147,6 +147,21 @@ export class OrdersListComponent implements OnInit {
     this.tagOrder = ''
   }
 
+  removeTag(order: string, tag: string) {
+    this.OrdersService.manageTags({ order: order, tag: tag }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrders()
+          this.Toast.success(res.message)
+        } else {
+          this.Toast.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.message)
+      }
+    })
+  }
+
   addTag() {
     if (!this.tag.valid) {
       this.isTagSubmitted = true
@@ -160,6 +175,7 @@ export class OrdersListComponent implements OnInit {
           this.tagRef?.hide()
           this.Toast.success(res.message)
           this.tagOrder = ''
+          this.isTagSubmitted = false
           this.tag.reset()
         } else {
           this.Toast.error(res.message)

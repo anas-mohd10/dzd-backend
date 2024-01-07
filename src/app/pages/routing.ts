@@ -24,6 +24,7 @@ import { ActivitiesComponent } from './settings/general/activities/activities.co
 import { SalesAnalyticsComponent } from './sales-analytics/sales-analytics.component';
 import { DeliverySlotsComponent } from './settings/general/delivery-slots/delivery-slots.component';
 import { LoyaltyComponent } from './marketing/loyalty/loyalty.component';
+import { ReferralComponent } from './marketing/referral/referral.component';
 
 export const Routing: Routes = [
   {
@@ -238,11 +239,6 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'return-lists',
-        loadChildren: () => import('./sales/returns/returns.module').then((m) => m.ReturnsModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
         path: 'banners',
         loadChildren: () => import('./design/banners/banners.module').then((m) => m.BannersModule),
         canActivate: [AuthenticationGuard]
@@ -251,8 +247,15 @@ export const Routing: Routes = [
         path: 'reports',
         loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
+        path: 'returns',
+        loadChildren: () => import('./returns/returns.module').then((m) => m.ReturnsModule),
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'referral',
+        component: ReferralComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'layouts',
         loadChildren: () => import('./design/layouts/layouts.module').then((m) => m.LayoutsModule),
         canActivate: [AuthenticationGuard]

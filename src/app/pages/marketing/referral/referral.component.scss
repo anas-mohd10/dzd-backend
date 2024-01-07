@@ -1,0 +1,68 @@
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00bdab;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00bdab20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
+.icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background: #00bdab10;
+    color: #00bdab;
+    margin: 0 0 .625rem 0;
+    display: grid;
+    place-items: center;
+}
+
+.btn-secondary,
+.form-label,
+.btn-primary {
+    font-weight: 400 !important;
+}
+
+.emptyNote {
+    margin: 0 0 20px 0;
+    display: grid;
+    place-items: center;
+
+    .note {
+        font-weight: normal;
+    }
+}
+
+
+.table-responsive {
+
+    .common_thead {
+        background: #20BDAB;
+
+        th {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 15px;
+            text-transform: capitalize;
+            color: #FFFFFF;
+        }
+    }
+
+    tr {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    tbody {
+        tr {
+            td {
+                img {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

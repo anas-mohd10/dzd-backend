@@ -33,28 +33,28 @@
                     Delete assets
                 </button>
             </div>
-            <div class="mt-4 d-flex align-items-center justify-content-end">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <input type="text" placeholder="Search medias" class="form-control" [formControl]="keyword"
-                                (ngModelChange)="getMedias()" />
-                        </div>
+            <div class="mt-4 row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <input type="text" placeholder="Search medias" class="form-control" [formControl]="keyword"
+                            (ngModelChange)="getMedias()" />
                     </div>
-                    <div class="col-lg-3">
-                        <select name="type" id="type" class="form-select" [formControl]="type" (change)="getMedias()">
-                            <option disabled>-- Select an option --</option>
-                            <option value="">All items</option>
-                            <option value="image">Images</option>
-                            <option value="video">Videos</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-3">
-                        <input id="date" name="date" type="text" placeholder="All dates" class="form-control"
-                            bsDatepicker
-                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
-                            [(ngModel)]="date" (ngModelChange)="getMedias()">
-                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <select name="type" id="type" class="form-select" [formControl]="type" (change)="getMedias()">
+                        <option disabled>-- Select an option --</option>
+                        <option value="">All items</option>
+                        <option value="image">Images</option>
+                        <option value="video">Videos</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <input id="date" name="date" type="text" placeholder="All dates" class="form-control" bsDatepicker
+                        [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                        [(ngModel)]="date" (ngModelChange)="getMedias()">
+                </div>
+                <div class="col-lg-2">
+                    <input type="button" class="btn btn-secondary" value="Clear filters" (click)="clear()">
                 </div>
             </div>
             <div class=" medias-wrapper">
@@ -65,7 +65,8 @@
                             </div>
                         </div>
                         <a routerLink="{{appRoute.mediaLibrary + '/' + media.slug}}">
-                            <img src="{{base}}/{{media.path}}" alt={{media.altTitle}} onerror="this.src = '../../../../assets/images/default.png'">
+                            <img src="{{base}}/{{media.path}}" alt={{media.altTitle}}
+                                onerror="this.src = '../../../../assets/images/default.png'">
                             <div class="p-3 details">
                                 <div class="asset-details">{{media.title}}</div>
                                 <div class="text-muted">{{media.createdAt}}</div>

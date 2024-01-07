@@ -152,10 +152,6 @@ export const appRoutes = {
     ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   },
-  returns: {
-    RETURN_LIST: `${app}${returnRoute}`,
-    UPDATE_RETURN: `${app}${returnRoute}/update`
-  },
   banner: {
     BANNER_LIST: `${app}${bannerRoute}`,
     ADD_BANNER: `${app}${bannerRoute}/add`,
@@ -286,5 +282,7 @@ export const appRoutes = {
     create: `${app}/catalogs/create-catalog`,
     update: `${app}/catalogs/update-catalog`
   },
-  loyalty: `${app}/loyalty`
+  returns: `${app}/returns`,
+  loyalty: `${app}/loyalty`,
+  referralProgram: `${app}/referral`,
 }

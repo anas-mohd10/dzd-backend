@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateReturnsListComponent } from './update-returns-list.component';
+import { ReferralComponent } from './referral.component';
 
-describe('UpdateReturnsListComponent', () => {
-  let component: UpdateReturnsListComponent;
-  let fixture: ComponentFixture<UpdateReturnsListComponent>;
+describe('ReferralComponent', () => {
+  let component: ReferralComponent;
+  let fixture: ComponentFixture<ReferralComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UpdateReturnsListComponent ]
+      declarations: [ ReferralComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateReturnsListComponent);
+    fixture = TestBed.createComponent(ReferralComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

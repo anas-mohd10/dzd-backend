@@ -118,7 +118,8 @@
             </div>
             <div class="itemDetails">
               <div class="itemTitle">Delivery slot</div>
-              <div class="itemResponse">{{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}</div>
+              <div class="itemResponse">{{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' +
+                order?.deliverySlot?.to : '-'}}</div>
             </div>
           </div>
         </div>
@@ -204,14 +205,14 @@
           <div class="table-responsive">
             <table class="table table-vertical-center table-borderless productsTable">
               <thead>
-                <tr class="text-left mb-2 fs-6 text-gray-400">
-                  <th style="max-width: 20px">&nbsp;</th>
-                  <th style="min-width: 150px">Product</th>
-                  <th style="max-width: 50px">Qty</th>
-                  <th style="min-width: 100px">Price</th>
-                  <th style="min-width: 100px">Total</th>
-                  <th style="min-width: 100px">Status</th>
-                  <th style="min-width: 80px">Payment</th>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Payment</th>
                 </tr>
               </thead>
               <tbody class="fs-6 text-dark">
@@ -224,8 +225,8 @@
                       <div>
                         <div class="fw-bolder">{{product?.productId?.name}}</div>
                         <div class="mb-1 text-gray-400 fs-6">SKU - {{product?.productId?.sku}}</div>
-                        <div class="pe-2 ps-2 fw-bolder rounded productStatus"
-                          [ngClass]="{'failedStatus':product.currentStatus.status == 'Failed' }">
+                        <div class="px-2 py-0 fw-bold rounded alert" [ngClass]="{'alert-danger': product.currentStatus.status == 'Failed', 
+                          'alert-success': product.currentStatus.status != 'Failed' }">
                           {{product.currentStatus.status}},
                           {{product.currentStatus.date}}
                         </div>

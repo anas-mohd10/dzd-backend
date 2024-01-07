@@ -84,13 +84,28 @@
 <div class="menu-item">
   <a class="menu-link without-sub" routerLink="{{ appRoute.orders.ORDERS_LIST }}" routerLinkActive="active">
     <span class="menu-icon">
-      <i class="bi bi-clipboard-data fs-4"></i>
+      <svg width="16" height="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"></path>
+      </svg>
     </span>
     <span class="menu-title fw-bold">Orders</span>
   </a>
 </div>
 
-
+<div class="menu-item">
+  <a class="menu-link without-sub" routerLink="{{ appRoute.returns }}" routerLinkActive="active">
+    <span class="menu-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
+        viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+      </svg>
+    </span>
+    <span class="menu-title fw-bold">Returns</span>
+  </a>
+</div>
 
 <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
   <span class="menu-link">
@@ -204,6 +219,19 @@
           </svg>
         </span>
         <span class="menu-title">Loyalty</span>
+      </a>
+    </div>
+    <div class="menu-item">
+      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.referralProgram }}">
+        <span class="menu-bullet">
+          <svg height="16px" width="16px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z">
+            </path>
+          </svg>
+        </span>
+        <span class="menu-title">Referral</span>
       </a>
     </div>
     <div class="menu-item">

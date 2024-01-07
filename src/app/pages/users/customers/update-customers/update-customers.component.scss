@@ -10,6 +10,12 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+.md-local {
+   background-color: #009688;
+   border-color: #00695C;
+   color: #fff;
+ }
+
 label,
 input[type=button],
 .btn-secondary {
@@ -17,7 +23,7 @@ input[type=button],
 }
 
 .addressWrapper {
-   margin: 1.875rem 0;
+   margin: 3rem 0;
    
    .addressCards {
       display: grid;

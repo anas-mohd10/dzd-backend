@@ -29,14 +29,23 @@
                <form [formGroup]="customersForm">
                   <div class="row">
 
+                     <div class="my-5" *ngIf="customerData?.referralSource">
+                        <div class="border p-6 bg-white border-secondary rounded shadow">
+                           {{customerData.name}} signed up for the account, using
+                           <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST}}" target="_blank"
+                              [queryParams]="{'customer': customerData?.referralSource?.user?.userid}">{{customerData?.referralSource?.user?.name}}'s</a>
+                         referral code.
+                        </div>
+                     </div>
+
                      <div class="d-flex justify-content-end">
                         <button class="btn btn-secondary" (click)="openWallet(walletTemplate)">Wallet
                            transactions</button>
                      </div>
 
                      <div class="addressWrapper">
-                        <div class="d-flex align-items-center justify-content-between">
-                           <h3 class="mb-3 fw-bold fs-4">Address details</h3>
+                        <div class="d-flex align-items-end justify-content-between">
+                           <div class="fw-bold fs-4">Address details</div>
                            <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
                         </div>
 
@@ -69,7 +78,7 @@
                         </div>
 
                         <ng-container *ngIf="addresses.length == 0">
-                           <div class="my-8 d-flex flex-column align-items-center justify-content-center">
+                           <div class="my-3 d-flex flex-column align-items-start justify-content-start">
                               <div class="fs-4 fw-bold">No address found</div>
                               <p class="text-muted">We couldn't find any item based on your search</p>
                            </div>
@@ -161,10 +170,8 @@
 <ng-template #delete>
    <div class="modal-body text-center">
       <div class="fs-5 mb-6">Do you want to delete this address?</div>
-      <div class="d-flex justify-content-between align-items-center">
-         <button type="button" class="btn btn-default p-2" (click)="confirm()">Yes</button>
-         <button type="button" class="btn btn-primary p-2" (click)="decline()">No</button>
-      </div>
+         <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+         <button type="button" class="btn btn-primary" (click)="decline()">No</button>
    </div>
 </ng-template>
 
