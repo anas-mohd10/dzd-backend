@@ -10,7 +10,7 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
-.dropdown-menu{
+.dropdown-menu {
     width: 200px !important;
     right: 0 !important;
     top: -100% !important;
@@ -20,7 +20,8 @@ $error: #F1416C;
     margin: 5px 0 0 0 !important;
 }
 
-button.btn.btn-secondary {
+.btn-secondary,
+.btn-primary {
     font-weight: 400 !important;
 }
 

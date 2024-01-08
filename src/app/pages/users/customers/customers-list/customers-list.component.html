@@ -1,7 +1,7 @@
-<div class="brand-page-container">
+<div>
    <div class="page-header">
       <div class="page-title">
-         <h1 class="fw-bolder">Customers</h1>
+         <h1 class="fw-bold">Customers</h1>
       </div>
       <div class="row align-items-center">
          <div class="col d-flex align-items-start justify-content-between">
@@ -71,12 +71,12 @@
                               <td>{{customer?.email}}</td>
                               <td>{{customer?.mobile}}</td>
                               <td>
-                                 <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
+                                 <span class="alert alert-success p-1 fs-6"
+                                    [ngClass]="{'alert-danger': !customer?.isActive}">
                                     {{customer?.isActive ? 'Active' : 'Inactive'}}
                                  </span>
                               </td>
-                              <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST}}"
-                                 [queryParams]="{'customer': customer?.userid}">
+                              <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
                                  <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                               </td>
                            </tr>
@@ -105,7 +105,8 @@
                         <span class="fs-6 text-dark">entries</span>
                      </div>
                      <div class="filteringResultCount fs-6">
-                        Showing <span class="me-1 ms-1">{{customers.length}}</span> of <span class="ms-1">{{totalCustomers}}</span>
+                        Showing <span class="me-1 ms-1">{{customers.length}}</span> of <span
+                           class="ms-1">{{totalCustomers}}</span>
                      </div>
                      <div class="pagination">
                         <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">

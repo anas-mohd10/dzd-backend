@@ -36,6 +36,16 @@ export class CustomersService {
     return this.http.get(`${url}`)
   }
 
+  getCustomerDetails(customer: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.getCustomerDetails + `/${customer}`);
+    return this.http.get(`${url}`)
+  }
+
+  getReferralHistory(customer: string, page: number, limit: number, keyword: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.referralHistory + `/${customer}` + `?page=` + page + `&limit=` + limit + `&keyword=` + keyword);
+    return this.http.get(`${url}`)
+  }
+
   getCustomerByNum(data: any) {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer_by_number);
     return this.http.post(`${url}`, data)

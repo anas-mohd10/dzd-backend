@@ -131,10 +131,11 @@ export const appRoutes = {
     CUSTOMERS_LIST: `${app}${customerRoute}`,
     ADD_CUSTOMERS_LIST: `${app}${customerRoute}/add`,
     UPDATE_CUSTOMERS_LIST: `${app}${customerRoute}/update`,
+    referralHistory: `${app}${customerRoute}/referral-history`,
   },
   coupons: {
     COUPONS_LIST: `${app}${couponRoute}`,
-    ADD_COUPONS_LIST: `${app}${couponRoute}/add`,
+    ADD_COUPONS_LIST: `${app}${couponRoute} /add`,
     UPDATE_COUPONS_LIST: `${app}${couponRoute}/update`,
   },
   contacts: {

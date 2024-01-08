@@ -34,13 +34,18 @@
                            {{customerData.name}} signed up for the account, using
                            <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST}}" target="_blank"
                               [queryParams]="{'customer': customerData?.referralSource?.user?.userid}">{{customerData?.referralSource?.user?.name}}'s</a>
-                         referral code.
+                           referral code.
                         </div>
                      </div>
 
                      <div class="d-flex justify-content-end">
-                        <button class="btn btn-secondary" (click)="openWallet(walletTemplate)">Wallet
-                           transactions</button>
+                        <button class="btn btn-secondary ms-1"
+                           routerLink="{{appRoute.customers.referralHistory + '/' + customerData?.slug}}">
+                           Referral history
+                        </button>
+                        <button class="btn btn-secondary ms-1" (click)="openWallet(walletTemplate)">
+                           Wallet transactions
+                        </button>
                      </div>
 
                      <div class="addressWrapper">
@@ -113,6 +118,7 @@
                               formControlName="countryCode">
                               <option value="" disabled>-- Select an option --</option>
                               <option value="+91">+91</option>
+                              <option value="+971">+91</option>
                            </select>
                         </div>
                      </div>
@@ -170,8 +176,8 @@
 <ng-template #delete>
    <div class="modal-body text-center">
       <div class="fs-5 mb-6">Do you want to delete this address?</div>
-         <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
-         <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+      <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
    </div>
 </ng-template>
 

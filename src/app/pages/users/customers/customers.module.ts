@@ -10,12 +10,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ReferralHistoryComponent } from './referral-history/referral-history.component';
+import { SharedModule } from '../../shared/shared.module'
 
 @NgModule({
   declarations: [
     CustomersListComponent,
     AddCustomersComponent,
-    UpdateCustomersComponent
+    UpdateCustomersComponent,
+    ReferralHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -23,6 +26,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     DataTablesModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     AlertModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

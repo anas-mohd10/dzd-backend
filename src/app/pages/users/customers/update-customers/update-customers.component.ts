@@ -64,7 +64,7 @@ export class UpdateCustomersComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.managePage()
-    this.slug = this.route.snapshot.queryParams.customer || ''
+    this.slug = this.route.snapshot.params['id'] || ''
     this.getCustomerDetails()
     this.getAddress()
 
@@ -326,9 +326,9 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getCustomerDetails() {
-    this.customerService.getCustomerBySlug(this.slug).subscribe((res: any) => {
-      this.customerData = res?.result[0]
-      this.referralCode.setValue(res?.result[0]?.referralCode)
+    this.customerService.getCustomerDetails(this.slug).subscribe((res: any) => {
+      this.customerData = res?.result
+      this.referralCode.setValue(res?.result?.referralCode)
       this.referralCode.disable()
       this.customersForm.get("name")?.setValue(this.customerData.name)
       this.customersForm.get("mobile")?.setValue(this.customerData.mobile)

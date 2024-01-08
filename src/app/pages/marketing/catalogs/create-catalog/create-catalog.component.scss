@@ -16,99 +16,124 @@ $error: #F1416C;
   position: relative;
 
   input {
-      height: 40px;
-      width: 40px;
-      outline: none;
-      border: none;
-      background: #ffffff;
+    height: 40px;
+    width: 40px;
+    outline: none;
+    border: none;
+    background: #ffffff;
   }
 
   .margin {
+    height: 100%;
+    width: 100%;
+    background: #ffdfd3;
+    position: relative;
+
+    .OuterrWrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       height: 100%;
       width: 100%;
-      background: #ffdfd3;
 
-      .styles {
+      input {
+        &:first-child {
+          position: absolute;
+          left: 50%;
+          top: 6px;
+          transform: translateX(-50%);
+        }
 
-          &:first-child {
-              position: absolute;
-              top: 50%;
-              left: 6px;
-              transform: translateY(-50%);
-          }
+        &:nth-child(2) {
+          position: absolute;
+          top: 50%;
+          right: 6px;
+          transform: translateY(-50%);
+        }
 
-          &:nth-child(2) {
-              position: absolute;
-              top: 6px;
-              left: 50%;
-              transform: translateX(-50%);
-          }
+        &:nth-child(3) {
+          position: absolute;
+          left: 50%;
+          bottom: 6px;
+          transform: translateX(-50%);
+        }
 
-          &:nth-child(3) {
-              position: absolute;
-              top: 50%;
-              right: 6px;
-              transform: translateY(-50%);
-          }
-
-          &:last-child {
-              position: absolute;
-              left: 50%;
-              bottom: 6px;
-              transform: translateX(-50%);
-          }
+        &:last-child {
+          position: absolute;
+          top: 50%;
+          left: 6px;
+          transform: translateY(-50%);
+        }
       }
+    }
+
+    .styles {
+      position: relative;
+
+
+    }
   }
 
   .padding {
-      height: 200px;
-      width: 300px;
+    height: 200px;
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #d4ffd3;
+
+    .OuterrWrapper {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #d4ffd3;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      width: 100%;
 
-      .styles {
+      input {
+        &:first-child {
+          position: absolute;
+          left: 50%;
+          top: 6px;
+          transform: translateX(-50%);
+        }
 
-          &:first-child {
-              position: absolute;
-              top: 50%;
-              left: 6px;
-              transform: translateY(-50%);
-          }
+        &:nth-child(2) {
+          position: absolute;
+          top: 50%;
+          right: 6px;
+          transform: translateY(-50%);
+        }
 
-          &:nth-child(2) {
-              position: absolute;
-              top: 6px;
-              left: 50%;
-              transform: translateX(-50%);
-          }
+        &:nth-child(3) {
+          position: absolute;
+          left: 50%;
+          bottom: 6px;
+          transform: translateX(-50%);
+        }
 
-          &:nth-child(3) {
-              position: absolute;
-              top: 50%;
-              right: 6px;
-              transform: translateY(-50%);
-          }
-
-          &:last-child {
-              position: absolute;
-              left: 50%;
-              bottom: 6px;
-              transform: translateX(-50%);
-          }
+        &:last-child {
+          position: absolute;
+          top: 50%;
+          left: 6px;
+          transform: translateY(-50%);
+        }
       }
+    }
   }
 
   .element {
-      height: 100px;
-      width: 200px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #d3e4ff;
+    height: 100px;
+    width: 200px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #d3e4ff;
   }
 }
 

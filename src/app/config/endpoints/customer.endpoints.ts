@@ -24,4 +24,6 @@ export const customerEndpoints = {
   download_subscribers: '/download-subscribers',
   addToWallet: '/create-transaction',
   getWalletTransactions: '/transactions',
+  getCustomerDetails: '/customer-details',
+  referralHistory: '/referral-history',
 }

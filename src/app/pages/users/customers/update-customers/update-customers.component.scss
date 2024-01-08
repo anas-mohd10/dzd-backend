@@ -14,17 +14,18 @@ $error: #F1416C;
    background-color: #009688;
    border-color: #00695C;
    color: #fff;
- }
+}
 
 label,
 input[type=button],
-.btn-secondary {
+.btn-secondary,
+.btn-primary {
    font-weight: normal !important;
 }
 
 .addressWrapper {
    margin: 3rem 0;
-   
+
    .addressCards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -53,7 +54,7 @@ input[type=button],
    }
 }
 
-.transactions{
+.transactions {
    overflow-y: scroll;
    max-height: 360px;
    height: max-content;
