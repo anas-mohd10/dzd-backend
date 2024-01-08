@@ -140,4 +140,9 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.getWalletTransactions + `/${customer}` + `?type=` + type);
     return this.http.get(`${url}`)
   }
+
+  getLoyaltyTransactions(customer: string, type: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.getLoyaltyTransactions + `/${customer}` + `?type=` + type);
+    return this.http.get(`${url}`)
+  }
 }

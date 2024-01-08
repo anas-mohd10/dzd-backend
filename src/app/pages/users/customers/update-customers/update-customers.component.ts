@@ -48,6 +48,12 @@ export class UpdateCustomersComponent implements OnInit {
   settings: any = {}
   referralCode: FormControl = new FormControl('')
   transactionType: FormControl = new FormControl('all')
+  loyaltyRef?: BsModalRef
+  historyItems: Array<any> = []
+  points: FormControl = new FormControl('', Validators.required)
+  loyaltyDescription: FormControl = new FormControl('')
+  isLoyaltySubmitted: boolean = false
+  loyalityType: FormControl = new FormControl('all')
 
   constructor(
     private formBuilder: FormBuilder,
@@ -119,6 +125,28 @@ export class UpdateCustomersComponent implements OnInit {
     this.amount?.reset()
     this.description?.reset()
     this.isWalletSubmitted = false
+  }
+
+  openLoyalty(template: TemplateRef<any>) {
+    this.loyaltyRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+    this.getHistory()
+  }
+
+  closeLoyalty() {
+    this.loyaltyRef?.hide()
+    this.points?.reset()
+    this.loyaltyDescription?.reset()
+    this.isLoyaltySubmitted = false
+  }
+
+  getHistory() {
+    this.customerService.getLoyaltyTransactions(this.customerData?.slug, this.loyalityType?.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.historyItems = res?.result
+        }
+      }
+    })
   }
 
   getTransactions() {

@@ -80,7 +80,8 @@
                         </div>
                         <div class="col-lg-2">
                             <label class="form-label">&nbsp;</label>
-                            <input type="button" class="w-100 btn btn-secondary" value="Clear filters" (click)="clear()">
+                            <input type="button" class="w-100 btn btn-secondary" value="Clear filters"
+                                (click)="clear()">
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -110,7 +111,9 @@
                                             <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST}}"
                                                 [queryParams]="{'customer': customer?.invitedBy?.userid}">{{customer?.invitedBy?.name}}</a>
                                         </td>
-                                        <td>{{customer?.orders}}</td>
+                                        <td>
+                                            {{customer?.orders == 0 ? 'Yet to order' : 'Order has been placed'}}
+                                        </td>
                                         <td>
                                             <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
                                         </td>
@@ -147,19 +150,22 @@
         <form [formGroup]="form" (ngSubmit)="manageReferral()">
             <div class="form-group mb-3">
                 <label for="welcomeBonus" class="form-label required">Welcome bonus</label>
-                <input type="text" class="form-control" formControlName="welcomeBonus" [ngClass]="{
+                <input type="text" class="form-control" formControlName="welcomeBonus"
+                    [ngClass]="{
                     'is-invalid':
                     (formControls.welcomeBonus.touched || isSubmitted) && (formControls.welcomeBonus.errors?.required || formControls.welcomeBonus.errors?.pattern) }">
             </div>
             <div class="form-group mb-3">
                 <label for="referralBonus" class="form-label required">Referral bonus</label>
-                <input type="text" class="form-control" formControlName="referralBonus" [ngClass]="{
+                <input type="text" class="form-control" formControlName="referralBonus"
+                    [ngClass]="{
                     'is-invalid':
                     (formControls.referralBonus.touched || isSubmitted) && (formControls.referralBonus.errors?.required || formControls.referralBonus.errors?.pattern) }">
             </div>
             <div class="form-group mb-3">
                 <label for="minimumPurchase" class="form-label required">Minimum purchase</label>
-                <input type="text" class="form-control" formControlName="minimumPurchase" [ngClass]="{
+                <input type="text" class="form-control" formControlName="minimumPurchase"
+                    [ngClass]="{
                     'is-invalid':
                     (formControls.minimumPurchase.touched || isSubmitted) && (formControls.minimumPurchase.errors?.required || formControls.minimumPurchase.errors?.pattern) }">
             </div>

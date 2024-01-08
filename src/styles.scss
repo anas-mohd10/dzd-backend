@@ -233,8 +233,11 @@ ngx-star-rating.ng-untouched.ng-pristine.ng-valid {
   }
 }
 
-.page-title h1 {
-  margin: 0 !important;
+.page-title {
+
+  h1 {
+    margin: 0 !important;
+  }
 }
 
 img.iconImage {
@@ -1109,5 +1112,5 @@ body {
 .mat-typography h4,
 .mat-typography h5,
 .mat-typography h6 {
-  font-family: monospace, 'Sen', "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family: 'Figtree', 'Sen', "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
