@@ -383,9 +383,20 @@
             <div class="transactions">
                <ng-container *ngFor="let transaction of transactions">
                   <div class="p-4 bg-white rounded border border-secondary my-2">
-                     <div class="mb-2 fs-5">An amount of <span class="text-primary">{{settings?.currency}}
-                           {{transaction?.amount}}</span> has been <span
-                           class="text-primary">{{transaction?.message}}.</span></div>
+                     <div class="mb-2 d-flex align-items-center justify-content-start"
+                        [ngClass]="{'text-muted': transaction.status == 'pending'}">
+                        <div class="me-2 modal-title">{{transaction?.type == 'credit' ? '+' : '-'}}
+                           {{settings?.currency}}
+                           {{transaction?.amount}}</div>
+                        <div class="rounded fs-6 fw-normal bg-secondary p-2" *ngIf="transaction.status == 'pending'">
+                           <svg height="20" width=20 data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                           </svg>
+                        </div>
+                     </div>
                      <div class="fs-6" *ngIf="transaction?.description">{{transaction?.description}}</div>
                      <div class="text-muted">{{transaction?.transactionDate}}</div>
                   </div>
@@ -460,9 +471,17 @@
             <div class="transactions">
                <ng-container *ngFor="let transaction of historyItems">
                   <div class="p-4 bg-white rounded border border-secondary my-2">
-                     <div class="fs-3 fw-bold mb-2"
-                        [ngClass]="{'loyalty-credit': transaction?.type == 'credit', 'loyalty-debit': transaction?.type == 'debit' }">
-                        {{transaction?.type == 'credit' ? '+' : '-'}} {{transaction?.points}} points</div>
+                     <div class=" mb-2 d-flex align-items-center justify-content-start">
+                        <div class="modal-title" [ngClass]="{'loyalty-credit': transaction?.type == 'credit', 'loyalty-debit': transaction?.type == 'debit' }"> {{transaction?.type == 'credit' ? '+' : '-'}} {{transaction?.points}} points</div>
+                        <div class="rounded fs-6 fw-normal bg-secondary p-2" *ngIf="transaction.status == 'pending'">
+                           <svg height="20" width=20 data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                           </svg>
+                        </div>
+                     </div>
                      <div class="fs-6">{{transaction?.description}}</div>
                      <div class="text-muted">{{transaction?.transactionDate}}</div>
                   </div>
