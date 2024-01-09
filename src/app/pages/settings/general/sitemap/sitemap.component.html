@@ -1,0 +1,61 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Sitemap</h1>
+        </div>
+        <div class="row">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.sitemap}}">Sitemap</a>
+                    </li>
+                </ul>
+
+                <div class="buttonContainer">
+                    <button type="button" class="btn btn-primary" (click)="open(template)">
+                        Save changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <form [formGroup]="form">
+                <div class="form-group mb-3">
+                    <label for="sitemap" class="form-label required">Sitemap</label>
+                    <ngx-monaco-editor id="sitemap" class="form-control" [options]="editorOptions"
+                        style="height: 370px;" formControlName="sitemap" [ngClass]="{
+                            'is-invalid': (formControls.sitemap.touched || isSubmitted) &&
+                            formControls.sitemap.errors?.required }">
+                    </ngx-monaco-editor>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="isEnabled" class="form-label">Enable custom sitemap</label>
+                            <select formControlName="isEnabled" id="isEnabled" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let type of ['true', 'false']" value="{{type}}">
+                                    {{type == 'true' ? 'Yes' : 'No'}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-body text-center">
+        <p>Do you want to confirm?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="modalRef?.hide()">No</button>
+    </div>
+</ng-template>

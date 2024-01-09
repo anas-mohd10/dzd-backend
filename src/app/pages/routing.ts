@@ -25,6 +25,7 @@ import { SalesAnalyticsComponent } from './sales-analytics/sales-analytics.compo
 import { DeliverySlotsComponent } from './settings/general/delivery-slots/delivery-slots.component';
 import { LoyaltyComponent } from './marketing/loyalty/loyalty.component';
 import { ReferralComponent } from './marketing/referral/referral.component';
+import { SitemapComponent } from './settings/general/sitemap/sitemap.component';
 
 export const Routing: Routes = [
   {
@@ -417,6 +418,10 @@ export const Routing: Routes = [
       }, {
         path: 'navigation',
         component: NavigationMenuComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'sitemap',
+        component: SitemapComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'shipping-policy',

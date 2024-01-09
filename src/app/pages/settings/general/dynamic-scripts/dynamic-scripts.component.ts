@@ -10,7 +10,6 @@ import { DynamicScriptsService } from 'src/app/includes/services/dynamic-scripts
   styleUrls: ['./dynamic-scripts.component.scss']
 })
 
-
 export class DynamicScriptsComponent implements OnInit {
   appRoute = appRoutes
   scriptDetails: any = {}

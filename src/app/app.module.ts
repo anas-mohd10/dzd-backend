@@ -73,6 +73,7 @@ import { DeliverySlotsComponent } from './pages/settings/general/delivery-slots/
 import { SharedModule } from './pages/shared/shared.module';
 import { LoyaltyComponent } from './pages/marketing/loyalty/loyalty.component';
 import { ReferralComponent } from './pages/marketing/referral/referral.component';
+import { SitemapComponent } from './pages/settings/general/sitemap/sitemap.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -120,6 +121,7 @@ const DragConfig = {
     DeliverySlotsComponent,
     LoyaltyComponent,
     ReferralComponent,
+    SitemapComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
