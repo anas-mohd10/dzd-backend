@@ -33,6 +33,10 @@ export class LoyaltyComponent implements OnInit {
       earningPoints: new FormControl('', Validators.required),
       conversionPoints: new FormControl('', Validators.required),
       isEnabled: new FormControl(false),
+      welcomePoints: new FormControl('1'),
+      minimumPurchase: new FormControl('', Validators.required),
+      percentageOff: new FormControl('', Validators.required),
+      maximumPoints: new FormControl('', Validators.required),
       conversionWorth: new FormControl('', Validators.required)
     })
     this.getLoyaltyDetails()
@@ -66,6 +70,10 @@ export class LoyaltyComponent implements OnInit {
     this.form.get('conversionWorth')?.setValue(this.loyaltyDetails?.conversion?.worth)
     this.form.get('conversionPoints')?.setValue(this.loyaltyDetails?.conversion?.points)
     this.form.get('isEnabled')?.setValue(this.loyaltyDetails?.isEnabled)
+    this.form.get('welcomePoints')?.setValue(this.loyaltyDetails?.welcomePoints)
+    this.form.get('minimumPurchase')?.setValue(this.loyaltyDetails?.minimumPurchase)
+    this.form.get('percentageOff')?.setValue(this.loyaltyDetails?.percentageOff)
+    this.form.get('maximumPoints')?.setValue(this.loyaltyDetails?.maximumPoints)
   }
 
   close() {
@@ -87,7 +95,12 @@ export class LoyaltyComponent implements OnInit {
       }, conversion: {
         worth: this.form.get('conversionWorth')?.value,
         points: this.form.get('conversionPoints')?.value
-      }, isEnabled: this.form.get('isEnabled')?.value,
+      }, 
+      isEnabled: this.form.get('isEnabled')?.value,
+      welcomePoints: this.form.get('welcomePoints')?.value,
+      minimumPurchase: this.form.get('minimumPurchase')?.value,
+      percentageOff: this.form.get('percentageOff')?.value,
+      maximumPoints: this.form.get('maximumPoints')?.value,
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

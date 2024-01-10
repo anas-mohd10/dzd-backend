@@ -26,8 +26,8 @@
             </div>
             <div class="row my-5">
                 <div class="col-lg-6">
-                    <div>
-                        <div class="fs-4 fw-bold mb-1">Earning points</div>
+                    <div class="p-4 rounded shadow">
+                        <div class="fs-3 fw-bolder mb-2">Earning points</div>
                         <div class="fs-6">
                             For every <span class="text-primary">{{settings?.currency}}
                                 {{loyaltyDetails?.earning?.amount}}</span>,
@@ -39,8 +39,8 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div>
-                        <div class="fs-4 fw-bold mb-1">Point conversion</div>
+                    <div class="p-4 rounded shadow">
+                        <div class="fs-3 fw-bolder mb-2">Point conversion</div>
                         <div class="fs-6">
                             <span class="text-primary">{{loyaltyDetails?.conversion?.points}}</span> wallet points are
                             worth
@@ -65,41 +65,72 @@
     <div class="modal-body">
         <form [formGroup]="form">
             <div class="mb-2">
-                <div class="mb-4">
-                    <div class="fs-5 fw-bold mb-2">Earning</div>
+                <div class="mb-5">
+                    <div class="modal-title mb-2">Earning</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
-                            <label for="earningAmount" class="form-label mb-3">Amount</label>
+                            <label for="earningAmount" class="form-label required mb-1">Amount</label>
                             <input type="text" id="earningAmount" formControlName="earningAmount" class="form-control">
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label for="earningPoints" class="form-label mb-3">Points</label>
+                            <label for="earningPoints" class="form-label required mb-1">Points</label>
                             <input type="text" id="earningPoints" formControlName="earningPoints" class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <div class="fs-5 fw-bold mb-2">Conversion</div>
+                <div class="mb-5 p-4 shadow-sm rounded border border-secondary">
+                    <div class="modal-title mb-2">Conversion</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
-                            <label for="conversionPoints" class="form-label mb-3">Points</label>
+                            <label for="conversionPoints" class="form-label required mb-1">Points</label>
                             <input type="text" id="conversionPoints" formControlName="conversionPoints"
                                 class="form-control">
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label for="conversionWorth" class="form-label mb-3">Worth Amount</label>
+                            <label for="conversionWorth" class="form-label required mb-1">Amount</label>
                             <input type="text" id="conversionWorth" formControlName="conversionWorth"
                                 class="form-control">
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="isEnabled" class="form-label">Enabled</label>
-                    <select formControlName="isEnabled" id="isEnabled" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let type of [true, false]" value="{{type}}">{{type == true ? 'Enabled' :
-                            'Disabled'}}</option>
-                    </select>
+                <div class="mb-5">
+                    <div class="modal-title mb-2">Welcome points</div>
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <label for="welcomePoints" class="form-label required mb-1">Points</label>
+                            <input type="text" id="welcomePoints" formControlName="welcomePoints" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-5 p-4 rounded shadow-sm border border-secondary">
+                    <div class="modal-title mb-2">Cart settings</div>
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label for="minimumPurchase" class="form-label required mb-1">Minimum purchase</label>
+                            <input type="text" id="minimumPurchase" formControlName="minimumPurchase" class="form-control">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="percentageOff" class="form-label required mb-1">Percentage</label>
+                            <input type="text" id="percentageOff" formControlName="percentageOff" class="form-control">
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label for="maximumPoints" class="form-label required mb-1">Maximum points</label>
+                            <input type="text" id="maximumPoints" formControlName="maximumPoints" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div class="modal-title mb-2">Loyalty settings</div>
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <label for="isEnabled" class="form-label mb-1">Enable loyalty points?</label>
+                            <select formControlName="isEnabled" id="isEnabled" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let type of [true, false]" value="{{type}}">{{type == true ? 'Yes' :
+                                    'No'}}</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end align-items-center">

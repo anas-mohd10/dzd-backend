@@ -13,7 +13,7 @@ export class PaginationComponent implements OnInit, OnChanges {
   @Input('totalPages') totalPages: number = 1;
   @Output('pageTrigger') pageTrigger = new EventEmitter<any>();
   limit: FormControl = new FormControl("20");
-  limits: Array<string> = ["5", "10", "20", "30", "40", "50", "100", "200"];
+  limits: Array<string> = ["05", "10", "20", "30", "40", "50", "100", "200"];
 
   constructor() { }
 
@@ -23,6 +23,13 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
 
+  }
+
+  getDisplayRange(): string {
+    const startRange = (this.pageIndex - 1) * (this.pageSize || 1) + 1;
+    const endRange = Math.min(this.pageIndex * (this.pageSize || 1), this.totalResults);
+
+    return `${startRange} to ${endRange} of ${this.totalResults} results`;
   }
 
   onPageSizeChange() {

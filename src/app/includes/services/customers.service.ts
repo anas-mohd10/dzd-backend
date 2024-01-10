@@ -145,4 +145,9 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.getLoyaltyTransactions + `/${customer}` + `?type=` + type);
     return this.http.get(`${url}`)
   }
+
+  getNewsletterSubscribers(page: number, limit: number, keyword: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.getNewsletterSubscribers + `?page=${page}&limit=${limit}&keyword=${keyword}`);
+    return this.http.get(`${url}`)
+  }
 }

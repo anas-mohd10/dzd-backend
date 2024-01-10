@@ -1,0 +1,78 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bolder">Newsletter subscribers</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.customers.newsletterSubscribers }}">
+                            Newsletter subscribers
+                        </a>
+                    </li>
+                </ul>
+                <a class="btn btn-secondary" href="{{exportUrl}}">Export subscribers</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-4 card">
+        <div class="card-body">
+            <div class="mb-5 row d-flex justify-content-end align-items-center">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="keyword" class="form-label">&nbsp;</label>
+                        <input type="text" id="keyword" placeholder="Search subscribers" [formControl]="keyword"
+                            class="form-control" (ngModelChange)="getSubscribers()">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label for="clear" class="form-label">&nbsp;</label>
+                        <input type="button" id="clear" value="Clear filters"
+                            class="w-100 btn btn-secondary form-control" (click)="clear()">
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
+                    *ngIf="emails.length > 0">
+                    <thead class="common_thead">
+                        <tr class="text-left text-gray-400">
+                            <th style="min-width: 120px">&nbsp;</th>
+                            <th style="min-width: 100px">Email</th>
+                            <th style="min-width: 120px">Subscribed</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fs-6">
+                        <ng-container *ngFor="let email of emails; let i =index">
+                            <tr>
+                                <td>{{(limit * (page - 1)) + i + 1}}</td>
+                                <td>{{email?.email}}</td>
+                                <td>{{email?.createdAt}}</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+
+                <div *ngIf="emails.length == 0">
+                    <div class="emptyNote">
+                        <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                        <div class="fs-3 fw-bolder">No result found</div>
+                        <div class="fs-5 note">We couldn't find any item based on your search.</div>
+                    </div>
+                </div>
+
+                <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
+                    [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
+            </div>
+        </div>
+    </div>
+</div>

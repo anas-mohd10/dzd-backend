@@ -26,5 +26,6 @@ export const customerEndpoints = {
   getWalletTransactions: '/transactions',
   getCustomerDetails: '/customer-details',
   referralHistory: '/referral-history',
-  getLoyaltyTransactions: '/get-loyalty-history'
+  getLoyaltyTransactions: '/get-loyalty-history',
+  getNewsletterSubscribers: '/newsletter-subscribers',
 }

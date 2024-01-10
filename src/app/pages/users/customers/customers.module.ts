@@ -11,14 +11,16 @@ import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ReferralHistoryComponent } from './referral-history/referral-history.component';
-import { SharedModule } from '../../shared/shared.module'
+import { SharedModule } from '../../shared/shared.module';
+import { NewsletterSubscribersComponent } from './newsletter-subscribers/newsletter-subscribers.component'
 
 @NgModule({
   declarations: [
     CustomersListComponent,
     AddCustomersComponent,
     UpdateCustomersComponent,
-    ReferralHistoryComponent
+    ReferralHistoryComponent,
+    NewsletterSubscribersComponent
   ],
   imports: [
     CommonModule,

@@ -15,6 +15,7 @@
     background: #f3f3f3;
     display: grid;
     place-items: center;
+    border-radius: 50%;
 
     &.active {
         font-weight: bold;
@@ -38,5 +39,5 @@
 }
 
 select {
-    width: 70px;
+   width: 110px;
 }

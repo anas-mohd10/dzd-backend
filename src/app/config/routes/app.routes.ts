@@ -132,6 +132,7 @@ export const appRoutes = {
     ADD_CUSTOMERS_LIST: `${app}${customerRoute}/add`,
     UPDATE_CUSTOMERS_LIST: `${app}${customerRoute}/update`,
     referralHistory: `${app}${customerRoute}/referral-history`,
+    newsletterSubscribers: `${app}${customerRoute}/newsletter-subscribers`,
   },
   coupons: {
     COUPONS_LIST: `${app}${couponRoute}`,

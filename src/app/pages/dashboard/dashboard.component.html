@@ -202,7 +202,7 @@
       <ng-container *ngFor="let product of products">
         <div class="selling_products">
           <div class="selling_phoneImg">
-            <img src="{{product?.thumbnail}}" alt="Product" />
+            <img src="{{product?.thumbnail}}" onerror="this.src = '../../../assets/images/default.png'" alt="Product" />
           </div>
           <div class="product_details">
             <h2>{{product?.name}}</h2>

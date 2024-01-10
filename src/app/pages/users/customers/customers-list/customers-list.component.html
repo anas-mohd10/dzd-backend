@@ -1,7 +1,7 @@
 <div>
    <div class="page-header">
       <div class="page-title">
-         <h1 class="fw-bold">Customers</h1>
+         <h1 class="fw-bolder">Customers</h1>
       </div>
       <div class="row align-items-center">
          <div class="col d-flex align-items-start justify-content-between">
@@ -13,9 +13,11 @@
                   <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}">Customers</a>
                </li>
             </ul>
-            <div>
-               <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-                  routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}" style="width: 200px">
+            <div class="d-flex align-items-center justify-content-end">
+               <button class="me-1 btn btn-secondary" routerLink="{{ appRoute.customers.newsletterSubscribers }}">
+                  Newsletter subscribers
+               </button>
+               <button class="ms-1 btn btn-primary" routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
                   Add Customers
                </button>
             </div>

@@ -1,13 +1,13 @@
 <div class="d-flex align-items-center justify-content-between my-6">
     <div class="form-group d-flex align-items-center">
-        <label for="limit" class="form-label me-2">Items per page</label>
-        <select [formControl]="limit" id="limit" class="p-2 form-select" (change)="onPageSizeChange()">
+        <select [formControl]="limit" id="limit" class="py-1 px-2 form-select" (change)="onPageSizeChange()">
             <option value="" disabled>--Select an option --</option>
-            <option *ngFor="let limit of limits" [value]="limit">{{limit}}</option>
+            <option *ngFor="let limit of limits" [value]="limit">{{limit}} items</option>
         </select>
     </div>
+    <div class="fs-6">{{getDisplayRange()}}</div>
     <div class="pagination-container">
-        <button class="btn p-2 rounded" (click)="onPageIndexChange(pageIndex - 1)" [disabled]="pageIndex === 1">
+        <button class="btn p-2" (click)="onPageIndexChange(pageIndex - 1)" [disabled]="pageIndex === 1">
             <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
@@ -18,7 +18,7 @@
                 {{ page }}
             </button>
         </ng-container>
-        <button class="btn p-2 rounded" (click)="onPageIndexChange(pageIndex + 1)"
+        <button class="btn p-2" (click)="onPageIndexChange(pageIndex + 1)"
             [disabled]="pageIndex === totalPages">
             <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

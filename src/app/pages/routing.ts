@@ -26,6 +26,7 @@ import { DeliverySlotsComponent } from './settings/general/delivery-slots/delive
 import { LoyaltyComponent } from './marketing/loyalty/loyalty.component';
 import { ReferralComponent } from './marketing/referral/referral.component';
 import { SitemapComponent } from './settings/general/sitemap/sitemap.component';
+import { NewsletterSubscribersComponent } from './users/customers/newsletter-subscribers/newsletter-subscribers.component';
 
 export const Routing: Routes = [
   {
@@ -255,6 +256,10 @@ export const Routing: Routes = [
       }, {
         path: 'referral',
         component: ReferralComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'newsletter-subscribers',
+        component: NewsletterSubscribersComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'layouts',
