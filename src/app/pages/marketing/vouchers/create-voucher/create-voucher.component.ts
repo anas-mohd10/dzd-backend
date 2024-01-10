@@ -45,13 +45,14 @@ export class CreateVoucherComponent implements OnInit {
       user: new FormControl('', Validators.required),
       amount: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
       name: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required),
-      countryCode: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
+      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      countryCode: new FormControl('', Validators.required),
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
       background: new FormControl(''),
       message: new FormControl('Hope you enjoy this Gift Card!')
     })
 
+  
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result

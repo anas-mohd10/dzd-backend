@@ -47,7 +47,7 @@
         Generate packing slip
       </div>
     </div>
-    <div class="position-relative btns-sx">
+    <div class="position-relative btns-sx" *ngIf="isInvoiceAvailable">
       <a class="printButton bg-primary text-white" href="/generate-invoice?order={{orderNumber?.split('#')[1]}}"
         target="_blank">
         <img src="../../../../../../assets/icons/printer.svg" alt="icon" class="iconImage">

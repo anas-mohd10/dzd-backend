@@ -72,16 +72,16 @@
                         <input type="text" id="email" placeholder="Enter email address" class="form-control"
                             formControlName="email"
                             [ngClass]="{
-                                'is-invalid':  (formControls.email.touched || isSubmitted) && formControls.email.errors?.required}">
+                                'is-invalid':  (formControls.email.touched || isSubmitted) && formControls.email.errors?.required || formControls.email.errors?.pattern}">
                     </div>
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group mb-3">
                                 <label for="country" class="form-label required">Country code</label>
-                                <input type="text" placeholder="Enter country code" class="form-control"
-                                    formControlName="countryCode"
-                                    [ngClass]="{
-                                        'is-invalid':  (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required || formControls.countryCode.errors?.pattern}">
+                               <select formControlName="countryCode" id="country" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let country of ['+91', '+971']" value="{{country}}">{{country}}</option>
+                               </select>
                             </div>
                         </div>
                         <div class="col-lg-9">
