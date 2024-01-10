@@ -43,11 +43,11 @@ export class CreateVoucherComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       user: new FormControl('', Validators.required),
-      amount: new FormControl('', Validators.required),
+      amount: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
       name: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
-      countryCode: new FormControl('', Validators.required),
-      mobile: new FormControl('', Validators.required),
+      countryCode: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
+      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
       background: new FormControl(''),
       message: new FormControl('Hope you enjoy this Gift Card!')
     })

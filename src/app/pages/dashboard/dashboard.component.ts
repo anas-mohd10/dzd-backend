@@ -76,6 +76,8 @@ export class DashboardComponent implements OnInit {
     { title: 'Create order', description: 'Place order on behalf of your custsomer', redirection: appRoutes.orders.ADD_ORDER_LIST },
     { title: 'View orders', description: 'Manage your latest orders', redirection: appRoutes.orders.ORDERS_LIST },
     { title: 'Create coupons', description: 'Create new coupon code and give discounts to customers', redirection: appRoutes.coupons.ADD_COUPONS_LIST },
+    { title: 'Create blogs', description: 'Create new blogs for your customers', redirection: appRoutes.blogs.create },
+    { title: 'View blogs', description: 'View all blogs in your stores', redirection: appRoutes.blogs.list },
   ]
   searchResults: Array<any> = []
 

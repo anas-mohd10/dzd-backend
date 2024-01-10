@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { TimeslotsService } from 'src/app/includes/services/timeslots.service';
@@ -24,7 +24,7 @@ export class UpdateStoreComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private TimeslotsService: TimeslotsService,
     private Router: Router,
-    private ToastrService: ToastrService,
+    private ToastrService: HotToastService,
     private ActivatedRoute: ActivatedRoute
   ) { }
 
@@ -96,13 +96,12 @@ export class UpdateStoreComponent implements OnInit {
   addDetails() {
     if (!this.form.valid) {
       this.isValid = false
-      this.ToastrService.error('Invalid form')
       return
     }
 
     const payload = this.createPayload()
-    console.log("payload")
-    if (payload && this.slots.length > 0) {
+
+    if (this.slots.length > 0) {
       console.log(payload)
       this.StoresService.update(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
@@ -112,6 +111,8 @@ export class UpdateStoreComponent implements OnInit {
           this.ToastrService.error(res?.message)
         }
       })
+    } else {
+      this.ToastrService.error('Add time slots to proceed')
     }
   }
 

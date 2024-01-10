@@ -85,8 +85,12 @@
                 </ng-container>
             </div>
         </ng-container>
-        <ng-container *ngIf="data.length == 0">
-            <h3 class="fw-bolder">No stores found</h3>
-        </ng-container>
+        <div *ngIf="data.length == 0">
+            <div class="emptyNote">
+                <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                <div class="fs-3 fw-bolder">No result found</div>
+                <div class="fs-5 note">We couldn't find any item based on your search.</div>
+            </div>
+        </div>
     </div>
 </div>

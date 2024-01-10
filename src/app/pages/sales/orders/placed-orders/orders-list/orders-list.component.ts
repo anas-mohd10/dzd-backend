@@ -147,8 +147,8 @@ export class OrdersListComponent implements OnInit {
     this.tagOrder = ''
   }
 
-  removeTag(order: string, tag: string) {
-    this.OrdersService.manageTags({ order: order, tag: tag }).subscribe({
+  removeTag(order: string, tag: number) {
+    this.OrdersService.manageTags({ order: order, tag: tag }, 'delete').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrders()
@@ -168,7 +168,7 @@ export class OrdersListComponent implements OnInit {
       return
     }
 
-    this.OrdersService.manageTags({ order: this.tagOrder, tag: this.tag.value }).subscribe({
+    this.OrdersService.manageTags({ order: this.tagOrder, tag: this.tag.value }, 'add').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrders()

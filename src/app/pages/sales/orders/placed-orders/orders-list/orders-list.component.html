@@ -30,19 +30,19 @@
     <div class="row order-cards">
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-2 mb-2 text-dark fw-bold"> {{ count }}</div>
+          <div class="fs-2 mb-2 text-dark fw-bolder"> {{ count }}</div>
           <div class="fs-6">Total orders</div>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-2 fw-bold mb-2 text-dark"> {{ totalrevenues }}</div>
+          <div class="fs-2 fw-bolder mb-2 text-dark"> {{ totalrevenues }}</div>
           <div class="fs-6">Total revenue</div>
         </div>
       </div>
       <div class="col-lg-3">
         <div class="card-body">
-          <div class="fs-2 mb-2 text-dark fw-bold"> {{ averagesales }}</div>
+          <div class="fs-2 mb-2 text-dark fw-bolder"> {{ averagesales }}</div>
           <div class="fs-6">Average sales</div>
         </div>
       </div>
@@ -155,9 +155,9 @@
                           </svg>
                         </span>
                       </div>
-                      <ng-container *ngFor="let tag of order?.tags; let j = index">
+                      <ng-container *ngFor="let tag of order?.tags; let tagIndex = index">
                         <div class="p-1 bg-secondary rounded tag d-flex align-items-center justify-content-center"
-                          (click)="removeTag(order.orderNo, tag)">
+                          (click)="removeTag(order.orderNo, tagIndex)">
                           {{tag}}
                           <div class="ms-1">
                             <svg height="15px" width="15px" data-slot="icon" fill="none" stroke-width="1.5"

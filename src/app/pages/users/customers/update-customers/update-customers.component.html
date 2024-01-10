@@ -355,7 +355,7 @@
             <div class="form-group mb-3">
                <label for="amount" class="form-label mb-3 required">Amount</label>
                <input type="text" id="amount" [formControl]="amount" placeholder="Wallet amount" class="form-control"
-                  [ngClass]="{'is-invalid': (amount.touched || isWalletSubmitted) && amount.errors?.required }">
+                  [ngClass]="{'is-invalid': (amount.touched || isWalletSubmitted) && amount.errors?.required || amount.errors?.pattern}">
             </div>
             <div class="form-group mb-3">
                <label for="description" class="form-label mb-3">Description</label>
@@ -444,7 +444,7 @@
             <div class="form-group mb-3">
                <label for="amount" class="form-label mb-3 required">Points</label>
                <input type="text" id="amount" [formControl]="points" placeholder="Loyalty points" class="form-control"
-                  [ngClass]="{'is-invalid': (points.touched || isLoyaltySubmitted) && points.errors?.required }">
+                  [ngClass]="{'is-invalid': (points.touched || isLoyaltySubmitted) && points.errors?.required || points.errors?.pattern }">
             </div>
             <div class="form-group mb-3">
                <label for="description" class="form-label mb-3">Description</label>

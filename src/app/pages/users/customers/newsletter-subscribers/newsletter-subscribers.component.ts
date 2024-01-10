@@ -27,10 +27,6 @@ export class NewsletterSubscribersComponent implements OnInit {
     private Toast: HotToastService
   ) { }
 
-  export() {
-
-  }
-
   ngOnInit(): void {
     this.getSubscribers()
   }

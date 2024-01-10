@@ -101,8 +101,8 @@ export class OrdersService {
     return this.http.put(`${url}`, data)
   }
 
-  manageTags(data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.manageTags);
+  manageTags(data: any, type: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.manageTags + '?type=' + type);
     return this.http.post(`${url}`, data)
   }
 

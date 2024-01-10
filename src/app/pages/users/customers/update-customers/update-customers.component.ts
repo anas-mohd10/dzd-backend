@@ -42,7 +42,7 @@ export class UpdateCustomersComponent implements OnInit {
   deleteModalRef?: BsModalRef
   walletRef?: BsModalRef
   transactions: Array<any> = []
-  amount: FormControl = new FormControl('', Validators.required)
+  amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)])
   description: FormControl = new FormControl('')
   isWalletSubmitted: boolean = false
   settings: any = {}
@@ -50,7 +50,7 @@ export class UpdateCustomersComponent implements OnInit {
   transactionType: FormControl = new FormControl('all')
   loyaltyRef?: BsModalRef
   historyItems: Array<any> = []
-  points: FormControl = new FormControl('', Validators.required)
+  points: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)])
   loyaltyDescription: FormControl = new FormControl('')
   isLoyaltySubmitted: boolean = false
   loyalityType: FormControl = new FormControl('all')
@@ -160,7 +160,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   addToWallet(type: string) {
-    if (!this.amount.value) {
+    if (!this.amount.valid) {
       this.isWalletSubmitted = true
       return
     }

@@ -59,13 +59,13 @@
                         <input type="text" placeholder="Enter gift card amount" class="form-control"
                             formControlName="amount"
                             [ngClass]="{
-                                'is-invalid':  (formControls.amount.touched || isSubmitted) && formControls.amount.errors?.required}">
+                                'is-invalid':  (formControls.amount.touched || isSubmitted) && (formControls.amount.errors?.required || formControls.amount.errors?.pattern)}">
                     </div>
                     <div class="col-lg-6 form-group mb-3">
                         <label for="amount" class="form-label required">Name</label>
                         <input type="text" placeholder="Enter name" class="form-control" formControlName="name"
                             [ngClass]="{
-                            'is-invalid':  (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}">
+                            'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}">
                     </div>
                     <div class="col-lg-6 form-group mb-3">
                         <label for="email" class="form-label required">Email</label>
@@ -81,7 +81,7 @@
                                 <input type="text" placeholder="Enter country code" class="form-control"
                                     formControlName="countryCode"
                                     [ngClass]="{
-                                        'is-invalid':  (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
+                                        'is-invalid':  (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required || formControls.countryCode.errors?.pattern}">
                             </div>
                         </div>
                         <div class="col-lg-9">
@@ -90,7 +90,7 @@
                                 <input type="text" placeholder="Enter mobile number" class="form-control"
                                     formControlName="mobile"
                                     [ngClass]="{
-                                        'is-invalid':  (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required}">
+                                        'is-invalid':  (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required || formControls.mobile.errors?.pattern}">
                             </div>
                         </div>
                     </div>

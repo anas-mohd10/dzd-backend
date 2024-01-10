@@ -48,6 +48,7 @@
                         <tr class="text-left text-gray-400">
                             <th style="min-width: 120px">&nbsp;</th>
                             <th style="min-width: 100px">Email</th>
+                            <th style="min-width: 100px">Verified</th>
                             <th style="min-width: 120px">Subscribed</th>
                         </tr>
                     </thead>
@@ -56,6 +57,7 @@
                             <tr>
                                 <td>{{(limit * (page - 1)) + i + 1}}</td>
                                 <td>{{email?.email}}</td>
+                                <td>{{email?.isVerified ? 'Verified' : 'Not verified'}}</td>
                                 <td>{{email?.createdAt}}</td>
                             </tr>
                         </ng-container>

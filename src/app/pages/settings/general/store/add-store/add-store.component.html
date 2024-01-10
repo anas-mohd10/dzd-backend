@@ -42,7 +42,9 @@
                         <div class="mb-5 col-6">
                             <label class="mb-1 fs-6 required">Country Code</label>
                             <select class="form-select form-select-lg mb-3 fs-6" formControlName="countryCode"
-                                [ngClass]="{ 'is-invalid':  (fc.countryCode.touched || !isValid) && fc.countryCode.errors?.required }">
+                                [ngClass]="{'is-invalid':  (fc.countryCode.touched || !isValid) && fc.countryCode.errors?.required }">
+                                <option value='' disabled>-- Select an option --</option>
+                                <option value='+91'>+91</option>
                                 <option value='+971'>+971</option>
                             </select>
                         </div>

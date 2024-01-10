@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { TimeslotsService } from 'src/app/includes/services/timeslots.service';
+
 
 @Component({
   selector: 'app-add-store',
@@ -23,7 +24,7 @@ export class AddStoreComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private TimeslotsService: TimeslotsService,
     private Router: Router,
-    private ToastrService: ToastrService
+    private Toast: HotToastService
   ) { }
 
   get fc() {
@@ -67,25 +68,23 @@ export class AddStoreComponent implements OnInit {
   }
 
   addDetails() {
-    console.log("clicked");
-
     if (!this.form.valid) {
       this.isValid = false
-
       return
     }
 
     const payload = this.createPayload()
-
-    if (payload && this.slots.length > 0) {
+    if (this.slots.length > 0) {
       this.StoresService.add(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
+          this.Toast.success(res?.message)
           this.Router.navigate([appRoutes.stores.STORE_LIST])
         } else {
-          this.ToastrService.error(res?.message)
+          this.Toast.error(res?.message)
         }
       })
+    } else {
+      this.Toast.error('Add time slots to proceed')
     }
   }
 
