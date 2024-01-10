@@ -203,7 +203,27 @@ export class OrdersListComponent implements OnInit {
   }
 
   exportOrders() {
-
+    this.OrdersService.exportOrderTabs({
+      status: this.activeValue,
+      page: this.page,
+      limit: this.limit.value,
+      paymentMethod: this.orderform.get('paymentMethod')?.value,
+      from: this.orderform.get('fromDate')?.value,
+      to: this.orderform.get('toDate')?.value,
+      keyword: this.keyword.value,
+      source: this.orderform.get('source')?.value,
+      paymentStatus: this.orderform.get('paymentStatus')?.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.error.message)
+      }
+    })
   }
 
   getLimit() {

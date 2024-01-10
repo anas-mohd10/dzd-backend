@@ -19,5 +19,6 @@ export const orderEndpoints = {
    orderCounts: '/order-counts',
    updateProductPayement: '/update-product-payment',
    manageTags: '/manage-tags',
-   invoiceDetails: '/invoice-details'
+   invoiceDetails: '/invoice-details',
+   exportOrderTabs: '/export-order-tabs'
 };
