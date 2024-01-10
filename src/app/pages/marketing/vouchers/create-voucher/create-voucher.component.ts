@@ -2,12 +2,12 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { VouchersService } from 'src/app/includes/services/vouchers.service';
 import { environment } from 'src/environments/environment';
-
 
 @Component({
   selector: 'app-create-voucher',
@@ -52,13 +52,31 @@ export class CreateVoucherComponent implements OnInit {
       message: new FormControl('Hope you enjoy this Gift Card!')
     })
 
-  
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
+
+  updateMobilePattern(newPattern: string) {
+    const validators = this.form.get('mobile')?.validator;
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
   }
 
   handleMedia(event: any) {

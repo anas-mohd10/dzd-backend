@@ -57,7 +57,7 @@
                             <tr>
                                 <td>{{(limit * (page - 1)) + i + 1}}</td>
                                 <td>{{email?.email}}</td>
-                                <td>{{email?.isVerified ? 'Verified' : 'Not verified'}}</td>
+                                <td>{{email?.isVerified == true ? 'Verified' : 'Not verified'}}</td>
                                 <td>{{email?.createdAt}}</td>
                             </tr>
                         </ng-container>
