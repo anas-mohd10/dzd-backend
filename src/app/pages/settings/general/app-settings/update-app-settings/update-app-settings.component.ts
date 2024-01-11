@@ -109,6 +109,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
+        this.form.get('logo')?.setValue(res?.result?.logo?._id)
+        this.form.get('favicon')?.setValue(res?.result?.favicon?._id)
         this.ChangeDetectorRef.markForCheck()
       }
     })
@@ -154,7 +156,11 @@ export class UpdateAppSettingsComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.form.value);
+    
     if (!this.form.valid) {
+      console.log("I'm not validated");
+      
       this.isSubmitted = true
       return
     }
