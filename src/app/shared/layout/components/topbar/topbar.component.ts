@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { LayoutService } from '../../core/layout.service';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-topbar',
@@ -14,6 +15,7 @@ export class TopbarComponent implements OnInit {
   toolbarUserAvatarHeightClass = 'symbol-30px symbol-md-40px';
   toolbarButtonIconSizeClass = 'svg-icon-1';
   headerLeft: string = 'menu';
+  settings: any = {}
 
   @ViewChild('container') container: any;
   @ViewChild('dropdown') dropdown: any;
@@ -24,7 +26,12 @@ export class TopbarComponent implements OnInit {
   currentPage: any = this.pages[0]
   notifications: any = []
 
-  constructor(private layout: LayoutService, private NotificationsService: NotificationsService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private layout: LayoutService,
+     private NotificationsService: NotificationsService,
+      private ChangeDetectorRef: ChangeDetectorRef,
+      private AppSettingsService: AppSettingsService
+      ) {
     document.addEventListener('click', this.offClickHandler.bind(this));
   }
 
@@ -36,6 +43,12 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+      if(res?.errorCode == 0){
+        this.settings = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
     this.headerLeft = this.layout.getProp('header.left') as string;
 
     this.NotificationsService.latestNotifications({ page: this.currentPage }).subscribe((res: any) => {
@@ -44,7 +57,7 @@ export class TopbarComponent implements OnInit {
         if (this.notifications.length <= 5) this.pages = [1]
         if (this.notifications.length <= 10 && this.notifications.length > 5) this.pages = [1, 2]
         if (this.notifications.length <= 15 && this.notifications.length > 10) this.pages = [1, 2, 3]
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -61,7 +74,7 @@ export class TopbarComponent implements OnInit {
         if (this.notifications.length >= 5) this.pages = [1]
         if (this.notifications.length >= 10) this.pages = [1, 2]
         if (this.notifications.length >= 15) this.pages = [1, 2, 3]
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }

@@ -287,5 +287,8 @@ export const appRoutes = {
   returns: `${app}/returns`,
   loyalty: `${app}/loyalty`,
   referralProgram: `${app}/referral`,
-  sitemap: `${app}/sitemap`
+  sitemap: `${app}/sitemap`,
+  designs: {
+    home: "/designs/home"
+  }
 }

@@ -21,6 +21,7 @@ export const routes: Routes = [
   { path: 'generate-invoice', component: GenerateInvoiceComponent },
   { path: 'support-email/:token', component: SupportEmailVerificationComponent },
   { path: 'access-denied', component: AccessDeniedComponent },
+  { path: "designs", loadChildren: () => import("./pages/store-designs/store-designs.module").then(m => m.StoreDesignsModule) },
   { path: 'packing-slip', component: PackingSlipComponent },
   { path: '**', redirectTo: 'error/404' },
 ];

@@ -1,9 +1,15 @@
 <div class="d-flex align-items-center" [ngClass]="toolbarButtonMarginClass" id="kt_header_user_menu_toggle">
 
+  <div class="me-2">
+    <a class="btn btn-primary" routerLink="{{appRoutes.designs.home}}">
+      Design your store
+    </a>
+  </div>
+
   <div class="storeButton me-2">
-    <button class="btn btn-primary">
+    <a class="btn btn-secondary" href="{{settings?.domain}}" target="_blank">
       Visit store
-    </button>
+    </a>
   </div>
 
   <div class="notifications" #container>
