@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 interface AddWidget {
   index: number;
   widgetType: string;
+  widgetName: string;
 }
 
 interface DuplicateWidget{
@@ -30,7 +31,12 @@ export class HomeWidgetsService {
 
   updateHomeWidget(data: any) {
     const url = this.commonService.getFullUrl(homeWidgetEndpoints.updateHomeWidget);
-    return this.http.post(`${url}`, data)
+    return this.http.put(`${url}`, data)
+  }
+
+  reorderWidgets(data: any){
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.reorderWidgets);
+    return this.http.put(`${url}`, data)
   }
 
   duplicateHomeWidget(data: DuplicateWidget) {
@@ -39,7 +45,17 @@ export class HomeWidgetsService {
   }
 
   homeWidgetDetails(widget: string) {
-    const url = this.commonService.getFullUrl(homeWidgetEndpoints.homeWidgetDetails + `/${widget}`);
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.homeWidgets + `/${widget}`);
+    return this.http.get(`${url}`)
+  }
+
+  deleteWidget(widget: string) {
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.deleteWidget + `/${widget}`);
+    return this.http.delete(`${url}`)
+  }
+
+  homeWidgets() {
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.homeWidgets);
     return this.http.get(`${url}`)
   }
 }

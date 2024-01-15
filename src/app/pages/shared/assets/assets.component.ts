@@ -33,6 +33,7 @@ export class AssetsComponent implements OnInit, OnChanges {
   medias: Array<any> = []
   @Input('previewDetails') previewDetails?: string;
   @Input('aspectRatio') aspectRatio: string;
+  @Input('previewEnabled') previewEnabled?: boolean;
   @Input('image') image?: any;
   base: string = environment.base + '/'
   preview: any;
@@ -55,13 +56,33 @@ export class AssetsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.previewDetails ? this.preview = { path: this.previewDetails } : null
+    switch (this.previewEnabled) {
+      case true:
+        this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
+        break
+      case false:
+        this.preview = null
+        break
+      default:
+        this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
+        break
+    }
     this.ChangeDetectorRef.markForCheck()
   }
 
   ngOnInit(): void {
     this.getMedias()
-    this.previewDetails ? this.preview = { path: this.previewDetails } : null
+    switch (this.previewEnabled) {
+      case true:
+        this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
+        break
+      case false:
+        this.preview = null
+        break
+      default:
+        this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
+        break
+    }
   }
 
   open(template: TemplateRef<any>) {
@@ -141,7 +162,17 @@ export class AssetsComponent implements OnInit, OnChanges {
 
   onMediaClickedHandler(media: Media) {
     this.onMediaClicked.emit(media)
-    this.preview = media
+    switch (this.previewEnabled) {
+      case true:
+        this.preview = media
+        break
+      case false:
+        this.preview = null
+        break
+      default:
+        this.preview = media
+        break
+    }
     this.close()
   }
 }

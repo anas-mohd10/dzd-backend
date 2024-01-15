@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DesignTopbarComponent } from './design-topbar/design-topbar.component';
 import { DesignSidebarComponent } from './design-sidebar/design-sidebar.component';
 import { RouterModule } from '@angular/router';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -12,10 +13,11 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
+    TooltipModule
   ],
   exports: [
     DesignTopbarComponent,
     DesignSidebarComponent
   ]
 })
-export class SharedModule { }
+export class DesignSharedModule { }
