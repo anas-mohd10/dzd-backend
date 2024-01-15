@@ -11,7 +11,7 @@
             <div class="fs-3 fw-bolder mb-2">Homepage</div>
             <p class="text-muted fs-6">Configure your homepage with widgets for desktop & mobile view.</p>
             <div>
-                <button class="d-flex align-items-center justify-content-center btn btn-dark w-100"
+                <button class="d-flex align-items-center justify-content-center btn btn-secondary w-100"
                     (click)="openWidgets(widgetsTemplate)">
                     <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="2" stroke="currentColor"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -126,28 +126,14 @@
 </ng-template>
 
 <ng-template #updateTemplate>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">
-            Widget details
-            <p class="text-muted fs-6 fw-normal">You can update your widget data and images in this section.</p>
-        </h4>
-        <div class="d-flex align-items-center justify-content-end">
-            <button type="button" class="btn-primary me-2 btn d-flex align-items-center justify-content-center"
-                (click)="updateWidget()">
-                <div class="me-2">Save changes</div>
-                <img src="../../../../assets/widgets/assets/save-light.svg" alt="Save changes">
-            </button>
-            <button type="button" class="btn-secondary btn d-flex align-items-center justify-content-center"
-                (click)="closeUpdate()">
-                <div class="me-1">Cancel</div>
-                <img src="../../../../assets/widgets/assets/close.svg" alt="Cancel changes">
-            </button>
-        </div>
-    </div>
-    <div class="modal-body">
-        <form [formGroup]="form" class="widget-form">
-            <div class="d-flex mb-2 justify-content-end">
-                <div class="form-group">
+    <form [formGroup]="form">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">
+                Widget details
+                <p class="text-muted fs-6 fw-normal">You can update your widget data and images in this section.</p>
+            </h4>
+            <div class="d-flex align-items-end justify-content-end">
+                <div class="form-group me-2">
                     <label for="visibility" class="form-label">Visibility </label>
                     <select formControlName="visibility" id="visibility" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
@@ -157,34 +143,49 @@
                         </option>
                     </select>
                 </div>
+                <button type="button" class="btn-primary me-2 btn d-flex align-items-center justify-content-center"
+                    (click)="updateWidget()">
+                    <div class="me-2">Save changes</div>
+                    <img src="../../../../assets/widgets/assets/save-light.svg" alt="Save changes">
+                </button>
+                <button type="button" class="btn-secondary btn d-flex align-items-center justify-content-center"
+                    (click)="closeUpdate()">
+                    <div class="me-1">Cancel</div>
+                    <img src="../../../../assets/widgets/assets/close.svg" alt="Cancel changes">
+                </button>
             </div>
-
-            <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
-                <div class="mb-2">
-                    <div class="accordion" id="header">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header m-0">
-                                <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#headerDetails" aria-expanded="false" aria-controls="headerDetails">
-                                    Section header details
-                                </button>
-                            </h2>
-                            <div id="headerDetails" class="accordion-collapse collapse" data-bs-parent="#header">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="form-floating mb-3">
-                                                <input type="text" placeholder="Latest arrivals" class="form-control"
-                                                    formControlName="title" id="title">
-                                                <label for="title">Title</label>
+        </div>
+        <div class="modal-body">
+            <div class="widget-form">
+                <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
+                    <div class="mb-2">
+                        <div class="accordion" id="header">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header m-0">
+                                    <button class="fs-5 accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#headerDetails" aria-expanded="false"
+                                        aria-controls="headerDetails">
+                                        Section header details
+                                    </button>
+                                </h2>
+                                <div id="headerDetails" class="accordion-collapse collapse" data-bs-parent="#header">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" placeholder="Latest arrivals"
+                                                        class="form-control" formControlName="title" id="title">
+                                                    <label for="title">Title</label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <div class="form-floating mb-3">
-                                                <input type="text"
-                                                    placeholder="Get latest arrival products from our store"
-                                                    class="form-control" formControlName="description" id="description">
-                                                <label for="description">Description</label>
+                                            <div class="col-lg-8">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text"
+                                                        placeholder="Get latest arrival products from our store"
+                                                        class="form-control" formControlName="description"
+                                                        id="description">
+                                                    <label for="description">Description</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -192,64 +193,67 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <p class="mb-2 text-muted">In this section you can write content and upload images from your computer or
-                    can
-                    use from variety of images from web.</p>
-                <div class="mb-2 p-4 rounded border border-secondary">
-                    <div class="modal-images">
-                        <ng-container *ngFor="let image of widgetImages; let i = index">
-                            <div class="modal-image w-100 rounded border border-secondary ratio ratio-1x1"
-                                (click)="getWidgetImagePreview(i)">
-                                <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}" alt="{{image?.url?.title}}">
-                                <div class="position-absolute delete-modal-image bg-dark"
-                                    (click)="deleteWidgetImage(i, $event)">
-                                    <img src="../../../../assets/widgets/assets/close-light.svg" alt="Close">
+                    <p class="mb-2 text-muted">In this section you can write content and upload images from your
+                        computer or
+                        can
+                        use from variety of images from web.</p>
+                    <div class="mb-2 p-4 rounded border border-secondary">
+                        <div class="modal-images">
+                            <ng-container *ngFor="let image of widgetImages; let i = index">
+                                <div class="modal-image w-100 rounded border border-secondary ratio ratio-1x1"
+                                    (click)="getWidgetImagePreview(i)">
+                                    <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}"
+                                        alt="{{image?.url?.title}}">
+                                    <div class="position-absolute delete-modal-image bg-dark"
+                                        (click)="deleteWidgetImage(i, $event)">
+                                        <img src="../../../../assets/widgets/assets/close-light.svg" alt="Close">
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div class="modal-image w-100 ratio ratio-1x1 h-auto">
+                                <app-assets (mediaClicked)="addMediaTriggered($event)"
+                                    [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded border border-secondary"
+                        *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="w-100 ratio ratio-1x1 h-auto">
+                                    <app-assets (mediaClicked)="mediaTriggered($event)"
+                                        [previewDetails]="previewDetails"></app-assets>
                                 </div>
                             </div>
-                        </ng-container>
-                        <div class="modal-image w-100 ratio ratio-1x1 h-auto">
-                            <app-assets (mediaClicked)="addMediaTriggered($event)"
-                                [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
+                            <div class="col-lg-8">
+                                <form [formGroup]="widgetForm">
+                                    <div class="form-group mb-3">
+                                        <label for="title" class="form-label">Title</label>
+                                        <input type="text" placeholder="Latest brands" formControlName="title"
+                                            class="form-control" (change)="addWidgetDetails()">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="redirectionType" class="form-label">Call to action</label>
+                                        <select id="redirectionType" class="form-select">
+                                            <option value="" disabled>-- Select an option --</option>
+                                            <option *ngFor="let redirectionItem of redirectionItems"
+                                                value="{{redirectionItem?.value}}">{{redirectionItem?.key}}</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="p-4 rounded border border-secondary"
-                    *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="w-100 ratio ratio-1x1 h-auto">
-                                <app-assets (mediaClicked)="mediaTriggered($event)"
-                                    [previewDetails]="previewDetails"></app-assets>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <form [formGroup]="widgetForm">
-                                <div class="form-group mb-3">
-                                    <label for="title" class="form-label">Title</label>
-                                    <input type="text" placeholder="Latest brands" formControlName="title"
-                                        class="form-control" (change)="addWidgetDetails()">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="redirectionType" class="form-label">Call to action</label>
-                                    <select id="redirectionType" class="form-select">
-                                        <option value="" disabled>-- Select an option --</option>
-                                        <option *ngFor="let redirectionItem of redirectionItems" value="{{redirectionItem?.value}}">{{redirectionItem?.key}}</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div *ngIf="widgetDetails?.widgetType == 'html'">
-                <p class="text-muted">You can paste/write your widget code and images in this section.</p>
-                <div class="form-group">
-                    <label for="html" class="form-label">Paste Html</label>
-                    <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                <div *ngIf="widgetDetails?.widgetType == 'html'">
+                    <p class="text-muted">You can paste/write your widget code and images in this section.</p>
+                    <div class="form-group">
+                        <label for="html" class="form-label">Paste Html</label>
+                        <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                    </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </ng-template>
