@@ -5,6 +5,7 @@ import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.servi
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { BlogService } from 'src/app/includes/services/blog.service';
 
 interface WidgetProps {
   title: string;
@@ -61,13 +62,15 @@ export class HomeComponent implements OnInit {
     { key: "Open static page", value: "static-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
+  blogs: Array<any> = []
   widgetBlogs: Array<any> = []
 
   constructor(
     private BsModalService: BsModalService,
     private Toast: HotToastService,
     private HomeWidgetsService: HomeWidgetsService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private BlogService: BlogService
   ) { }
 
   //Add widgets starts here
@@ -178,8 +181,9 @@ export class HomeComponent implements OnInit {
               })
             }
           }
-          if(this.widgetDetails?.widgetType == 'blog'){
+          if (this.widgetDetails?.widgetType == 'blog') {
             this.widgetBlogs = this.widgetDetails?.blogs
+            this.getBlogs()
           }
           this.form.patchValue(this.widgetDetails)
           this.ChangeDetectorRef.markForCheck()
@@ -317,4 +321,15 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  getBlogs() {
+    this.BlogService.blogs({ page: 1, limit: 100 }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.blogs = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+
+  }
 }

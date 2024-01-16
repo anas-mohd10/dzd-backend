@@ -289,6 +289,7 @@ export const appRoutes = {
   referralProgram: `${app}/referral`,
   sitemap: `${app}/sitemap`,
   designs: {
-    home: "/designs/home"
+    home: "/designs/home",
+    catalogs: "/designs/catalogs",
   }
 }

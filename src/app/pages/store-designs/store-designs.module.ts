@@ -9,10 +9,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CatalogComponent } from './catalog/catalog.component';
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    CatalogComponent
   ],
   imports: [
     CommonModule,
