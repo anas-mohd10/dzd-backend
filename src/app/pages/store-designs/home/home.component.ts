@@ -57,8 +57,11 @@ export class HomeComponent implements OnInit {
     { key: "Open product details", value: "product-details" },
     { key: "Open catalog page", value: "catalog-pages" },
     { key: "Open blogs", value: "blog-pages" },
+    { key: "Open weblink", value: "web-links" },
+    { key: "Open static page", value: "static-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
+  widgetBlogs: Array<any> = []
 
   constructor(
     private BsModalService: BsModalService,
@@ -175,6 +178,9 @@ export class HomeComponent implements OnInit {
               })
             }
           }
+          if(this.widgetDetails?.widgetType == 'blog'){
+            this.widgetBlogs = this.widgetDetails?.blogs
+          }
           this.form.patchValue(this.widgetDetails)
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -203,6 +209,9 @@ export class HomeComponent implements OnInit {
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id })
       }
       widgetPayload['widgetImages'] = widgetImages
+    } else if (this.widgetDetails?.widgetType == 'blogs') {
+      let widgetBlogs = []
+
     }
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
