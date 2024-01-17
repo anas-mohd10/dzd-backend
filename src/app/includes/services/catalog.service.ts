@@ -17,4 +17,14 @@ export class CatalogService {
     const url = this.commonService.getFullUrl(catalogEndpoints.createCatalog);
     return this.http.post(`${url}`, data);
   }
+
+  getCatalogs() {
+    const url = this.commonService.getFullUrl(catalogEndpoints.getCatalogs);
+    return this.http.get(`${url}`);
+  }
+
+  getCatalogDetails(catalog: string) {
+    const url = this.commonService.getFullUrl(catalogEndpoints.getCatalogs + `/${catalog}`);
+    return this.http.get(`${url}`);
+  }
 }
