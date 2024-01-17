@@ -18,6 +18,11 @@ export class CatalogService {
     return this.http.post(`${url}`, data);
   }
 
+  updateCatalog(data: any, catalog: string) {
+    const url = this.commonService.getFullUrl(catalogEndpoints.updateCatalog + `/${catalog}`);
+    return this.http.put(`${url}`, data);
+  }
+
   getCatalogs() {
     const url = this.commonService.getFullUrl(catalogEndpoints.getCatalogs);
     return this.http.get(`${url}`);

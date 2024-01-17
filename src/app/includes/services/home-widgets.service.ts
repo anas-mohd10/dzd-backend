@@ -9,7 +9,7 @@ interface AddWidget {
   widgetName: string;
 }
 
-interface DuplicateWidget{
+interface DuplicateWidget {
   widget: string;
   index: number;
 }
@@ -34,7 +34,7 @@ export class HomeWidgetsService {
     return this.http.put(`${url}`, data)
   }
 
-  reorderWidgets(data: any){
+  reorderWidgets(data: any) {
     const url = this.commonService.getFullUrl(homeWidgetEndpoints.reorderWidgets);
     return this.http.put(`${url}`, data)
   }
@@ -56,6 +56,11 @@ export class HomeWidgetsService {
 
   homeWidgets() {
     const url = this.commonService.getFullUrl(homeWidgetEndpoints.homeWidgets);
+    return this.http.get(`${url}`)
+  }
+
+  getRediections(redirectionType: string, query: string) {
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.getRedirections + `/${redirectionType}?keyword=${query}`);
     return this.http.get(`${url}`)
   }
 }

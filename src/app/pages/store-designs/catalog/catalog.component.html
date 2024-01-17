@@ -36,13 +36,15 @@
                                     <div class="mb-2">
                                         <div class="form-group">
                                             <label for="catalogPage" class="form-label">Title</label>
-                                            <input type="text" id="catalogPage" placeholder="{{catalogPageDetails?.title}}"
+                                            <input type="text" id="catalogPage" [formControl]="catalogTitle"
+                                                (change)="updateCatalog()" placeholder="{{catalogPageDetails?.title}}"
                                                 class="form-control">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="catalogPage" class="form-label">Catalog pages</label>
-                                        <select [formControl]="catalogPage" id="catalogPage" class="form-select" (change)="getCatalogDetails()">
+                                        <select [formControl]="catalogPage" id="catalogPage" class="form-select"
+                                            (change)="getCatalogDetails()">
                                             <option value="" disabled>-- Select an option --</option>
                                             <option *ngFor="let catalogPage of catalogPages"
                                                 value="{{catalogPage?.slug}}">{{catalogPage?.title}}
@@ -104,21 +106,22 @@
                             <div class="accordion-body p-2">
                                 <form [formGroup]="metaForm">
                                     <div class="form-group mb-3">
-                                        <label for="metaTitle" class="form-label">Meta title</label>
-                                        <input type="text" formControlName="metaTitle" placeholder="Meta title"
-                                            class="form-control">
+                                        <label for="seoTitle" class="form-label">Meta title</label>
+                                        <input type="text" formControlName="seoTitle" id="seoTitle"
+                                            placeholder="Meta title" class="form-control">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="metaDescription" class="form-label">Meta description</label>
-                                        <input type="text" formControlName="metaDescription"
+                                        <label for="seoDescription" class="form-label">Meta description</label>
+                                        <input type="text" id="seoDescription" formControlName="seoDescription"
                                             placeholder="Meta description" class="form-control">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="metaKeywords" class="form-label">Meta title</label>
-                                        <input type="text" formControlName="metaKeywords" placeholder="Meta keywords"
+                                        <label for="seoKeywords" id="seoKeywords" class="form-label">Meta title</label>
+                                        <input type="text" formControlName="seoKeywords" placeholder="Meta keywords"
                                             class="form-control">
                                     </div>
-                                    <button type="button" class="btn btn-primary w-100">Save</button>
+                                    <button type="button" class="btn btn-primary w-100"
+                                        (click)="updateCatalogSeo()">Save</button>
                                 </form>
                             </div>
                         </div>

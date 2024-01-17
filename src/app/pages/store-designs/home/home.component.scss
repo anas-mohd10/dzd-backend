@@ -14,7 +14,7 @@ iframe {
 
 .modal-images {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 10px;
 
     .modal-image {
@@ -67,4 +67,19 @@ iframe {
 
 label {
     font-weight: 400 !important;
+}
+
+.redirections {
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 140px;
+    height: max-content;
+    z-index: 999;
+    overflow-y: scroll;
+    background: #ffffff;
+
+    .redirectionType {
+        cursor: pointer;
+    }
 }

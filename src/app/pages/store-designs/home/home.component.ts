@@ -52,18 +52,20 @@ export class HomeComponent implements OnInit {
   widgetImageTypes: Array<any> = ["image-slider", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas"]
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
-    { key: "Open category products", value: "category-products" },
-    { key: "Open brand products", value: "brand-products" },
-    { key: "Open collection products", value: "collection-products" },
-    { key: "Open product details", value: "product-details" },
-    { key: "Open catalog page", value: "catalog-pages" },
-    { key: "Open blogs", value: "blog-pages" },
+    { key: "Open category products", value: "category" },
+    { key: "Open brand products", value: "brands" },
+    { key: "Open collection products", value: "collection" },
+    { key: "Open product details", value: "products" },
+    { key: "Open catalog page", value: "catalog" },
+    { key: "Open blogs", value: "blogs" },
     { key: "Open weblink", value: "web-links" },
     { key: "Open static page", value: "static-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
+  searchRedirections: Array<string> = ["category", "brands", "collection", "products", "catalog", "blogs"]
   blogs: Array<any> = []
   widgetBlogs: Array<any> = []
+  redirections: Array<any> = []
 
   constructor(
     private BsModalService: BsModalService,
@@ -302,6 +304,30 @@ export class HomeComponent implements OnInit {
     this.reorderWidgets()
   }
 
+  getRedirections() {
+    if (this.widgetForm.value.redirectionQuery) {
+      this.HomeWidgetsService.getRediections(this.widgetForm.value.redirectionType, this.widgetForm.value.redirectionQuery).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.redirections = res?.result
+            this.ChangeDetectorRef.markForCheck()
+          } else {
+            this.Toast.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.Toast.error(err?.error?.message)
+        }
+      })
+    } else {
+      this.redirections = []
+    }
+  }
+
+  updateRedirection(redirection: any) {
+    this.widgetForm.get("redirectionQuery")?.reset()
+    this.redirections = []
+  }
+
   ngOnInit(): void {
     this.focusedWidget = this.widgets[0]
     this.getHomeWidgets()
@@ -310,6 +336,7 @@ export class HomeComponent implements OnInit {
       title: new FormControl(""),
       description: new FormControl(""),
       html: new FormControl(""),
+      htmlStyles: new FormControl(""),
     })
 
     this.widgetForm = new FormGroup({
@@ -318,6 +345,7 @@ export class HomeComponent implements OnInit {
       redirectionType: new FormControl(""),
       buttonText: new FormControl(""),
       buttonRedirection: new FormControl(""),
+      redirectionQuery: new FormControl("")
     })
   }
 

@@ -216,29 +216,50 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-4 rounded border border-secondary"
-                        *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
-                        <div class="row">
-                            <div class="col-lg-4">
+                    <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
+                        <div class="row mx-0">
+                            <div class="col-lg-3 px-0">
                                 <div class="w-100 ratio ratio-1x1 h-auto">
                                     <app-assets (mediaClicked)="mediaTriggered($event)"
                                         [previewDetails]="previewDetails"></app-assets>
                                 </div>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-9">
                                 <form [formGroup]="widgetForm">
-                                    <div class="form-group mb-3">
-                                        <label for="title" class="form-label">Title</label>
-                                        <input type="text" placeholder="Latest brands" formControlName="title"
-                                            class="form-control" (change)="addWidgetDetails()">
+                                    <div class="row">
+                                        <div class="col-lg-6 form-group mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" placeholder="Latest brands" formControlName="title"
+                                                class="form-control" (change)="addWidgetDetails()">
+                                        </div>
+                                        <div class="col-lg-6 form-group mb-3">
+                                            <label for="redirectionType" class="form-label">Call to action</label>
+                                            <select id="redirectionType" formControlName="redirectionType"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let redirectionItem of redirectionItems"
+                                                    value="{{redirectionItem?.value}}">{{redirectionItem?.key}}</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="form-group mb-3">
-                                        <label for="redirectionType" class="form-label">Call to action</label>
-                                        <select id="redirectionType" class="form-select">
-                                            <option value="" disabled>-- Select an option --</option>
-                                            <option *ngFor="let redirectionItem of redirectionItems"
-                                                value="{{redirectionItem?.value}}">{{redirectionItem?.key}}</option>
-                                        </select>
+                                    <div class="position-relative">
+                                        <div class="form-group mb-3"
+                                            *ngIf="searchRedirections.includes(widgetForm.get('redirectionType')?.value)">
+                                            <label for="title" class="form-label">Search items</label>
+                                            <input type="text" placeholder="Search redirection items"
+                                                formControlName="redirectionQuery" class="form-control"
+                                                (ngModelChange)="getRedirections()">
+                                        </div>
+                                        <ng-container *ngIf="redirections.length > 0">
+                                            <div class="position-absolute redirections shadow-sm p-2 rounded">
+                                                <ng-container *ngFor="let redirection of redirections; let i = index">
+                                                    <div class="redirectionType py-2 px-1 rounded"
+                                                        (click)="updateRedirection(redirection)">
+                                                        {{redirection.name ? redirection?.name : redirection?.title}}
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </form>
                             </div>
@@ -248,14 +269,25 @@
 
                 <div *ngIf="widgetDetails?.widgetType == 'html'">
                     <p class="text-muted">You can paste/write your widget code and images in this section.</p>
-                    <div class="form-group">
-                        <label for="html" class="form-label">Paste Html</label>
-                        <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="htmlStyles" class="form-label">Paste Styles</label>
+                                <textarea formControlName="htmlStyles" id="htmlStyles" rows="10"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="html" class="form-label">Paste Html</label>
+                                <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div *ngIf="widgetDetails?.widgetType == 'blogs'">
-                   
+
                 </div>
             </div>
         </div>

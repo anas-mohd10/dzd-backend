@@ -16,6 +16,7 @@ export class CatalogComponent implements OnInit {
   catalogForm: FormGroup;
   createRef?: BsModalRef
   isCopy: FormControl = new FormControl(false);
+  catalogTitle: FormControl = new FormControl("");
 
   constructor(
     private BsModalService: BsModalService,
@@ -31,6 +32,7 @@ export class CatalogComponent implements OnInit {
   closeCreate(): void {
     this.createRef?.hide()
     this.catalogForm.reset()
+    this.catalogForm.get("isCopy")?.setValue(false)
   }
 
   createCatalog() {
@@ -75,7 +77,11 @@ export class CatalogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.catalogPageDetails = res?.result
-          this.catalogForm.patchValue(res?.result)
+          if (res?.result?.seoTitle || res?.result?.seoDescription || res?.result?.seoKeyword) {
+            this.metaForm.patchValue(res?.result)
+          } else {
+            this.metaForm.reset()
+          }
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -86,12 +92,47 @@ export class CatalogComponent implements OnInit {
     })
   }
 
+  updateCatalog() {
+    this.catalogForm.get("title")?.setValue(this.catalogTitle?.value)
+    this.CatalogService.updateCatalog(this.catalogForm.value, this.catalogPageDetails?.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.closeCreate()
+          this.Toast.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+          this.getCatalogs()
+          if (this.catalogTitle?.value) this.catalogTitle.reset()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  updateCatalogSeo() {
+    this.CatalogService.updateCatalog(this.metaForm.value, this.catalogPageDetails?.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+
+  }
+
   ngOnInit(): void {
     this.getCatalogs()
     this.metaForm = new FormGroup({
-      metaTitle: new FormControl(""),
-      metaDescription: new FormControl(""),
-      metaKeywords: new FormControl(""),
+      seoTitle: new FormControl(""),
+      seoDescription: new FormControl(""),
+      seoKeywords: new FormControl(""),
     })
 
     this.catalogForm = new FormGroup({
