@@ -48,8 +48,27 @@ export class CatalogComponent implements OnInit {
   catalogForm: FormGroup;
 
   createRef?: BsModalRef
-  isCopy: FormControl = new FormControl(false);
   catalogTitle: FormControl = new FormControl("");
+  widgetsRef: BsModalRef<unknown>;
+  focusedWidget: WidgetProps;
+  updateRef: BsModalRef<unknown>;
+  deleteRef: BsModalRef<unknown>;
+  widgetItems: any;
+  widgetDetailsRef: BsModalRef<unknown>;
+  widgetDetails: any;
+  widgetImageTypes: any;
+  widgetImages: any;
+  widgetBlogs: any;
+  form: any;
+  widgetImagePreviewIndex: any;
+  widgetImagePreview: any;
+  confirmedWidget: any;
+  confirmRef: BsModalRef<unknown>;
+  duplicatedWidget: any;
+  duplicateRef: BsModalRef<unknown>;
+  previewDetails: string;
+  widgetForm: any;
+  blogs: any;
 
   constructor(
     private BsModalService: BsModalService,
@@ -160,17 +179,6 @@ export class CatalogComponent implements OnInit {
   //Catalog delete ends here
 
   //Add widgets starts here
-  openWidgets(template: TemplateRef<any>) {
-    this.widgetsRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
-  }
-
-  focusWidget(widget: WidgetProps) {
-    this.focusedWidget = widget;
-  }
-
-  closeWidgets() {
-    this.widgetsRef?.hide();
-  }
 
   addWidget(widget: WidgetProps) {
     this.CatalogService.addCatalogWidget({
@@ -327,7 +335,7 @@ export class CatalogComponent implements OnInit {
   //Duplicate widgets ends here
 
   reorderWidgets() {
-    let widgets = this.widgetItems.map((widget, index) => {
+    let widgets = this.widgetItems.map((widget: { widgetType: any; refid: any; }, index: any) => {
       return { widgetType: widget?.widgetType, refid: widget?.refid, index: index }
     })
 
