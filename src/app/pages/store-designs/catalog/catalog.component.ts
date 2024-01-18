@@ -5,6 +5,13 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { CatalogService } from 'src/app/includes/services/catalog.service';
+
+interface WidgetProps {
+  title: string;
+  type: string;
+  icon: string;
+  description: string;
+}
 import { environment } from 'src/environments/environment';
 interface WidgetProps {
   title: string;
@@ -41,42 +48,8 @@ export class CatalogComponent implements OnInit {
   catalogForm: FormGroup;
 
   createRef?: BsModalRef
-  deleteRef?: BsModalRef
-  updateRef?: BsModalRef
-  widgetsRef?: BsModalRef
-  widgetDetailsRef?: BsModalRef
-
-  widgetItems: Array<any> = []
-  focusedWidget: any = {}
-  widgetDetails: any;
-  widgetImageTypes: Array<any> = ["image-slider", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas"]
-  widgetImages: Array<any> = []
-  widgetBlogs: Array<any> = []
-  form: any;
-  confirmedWidget: any;
-  confirmRef?: BsModalRef;
-  duplicatedWidget: any;
-  duplicateRef?: BsModalRef;
-  redirectionItems: Array<any> = [
-    { key: "None", value: "" },
-    { key: "Open category products", value: "category" },
-    { key: "Open brand products", value: "brands" },
-    { key: "Open collection products", value: "collection" },
-    { key: "Open product details", value: "products" },
-    { key: "Open catalog page", value: "catalog" },
-    { key: "Open blogs", value: "blogs" },
-    { key: "Open weblink", value: "web-links" },
-    { key: "Open static page", value: "static-pages" },
-    { key: "Search filters", value: "search-filters" },
-  ]
-  searchRedirections: Array<string> = ["category", "brands", "collection", "products", "catalog", "blogs"]
-  blogs: Array<any> = []
-  widgetImagePreviewIndex: any;
-  widgetForm: FormGroup;
-  base: string = environment.base + '/'
-  previewDetails: string = ''
-  widgetImagePreview: any;
-  widgetPreviewDetails: any
+  isCopy: FormControl = new FormControl(false);
+  catalogTitle: FormControl = new FormControl("");
 
   constructor(
     private BsModalService: BsModalService,
@@ -85,6 +58,20 @@ export class CatalogComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private BlogService: BlogService
   ) { }
+
+  //Add widgets starts here
+  openWidgets(template: TemplateRef<any>) {
+    this.widgetsRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  focusWidget(widget: WidgetProps) {
+    this.focusedWidget = widget;
+  }
+
+  closeWidgets() {
+    this.widgetsRef?.hide();
+  }
+  //Add widgets ends here
 
   //Catalog create starts here
   openCreate(template: TemplateRef<any>): void {
