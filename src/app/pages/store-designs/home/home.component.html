@@ -242,25 +242,6 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="position-relative">
-                                        <div class="form-group mb-3"
-                                            *ngIf="searchRedirections.includes(widgetForm.get('redirectionType')?.value)">
-                                            <label for="title" class="form-label">Search items</label>
-                                            <input type="text" placeholder="Search redirection items"
-                                                formControlName="redirectionQuery" class="form-control"
-                                                (ngModelChange)="getRedirections()">
-                                        </div>
-                                        <ng-container *ngIf="redirections.length > 0">
-                                            <div class="position-absolute redirections shadow-sm p-2 rounded">
-                                                <ng-container *ngFor="let redirection of redirections; let i = index">
-                                                    <div class="redirectionType py-2 px-1 rounded"
-                                                        (click)="updateRedirection(redirection)">
-                                                        {{redirection.name ? redirection?.name : redirection?.title}}
-                                                    </div>
-                                                </ng-container>
-                                            </div>
-                                        </ng-container>
-                                    </div>
                                 </form>
                             </div>
                         </div>

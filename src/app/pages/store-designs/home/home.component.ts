@@ -304,30 +304,6 @@ export class HomeComponent implements OnInit {
     this.reorderWidgets()
   }
 
-  getRedirections() {
-    if (this.widgetForm.value.redirectionQuery) {
-      this.HomeWidgetsService.getRediections(this.widgetForm.value.redirectionType, this.widgetForm.value.redirectionQuery).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.redirections = res?.result
-            this.ChangeDetectorRef.markForCheck()
-          } else {
-            this.Toast.error(res?.message)
-          }
-        }, error: (err: any) => {
-          this.Toast.error(err?.error?.message)
-        }
-      })
-    } else {
-      this.redirections = []
-    }
-  }
-
-  updateRedirection(redirection: any) {
-    this.widgetForm.get("redirectionQuery")?.reset()
-    this.redirections = []
-  }
-
   ngOnInit(): void {
     this.focusedWidget = this.widgets[0]
     this.getHomeWidgets()

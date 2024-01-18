@@ -33,26 +33,28 @@
                                     <div class="ms-1">Create catalog</div>
                                 </button>
                                 <div class="my-5">
-                                    <div class="mb-2">
-                                        <div class="form-group">
-                                            <label for="catalogPage" class="form-label">Title</label>
-                                            <input type="text" id="catalogPage" [formControl]="catalogTitle"
-                                                (change)="updateCatalog()" placeholder="{{catalogPageDetails?.title}}"
-                                                class="form-control">
+                                    <div class="row">
+                                        <div class="form-group" [ngClass]="{'col-lg-8': catalogPages.length > 0}">
+                                            <label for="catalogPage" class="form-label">Catalog pages</label>
+                                            <select [formControl]="catalogPage" id="catalogPage" class="form-select p-2"
+                                                (change)="getCatalogDetails()">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let catalogPage of catalogPages"
+                                                    value="{{catalogPage?.slug}}">{{catalogPage?.title}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4 form-group" *ngIf="catalogPages.length > 0">
+                                            <label for="catalogPage" class="form-label">&nbsp;</label>
+                                            <button (click)="openUpdate(updateTemplate)"
+                                                class="btn p-2 bg-white border border-secondary w-100">
+                                                View
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="catalogPage" class="form-label">Catalog pages</label>
-                                        <select [formControl]="catalogPage" id="catalogPage" class="form-select"
-                                            (change)="getCatalogDetails()">
-                                            <option value="" disabled>-- Select an option --</option>
-                                            <option *ngFor="let catalogPage of catalogPages"
-                                                value="{{catalogPage?.slug}}">{{catalogPage?.title}}
-                                            </option>
-                                        </select>
-                                    </div>
                                 </div>
-                                <button class="d-flex align-items-center justify-content-center btn btn-danger w-100">
+                                <button class="d-flex align-items-center justify-content-center btn btn-danger w-100"
+                                    (click)="openDelete(deleteTemplate)">
                                     <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
                                         stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                         aria-hidden="true">
@@ -75,7 +77,7 @@
                         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#catalogAccordion">
                             <div class="accordion-body p-2">
                                 <div>
-                                    <button
+                                    <button (click)="openWidgets(widgetsTemplate)"
                                         class="d-flex align-items-center justify-content-center btn btn-secondary w-100">
                                         <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="2"
                                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -91,38 +93,53 @@
                                         <div class="fs-3 fw-bolder">Widgets</div>
                                         <div class="fs-6 text-muted">Manage section order, design, data.</div>
                                     </div>
+                                    <div cdkDropList class="widget-items rounded" (cdkDropListDropped)="drop($event)">
+                                        <div class="widget-item mb-2 pb-2 fs-6 border-bottom border-secondary"
+                                            *ngFor="let widgetItem of widgetItems; let i = index" cdkDrag>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <div class="text-primary">#{{i+1}}:</div>
+                                                <div class="d-flex align-items-center justify-content-end">
+                                                    <div class="duplicate"
+                                                        (click)="openDuplication(duplicateTemplate, widgetItem)">
+                                                        <img src="../../../../assets/widgets/assets/copy.svg"
+                                                            alt="Copy widget">
+                                                    </div>
+                                                    <div class="delete ms-2"
+                                                        (click)="openConfirmation(deleteWidgetTemplate, widgetItem)">
+                                                        <img src="../../../../assets/widgets/assets/delete.svg"
+                                                            alt="Delete widget">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>{{widgetItem?.widgetName}}</div>
+                                            <div class="text-muted mt-1">
+                                                Visible in {{widgetItem?.visibility == 'all' ? 'all devices':
+                                                widgetItem?.visibility}}
+                                            </div>
+                                            <div class="mt-2 d-flex align-items-center justify-content-between">
+                                                <button
+                                                    class="btn w-50 bg-white me-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
+                                                    placement="bottom" tooltip="Customize this widget design">
+                                                    <img src="../../../../assets/widgets/assets/design.svg" alt="Design"
+                                                        class="me-1">
+                                                    <div>Design</div>
+                                                    <img src="../../../../assets/widgets/assets/chevron-right.svg"
+                                                        alt="Design" class="me-1">
+                                                </button>
+                                                <button (click)="openWidgetUpdate(updateWidgetTemplate, widgetItem)"
+                                                    class="btn w-50 bg-white ms-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
+                                                    placement="bottom"
+                                                    tooltip="Upload content which you want to show in this widget">
+                                                    <img src="../../../../assets/widgets/assets/edit.svg" alt="Design"
+                                                        class="me-1">
+                                                    <div>Content</div>
+                                                    <img src="../../../../assets/widgets/assets/chevron-right.svg"
+                                                        alt="Design" class="me-1">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header m-0">
-                            <button class="accordion-button p-2 collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#catalogSeo" aria-expanded="false" aria-controls="catalogSeo">
-                                SEO Details
-                            </button>
-                        </h2>
-                        <div id="catalogSeo" class="accordion-collapse collapse" data-bs-parent="#catalogAccordion">
-                            <div class="accordion-body p-2">
-                                <form [formGroup]="metaForm">
-                                    <div class="form-group mb-3">
-                                        <label for="seoTitle" class="form-label">Meta title</label>
-                                        <input type="text" formControlName="seoTitle" id="seoTitle"
-                                            placeholder="Meta title" class="form-control">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="seoDescription" class="form-label">Meta description</label>
-                                        <input type="text" id="seoDescription" formControlName="seoDescription"
-                                            placeholder="Meta description" class="form-control">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="seoKeywords" id="seoKeywords" class="form-label">Meta title</label>
-                                        <input type="text" formControlName="seoKeywords" placeholder="Meta keywords"
-                                            class="form-control">
-                                    </div>
-                                    <button type="button" class="btn btn-primary w-100"
-                                        (click)="updateCatalogSeo()">Save</button>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -180,4 +197,264 @@
             </div>
         </form>
     </div>
+</ng-template>
+
+<ng-template #updateTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Catalog Details</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeUpdate()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="catalogForm">
+            <div class="form-group mb-3">
+                <label for="title" class="form-label required">Title</label>
+                <input type="text" formControlName="title" id="title" placeholder="Catalog page title"
+                    class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" formControlName="description" id="description" placeholder="Catalog page description"
+                    class="form-control">
+            </div>
+            <div class="my-5">
+                <div class="fs-4 mb-2">SEO Details</div>
+                <div class="form-group mb-3">
+                    <label for="seoTitle" class="form-label">Meta title</label>
+                    <input type="text" formControlName="seoTitle" id="seoTitle" placeholder="Meta title"
+                        class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="seoDescription" class="form-label">Meta description</label>
+                    <input type="text" id="seoDescription" formControlName="seoDescription"
+                        placeholder="Meta description" class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="seoKeywords" id="seoKeywords" class="form-label">Meta keywords</label>
+                    <input type="text" formControlName="seoKeywords" placeholder="Meta keywords" class="form-control">
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end">
+                <button class="btn btn-secondary me-1" (click)="closeUpdate()">Cancel</button>
+                <button class="btn btn-primary ms-1" (click)="updateCatalog()">Continue</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #deleteTemplate>
+    <div class="modal-body text-center">
+        <div class="fs-3 mb-2 fw-bolder">Delete catalog?</div>
+        <p>Are you sure you want to proceed?</p>
+        <button type="button" class="btn btn-default" (click)="deleteCatalog()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="closeDelete()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #widgetsTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add new widget</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeWidgets()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="modal-widgets">
+                    <ng-container *ngFor="let widget of widgets; let i = index">
+                        <div class="modal-widget p-4 rounded border w-100" (click)="focusWidget(widget)"
+                            [ngClass]="{'border-primary shadow-sm': focusedWidget.type == widget.type, 'border-secondary border-dotted': focusedWidget.type != widget.type}">
+                            <img class="h-auto w-100 ratio ratio-1x1" src="{{widget?.icon}}" alt="{{widget?.title}}">
+                            <div class="text-center mt-2 fs-6">{{widget?.title}}</div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="fw-bolder fs-4">{{focusedWidget.title}}</div>
+                    <div>
+                        <button class="btn btn-secondary py-2 px-3 me-1" (click)="closeWidgets()">Cancel</button>
+                        <button class="btn btn-primary py-2 px-3 ms-1" (click)="addWidget(focusedWidget)">Add to
+                            page</button>
+                    </div>
+                </div>
+                <div class="my-5">
+                    <div class="mb-2 fw-bolder text-muted fs-5">Description</div>
+                    <div class="fs-6">{{focusedWidget.description}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #deleteWidgetTemplate>
+    <div class="modal-body text-center">
+        <div class="fs-3 mb-2 fw-bolder">Delete section?</div>
+        <p>Are you sure you want to proceed?</p>
+        <button type="button" class="btn btn-default" (click)="deleteWidget()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="closeConfirmation()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #duplicateTemplate>
+    <div class="modal-body text-center">
+        <div class="fs-3 mb-2 fw-bolder">Duplicate this section? Section will be added in the last.
+        </div>
+        <p>Are you sure you want to proceed?</p>
+        <button type="button" class="btn btn-default" (click)="duplicateWidget()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="closeDuplication()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #updateWidgetTemplate>
+    <form [formGroup]="form">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">
+                Widget details
+                <p class="text-muted fs-6 fw-normal">You can update your widget data and images in this section.</p>
+            </h4>
+            <div class="d-flex align-items-end justify-content-end">
+                <div class="form-group me-2">
+                    <label for="visibility" class="form-label">Visibility </label>
+                    <select formControlName="visibility" id="visibility" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let item of ['all', 'mobile', 'web', 'none']" value="{{item}}">
+                            {{item == 'all' ? 'Mobile and Desktop' : item == 'web' ? 'Desktop only': item == 'mobile' ?
+                            'Mobile only': 'None'}}
+                        </option>
+                    </select>
+                </div>
+                <button type="button" class="btn-primary me-2 btn d-flex align-items-center justify-content-center"
+                    (click)="updateWidget()">
+                    <div class="me-2">Save changes</div>
+                    <img src="../../../../assets/widgets/assets/save-light.svg" alt="Save changes">
+                </button>
+                <button type="button" class="btn-secondary btn d-flex align-items-center justify-content-center"
+                    (click)="closeWidgetUpdate()">
+                    <div class="me-1">Cancel</div>
+                    <img src="../../../../assets/widgets/assets/close.svg" alt="Cancel changes">
+                </button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="widget-form">
+                <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
+                    <div class="mb-2">
+                        <div class="accordion" id="header">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header m-0">
+                                    <button class="fs-5 accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#headerDetails" aria-expanded="false"
+                                        aria-controls="headerDetails">
+                                        Section header details
+                                    </button>
+                                </h2>
+                                <div id="headerDetails" class="accordion-collapse collapse" data-bs-parent="#header">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text" placeholder="Latest arrivals"
+                                                        class="form-control" formControlName="title" id="title">
+                                                    <label for="title">Title</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <div class="form-floating mb-3">
+                                                    <input type="text"
+                                                        placeholder="Get latest arrival products from our store"
+                                                        class="form-control" formControlName="description"
+                                                        id="description">
+                                                    <label for="description">Description</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-2 text-muted">In this section you can write content and upload images from your
+                        computer or
+                        can
+                        use from variety of images from web.</p>
+                    <div class="mb-2 p-4 rounded border border-secondary">
+                        <div class="modal-images">
+                            <ng-container *ngFor="let image of widgetImages; let i = index">
+                                <div class="modal-image w-100 rounded border border-secondary ratio ratio-1x1"
+                                    (click)="getWidgetImagePreview(i)">
+                                    <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}"
+                                        alt="{{image?.url?.title}}">
+                                    <div class="position-absolute delete-modal-image bg-dark"
+                                        (click)="deleteWidgetImage(i, $event)">
+                                        <img src="../../../../assets/widgets/assets/close-light.svg" alt="Close">
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <div class="modal-image w-100 ratio ratio-1x1 h-auto">
+                                <app-assets (mediaClicked)="addMediaTriggered($event)"
+                                    [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
+                        <div class="row mx-0">
+                            <div class="col-lg-3 px-0">
+                                <div class="w-100 ratio ratio-1x1 h-auto">
+                                    <app-assets (mediaClicked)="mediaTriggered($event)"
+                                        [previewDetails]="previewDetails"></app-assets>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <form [formGroup]="widgetForm">
+                                    <div class="row">
+                                        <div class="col-lg-6 form-group mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" placeholder="Latest brands" formControlName="title"
+                                                class="form-control" (change)="addWidgetDetails()">
+                                        </div>
+                                        <div class="col-lg-6 form-group mb-3">
+                                            <label for="redirectionType" class="form-label">Call to action</label>
+                                            <select id="redirectionType" formControlName="redirectionType"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let redirectionItem of redirectionItems"
+                                                    value="{{redirectionItem?.value}}">{{redirectionItem?.key}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="widgetDetails?.widgetType == 'html'">
+                    <p class="text-muted">You can paste/write your widget code and images in this section.</p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="htmlStyles" class="form-label">Paste Styles</label>
+                                <textarea formControlName="htmlStyles" id="htmlStyles" rows="10"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="html" class="form-label">Paste Html</label>
+                                <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="widgetDetails?.widgetType == 'blogs'">
+
+                </div>
+            </div>
+        </div>
+    </form>
 </ng-template>
