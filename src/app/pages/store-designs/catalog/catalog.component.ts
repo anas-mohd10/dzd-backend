@@ -56,7 +56,7 @@ export class CatalogComponent implements OnInit {
   widgetItems: any;
   widgetDetailsRef: BsModalRef<unknown>;
   widgetDetails: any;
-  widgetImageTypes: any;
+  widgetImageTypes: Array<any> = ["image-slider", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas"]
   widgetImages: any;
   widgetBlogs: any;
   form: any;
@@ -69,6 +69,20 @@ export class CatalogComponent implements OnInit {
   previewDetails: string;
   widgetForm: any;
   blogs: any;
+  base: string = environment.base + '/'
+  redirectionItems: Array<any> = [
+    { key: "None", value: "" },
+    { key: "Open category products", value: "category" },
+    { key: "Open brand products", value: "brands" },
+    { key: "Open collection products", value: "collection" },
+    { key: "Open product details", value: "products" },
+    { key: "Open catalog page", value: "catalog" },
+    { key: "Open blogs", value: "blogs" },
+    { key: "Open weblink", value: "web-links" },
+    { key: "Open static page", value: "static-pages" },
+    { key: "Search filters", value: "search-filters" },
+  ]
+  searchRedirections: Array<string> = ["category", "brands", "collection", "products", "catalog", "blogs"]
 
   constructor(
     private BsModalService: BsModalService,
