@@ -2,36 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AddCollectionComponent } from './add-collection.component';
-import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { ImageCropperModule } from 'ngx-image-cropper';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [AddCollectionComponent],
   imports: [
     CommonModule,
-    ToastrModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule,
-    ImageCropperModule,
     DragDropModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      progressAnimation: 'decreasing',
-      preventDuplicates: true,
-      progressBar: true,
-    }),
-    RouterModule.forChild([
-      {
-        path: '',
-        component: AddCollectionComponent,
-      },
-    ]),
+    SharedModule,
+    RouterModule.forChild([{
+      path: '',
+      component: AddCollectionComponent,
+    }]),
   ],
 })
 export class AddCollectionModule { }

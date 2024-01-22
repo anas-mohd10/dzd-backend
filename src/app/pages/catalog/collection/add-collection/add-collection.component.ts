@@ -17,7 +17,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./add-collection.component.scss'],
 })
 export class AddCollectionComponent implements OnInit {
-  collectionForm: FormGroup;
+  form: FormGroup;
   task = PageTasks.ADD;
   productValue: any;
   editMode = false;
@@ -102,38 +102,41 @@ export class AddCollectionComponent implements OnInit {
   }
 
   initForm() {
-    this.collectionForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      subname: [''],
-      file: [''],
-      products: [Validators.required],
-      isFeatured: ['false', Validators.required],
-      isArchive: ['false', Validators.required],
-      isHighlighted: ['false', Validators.required],
-      isActive: ['true', Validators.required],
-      type: ['slider'],
-      count: ['3'],
-      background: [''],
-      border: [''],
-      radius: [''],
-      color: [''],
-      fontSize: [''],
-      fontWeight: ['']
+    this.form = new FormGroup({
+      name: new FormControl("", Validators.required),
+      subname: new FormControl(""),
+      file: new FormControl("", Validators.required),
+      products: new FormControl("", Validators.required),
+      isFeatured: new FormControl("false"),
+      isHighlighted: new FormControl("false"),
+      isActive: new FormControl("true"),
+      style: new FormGroup({
+        background: new FormControl(""),
+        border: new FormControl(""),
+        radius: new FormControl(""),
+        text: new FormGroup({
+          color: new FormControl(""),
+          fontSize: new FormControl(""),
+          fontWeight: new FormControl(""),
+        })
+      })
     });
 
-    this.collectionForm.get('background')?.setValue(AppSettings.BACKGROUND)
+
+
+    this.form.get('background')?.setValue(AppSettings.BACKGROUND)
     this.background = AppSettings.BACKGROUND
-    this.collectionForm.get('border')?.setValue(AppSettings.BORDER)
+    this.form.get('border')?.setValue(AppSettings.BORDER)
     this.border = AppSettings.BORDER
-    this.collectionForm.get('color')?.setValue(AppSettings.COLOR)
+    this.form.get('color')?.setValue(AppSettings.COLOR)
     this.color = AppSettings.COLOR
-    this.collectionForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.collectionForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.collectionForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
+    this.form.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
+    this.form.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
+    this.form.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   get cf() {
-    return this.collectionForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -146,6 +149,15 @@ export class AddCollectionComponent implements OnInit {
         break;
       default:
         break;
+    }
+  }
+
+  handleMedia(event: any, type: string) {
+    switch (type) {
+      case "cover":
+        break
+      case "thumbnail":
+        break
     }
   }
 
@@ -270,7 +282,7 @@ export class AddCollectionComponent implements OnInit {
   }
 
   addCollection() {
-    if (!this.collectionForm.valid) {
+    if (!this.form.valid) {
       return;
     }
 
@@ -308,14 +320,14 @@ export class AddCollectionComponent implements OnInit {
 
   createPayload() {
     let data = {
-      name: this.collectionForm.get('name')?.value,
-      subname: this.collectionForm.get('subname')?.value,
-      isFeatured: this.collectionForm.get('isFeatured')?.value,
-      isActive: this.collectionForm.get('isActive')?.value,
-      isHighlighted: this.collectionForm.get('isHighlighted')?.value,
-      isArchive: this.collectionForm.get('isArchive')?.value,
-      type: this.collectionForm.get('type')?.value,
-      count: this.collectionForm.get('count')?.value,
+      name: this.form.get('name')?.value,
+      subname: this.form.get('subname')?.value,
+      isFeatured: this.form.get('isFeatured')?.value,
+      isActive: this.form.get('isActive')?.value,
+      isHighlighted: this.form.get('isHighlighted')?.value,
+      isArchive: this.form.get('isArchive')?.value,
+      type: this.form.get('type')?.value,
+      count: this.form.get('count')?.value,
       filestring: this.croppedImage,
       filename: this.filename,
       file: this.file,
@@ -323,13 +335,13 @@ export class AddCollectionComponent implements OnInit {
       bannername: this.bannerFilename,
       products: this.selectedProducts,
       style: {
-        background: this.collectionForm.get('background')?.value,
-        border: this.collectionForm.get('border')?.value,
-        radius: this.collectionForm.get('radius')?.value,
+        background: this.form.get('background')?.value,
+        border: this.form.get('border')?.value,
+        radius: this.form.get('radius')?.value,
         text: {
-          color: this.collectionForm.get('color')?.value,
-          fontSize: this.collectionForm.get('fontSize')?.value,
-          fontWeight: this.collectionForm.get('fontWeight')?.value,
+          color: this.form.get('color')?.value,
+          fontSize: this.form.get('fontSize')?.value,
+          fontWeight: this.form.get('fontWeight')?.value,
         }
       }
     }

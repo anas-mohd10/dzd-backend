@@ -1,32 +1,125 @@
-<div class="content container-fluid">
-
+<div>
   <div class="page-header">
     <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fs-2 fw-bolder">
-          {{ editMode ? "Update Collection" : "Add Collection" }}
-        </h3>
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.collection.ADD_COLLECTION }}">
-              {{ editMode ? "Update Collection" : "Add Collection" }}
-            </a>
-          </li>
-        </ul>
-      </div>
+      <h1 class="fw-bolder">Add Collection</h1>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.collection.ADD_COLLECTION }}">Add Collection</a>
+        </li>
+      </ul>
     </div>
   </div>
 
   <div class="mt-4">
     <div class="card" ngForm>
       <div class="card-body">
-        <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm" (keydown.Enter)="$event.preventDefault()">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
+
+          <!-- <div class="cover w-100 mb-3">
+            <app-assets (mediaClicked)="handleMedia($event, 'cover')" [image]="'cover'"></app-assets>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="ratio ratio-1x1 h-auto w-100 rounded mb-3">
+                <app-assets (mediaClicked)="handleMedia($event, 'thumbnail')"></app-assets>
+              </div>
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Status</label>
+                <select class="form-select" formControlName="isActive">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">Inactive</option>
+                  <option value="true">Active</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Highlight this collection?</label>
+                <select class="form-select" formControlName="isHighlighted">
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Featured Collection?</label>
+                <select class="form-select" formControlName="isFeatured">
+                  <option value="false" selected>No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3 required">Title</label>
+                <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                      'is-invalid': (cf.name.touched || isSubmitted) && cf.name.errors?.required }" />
+              </div>
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Description</label>
+                <input type="text" class="form-control fs-6" formControlName="subname" />
+              </div>
+              <div class="mb-3 accordion" id="collectionStyles">
+                <div class="accordion-item">
+                  <h2 class="accordion-header m-0">
+                    <button class="accordion-button p-5" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#styleDetails" aria-expanded="true" aria-controls="styleDetails">
+                      Styles
+                    </button>
+                  </h2>
+                  <div id="styleDetails" class="accordion-collapse collapse show" data-bs-parent="#collectionStyles">
+                    <div class="accordion-body">
+                      <div class="row" formGroupName="style">
+                        <div class="col-lg-4">
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Background</label>
+                            <input type="color" class="form-control" style="height: 50px;"
+                              formControlName="background" />
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Border</label>
+                            <input type="color" placeholder="Category name" class="form-control"
+                              formControlName="border" style="height: 50px;" />
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Border radius</label>
+                            <input type="number" class="form-control fs-6" formControlName="radius" />
+                          </div>
+                        </div>
+
+                        <div formGroupName="text">
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Color</label>
+                            <input type="color" class="form-control" style="height: 50px;" formControlName="color" />
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Font weight</label>
+                            <input type="number" class="form-control" formControlName="fontWeight" />
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Font size</label>
+                            <input type="number" class="form-control" formControlName="fontSize" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
 
           <div class="mediaWrapper">
 
@@ -227,51 +320,6 @@
 
             <h2 class="fw-bolder fs-4">Collection Styles</h2>
 
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Background</label>
-                <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                  formControlName="background" (change)="getColors('background', $event.target)" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Border</label>
-                <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
-                  style="height: 50px;" (change)="getColors('border', $event.target)" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Border Radius</label>
-                <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Color</label>
-                <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                  formControlName="color" (change)="getColors('color', $event.target)" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Font Weight</label>
-                <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Font Size ( in px )</label>
-                <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
-              </div>
-            </div>
-
             <div class="d-flex align-items-center justify-content-end">
               <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
                 style="width: 200px; margin-right: 20px;">
@@ -316,10 +364,10 @@
 
 <ng-template #coverModal>
   <div class="modal-body">
-    <image-cropper class="crop-section" [imageChangedEvent]="bannerChangedEvent" [maintainAspectRatio]="true"
+    <!-- <image-cropper class="crop-section" [imageChangedEvent]="bannerChangedEvent" [maintainAspectRatio]="true"
       [aspectRatio]="2 / 1" [cropperMaxWidth]="4000" [cropperMaxHeight]="2000" format="png"
       (imageCropped)="bannerCropped($event)">
-    </image-cropper>
+    </image-cropper> -->
 
     <div class="mt-3 d-flex align-items-center justify-content-end">
       <div class="btn btn-secondary me-2 fs-6" (click)="closeMedia('cover')">Discard Changes</div>
@@ -344,10 +392,10 @@
 <ng-template #mediaModal>
   <div class="modal-body mediaModal">
     <div class="mediaWrapper">
-      <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+      <!-- <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
         [aspectRatio]="3 / 3" [cropperMaxWidth]="400" [cropperMaxHeight]="400" format="png"
         (imageCropped)="imageCropped($event)">
-      </image-cropper>
+      </image-cropper> -->
     </div>
     <div class="mt-3 d-flex align-items-center justify-content-end">
       <div class="btn btn-secondary me-2 fs-6" (click)="closeMedia('thumbnail')">Discard Changes</div>
