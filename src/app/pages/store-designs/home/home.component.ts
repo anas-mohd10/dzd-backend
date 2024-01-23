@@ -6,6 +6,8 @@ import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { BlogService } from 'src/app/includes/services/blog.service';
+import { ProductService } from 'src/app/includes/services/product.service';
+
 
 interface WidgetProps {
   title: string;
@@ -68,13 +70,17 @@ export class HomeComponent implements OnInit {
   widgetBlogs: Array<any> = []
   redirections: Array<any> = []
   productForm: FormGroup;
+  productKeyword: FormControl = new FormControl("", Validators.required);
+  products: Array<any> = []
+  widgetProducts: Array<any> = []
 
   constructor(
     private BsModalService: BsModalService,
     private Toast: HotToastService,
     private HomeWidgetsService: HomeWidgetsService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private BlogService: BlogService
+    private BlogService: BlogService,
+    private ProductService: ProductService
   ) { }
 
   //Add widgets starts here
@@ -227,7 +233,9 @@ export class HomeComponent implements OnInit {
       widgetPayload = {
         visibility: this.form.get("visibility")?.value,
         refid: this.widgetDetails?.refid,
-        ...this.productForm.value
+        widgetType: this.widgetDetails?.widgetType,
+        ...this.productForm.value,
+        products: this.widgetProducts.map((product) => product?._id)
       }
     }
 
@@ -344,6 +352,37 @@ export class HomeComponent implements OnInit {
       cover: new FormControl(""),
       count: new FormControl(0, Validators.pattern(/^-?(0|[1-9]\d*)?$/))
     })
+  }
+
+  getProducts() {
+    if (!this.productKeyword.valid) {
+      return
+    }
+
+    this.ProductService.searchProducts({
+      name: this.productKeyword.value,
+      page: 1, limit: 100,
+      isActive: true, isVisible: 0
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.products = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  toggleProducts(productDetails: any) {
+    if (this.isIdInArray(productDetails?._id, this.widgetProducts)) {
+      this.widgetProducts = this.widgetProducts.filter(item => item._id !== productDetails?._id)
+    } else {
+      this.widgetProducts.push(productDetails)
+    }
+  }
+
+  isIdInArray(idToCheck: string, array: any[]) {
+    return array.some(item => item._id === idToCheck);
   }
 
   getBlogs() {

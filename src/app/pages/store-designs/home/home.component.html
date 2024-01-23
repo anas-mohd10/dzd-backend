@@ -274,7 +274,7 @@
                 <div *ngIf="widgetDetails?.widgetType == 'products'">
                     <form [formGroup]="productForm">
                         <div class="mb-3 ratio ratio-21x9 h-auto">
-                            <app-assets (mediaClicked)="productMediaTriggered($event, 'cover')"
+                            <app-assets [image]="'cover'" (mediaClicked)="productMediaTriggered($event, 'cover')"
                                 [previewDetails]="previewDetails"></app-assets>
                         </div>
                         <div class="row mx-0">
@@ -293,6 +293,65 @@
                                     <label for="productDescription" class="form-label">Description</label>
                                     <input type="text" id="productDescription" class="form-control"
                                         formControlName="description">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 form-group mb-3">
+                                        <label for="productView" class="form-label">Type</label>
+                                        <select formControlName="type" id="productView" class="form-select">
+                                            <option value="" disabled>-- Select an option --</option>
+                                            <option *ngFor="let item of ['slider', 'grid']" value="{{item}}">
+                                                {{item == 'slider' ? 'Slider': 'Grid'}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 form-group mb-3"
+                                        *ngIf="productForm.get('type')?.value == 'grid'">
+                                        <label for="productCount" class="form-label required">Count</label>
+                                        <input type="text" id="productCount" class="form-control"
+                                            formControlName="count"
+                                            [ngClass]="{'is-invalid': productForm.get('count')?.errors?.pattern}">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <ng-container *ngIf="widgetProducts.length > 0">
+                                        <div class="widget-products mb-5">
+                                            <ng-container *ngFor="let product of widgetProducts">
+                                                <div class="product border border-secondary p-3 shadow-sm rounded">
+                                                    <img class="rounded" height="30px" width="30px"
+                                                        src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}">
+                                                    <div class="mt-2 product-name">{{product?.name}}</div>
+                                                    <div class="remove-product bg-danger text-white"
+                                                        (click)="toggleProducts(product)">
+                                                        <svg height="16" width="16" data-slot="icon" fill="none"
+                                                            stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M6 18 18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+
+                                    <div class="form-group mb-3">
+                                        <label for="productKeyword" class="form-label">Search products</label>
+                                        <input type="text" id="productKeyword" class="form-control"
+                                            [formControl]="productKeyword" (ngModelChange)="getProducts()">
+                                    </div>
+                                    <ng-container *ngIf="products.length > 0">
+                                        <div class="products">
+                                            <ng-container *ngFor="let product of products">
+                                                <div class="product shadow-sm p-3 rounded mb-3 d-flex align-items-center justify-content-start"
+                                                    (click)="toggleProducts(product)"
+                                                    [ngClass]="{'border border-primary': isIdInArray(product?._id, widgetProducts)}">
+                                                    <img class="rounded" height="30px" width="30px"
+                                                        src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}">
+                                                    <div class="ms-2">{{product?.name}}</div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </div>
                         </div>
