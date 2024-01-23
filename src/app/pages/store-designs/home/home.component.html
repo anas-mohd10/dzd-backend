@@ -158,7 +158,7 @@
         <div class="modal-body">
             <div class="widget-form">
                 <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
-                    <div class="mb-2">
+                    <div class="mb-2" *ngIf="widgetDetails?.widgetType != 'products'">
                         <div class="accordion" id="header">
                             <div class="accordion-item">
                                 <h2 class="accordion-header m-0">
@@ -269,6 +269,34 @@
 
                 <div *ngIf="widgetDetails?.widgetType == 'blogs'">
 
+                </div>
+
+                <div *ngIf="widgetDetails?.widgetType == 'products'">
+                    <form [formGroup]="productForm">
+                        <div class="mb-3 ratio ratio-21x9 h-auto">
+                            <app-assets (mediaClicked)="productMediaTriggered($event, 'cover')"
+                                [previewDetails]="previewDetails"></app-assets>
+                        </div>
+                        <div class="row mx-0">
+                            <div class="col-lg-3">
+                                <div class="w-100 ratio ratio-1x1 h-auto">
+                                    <app-assets (mediaClicked)="productMediaTriggered($event, 'thumbnail')"
+                                        [previewDetails]="previewDetails"></app-assets>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="form-group mb-3">
+                                    <label for="productTitle" class="form-label required">Title</label>
+                                    <input type="text" id="productTitle" class="form-control" formControlName="title">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="productDescription" class="form-label">Description</label>
+                                    <input type="text" id="productDescription" class="form-control"
+                                        formControlName="description">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

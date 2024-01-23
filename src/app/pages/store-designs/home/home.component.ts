@@ -3,7 +3,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.service';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { BlogService } from 'src/app/includes/services/blog.service';
 
@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
     { title: 'Custom HTML', type: 'html', icon: '../../../../assets/widgets/custom-html.png', description: '' },
     { title: 'Image Slider', type: 'image-slider', icon: '../../../../assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Video', type: 'video', icon: '../../../../assets/widgets/video.png', description: 'This widget is used to showcase full width video only' },
+    { title: 'Products', type: 'products', icon: '../../../../assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
   ]
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
@@ -66,6 +67,7 @@ export class HomeComponent implements OnInit {
   blogs: Array<any> = []
   widgetBlogs: Array<any> = []
   redirections: Array<any> = []
+  productForm: FormGroup;
 
   constructor(
     private BsModalService: BsModalService,
@@ -168,6 +170,10 @@ export class HomeComponent implements OnInit {
     this.ChangeDetectorRef.markForCheck()
   }
 
+  productMediaTriggered(event: any, type: string) {
+    type == "cover" ? this.productForm.get("cover")?.setValue(event._id) : this.productForm.get("thumbnail")?.setValue(event._id)
+  }
+
   //Update widgets starts here
   openUpdate(template: TemplateRef<any>, widget: any) {
     this.updateRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
@@ -217,7 +223,12 @@ export class HomeComponent implements OnInit {
       widgetPayload['widgetImages'] = widgetImages
     } else if (this.widgetDetails?.widgetType == 'blogs') {
       let widgetBlogs = []
-
+    } else if (this.widgetDetails?.widgetType == 'products') {
+      widgetPayload = {
+        visibility: this.form.get("visibility")?.value,
+        refid: this.widgetDetails?.refid,
+        ...this.productForm.value
+      }
     }
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
@@ -322,6 +333,16 @@ export class HomeComponent implements OnInit {
       buttonText: new FormControl(""),
       buttonRedirection: new FormControl(""),
       redirectionQuery: new FormControl("")
+    })
+
+    this.productForm = new FormGroup({
+      title: new FormControl("Check Before The Offer Ends"),
+      description: new FormControl("Explore the trendy collection of best-selling fragrances with commendable discounts"),
+      products: new FormControl(""),
+      type: new FormControl("slider"),
+      thumbnail: new FormControl(""),
+      cover: new FormControl(""),
+      count: new FormControl(0, Validators.pattern(/^-?(0|[1-9]\d*)?$/))
     })
   }
 

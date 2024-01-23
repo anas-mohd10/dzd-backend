@@ -40,6 +40,7 @@ export class CartListComponent implements OnInit {
   settings: any = {}
   cartQuery: any
   @ViewChild('cartProducts') productsModal: TemplateRef<any>
+  notificationRef?: BsModalRef
 
   constructor(
     private cartService: CartService,
@@ -104,6 +105,13 @@ export class CartListComponent implements OnInit {
     this.page += 1
     this.seachCart()
   }
+
+  //Notification handler starts here
+  openNotification(template: TemplateRef<any>, cart: any) {
+    this.cart = cart
+    this.notifyModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+  }
+  //Notiication handler ends here
 
   seachCart() {
     let payload = {
