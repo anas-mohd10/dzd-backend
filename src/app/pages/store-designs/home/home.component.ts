@@ -8,7 +8,6 @@ import { environment } from 'src/environments/environment';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 
-
 interface WidgetProps {
   title: string;
   type: string;
@@ -394,6 +393,9 @@ export class HomeComponent implements OnInit {
         }
       }
     })
+  }
 
+  getCollections(){
+    
   }
 }
