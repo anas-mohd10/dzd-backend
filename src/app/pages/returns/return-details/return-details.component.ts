@@ -40,6 +40,8 @@ export class ReturnDetailsComponent implements OnInit {
             this.returnDetails = res?.result
             this.isRefunded.setValue(this.returnDetails?.isRefunded)
             this.returnDetails?.isRefunded == true ? this.isRefunded.disable() : null
+            this.returnDetails?.isAccepted == false && this.returnDetails?.isRejected == false ? this.isRefunded.disable() : null
+            this.returnDetails?.isRejected == true ? this.isRefunded.disable() : null
             this.ChangeDetectorRef.markForCheck()
           } else {
 
@@ -78,5 +80,37 @@ export class ReturnDetailsComponent implements OnInit {
 
   decline() {
     this.deleteRef?.hide()
+  }
+
+  acceptReturn() {
+    this.ReturnsService.updateReturn({ reference: this.returnRef, isAccepted: true, isRejected: false }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.deleteRef?.hide()
+          this.Router.navigate([appRoutes.returns])
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.message)
+      }
+    })
+  }
+
+  rejectReturn() {
+    this.ReturnsService.updateReturn({ reference: this.returnRef, isRejected: true, isAccepted: false }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.deleteRef?.hide()
+          this.Router.navigate([appRoutes.returns])
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err.message)
+      }
+    })
   }
 }

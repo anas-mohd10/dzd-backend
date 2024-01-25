@@ -5,5 +5,7 @@ export const homeWidgetEndpoints = {
     homeWidgets: '/home-widgets',
     deleteWidget: '/delete-widget',
     reorderWidgets: '/reorder-home-widgets',
-    getRedirections: '/get-redirections'
+    getRedirections: '/get-redirections',
+    saveHomeDraft: '/savetodraft-home-widgets',
+    publishHome: '/publish-home-widgets',
 }

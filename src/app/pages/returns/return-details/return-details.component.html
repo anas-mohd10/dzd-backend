@@ -22,6 +22,14 @@
 
     <div class="card my-4">
         <div class="card-body" *ngIf="returnDetails">
+            <div class="my-5 d-flex justify-content-end align-items-center" *ngIf="returnDetails?.isRefunded == false">
+                <button class="btn btn-danger me-1" (click)="rejectReturn()" *ngIf="returnDetails?.isAccepted == true || returnDetails?.isRejected == false">
+                    Reject return
+                </button>
+                <button class="btn btn-primary ms-1" (click)="acceptReturn()" *ngIf="returnDetails?.isRejected == true || returnDetails?.isAccepted == false">
+                    Accept this return
+                </button>
+            </div>
             <h1 class="fw-bold">Return #{{returnDetails?.reference}}</h1>
             <div class="fs-5 fw-bold">Order {{returnDetails?.order?.orderNo}}</div>
             <div class="fs-6">Request submitted on {{returnDetails?.createdAt}}</div>

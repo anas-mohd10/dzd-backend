@@ -68,6 +68,8 @@ export class AssetsComponent implements OnInit, OnChanges {
         break
     }
     this.ChangeDetectorRef.markForCheck()
+    console.log(this.previewDetails);
+
   }
 
   ngOnInit(): void {

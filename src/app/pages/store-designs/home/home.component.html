@@ -1,15 +1,27 @@
-<app-design-topbar></app-design-topbar>
+<app-design-topbar [page]="'home'"></app-design-topbar>
 <app-design-sidebar></app-design-sidebar>
 
 <div class="storedesign-container">
     <div class="row mx-0">
         <div class="col-lg-9">
-            <iframe src="http://demo.storedada.com" style="width:100%;" frameborder="0">
+            <iframe src="https://demo.storedada.com?isPreview=true" style="width:100%;" frameborder="0">
             </iframe>
         </div>
         <div class="col-lg-3 bg-white rounded p-5 widget-container">
             <div class="fs-3 fw-bolder mb-2">Homepage</div>
             <p class="text-muted fs-6">Configure your homepage with widgets for desktop & mobile view.</p>
+            <div class="mb-2">
+                <button class="d-flex align-items-center justify-content-center btn border border-secondary w-100"
+                    (click)="openHistory(historyTemplate)">
+                    <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
+                        <path
+                            d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
+                    </svg>
+                    <div class="ms-1">History</div>
+                </button>
+            </div>
             <div>
                 <button class="d-flex align-items-center justify-content-center btn btn-secondary w-100"
                     (click)="openWidgets(widgetsTemplate)">
@@ -275,13 +287,13 @@
                     <form [formGroup]="productForm">
                         <div class="mb-3 ratio ratio-21x9 h-auto">
                             <app-assets [image]="'cover'" (mediaClicked)="productMediaTriggered($event, 'cover')"
-                                [previewDetails]="previewDetails"></app-assets>
+                                [previewDetails]="collectionCoverDetails"></app-assets>
                         </div>
                         <div class="row mx-0">
                             <div class="col-lg-3">
                                 <div class="w-100 ratio ratio-1x1 h-auto">
                                     <app-assets (mediaClicked)="productMediaTriggered($event, 'thumbnail')"
-                                        [previewDetails]="previewDetails"></app-assets>
+                                        [previewDetails]="collectionThumbnailDetails"></app-assets>
                                 </div>
                             </div>
                             <div class="col-lg-9">
@@ -360,4 +372,17 @@
             </div>
         </div>
     </form>
+</ng-template>
+
+<ng-template #historyTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">History</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="historyRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body history-frame">
+        <iframe src="https://demo.storedada.com?isHistory=true" style="width:100%;" frameborder="0">
+        </iframe>
+    </div>
 </ng-template>

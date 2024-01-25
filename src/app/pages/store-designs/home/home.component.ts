@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { CollectionService } from 'src/app/includes/services/collection.service';
 
 interface WidgetProps {
   title: string;
@@ -72,6 +73,9 @@ export class HomeComponent implements OnInit {
   productKeyword: FormControl = new FormControl("", Validators.required);
   products: Array<any> = []
   widgetProducts: Array<any> = []
+  historyRef?: BsModalRef
+  collectionCoverDetails: string = ''
+  collectionThumbnailDetails: string = ''
 
   constructor(
     private BsModalService: BsModalService,
@@ -79,7 +83,8 @@ export class HomeComponent implements OnInit {
     private HomeWidgetsService: HomeWidgetsService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private BlogService: BlogService,
-    private ProductService: ProductService
+    private ProductService: ProductService,
+    private CollectionService: CollectionService
   ) { }
 
   //Add widgets starts here
@@ -188,15 +193,17 @@ export class HomeComponent implements OnInit {
           this.widgetDetails = res?.result;
           if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
-              this.widgetImages.push({
-                url: widgetImage?.media, title: widgetImage?.title,
-                redirection: widgetImage?.redirection
-              })
+              this.widgetImages.push({ url: widgetImage?.media, title: widgetImage?.title, redirection: widgetImage?.redirection })
             }
           }
           if (this.widgetDetails?.widgetType == 'blog') {
             this.widgetBlogs = this.widgetDetails?.blogs
             this.getBlogs()
+          }
+          if (this.widgetDetails?.widgetType == 'products') {
+            this.collectionThumbnailDetails = this.widgetDetails?.collections?.thumbnail?.path
+            this.collectionCoverDetails = this.widgetDetails?.collections?.cover?.path
+            this.getCollections(this.widgetDetails?.collections?.slug)
           }
           this.form.patchValue(this.widgetDetails)
           this.ChangeDetectorRef.markForCheck()
@@ -395,7 +402,19 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getCollections(){
-    
+  openHistory(template: TemplateRef<any>) {
+    this.historyRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  getCollections(collection: string) {
+    this.CollectionService.getCollectionBySlug(collection).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.widgetProducts = res?.result[0]?.products
+          this.productForm.patchValue(res?.result[0])
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
   }
 }

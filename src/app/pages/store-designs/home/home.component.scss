@@ -94,6 +94,15 @@ label {
     }
 }
 
+.history-frame {
+    height: 80vh;
+
+    iframe {
+        height: 100%;
+        width: 100%;
+    }
+}
+
 .widget-products {
     display: grid;
     grid-template-columns: repeat(6, 1fr);

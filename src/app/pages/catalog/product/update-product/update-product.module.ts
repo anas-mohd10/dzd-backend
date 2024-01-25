@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [UpdateProductComponent],
@@ -22,6 +23,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     DragDropModule,
     NgSelectModule,
     TabsModule,
+    SharedModule,
     AngularEditorModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

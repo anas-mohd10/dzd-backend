@@ -13,6 +13,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 @NgModule({
   declarations: [AddProductComponent],
   imports: [
@@ -28,6 +29,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     VgControlsModule,
     AngularEditorModule,
     NgSelectModule,
+    SharedModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',

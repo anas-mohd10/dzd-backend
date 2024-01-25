@@ -63,4 +63,14 @@ export class HomeWidgetsService {
     const url = this.commonService.getFullUrl(homeWidgetEndpoints.getRedirections + `/${redirectionType}?keyword=${query}`);
     return this.http.get(`${url}`)
   }
+
+  saveHomeWidgetsDraft(){
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.saveHomeDraft);
+    return this.http.post(`${url}`, {})
+  }
+
+  publishHomeWidgets(){
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.publishHome);
+    return this.http.post(`${url}`, {})
+  }
 }
