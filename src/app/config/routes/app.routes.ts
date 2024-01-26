@@ -288,6 +288,8 @@ export const appRoutes = {
   loyalty: `${app}/loyalty`,
   referralProgram: `${app}/referral`,
   sitemap: `${app}/sitemap`,
+  giftWraps: `${app}/gift-wrap`,
+  bannerImages: `${app}/banner-images`,
   designs: {
     home: "/designs/home",
     catalogs: "/designs/catalogs",

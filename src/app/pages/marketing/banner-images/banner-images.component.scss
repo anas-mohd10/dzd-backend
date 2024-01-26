@@ -1,0 +1,29 @@
+.btn,
+.form-label {
+    font-weight: 400 !important;
+}
+
+.delete {
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
+    background: #be2424;
+    color: #ffffff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.edit {
+    height: 32px;
+    width: 32px;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    
+    &:hover {
+        background: #cccccc;
+    }
+}

@@ -1,0 +1,64 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Gift wrap</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.giftWraps }}">Gift wrap</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="fs-2 fw-bolder">Manage how you want to enable gift wrap for your customer.</div>
+                    <p class="text-muted fs-6 my-2">Choose how you want to offer gift wrapping services to enhance their
+                        shopping experience</p>
+                </div>
+                <div class="col-lg-6">
+                    <img src="../../../../assets/images/gift-wrap.jpg" alt="Gift Wrap Customization for Customer"
+                        class="w-100 h-auto">
+                </div>
+            </div>
+            <div class="my-5">
+                <form [formGroup]="form">
+                    <div class="mb-5">
+                        <div class="mb-5 d-flex align-items-center">
+                            <div class="checkbox" (click)="toggleCheckbox('isEnabled')" [ngClass]="{'checked': form.get('isEnabled')?.value == true}"> </div>
+                            <p class="fs-5 mb-0 ms-2">Enable gift wrap</p>
+                        </div>
+                        <div class="mb-5 d-flex align-items-center">
+                            <div class="checkbox" (click)="toggleCheckbox('isOrderLevel')" [ngClass]="{'checked': form.get('isOrderLevel')?.value == true}"> </div>
+                            <p class="fs-5 mb-0 ms-2">Order level gift wrap enabled</p>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="value" class="form-label">Minimum item value for free gift wrap</label>
+                        <input type="text" id="value" placeholder="10" formControlName="minimumValue"
+                            class="form-control"
+                            [ngClass]="{'is-invalid': formControls.minimumValue.errors?.pattern || isSubmitted}">
+                    </div>
+                    <div class="form-group">
+                        <label for="charge" class="form-label">Gift wrapping charge</label>
+                        <input type="text" id="charge" placeholder="5" formControlName="giftCharge"
+                            [ngClass]="{'is-invalid': formControls.giftCharge.errors?.pattern || isSubmitted}"
+                            class="form-control">
+                    </div>
+                </form>
+                <div class="my-3 d-flex align-items-center justify-content-end">
+                    <button class="btn btn-secondary me-1" (click)="discard()">Discard</button>
+                    <button class="btn btn-primary ms-1" (click)="update()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

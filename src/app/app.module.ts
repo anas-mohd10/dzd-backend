@@ -74,6 +74,8 @@ import { SharedModule } from './pages/shared/shared.module';
 import { LoyaltyComponent } from './pages/marketing/loyalty/loyalty.component';
 import { ReferralComponent } from './pages/marketing/referral/referral.component';
 import { SitemapComponent } from './pages/settings/general/sitemap/sitemap.component';
+import { GiftWrapComponent } from './pages/marketing/gift-wrap/gift-wrap.component';
+import { BannerImagesComponent } from './pages/marketing/banner-images/banner-images.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -122,6 +124,8 @@ const DragConfig = {
     LoyaltyComponent,
     ReferralComponent,
     SitemapComponent,
+    GiftWrapComponent,
+    BannerImagesComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
