@@ -24,3 +24,32 @@
         }
     }
 }
+
+.table-responsive {
+
+    .common_thead {
+        background: #20BDAB;
+
+        th {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 15px;
+            text-transform: capitalize;
+            color: #FFFFFF;
+        }
+    }
+
+    tr {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    tbody {
+        tr {
+            td {
+                img {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

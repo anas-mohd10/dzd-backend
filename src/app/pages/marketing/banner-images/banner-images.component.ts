@@ -85,11 +85,11 @@ export class BannerImagesComponent implements OnInit {
     this.BannerImagesService.deleteBannerImage(this.focusedBannerImage?.refid).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Toast.success(res?.errorMessage);
+          this.Toast.success(res?.message);
           this.deleteRef?.hide();
           this.searchBannerImages();
         } else {
-          this.Toast.error(res?.errorMessage);
+          this.Toast.error(res?.message);
         }
       }, error: (err: any) => {
         this.Toast.error(err?.error?.message);
@@ -140,6 +140,7 @@ export class BannerImagesComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message);
           this.closeManage();
+          this.duplicateRef?.hide();
           this.searchBannerImages();
         } else {
           this.Toast.error(res?.message);
@@ -158,9 +159,10 @@ export class BannerImagesComponent implements OnInit {
           this.closeManage();
           this.searchBannerImages();
         } else {
-          this.duplicateRef = this.BsModalService.show(this.duplicateModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+          this.duplicateRef = this.BsModalService.show(this.duplicateModal, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
           this.bannerImageDetails = res?.result;
           this.Toast.error(res?.message);
+          this.manageRef?.hide();
         }
       }, error: (err: any) => {
         this.Toast.error(err?.error?.message);

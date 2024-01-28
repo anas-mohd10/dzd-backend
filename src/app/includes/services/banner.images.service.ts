@@ -20,7 +20,7 @@ export class BannerImagesService {
 
   updateBannerImage(data: any) {
     const url = this.CommonService.getFullUrl(bannerImageEndpoints.updateBannerImage);
-    return this.HttpClient.post(`${url}`, data)
+    return this.HttpClient.put(`${url}`, data)
   }
 
   searchBannerImages() {

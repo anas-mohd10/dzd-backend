@@ -11,5 +11,6 @@ export const dashboardEndpoints = {
   sourceDetails: '/source-details',
   monthlyComparison: '/monthly-comparison',
   salesAnalytics: '/sales-analytics',
+  sales: '/sales',
   storeTips: '/store-tips',
 }

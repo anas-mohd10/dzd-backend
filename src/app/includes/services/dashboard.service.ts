@@ -88,4 +88,9 @@ export class DashboardService {
   sendRevenues(revenues: any) {
     this.revenues.next(revenues);
   }
+
+  sales(data: any) {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.sales);
+    return this.http.post(`${url}`, data)
+  }
 }

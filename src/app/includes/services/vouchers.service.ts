@@ -38,4 +38,6 @@ export class VouchersService {
     const url = this.commonService.getFullUrl(this.endpoints.searchVouchers);
     return this.http.post(`${url}`, data);
   }
+
+  
 }

@@ -3,27 +3,40 @@
     font-weight: 400 !important;
 }
 
-.delete {
-    height: 32px;
-    width: 32px;
-    border-radius: 4px;
-    background: #be2424;
-    color: #ffffff;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-}
+.banner {
 
-.edit {
-    height: 32px;
-    width: 32px;
-    border-radius: 4px;
-    border: 1px solid #cccccc;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    
-    &:hover {
-        background: #cccccc;
+    img {
+        object-fit: cover;
+    }
+
+    .details {
+        bottom: 10px;
+        right: 10px;
+
+        .delete {
+            height: 32px;
+            width: 32px;
+            border-radius: 6px;
+            background: #be2424;
+            color: #ffffff;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+        }
+        
+        .edit {
+            height: 32px;
+            width: 32px;
+            border-radius: 6px;
+            border: 1px solid #cccccc;
+            display: grid;
+            background: #ffffff;
+            place-items: center;
+            cursor: pointer;
+        
+            &:hover {
+                background: #eeeeee;
+            }
+        }
     }
 }

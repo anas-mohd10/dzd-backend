@@ -30,6 +30,7 @@ export class SalesAnalyticsComponent implements OnInit {
   orders: Array<any> = []
   orderLabels: Array<any> = []
   orderChartOptions: any;
+  salesDetails: Array<any> = []
 
   constructor(
     private BsModalService: BsModalService,
@@ -45,6 +46,7 @@ export class SalesAnalyticsComponent implements OnInit {
     })
 
     this.getDetails()
+    this.getSales()
   }
 
   getDetails() {
@@ -69,6 +71,17 @@ export class SalesAnalyticsComponent implements OnInit {
 
           this.getRevenueChartOptions()
           this.getOrderChartOptions()
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  getSales() {
+    this.DashboardService.sales({ duration: this.duration.value, dates: this.date.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.salesDetails = res?.result
           this.ChangeDetectorRef.markForCheck()
         }
       }
@@ -116,6 +129,7 @@ export class SalesAnalyticsComponent implements OnInit {
     if (this.duration.value == 'date-range') {
       this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
     }
+    this.getSales()
     this.getDetails()
   }
 
