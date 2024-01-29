@@ -30,7 +30,7 @@
             <div class="row">
                 <ng-container *ngFor="let banner of bannerImages">
                     <div class="col-lg-6 banner mb-3 rounded">
-                        <div class="h-auto w-100" style="aspect-ratio: 4/1;">
+                        <div class="h-auto w-100" style="aspect-ratio: 6/1;">
                             <img class="w-100 rounded h-100" src="{{base}}{{banner?.media?.path}}" alt="Banner Details">
                             <div class="d-flex my-3 align-items-center justify-content-between">
                                 <div>{{banner?.createdAt}}</div>
@@ -86,8 +86,8 @@
                     <option *ngFor="let item of items" value="{{item.value}}">{{item.key}}</option>
                 </select>
             </div>
-            <div class="w-100 my-3 h-auto" style="aspect-ratio: 4/1;">
-                <app-assets (mediaClicked)="onMediaTriggered($event)" [image]="'cover'" [aspectRatio]="'4:1'"
+            <div class="w-100 my-3 h-auto" style="aspect-ratio: 6/1;">
+                <app-assets (mediaClicked)="onMediaTriggered($event)" [image]="'cover'" [aspectRatio]="'6:1'"
                     [previewDetails]="previewDetails"></app-assets>
             </div>
             <div class="d-flex align-items-center justify-content-end">
