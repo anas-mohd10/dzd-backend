@@ -4,11 +4,13 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssetsComponent } from './assets/assets.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModuleNotificationComponent } from './module-notification/module-notification.component';
 
 @NgModule({
   declarations: [
     PaginationComponent,
-    AssetsComponent
+    AssetsComponent,
+    ModuleNotificationComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
   ],
   exports: [
     PaginationComponent,
-    AssetsComponent
+    AssetsComponent,
+    ModuleNotificationComponent
   ]
 })
 export class SharedModule { }
