@@ -1,1 +1,77 @@
-<p>module-notification works!</p>
+<button type="button" class="btn btn-primary" (click)="openModal(template)">
+    Send notification
+</button>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Send notification</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="my-3">
+                <div class="fs-5 mb-3">Select notification channel</div>
+                <div class="row">
+                    <ng-container *ngFor="let channel of channels">
+                        <div class="col-lg-4 text-muted">
+                            <div class="channel p-4 rounded border d-flex align-items-center"
+                                [ngClass]="{'border-primary text-primary': form.get('channel')?.value == channel?.type}"
+                                (click)="toggleChannel(channel?.type)">
+                                <span class="me-2" *ngIf="channel.type == 'email'">
+                                    <svg height="32" width="32" data-slot="icon" fill="none" stroke-width="1.5"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75">
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span class="me-2" *ngIf="channel.type == 'push'">
+                                    <svg height="32" width="32" data-slot="icon" fill="none" stroke-width="1.5"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5">
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span class="me-2" *ngIf="channel.type == 'sms'">
+                                    <svg height="32" width="32" data-slot="icon" fill="none" stroke-width="1.5"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z">
+                                        </path>
+                                    </svg>
+                                </span>
+                                <div>{{ channel.name }}</div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="form-group mb-3" *ngIf="form.get('channel')?.value == 'sms'">
+                <label for="sms" class="form-label">SMS</label>
+                <textarea class="form-control" id="sms" formControlName="sms"></textarea>
+            </div>
+            <div class="form-group mb-3" *ngIf="form.get('channel')?.value == 'email'">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" class="form-control" id="subject" formControlName="subject">
+            </div>
+            <div class="form-group mb-3" *ngIf="form.get('channel')?.value == 'push'">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" formControlName="title">
+            </div>
+            <div class="form-group mb-3" *ngIf="form.get('channel')?.value == 'push'">
+                <label for="message" class="form-label">Message</label>
+                <input type="text" class="form-control" id="message" formControlName="message">
+            </div>
+            <div class="d-flex align-items-center justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="send()">Send</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

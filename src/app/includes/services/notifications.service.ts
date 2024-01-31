@@ -43,4 +43,9 @@ export class NotificationsService {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.latest_notifications);
     return this.http.post(`${url}`, data);
   }
+
+  moduleNotifications(data: any) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.moduleNotifications);
+    return this.http.post(`${url}`, data);
+  }
 }

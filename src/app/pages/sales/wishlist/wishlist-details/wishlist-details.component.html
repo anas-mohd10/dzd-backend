@@ -14,7 +14,7 @@
                     </li>
                     <li class="breadcrumb-item active fs-6">
                         <a routerLink="{{ appRoute.wishlist.DETAILS }}" [queryParams]="{user: customer}">Wishlist
-                            Details ( {{customerDetails?.customerDetails?.name}} )</a>
+                            Details</a>
                     </li>
                 </ul>
             </div>
@@ -24,7 +24,12 @@
     <div class="mt-4">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title fw-bolder">Customer Details</h3>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="fs-4 fw-bold mb-2">Customer details</div>
+                    <div>
+                        <app-module-notification [query]="customerDetails?.slug" [type]="'wishlist'"></app-module-notification>
+                    </div>
+                </div>
                 <div class="fs-6 mb-2">Name : <span class="fs-5">{{customerDetails?.customerDetails?.name}}</span>
                 </div>
                 <div class="fs-6 mb-2">Mobile : <span class="fs-5">{{customerDetails?.customerDetails?.mobile}}</span>
@@ -41,7 +46,8 @@
                         <div class="productCard d-flex p-2 align-items-center justify-content-start">
                             <div class="productImage">
                                 <img src="{{product?.thumbnail}}" alt="Product" height="80px" width="80px"
-                                    class="rounded me-1" onerror="this.src = '../../../../../assets/images/default.png'">
+                                    class="rounded me-1"
+                                    onerror="this.src = '../../../../../assets/images/default.png'">
                             </div>
                             <div class="productDetails">
                                 <div class="productName fs-6">Name : {{product?.name}}</div>

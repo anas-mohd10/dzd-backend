@@ -338,6 +338,7 @@ export class HomeComponent implements OnInit {
       description: new FormControl(""),
       html: new FormControl(""),
       htmlStyles: new FormControl(""),
+      video: new FormControl(""),
     })
 
     this.widgetForm = new FormGroup({
