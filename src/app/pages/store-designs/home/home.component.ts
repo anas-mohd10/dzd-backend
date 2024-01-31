@@ -76,6 +76,9 @@ export class HomeComponent implements OnInit {
   historyRef?: BsModalRef
   collectionCoverDetails: string = ''
   collectionThumbnailDetails: string = ''
+  designRef?: BsModalRef
+  designForm: FormGroup
+  backgroundDetails: string
 
   constructor(
     private BsModalService: BsModalService,
@@ -86,6 +89,52 @@ export class HomeComponent implements OnInit {
     private ProductService: ProductService,
     private CollectionService: CollectionService
   ) { }
+
+  //Design starts here
+  openDesign(template: TemplateRef<any>, widget: any) {
+    this.designRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+    this.getWidgetDetails(widget)
+  }
+
+  getWidgetDetails(widget: any) {
+    this.HomeWidgetsService.homeWidgetDetails(widget?.refid).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.widgetDetails = res?.result;
+          if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
+            for (let widgetImage of this.widgetDetails?.widgetImages) {
+              this.widgetImages.push({ url: widgetImage?.media, title: widgetImage?.title, redirection: widgetImage?.redirection })
+            }
+          }
+          if (this.widgetDetails?.widgetType == 'blog') {
+            this.widgetBlogs = this.widgetDetails?.blogs
+            this.getBlogs()
+          }
+          if (this.widgetDetails?.widgetType == 'products') {
+            this.collectionThumbnailDetails = this.widgetDetails?.collections?.thumbnail?.path
+            this.collectionCoverDetails = this.widgetDetails?.collections?.cover?.path
+            this.getCollections(this.widgetDetails?.collections?.slug)
+          }
+          if(this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
+          this.form.patchValue(this.widgetDetails)
+          this.designForm.patchValue(this.widgetDetails?.styles)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  closeDesign() {
+    this.designRef?.hide();
+    this.widgetImages = []
+    this.widgetImagePreviewIndex = null
+    this.widgetImagePreview = null
+  }
+  //Design ends here
 
   //Add widgets starts here
   openWidgets(template: TemplateRef<any>) {
@@ -187,33 +236,7 @@ export class HomeComponent implements OnInit {
   //Update widgets starts here
   openUpdate(template: TemplateRef<any>, widget: any) {
     this.updateRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
-    this.HomeWidgetsService.homeWidgetDetails(widget?.refid).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.widgetDetails = res?.result;
-          if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
-            for (let widgetImage of this.widgetDetails?.widgetImages) {
-              this.widgetImages.push({ url: widgetImage?.media, title: widgetImage?.title, redirection: widgetImage?.redirection })
-            }
-          }
-          if (this.widgetDetails?.widgetType == 'blog') {
-            this.widgetBlogs = this.widgetDetails?.blogs
-            this.getBlogs()
-          }
-          if (this.widgetDetails?.widgetType == 'products') {
-            this.collectionThumbnailDetails = this.widgetDetails?.collections?.thumbnail?.path
-            this.collectionCoverDetails = this.widgetDetails?.collections?.cover?.path
-            this.getCollections(this.widgetDetails?.collections?.slug)
-          }
-          this.form.patchValue(this.widgetDetails)
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.Toast.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.Toast.error(err?.error?.message)
-      }
-    })
+    this.getWidgetDetails(widget)
   }
 
   closeUpdate() {
@@ -224,7 +247,7 @@ export class HomeComponent implements OnInit {
     this.form.reset()
   }
 
-  updateWidget() {
+  updateWidget(type?: string) {
     let widgetPayload = { ...this.form.value, refid: this.widgetDetails?.refid }
 
     if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
@@ -245,6 +268,8 @@ export class HomeComponent implements OnInit {
       }
     }
 
+    type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
+
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -254,7 +279,14 @@ export class HomeComponent implements OnInit {
           this.widgetImagePreviewIndex = null
           this.widgetImagePreview = null
           this.form.reset()
+          this.designForm.patchValue({
+            backgroundColor: '#ffffff', backgroundImage: '', marginLeft: 0,
+            marginTop: 0, marginRight: 0, marginBottom: 0,
+            paddingTop: 0, paddingBottom: 0, paddingLeft: 0,
+            paddingRight: 0, borderRadius: 0, borderWidth: 0
+          })
           this.closeUpdate()
+          this.closeDesign()
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -359,6 +391,27 @@ export class HomeComponent implements OnInit {
       cover: new FormControl(""),
       count: new FormControl(0, Validators.pattern(/^-?(0|[1-9]\d*)?$/))
     })
+
+    this.designForm = new FormGroup({
+      marginLeft: new FormControl(0),
+      marginRight: new FormControl(0),
+      marginTop: new FormControl(0),
+      marginBottom: new FormControl(0),
+      elevation: new FormControl(0),
+      backgroundColor: new FormControl("#ffffff"),
+      backgroundImage: new FormControl(""),
+      paddingLeft: new FormControl(0),
+      paddingRight: new FormControl(0),
+      paddingTop: new FormControl(0),
+      paddingBottom: new FormControl(0),
+      borderRadius: new FormControl(0),
+      borderWidth: new FormControl(0),
+      borderColor: new FormControl("#ffffff"),
+    })
+  }
+
+  onBackgroundTriggered(event: any){
+    this.designForm.get("backgroundImage")?.setValue(event._id)
   }
 
   getProducts() {

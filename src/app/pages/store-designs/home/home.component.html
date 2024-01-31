@@ -10,7 +10,7 @@
         <div class="col-lg-3 bg-white rounded p-5 widget-container">
             <div class="fs-3 fw-bolder mb-2">Homepage</div>
             <p class="text-muted fs-6">Configure your homepage with widgets for desktop & mobile view.</p>
-            <div class="mb-2">
+            <!-- <div class="mb-2">
                 <button class="d-flex align-items-center justify-content-center btn border border-secondary w-100"
                     (click)="openHistory(historyTemplate)">
                     <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -21,7 +21,7 @@
                     </svg>
                     <div class="ms-1">History</div>
                 </button>
-            </div>
+            </div> -->
             <div>
                 <button class="d-flex align-items-center justify-content-center btn btn-secondary w-100"
                     (click)="openWidgets(widgetsTemplate)">
@@ -56,7 +56,7 @@
                             Visible in {{widgetItem?.visibility == 'all' ? 'all devices': widgetItem?.visibility}}
                         </div>
                         <div class="mt-2 d-flex align-items-center justify-content-between">
-                            <button
+                            <button (click)="openDesign(designTemplate, widgetItem)"
                                 class="btn w-50 bg-white me-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
                                 placement="bottom" tooltip="Customize this widget design">
                                 <img src="../../../../assets/widgets/assets/design.svg" alt="Design" class="me-1">
@@ -173,9 +173,8 @@
                     <div class="accordion" id="header">
                         <div class="accordion-item">
                             <h2 class="accordion-header m-0">
-                                <button class="fs-5 accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#headerDetails" aria-expanded="false"
-                                    aria-controls="headerDetails">
+                                <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#headerDetails" aria-expanded="false" aria-controls="headerDetails">
                                     Section header details
                                 </button>
                             </h2>
@@ -184,8 +183,8 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="form-floating mb-3">
-                                                <input type="text" placeholder="Latest arrivals"
-                                                    class="form-control" formControlName="title" id="title">
+                                                <input type="text" placeholder="Latest arrivals" class="form-control"
+                                                    formControlName="title" id="title">
                                                 <label for="title">Title</label>
                                             </div>
                                         </div>
@@ -193,8 +192,7 @@
                                             <div class="form-floating mb-3">
                                                 <input type="text"
                                                     placeholder="Get latest arrival products from our store"
-                                                    class="form-control" formControlName="description"
-                                                    id="description">
+                                                    class="form-control" formControlName="description" id="description">
                                                 <label for="description">Description</label>
                                             </div>
                                         </div>
@@ -376,6 +374,206 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #designTemplate>
+    <div class="modal-header">
+        <div>
+            <h4 class="modal-title pull-left">Widget design</h4>
+            <div>Widget type : {{widgetDetails?.widgetName}}</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+            <button type="button" class="btn-primary me-2 btn d-flex align-items-center justify-content-center"
+                (click)="updateWidget('styles')">
+                <div class="me-2">Save changes</div>
+                <img src="../../../../assets/widgets/assets/save-light.svg" alt="Save changes">
+            </button>
+            <button type="button" class="btn-secondary btn d-flex align-items-center justify-content-center"
+                (click)="closeDesign()">
+                <div class="me-1">Cancel</div>
+                <img src="../../../../assets/widgets/assets/close.svg" alt="Cancel changes">
+            </button>
+        </div>
+    </div>
+    <form [formGroup]="designForm">
+        <div class="modal-body">
+            <div class="accordion" id="widgetDesign">
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0" id="marginDetails">
+                        <button class="accordion-button p-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#margin" aria-expanded="true" aria-controls="margin">
+                            Margin
+                        </button>
+                    </h2>
+                    <div id="margin" class="accordion-collapse collapse show" aria-labelledby="marginDetails"
+                        data-bs-parent="#widgetDesign">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-3 form-group">
+                                    <label for="marginTop" class="form-label">Margin top</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/MarginTopStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="marginTop" formControlName="marginTop"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="marginRight" class="form-label">Margin right</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/MarginRightStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="marginRight" formControlName="marginRight"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="marginBottom" class="form-label">Margin bottom</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/MarginBottomStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="marginBottom" formControlName="marginBottom"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="marginLeft" class="form-label">Margin left</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/MarginLeftStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="marginLeft" formControlName="marginLeft"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0" id="paddingDetails">
+                        <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#padding" aria-controls="padding">
+                            Padding
+                        </button>
+                    </h2>
+                    <div id="padding" class="accordion-collapse collapse" aria-labelledby="paddingDetails"
+                        data-bs-parent="#widgetDesign">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-3 form-group">
+                                    <label for="paddingTop" class="form-label">Padding top</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/PaddingTopStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="paddingTop" formControlName="paddingTop"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="paddingRight" class="form-label">Padding right</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/PaddingRightStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="paddingRight" formControlName="paddingRight"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="paddingBottom" class="form-label">Padding bottom</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/PaddingBottomStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="paddingBottom" formControlName="paddingBottom"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="paddingLeft" class="form-label">Padding left</label>
+                                    <div class="d-flex align-items-center">
+                                        <img class="me-1" height="32" width="32"
+                                            src="../../../../assets/store-designs/PaddingLeftStyle.png"
+                                            alt="WidgetDesigns">
+                                        <input type="number" id="paddingLeft" formControlName="paddingLeft"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0" id="borderDetails">
+                        <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#border" aria-controls="border">
+                            Border
+                        </button>
+                    </h2>
+                    <div id="border" class="accordion-collapse collapse" aria-labelledby="borderDetails"
+                        data-bs-parent="#widgetDesign">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-lg-4 form-group">
+                                    <label for="borderWidth" class="form-label">Border width</label>
+                                    <input type="number" id="borderWidth" formControlName="borderWidth"
+                                        class="form-control">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="borderRadius" class="form-label">Border radius</label>
+                                    <input type="number" id="borderRadius" formControlName="borderRadius"
+                                        class="form-control">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="borderColor" class="form-label">Border color</label>
+                                    <input type="color" id="borderColor" formControlName="borderColor"
+                                        class="form-control" style="height: 46px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0" id="backgroundDetails">
+                        <button class="accordion-button collapsed p-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#background" aria-controls="background">
+                            Background
+                        </button>
+                    </h2>
+                    <div id="background" class="accordion-collapse collapse" aria-labelledby="backgroundDetails"
+                        data-bs-parent="#widgetDesign">
+                        <div class="accordion-body">
+                            <div class="row mb-3">
+                                <div class="col-lg-6 form-group">
+                                    <label for="backgroundColor" class="form-label">Background</label>
+                                    <input type="color" id="backgroundColor" formControlName="backgroundColor"
+                                        class="form-control" style="height: 46px;">
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <label for="elevation" class="form-label">Elevation</label>
+                                    <input type="number" id="elevation" formControlName="elevation"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="backgroundImage" class="form-label">Background image</label>
+                                <div id="backgroundImage" style="aspect-ratio: 4/1;">
+                                    <app-assets (mediaClicked)="onBackgroundTriggered($event)" [image]="'cover'"
+                                        [previewDetails]="backgroundDetails"></app-assets>
+                                </div>
+                                <p class="text-muted mx-2">This image will appear on widget backgrounds.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

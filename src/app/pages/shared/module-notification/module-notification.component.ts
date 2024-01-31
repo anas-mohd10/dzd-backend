@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
@@ -18,6 +18,7 @@ export class ModuleNotificationComponent implements OnInit {
     { type: 'sms', name: 'SMS' },
     { type: 'push', name: 'Push notification' }
   ]
+  couponForm: FormGroup
   form: FormGroup
 
   constructor(
@@ -48,6 +49,17 @@ export class ModuleNotificationComponent implements OnInit {
       subject: new FormControl('Complete Your Shopping Today for Exclusive Deals!'),
       title: new FormControl('Finish your shopping now'),
       message: new FormControl('Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone')
+    })
+
+    this.couponForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      couponType: new FormControl('complete'),
+      code: new FormControl('', Validators.required),
+      type: new FormControl('percent'),
+      value: new FormControl('10', Validators.required),
+      minPurchase: new FormControl(0),
+      isVisibility: new FormControl(false),
+      forUser: new FormControl('', Validators.required)
     })
   }
 

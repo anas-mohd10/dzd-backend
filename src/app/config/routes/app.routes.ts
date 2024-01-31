@@ -136,7 +136,7 @@ export const appRoutes = {
   },
   coupons: {
     COUPONS_LIST: `${app}${couponRoute}`,
-    ADD_COUPONS_LIST: `${app}${couponRoute} /add`,
+    ADD_COUPONS_LIST: `${app}${couponRoute}/add`,
     UPDATE_COUPONS_LIST: `${app}${couponRoute}/update`,
   },
   contacts: {
