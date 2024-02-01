@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -9,10 +9,10 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
   templateUrl: './module-notification.component.html',
   styleUrls: ['./module-notification.component.scss']
 })
-export class ModuleNotificationComponent implements OnInit {
+export class ModuleNotificationComponent implements OnInit, OnChanges {
   modalRef?: BsModalRef;
   @Input() type: string;
-  @Input() query: any;
+  @Input() query: string;
   channels: Array<any> = [
     { type: 'email', name: 'Email' },
     { type: 'sms', name: 'SMS' },
@@ -20,6 +20,11 @@ export class ModuleNotificationComponent implements OnInit {
   ]
   couponForm: FormGroup
   form: FormGroup
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+    console.log(this.query);
+  }
 
   constructor(
     private BsModalService: BsModalService,
@@ -68,7 +73,7 @@ export class ModuleNotificationComponent implements OnInit {
   }
 
   send() {
-    this.NotificationsService.moduleNotifications({ query: this.query, ...this.form.value }).subscribe({
+    this.NotificationsService.moduleNotifications({ type: this.type, query: this.query, ...this.form.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.closeModal()

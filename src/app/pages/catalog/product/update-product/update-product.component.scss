@@ -2,6 +2,20 @@ label {
   font-weight: normal !important;
 }
 
+.remove-tag {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: #ffffff;
+  z-index: 9;
+}
+
 .product-preview {
   height: 140px;
   width: 140px;

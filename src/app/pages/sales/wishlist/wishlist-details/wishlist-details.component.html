@@ -27,7 +27,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="fs-4 fw-bold mb-2">Customer details</div>
                     <div>
-                        <app-module-notification [query]="customerDetails?.slug" [type]="'wishlist'"></app-module-notification>
+                        <app-module-notification [query]="customerDetails?.customerDetails?.slug" [type]="'wishlist'"></app-module-notification>
                     </div>
                 </div>
                 <div class="fs-6 mb-2">Name : <span class="fs-5">{{customerDetails?.customerDetails?.name}}</span>

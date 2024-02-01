@@ -24,5 +24,6 @@ export const productEndpoints = {
     deleteVideo: '/delete-video',
     deleteImage: '/delete-product-image',
     addProductCover: '/add-productcover',
-    removeProductCover: '/remove-productcover'
+    removeProductCover: '/remove-productcover',
+    productTags: '/product-tags',
 }

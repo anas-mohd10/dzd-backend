@@ -783,7 +783,8 @@
                                 </path>
                               </svg>
                             </div>
-                            <p class="text-muted text-center">Click on the button or drag and drop thumbnail file here</p>
+                            <p class="text-muted text-center">Click on the button or drag and drop thumbnail file here
+                            </p>
                             <button class="btn btn-primary mt-4">Browse here</button>
                           </div>
                           <input type="file" accept="image/*" [formControl]="videoThumbInput" class="form-control"
@@ -803,8 +804,71 @@
 
                   </div>
                 </div>
-                <div class="col-lg-6">
-                  
+                <div class="my-5">
+                  <div class="fs-4 fw-bolder">Product tags</div>
+                  <div class="my-2">
+                    <div class="row">
+                      <div class="col-lg-6 mb-3">
+                        <div class="fs-6 mb-2 text-muted">Top right</div>
+                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                          <div class="remove-tag bg-danger" (click)="removeTag('topRightTag')" *ngIf="productTags?.topRightTag">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
+                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('topRightTag', $event)"
+                            [previewDetails]="productTags?.topRightTag"></app-assets>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <div class="fs-6 mb-2 text-muted">Top left</div>
+                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                          <div class="remove-tag bg-danger" (click)="removeTag('topLeftTag')" *ngIf="productTags?.topLeftTag">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
+                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('topLeftTag', $event)"
+                            [previewDetails]="productTags?.topLeftTag"></app-assets>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <div class="fs-6 mb-2 text-muted">Bottom right</div>
+                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                          <div class="remove-tag bg-danger" (click)="removeTag('bottomRightTag')" *ngIf="productTags?.bottomRightTag">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
+                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('bottomRightTag', $event)"
+                            [previewDetails]="productTags?.bottomRightTag"></app-assets>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <div class="fs-6 mb-2 text-muted">Bottom left</div>
+                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                          <div class="remove-tag bg-danger" (click)="removeTag('bottomLeftTag')" *ngIf="productTags?.bottomLeftTag">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
+                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('bottomLeftTag', $event)"
+                            [previewDetails]="productTags?.bottomLeftTag"></app-assets>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-end" *ngIf="isTagTriggered">
+                    <button class="btn btn-primary" (click)="saveTags()">Save tags</button>
+                  </div>
                 </div>
               </div>
 

@@ -59,6 +59,11 @@ export class HomeWidgetsService {
     return this.http.get(`${url}`)
   }
 
+  draftWidgets() {
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.draftWidgets);
+    return this.http.get(`${url}`)
+  }
+
   getRediections(redirectionType: string, query: string) {
     const url = this.commonService.getFullUrl(homeWidgetEndpoints.getRedirections + `/${redirectionType}?keyword=${query}`);
     return this.http.get(`${url}`)

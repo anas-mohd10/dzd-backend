@@ -15,6 +15,8 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
+import { HotToastService } from '@ngneat/hot-toast';
+
 
 @Component({
   selector: 'app-update-product',
@@ -171,6 +173,15 @@ export class UpdateProductComponent implements OnInit {
   coverPreview: any
   coverInput: FormControl = new FormControl('')
 
+  tagsForm: FormGroup
+  isTagTriggered: boolean = false
+  productTags: any = {
+    topRightTag: "",
+    topLeftTag: "",
+    bottomRightTag: "",
+    bottomLeftTag: "",
+  }
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -182,6 +193,7 @@ export class UpdateProductComponent implements OnInit {
     private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private AttributeService: AttributeService,
+    private Toast: HotToastService,
     private AppSettingsService: AppSettingsService
   ) { }
 
@@ -325,7 +337,57 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
+  onTagTriggered(type: string, event: any) {
+    switch (type) {
+      case 'topRightTag':
+        this.tagsForm.get('topRightTag')?.setValue(event._id)
+        break;
+      case 'topLeftTag':
+        this.tagsForm.get('topLeftTag')?.setValue(event._id)
+        break;
+      case 'bottomRightTag':
+        this.tagsForm.get('bottomRightTag')?.setValue(event._id)
+        break;
+      case 'bottomLeftTag':
+        this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
+        break;
+    }
+    this.isTagTriggered = true
+  }
+
+  saveTags() {
+    this.productService.productTags({
+      product: this.productDetails?.slug,
+      ...this.tagsForm.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.tagsForm.reset()
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  removeTag(type: string) {
+    this.tagsForm.get(type)?.setValue(null)
+    this.productTags[type] = ''
+    this.isTagTriggered = true
+  }
+
   ngOnInit(): void {
+    this.tagsForm = new FormGroup({
+      topRightTag: new FormControl(''),
+      topLeftTag: new FormControl(''),
+      bottomRightTag: new FormControl(''),
+      bottomLeftTag: new FormControl('')
+    })
+
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
@@ -355,6 +417,13 @@ export class UpdateProductComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.isUnit = true
         this.productDetails = res?.result[0]
+
+        for (let _keys of Object.keys(this.productDetails?.productTags)) {
+          if (this.productDetails?.productTags[_keys]) {
+            this.tagsForm.get(_keys)?.setValue(this.productDetails?.productTags[_keys]['_id'])
+            this.productTags[_keys] = this.productDetails?.productTags[_keys]['path']
+          }
+        }
 
         //Product video
         this.videoPreview = res?.result[0]?.video ? environment.base + '/' + res?.result[0]?.video : null

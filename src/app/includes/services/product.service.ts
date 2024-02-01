@@ -66,6 +66,11 @@ export class ProductService {
     return this.http.post(`${url}`, data);
   }
 
+  productTags(data: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.productTags);
+    return this.http.post(`${url}`, data);
+  }
+
   archivedProducts(query: any, page: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.archive_product + "?page=" + page);
     return this.http.post(`${url}`, query);

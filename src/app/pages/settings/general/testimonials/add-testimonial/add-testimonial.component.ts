@@ -34,6 +34,8 @@ export class AddTestimonialComponent implements OnInit {
   ngOnInit(): void {
     this.initForm()
     this.managePage()
+
+
   }
 
   initForm() {

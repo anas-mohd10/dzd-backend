@@ -79,6 +79,7 @@ export class HomeComponent implements OnInit {
   designRef?: BsModalRef
   designForm: FormGroup
   backgroundDetails: string
+  isDraft: boolean = false
 
   constructor(
     private BsModalService: BsModalService,
@@ -180,6 +181,17 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  getHomeDraftWidgets(){
+    this.HomeWidgetsService.draftWidgets().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.widgetItems = res?.result;
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
   reorderWidgets() {
     let widgets = this.widgetItems.map((widget, index) => {
       return { widgetType: widget?.widgetType, refid: widget?.refid, index: index }
@@ -189,6 +201,7 @@ export class HomeComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
+          this.widgetItems = []
           this.getHomeWidgets()
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -359,11 +372,12 @@ export class HomeComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.widgetItems, event.previousIndex, event.currentIndex);
     this.reorderWidgets()
+    this.isDraft = true
   }
 
   ngOnInit(): void {
     this.focusedWidget = this.widgets[0]
-    this.getHomeWidgets()
+    this.getHomeDraftWidgets()
     this.form = new FormGroup({
       visibility: new FormControl("all"),
       title: new FormControl(""),

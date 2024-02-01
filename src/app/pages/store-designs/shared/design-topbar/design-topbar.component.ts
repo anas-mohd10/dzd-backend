@@ -11,6 +11,7 @@ import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.servi
 export class DesignTopbarComponent implements OnInit, OnChanges {
   settings: any = {}
   @Input() page: string = '';
+  @Input() isDraft: boolean = false;
 
   constructor(
     private AppSettingsService: AppSettingsService,
@@ -23,7 +24,6 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
     console.log(changes)
     console.log(this.page);
   }
-
 
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {

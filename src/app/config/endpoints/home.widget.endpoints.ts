@@ -3,6 +3,7 @@ export const homeWidgetEndpoints = {
     duplicateHomeWidget: '/duplicate-home-widget',
     updateHomeWidget: '/update-home-widget',
     homeWidgets: '/home-widgets',
+    draftWidgets: '/home-draft-widgets',
     deleteWidget: '/delete-widget',
     reorderWidgets: '/reorder-home-widgets',
     getRedirections: '/get-redirections',

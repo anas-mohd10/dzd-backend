@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ReactiveFormsModule,
     DataTablesModule,
     WidgetsModule,
+    SharedModule,
     NgSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
