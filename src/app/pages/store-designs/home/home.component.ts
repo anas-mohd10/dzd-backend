@@ -32,8 +32,9 @@ export class HomeComponent implements OnInit {
     { title: 'Blogs', type: 'blogs', icon: '../../../../assets/widgets/blogs.png', description: 'The following widget can be used to display the recent blogs, or categories.The widget contains image and white transluscent descriptive box.The description box contain text and button.' },
     { title: 'Custom HTML', type: 'html', icon: '../../../../assets/widgets/custom-html.png', description: '' },
     { title: 'Image Slider', type: 'image-slider', icon: '../../../../assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
-    { title: 'Video', type: 'video', icon: '../../../../assets/widgets/video.png', description: 'This widget is used to showcase full width video only' },
+    { title: 'Video', type: 'video', icon: '../../../../assets/widgets/video.png', description: 'This widget is used to showcase full width video only.' },
     { title: 'Products', type: 'products', icon: '../../../../assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
+    { title: 'Sale timer', type: 'sale-timer', icon: '../../../../assets/widgets/sale-timer.png', description: 'This widget is used to showcase a sale timer.' },
   ]
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
@@ -80,6 +81,7 @@ export class HomeComponent implements OnInit {
   designForm: FormGroup
   backgroundDetails: string
   isDraft: boolean = false
+  saleForm: FormGroup
   device: string = 'desktop'
 
   constructor(
@@ -393,6 +395,14 @@ export class HomeComponent implements OnInit {
       html: new FormControl(""),
       htmlStyles: new FormControl(""),
       video: new FormControl(""),
+    })
+
+    this.saleForm = new FormGroup({
+      saleTitle: new FormControl(""),
+      saleButtonText: new FormControl(""),
+      saleButtonLink: new FormControl(""),
+      startDate: new FormControl(""),
+      endDate: new FormControl(""),
     })
 
     this.widgetForm = new FormGroup({
