@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.service';
@@ -12,6 +12,8 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   settings: any = {}
   @Input() page: string = '';
   @Input() isDraft: boolean = false;
+  @Output() device = new EventEmitter();
+  deviceType: string = 'desktop';
 
   constructor(
     private AppSettingsService: AppSettingsService,
@@ -34,6 +36,11 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
     })
   }
 
+  toggleDevice(type: string) {
+    this.device.emit(type)
+    this.deviceType = type;
+  }
+
   saveDraft() {
     switch (this.page) {
       case 'home':
@@ -44,7 +51,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
     }
   }
 
-  publishWidgets(){
+  publishWidgets() {
     switch (this.page) {
       case 'home':
         this.publishHomeWidgets()

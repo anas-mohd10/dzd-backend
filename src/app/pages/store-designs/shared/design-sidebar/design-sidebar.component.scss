@@ -13,8 +13,8 @@
     justify-content: flex-start;
 
     .navigate-back{
-        height: 40px;
-        width: 40px;
+        height: 2.5rem;
+        width: 2.5rem;
         display: grid;
         place-items: center;
         cursor: pointer;
@@ -27,9 +27,9 @@
             margin: 0;
 
             li{
-                height: 40px;
-                width: 40px;
-
+                height: 2.5rem;
+                width: 2.5rem;
+                
                 .link{
                     height: 100%;
                     width: 100%;
@@ -39,8 +39,8 @@
                     color: #666666;
 
                     &.active{
-                        background: #00bdab10;
-                        color: #00bdab;
+                        background: #00bdab;
+                        color: #ffffff;
                     }
                 }
             }

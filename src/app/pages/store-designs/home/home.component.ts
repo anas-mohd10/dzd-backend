@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit {
   designForm: FormGroup
   backgroundDetails: string
   isDraft: boolean = false
+  device: string = 'desktop'
 
   constructor(
     private BsModalService: BsModalService,
@@ -90,6 +91,13 @@ export class HomeComponent implements OnInit {
     private ProductService: ProductService,
     private CollectionService: CollectionService
   ) { }
+
+  //Toggle device
+  deviceToggled(event: string) {
+    this.device = event;
+    this.ChangeDetectorRef.markForCheck()
+  }
+  //Toggle device
 
   //Design starts here
   openDesign(template: TemplateRef<any>, widget: any) {
@@ -116,7 +124,7 @@ export class HomeComponent implements OnInit {
             this.collectionCoverDetails = this.widgetDetails?.collections?.cover?.path
             this.getCollections(this.widgetDetails?.collections?.slug)
           }
-          if(this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
+          if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
           this.designForm.patchValue(this.widgetDetails?.styles)
           this.ChangeDetectorRef.markForCheck()
@@ -181,7 +189,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getHomeDraftWidgets(){
+  getHomeDraftWidgets() {
     this.HomeWidgetsService.draftWidgets().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -424,7 +432,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  onBackgroundTriggered(event: any){
+  onBackgroundTriggered(event: any) {
     this.designForm.get("backgroundImage")?.setValue(event._id)
   }
 

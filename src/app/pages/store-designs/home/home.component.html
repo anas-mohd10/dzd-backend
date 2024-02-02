@@ -1,13 +1,19 @@
-<app-design-topbar [page]="'home'" [isDraft]="isDraft"></app-design-topbar>
+<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled($event)"></app-design-topbar>
 <app-design-sidebar></app-design-sidebar>
 
 <div class="storedesign-container">
-    <div class="row mx-0">
-        <div class="col-lg-9">
-            <iframe src="https://demo.storedada.com?isPreview=true" style="width:100%;" frameborder="0">
-            </iframe>
+    <div class="row mx-0 storedesign-wrapper">
+        <div class="col-lg-9 h-100 overflow-auto d-flex align-items-center justify-content-center">
+            <div class="desktop" *ngIf="device == 'desktop'">
+                <iframe src="https://demo.storedada.com?isPreview=true" style="width:100%;" frameborder="0">
+                </iframe>
+            </div>
+            <div class="mobile" *ngIf="device == 'mobile'">
+                <iframe src="https://demo.storedada.com?isPreview=true" style="width:100%;" frameborder="0">
+                </iframe>
+            </div>
         </div>
-        <div class="col-lg-3 bg-white rounded p-5 widget-container">
+        <div class="col-lg-3 h-100 overflow-auto bg-white rounded p-5 widget-container">
             <div class="fs-3 fw-bolder mb-2">Homepage</div>
             <p class="text-muted fs-6">Configure your homepage with widgets for desktop & mobile view.</p>
             <div>
