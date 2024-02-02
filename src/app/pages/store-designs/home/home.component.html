@@ -157,7 +157,7 @@
         </div>
         <div class="modal-body">
             <div class="widget-form">
-                <div class="mb-2" *ngIf="widgetDetails?.widgetType != 'products'">
+                <div class="mb-2" *ngIf="widgetDetails?.widgetType != 'products' || widgetDetails?.widgetType != 'sale-timer'">
                     <div class="accordion" id="header">
                         <div class="accordion-item">
                             <h2 class="accordion-header m-0">
@@ -245,7 +245,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div *ngIf="widgetDetails?.widgetType == 'html'">
                     <p class="text-muted">You can paste/write your widget code and images in this section.</p>
                     <div class="row">
@@ -267,6 +266,30 @@
 
                 <div *ngIf="widgetDetails?.widgetType == 'blogs'">
 
+                </div>
+
+                <div *ngIf="widgetDetails?.widgetType == 'sale-timer'">
+                    <form [formGroup]="saleForm">
+                        <div class="form-group mb-3">
+                            <label for="saleTitle" class="form-label">Title</label>
+                            <input type="text" id="saleTitle" placeholder="Last chance! 50% OFF" formControlName="saleTitle"
+                                class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="saleButton" class="form-label">Button text</label>
+                            <input type="text" id="saleButton" placeholder="Shop now" formControlName="saleButton"
+                                class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="saleButtonLink" class="form-label">Button redirection</label>
+                            <input type="text" id="saleButtonLink" placeholder="https://demo.storedada.com/products/electronics-and-mobiles" formControlName="saleButtonLink"
+                                class="form-control">
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6"></div>
+                            <div class="col-lg-6"></div>
+                        </div>
+                    </form>
                 </div>
 
                 <div *ngIf="widgetDetails?.widgetType == 'video' || widgetDetails?.widgetType == 'celestial-canvas'">
