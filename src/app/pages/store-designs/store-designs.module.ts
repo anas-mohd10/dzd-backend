@@ -10,6 +10,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogComponent } from './catalog/catalog.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CatalogComponent } from './catalog/catalog.component';
     AccordionModule,
     FormsModule,
     SharedModule,
+    BsDatepickerModule,
     ReactiveFormsModule,
     TooltipModule,
     DesignSharedModule,

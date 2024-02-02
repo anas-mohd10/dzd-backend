@@ -128,6 +128,8 @@ export class HomeComponent implements OnInit {
           }
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
+          this.saleForm.patchValue(this.widgetDetails)
+          this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -281,6 +283,13 @@ export class HomeComponent implements OnInit {
       widgetPayload['widgetImages'] = widgetImages
     } else if (this.widgetDetails?.widgetType == 'blogs') {
       let widgetBlogs = []
+    } else if (this.widgetDetails?.widgetType == 'sale-timer') {
+      widgetPayload = {
+        visibility: this.form.get("visibility")?.value,
+        refid: this.widgetDetails?.refid,
+        widgetType: this.widgetDetails?.widgetType,
+        ...this.saleForm.value,
+      }
     } else if (this.widgetDetails?.widgetType == 'products') {
       widgetPayload = {
         visibility: this.form.get("visibility")?.value,
@@ -387,7 +396,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.focusedWidget = this.widgets[0]
-    this.getHomeDraftWidgets()
+    // this.getHomeDraftWidgets()
+    this.getHomeWidgets()
     this.form = new FormGroup({
       visibility: new FormControl("all"),
       title: new FormControl(""),
