@@ -11,11 +11,13 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogComponent } from './catalog/catalog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ThemeComponent } from './theme/theme.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    CatalogComponent
+    CatalogComponent,
+    ThemeComponent
   ],
   imports: [
     CommonModule,

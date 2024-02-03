@@ -34,8 +34,8 @@ export class HomeWidgetsService {
     return this.http.put(`${url}`, data)
   }
 
-  reorderWidgets(data: any) {
-    const url = this.commonService.getFullUrl(homeWidgetEndpoints.reorderWidgets);
+  reorderWidgets(query: number, data: any) {
+    const url = this.commonService.getFullUrl(homeWidgetEndpoints.reorderWidgets + `?history=${query}`);
     return this.http.put(`${url}`, data)
   }
 

@@ -1,0 +1,11 @@
+<app-design-topbar [page]="'theme'" (device)="deviceToggled($event)"></app-design-topbar>
+<app-design-sidebar></app-design-sidebar>
+
+<div>
+    <div class="row storedesign-wrapper">
+        <div class="col-lg-9 h-100 overflow-auto d-flex align-items-center justify-content-center">
+            <app-screens class="w-100" [device]="device"></app-screens>
+        </div>
+        <div class="col-lg-3 h-100 overflow-auto bg-white p-5">
+        </div>
+    </div>

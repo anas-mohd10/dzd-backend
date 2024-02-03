@@ -1,19 +1,12 @@
 <app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled($event)"></app-design-topbar>
 <app-design-sidebar></app-design-sidebar>
 
-<div class="storedesign-container">
-    <div class="row mx-0 storedesign-wrapper">
+<div>
+    <div class="row storedesign-wrapper">
         <div class="col-lg-9 h-100 overflow-auto d-flex align-items-center justify-content-center">
-            <div class="desktop" *ngIf="device == 'desktop'">
-                <iframe src="https://demo.storedada.com?isPreview=true" style="width:100%;" frameborder="0">
-                </iframe>
-            </div>
-            <div class="mobile" *ngIf="device == 'mobile'">
-                <iframe src="https://demo.storedada.com?isPreview=true" style="width:100%;" frameborder="0">
-                </iframe>
-            </div>
+            <app-screens class="w-100" [device]="device"></app-screens>
         </div>
-        <div class="col-lg-3 h-100 overflow-auto bg-white rounded p-5 widget-container">
+        <div class="col-lg-3 h-100 overflow-auto bg-white p-5">
             <div class="fs-3 fw-bolder mb-2">Homepage</div>
             <p class="text-muted fs-6">Configure your homepage with widgets for desktop & mobile view.</p>
             <div>
@@ -163,8 +156,7 @@
         </div>
         <div class="modal-body">
             <div class="widget-form">
-                <div class="mb-2"
-                    *ngIf="widgetDetails?.widgetType != 'products' || widgetDetails?.widgetType != 'sale-timer'">
+                <div class="mb-2" *ngIf="!hiddenHeaderItems.includes(widgetDetails?.widgetType)">
                     <div class="accordion" id="header">
                         <div class="accordion-item">
                             <h2 class="accordion-header m-0">
@@ -279,28 +271,53 @@
                 <div *ngIf="widgetDetails?.widgetType == 'sale-timer'">
                     <form [formGroup]="saleForm">
                         <div class="row">
-                            <div class="col-lg-6 form-group mb-3">
-                                <label for="saleTitle" class="form-label">Title</label>
-                                <input type="text" id="saleTitle" placeholder="Last chance! 50% OFF"
-                                    formControlName="saleTitle" class="form-control">
-                            </div>
-                            <div class="col-lg-6 form-group mb-3">
-                                <label for="saleButtonText" class="form-label">Button text</label>
-                                <input type="text" id="saleButtonText" placeholder="Shop now" formControlName="saleButtonText"
-                                    class="form-control">
-                            </div>
-                            <div class="col-lg-9 form-group mb-3">
-                                <label for="saleButtonLink" class="form-label">Button redirection</label>
-                                <input type="text" id="saleButtonLink"
-                                    placeholder="https://demo.storedada.com/products/electronics-and-mobiles"
-                                    formControlName="saleButtonLink" class="form-control">
-                            </div>
                             <div class="col-lg-3">
-                                <label for="date" class="form-label">Valid till</label>
-                                <input id="date" type="text" placeholder="-- Select a date --" class="form-control"
-                                    bsDatepicker
-                                    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
-                                    formControlName="endDate">
+                                <div class="w-100 ratio ratio-16x9 h-auto">
+                                    <app-assets [image]="'cover'" (mediaClicked)="onSaleThumbnailTriggered($event)"
+                                        [previewDetails]="saleThumbnailDetails">
+                                    </app-assets>
+                                </div>
+                                <button *ngIf="saleForm.get('saleThumbnail')?.value" class="btn btn-danger w-100 my-2" (click)="removeSaleThumbnail()">Remove thumbnail</button>
+                            </div>
+                            <div class="col-lg-9 row">
+                                <div class="col-lg-9 form-group mb-3">
+                                    <label for="saleTitle" class="form-label">Title</label>
+                                    <input type="text" id="saleTitle" placeholder="Last chance! 50% OFF"
+                                        formControlName="saleTitle" class="form-control">
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="date" class="form-label">Valid till</label>
+                                    <input id="date" type="text" placeholder="-- Select a date --" class="form-control"
+                                        bsDatepicker
+                                        [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                                        formControlName="endDate">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="saleDescription" class="form-label">Description</label>
+                                    <input type="text" id="saleDescription" placeholder=""
+                                        formControlName="saleDescription" class="form-control">
+                                </div>
+                                <div class="col-lg-6 form-group mb-3">
+                                    <label for="saleButtonVisibility" class="form-label">Button visibility</label>
+                                    <select formControlName="saleButtonVisibility" id="saleButtonVisibility"
+                                        class="form-select">
+                                        <option value="" disabled>-- Select an option --</option>
+                                        <option *ngFor="let item of [true, false]" value="{{item}}">
+                                            {{item == true ? 'True' : 'False'}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 form-group mb-3">
+                                    <label for="saleButtonText" class="form-label">Button text</label>
+                                    <input type="text" id="saleButtonText" placeholder="Shop now"
+                                        formControlName="saleButtonText" class="form-control">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="saleButtonLink" class="form-label">Button redirection</label>
+                                    <input type="text" id="saleButtonLink"
+                                        placeholder="https://demo.storedada.com/products/electronics-and-mobiles"
+                                        formControlName="saleButtonLink" class="form-control">
+                                </div>
                             </div>
                         </div>
                     </form>

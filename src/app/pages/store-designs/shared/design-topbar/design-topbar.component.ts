@@ -11,7 +11,7 @@ import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.servi
 export class DesignTopbarComponent implements OnInit, OnChanges {
   settings: any = {}
   @Input() page: string = '';
-  @Input() isDraft: boolean = false;
+  @Input() isDraft?: boolean = false;
   @Output() device = new EventEmitter();
   deviceType: string = 'desktop';
 

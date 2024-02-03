@@ -4,11 +4,13 @@ import { DesignTopbarComponent } from './design-topbar/design-topbar.component';
 import { DesignSidebarComponent } from './design-sidebar/design-sidebar.component';
 import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ScreensComponent } from './screens/screens.component';
 
 @NgModule({
   declarations: [
     DesignTopbarComponent,
-    DesignSidebarComponent
+    DesignSidebarComponent,
+    ScreensComponent
   ],
   imports: [
     CommonModule,
@@ -17,7 +19,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
   ],
   exports: [
     DesignTopbarComponent,
-    DesignSidebarComponent
+    DesignSidebarComponent,
+    ScreensComponent
   ]
 })
 export class DesignSharedModule { }

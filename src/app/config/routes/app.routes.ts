@@ -293,5 +293,6 @@ export const appRoutes = {
   designs: {
     home: "/designs/home",
     catalogs: "/designs/catalogs",
+    theme: "/designs/theme"
   }
 }

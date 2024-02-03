@@ -83,6 +83,9 @@ export class HomeComponent implements OnInit {
   isDraft: boolean = false
   saleForm: FormGroup
   device: string = 'desktop'
+  count: number = 0
+  saleThumbnailDetails: string = ''
+  hiddenHeaderItems: Array<string> = ['products', 'sale-timer']
 
   constructor(
     private BsModalService: BsModalService,
@@ -129,6 +132,10 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
           this.saleForm.patchValue(this.widgetDetails)
+          if (this.widgetDetails?.saleThumbnail) {
+            this.saleThumbnailDetails = this.widgetDetails?.saleThumbnail?.path
+            this.saleForm.get("saleThumbnail")?.setValue(this.widgetDetails?.saleThumbnail?._id)
+          }
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
           this.ChangeDetectorRef.markForCheck()
@@ -168,6 +175,8 @@ export class HomeComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
+          this.count++
+          this.isDraft = true
           this.Toast.success(res?.message)
           this.getHomeWidgets()
           this.closeWidgets()
@@ -209,7 +218,7 @@ export class HomeComponent implements OnInit {
       return { widgetType: widget?.widgetType, refid: widget?.refid, index: index }
     })
 
-    this.HomeWidgetsService.reorderWidgets({ widgets: widgets }).subscribe({
+    this.HomeWidgetsService.reorderWidgets(this.count, { widgets: widgets }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
@@ -307,6 +316,8 @@ export class HomeComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
           this.getHomeWidgets()
+          this.count++
+          this.isDraft = true
           this.widgetImages = []
           this.widgetImagePreviewIndex = null
           this.widgetImagePreview = null
@@ -348,6 +359,8 @@ export class HomeComponent implements OnInit {
           this.Toast.success(res?.message)
           this.getHomeWidgets()
           this.closeConfirmation()
+          this.count++
+          this.isDraft = true
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -377,6 +390,8 @@ export class HomeComponent implements OnInit {
           this.Toast.success(res?.message)
           this.getHomeWidgets()
           this.closeDuplication()
+          this.count++
+          this.isDraft = true
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -392,6 +407,7 @@ export class HomeComponent implements OnInit {
     moveItemInArray(this.widgetItems, event.previousIndex, event.currentIndex);
     this.reorderWidgets()
     this.isDraft = true
+    this.count++
   }
 
   ngOnInit(): void {
@@ -413,6 +429,9 @@ export class HomeComponent implements OnInit {
       saleButtonLink: new FormControl(""),
       startDate: new FormControl(""),
       endDate: new FormControl(""),
+      saleDescription: new FormControl(""),
+      saleButtonVisibility: new FormControl("true"),
+      saleThumbnail: new FormControl(null),
     })
 
     this.widgetForm = new FormGroup({
@@ -454,6 +473,15 @@ export class HomeComponent implements OnInit {
 
   onBackgroundTriggered(event: any) {
     this.designForm.get("backgroundImage")?.setValue(event._id)
+  }
+
+  onSaleThumbnailTriggered(event: any) {
+    this.saleForm.get("saleThumbnail")?.setValue(event._id)
+  }
+
+  removeSaleThumbnail() {
+    this.saleForm.get("saleThumbnail")?.setValue(null)
+    this.saleThumbnailDetails = ""
   }
 
   getProducts() {
