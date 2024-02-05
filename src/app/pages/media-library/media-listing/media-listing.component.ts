@@ -57,10 +57,10 @@ export class MediaListingComponent implements OnInit {
     if (this.checkedMedias.includes(media)) {
       this.checkedMedias = this.checkedMedias.filter(item => item != media)
     } else {
-      if (this.checkedMedias.length < 10) {
+      if (this.checkedMedias.length < 20) {
         this.checkedMedias.push(media)
       } else {
-        this.Toast.error('You can only select 10 media at a time')
+        this.Toast.error('You can only select 20 media at a time')
       }
     }
   }

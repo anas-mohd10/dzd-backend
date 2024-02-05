@@ -294,5 +294,8 @@ export const appRoutes = {
     home: "/designs/home",
     catalogs: "/designs/catalogs",
     theme: "/designs/theme"
+  },
+  bulk: {
+    import: `${app}/bulk-import`,
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
-import { customerEndpoints } from 'src/app/config/endpoints';
+import { csvEndpoints, customerEndpoints } from 'src/app/config/endpoints';
 import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { Observable } from 'rxjs';
@@ -43,4 +43,8 @@ export class CsvService {
   }
 
 
+  getFileImports(query: any) {
+    const url = this.commonService.getFullUrl(csvEndpoints.fileImports);
+    return this.http.post(`${url}`, query)
+  }
 }
