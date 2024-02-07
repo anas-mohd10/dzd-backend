@@ -29,6 +29,8 @@ import { SitemapComponent } from './settings/general/sitemap/sitemap.component';
 import { NewsletterSubscribersComponent } from './users/customers/newsletter-subscribers/newsletter-subscribers.component';
 import { GiftWrapComponent } from './marketing/gift-wrap/gift-wrap.component';
 import { BannerImagesComponent } from './marketing/banner-images/banner-images.component';
+import { CustomMailersComponent } from './settings/general/custom-mailers/custom-mailers.component';
+import { MailerDetailsComponent } from './settings/general/mailer-details/mailer-details.component';
 
 export const Routing: Routes = [
   {
@@ -429,6 +431,14 @@ export const Routing: Routes = [
       }, {
         path: 'feeds',
         component: FeedsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'custom-mailers',
+        component: CustomMailersComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'mailer-details',
+        component: MailerDetailsComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'navigation',

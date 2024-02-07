@@ -1,0 +1,29 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Custom mailers</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.customMailers }}">Custom mailers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card my-4">
+        <div class="card-body">
+            <ng-container *ngFor="let mailer of mailers">
+                <div class="mb-3 border cursor-pointer border-outline rounded p-3 rounded" routerLink="{{appRoute.mailerDetails}}" [queryParams]="{'type': mailer?.type}">
+                    <div class="fs-4">{{mailer.title}}</div>
+                    <p class="text-muted">{{mailer.description}}</p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Mailer details</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.customMailers }}">Custom mailers</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.mailerDetails }}">Mailer details</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-3">
+                    <ng-container *ngFor="let item of mailerItems">
+                        <div class="border border-outline p-4 cursor-pointer rounded mb-3"
+                            [ngClass]="{'bg-primary text-white': form.get('type')?.value == item.type}"
+                            (click)="toggleMailer(item.type)">
+                            {{item.title}}
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="col-lg-9">
+                    <form [formGroup]="form">
+                        <div class="form-group mb-3">
+                            <label for="subject" class="form-label required">Subject</label>
+                            <input type="text" id="subject" placeholder="" formControlName="subject"
+                                class="form-control" [ngClass]="{'is-invalid': (formControls.subject.touched || isSubmitted) &&
+                                formControls.subject.errors?.required}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label required">Email</label>
+                            <textarea formControlName="email" id="email" cols="30" rows="10" class="form-control"
+                                [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) &&
+                                formControls.email.errors?.required}"></textarea>
+                        </div>
+                        <div class="d-flex my-4 justify-content-end align-items-center">
+                            <button class="btn btn-primary" (click)="manageMailer()">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

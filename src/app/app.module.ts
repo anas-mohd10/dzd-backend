@@ -76,6 +76,8 @@ import { ReferralComponent } from './pages/marketing/referral/referral.component
 import { SitemapComponent } from './pages/settings/general/sitemap/sitemap.component';
 import { GiftWrapComponent } from './pages/marketing/gift-wrap/gift-wrap.component';
 import { BannerImagesComponent } from './pages/marketing/banner-images/banner-images.component';
+import { CustomMailersComponent } from './pages/settings/general/custom-mailers/custom-mailers.component';
+import { MailerDetailsComponent } from './pages/settings/general/mailer-details/mailer-details.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -126,6 +128,8 @@ const DragConfig = {
     SitemapComponent,
     GiftWrapComponent,
     BannerImagesComponent,
+    CustomMailersComponent,
+    MailerDetailsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

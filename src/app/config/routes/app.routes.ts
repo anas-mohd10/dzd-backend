@@ -295,6 +295,8 @@ export const appRoutes = {
     catalogs: "/designs/catalogs",
     theme: "/designs/theme"
   },
+  customMailers: `${app}/custom-mailers`,
+  mailerDetails: `${app}/mailer-details`,
   bulk: {
     import: `${app}/bulk-import`,
   }
