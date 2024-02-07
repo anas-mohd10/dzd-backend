@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-screens',
@@ -6,11 +6,15 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./screens.component.scss']
 })
 export class ScreensComponent implements OnInit {
-  @Input() device?: string
+  @Input() device?: string;
+  @ViewChild("frame") frame: ElementRef | undefined;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  reloadFrame() {
+    this.frame?.nativeElement.contentWindow?.location.reload();
+  }
 }
