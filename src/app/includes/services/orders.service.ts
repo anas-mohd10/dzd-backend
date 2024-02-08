@@ -111,6 +111,11 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
+  updateBulkProduct(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.updateBulkProduct);
+    return this.http.put(`${url}`, data)
+  }
+
   invoiceDetails(order: string) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.invoiceDetails + `/${order}`);
     return this.http.get(`${url}`)

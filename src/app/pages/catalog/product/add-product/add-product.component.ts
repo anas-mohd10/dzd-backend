@@ -753,6 +753,7 @@ export class AddProductComponent implements OnInit {
       price: {
         mrp: this.productform.get('mrpPrice')?.value,
         offer: this.productform.get('offerPrice')?.value,
+        selling: this.productform.get('offerPrice')?.value,
       },
       style: {
         background: this.productform.get('background')?.value,

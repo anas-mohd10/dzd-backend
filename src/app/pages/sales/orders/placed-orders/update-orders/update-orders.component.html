@@ -202,11 +202,24 @@
             <i class="bi bi-bag-check fs-1 text-dark"></i>
             Product details
           </h3>
+          <div *ngIf="bulkProducts.length > 0">
+            <div class="row justify-content-end">
+              <div class="col-lg-4">
+                <select class="form-select fs-6" (change)="updateBulkProduct($event)">
+                  <option disabled selected>-- Select a status --</option>
+                  <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
           <div class="table-responsive">
             <table class="table table-vertical-center table-borderless productsTable">
               <thead>
                 <tr>
-                  <th>&nbsp;</th>
+                  <th>
+                    <div class="checkbox" [ngClass]="{'checked': bulkProducts.length == order?.products?.length}"
+                      (click)="toggleBulkProduct()"></div>
+                  </th>
                   <th>Product</th>
                   <th>Qty</th>
                   <th>Price</th>
@@ -218,7 +231,10 @@
               <tbody class="fs-6 text-dark">
                 <ng-container *ngFor="let product of order?.products; let i =index">
                   <tr class="productRow">
-                    <td>{{i+1}}</td>
+                    <td>
+                      <div class="checkbox" [ngClass]="{'checked': bulkProducts.includes(product)}"
+                        (click)="toggleBulkProduct(product)"></div>
+                    </td>
                     <td class="d-flex align-items-start justify-content-start" style="margin-bottom: 30px">
                       <img class="me-2 productThumbnail" height="50px" width="50px"
                         src="{{base}}/{{product?.productId?.thumbnail}}" alt="Product">

@@ -20,5 +20,6 @@ export const orderEndpoints = {
    updateProductPayement: '/update-product-payment',
    manageTags: '/manage-tags',
    invoiceDetails: '/invoice-details',
-   exportOrderTabs: '/export-order-tabs'
+   exportOrderTabs: '/export-order-tabs',
+   updateBulkProduct: '/bulk-order-update'
 };

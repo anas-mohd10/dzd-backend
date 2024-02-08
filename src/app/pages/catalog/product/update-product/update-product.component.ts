@@ -382,10 +382,10 @@ export class UpdateProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.tagsForm = new FormGroup({
-      topRightTag: new FormControl(''),
-      topLeftTag: new FormControl(''),
-      bottomRightTag: new FormControl(''),
-      bottomLeftTag: new FormControl('')
+      topRightTag: new FormControl(null),
+      topLeftTag: new FormControl(null),
+      bottomRightTag: new FormControl(null),
+      bottomLeftTag: new FormControl(null)
     })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
@@ -470,6 +470,7 @@ export class UpdateProductComponent implements OnInit {
         }
 
         this.productform.get('sku')?.setValue(res?.result[0]?.sku)
+        this.productform.get('video')?.setValue(res?.result[0]?.video)
         this.productform.get('stock')?.setValue(res?.result[0]?.stock)
         this.productform.get('moq')?.setValue(res?.result[0]?.moq)
         this.productform.get('maxOrderQuantity')?.setValue(res?.result[0]?.maxOrderQuantity)
@@ -554,7 +555,8 @@ export class UpdateProductComponent implements OnInit {
       radius: [''],
       color: [''],
       fontSize: [''],
-      fontWeight: ['']
+      fontWeight: [''],
+      video: ['']
     });
 
     this.productform.get('background')?.setValue(AppSettings.BACKGROUND)
@@ -843,6 +845,7 @@ export class UpdateProductComponent implements OnInit {
         id: this.selectedSubCategory,
         refid: categoryRefid
       },
+      video: this.productform.get('video')?.value,
       attributes: this.attributesValues,
       stockWarning: this.productform.get('stockWarning')?.value,
       isActive: this.productform.get('isActive')?.value,
@@ -852,7 +855,7 @@ export class UpdateProductComponent implements OnInit {
       searchKeywords: this.searchKeywords,
       relatedProducts: this.selectedProducts,
       files: this.files,
-      video: this.videoFile,
+      // video: this.videoFile,
       thumbFilename: this.thumbnailFilename,
       thumbFilestring: this.thumbnailImage,
       prodid: this.prodid

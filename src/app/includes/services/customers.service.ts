@@ -150,4 +150,9 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.getNewsletterSubscribers + `?page=${page}&limit=${limit}&keyword=${keyword}`);
     return this.http.get(`${url}`)
   }
+
+  customerDetails(query: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.customerDetails);
+    return this.http.post(`${url}`, query)
+  }
 }

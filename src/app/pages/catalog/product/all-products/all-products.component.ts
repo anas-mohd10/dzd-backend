@@ -103,6 +103,7 @@ export class AllProductsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+        this.cdr.markForCheck()
       }
     })
 

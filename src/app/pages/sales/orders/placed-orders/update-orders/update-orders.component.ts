@@ -10,6 +10,7 @@ import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment.prod';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-update-orders',
@@ -66,7 +67,8 @@ export class UpdateOrdersComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private invoiceService: InvoiceSettingsService,
     private AppSettingsService: AppSettingsService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private Toast: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -243,7 +245,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   openOrderAcceptance(template: TemplateRef<any>, productDetails: any) {
     this.expectedModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' })
-    this.dateExpected.setValue(new Date(productDetails?.dateExpected).toISOString().split('T')[0])
+    productDetails?.dateExpected ? this.dateExpected.setValue(new Date(productDetails?.dateExpected).toISOString().split('T')[0]) : null
     this.trackingURL.setValue(productDetails?.trackingURL)
     this.trackingNo.setValue(productDetails?.trackingNo)
     this.productReference = productDetails?.productId?._id
@@ -253,6 +255,55 @@ export class UpdateOrdersComponent implements OnInit {
     this.deliveryModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' })
     this.deliveryPerson.setValue(productDetails?.deliveryPerson)
     this.productReference = productDetails?.productId?._id
+  }
+
+  bulkProducts: Array<any> = []
+  bulkStatus: Array<any> = []
+
+  toggleBulkProduct(product?: any) {
+    if (product) {
+      const index = this.bulkProducts.indexOf(product)
+      if (index > -1) {
+        this.bulkProducts.splice(index, 1)
+      } else {
+        this.bulkProducts.push(product)
+      }
+    }
+    console.log(this.bulkProducts);
+
+    product ? null : this.bulkProducts.length == this.order?.products.length ? this.bulkProducts = [] : this.bulkProducts = [...this.order?.products]
+    this.bulkProducts.length > 0 ? this.toggleBulkStatus() : null
+  }
+
+  toggleBulkStatus() {
+    this.OrdersService.getStatusList('placed', this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
+      next: (res: any) => {
+        this.bulkStatus = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }, error: (err: any) => {
+        this.ToastrService.error("Couldn't fetch order status list")
+      }
+    })
+  }
+
+  updateBulkProduct(event: any) {
+    this.OrdersService.updateBulkProduct({
+      order: this.order?.orderNo,
+      status: event?.target?.value,
+      products: this.bulkProducts
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.bulkProducts = []
+          this.getOrderDetails()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
   }
 
   onSubmit() {

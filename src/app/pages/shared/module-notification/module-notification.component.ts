@@ -1,8 +1,11 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CouponsService } from 'src/app/includes/services/coupons.service';
+import { CustomersService } from 'src/app/includes/services/customers.service';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
+
 
 @Component({
   selector: 'app-module-notification',
@@ -11,6 +14,7 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
 })
 export class ModuleNotificationComponent implements OnInit, OnChanges {
   modalRef?: BsModalRef;
+  @ViewChild("template") template: TemplateRef<any>
   @Input() type: string;
   @Input() query: string;
   channels: Array<any> = [
@@ -18,18 +22,22 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
     { type: 'sms', name: 'SMS' },
     { type: 'push', name: 'Push notification' }
   ]
+  couponModalRef?: BsModalRef
   couponForm: FormGroup
   form: FormGroup
+  isInvalid: boolean;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
-    console.log(this.query);
+
   }
 
   constructor(
     private BsModalService: BsModalService,
     private NotificationsService: NotificationsService,
-    private Toast: HotToastService
+    private Toast: HotToastService,
+    private CouponsService: CouponsService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private CustomersService: CustomersService,
   ) { }
 
   openModal(template: TemplateRef<any>) {
@@ -47,6 +55,10 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
     })
   }
 
+  get couponControls() {
+    return this.couponForm.controls
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       channel: new FormControl('push'),
@@ -55,6 +67,8 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       title: new FormControl('Finish your shopping now'),
       message: new FormControl('Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone')
     })
+
+
 
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -83,6 +97,58 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
         }
       }, error: (err: any) => {
         this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  openCoupon(template: TemplateRef<any>) {
+    let query = {}
+    this.type == 'cart' ? query = { userid: Number(this.query) } : query = { slug: this.query }
+    if (this.type) {
+      this.CustomersService.customerDetails(query).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.couponForm.get('forUser')?.setValue(res?.result?._id)
+          }
+        }
+      })
+    }
+    this.modalRef?.hide()
+    this.couponModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  closeCoupon() {
+    this.couponModalRef?.hide()
+    this.couponForm.reset()
+    this.isInvalid = false
+    this.modalRef = this.BsModalService.show(this.template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  addCoupon() {
+    console.log(this.couponForm.value);
+
+    if (!this.couponForm.valid) {
+      this.isInvalid = true
+      return
+    }
+
+    this.CouponsService.addCoupon(this.couponForm.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.couponModalRef?.hide()
+          this.couponForm.reset()
+          this.Toast.success(res?.message)
+          this.form.get('couponCode')?.setValue(res?.result?.code)
+          this.form.get('sms')?.setValue(this.form.get('sms')?.value + `. Use ${res?.result?.code} coupon code`)
+          this.form.get('subject')?.setValue(this.form.get('subject')?.value + `. Use ${res?.result?.code} coupon code`)
+          this.form.get('message')?.setValue(this.form.get('message')?.value + `. Use ${res?.result?.code} coupon code`)
+          this.modalRef = this.BsModalService.show(this.template, { class: 'modal-lg modal-dialog-centered' })
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.message)
       }
     })
   }

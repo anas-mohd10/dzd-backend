@@ -480,7 +480,7 @@
                 <!-- Product additional details -->
                 <div class="row">
                   <h3 class="form-subtitle">Additional Details</h3>
-                  <div class="col-12 col-sm-6 form-group">
+                  <div class="col-lg-6 form-group">
                     <label class="fs-6 mb-3">Search Keywords</label>
                     <input class="form-control fs-6" formControlName="searchKeywords"
                       (keyup.Enter)="tagInput($event.target)" />
@@ -493,24 +493,29 @@
                       </ng-container>
                     </div>
                   </div>
-                  <div class="col-12 col-sm-6">
-                    <label class="fs-6 mb-3">Related Products</label>
-
+                  <div class="col-lg-6 form-group mb-3">
+                    <label for="relatedProducts" class="form-label">Related Products</label>
+                    <div class="form-control">
+                      <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
+                        placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
+                      </ng-select>
+                    </div>
                   </div>
-                  <div class="col-12 col-sm-6 form-group">
+
+                  <div class="col-lg-6 form-group">
                     <label class="fs-6 mb-3">Featured Product?</label>
                     <select class="form-select" formControlName="isFeatured"
                       [ngClass]="{'is-invalid': (pf.isFeatured.touched || isSubmitted) && pf.isFeatured.errors?.required}">
-                      <option value="Check" disabled>-- Select an option --</option>
+                      <option value="" disabled>-- Select an option --</option>
                       <option value="true">Yes</option>
                       <option value="false">No</option>
                     </select>
                   </div>
-                  <div class="col-12 col-sm-6 form-group">
+                  <div class="col-lg-6 form-group">
                     <label class="fs-6 mb-3">Active Product?</label>
                     <select class="form-select" formControlName="isActive"
                       [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
-                      <option value="Check" disabled>-- Select an option --</option>
+                      <option value="" disabled>-- Select an option --</option>
                       <option value="true">Yes</option>
                       <option value="false">No</option>
                     </select>
@@ -519,7 +524,7 @@
                     <label class="fs-6 mb-3">Visible Product?</label>
                     <select class="form-select" formControlName="isVisible"
                       [ngClass]="{'is-invalid': (pf.isVisible.touched || isSubmitted) && pf.isVisible.errors?.required}">
-                      <option value="Check" disabled>-- Select an option --</option>
+                      <option value="" disabled>-- Select an option --</option>
                       <option value="true">Yes</option>
                       <option value="false">No</option>
                     </select>
@@ -529,7 +534,7 @@
                     <label class="fs-6 mb-3">Archive Product?</label>
                     <select class="form-select" formControlName="isArchive"
                       [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
-                      <option value="Check" disabled>-- Select an option --</option>
+                      <option value="" disabled>-- Select an option --</option>
                       <option value="true">Yes</option>
                       <option value="false">No</option>
                     </select>
@@ -549,6 +554,10 @@
                       <label class="fs-6 mb-3">Features</label>
                       <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
                         [config]="editorConfig"></angular-editor>
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="video" class="form-label">Video</label>
+                      <input type="text" placeholder="Video link" formControlName="video" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -735,7 +744,7 @@
               <!-- Product video -->
 
               <div class="row">
-                <div class="col-lg-6">
+                <!-- <div class="col-lg-6">
                   <div class="video-wrapper mb-3">
                     <div class="fs-5 mb-2">Product Video</div>
                     <div class="row">
@@ -800,10 +809,9 @@
                     <div class="d-flex mt-3 justify-content-end" *ngIf="videoData">
                       <button class="btn btn-primary" (click)="addVideo()">Save and continue</button>
                     </div>
-                    <!-- Product video -->
-
                   </div>
-                </div>
+                </div> -->
+
                 <div class="my-5">
                   <div class="fs-4 fw-bolder">Product tags</div>
                   <div class="my-2">
@@ -811,7 +819,8 @@
                       <div class="col-lg-6 mb-3">
                         <div class="fs-6 mb-2 text-muted">Top right</div>
                         <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('topRightTag')" *ngIf="productTags?.topRightTag">
+                          <div class="remove-tag bg-danger" (click)="removeTag('topRightTag')"
+                            *ngIf="productTags?.topRightTag">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                               stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                               aria-hidden="true">
@@ -825,7 +834,8 @@
                       <div class="col-lg-6 mb-3">
                         <div class="fs-6 mb-2 text-muted">Top left</div>
                         <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('topLeftTag')" *ngIf="productTags?.topLeftTag">
+                          <div class="remove-tag bg-danger" (click)="removeTag('topLeftTag')"
+                            *ngIf="productTags?.topLeftTag">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                               stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                               aria-hidden="true">
@@ -839,7 +849,8 @@
                       <div class="col-lg-6 mb-3">
                         <div class="fs-6 mb-2 text-muted">Bottom right</div>
                         <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('bottomRightTag')" *ngIf="productTags?.bottomRightTag">
+                          <div class="remove-tag bg-danger" (click)="removeTag('bottomRightTag')"
+                            *ngIf="productTags?.bottomRightTag">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                               stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                               aria-hidden="true">
@@ -853,7 +864,8 @@
                       <div class="col-lg-6 mb-3">
                         <div class="fs-6 mb-2 text-muted">Bottom left</div>
                         <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('bottomLeftTag')" *ngIf="productTags?.bottomLeftTag">
+                          <div class="remove-tag bg-danger" (click)="removeTag('bottomLeftTag')"
+                            *ngIf="productTags?.bottomLeftTag">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                               stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                               aria-hidden="true">
