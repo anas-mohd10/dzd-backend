@@ -27,10 +27,11 @@ export class OrdersListComponent implements OnInit {
   base: any
   isDateValid: boolean = false;
   totalcount: Number = 0
-  totalRevenue: Number = 0
-  count: Number = 0
-  totalrevenues: any;
-  averagesales: any;
+
+  totalOrders: Number = 0
+  totalRevenues: string = 'INR 0';
+  averageSales: string = 'INR 0';
+
   currentTab: number = 0;
   swiperConfig: SwiperOptions = {
     slidesPerView: 'auto',
@@ -60,51 +61,51 @@ export class OrdersListComponent implements OnInit {
   orderStatus: Array<any> = [{
     status: 'All Orders',
     value: '',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Placed',
     value: 'PLACED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Accepted',
     value: 'ACCEPTED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Packed',
     value: 'PACKED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Shipped',
     value: 'SHIPPED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Out for Delivery',
     value: 'OUT FOR DELIVERY',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Delivered',
     value: 'DELIVERED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Collected',
     value: 'COLLECTED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Pending',
     value: 'PENDING',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Partial Processed',
     value: 'PARTIAL PROCESSED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Failed',
     value: 'FAILED',
-    count: 0
+    totalOrders: 0
   }, {
     status: 'Cancelled',
     value: 'CANCELLED',
-    count: 0
+    totalOrders: 0
   },]
   lastPage: Boolean = false
   type: any = null
@@ -262,9 +263,9 @@ export class OrdersListComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
         for (let order of this.orders) order.orderDate = new Date(order.orderDate).toLocaleDateString() + " " + order.orderTime
-        this.count = res?.result?.total_orders
-        this.averagesales = res?.result?.average_sales
-        this.totalrevenues = res?.result?.total_revenue
+        this.totalOrders = res?.result?.total_orders
+        this.averageSales = res?.result?.average_sales
+        this.totalRevenues = res?.result?.total_revenue
         this.lastPage = res?.result?.lastPage
         this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()

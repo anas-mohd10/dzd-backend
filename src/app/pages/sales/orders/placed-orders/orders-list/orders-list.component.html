@@ -14,19 +14,28 @@
           </li>
         </ul>
         <div>
-          <button class="btn btn-secondary me-1" (click)="exportOrders()">
+          <button class="btn bg-white text-primary border border-primary me-1" (click)="exportOrders()">
             Export orders
+            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+              </path>
+            </svg>
           </button>
           <button class="btn btn-primary ms-1" routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
             Add Orders
+            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+            </svg>
           </button>
         </div>
-
       </div>
     </div>
   </div>
 
-  <div class="top-form-container">
+  <!-- <div class="top-form-container">
     <div class="row order-cards">
       <div class="col-lg-3">
         <div class="card-body">
@@ -47,7 +56,56 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+  <div class="row order-statitics my-3">
+    <div class="col-lg-4">
+      <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
+        <div class="stats-icon d-flex align-items-center justify-content-center">
+          <img src="../../../../../../assets/orders/total-orders.png" alt="TotalOrders">
+        </div>
+        <div>
+          <div class="fs-6 mb-2">Total orders</div>
+          <div class="fs-3 fw-bolder">{{ totalOrders }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
+        <div class="stats-icon d-flex align-items-center justify-content-center">
+          <img src="../../../../../../assets/orders/revenue.png" alt="TotalRevenues">
+        </div>
+        <div>
+          <div class="fs-6 mb-2">Total revenue</div>
+          <div class="fs-3 fw-bolder">{{ totalRevenues }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
+        <div class="stats-icon d-flex align-items-center justify-content-center">
+          <img src="../../../../../../assets/orders/average-sales.png" alt="AverageSales">
+        </div>
+        <div>
+          <div class="fs-6 mb-2">Average sales</div>
+          <div class="fs-3 fw-bolder">{{ averageSales }}</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- <div>
+    <swiper [config]="swiperConfig">
+      <ng-container *ngFor="let status of orderStatus">
+        <ng-template swiperSlide>
+          <div class="cursor-pointer" [ngClass]="{'text-primary': status?.status == activeStatus}"
+            (click)="getStatus(status)">
+            {{status?.status}} ({{status?.count}})
+          </div>
+        </ng-template>
+      </ng-container>
+    </swiper>
+  </div> -->
 
   <div class="order_row">
     <div class="card card-table">

@@ -8,9 +8,51 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
-.btn-secondary{
+.btn-secondary {
   font-weight: 400 !important;
 }
+
+
+//New designs
+.btn {
+  font-weight: 400 !important;
+}
+
+.order-stats {
+  padding: 1.5625rem;
+
+  .stats-icon {
+    width: 3.875rem;
+    height: 3.875rem;
+    border-radius: 1.9375rem;
+  }
+}
+
+.order-statitics {
+
+  >div {
+
+    &:nth-child(1) {
+      .stats-icon {
+        background: #FBE2FF;
+      }
+    }
+
+    &:nth-child(2) {
+      .stats-icon {
+        background: #E1EFFF;
+      }
+    }
+
+    &:nth-child(3) {
+      .stats-icon {
+        background: #DDFFE0;
+      }
+    }
+  }
+}
+
+//New designs
 
 .modal-body {
   .form-label {
@@ -204,7 +246,7 @@ $error: #F1416C;
 
   tbody {
     font-size: 14px !important;
-    
+
     tr {
       td {
         img {
