@@ -262,7 +262,7 @@ export class OrdersListComponent implements OnInit {
     this.OrdersService.getOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
-        for (let order of this.orders) order.orderDate = new Date(order.orderDate).toLocaleDateString() + " " + order.orderTime
+        for (let order of this.orders) order.orderDate = new Date(order.orderDate).toLocaleDateString() + " <br> " + order.orderTime
         this.totalOrders = res?.result?.total_orders
         this.averageSales = res?.result?.average_sales
         this.totalRevenues = res?.result?.total_revenue

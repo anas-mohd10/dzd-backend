@@ -94,18 +94,18 @@
     </div>
   </div>
 
-  <!-- <div>
+  <div>
     <swiper [config]="swiperConfig">
       <ng-container *ngFor="let status of orderStatus">
-        <ng-template swiperSlide>
-          <div class="cursor-pointer" [ngClass]="{'text-primary': status?.status == activeStatus}"
+        <ng-template swiperSlide class="mr-2">
+          <div class="cursor-pointer bg-white p-3 rounded" [ngClass]="{'text-primary': status?.status == activeStatus}"
             (click)="getStatus(status)">
-            {{status?.status}} ({{status?.count}})
+            {{status?.status}} <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus}">({{status?.count}})</span>
           </div>
         </ng-template>
       </ng-container>
     </swiper>
-  </div> -->
+  </div>
 
   <div class="order_row">
     <div class="card card-table">
@@ -180,7 +180,7 @@
             *ngIf="orders.length > 0">
             <thead class="common_thead">
               <tr class="text-left fs-6 text-gray-400">
-                <th style="min-width: 60px">#</th>
+                <!-- <th style="min-width: 60px">#</th> -->
                 <th style="min-width: 120px">Order</th>
                 <th style="min-width: 100px">Date</th>
                 <th style="min-width: 100px">Customer</th>
@@ -195,7 +195,7 @@
             <tbody class="fs-6">
               <ng-container *ngFor="let order of orders; let i = index">
                 <tr>
-                  <td>{{i+1}}</td>
+                  <!-- <td>{{i+1}}</td> -->
                   <td>{{order?.orderNo}}</td>
                   <td>{{order?.orderDate}}</td>
                   <td>{{order?.customerId?.name}}</td>

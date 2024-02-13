@@ -85,4 +85,14 @@ export class BrandService {
     const url = this.commonService.getFullUrl(this.brandEndpoints.brands_bulk_image_upload);
     return this.http.post(`${url}`, data);
   }
+
+  createBrands(data: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.createBrands);
+    return this.http.post(`${url}`, data);
+  }
+
+  getBrandDetails(keyword: string, page: number = 1, type: string = 'active') {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.getBrands + `?page=${page}&type=${type}&keyword=${keyword}`);
+    return this.http.get(`${url}`);
+  }
 }

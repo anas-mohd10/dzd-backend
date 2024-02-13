@@ -14,4 +14,7 @@ export const brandEndpoints = {
   brands_bulk_image_upload: '/brands/bulk-image-upload',
   updateBrandMedias: '/update-brand-media',
   removeCoverMedia: '/remove-brand-cover',
+
+  getBrands: '/get-brands',
+  createBrands: '/create-brands',
 }
