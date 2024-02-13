@@ -171,12 +171,17 @@ export class AddProductComponent implements OnInit {
   showObjFile: boolean = false
   settings: any = {}
 
+  parentForm: FormGroup;
+  taxClassDetails: Array<any> = [];
+  brand: FormControl = new FormControl('', Validators.required)
+  brands: Array<any> = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private brandService: BrandService,
+    private BrandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService,
@@ -193,6 +198,20 @@ export class AddProductComponent implements OnInit {
 
   get hf() {
     return this.productheadform.controls;
+  }
+
+  getBrandDetails() {
+    if (!this.brand.value) {
+      return
+    }
+
+    this.BrandService.getBrandDetails(this.brand.value).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.brands = res?.result
+        }
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -230,6 +249,35 @@ export class AddProductComponent implements OnInit {
         this.cdr.markForCheck()
       }
     })
+
+    this.parentForm = new FormGroup({
+      name: new FormControl("", Validators.required),
+      brand: new FormControl(""),
+      category: new FormControl("", Validators.required), // Default category
+      parentCategories: new FormControl("", Validators.required), //Main category
+      thumbnail: new FormControl(""),
+      isActive: new FormControl("true"),
+      sku: new FormControl("", Validators.required),
+      tax: new FormControl(""),
+      hsn: new FormControl(""),
+      cod: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) })
+    })
+
+    //Tax class details
+    this.taxClassService.getTaxClasses().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.taxClassDetails = res?.result;
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    });
+    //Tax class details
 
     this.productService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -457,7 +505,7 @@ export class AddProductComponent implements OnInit {
   }
 
   getBrandDetail() {
-    this.brandService.getActiveBrands().subscribe((res: any) => {
+    this.BrandService.getActiveBrands().subscribe((res: any) => {
       this.brandData = res?.result;
     });
   }
@@ -469,9 +517,7 @@ export class AddProductComponent implements OnInit {
   }
 
   getTaxClassDetail() {
-    this.taxClassService.getTaxClasses().subscribe((res: any) => {
-      this.taxClassData = res?.result;
-    });
+
   }
 
   getProducts() {
