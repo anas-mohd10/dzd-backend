@@ -22,4 +22,5 @@ export const categoryEndpoints = {
   childCategories: '/child-categories',
   updateCategoryMedias: '/update-category-media',
   removeCategoryMedia: '/remove-category-cover',
+  dropdownCategories: '/dropdown-categories'
 }

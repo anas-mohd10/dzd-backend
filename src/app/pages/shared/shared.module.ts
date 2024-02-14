@@ -5,12 +5,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssetsComponent } from './assets/assets.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModuleNotificationComponent } from './module-notification/module-notification.component';
+import { BrandDropdownComponent } from './brand-dropdown/brand-dropdown.component';
+import { CategoryDropdownComponent } from './category-dropdown/category-dropdown.component';
 
 @NgModule({
   declarations: [
     PaginationComponent,
     AssetsComponent,
-    ModuleNotificationComponent
+    ModuleNotificationComponent,
+    BrandDropdownComponent,
+    CategoryDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +25,9 @@ import { ModuleNotificationComponent } from './module-notification/module-notifi
   exports: [
     PaginationComponent,
     AssetsComponent,
-    ModuleNotificationComponent
+    ModuleNotificationComponent,
+    BrandDropdownComponent,
+    CategoryDropdownComponent
   ]
 })
 export class SharedModule { }

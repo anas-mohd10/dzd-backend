@@ -45,4 +45,9 @@ export class ProductHeadService {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head_images);
     return this.http.post(`${url}`, data);
   }
+
+  parentDetails(productSlug: any) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.parentDetails + `/${productSlug}`);
+    return this.http.get(`${url}`);
+  }
 }

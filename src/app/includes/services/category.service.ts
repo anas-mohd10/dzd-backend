@@ -125,4 +125,9 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.removeCategoryMedia + `/${category}`);
     return this.http.get(`${url}`);
   }
+
+  dropdownCategories(keyword: string, page: number = 1, type: string = 'active') {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.dropdownCategories + `?page=${page}&type=${type}&keyword=${keyword}`);
+    return this.http.get(`${url}`);
+  }
 }

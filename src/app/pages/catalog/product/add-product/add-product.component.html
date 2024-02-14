@@ -26,17 +26,17 @@
         <div class="card-body">
 
 
-          <tabset type="pills" [justified]="true">
-            <tab heading="Justified">
+          <tabset type="pills" [justified]="true" #staticTabs>
+            <tab heading="Basic details (1)">
               <form [formGroup]="parentForm">
-                <div class="row my-4">
+                <div class="row my-6">
                   <div class="col-lg-6 mb-3 form-group">
-                    <label class="form-label mb-3 required">Name</label>
+                    <label class="fs-6 mb-3 required">Name</label>
                     <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
                       formControlName="name" />
                   </div>
                   <div class="col-lg-6 mb-3 form-group">
-                    <label class="form-label mb-3">HSN</label>
+                    <label class="fs-6 mb-3">HSN</label>
                     <input type="text" class="form-control fs-6" formControlName="hsn" />
                   </div>
                   <div class="col-lg-6 mb-3 form-group">
@@ -44,24 +44,35 @@
                     <input type="text" class="form-control fs-6" formControlName="sku" />
                   </div>
                   <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required detail_label">Tax</label>
+                    <label class="fs-6 mb-3 required">Tax</label>
                     <select formControlName="tax" id="tax" class="form-select">
                       <option value="" disabled>-- Select an option --</option>
                       <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
                       </option>
                     </select>
                   </div>
-                  <div class="col-lg-6 form-group">
-                    <label class="fs-6 mb-3 detail_label">Brand</label>
-                    <input type="text" placeholder="Search brands" class="form-control" [formControl]="brand"
-                      (ngModelChange)="getBrandDetails()">
-                    <ng-container *ngIf="brands.length > 0">
-                      <div class="postition-relative">
-                        <div class="position-absolute">
-                          
-                        </div>
-                      </div>
-                    </ng-container>
+                  <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3">Brand</label>
+                    <app-brand-dropdown (brandTriggered)="onBrandTriggered($event)"></app-brand-dropdown>
+                  </div>
+                  <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3 required">Category</label>
+                    <app-category-dropdown (categoryTriggered)="onCategoryTriggered($event)"></app-category-dropdown>
+                  </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Default category</label>
+                    <select formControlName="category" id="defaultCategory" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let category of defaultCategories" value="{{category._id}}">
+                        {{category.name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-lg-3 mb-3 form-group">
+                    <label class="fs-6 mb-3">Thumbnail</label>
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="handleThumbnail($event)"></app-assets>
+                    </div>
                   </div>
                   <!-- <div class="col-12 col-sm-6 form-group">
                     <label class="fs-6 mb-3 required detail_label">Main Category</label>
@@ -154,10 +165,63 @@
                     </select>
                   </div> -->
                 </div>
+
+                <div class="d-flex align-items-center justify-content-end">
+                  <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
+                  <button class="btn btn-primary" *ngIf="!parentDetails" (click)="createParent()">Save and
+                    Continue</button>
+                </div>
               </form>
             </tab>
-            <tab heading="SJ">Short Labeled Justified content</tab>
-            <tab heading="Long Justified">Long Labeled Justified content</tab>
+            <tab heading="Product Details (2)">
+              <div class="my-6">
+                <form [formGroup]="form">
+                  <div class="col-lg-8 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Name</label>
+                    <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
+                      formControlName="name" />
+                  </div>
+                </form>
+              </div>
+            </tab>
+            <tab heading="Product Medias (3)">
+              <div class="my-6">
+                <div class="mb-3">
+                  <label for="images" class="fs-6 mb-3">Product images</label>
+                  <div class="row" id="images">
+                    <ng-container *ngFor="let image of images">
+                      <div class="col-lg-2">
+                        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                          <div class="position-absolute bg-secondary">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
+                          <img src="{{base}}/{{image.path}}" class="rounded" class="h-100 w-100" alt="{{image.title}}">
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="productMediaClicked($event)" [previewEnabled]="false"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
+                  <div class="row" id="thumbnail">
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab>
           </tabset>
 
 

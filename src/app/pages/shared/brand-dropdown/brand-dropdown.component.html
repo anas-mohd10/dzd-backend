@@ -1,0 +1,19 @@
+<div class="form-group">
+    <input type="text" placeholder="Search for brands" class="form-control" [formControl]="searchKeyword"
+        (ngModelChange)="getBrands()">
+    <div class="position-relative" *ngIf="brands.length > 0">
+        <div class="position-absolute bg-white p-2 shadow-sm brands-wrapper">
+            <ng-container *ngFor="let brand of brands">
+                <div (click)="brandClicked(brand)"
+                    class="p-2 cursor-pointer d-flex align-items-center justify-content-start gap-3">
+                    <div class="checkbox"></div>
+                    <div>{{brand.name}}</div>
+                </div>
+            </ng-container>
+        </div>
+        <ng-container *ngIf="brands.length == 0 && searchKeyword.value">
+            <div class="my-4"> Create brand <span class="cursor-pointer text-primary"
+                    (click)="createBrand()">{{searchKeyword.value}}</span></div>
+        </ng-container>
+    </div>
+</div>

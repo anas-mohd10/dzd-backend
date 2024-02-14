@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ElementRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,9 @@ import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { HotToastService } from '@ngneat/hot-toast';
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
+
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -175,6 +178,12 @@ export class AddProductComponent implements OnInit {
   taxClassDetails: Array<any> = [];
   brand: FormControl = new FormControl('', Validators.required)
   brands: Array<any> = [];
+  productCategories: Array<any> = [];
+  images: Array<any> = [];
+  defaultCategories: Array<any> = [];
+  form: FormGroup;
+  parentDetails: any;
+  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -189,6 +198,7 @@ export class AddProductComponent implements OnInit {
     private ProductHeadService: ProductHeadService,
     private ElementRef: ElementRef,
     private AttributeService: AttributeService,
+    private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService
   ) { }
 
@@ -210,6 +220,84 @@ export class AddProductComponent implements OnInit {
         if (res.errorCode == 0) {
           this.brands = res?.result
         }
+      }
+    })
+  }
+
+  onBrandTriggered(event: any) {
+    this.parentForm.get('brand')?.setValue(event._id)
+  }
+
+  onCategoryTriggered(event: any) {
+    this.productCategories.includes(event._id) ? null : this.productCategories.push(event._id)
+    this.productCategories.includes(event._id) ? null : this.getDefaultCategories(event._id)
+    this.parentForm.get('parentCategories')?.setValue(this.productCategories)
+  }
+
+  getDefaultCategories(category: string) {
+    this.categoryService.getSubCategoriesbyId(category).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = [...this.defaultCategories, ...res?.result]
+          // this.appendMainCategory()
+          // this.showMainCategory = true
+          // this.cdr.markForCheck()
+        }
+      }
+    })
+  }
+
+  handleThumbnail(event: any) {
+    this.parentForm.get('thumbnail')?.setValue(event._id)
+  }
+
+  productMediaClicked(event: any) {
+    this.images.push(event)
+  }
+
+  removeProductMedia(image: any) {
+    this.images = this.images.filter((item: any) => item._id != image._id)
+  }
+
+  productThumbnailClicked(event: any) {
+    this.form.get('thumbnail')?.setValue(event._id)
+  }
+
+  getParentDetails(productSlug: string) {
+    this.ProductHeadService.parentDetails(productSlug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.parentDetails = res?.result
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  toggleTab(index: number) {
+    if (this.staticTabs?.tabs[index]) {
+      this.staticTabs.tabs[index].active = true;
+    }
+  }
+
+  createParent() {
+    if (!this.parentForm.valid) {
+      return
+    }
+
+    this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res.message)
+          this.getParentDetails(res?.result?.slug)
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
       }
     })
   }
@@ -242,6 +330,7 @@ export class AddProductComponent implements OnInit {
       }
     })
 
+
     this.productService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.productImages = res?.result?.images
@@ -253,9 +342,9 @@ export class AddProductComponent implements OnInit {
     this.parentForm = new FormGroup({
       name: new FormControl("", Validators.required),
       brand: new FormControl(""),
-      category: new FormControl("", Validators.required), // Default category
+      category: new FormControl(null), // Default category
       parentCategories: new FormControl("", Validators.required), //Main category
-      thumbnail: new FormControl(""),
+      thumbnail: new FormControl(null),
       isActive: new FormControl("true"),
       sku: new FormControl("", Validators.required),
       tax: new FormControl(""),
@@ -264,6 +353,17 @@ export class AddProductComponent implements OnInit {
       shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
       return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) })
     })
+
+
+    this.form = new FormGroup({
+      name: new FormControl("", Validators.required),
+      thumbnail: new FormControl(""),
+      files: new FormControl(""),
+      video: new FormControl(""),
+      isActive: new FormControl("true"),
+      isVisible: new FormControl("true"),
+    })
+
 
     //Tax class details
     this.taxClassService.getTaxClasses().subscribe({
@@ -308,6 +408,10 @@ export class AddProductComponent implements OnInit {
         this.cdr.markForCheck()
       }
     })
+  }
+
+  mainCategory() {
+
   }
 
   loadMoreThumbnailImages() {
@@ -422,16 +526,7 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  mainCategory() {
-    this.categoryService.getSubCategoriesbyId(this.selectedMainCategory).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.defaultcategories = [...res?.result]
-        this.appendMainCategory()
-        this.showMainCategory = true
-        this.cdr.markForCheck()
-      }
-    })
-  }
+
 
   appendMainCategory() {
     for (let _main of this.maincategories) {
