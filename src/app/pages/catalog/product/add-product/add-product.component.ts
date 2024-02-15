@@ -188,6 +188,7 @@ export class AddProductComponent implements OnInit {
   previewDetails: any;
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
   searchKeywords: Array<any> = [];
+  searchKeyword: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -398,7 +399,7 @@ export class AddProductComponent implements OnInit {
       video: new FormControl(""),
       unit: new FormGroup({
         type: new FormControl("pack"),
-        value: new FormControl("")
+        value: new FormControl(1)
       }),
       details: new FormGroup({
         additionalButton: new FormControl(""),
