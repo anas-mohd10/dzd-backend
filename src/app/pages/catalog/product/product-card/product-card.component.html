@@ -283,13 +283,26 @@
 </ng-template>
 
 <ng-template #productTemplate>
-   <div class="modal-header pb-0">
-      <div class="fs-4 fw-bolder pull-left">{{productDetails?.name}} products</div>
+   <div class="modal-header">
+      <div class="fs-2 fw-bolder pull-left">{{productDetails?.name}} products</div>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeProducts()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
    </div>
    <div class="modal-body">
+      <div class="row justify-content-end">
+         <div class="col-lg-3">
+            <button (click)="closeProducts()" routerLink="{{appRoute.product.ADD_PRODUCT}}"
+               [queryParams]="{'product': productDetails?.slug}"
+               class="btn btn-primary d-flex align-items-center justify-content-center gap-row-3">
+               <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+               </svg>
+               Add products
+            </button>
+         </div>
+      </div>
       <div class="products_wrapper">
          <ng-container *ngFor="let product of childProducts">
             <div class="product_card" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"

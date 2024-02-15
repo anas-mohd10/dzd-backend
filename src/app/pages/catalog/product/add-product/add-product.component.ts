@@ -183,7 +183,11 @@ export class AddProductComponent implements OnInit {
   defaultCategories: Array<any> = [];
   form: FormGroup;
   parentDetails: any;
+  parentSlug: string;
+  brandDetails: any;
+  previewDetails: any;
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
+  searchKeywords: Array<any> = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -268,6 +272,12 @@ export class AddProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.parentDetails = res?.result
+          this.parentForm.patchValue(res.result)
+          this.brandDetails = res?.result?.brand
+          this.previewDetails = res?.result?.thumbnail?.path
+          this.productCategories = res?.result?.parentCategories
+          this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
+          this.cdr.markForCheck()
         } else {
 
         }
@@ -302,6 +312,22 @@ export class AddProductComponent implements OnInit {
     })
   }
 
+  toggleSearchKeywords(event: any, type: string) {
+    if (type == 'add') {
+      if (event.key == 'Enter') {
+        if (this.searchKeywords.includes(event.target.value)) {
+
+        } else {
+          this.searchKeywords.push(event.target.value)
+        }
+        this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+      }
+    } else {
+      this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
+    }
+  }
+
+
   ngOnInit(): void {
     this.initForm();
     this.base = environment.base
@@ -311,7 +337,9 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
-    this.slug = this.route.snapshot.queryParams.id || ''
+
+    this.slug = this.route.snapshot.queryParams.product || ''
+    this.getParentDetails(this.slug)
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -354,16 +382,37 @@ export class AddProductComponent implements OnInit {
       return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) })
     })
 
-
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
+      price: new FormGroup({
+        mrp: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+        offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
+        selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
+      }),
+      stock: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      moq: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      sku: new FormControl("", Validators.required),
+      maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
       thumbnail: new FormControl(""),
       files: new FormControl(""),
       video: new FormControl(""),
+      unit: new FormGroup({
+        type: new FormControl("pack"),
+        value: new FormControl("")
+      }),
+      details: new FormGroup({
+        additionalButton: new FormControl(""),
+        buttonRedirectUrl: new FormControl(""),
+        description: new FormControl(""),
+        features: new FormControl(""),
+        longDescription: new FormControl("")
+      }),
+      stockWarning: new FormControl(10),
+      searchKeywords: new FormControl(""),
+      relatedProducts: new FormControl(""),
       isActive: new FormControl("true"),
       isVisible: new FormControl("true"),
     })
-
 
     //Tax class details
     this.taxClassService.getTaxClasses().subscribe({

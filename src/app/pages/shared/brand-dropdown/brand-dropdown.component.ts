@@ -17,7 +17,6 @@ interface BrandProps {
   styleUrls: ['./brand-dropdown.component.scss']
 })
 
-
 export class BrandDropdownComponent implements OnInit, OnChanges {
   brands: Array<BrandProps> = [];
   brandDetails: BrandProps;
@@ -40,6 +39,7 @@ export class BrandDropdownComponent implements OnInit, OnChanges {
 
   getBrands() {
     if (!this.searchKeyword.valid) {
+      this.brands = []
       return;
     }
 

@@ -7,6 +7,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModuleNotificationComponent } from './module-notification/module-notification.component';
 import { BrandDropdownComponent } from './brand-dropdown/brand-dropdown.component';
 import { CategoryDropdownComponent } from './category-dropdown/category-dropdown.component';
+import { ProductDropdownComponent } from './product-dropdown/product-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { CategoryDropdownComponent } from './category-dropdown/category-dropdown
     AssetsComponent,
     ModuleNotificationComponent,
     BrandDropdownComponent,
-    CategoryDropdownComponent
+    CategoryDropdownComponent,
+    ProductDropdownComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { CategoryDropdownComponent } from './category-dropdown/category-dropdown
     AssetsComponent,
     ModuleNotificationComponent,
     BrandDropdownComponent,
-    CategoryDropdownComponent
+    CategoryDropdownComponent,
+    ProductDropdownComponent
   ]
 })
 export class SharedModule { }
