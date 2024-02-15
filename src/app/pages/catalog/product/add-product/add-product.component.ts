@@ -121,7 +121,7 @@ export class AddProductComponent implements OnInit {
   attributesId: any = []
   showMedia: Boolean = false
   showProduct: Boolean = false
-  slug: any;
+  slug: string = '';
   productheadfile: any;
   defaultcategories: any = [];
   base: string;
@@ -189,6 +189,9 @@ export class AddProductComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
   searchKeywords: Array<any> = [];
   searchKeyword: string;
+  relatedProducts: Array<any> = [];
+  categories: Array<any> = [];
+  productCategory: FormControl = new FormControl('');
 
   constructor(
     private formBuilder: FormBuilder,
@@ -234,20 +237,25 @@ export class AddProductComponent implements OnInit {
   }
 
   onCategoryTriggered(event: any) {
-    this.productCategories.includes(event._id) ? null : this.productCategories.push(event._id)
-    this.productCategories.includes(event._id) ? null : this.getDefaultCategories(event._id)
+    this.productCategories.includes(event._id) ? this.HotToastService.info('Category already added') : this.productCategories.push(event._id)
+    this.productCategories.includes(event._id) ? this.HotToastService.info('Category already added') : this.getDefaultCategories(event.slug)
     this.parentForm.get('parentCategories')?.setValue(this.productCategories)
   }
 
+  onProductTriggered(event: any) {
+    this.relatedProducts.includes(event._id) ? this.HotToastService.info('Product already added') : this.relatedProducts.push(event._id)
+  }
+
   getDefaultCategories(category: string) {
-    this.categoryService.getSubCategoriesbyId(category).subscribe({
+    this.categoryService.defaultCategories(category).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.defaultCategories = [...this.defaultCategories, ...res?.result]
-          // this.appendMainCategory()
-          // this.showMainCategory = true
-          // this.cdr.markForCheck()
+        } else {
+
         }
+      }, error: (err: any) => {
+
       }
     })
   }
@@ -268,6 +276,15 @@ export class AddProductComponent implements OnInit {
     this.form.get('thumbnail')?.setValue(event._id)
   }
 
+  toggleProductCategory(event: any, type: string) {
+    if (type == 'add') {
+      this.categories.includes(event.target.value) ? this.HotToastService.info('Category already added') : this.categories.push(event.target.value)
+    } else {
+      this.categories = this.categories.filter((item: any) => item?._id != event)
+    }
+    console.log(this.categories);
+  }
+
   getParentDetails(productSlug: string) {
     this.ProductHeadService.parentDetails(productSlug).subscribe({
       next: (res: any) => {
@@ -277,6 +294,8 @@ export class AddProductComponent implements OnInit {
           this.brandDetails = res?.result?.brand
           this.previewDetails = res?.result?.thumbnail?.path
           this.productCategories = res?.result?.parentCategories
+          res?.result?.category ? this.getDefaultCategories(res?.result?.category?.slug) : null
+          this.parentForm.get('category')?.setValue(res?.result?.category?._id)
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
           this.cdr.markForCheck()
         } else {
@@ -320,6 +339,7 @@ export class AddProductComponent implements OnInit {
 
         } else {
           this.searchKeywords.push(event.target.value)
+          this.searchKeyword = ''
         }
         this.form.get('searchKeywords')?.setValue(this.searchKeywords)
       }
@@ -327,7 +347,6 @@ export class AddProductComponent implements OnInit {
       this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
     }
   }
-
 
   ngOnInit(): void {
     this.initForm();
@@ -340,7 +359,7 @@ export class AddProductComponent implements OnInit {
     this.getProducts();
 
     this.slug = this.route.snapshot.queryParams.product || ''
-    this.getParentDetails(this.slug)
+    this.slug ? this.getParentDetails(this.slug) : null
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {

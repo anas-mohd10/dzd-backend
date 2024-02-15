@@ -130,4 +130,9 @@ export class CategoryService {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.dropdownCategories + `?page=${page}&type=${type}&keyword=${keyword}`);
     return this.http.get(`${url}`);
   }
+
+  defaultCategories(category: string) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.defaultCategories + `?category=${category}`);
+    return this.http.get(`${url}`);
+  }
 }

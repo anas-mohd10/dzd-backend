@@ -71,6 +71,11 @@ export class ProductService {
     return this.http.post(`${url}`, data);
   }
 
+  dropdownProducts(keyword: string, page: number = 1, type: string = 'active') {
+    const url = this.commonService.getFullUrl(this.productEndpoints.dropdownProducts + `?page=${page}&type=${type}&keyword=${keyword}`);
+    return this.http.get(`${url}`);
+  }
+
   archivedProducts(query: any, page: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.archive_product + "?page=" + page);
     return this.http.post(`${url}`, query);

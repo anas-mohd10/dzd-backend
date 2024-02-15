@@ -1,1 +1,15 @@
-<p>product-dropdown works!</p>
+<div class="form-group">
+    <input type="text" placeholder="Search for products" class="form-control" [formControl]="searchKeyword"
+        (ngModelChange)="getProducts()">
+    <div class="position-relative" *ngIf="products.length > 0">
+        <div class="position-absolute bg-white p-2 shadow-sm products-wrapper">
+            <ng-container *ngFor="let product of products">
+                <div (click)="productClicked(product)"
+                    class="p-2 cursor-pointer d-flex align-items-center justify-content-start gap-3">
+                    <div class="checkbox"></div>
+                    <div>{{product.name}}</div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

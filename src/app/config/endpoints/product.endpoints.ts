@@ -26,4 +26,5 @@ export const productEndpoints = {
     addProductCover: '/add-productcover',
     removeProductCover: '/remove-productcover',
     productTags: '/product-tags',
+    dropdownProducts: '/dropdown-products',
 }

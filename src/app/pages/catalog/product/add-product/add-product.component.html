@@ -2,9 +2,9 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
+        <h1 class="fw-bolder">
           {{ editMode ? "Update Product" : "Add Product" }}
-        </h3>
+        </h1>
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -140,7 +140,7 @@
                   </div>
                 </div>
               </form>
-              <div class="d-flex align-items-center justify-content-end row-gap-3">
+              <div class="d-flex align-items-center justify-content-end gap-2">
                 <button class="btn border border-danger text-danger bg-white">Cancel</button>
                 <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
                 <button class="btn btn-primary" *ngIf="!parentDetails" (click)="createParent()">
@@ -175,6 +175,33 @@
                     </div>
 
                     <div class="my-4">
+                      <div class="fs-3 fw-bold">Product category and attributes</div>
+                      <p class="text-muted">Easily manage price details to showacse your product</p>
+                      <div>
+                        <div class="col-lg-6 mb-3 form-group">
+                          <label class="fs-6 mb-3" for="productCategory">Category</label>
+                          <select formControlName="productCategory" id="productCategory"
+                            (change)="toggleProductCategory($event, 'add')" class="form-select">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let category of defaultCategories" value="{{category._id}}">
+                              {{category.name}}
+                            </option>
+                          </select>
+                        </div>
+                        <ng-container *ngIf="categories.length > 0">
+                          <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                            <ng-container *ngFor="let category of categories">
+                              <div class="bg-secondary cursor-pointer p-2 rounded"
+                                (change)="toggleProductCategory(category._id, 'remove')">
+                                {{category.name}}
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+
+                    <div class="my-4">
                       <div class="fs-3 fw-bold">Inventory details</div>
                       <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
                       <div class="row px-0 mx-0">
@@ -204,8 +231,8 @@
                     <div class="my-4">
                       <div class="fs-3 fw-bold">Unit and measurement</div>
                       <p class="text-muted">Update the unit of measurement details of the product easily</p>
-                      <div class="row px-0 mx-0" formGroupName="unit">
-                        <div class="form-group mb-3 col-lg-6">
+                      <div class="row" formGroupName="unit">
+                        <div class="form-group mb-3 px-0 mx-0 col-lg-6">
                           <label for="type" class="fs-6 mb-3">Unit of measurement</label>
                           <select formControlName="type" id="type" class="form-select">
                             <option value="" disabled>-- Select an option --</option>
@@ -257,11 +284,20 @@
                     <div class="col-lg-6 mb-3 form-group">
                       <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
                       <app-product-dropdown></app-product-dropdown>
+                      <ng-container *ngIf="relatedProducts.length > 0">
+                        <div class="mt-2 d-flex flex-wrap align-items-center justify-content-start">
+                          <ng-container *ngFor="let product of relatedProducts; let i = index">
+                            <div class="bg-secondary p-2 rounded">
+                              {{product.name}}
+                            </div>
+                          </ng-container>
+                        </div>
+                      </ng-container>
                     </div>
                   </div>
                 </form>
               </div>
-              <div class="d-flex align-items-center justify-content-end row-gap-3">
+              <div class="d-flex align-items-center justify-content-end gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
                 <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
               </div>
@@ -309,8 +345,6 @@
               </div>
             </tab>
           </tabset>
-
-
 
           <nav style="pointer-events: none;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">

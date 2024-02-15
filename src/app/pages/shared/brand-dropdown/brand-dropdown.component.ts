@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
-import { event } from 'jquery';
 import { BrandService } from 'src/app/includes/services/brand.service';
 
 interface BrandProps {
