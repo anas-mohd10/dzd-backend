@@ -264,8 +264,6 @@
       </ng-container>
     </tbody>
   </table>
-  <app-pagination [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults" [totalPages]="totalPages"
-    (pageTrigger)="onPageTriggered($event)"></app-pagination>
 
   <div class="card" *ngIf="orders.length == 0">
     <div class="card-body">
@@ -274,6 +272,11 @@
         <p class="text-muted">We couldn't find any item based on your search</p>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="orders.length > 0">
+    <app-pagination [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults" [totalPages]="totalPages"
+      (pageTrigger)="onPageTriggered($event)"></app-pagination>
   </div>
 </div>
 
