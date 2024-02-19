@@ -35,30 +35,7 @@
     </div>
   </div>
 
-  <!-- <div class="top-form-container">
-    <div class="row order-cards">
-      <div class="col-lg-3">
-        <div class="card-body">
-          <div class="fs-2 mb-2 text-dark fw-bolder"> {{ count }}</div>
-          <div class="fs-6">Total orders</div>
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <div class="card-body">
-          <div class="fs-2 fw-bolder mb-2 text-dark"> {{ totalrevenues }}</div>
-          <div class="fs-6">Total revenue</div>
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <div class="card-body">
-          <div class="fs-2 mb-2 text-dark fw-bolder"> {{ averagesales }}</div>
-          <div class="fs-6">Average sales</div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-  <div class="row order-statitics my-3">
+  <div class="row mt-3 order-statitics">
     <div class="col-lg-4">
       <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
         <div class="stats-icon d-flex align-items-center justify-content-center">
@@ -94,187 +71,207 @@
     </div>
   </div>
 
-  <div>
-    <swiper [config]="swiperConfig">
-      <ng-container *ngFor="let status of orderStatus">
-        <ng-template swiperSlide class="mr-2">
-          <div class="cursor-pointer bg-white p-3 rounded" [ngClass]="{'text-primary': status?.status == activeStatus}"
-            (click)="getStatus(status)">
-            {{status?.status}} <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus}">({{status?.count}})</span>
+  <div class="card my-5">
+    <div class="card-body py-0 px-5">
+      <div class="border-bottom py-5 border-secondary status-list">
+        <swiper [config]="swiperConfig">
+          <ng-container *ngFor="let status of orderStatus">
+            <ng-template swiperSlide>
+              <div class="cursor-pointer" [ngClass]="{'text-primary': status?.status == activeStatus}"
+                (click)="getStatus(status)">
+                {{status?.status}}
+                <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus, 
+                  'bg-secondary': status?.status != activeStatus}">
+                  {{status?.count}}
+                </span>
+              </div>
+            </ng-template>
+          </ng-container>
+        </swiper>
+      </div>
+      <div class="py-5">
+        <div class="row">
+          <div class="col-lg-10">
+            <form [formGroup]="orderForm">
+              <div class="d-flex align-items-center gap-3 justify-content-between">
+                <div>
+                  <input type="date" class="form-control fs-6 text-dark" formControlName="fromDate"
+                    (change)="getOrders()" placeholder="From date">
+                </div>
+                <div>
+                  <input type="date" class="form-control fs-6 text-dark" formControlName="toDate"
+                    (change)="getOrders()">
+                </div>
+                <div>
+                  <select class="form-select fs-6 text-dark" formControlName="paymentMethod" (change)="getOrders()">
+                    <option value="" disabled>-- Payment method --</option>
+                    <option value="COD">Cash On Delivery</option>
+                    <option value="ONLINE">Online</option>
+                  </select>
+                </div>
+                <div>
+                  <select class="form-select fs-6 text-dark" formControlName="paymentStatus" (change)="getOrders()">
+                    <option value="" disabled>-- Payment status --</option>
+                    <option value="REJECTED">Rejected</option>
+                    <option value="PAID">Paid</option>
+                    <option value="PENDING">Pending</option>
+                  </select>
+                </div>
+                <div>
+                  <select class="form-select fs-6 text-dark" formControlName="source" (change)="getOrders()">
+                    <option value="" disabled>-- Source --</option>
+                    <option value="WEB">Website</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="APP">App</option>
+                  </select>
+                </div>
+                <div>
+                  <input type="button" class="form-control btn-secondary p-1 fs-6 text-dark" value="Clear filters"
+                    (click)="onReload()">
+                </div>
+              </div>
+            </form>
           </div>
-        </ng-template>
-      </ng-container>
-    </swiper>
-  </div>
-
-  <div class="order_row">
-    <div class="card card-table">
-      <div class="row nav_row">
-        <div class="col-9 arrow_flex">
-          <swiper [config]="swiperConfig">
-            <ng-container *ngFor="let status of orderStatus">
-              <ng-template swiperSlide>
-                <button class="nav_btn fs-6" [ngClass]="{'active': status?.status == activeStatus}"
-                  (click)="getStatus(status)">
-                  {{status?.status}} ({{status?.count}})
-                </button>
-              </ng-template>
-            </ng-container>
-          </swiper>
+          <div class="col-lg-2">
+            <div class="search_input">
+              <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders" [formControl]="keyword"
+                (ngModelChange)="getOrders()">
+              <img src="../../../../../assets/icons/Search.svg" alt="">
+            </div>
+          </div>
         </div>
-        <div class="col-3">
-          <div class="search_input">
-            <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders here"
-              [formControl]="keyword" (ngModelChange)="getOrders()">
-            <img src="../../../../../assets/icons/Search.svg" alt="">
+        <div class="d-flex mt-5 flex-wrap align-items-center justify-content-between">
+          <div class="d-flex gap-3">
+            <button class="btn p-2 bg-white text-primary border border-primary" (click)="exportOrders()">
+              Bulk invoice
+              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+                </path>
+              </svg>
+            </button>
+            <button class="btn p-2 bg-white text-primary border border-primary" (click)="exportOrders()">
+              Bulk packing slip
+              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+                </path>
+              </svg>
+            </button>
+          </div>
+          <div>
+            <select name="sort" id="sort" class="form-select">
+              <option value="" selected disabled>Sort by</option>
+              <option value="date">Date</option>
+              <option value="customer">Customer</option>
+              <option value="total">Total</option>
+              <option value="source">Source</option>
+              <option value="tags">Tags</option>
+              <option value="method">Method</option>
+              <option value="status">Status</option>
+            </select>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div *ngIf="currentTab==0" class="row">
-        <form class="calender_form" [formGroup]="orderform">
-          <div class="row align-items-end flex-start">
-            <div class="search-input col-sm-2">
-              <label class="fs-6 mb-1">From</label>
-              <input type="date" class="form-control fs-6 text-dark" formControlName="fromDate" (change)="getOrders()"
-                placeholder="From date">
-            </div>
-            <div class="search-input col-sm-2">
-              <label class="fs-6 mb-1">To</label>
-              <input type="date" class="form-control fs-6 text-dark" formControlName="toDate" (change)="getOrders()">
-            </div>
-            <div class="search-featured col-sm-2">
-              <label class="fs-6 mb-1">Payment Method</label>
-              <select class="form-select fs-6 text-dark" formControlName="paymentMethod" (change)="getOrders()">
-                <option value="" disabled>-- Select --</option>
-                <option value="COD">Cash On Delivery</option>
-                <option value="ONLINE">Online</option>
-              </select>
-            </div>
-            <div class="search-featured col-sm-2">
-              <label class="fs-6 mb-1">Payment Status</label>
-              <select class="form-select fs-6 text-dark" formControlName="paymentStatus" (change)="getOrders()">
-                <option value="" disabled>-- Select --</option>
-                <option value="REJECTED">Rejected</option>
-                <option value="PAID">Paid</option>
-                <option value="PENDING">Pending</option>
-              </select>
-            </div>
-            <div class="search-featured col-sm-2">
-              <label class="fs-6 mb-1">Source</label>
-              <select class="form-select fs-6 text-dark" formControlName="source" (change)="getOrders()">
-                <option value="" disabled>-- Select --</option>
-                <option value="WEB">Website</option>
-                <option value="ADMIN">Admin</option>
-                <option value="APP">App</option>
-              </select>
-            </div>
-            <div class="search-input col-sm-2">
-              <label class="fs-6 mb-1">&nbsp;</label>
-              <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear" (click)="onReload()">
-            </div>
+  <table class="table fs-6 table-head-custom table-vertical-center table-head-bg table-borderless"
+    *ngIf="orders.length > 0">
+    <thead>
+      <tr class="text-left">
+        <th>
+          <div class="d-flex align-items-center justify-content-start">
+            <div class="checkbox"></div>
+            <div class="ms-3">All</div>
           </div>
-        </form>
-        <div class="table-responsive">
-          <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-            *ngIf="orders.length > 0">
-            <thead class="common_thead">
-              <tr class="text-left fs-6 text-gray-400">
-                <!-- <th style="min-width: 60px">#</th> -->
-                <th style="min-width: 120px">Order</th>
-                <th style="min-width: 100px">Date</th>
-                <th style="min-width: 100px">Customer</th>
-                <th style="min-width: 100px">Total</th>
-                <th style="min-width: 100px">Source</th>
-                <th style="min-width: 100px">Tags</th>
-                <th style="min-width: 100px">Method</th>
-                <th style="min-width: 100px">Status</th>
-                <th style="min-width: 100px">Action</th>
-              </tr>
-            </thead>
-            <tbody class="fs-6">
-              <ng-container *ngFor="let order of orders; let i = index">
-                <tr>
-                  <!-- <td>{{i+1}}</td> -->
-                  <td>{{order?.orderNo}}</td>
-                  <td>{{order?.orderDate}}</td>
-                  <td>{{order?.customerId?.name}}</td>
-                  <td>{{order?.total}}</td>
-                  <td>{{order?.source}}</td>
-                  <td>
-                    <div class="tags">
-                      <div class="addTag p-1 border border-secondary rounded"
-                        (click)="openTag(tagTemplate, order.orderNo)">
-                        Add tag
-                        <span>
-                          <svg height="14px" width="14px" fill="none" stroke="currentColor" stroke-width="1.5"
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                          </svg>
-                        </span>
-                      </div>
-                      <ng-container *ngFor="let tag of order?.tags; let tagIndex = index">
-                        <div class="p-1 bg-secondary rounded tag d-flex align-items-center justify-content-center"
-                          (click)="removeTag(order.orderNo, tagIndex)">
-                          {{tag}}
-                          <div class="ms-1">
-                            <svg height="15px" width="15px" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
-                            </svg>
-                          </div>
-                        </div>
-                      </ng-container>
-                    </div>
-                  </td>
-                  <td>{{order?.paymentMethod}}</td>
-                  <td>
-                    <span class="paid fs-6"
-                      [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'Pending' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'Cancelled'}">
-                      {{order?.paymentStatus == 'PAID' || order?.paymentStatus == 'Paid' ? 'Paid' : order?.paymentStatus
-                      == 'CANCELLED' ? 'Cancelled' :'Pending'}}
-                    </span>
-                  </td>
-                  <td routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img
-                      src="../../../../../assets/icons/Edit2.svg" alt="Icon"></td>
-                </tr>
+        </th>
+        <th>Order</th>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Total</th>
+        <th>Source</th>
+        <th>Tags</th>
+        <th>Method</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let order of orders; let i = index">
+        <tr>
+          <td>
+            <div class="checkbox"></div>
+          </td>
+          <td>{{order?.orderNo}}</td>
+          <td>
+            {{order?.orderDate}} <br>
+            {{order.orderTime}}
+          </td>
+          <td>{{order?.customerId?.name}}</td>
+          <td>{{order?.total}}</td>
+          <td>{{order?.source}}</td>
+          <td>
+            <div class="tags">
+              <div class="addTag p-1 border border-secondary rounded" (click)="openTag(tagTemplate, order.orderNo)">
+                Add tag
+                <span>
+                  <svg height="14px" width="14px" fill="none" stroke="currentColor" stroke-width="1.5"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                  </svg>
+                </span>
+              </div>
+              <ng-container *ngFor="let tag of order?.tags; let tagIndex = index">
+                <div class="p-1 bg-secondary rounded tag d-flex align-items-center justify-content-center"
+                  (click)="removeTag(order.orderNo, tagIndex)">
+                  {{tag}}
+                  <div class="ms-1">
+                    <svg height="15px" width="15px" data-slot="icon" fill="none" stroke-width="1.5"
+                      stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                    </svg>
+                  </div>
+                </div>
               </ng-container>
-            </tbody>
-          </table>
-
-          <div *ngIf="orders.length == 0">
-            <div class="emptyNote">
-              <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
-              <div class="fs-3 fw-bolder">No result found</div>
-              <div class="fs-5 note">We couldn't find any item based on your search.</div>
             </div>
-          </div>
-
-          <div class="d-flex align-items-center justify-content-between" *ngIf="orders.length > 0">
-            <div class="filtering">
-              <span class="fs-6 text-dark">Show</span>
-              <select [formControl]="limit" (change)="getOrders()">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-              </select>
-              <span class="fs-6 text-dark">entries</span>
-            </div>
-            <div class="pagination">
-              <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-                <img src="../../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+          </td>
+          <td>{{order?.paymentMethod}}</td>
+          <td>
+            <span class="paid fs-6"
+              [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'Pending' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'Cancelled'}">
+              {{order?.paymentStatus == 'PAID' || order?.paymentStatus == 'Paid' ? 'Paid' : order?.paymentStatus
+              == 'CANCELLED' ? 'Cancelled' :'Pending'}}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex align-items-center justify-content-start gap-3">
+              <div
+                class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
+                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
+                <img src="../../../../../../assets/icons/eye.svg" alt="View order details">
               </div>
-              <div class="paginationPage">{{page}}</div>
-              <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-                <img src="../../../../../../assets/icons/navigateNext.svg" alt="Icon">
+              <div
+                class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
+                <img src="../../../../../../assets/icons/print.svg" alt="Genarete Invoice">
               </div>
             </div>
-          </div>
-        </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <app-pagination [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults" [totalPages]="totalPages"
+    (pageTrigger)="onPageTriggered($event)"></app-pagination>
+
+  <div class="card" *ngIf="orders.length == 0">
+    <div class="card-body">
+      <div class="my-8 d-flex flex-column align-items-center justify-content-center">
+        <div class="fs-4 fw-bold">No orders found</div>
+        <p class="text-muted">We couldn't find any item based on your search</p>
       </div>
     </div>
   </div>

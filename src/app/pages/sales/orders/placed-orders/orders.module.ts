@@ -10,6 +10,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SwiperModule } from 'swiper/angular';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SwiperModule } from 'swiper/angular';
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
+    SharedModule,
     NgSelectModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

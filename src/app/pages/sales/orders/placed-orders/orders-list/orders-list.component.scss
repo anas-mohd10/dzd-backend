@@ -13,6 +13,48 @@ $error: #F1416C;
 }
 
 
+.action-button{
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.table{
+  background: #ffffff;
+  font-size: 15px;
+
+  thead{
+    background: #E4E7F4;
+  }
+
+  .checkbox{
+    height: 20px;
+    width: 20px;
+    border: 2px solid #aaaaaa;
+    border-radius: 4px;
+    position: relative;
+    background: #ffffff;
+    cursor: pointer;
+
+    &.checked{
+
+        &::after{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            content: '';
+            height: 10px;
+            width: 10px;
+            background: #00bdab;
+            border-radius: 2px;
+        }
+        
+        border: 2px solid #00bdab;
+    }
+}
+}
+
+
 //New designs
 .btn {
   font-weight: 400 !important;
@@ -53,14 +95,13 @@ $error: #F1416C;
 }
 
 //New designs
-
 .modal-body {
   .form-label {
     font-weight: 400;
   }
 
   .form-control {
-    color: #111111 !important;
+    color: #111111;
   }
 
   .btn-primary {
@@ -169,18 +210,6 @@ $error: #F1416C;
   border-radius: 4px;
   border: none;
   outline: none;
-}
-
-.common_thead {
-  background: #20BDAB;
-
-  th {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 15px;
-    text-transform: capitalize;
-    color: #FFFFFF;
-  }
 }
 
 .calender_form {
@@ -325,21 +354,16 @@ $error: #F1416C;
 
 .search_input {
   position: relative;
-  height: 43px;
   display: flex;
   align-items: center;
-
 
   input {
     font-weight: 500;
     font-size: 15px;
-    line-height: 18px;
-    height: 34px;
     display: flex;
     align-items: center;
-    color: #8B909A;
     padding: 0px 30px 0px 14px;
-    background: #FFFFFF;
+    background: #f2f2f2;
     border: 1px solid #E8E8E8;
     border-radius: 4px;
     margin-left: auto;

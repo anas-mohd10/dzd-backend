@@ -1,10 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, TemplateRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { DataTableDirective } from 'angular-datatables'
-import { Subject } from 'rxjs';
 import SwiperCore, { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -16,22 +14,15 @@ import { HotToastService } from '@ngneat/hot-toast';
   styleUrls: ['./orders-list.component.scss']
 })
 export class OrdersListComponent implements OnInit {
-  @ViewChild(DataTableDirective, { static: false })
-  public dtElement: DataTableDirective;
-  public dtOptions: DataTables.Settings = {};
-  public dtTrigger: Subject<any> = new Subject();
-
-  orderform: FormGroup;
+  orderForm: FormGroup;
   appRoute = appRoutes;
   orders: any = [];
   base: any
   isDateValid: boolean = false;
   totalcount: Number = 0
-
   totalOrders: Number = 0
   totalRevenues: string = 'INR 0';
   averageSales: string = 'INR 0';
-
   currentTab: number = 0;
   swiperConfig: SwiperOptions = {
     slidesPerView: 'auto',
@@ -54,7 +45,7 @@ export class OrdersListComponent implements OnInit {
     }
   }
   page: number = 1
-  limit: FormControl = new FormControl(20)
+  limit: number = 20
   keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'
@@ -114,6 +105,8 @@ export class OrdersListComponent implements OnInit {
   tagOrder: string = ''
   tag: FormControl = new FormControl('', [Validators.required, Validators.maxLength(10)])
   isTagSubmitted: boolean = false
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private OrdersService: OrdersService,
@@ -207,13 +200,9 @@ export class OrdersListComponent implements OnInit {
     this.OrdersService.exportOrderTabs({
       status: this.activeValue,
       page: this.page,
-      limit: this.limit.value,
-      paymentMethod: this.orderform.get('paymentMethod')?.value,
-      from: this.orderform.get('fromDate')?.value,
-      to: this.orderform.get('toDate')?.value,
+      limit: this.limit,
+      ...this.orderForm.value,
       keyword: this.keyword.value,
-      source: this.orderform.get('source')?.value,
-      paymentStatus: this.orderform.get('paymentStatus')?.value
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -237,13 +226,9 @@ export class OrdersListComponent implements OnInit {
     this.getOrders()
   }
 
-  getPreviousPage() {
-    this.page = this.page - 1
-    this.getOrders()
-  }
-
-  getNextPage() {
-    this.page = this.page + 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getOrders()
   }
 
@@ -251,22 +236,20 @@ export class OrdersListComponent implements OnInit {
     let payload = {
       status: this.activeValue,
       page: this.page,
-      limit: this.limit.value,
-      paymentMethod: this.orderform.get('paymentMethod')?.value,
-      from: this.orderform.get('fromDate')?.value,
-      to: this.orderform.get('toDate')?.value,
+      limit: this.limit,
+      ...this.orderForm.value,
       keyword: this.keyword.value,
-      source: this.orderform.get('source')?.value,
-      paymentStatus: this.orderform.get('paymentStatus')?.value
     }
     this.OrdersService.getOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
-        for (let order of this.orders) order.orderDate = new Date(order.orderDate).toLocaleDateString() + " <br> " + order.orderTime
+        for (let order of this.orders) order.orderDate = new Date(order.orderDate).toLocaleDateString()
         this.totalOrders = res?.result?.total_orders
         this.averageSales = res?.result?.average_sales
         this.totalRevenues = res?.result?.total_revenue
         this.lastPage = res?.result?.lastPage
+        this.totalResults = res?.result?.totalResults
+        this.totalPages = res?.result?.totalPages
         this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()
       }
@@ -274,7 +257,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   initForm() {
-    this.orderform = new FormGroup({
+    this.orderForm = new FormGroup({
       fromDate: new FormControl(''),
       toDate: new FormControl(''),
       paymentMethod: new FormControl(''),
@@ -284,8 +267,8 @@ export class OrdersListComponent implements OnInit {
   }
 
   checkToDate() {
-    let fromDate = this.orderform.get("fdate")?.value
-    let toDate = this.orderform.get("tdate")?.value
+    let fromDate = this.orderForm.get("fdate")?.value
+    let toDate = this.orderForm.get("tdate")?.value
     if (toDate) {
       if (toDate < fromDate) {
         this.isDateValid = false
@@ -298,7 +281,7 @@ export class OrdersListComponent implements OnInit {
 
   onReload() {
     this.keyword.setValue('')
-    this.limit.setValue(20)
+    this.limit = 20
     this.initForm()
     this.activeStatus = 'All Orders'
     this.activeValue = ''
@@ -307,15 +290,13 @@ export class OrdersListComponent implements OnInit {
   }
 
   searchOrder() {
-    this.OrdersService.searchOrder(this.orderform.value).subscribe((res: any) => {
+    this.OrdersService.searchOrder(this.orderForm.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.dtTrigger.unsubscribe()
         this.orders = res?.result?.data
         for (let order of this.orders) {
           order.orderDate = new Date(order.orderDate).toDateString()
         }
         this.ChangeDetectorRef.markForCheck();
-        this.dtTrigger.next()
       }
     })
   }
