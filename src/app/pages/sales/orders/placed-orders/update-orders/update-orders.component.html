@@ -63,6 +63,7 @@
   </div>
 
   <div class="position-relative mt-4">
+
     <div class="cancelledOrderDetails shadow" *ngIf="isCancelled">
       <div class="alert m-0 alert-danger">
         <div class="fs-3 mb-3 fw-bolder">Unfortunately this order has been cancelled</div>
@@ -71,10 +72,9 @@
       </div>
     </div>
 
-
     <div class="row">
-      <div class="col-lg-6">
-        <div class="card">
+      <div class="col-lg-6 mb-3">
+        <div class="card h-100">
           <div class="card-body">
             <div class="fs-3 fw-bolder">
               Order Details ({{orderNumber}})
@@ -82,202 +82,326 @@
                 {{orderStatus}}
               </span>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6"></div>
-      <div class="col-lg-6 d-flex gap-3 flex-column">
-        <div class="card">
-          <div class="card-body">
-            <div class="fs-3 fw-bolder">
-              Customer Address
-            </div>
             <div class="my-2">
-              <p class="my-1 fs-5 fw-bold">
-                {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
-              </p>
-              <div class="fs-6 text-muted">
-                {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                {{order?.address?.area}}, {{order?.address?.landmark}},
-                {{order?.address?.city}}, {{order?.address?.state}},
-                {{order?.address?.pincode}}
+              <div class="itemDetails">
+                <div class="itemTitle">Order Placed on</div>
+                <div class="itemResponse">{{order?.orderDate}}, {{order?.orderTime}}</div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <div class="fs-3 fw-bolder">
-              Shipping Address
-            </div>
-            <div class="my-2">
-              <p class="my-1 fs-5 fw-bold">
-                {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
-              </p>
-              <div class="fs-6 text-muted">
-                {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                {{order?.address?.area}}, {{order?.address?.landmark}},
-                {{order?.address?.city}}, {{order?.address?.state}},
-                {{order?.address?.pincode}}
+              <div class="itemDetails">
+                <div class="itemTitle">Payment Method</div>
+                <div class="itemResponse">{{order?.paymentMethod}}</div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <div class="fs-3 fw-bolder">Click and Collect Details</div>
-            <div class="my-2">
-              <div class="d-flex align-items-center justify-content-between my-1">
-                <div class="fs-6">Date</div>
-                <div class="fs-6">{{order?.deliveryDate ? order?.deliveryDate : 'Not avaialble'}}</div>
+              <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">
+                <div class="itemTitle">Gateway Status</div>
+                <div class="itemResponse">{{order?.gatewayStatus}}</div>
               </div>
-              <div class="d-flex align-items-center justify-content-between mb-1">
-                <div class="fs-6">Time</div>
-                <div class="fs-6">
-                  {{order?.deliveryTime?.from ?
-                  order?.deliveryTime?.from + ' -' + order?.deliveryTime?.to : 'Not available'}}
+              <div class="itemDetails">
+                <div class="itemTitle">Payment Status</div>
+                <div class="itemResponse">{{order?.paymentStatus}}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Invoice Reference</div>
+                <div class="itemResponse">{{order?.invoiceNo}}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Order Source</div>
+                <div class="itemResponse">{{order?.source}}
                 </div>
               </div>
-              <div class="d-flex align-items-center justify-content-between">
-                <div class="fs-6">Store</div>
-                <div class="fs-6">
-                  {{order?.clickPoint ? order?.clickPoint?.name : 'Not available'}}
-                </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Order Total</div>
+                <div class="itemResponse">{{settings?.currency}} {{order?.total}}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Shipping Method</div>
+                <div class="itemResponse">{{order?.shippingMethod ? order?.shippingMethod : '-'}}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Delivery</div>
+                <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">{{order?.deliveryType == '1' ?
+                  'Click
+                  and collect' : 'Home delivery' }}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Delivery slot</div>
+                <div class="itemResponse">{{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' +
+                  order?.deliverySlot?.to : '-'}}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6"></div>
-    </div>
-
-
-
-    <div [ngClass]="{'cancelledWrapper': isCancelled}">
-      <div class="orderDetailsWrapper">
+      <div class="col-lg-6 mb-3">
         <div class="card">
           <div class="card-body">
-            <h3 class="fs-3 text-dark fw-bolder">
-              Order Details ({{orderNumber}})
-              <span class="ms-2 alert alert-success fs-6 fw-normal p-1 m-0">
-                {{orderStatus}}
-              </span>
-            </h3>
-
-            <div class="itemDetails">
-              <div class="itemTitle">Order Placed on</div>
-              <div class="itemResponse">{{order?.orderDate}}, {{order?.orderTime}}</div>
+            <div class="fs-3 fw-bolder">
+              Order Amount Details
             </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Payment Method</div>
-              <div class="itemResponse">{{order?.paymentMethod}}</div>
-            </div>
-            <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">
-              <div class="itemTitle">Gateway Status</div>
-              <div class="itemResponse">{{order?.gatewayStatus}}</div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Payment Status</div>
-              <div class="itemResponse">{{order?.paymentStatus}}</div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Invoice Reference</div>
-              <div class="itemResponse">{{order?.invoiceNo}}</div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Order Source</div>
-              <div class="itemResponse">{{order?.source}}
+            <div class="my-2 p-3 border border-secondary rounded">
+              <div class="itemDetails">
+                <div class="itemTitle">Price excluding tax</div>
+                <div class="itemResponse">{{settings?.currency}} {{order?.priceBeforeTax ? order?.priceBeforeTax :
+                  '0.00'}}</div>
               </div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Order Total</div>
-              <div class="itemResponse">{{settings?.currency}} {{order?.total}}</div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Shipping Method</div>
-              <div class="itemResponse">{{order?.shippingMethod ? order?.shippingMethod : '-'}}</div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Delivery</div>
-              <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">{{order?.deliveryType == '1' ? 'Click
-                and collect' : 'Home delivery' }}</div>
-            </div>
-            <div class="itemDetails">
-              <div class="itemTitle">Delivery slot</div>
-              <div class="itemResponse">{{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' +
-                order?.deliverySlot?.to : '-'}}</div>
+              <div class="itemDetails">
+                <div class="itemTitle">Tax</div>
+                <div class="itemResponse">{{settings?.currency}} {{order?.tax ? order?.tax : '0.00'}}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Price including tax</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.priceAfterTax ? order?.priceAfterTax: '0.00'}}
+                </div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Shipping charge</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.shippingCost ? order?.shippingCost : '0.00'}}
+                </div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Cash on delivery charge</div>
+                <div class="itemResponse">{{settings?.currency}} {{order?.codCharge ? order?.codCharge : '0.00'}}</div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Additional charge</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.additionalCharge ? order?.additionalCharge : '0.00'}}
+                </div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Gift charge</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.giftCharge ? order?.giftCharge : '0.00'}}
+                </div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Coupon discount</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.discount ? order?.discount : '0.00'}}
+                </div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Credit used</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.credit?.amount ? order?.credit?.amount : '0.00'}}
+                </div>
+              </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Grand total</div>
+                <div class="itemResponse">
+                  {{settings?.currency}}
+                  {{order?.credit?.total ? order?.credit?.total : '0.00'}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="card addressCard">
-          <div class="card-body">
-            <div class="mb-4">
-              <h3 class="fs-3 text-dark fw-bolder">
-                <i class="bi bi-house fs-3 text-dark"></i>
+      </div>
+      <div class="col-lg-6 mb-3">
+        <div class="d-flex gap-3 flex-column">
+          <div class="card">
+            <div class="card-body">
+              <div class="fs-3 fw-bolder">
                 Customer Address
-              </h3>
-              <div class="customerDetails fs-5 fw-bolder">
-                {{order?.customerId?.name}},
-                {{order?.customerId?.mobile}},
-                {{order?.customerId?.email}}
               </div>
-              <div>
-                {{order?.address?.firstlane}},
-                {{order?.address?.secondlane}},
-                {{order?.address?.area}}, {{order?.address?.landmark}},
-                {{order?.address?.city}}, {{order?.address?.state}},
-                {{order?.address?.pincode}}
-              </div>
-            </div>
-
-            <div class="mt-4 mb-4">
-              <h3 class="fs-3 text-dark fw-bolder">
-                <i class="bi bi-truck fs-3 text-dark"></i> Shipping Address
-              </h3>
-              <div class="customerDetails fs-5 fw-bolder">
-                {{order?.customerId?.name}},
-                {{order?.customerId?.mobile}},
-                {{order?.customerId?.email}}
-              </div>
-              <div>
-                {{order?.address?.firstlane}},
-                {{order?.address?.secondlane}},
-                {{order?.address?.area}}, {{order?.address?.landmark}},
-                {{order?.address?.city}}, {{order?.address?.state}},
-                {{order?.address?.pincode}}
-              </div>
-            </div>
-
-            <div class="mt-4 orderDeliveryWrapper">
-              <h3 class="fw-bolder fs-3 text-dark"><i class="bi bi-truck fs-3 text-dark"></i> Click and Collect Details
-              </h3>
-              <div class="detailsWrapper">
-                <div class=" deliveryDate mb-1 delivery">
-                  <span class="title fs-6">Date</span>
-                  <span class="fs-6">{{order?.deliveryDate ? order?.deliveryDate : 'Not avaialble'}}</span>
+              <div class="my-2">
+                <p class="my-1 fs-5 fw-bold">
+                  {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
+                </p>
+                <div class="fs-6 text-muted">
+                  {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
+                  {{order?.address?.area}}, {{order?.address?.landmark}},
+                  {{order?.address?.city}}, {{order?.address?.state}},
+                  {{order?.address?.pincode}}
                 </div>
-                <div class="deliveryTime mb-1 delivery">
-                  <span class="title fs-6">Time</span>
-                  <span class="fs-6">
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="fs-3 fw-bolder">
+                Shipping Address
+              </div>
+              <div class="my-2">
+                <p class="my-1 fs-5 fw-bold">
+                  {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
+                </p>
+                <div class="fs-6 text-muted">
+                  {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
+                  {{order?.address?.area}}, {{order?.address?.landmark}},
+                  {{order?.address?.city}}, {{order?.address?.state}},
+                  {{order?.address?.pincode}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="fs-3 fw-bolder">Click and Collect Details</div>
+              <div class="my-2">
+                <div class="d-flex align-items-center justify-content-between my-1">
+                  <div class="fs-6">Date</div>
+                  <div class="fs-6">{{order?.deliveryDate ? order?.deliveryDate : 'Not avaialble'}}</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                  <div class="fs-6">Time</div>
+                  <div class="fs-6">
                     {{order?.deliveryTime?.from ?
                     order?.deliveryTime?.from + ' -' + order?.deliveryTime?.to : 'Not available'}}
-                  </span>
+                  </div>
                 </div>
-                <div class="deliveryTime mb-1 delivery">
-                  <span class="title fs-6">Store</span>
-                  <span class="fs-6">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="fs-6">Store</div>
+                  <div class="fs-6">
                     {{order?.clickPoint ? order?.clickPoint?.name : 'Not available'}}
-                  </span>
+                  </div>
                 </div>
-              </div>
-
-              <div class="alert alert-info mt-3" *ngIf="order?.shippingNote">
-                <span class="title fs-6">Shipping Note :</span>
-                <span class="fs-6">{{order?.shippingNote}}</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 mb-3">
+        <div class="d-flex gap-3 flex-column h-100 justify-content-between">
+          <div class="card h-50">
+            <div class="card-body">
+              <div class="fs-3 fw-bolder">
+                Order Notes
+              </div>
+              <div class="my-2">
+                <div class="form-group">
+                  <textarea [formControl]="orderNote" rows="4" class="form-control" draggable="true"></textarea>
+                </div>
+                <div class="my-2 d-flex align-items-center justify-content-end">
+                  <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected">Save notes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card h-50">
+            <div class="card-body">
+              <div class="fs-3 fw-bolder">
+                Shipping Notes
+              </div>
+              <div class="my-2">
+                <div class="form-group">
+                  <textarea value="{{order?.shippingNote}}" readonly="true" rows="4" draggable="false"
+                    class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <div [ngClass]="{'cancelledWrapper': isCancelled}">
+
+      <div class="my-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="fs-3 fw-bolder">
+              Product Details
+            </div>
+            <div class="products my-2">
+              <div class="row mb-2">
+                <div class="col-lg-1 d-flex align-items-center">
+                  <div class="checkbox">
+
+                  </div>
+                </div>
+                <div class="col-lg-8">
+
+                </div>
+                <div class="col-lg-3">
+                  <select class="form-select fs-6" (change)="updateBulkProduct($event)">
+                    <option disabled selected>-- Select a status --</option>
+                    <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
+                  </select>
+                </div>
+              </div>
+              <ng-container *ngFor="let product of order?.products; let i = index">
+                <div class="row mb-2">
+                  <div class="col-lg-1">
+                    <div class="checkbox">
+
+                    </div>
+                  </div>
+                  <div class="col-lg-11">
+                    <div class="d-flex flex-wrap align-items-start justify-content-between">
+                      <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
+                        <div class="productThumbnail">
+                          <img class="border border-secondary rounded" src="{{base}}/{{product?.productId?.thumbnail}}"
+                            alt="{{product?.productId?.name}}">
+                        </div>
+                        <div>
+                          <div>{{product?.productId?.name}}</div>
+                          <div class="my-1 w-max">
+                            <div class="p-2 rounded productStatusAlert">
+                              {{product.currentStatus.status}},
+                              {{product.currentStatus.date}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w-50">
+                        <div class="mb-2 d-flex align-items-center fs-6 justify-content-start">
+                          <div class="w-25">SKU:</div>
+                          <div class="fw-bold">{{product?.productId?.sku}}</div>
+                        </div>
+                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                          <div class="w-25">Qty:</div>
+                          <div class="fw-bold">{{product?.quantity}}</div>
+                        </div>
+                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                          <div class="w-25">Price:</div>
+                          <div class="fw-bold">{{settings?.currency}}{{product?.pricePerUnit}}</div>
+                        </div>
+                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                          <div class="w-25">Total:</div>
+                          <div class="fw-bold">{{settings?.currency}}{{product?.total}}</div>
+                        </div>
+                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                          <div class="w-25">Status:</div>
+                          <div>
+                            <select class="form-select p-2" (click)="getStatusList(product.currentStatus.status)"
+                              (change)="updateOrderStatus($event, product?.productId?._id)">
+                              <option disabled>-- Select a option --</option>
+                              <option selected disabled>{{product.currentStatus.status}}</option>
+                              <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                          <div class="w-25">Payment:</div>
+                          <div>
+                            <select name="payment" class="form-select p-2" id="payment"
+                              (change)="updateProductPayment($event, product)">
+                              <option disabled>-- Select an option --</option>
+                              <option selected disabled>
+                                {{product?.paymentStatus == 'PENDING' ? 'Pending' : 'Paid'}}
+                              </option>
+                              <option *ngIf="product?.paymentStatus == 'PENDING'" value="PAID">Paid</option>
+                              <option *ngIf="product?.paymentStatus == 'PAID'" value="PENDING">Pending</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w-100">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>

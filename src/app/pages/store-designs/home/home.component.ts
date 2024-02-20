@@ -34,6 +34,9 @@ export class HomeComponent implements OnInit {
     { title: 'Image Slider', type: 'image-slider', icon: '../../../../assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Video', type: 'video', icon: '../../../../assets/widgets/video.png', description: 'This widget is used to showcase full width video only.' },
     { title: 'Products', type: 'products', icon: '../../../../assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
+    { title: 'Noble Nodes', type: 'noble-nodes', icon: '../../../../assets/widgets/noble-nodes.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
+    { title: 'Prime Plates', type: 'prime-plates', icon: '../../../../assets/widgets/prime-plates.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
+    { title: 'Elite Elements', type: 'elite-elements', icon: '../../../../assets/widgets/elite-elements.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Sale timer', type: 'sale-timer', icon: '../../../../assets/widgets/sale-timer.png', description: 'This widget is used to showcase a sale timer.' },
   ]
   widgetItems: Array<any> = []
@@ -53,7 +56,7 @@ export class HomeComponent implements OnInit {
   widgetImagePreview: any;
   widgetImagePreviewIndex: any;
   widgetPreviewDetails: any
-  widgetImageTypes: Array<any> = ["image-slider", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas"]
+  widgetImageTypes: Array<any> = ["image-slider", "prime-plates", "elite-elements", "noble-nodes", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas"]
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },

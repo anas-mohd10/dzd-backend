@@ -31,7 +31,9 @@ export class UpdateOrdersComponent implements OnInit {
   price: any = 0
   slug: any
   base: string;
-  settings: any
+  settings: {
+    currency: 'INR'
+  }
   processedProducts: Array<any> = []
   processProduct: FormControl = new FormControl('')
   allProduct: FormControl = new FormControl('')
@@ -56,7 +58,9 @@ export class UpdateOrdersComponent implements OnInit {
   @ViewChild('deliveryStaff') deliveryModal: TemplateRef<any>
   isDateSubmitted: boolean = false
   productReference: string = ''
+  orderNote: FormControl = new FormControl('')
   reason: FormControl = new FormControl('')
+  isNoteDetected: boolean = false
 
   constructor(
     private OrdersService: OrdersService,
@@ -90,7 +94,7 @@ export class UpdateOrdersComponent implements OnInit {
     this.form = this.formBuilder.group({
       paymentStatus: [''],
       orderId: [''],
-      paymentId: [''],
+      paymentId: ['']
     });
   }
 
@@ -107,6 +111,28 @@ export class UpdateOrdersComponent implements OnInit {
     }
   }
 
+  saveNote() {
+    if (this.orderNote.value) {
+      this.OrdersService.updateOrder({ order: this.orderNumber, orderNote: this.orderNote.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.getOrderDetails()
+            this.isNoteDetected = false
+            this.Toast.success(res?.message)
+          } else {
+            this.Toast.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.Toast.error(err?.message)
+        }
+      })
+    }
+  }
+
+  detechNoteChanges() {
+    this.orderNote.value ? this.isNoteDetected = true : this.isNoteDetected = false
+  }
+
   getOrderDetails() {
     this.OrdersService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -115,6 +141,7 @@ export class UpdateOrdersComponent implements OnInit {
         this.productCount = this.order.products.length
         this.order.orderDate = new Date(this.order.orderDate).toDateString()
         this.form.get("paymentStatus")?.setValue(this.order?.paymentStatus)
+        this.orderNote?.setValue(this.order?.orderNote)
         this.form.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
         this.form.get("paymentId")?.setValue(this.order?.payment?.referenceId)
         this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
