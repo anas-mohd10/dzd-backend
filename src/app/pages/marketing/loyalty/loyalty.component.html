@@ -17,16 +17,15 @@
             </div>
         </div>
     </div>
-    <div class="card my-4">
-        <div class="card-body">
-            <div class="my-8">
-                <div>
-                    <img class="loyalty-image" src="../../../../assets/icons/loyalty.svg" alt="Loyalty">
-                </div>
+    <div class="card">
+        <div class="card-body gap-6" style="display: flex; align-items: center;">
+            <div  style="flex: 1; max-width: 469px; max-height: 469px;">
+                <img src="../../../../assets/icons/loyalty-poster.png" alt="">
             </div>
-            <div class="row my-5">
-                <div class="col-lg-6">
-                    <div class="p-4 rounded shadow">
+            <div class="row" class="gap-3" style="display: flex; flex-direction: column; flex: 1;">
+                <h3 class="fs-1" style="font-weight: bold;">How loyalty works?</h3>
+                <div>
+                    <div class="p-4 rounded" style="background: #F5F6FA; border: 1px solid #E8E8E8;">
                         <div class="fs-3 fw-bolder mb-2">Earning points</div>
                         <div class="fs-6">
                             For every <span class="text-primary">{{settings?.currency}}
@@ -38,8 +37,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="p-4 rounded shadow">
+                <div >
+                    <div class="p-4 rounded" rounded style="background: #F5F6FA; border: 1px solid #E8E8E8;">
                         <div class="fs-3 fw-bolder mb-2">Point conversion</div>
                         <div class="fs-6">
                             <span class="text-primary">{{loyaltyDetails?.conversion?.points}}</span> wallet points are
