@@ -71,7 +71,7 @@ input[type=button] {
   gap: 10px;
 
   .couponCard {
-    padding: 10px;
+    // padding: 10px;
     background: #ffffff;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
@@ -114,6 +114,7 @@ input[type=button] {
 
     .alert {
       width: max-content;
+      border-radius: 0%;
     }
   }
 }

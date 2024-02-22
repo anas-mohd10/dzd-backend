@@ -13,41 +13,72 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
         </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="{{ appRoute.offer.ADD_OFFER }}"
-          style="width: 200px;">Add offer</button>
+        <button
+          class="btn btn-primary cursor-pointer fs-6"
+          color="primary"
+          routerLink="{{ appRoute.offer.ADD_OFFER }}"
+          style="width: 200px"
+        >
+          Add offer
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="offer-form-container">
+  <div class="offer-form-container card p-4">
     <form [formGroup]="form">
       <div class="row d-flex align-items-end justify-content-between">
-        <div class="search-input col-lg-4">
-          <label class="fs-6">&nbsp;</label>
-          <input type="text" placeholder="Search for offers here" class="form-control fs-6" formControlName="name"
-            (ngModelChange)="getOffers()">
+        <div class="search-featured col-lg-2">
+          <!-- <label class="fs-6 form-title">Start Date</label> -->
+          <input
+            type="date"
+            class="form-control fs-6"
+            formControlName="fromDate"
+            (change)="getOffers()"
+          />
+        </div>
+        <div class="search-featured col-lg-2">
+          <!-- <label class="fs-6 form-title">End Date</label> -->
+          <input
+            type="date"
+            class="form-control fs-6"
+            formControlName="lastDate"
+            (change)="getOffers()"
+          />
         </div>
         <div class="search-status col-lg-2">
-          <label class="fs-6">Status</label>
-          <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-            (change)="getOffers()">
-            <option value="" disabled>-- Select an option --</option>
-            <option value=true>Active</option>
-            <option value=false>Inactive</option>
+          <!-- <label class="fs-6">Status</label> -->
+          <select
+            name="isActive"
+            id="isActive"
+            class="form-select fs-6"
+            formControlName="isActive"
+            (change)="getOffers()"
+          >
+            <option value="" disabled>Status</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
           </select>
         </div>
-        <div class="search-featured col-lg-2">
-          <label class="fs-6 form-title">Start Date</label>
-          <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getOffers()">
-        </div>
-        <div class="search-featured col-lg-2">
-          <label class="fs-6 form-title">End Date</label>
-          <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getOffers()">
-        </div>
         <div class="search-input col-lg-2">
-          <label class="fs-6 mb-1">&nbsp;</label>
-          <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
-            (click)="clearFilters()">
+          <!-- <label class="fs-6 mb-1">&nbsp;</label> -->
+          <input
+            type="button"
+            class="form-control fs-6"
+            style="color: #00bcaa; border: #00bcaa 1px solid"
+            value="Clear filters"
+            (click)="clearFilters()"
+          />
+        </div>
+        <div class="search-input col-lg-4">
+          <!-- <label class="fs-6">&nbsp;</label> -->
+          <input
+            type="text"
+            placeholder="Search for offers here"
+            class="form-control fs-6"
+            formControlName="name"
+            (ngModelChange)="getOffers()"
+          />
         </div>
       </div>
     </form>
@@ -55,47 +86,105 @@
 
   <div class="col-12 d-flex justify-content-between">
     <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white fs-6">Total {{offers.length > 0 ? offers.length : 0}} offers</h4>
+      <h4 class="text-white fs-6">
+        Total {{ offers.length > 0 ? offers.length : 0 }} offers
+      </h4>
     </div>
   </div>
 
   <div class="offer-card-container view-container row col-12">
     <ng-container *ngFor="let offer of offers">
-      <div class="offer-card card-hover">
+      <div
+        class="offer-card card-hover gap-2"
+        style="display: flex; align-items: center"
+      >
+        <div class="p-6" style="background: #e0fdfa">
+          <svg
+            width="42"
+            height="42"
+            viewBox="0 0 42 42"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_339_4451)">
+              <path
+                d="M39.2072 21.5441C39.0383 21.1984 39.0383 20.8018 39.2072 20.4562L40.7737 17.2516C41.6458 15.4674 40.9548 13.3407 39.2005 12.4099L36.0497 10.7381C35.7098 10.5578 35.4767 10.2369 35.4102 9.85804L34.794 6.34474C34.4508 4.38864 32.6414 3.07418 30.6754 3.35234L27.1437 3.85191C26.7625 3.90572 26.3856 3.78317 26.1091 3.51566L23.5455 1.03571C22.1181 -0.345196 19.8819 -0.345278 18.4546 1.03571L15.891 3.51591C15.6144 3.7835 15.2374 3.9058 14.8563 3.85215L11.3247 3.35259C9.35796 3.07426 7.54919 4.38888 7.20605 6.34499L6.58984 9.85812C6.52331 10.2371 6.29026 10.5579 5.95041 10.7383L2.7996 12.4101C1.04529 13.3408 0.354266 15.4676 1.22642 17.2519L2.7928 20.4563C2.96178 20.8021 2.96178 21.1986 2.7928 21.5443L1.22634 24.7488C0.354184 26.533 1.04521 28.6597 2.79952 29.5905L5.95032 31.2622C6.29026 31.4425 6.52331 31.7635 6.58984 32.1424L7.20605 35.6556C7.51842 37.4364 9.04534 38.6852 10.8002 38.685C10.9731 38.685 11.1484 38.6729 11.3247 38.648L14.8564 38.1484C15.2373 38.0943 15.6145 38.2171 15.8911 38.4846L18.4546 40.9646C19.1684 41.6551 20.0841 42.0003 21 42.0002C21.9157 42.0002 22.8319 41.655 23.5454 40.9646L26.1091 38.4846C26.3857 38.2171 26.7627 38.0949 27.1437 38.1484L30.6754 38.648C32.6423 38.9262 34.4508 37.6117 34.794 35.6556L35.4103 32.1424C35.4768 31.7635 35.7099 31.4426 36.0497 31.2622L39.2005 29.5905C40.9548 28.6597 41.6458 26.5329 40.7737 24.7487L39.2072 21.5441ZM38.0651 27.4505L34.9143 29.1223C33.9098 29.6554 33.2208 30.6035 33.0243 31.7237L32.4081 35.237C32.292 35.8988 31.6802 36.3433 31.0147 36.2494L27.483 35.7498C26.3567 35.5903 25.2422 35.9528 24.4248 36.7435L21.8612 39.2233C21.3783 39.6904 20.6218 39.6904 20.1388 39.2233L17.5752 36.7434C16.8844 36.0751 15.9812 35.7129 15.0383 35.7129C14.8656 35.7129 14.6914 35.725 14.517 35.7497L10.9854 36.2493C10.3204 36.3433 9.70807 35.8987 9.59192 35.2369L8.97562 31.7236C8.77907 30.6034 8.09018 29.6552 7.08555 29.1222L3.93475 27.4504C3.34117 27.1355 3.10738 26.416 3.40245 25.8124L4.96891 22.6078C5.46831 21.5861 5.46831 20.4142 4.96891 19.3924L3.40245 16.1879C3.10738 15.5842 3.34117 14.8647 3.93475 14.5498L7.08555 12.878C8.0901 12.3449 8.77907 11.3968 8.97554 10.2766L9.59175 6.76334C9.70791 6.10152 10.3197 5.65691 10.9852 5.75092L14.5169 6.25049C15.6428 6.40987 16.7576 6.04754 17.5751 5.25685L20.1387 2.7769C20.6215 2.30981 21.3781 2.30981 21.8611 2.7769L24.4246 5.25685C25.2421 6.04763 26.3568 6.40987 27.4828 6.25049L31.0145 5.75092C31.6795 5.65683 32.2919 6.10152 32.408 6.76334L33.0242 10.2766C33.2207 11.3969 33.9096 12.345 34.9142 12.878L38.065 14.5498C38.6586 14.8647 38.8924 15.5842 38.5973 16.1879L37.0309 19.3923C36.5315 20.414 36.5315 21.5861 37.0309 22.6078L38.5973 25.8122C38.8925 26.416 38.6587 27.1356 38.0651 27.4505Z"
+                fill="#00BCAA"
+              />
+              <path
+                d="M29.8499 12.1502C29.377 11.6772 28.61 11.6772 28.137 12.1502L12.1501 28.1371C11.6771 28.6101 11.6771 29.377 12.1501 29.85C12.3866 30.0865 12.6966 30.2048 13.0065 30.2048C13.3164 30.2048 13.6265 30.0866 13.8629 29.85L29.8498 13.8631C30.3229 13.39 30.3229 12.6232 29.8499 12.1502Z"
+                fill="#00BCAA"
+              />
+              <path
+                d="M16.1552 10.0991C13.7065 10.0991 11.7142 12.0914 11.7142 14.5402C11.7142 16.989 13.7065 18.9812 16.1552 18.9812C18.604 18.9812 20.5963 16.989 20.5963 14.5402C20.5963 12.0914 18.604 10.0991 16.1552 10.0991ZM16.1552 16.5588C15.0422 16.5588 14.1366 15.6533 14.1366 14.5401C14.1366 13.427 15.0422 12.5215 16.1552 12.5215C17.2683 12.5215 18.1739 13.427 18.1739 14.5401C18.1738 15.6533 17.2683 16.5588 16.1552 16.5588Z"
+                fill="#00BCAA"
+              />
+              <path
+                d="M25.8447 23.0186C23.3959 23.0186 21.4036 25.0108 21.4036 27.4596C21.4036 29.9084 23.3959 31.9007 25.8447 31.9007C28.2935 31.9007 30.2858 29.9084 30.2858 27.4596C30.2858 25.0108 28.2935 23.0186 25.8447 23.0186ZM25.8447 29.4782C24.7316 29.4782 23.826 28.5727 23.826 27.4596C23.826 26.3465 24.7315 25.441 25.8447 25.441C26.9578 25.441 27.8633 26.3465 27.8633 27.4596C27.8633 28.5727 26.9578 29.4782 25.8447 29.4782Z"
+                fill="#00BCAA"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_339_4451">
+                <rect width="42" height="42" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+        <div class="">
+          <div style="display: flex; align-items: center" class="gap-2">
+            <div>{{ offer?.title }}</div>
+            <div class="editButton">
+              <div
+                routerLink="{{ appRoute.offer.UPDATE_OFFER }}"
+                [queryParams]="{ offer: offer?.refid }"
+              >
+                <img src="../../../../../assets/icons/editPen.svg" alt="Icon" />
+              </div>
+            </div>
+           
+          </div>
 
-        <div class="editButton">
-          <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.refid }">
-            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+          <div class="offer-value fs-6 fw-bolder">
+            {{ offer?.type == "Flat" ? "Flat" : null }} {{ offer?.value }}
+            {{ offer?.type == "Flat" ? null : "%" }}
+          </div>
+
+          <div class="fs-8 text-muted">
+            Valid from
+            <span class="fw-bolder text-dark">{{ offer?.fromDate }}</span> to
+            <span class="fw-bolder text-dark">{{ offer?.lastDate }}</span>
           </div>
         </div>
-
-        <div class="d-flex align-items-center justify-content-start">
-          <div>{{offer?.title}}</div>
-          <div class="ms-2 fs-6 alert m-0 alert-success p-1" [ngClass]="{'alert-danger': !offer?.isActive}">
-            {{offer?.isActive ? 'Active' : 'Inactive'}}
-          </div>
+        <div
+          class="fs-6 alert m-0 alert-success p-2"
+          style="
+            transform: rotate(270deg);
+            min-width: 117px;
+            text-align: center;
+            border-radius: 0%;
+            background: #00bcaa;
+            color: white;
+          "
+          [ngClass]="{ 'alert-danger': !offer?.isActive }"
+        >
+          {{ offer?.isActive ? "Active" : "Inactive" }}
         </div>
-
-        <div class="offer-value fs-4 fw-bolder">
-          {{ offer?.type == 'Flat' ? 'Flat' : null }} {{offer?.value}} {{ offer?.type == 'Flat' ? null : '%' }}
-        </div>
-
-        <div class="fs-6 text-muted">
-          Valid from <span class="fw-bolder text-dark">{{offer?.fromDate}}</span> to <span
-            class="fw-bolder text-dark">{{offer?.lastDate}}</span>
-        </div>
-
       </div>
     </ng-container>
     <ng-container *ngIf="offers.length == 0">
       <div class="emptyNote">
         <div class="fs-3 fw-bolder">No result found</div>
-        <div class="fs-6 note">We couldn't find any item based on your search</div>
+        <div class="fs-6 note">
+          We couldn't find any item based on your search
+        </div>
       </div>
     </ng-container>
   </div>
 
-  <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+  <div
+    class="filteringWrapper d-flex align-items-center justify-content-between col-12"
+  >
     <div class="filtering">
       <span class="fs-6 text-dark">Show</span>
       <select [formControl]="limit" (change)="getOffers()">
@@ -108,18 +197,25 @@
       <span class="fs-6 text-dark">entries</span>
     </div>
     <div class="filteringResultCount fs-6">
-      Showing <span class="me-1 ms-1">{{offers.length}}</span> of <span class="ms-1">{{totalResults ?
-        totalResults : '0'}}</span>
+      Showing <span class="me-1 ms-1">{{ offers.length }}</span> of
+      <span class="ms-1">{{ totalResults ? totalResults : "0" }}</span>
     </div>
     <div class="pagination">
-      <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-        <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+      <div
+        class="paginationBefore"
+        [ngClass]="{ disabled: page == 1 }"
+        (click)="getPreviousPage()"
+      >
+        <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon" />
       </div>
-      <div class="paginationPage">{{page}}</div>
-      <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-        <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+      <div class="paginationPage">{{ page }}</div>
+      <div
+        class="paginationNext"
+        [ngClass]="{ disabled: lastPage }"
+        (click)="getNextPage()"
+      >
+        <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon" />
       </div>
     </div>
   </div>
-
 </div>

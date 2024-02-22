@@ -21,16 +21,14 @@ input[type=button] {
   gap: 10px;
 
   .offer-card {
-    padding: 10px;
+    // padding: 10px;
     border-radius: 10px;
     background: $white;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     position: relative;
 
     .editButton {
-      position: absolute;
-      right: 10px;
-      top: 10px;
+    
       height: 40px;
       width: 40px;
       display: grid;

@@ -1,153 +1,228 @@
 <div class="coupon-page-container">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder">Coupons</h1>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Coupons</h1>
+    </div>
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
+          </li>
+        </ul>
+        <button
+          class="btn btn-primary cursor-pointer fs-6"
+          color="primary"
+          routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}"
+        >
+          Add Coupon
+        </button>
       </div>
-      <div class="row">
-         <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}">Coupons</a>
-               </li>
-            </ul>
-            <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-               routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}">Add Coupon</button>
-         </div>
+    </div>
+  </div>
+
+  <div class="card coupon-form-container mt-2">
+    <form [formGroup]="form">
+      <div class="row d-flex p-4">
+        <div class="search-featured col-lg-2">
+          <!-- <label class="fs-6 form-title">Start Date</label> -->
+          <input
+            type="date"
+            class="form-control fs-6"
+            formControlName="fromDate"
+            (change)="getCoupons()"
+          />
+        </div>
+        <div class="search-featured col-lg-2">
+          <!-- <label class="fs-6 form-title">End Date</label> -->
+          <input
+            type="date"
+            class="form-control fs-6"
+            formControlName="lastDate"
+            (change)="getCoupons()"
+          />
+        </div>
+        <div class="search-status col-lg-2">
+          <!-- <label class="fs-6">Status</label> -->
+          <select
+            name="isActive"
+            id="isActive"
+            class="form-select fs-6"
+            formControlName="isActive"
+            (change)="getCoupons()"
+          >
+            <option value="" disabled>Status</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <div class="search-input col-lg-2">
+          <!-- <label class="fs-6 mb-1">&nbsp;</label> -->
+          <input
+            type="button"
+            class="form-control fs-6"
+            style="color: #00bcaa; border: #00bcaa 1px solid"
+            value="Clear filters"
+            (click)="clearFilters()"
+          />
+        </div>
+        <div class="search-input col-lg-4">
+          <!-- <label class="fs-6">&nbsp;</label> -->
+          <input
+            type="text"
+            placeholder="Search for coupons here"
+            class="form-control fs-6"
+            formControlName="title"
+            (ngModelChange)="getCoupons()"
+          />
+        </div>
       </div>
-   </div>
+    </form>
+  </div>
 
-   <div class="coupon-form-container">
-      <form [formGroup]="form">
-         <div class="row d-flex align-items-end justify-content-end">
-            <div class="search-input col-lg-4">
-               <label class="fs-6">&nbsp;</label>
-               <input type="text" placeholder="Search for coupons here" class="form-control fs-6"
-                  formControlName="title" (ngModelChange)="getCoupons()">
-            </div>
-            <div class="search-status col-lg-2">
-               <label class="fs-6">Status</label>
-               <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-                  (change)="getCoupons()">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value=true>Active</option>
-                  <option value=false>Inactive</option>
-               </select>
-            </div>
-            <div class="search-featured col-lg-2">
-               <label class="fs-6 form-title">Start Date</label>
-               <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getCoupons()">
-            </div>
-            <div class="search-featured col-lg-2">
-               <label class="fs-6 form-title">End Date</label>
-               <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getCoupons()">
-            </div>
-            <div class="search-input col-lg-2">
-               <label class="fs-6 mb-1">&nbsp;</label>
-               <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
-                  (click)="clearFilters()">
-            </div>
-         </div>
-      </form>
-   </div>
+  <div class="col-12 d-flex justify-content-between">
+    <div class="total-count-container col-sm-3 bg-dark">
+      <h4 class="text-white fs-6">
+        Total {{ coupons.length > 0 ? coupons.length : 0 }} coupons
+      </h4>
+    </div>
+  </div>
 
-   <div class="col-12 d-flex justify-content-between">
-      <div class="total-count-container col-sm-3 bg-dark">
-         <h4 class="text-white fs-6">Total {{coupons.length > 0 ? coupons.length : 0}} coupons</h4>
-      </div>
-   </div>
-
-   <div class="coupon-card-container view-container col-lg-12">
-      <tabset>
-         <tab heading="Active" (click)="toggleTab('active')">
-            <div class="mt-4 couponCards">
-               <ng-container *ngFor="let coupon of coupons">
-                  <div class="couponCard card-hover d-flex align-items-start justify-content-start"
-                     *ngIf="!coupon?.isCompleted">
-                     <div class="editButton">
-                        <div routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}"
-                           [queryParams]="{ coupon: coupon?.refid }">
-                           <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
-                        </div>
-                     </div>
-                     <div class="couponImage me-2">
-                        <img src="{{coupon?.file}}" alt="Coupon"
-                           onerror="this.src = '../../../../../assets/images/default.png'">
-                     </div>
-                     <div class="couponDetails">
-                        <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
-                        <div class="fs-6">{{coupon?.message}}</div>
-                        <div class="fs-6 mt-2 alert alert-success p-1 m-0"
-                           [ngClass]="{'alert-danger': !coupon?.isActive}">
-                           {{coupon?.isActive ? 'Active' : 'Inactive'}}
-                        </div>
-                     </div>
-                  </div>
-               </ng-container>
+  <div class="coupon-card-container view-container col-lg-12">
+    <tabset>
+      <tab heading="Active" (click)="toggleTab('active')">
+        <div class="mt-4 couponCards">
+          <ng-container *ngFor="let coupon of coupons">
+            <div
+              class="couponCard card-hover d-flex align-items-start justify-content-start"
+              *ngIf="!coupon?.isCompleted"
+            >
+              <div class="editButton">
+                <div
+                  routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}"
+                  [queryParams]="{ coupon: coupon?.refid }"
+                >
+                  <img
+                    src="../../../../../assets/icons/editPen.svg"
+                    alt="Icon"
+                  />
+                </div>
+              </div>
+              <div class="couponImage me-2">
+                <img
+                  src="{{ coupon?.file }}"
+                  alt="Coupon"
+                  onerror="this.src = '../../../../../assets/images/default.png'"
+                />
+              </div>
+              <div class="couponDetails">
+                <div class="fs-5 mb-1 fw-bolder">{{ coupon?.code }}</div>
+                <div class="fs-6">{{ coupon?.message }}</div>
+                <div
+                  class="fs-6 mt-2 alert alert-success p-1 m-0"
+                  [ngClass]="{ 'alert-danger': !coupon?.isActive }"
+                >
+                  {{ coupon?.isActive ? "Active" : "Inactive" }}
+                </div>
+              </div>
             </div>
-            <ng-container *ngIf="coupons.length == 0">
-               <div class="emptyNote">
-                  <div class="fs-3 fw-bolder">No result found</div>
-                  <div class="fs-6 note">We couldn't find any item based on your search</div>
-               </div>
-            </ng-container>
-         </tab>
-         <tab heading="Expired" (click)="toggleTab('expired')">
-            <div class="couponCards mt-4">
-               <ng-container *ngFor="let coupon of coupons">
-                  <div class="couponCard card-hover d-flex align-items-start justify-content-start"
-                     *ngIf="coupon?.isCompleted">
-                     <div class="couponImage me-2">
-                        <img src="{{coupon?.file}}" alt="Coupon"
-                           onerror="this.src = '../../../../../assets/images/default.png'">
-                     </div>
-                     <div class="couponDetails">
-                        <div class="fs-5 mb-1 fw-bolder">{{coupon?.code}}</div>
-                        <div class="fs-6">{{coupon?.message}}</div>
-                        <div class="fs-6 mt-2 alert alert-success p-1 m-0"
-                           [ngClass]="{'alert-danger': !coupon?.isActive}">
-                           {{coupon?.isActive ? 'Active' : 'Inactive'}}
-                        </div>
-                     </div>
-                  </div>
-               </ng-container>
+          </ng-container>
+        </div>
+        <ng-container *ngIf="coupons.length == 0">
+          <div class="emptyNote">
+            <div class="fs-3 fw-bolder">No result found</div>
+            <div class="fs-6 note">
+              We couldn't find any item based on your search
             </div>
-            <ng-container *ngIf="coupons.length == 0">
-               <div class="emptyNote">
-                  <div class="fs-3 fw-bolder">No result found</div>
-                  <div class="fs-6 note">We couldn't find any item based on your search</div>
-               </div>
-            </ng-container>
-         </tab>
-      </tabset>
-   </div>
+          </div>
+        </ng-container>
+      </tab>
+      <tab heading="Expired" (click)="toggleTab('expired')">
+        <div class="couponCards my-4">
+          <ng-container *ngFor="let coupon of coupons">
+            <div
+              class="couponCard card-hover p-2"
+              style="display: flex; align-items: center;"
+              *ngIf="coupon?.isCompleted"
+            >
+              <div class="couponImage me-2">
+                <img
+                  src="{{ coupon?.file }}"
+                  alt="Coupon"
+                  onerror="this.src = '../../../../../assets/images/default.png'"
+                />
+              </div>
 
-   <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
+              <div style="width: 100%; text-align: left">
+                <div class="fs-5 mb-1 fw-bolder">{{ coupon?.code }}</div>
+                <div class="fs-6">{{ coupon?.message }}</div>
+              </div>
+
+              <div
+                class="fs-6 mt-2 alert alert-success p-1 my-1"
+                style="text-align: center; transform: rotate(270deg); width: 100%; min-width: 117px;"
+                st
+                [ngClass]="{ 'alert-danger': !coupon?.isActive }"
+              >
+                {{ coupon?.isActive ? "Active" : "Inactive" }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <ng-container *ngIf="coupons.length == 0">
+          <div class="emptyNote">
+            <div class="fs-3 fw-bolder">No result found</div>
+            <div class="fs-6 note">
+              We couldn't find any item based on your search
+            </div>
+          </div>
+        </ng-container>
+      </tab>
+    </tabset>
+  </div>
+
+  <div class="card px-2">
+    <div
+      class="filteringWrapper d-flex align-items-center justify-content-between col-12"
+    >
       <div class="filtering">
-         <span class="fs-6 text-dark">Show</span>
-         <select [formControl]="limit" (change)="getCoupons()">
-            <option value="6">6</option>
-            <option value="12">12</option>
-            <option value="18">18</option>
-            <option value="24">24</option>
-            <option value="30">30</option>
-         </select>
-         <span class="fs-6 text-dark">entries</span>
+        <span class="fs-6 text-dark">Show</span>
+        <select [formControl]="limit" (change)="getCoupons()">
+          <option value="6">6</option>
+          <option value="12">12</option>
+          <option value="18">18</option>
+          <option value="24">24</option>
+          <option value="30">30</option>
+        </select>
+        <span class="fs-6 text-dark">entries</span>
       </div>
       <div class="filteringResultCount fs-6">
-         Showing <span class="me-1 ms-1">{{coupons.length}}</span> of <span class="ms-1">{{totalResults ?
-            totalResults : '0'}}</span>
+        Showing <span class="me-1 ms-1">{{ coupons.length }}</span> of
+        <span class="ms-1">{{ totalResults ? totalResults : "0" }}</span>
       </div>
       <div class="pagination">
-         <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-            <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-         </div>
-         <div class="paginationPage">{{page}}</div>
-         <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-            <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-         </div>
+        <div
+          class="paginationBefore"
+          [ngClass]="{ disabled: page == 1 }"
+          (click)="getPreviousPage()"
+        >
+          <img
+            src="../../../../../assets/icons/navigateBefore.svg"
+            alt="Icon"
+          />
+        </div>
+        <div class="paginationPage">{{ page }}</div>
+        <div
+          class="tionNext"
+          [ngClass]="{ disabled: lastPage }"
+          (click)="getNextPage()"
+        >
+          <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon" />
+        </div>
       </div>
-   </div>
+    </div>
+  </div>
 </div>
