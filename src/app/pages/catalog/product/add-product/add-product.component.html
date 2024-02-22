@@ -158,117 +158,120 @@
                       <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
                         formControlName="name" />
                     </div>
+                  </div>
 
-                    <div class="my-4">
-                      <div class="fs-3 fw-bold">Price Details</div>
-                      <p class="text-muted">Easily manage price details to showacse your product</p>
-                      <div class="row px-0 mx-0" formGroupName="price">
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3 required">Maximum retail price</label>
-                          <input type="text" class="form-control fs-6" formControlName="mrp" />
-                        </div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3 required">Offer price</label>
-                          <input type="text" class="form-control fs-6" formControlName="offer" />
-                        </div>
+                  <div class="my-4">
+                    <div class="fs-3 fw-bold">Price Details</div>
+                    <p class="text-muted">Easily manage price details to showacse your product</p>
+                    <div class="row" formGroupName="price">
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Maximum retail price</label>
+                        <input type="text" class="form-control fs-6" formControlName="mrp" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Offer price</label>
+                        <input type="text" class="form-control fs-6" formControlName="offer" />
                       </div>
                     </div>
+                  </div>
 
-                    <div class="my-4">
-                      <div class="fs-3 fw-bold">Product category and attributes</div>
-                      <p class="text-muted">Easily manage price details to showacse your product</p>
-                      <div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3" for="productCategory">Category</label>
-                          <select formControlName="productCategory" id="productCategory"
-                            (change)="toggleProductCategory($event, 'add')" class="form-select">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option *ngFor="let category of defaultCategories" value="{{category._id}}">
+                  <div class="my-4">
+                    <div class="fs-3 fw-bold">Product category and attributes</div>
+                    <p class="text-muted">Easily manage price details to showacse your product</p>
+                    <div class="row">
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3" for="productCategory">Category</label>
+                        <select [formControl]="productCategory" id="productCategory"
+                          (change)="toggleProductCategory($event, 'add')" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
+                            {{category.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <ng-container *ngIf="categories.length > 0">
+                        <div
+                          class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                          <ng-container *ngFor="let category of categories">
+                            <div class="bg-secondary cursor-pointer p-2 rounded"
+                              (change)="toggleProductCategory(category._id, 'remove')">
                               {{category.name}}
-                            </option>
-                          </select>
+                            </div>
+                          </ng-container>
                         </div>
-                        <ng-container *ngIf="categories.length > 0">
-                          <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                            <ng-container *ngFor="let category of categories">
-                              <div class="bg-secondary cursor-pointer p-2 rounded"
-                                (change)="toggleProductCategory(category._id, 'remove')">
-                                {{category.name}}
-                              </div>
-                            </ng-container>
-                          </div>
-                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <div class="my-4">
+                    <div class="fs-3 fw-bold">Inventory details</div>
+                    <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
+                    <div class="row">
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Stock</label>
+                        <input type="text" class="form-control fs-6" formControlName="stock" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">SKU</label>
+                        <input type="text" class="form-control fs-6" formControlName="sku" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Minimum order quantity</label>
+                        <input type="text" class="form-control fs-6" formControlName="moq" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Maximum order quantity</label>
+                        <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3">Stock warning</label>
+                        <input type="text" class="form-control fs-6" formControlName="stockWarning" />
                       </div>
                     </div>
+                  </div>
 
-                    <div class="my-4">
-                      <div class="fs-3 fw-bold">Inventory details</div>
-                      <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
-                      <div class="row px-0 mx-0">
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3 required">Stock</label>
-                          <input type="text" class="form-control fs-6" formControlName="stock" />
-                        </div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3 required">SKU</label>
-                          <input type="text" class="form-control fs-6" formControlName="sku" />
-                        </div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3 required">Minimum order quantity</label>
-                          <input type="text" class="form-control fs-6" formControlName="moq" />
-                        </div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3 required">Maximum order quantity</label>
-                          <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
-                        </div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label class="fs-6 mb-3">Stock warning</label>
-                          <input type="text" class="form-control fs-6" formControlName="stockWarning" />
-                        </div>
+                  <div class="my-4">
+                    <div class="fs-3 fw-bold">Unit and measurement</div>
+                    <p class="text-muted">Update the unit of measurement details of the product easily</p>
+                    <div class="row" formGroupName="unit">
+                      <div class="form-group mb-3 col-lg-6">
+                        <label for="type" class="fs-6 mb-3">Unit of measurement</label>
+                        <select formControlName="type" id="type" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let unit of ['kilograms', 'grams', 'pack', 'number']" value="{{unit}}">
+                            {{unit}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="form-group mb-3 col-lg-6">
+                        <label for="weight" class="fs-6 mb-3">Weight</label>
+                        <input type="text" id="weight" class="form-control fs-6" formControlName="value" />
                       </div>
                     </div>
+                  </div>
 
-                    <div class="my-4">
-                      <div class="fs-3 fw-bold">Unit and measurement</div>
-                      <p class="text-muted">Update the unit of measurement details of the product easily</p>
-                      <div class="row" formGroupName="unit">
-                        <div class="form-group mb-3 px-0 mx-0 col-lg-6">
-                          <label for="type" class="fs-6 mb-3">Unit of measurement</label>
-                          <select formControlName="type" id="type" class="form-select">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option *ngFor="let unit of ['kilograms', 'grams', 'pack', 'number']" value="{{unit}}">
-                              {{unit}}
-                            </option>
-                          </select>
-                        </div>
-                        <div class="form-group mb-3 col-lg-6">
-                          <label for="weight" class="fs-6 mb-3">Weight</label>
-                          <input type="text" id="weight" class="form-control fs-6" formControlName="value" />
-                        </div>
+                  <div class="my-4">
+                    <div class="fs-3 fw-bold">Additional details</div>
+                    <p class="text-muted">Update the additional details of the product</p>
+                    <div class="row" formGroupName="details">
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label for="additionalButton" class="fs-6 mb-3">Additional button</label>
+                        <input type="text" id="additionalButton" class="form-control fs-6"
+                          formControlName="additionalButton" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
+                        <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
+                          formControlName="buttonRedirectUrl" />
                       </div>
                     </div>
+                  </div>
 
-                    <div class="my-4">
-                      <div class="fs-3 fw-bold">Additional details</div>
-                      <p class="text-muted">Update the additional details of the product</p>
-                      <div class="row mx-0 px-0" formGroupName="details">
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label for="additionalButton" class="fs-6 mb-3">Additional button</label>
-                          <input type="text" id="additionalButton" class="form-control fs-6"
-                            formControlName="additionalButton" />
-                        </div>
-                        <div class="col-lg-6 mb-3 form-group">
-                          <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
-                          <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
-                            formControlName="buttonRedirectUrl" />
-                        </div>
-                      </div>
-                    </div>
-
+                  <div class="row">
                     <div class="col-lg-6 mb-3 form-group">
                       <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
-                      <input id="searchKeywords" class="form-control fs-6" formControlName="searchKeywords"
-                        (keyup.Enter)="toggleSearchKeywords($event, 'add')" (ngModel)="searchKeyword" />
+                      <input id="searchKeywords" class="form-control fs-6"
+                        (keyup.Enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
                       <ng-container *ngIf="searchKeywords.length > 0">
                         <div
                           class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
@@ -281,6 +284,9 @@
                         </div>
                       </ng-container>
                     </div>
+                  </div>
+
+                  <div class="row">
                     <div class="col-lg-6 mb-3 form-group">
                       <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
                       <app-product-dropdown></app-product-dropdown>
@@ -302,6 +308,7 @@
                 <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
               </div>
             </tab>
+
             <tab heading="Product Medias (3)">
               <div class="my-6">
                 <div class="mb-3 form-group">
@@ -344,9 +351,10 @@
                 </div>
               </div>
             </tab>
+
           </tabset>
 
-          <nav style="pointer-events: none;">
+          <!-- <nav style="pointer-events: none;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link fw-bolder" [ngClass]="{'active': !headAdded}" id="nav-home-tab"
                 data-bs-toggle="tab" data-bs-target="#basic-details" type="button" role="tab" aria-controls="nav-home"
@@ -544,7 +552,7 @@
               <form [formGroup]="productform" (keydown.Enter)="$event.preventDefault()">
                 <div class="row">
                   <h2 class="form-title">Product Details</h2>
-                  <!-- Product name -->
+
                   <div class="col-12">
                     <div class="col-sm-6 form-group">
                       <label class="fs-6 mb-3 required">Name</label>
@@ -553,9 +561,7 @@
                       'is-invalid': (pf.name.touched || isSubmitted) && pf.name.errors?.required}" />
                     </div>
                   </div>
-                  <!-- Product name -->
                   <hr>
-                  <!-- Product price details -->
                   <div class="row">
                     <h3 class="form-subtitle">Price Details</h3>
                     <div class="col-12 col-sm-6 form-group">
@@ -582,9 +588,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Product price details -->
                   <hr>
-                  <!-- Product category, attributes details -->
                   <div class="row">
                     <h3 class="form-subtitle">Product Category and Attributes Details</h3>
                     <div class="col-12">
@@ -651,9 +655,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Product category, attributes details -->
                   <hr>
-                  <!-- Product stock, moq details -->
                   <div class="row">
                     <h3 class="form-subtitle">SKU, MOQ & Stock Details</h3>
                     <div class="col-12 col-sm-6 form-group">
@@ -690,9 +692,7 @@
                       <input type="text" class="form-control fs-6" formControlName="buttonredireturl" />
                     </div>
                   </div>
-                  <!-- Product stock, moq details -->
                   <hr>
-                  <!-- Product stock, moq details -->
                   <div class="row">
                     <h3 class="form-subtitle">Unit and Value Details</h3>
                     <div class="col-12 col-sm-6 form-group">
@@ -713,9 +713,7 @@
                         [ngClass]="{'is-invalid': (pf.value.touched || isSubmitted) && pf.value.errors?.required}">
                     </div>
                   </div>
-                  <!-- Product stock, moq details -->
                   <hr>
-                  <!-- Product additional details -->
                   <div class="row">
                     <h3 class="form-subtitle">Additional Details</h3>
                     <div class="col-12 col-sm-6 form-group">
@@ -792,9 +790,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Product additional details -->
                   <hr>
-                  <!-- Product style details -->
                   <div class="row">
                     <h3 class="form-subtitle">Product Style Details</h3>
                     <div class="col-12 col-sm-6">
@@ -840,7 +836,6 @@
                       </div>
                     </div>
                   </div>
-                  <!-- Product style details -->
                 </div>
               </form>
               <div class="col-12 d-flex align-items-center justify-content-end">
@@ -1067,9 +1062,8 @@
                   (click)="onSubmit()">Add</button>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
-  <!-- Page Content -->

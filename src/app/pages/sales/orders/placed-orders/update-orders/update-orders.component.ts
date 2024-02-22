@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment.prod';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
+import SwiperCore, { SwiperOptions } from 'swiper';
 
 @Component({
   selector: 'app-update-orders',
@@ -33,6 +34,26 @@ export class UpdateOrdersComponent implements OnInit {
   base: string;
   settings: {
     currency: 'INR'
+  }
+  swiperConfig: SwiperOptions = {
+    slidesPerView: 'auto',
+    spaceBetween: 50,
+    navigation: { nextEl: "#next", prevEl: '#prev' },
+    pagination: { clickable: true },
+    scrollbar: { draggable: true },
+    autoplay: true,
+    breakpoints: {
+      320: {
+        slidesPerView: 'auto',
+        spaceBetween: 35
+      }, 480: {
+        slidesPerView: 'auto',
+        spaceBetween: 35
+      }, 640: {
+        slidesPerView: 'auto',
+        spaceBetween: 35
+      }
+    }
   }
   processedProducts: Array<any> = []
   processProduct: FormControl = new FormControl('')
