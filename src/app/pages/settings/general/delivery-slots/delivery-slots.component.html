@@ -1,102 +1,147 @@
 <div>
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bold">Delivery slots</h1>
-        </div>
-        <div class="row align-items-center">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.deliverySlots}}">Delivery slots</a>
-                    </li>
-                </ul>
-                <button class="btn btn-primary cursor-pointer" color="primary" (click)="open(template)">
-                    Add delivery slot
-                </button>
-            </div>
-        </div>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bold">Delivery slots</h1>
     </div>
-    <div class="card my-4">
-        <div class="card-body">
-            <ng-container *ngFor="let slot of slots">
-                <div class="p-3 mb-3 rounded shadow border border-secondary">
-                    <svg height="42px" width="42px" data-slot="icon" fill="none" stroke-width="1" stroke="#aaaaaa"
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12">
-                        </path>
-                    </svg>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <div class="fs-5">
-                                <span>{{slot.from}}</span> - <span>{{slot.to}}</span>
-                            </div>
-                            <div class="alert p-1 mt-2 mb-0 d-flex align-items-center justify-content-center"
-                                [ngClass]="{'alert-success': slot.isActive, 'alert-danger': !slot.isActive}">
-                                {{slot.isActive == true ? 'Enabled' : 'Disabled'}}</div>
-                        </div>
-                        <button class="btn btn-secondary p-2" (click)="open(template, slot.refid)">
-                            Edit details
-                        </button>
-                    </div>
-                </div>
-            </ng-container>
-            <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="slots.length == 0">
-                <div class="fs-4 fw-bold">No delivery slots found</div>
-                <p class="text-muted">We couldn't find any item based on your search</p>
-            </div>
-        </div>
+    <div class="row align-items-center">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.deliverySlots }}">Delivery slots</a>
+          </li>
+        </ul>
+        <button
+          class="btn btn-primary cursor-pointer"
+          color="primary"
+          (click)="open(template)"
+        >
+          Add delivery slot
+        </button>
+      </div>
     </div>
+  </div>
+  <div
+    class="my-4"
+    style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px"
+  >
+    <ng-container *ngFor="let slot of slots">
+      <div class="p-3 rounded shadow border border-secondary d-flex justify-content-between align-items-center">
+        <div style="background: #E0FDFA;" class="p-3">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M32.4928 24.1787C30.1789 24.1787 28.2964 26.0612 28.2964 28.3752C28.2964 30.6887 30.1789 32.5713 32.4928 32.5713C34.8071 32.5713 36.6893 30.6887 36.6893 28.3752C36.6893 26.0612 34.8068 24.1787 32.4928 24.1787ZM32.4928 30.2177C31.4762 30.2177 30.6495 29.391 30.6495 28.3748C30.6495 27.3582 31.4762 26.5315 32.4928 26.5315C33.5094 26.5315 34.3361 27.3586 34.3361 28.3748C34.3362 29.3909 33.5094 30.2177 32.4928 30.2177Z" fill="#00BCAA"/>
+                <path d="M26.453 9H4.17657C3.52673 9 3 9.52673 3 10.1766V28.2959C3 28.9457 3.52673 29.4724 4.17657 29.4724H7.8632V27.1193H5.35313V11.3532H25.2765V28.2959H27.6296V10.1766C27.6297 9.52673 27.1029 9 26.453 9Z" fill="#00BCAA"/>
+                <path d="M29.473 27.1201H13.6284V29.4733H29.473V27.1201Z" fill="#00BCAA"/>
+                <path d="M10.7263 24.1787C8.41232 24.1787 6.52979 26.0612 6.52979 28.3752C6.52979 30.6887 8.41232 32.5713 10.7263 32.5713C13.0402 32.5713 14.9228 30.6887 14.9228 28.3752C14.9227 26.0612 13.0402 24.1787 10.7263 24.1787ZM10.7263 30.2177C9.70971 30.2177 8.88299 29.391 8.88299 28.3748C8.88299 27.3582 9.70971 26.5315 10.7263 26.5315C11.7428 26.5315 12.5696 27.3586 12.5696 28.3748C12.5696 29.3909 11.7424 30.2177 10.7263 30.2177Z" fill="#00BCAA"/>
+                <path d="M38.2971 18.7656H26.4529V21.1188H37.1205V27.1193H35.4341V29.4724H38.2971C38.9469 29.4724 39.4736 28.9461 39.4736 28.2958V19.9422C39.4737 19.2924 38.947 18.7656 38.2971 18.7656Z" fill="#00BCAA"/>
+                <path d="M34.7396 13.8848C34.5329 13.5091 34.1375 13.2754 33.7085 13.2754H26.4529V15.6285H33.0127L35.6972 20.5098L37.7593 19.3755L34.7396 13.8848Z" fill="#00BCAA"/>
+                </svg>
+        </div>
+            
+        <div style="display: flex; align-items: flex-start; flex-direction: column;">
+          <div class="fs-5">
+            <span>{{ slot.from }}</span> - <span>{{ slot.to }}</span>
+          </div>
+          <div
+            class="alert px-2 py-1 mt-2 mb-0 d-flex align-items-center justify-content-center"
+            [ngClass]="{
+              'alert-success': slot.isActive,
+              'alert-danger': !slot.isActive
+            }"
+          >
+            {{ slot.isActive == true ? "Active" : "Inactive" }}
+          </div>
+        </div>
+        <button
+          class="btn p-2"
+          (click)="open(template, slot.refid)"
+        >
+          <img src="../../../../../assets/icons/Edit.png" alt="edit-delivery">
+        </button>
+      </div>
+    </ng-container>
+    <div
+      class="my-8 d-flex flex-column align-items-center justify-content-center"
+      *ngIf="slots.length == 0"
+    >
+      <div class="fs-4 fw-bold">No delivery slots found</div>
+      <p class="text-muted">We couldn't find any item based on your search</p>
+    </div>
+  </div>
 </div>
 
 <ng-template #template>
-    <div class="modal-header pb-0">
-        <h4 class="modal-title pull-left">Slot details</h4>
-        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
-            <span aria-hidden="true" class="visually-hidden">&times;</span>
+  <div class="modal-header pb-0">
+    <h4 class="modal-title pull-left">Slot details</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-lg-6 form-group mb-3">
+          <label for="from" class="form-label">From</label>
+          <input
+            type="time"
+            id="from"
+            class="form-control"
+            formControlName="from"
+            [ngClass]="{
+              'is-invalid':
+                (formControls.from.touched || isSubmitted) &&
+                formControls.from.errors?.required
+            }"
+          />
+        </div>
+        <div class="col-lg-6 form-group mb-3">
+          <label for="to" class="form-label">To</label>
+          <input
+            type="time"
+            id="to"
+            class="form-control"
+            formControlName="to"
+            [ngClass]="{
+              'is-invalid':
+                (formControls.to.touched || isSubmitted) &&
+                formControls.to.errors?.required
+            }"
+          />
+        </div>
+        <div class="col-lg-6 form-group mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select id="status" formControlName="isActive" class="form-select">
+            <option value="" disabled>-- Select an option --</option>
+            <option value="true">Enabled</option>
+            <option value="false">Disabled</option>
+          </select>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-end">
+        <button class="btn btn-secondary me-2" (click)="close()">Cancel</button>
+        <button class="btn btn-primary ms-2" (click)="submit()">
+          Save changes
         </button>
-    </div>
-    <div class="modal-body">
-        <form [formGroup]="form">
-            <div class="row">
-                <div class="col-lg-6 form-group mb-3">
-                    <label for="from" class="form-label">From</label>
-                    <input type="time" id="from" class="form-control" formControlName="from"
-                        [ngClass]="{'is-invalid':(formControls.from.touched || isSubmitted) && formControls.from.errors?.required}">
-                </div>
-                <div class="col-lg-6 form-group mb-3">
-                    <label for="to" class="form-label">To</label>
-                    <input type="time" id="to" class="form-control" formControlName="to"
-                        [ngClass]="{'is-invalid':(formControls.to.touched || isSubmitted) && formControls.to.errors?.required}">
-                </div>
-                <div class="col-lg-6 form-group mb-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select id="status" formControlName="isActive" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="true">Enabled</option>
-                        <option value="false">Disabled</option>
-                    </select>
-                </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-end">
-                <button class="btn btn-secondary me-2" (click)="close()">
-                    Cancel
-                </button>
-                <button class="btn btn-primary ms-2" (click)="submit()">
-                    Save changes
-                </button>
-            </div>
-        </form>
-    </div>
+      </div>
+    </form>
+  </div>
 </ng-template>
 
 <ng-template #confirmation>
-    <div class="modal-body text-center">
-        <p>Do you want to delete?</p>
-        <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
-        <button type="button" class="btn btn-primary" (click)="decline()">No</button>
-    </div>
+  <div class="modal-body text-center">
+    <p>Do you want to delete?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
 </ng-template>
