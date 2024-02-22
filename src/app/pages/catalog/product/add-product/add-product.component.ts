@@ -188,7 +188,7 @@ export class AddProductComponent implements OnInit {
   previewDetails: any;
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
   searchKeywords: Array<any> = [];
-  searchKeyword: string;
+  searchKeyword: FormControl = new FormControl('');
   relatedProducts: Array<any> = [];
   categories: Array<any> = [];
   productCategory: FormControl = new FormControl('');
@@ -278,11 +278,12 @@ export class AddProductComponent implements OnInit {
 
   toggleProductCategory(event: any, type: string) {
     if (type == 'add') {
-      this.categories.includes(event.target.value) ? this.HotToastService.info('Category already added') : this.categories.push(event.target.value)
+      let categoryDetails = this.defaultCategories.filter((item: any) => item._id == event.target.value)
+      this.categories.includes(categoryDetails[0]) ? this.HotToastService.info('Category already added') : this.categories.push(categoryDetails[0])
     } else {
       this.categories = this.categories.filter((item: any) => item?._id != event)
     }
-    console.log(this.categories);
+    this.productCategory.setValue('')
   }
 
   getParentDetails(productSlug: string) {
@@ -334,15 +335,13 @@ export class AddProductComponent implements OnInit {
 
   toggleSearchKeywords(event: any, type: string) {
     if (type == 'add') {
-      if (event.key == 'Enter') {
-        if (this.searchKeywords.includes(event.target.value)) {
-
-        } else {
-          this.searchKeywords.push(event.target.value)
-          this.searchKeyword = ''
-        }
-        this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+      if (this.searchKeywords.includes(event.target.value)) {
+        this.HotToastService.info('Keyword already added')
+      } else {
+        this.searchKeywords.push(event.target.value)
+        this.searchKeyword?.setValue('')
       }
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
     } else {
       this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
     }
@@ -1213,7 +1212,7 @@ export class AddProductComponent implements OnInit {
         this.producthhead = res?.result[0]
         this.showMainCategory = true
         for (let category of this.maincategories) {
-          for (let cat of res?.result[0]?.parentCategory['id']) {
+          for (let cat of res?.result[0]?.parentCategory?.id) {
             if (cat == category?._id) {
               this.parentCategory.push({
                 name: category?.name,

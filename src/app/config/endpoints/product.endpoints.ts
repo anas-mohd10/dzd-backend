@@ -27,4 +27,6 @@ export const productEndpoints = {
     removeProductCover: '/remove-productcover',
     productTags: '/product-tags',
     dropdownProducts: '/dropdown-products',
+    manageProductIcons: '/manage-product-icons',
+    deleteProductIcon: '/delete-product-icon',
 }
