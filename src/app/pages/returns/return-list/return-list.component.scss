@@ -4,62 +4,92 @@ $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primaryBackground: #20BDAB40;
+$primaryBackground: #20bdab40;
 $activeBackground: #00bdab20;
 $border: #cccccc;
 $background: #e5e5e5;
-$error: #F1416C;
+$error: #f1416c;
 
 .btn-secondary {
-    font-weight: 400 !important;
+  font-weight: 400 !important;
 }
 
 .product {
-    max-width: 300px;
-    overflow: hidden;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  max-width: 300px;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .emptyNote {
-    margin: 0 0 20px 0;
-    display: grid;
-    place-items: center;
+  margin: 0 0 20px 0;
+  display: grid;
+  place-items: center;
 
-    .note {
-        font-weight: normal;
-    }
+  .note {
+    font-weight: normal;
+  }
 }
 
-
 .table-responsive {
+  border-radius: 15px;
+  border: 1px solid #e8e8e8;
 
-    .common_thead {
-        background: #20BDAB;
+  .common_thead {
+    background: #e4e7f4;
 
-        th {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 15px;
-            text-transform: capitalize;
-            color: #FFFFFF;
-        }
+    th {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 15px;
+      text-transform: capitalize;
+      color: #212121;
     }
+  }
 
+  tr {
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  tbody {
+    background: white;
     tr {
-        border-bottom: 1px solid #E8E8E8;
-    }
-
-    tbody {
-        tr {
-            td {
-                img {
-                    cursor: pointer;
-                }
-            }
+      td {
+        img {
+          cursor: pointer;
         }
+      }
     }
+  }
+}
+
+.export {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: white;
+  border: 1px solid #00bcaa;
+  color: #00bcaa;
+  border-radius: 10px;
+}
+
+.add {
+  background: #00bcaa;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+
+.refunded {
+  color: white;
+  background: green;
+}
+
+.pending {
+  color: white;
+
+  background: red;
 }

@@ -1,108 +1,157 @@
 <div class="enquiresContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bolder">Enquires</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.enquires.ENQUIRY_LIST}}">Enquires</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bolder">Enquires</h1>
     </div>
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.enquires.ENQUIRY_LIST }}">Enquires</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-    <div class="resultsContainer">
-        <ng-container *ngFor="let enquiry of enquires">
-            <div class="enquiryCard">
-                <div class="editButton" data-bs-toggle="modal" data-bs-target="#enquiry" (click)="getEnquiry(enquiry)">
-                    <img src="../../../../../assets/icons/view.svg" alt="Icon">
-                </div>
-                <div class="name">
-                    <img src="../../../../assets/icons/user.svg" alt="Icon">
-                    <span class="fs-6">{{enquiry?.firstname}} {{enquiry?.lastname}}</span>
-                </div>
-                <div class="mobile">
-                    <img src="../../../../assets/icons/phone.svg" alt="Icon">
-                    <span class="fs-6">{{enquiry?.countryCode}} {{enquiry?.mobile}}</span>
-                </div>
-                <div class="email">
-                    <img src="../../../../assets/icons/mail.svg" alt="Icon">
-                    <span class="fs-6"> {{enquiry?.email}}</span>
-                </div>
-                <div class="date">
-                    <img src="../../../../assets/icons/calendar.svg" alt="Icon">
-                    <span> {{enquiry?.date}}</span>
-                </div>
-            </div>
-        </ng-container>
-        <div *ngIf="enquires.length == 0">
-            <div class="emptyNote">
-                <div class="fs-3 fw-bolder">No result found</div>
-                <div class="fs-6 note">We couldn't find any item based on your search</div>
-            </div>
-        </div>
-    </div>
+  <div class="resultsContainer">
+    <ng-container *ngFor="let enquiry of enquires">
+      <div class="enquiryCard">
+        <div
+          class="editButton"
+          data-bs-toggle="modal"
+          data-bs-target="#enquiry"
+          (click)="getEnquiry(enquiry)"
+        >
+          <img
+            src="../../../../../assets/icons/view.svg"
+            alt="Icon"
 
-    <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-        <div class="filtering">
-            <span class="fs-6 text-dark">Show</span>
-            <select [formControl]="limit" (change)="getEnquiries()">
-                <option value="6">6</option>
-                <option value="12">12</option>
-                <option value="18">18</option>
-                <option value="24">24</option>
-                <option value="30">30</option>
-            </select>
-            <span class="fs-6 text-dark">entries</span>
+          />
         </div>
-        <div class="filteringResultCount fs-6">
-            Showing <span class="me-1 ms-1">{{enquires.length}}</span> of <span class="ms-1">{{totalResults}}</span>
+        <div class="name d-flex gap-2" style="font-weight: bold">
+          <p class="text-muted">Name:</p>
+          <span class="fs-6"
+            >{{ enquiry?.firstname }} {{ enquiry?.lastname }}</span
+          >
         </div>
-        <div class="pagination">
-            <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-                <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-            </div>
-            <div class="paginationPage">{{page}}</div>
-            <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-                <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-            </div>
+        <div class="mobile d-flex gap-2" style="font-weight: bold">
+          <p class="text-muted">Phone Number:</p>
+          <span class="fs-6"
+            >{{ enquiry?.countryCode }} {{ enquiry?.mobile }}</span
+          >
         </div>
+        <div class="email d-flex gap-2" style="font-weight: bold">
+          <p class="text-muted">Mail Id:</p>
+          <span class="fs-6"> {{ enquiry?.email }}</span>
+        </div>
+        <div class="date d-flex gap-2" style="font-weight: bold">
+          <p class="text-muted">Date and Time:</p>
+          <span> {{ enquiry?.date }}</span>
+        </div>
+      </div>
+    </ng-container>
+    <div *ngIf="enquires.length == 0">
+      <div class="emptyNote">
+        <div class="fs-3 fw-bolder">No result found</div>
+        <div class="fs-6 note">
+          We couldn't find any item based on your search
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="card mt-5 px-3">
+    <div
+      class="filteringWrapper d-flex align-items-center justify-content-between col-12"
+    >
+      <div class="filtering">
+        <span class="fs-6 text-dark">Show</span>
+        <select [formControl]="limit" (change)="getEnquiries()">
+          <option value="6">6</option>
+          <option value="12">12</option>
+          <option value="18">18</option>
+          <option value="24">24</option>
+          <option value="30">30</option>
+        </select>
+        <span class="fs-6 text-dark">entries</span>
+      </div>
+      <div class="filteringResultCount fs-6">
+        Showing <span class="me-1 ms-1">{{ enquires.length }}</span> of
+        <span class="ms-1">{{ totalResults }}</span>
+      </div>
+      <div class="pagination">
+        <div
+          class="paginationBefore"
+          [ngClass]="{ disabled: page == 1 }"
+          (click)="getPreviousPage()"
+        >
+          <img
+            src="../../../../../assets/icons/navigateBefore.svg"
+            alt="Icon"
+          />
+        </div>
+        <div class="paginationPage">{{ page }}</div>
+        <div
+          class="paginationNext"
+          [ngClass]="{ disabled: lastPage }"
+          (click)="getNextPage()"
+        >
+          <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon" />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="modal fade" id="enquiry" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title fs-7" id="staticBackdropLabel">Enquiry Details</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="enquiryData mb-3">
-                    <img src="../../../../assets/icons/user.svg" alt="Icon">
-                    <span class="fs-6">{{enquiry?.firstname}} {{enquiry?.lastname}}</span>
-                </div>
-                <div class="enquiryData mb-3">
-                    <img src="../../../../assets/icons/phone.svg" alt="Icon">
-                    <span class="fs-6"> {{enquiry?.countryCode}} {{enquiry?.mobile}}</span>
-                </div>
-                <div class="enquiryData mb-3">
-                    <img src="../../../../assets/icons/mail.svg" alt="Icon">
-                    <span class="fs-6">{{enquiry?.email}}</span>
-                </div>
-                <div class="enquiryData mb-3">
-                    <img src="../../../../assets/icons/message.svg" alt="Icon">
-                    <span class="fs-4"> {{enquiry?.message}}</span>
-                </div>
-                <div class="enquiryDate">Enquired on {{enquiry?.date}}</div>
-            </div>
+<div
+  class="modal fade"
+  id="enquiry"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-7" id="staticBackdropLabel">
+          Enquiry Details
+        </h2>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="enquiryData mb-3">
+          <img src="../../../../assets/icons/user.svg" alt="Icon" />
+          <span class="fs-6"
+            >{{ enquiry?.firstname }} {{ enquiry?.lastname }}</span
+          >
         </div>
+        <div class="enquiryData mb-3">
+          <img src="../../../../assets/icons/phone.svg" alt="Icon" />
+          <span class="fs-6">
+            {{ enquiry?.countryCode }} {{ enquiry?.mobile }}</span
+          >
+        </div>
+        <div class="enquiryData mb-3">
+          <img src="../../../../assets/icons/mail.svg" alt="Icon" />
+          <span class="fs-6">{{ enquiry?.email }}</span>
+        </div>
+        <div class="enquiryData mb-3">
+          <img src="../../../../assets/icons/message.svg" alt="Icon" />
+          <span class="fs-4"> {{ enquiry?.message }}</span>
+        </div>
+        <div class="enquiryDate">Enquired on {{ enquiry?.date }}</div>
+      </div>
     </div>
+  </div>
 </div>

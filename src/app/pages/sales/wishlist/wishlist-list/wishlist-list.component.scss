@@ -87,16 +87,17 @@ input[type=button] {
 }
 
 .table-responsive {
+    border-radius: 10px;
 
     .common_thead {
-        background: #20BDAB;
+        background: #E4E7F4;
 
         th {
             font-weight: 600;
             font-size: 14px;
             line-height: 15px;
             text-transform: capitalize;
-            color: #FFFFFF;
+            color: #212121;
         }
     }
 

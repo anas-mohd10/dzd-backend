@@ -4,137 +4,144 @@ $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
 $activeState: #00bdab;
-$primaryBackground: #20BDAB40;
+$primaryBackground: #20bdab40;
 $activeBackground: #00bdab20;
 $border: #cccccc;
 $background: #e5e5e5;
-$error: #F1416C;
+$error: #f1416c;
 
 label,
-input[type=button] {
-    font-weight: normal !important;
+input[type="button"] {
+  font-weight: normal !important;
 }
 
 .filteringWrapper {
-    .filtering {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        gap: 8px;
+  .filtering {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
 
-        span {
-            color: #8B909A;
-            line-height: 18px;
-        }
-
-        select {
-            border: 1px solid #E8E8E8;
-            border-radius: 6px;
-            padding: 5px;
-
-            &:focus {
-                outline: none;
-            }
-        }
+    span {
+      color: #8b909a;
+      line-height: 18px;
     }
+
+    select {
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      padding: 5px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
 }
 
 .enquiresContainer {
+  .resultsContainer {
+    margin: 20px 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 
-    .resultsContainer {
-        margin: 20px 0 0 0;
+    .enquiryCard {
+      background: $white;
+      border-radius: 10px;
+      padding: 10px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+      .editButton {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        height: 40px;
+        width: 40px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        place-items: center;
+        
+        border-radius: 20px;
+      }
 
-        .enquiryCard {
-            background: $white;
-            border-radius: 10px;
-            padding: 10px;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-
-            .editButton {
-                position: absolute;
-                right: 10px;
-                top: 10px;
-                height: 40px;
-                width: 40px;
-                display: grid;
-                place-items: center;
-                cursor: pointer;
-                border-radius: 20px;
-
-                &:hover {
-                    background: $hover;
-                }
-            }
-
-            .name,
-            .mobile,
-            .email,
-            .date {
-                margin: 0 0 5px 0;
-
-                img {
-                    margin: 0 5px 0 0;
-                }
+      .editButton {
+        img {
+            border: 1px solid #dcdcdc; 
+            padding: 3px; 
+            border-radius: 5px;
+            cursor: pointer;
+            &:hover {
+                background-color: $hover;
             }
         }
+        
+      }
+
+      .name,
+      .mobile,
+      .email,
+      .date {
+        margin: 0 0 5px 0;
+
+        img {
+          margin: 0 5px 0 0;
+        }
+      }
     }
+  }
 }
 
-
 .modal {
-    .modal-dialog {
-        .modal-content {
-            .modal-body {
-                .enquiryData {
-                    img {
-                        margin: 0 10px 0 0;
-                    }
-                }
-            }
+  .modal-dialog {
+    .modal-content {
+      .modal-body {
+        .enquiryData {
+          img {
+            margin: 0 10px 0 0;
+          }
         }
+      }
     }
+  }
 }
 
 .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    .paginationBefore,
-    .paginationNext {
-        height: 30px;
-        width: 30px;
-        border-radius: 15px;
-        display: grid;
-        place-items: center;
-        background: $background;
-        cursor: pointer;
+  .paginationBefore,
+  .paginationNext {
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    background: $background;
+    cursor: pointer;
 
-        &.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
     }
+  }
 
-    .paginationPage {
-        margin: 0 10px;
-    }
+  .paginationPage {
+    margin: 0 10px;
+  }
 }
 
 .search {
-    input[type=button] {
-        width: 100%;
-    }
+  input[type="button"] {
+    width: 100%;
+  }
 }
 
 .emptyNote {
-    margin: 0 0 20px 0;
+  margin: 0 0 20px 0;
 
-    .note {
-        font-weight: normal;
-    }
+  .note {
+    font-weight: normal;
+  }
 }
