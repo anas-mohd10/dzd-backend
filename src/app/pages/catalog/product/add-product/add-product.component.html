@@ -201,6 +201,29 @@
                         </div>
                       </ng-container>
                     </div>
+                    <div>
+                      <label class="fs-6 mb-3" for="attributes">Attributes</label>
+                      <div id="attributes">
+                        <ng-container *ngIf="attributes.length > 0">
+                          <div class="my-3">
+                            <ng-container *ngFor="let attribute of attributes">
+                              <div class="my-2">
+                                <div class="fs-5">{{attribute.name}}</div>
+                                <div *ngIf="attribute.type == 'text'">
+                                  <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
+                                    <ng-container *ngFor="let value of attribute?.values">
+                                      <div class="p-2 rounded cursor-pointer">
+                                        {{value.value}}
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="my-4">
@@ -349,6 +372,10 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
+                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
               </div>
             </tab>
 

@@ -192,17 +192,18 @@ export class AddProductComponent implements OnInit {
   relatedProducts: Array<any> = [];
   categories: Array<any> = [];
   productCategory: FormControl = new FormControl('');
+  productAttributes: Array<any> = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService,
+    private ProductService: ProductService,
     private BrandService: BrandService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private ProductHeadService: ProductHeadService,
     private ElementRef: ElementRef,
     private AttributeService: AttributeService,
@@ -295,15 +296,51 @@ export class AddProductComponent implements OnInit {
           this.brandDetails = res?.result?.brand
           this.previewDetails = res?.result?.thumbnail?.path
           this.productCategories = res?.result?.parentCategories
+          this.getAttributes(res?.result?.category?.catid)
           res?.result?.category ? this.getDefaultCategories(res?.result?.category?.slug) : null
           this.parentForm.get('category')?.setValue(res?.result?.category?._id)
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         } else {
 
         }
       }, error: (err: any) => {
 
+      }
+    })
+  }
+
+  getAttributes(category: string) {
+    this.AttributeService.getAttributes(category).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.attributes = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  saveChanges() {
+    if (!this.form.valid) {
+      return
+    }
+
+    let payload = {
+      ...this.form.value,
+      files: this.images,
+      attributes: this.productAttributes
+    }
+
+    this.ProductService.addProduct(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
       }
     })
   }
@@ -347,6 +384,10 @@ export class AddProductComponent implements OnInit {
     }
   }
 
+  toggleAttributes(attribute: any) {
+
+  }
+
   ngOnInit(): void {
     this.initForm();
     this.base = environment.base
@@ -363,7 +404,7 @@ export class AddProductComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
 
@@ -373,16 +414,16 @@ export class AddProductComponent implements OnInit {
         if (this.slug != '') {
           this.getProductHead(this.slug)
         }
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
 
 
-    this.productService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
+    this.ProductService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.productImages = res?.result?.images
         this.productImagesLastPage = res?.result?.isLastPage
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
 
@@ -447,11 +488,11 @@ export class AddProductComponent implements OnInit {
     });
     //Tax class details
 
-    this.productService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
+    this.ProductService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.thumbnailImages = res?.result?.images
         this.thumbnailImagesLastPage = res?.result?.isLastPage
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -469,11 +510,11 @@ export class AddProductComponent implements OnInit {
 
   loadMoreProductImages() {
     this.productImagePage = this.productImagePage + 1
-    this.productService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
+    this.ProductService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.productImages = [...this.productImages, ...res?.result?.images]
         this.productImagesLastPage = res?.result?.isLastPage
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -484,11 +525,11 @@ export class AddProductComponent implements OnInit {
 
   loadMoreThumbnailImages() {
     this.thumbnailImagePage = this.thumbnailImagePage + 1
-    this.productService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
+    this.ProductService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.thumbnailImages = [...this.thumbnailImages, ...res?.result?.images]
         this.thumbnailImagesLastPage = res?.result?.isLastPage
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }
@@ -684,7 +725,7 @@ export class AddProductComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.getProduct().subscribe((res: any) => {
+    this.ProductService.getProduct().subscribe((res: any) => {
       this.productsData = res?.result;
     });
   }
@@ -732,7 +773,7 @@ export class AddProductComponent implements OnInit {
     this.filename = this.filedata.name
     this.imageChangedEvent = event;
     this.loadImage = true
-    this.cdr.markForCheck()
+    this.ChangeDetectorRef.markForCheck()
   }
 
   handleInputThumbnailChange(event: any) {
@@ -740,7 +781,7 @@ export class AddProductComponent implements OnInit {
     this.thumbnailFilename = this.fileThumbnaildata.name
     this.imageThumbnailChangedEvent = event;
     this.loadThumbnailImage = true
-    this.cdr.markForCheck()
+    this.ChangeDetectorRef.markForCheck()
   }
 
   handleInputBasicChange(event: any) {
@@ -748,7 +789,7 @@ export class AddProductComponent implements OnInit {
     this.basicfilename = this.filebasicdata.name
     this.imageBasicChangedEvent = event;
     this.loadBasicImage = true
-    this.cdr.markForCheck()
+    this.ChangeDetectorRef.markForCheck()
   }
 
   imageCropped(event: ImageCroppedEvent) {
@@ -833,7 +874,7 @@ export class AddProductComponent implements OnInit {
             video: this.video,
             name: event.target.files[0].name
           }
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         }, 2000)
       }
     }
@@ -905,6 +946,7 @@ export class AddProductComponent implements OnInit {
     }
   }
 
+
   updateProduct() { }
 
   addProduct() {
@@ -918,11 +960,11 @@ export class AddProductComponent implements OnInit {
       // this.toastr.info('Adding product...', '', { timeOut: 2000 })
       this.submitting = true
       setTimeout(() => {
-        this.productService.addProduct(payload).subscribe((res: any) => {
+        this.ProductService.addProduct(payload).subscribe((res: any) => {
           if (res.errorCode != 0) {
             this.toastr.error(res?.message);
             this.submitting = false
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           } else if (res.errorCode == 0) {
             this.toastr.success(res?.message);
             this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
@@ -961,8 +1003,8 @@ export class AddProductComponent implements OnInit {
       },
       price: {
         mrp: this.productform.get('mrpPrice')?.value,
-        offer: this.productform.get('offerPrice')?.value,
-        selling: this.productform.get('offerPrice')?.value,
+        offer: this.productform.get('offerPrice')?.value ? this.productform.get('offerPrice')?.value : this.productform.get('mrpPrice')?.value,
+        selling: this.productform.get('offerPrice')?.value ? this.productform.get('offerPrice')?.value : this.productform.get('mrpPrice')?.value,
       },
       style: {
         background: this.productform.get('background')?.value,
@@ -1071,7 +1113,7 @@ export class AddProductComponent implements OnInit {
             this.AttributeService.getAttributes(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
               if (res?.errorCode == 0) {
                 this.attributes = res?.result
-                this.cdr.markForCheck()
+                this.ChangeDetectorRef.markForCheck()
               }
             })
           }
@@ -1079,7 +1121,7 @@ export class AddProductComponent implements OnInit {
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
           this.getProductHead(res?.result?.prodid)
           this.slug = res?.result?.prodid
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         } else {
           this.toastr.error(res?.message)
         }
@@ -1110,12 +1152,12 @@ export class AddProductComponent implements OnInit {
             this.AttributeService.getAttributes(this.producthhead?.defaultCategory?.refid).subscribe((res: any) => {
               if (res?.errorCode == 0) {
                 this.attributes = res?.result
-                this.cdr.markForCheck()
+                this.ChangeDetectorRef.markForCheck()
               }
             })
           }
           this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         } else {
           this.toastr.error(res?.message)
         }
@@ -1205,7 +1247,7 @@ export class AddProductComponent implements OnInit {
             this.defaultcategories = [...res?.result]
             this.appendMainCategory()
             this.showMainCategory = true
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           }
         })
 
@@ -1230,10 +1272,10 @@ export class AddProductComponent implements OnInit {
         this.AttributeService.getAttributes(res?.result[0]?.defaultCategory['refid']).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.attributes = res?.result
-            this.cdr.markForCheck()
+            this.ChangeDetectorRef.markForCheck()
           }
         })
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
   }

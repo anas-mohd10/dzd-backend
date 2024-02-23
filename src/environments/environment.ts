@@ -17,16 +17,16 @@ export const environment = {
   //Dev
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // base: 'http://localhost:3000',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  base: 'http://localhost:3000',
   //Local
 
   //Storedada
-  apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
-  baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
-  appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
-  base: 'https://api.demo.storedada.com',
+  // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
+  // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
+  // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
+  // base: 'https://api.demo.storedada.com',
   //Storedada
   loginUrl: 'api',
   firebaseConfig: {
