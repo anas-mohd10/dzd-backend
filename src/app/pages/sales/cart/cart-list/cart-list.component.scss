@@ -78,16 +78,17 @@ input[type=button] {
 }
 
 .table-responsive {
+   border-radius: 10px;
 
    .common_thead {
-      background: #20BDAB;
+      background: #E4E7F4;
 
       th {
          font-weight: 600;
          font-size: 14px;
          line-height: 15px;
          text-transform: capitalize;
-         color: #FFFFFF;
+         color: #000;
       }
    }
 
@@ -96,6 +97,7 @@ input[type=button] {
    }
 
    tbody {
+      background: #ffff;
       tr {
          td {
             svg {
@@ -112,6 +114,7 @@ input[type=button] {
 
 .toolTip {
    position: absolute;
+   
    top: 0;
    left: -100%;
    font-size: 13px;
