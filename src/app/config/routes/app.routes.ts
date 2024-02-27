@@ -299,5 +299,6 @@ export const appRoutes = {
   mailerDetails: `${app}/mailer-details`,
   bulk: {
     import: `${app}/bulk-import`,
-  }
+  },
+  replaceRequests:`${app}/replace-requests`,
 }

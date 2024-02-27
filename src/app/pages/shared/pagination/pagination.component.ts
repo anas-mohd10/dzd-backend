@@ -28,7 +28,6 @@ export class PaginationComponent implements OnInit, OnChanges {
   getDisplayRange(): string {
     const startRange = (this.pageIndex - 1) * (this.pageSize || 1) + 1;
     const endRange = Math.min(this.pageIndex * (this.pageSize || 1), this.totalResults);
-
     return `${startRange} to ${endRange} of ${this.totalResults} results`;
   }
 

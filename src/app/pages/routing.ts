@@ -369,6 +369,10 @@ export const Routing: Routes = [
         component: SalesAnalyticsComponent,
         canActivate: [AuthenticationGuard]
       }, {
+        path: 'replace-requests',
+        loadChildren: () => import('./replace-requests/replace-requests.module').then((m) => m.ReplaceRequestsModule),
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'activity-logs',
         component: ActivitiesComponent,
         canActivate: [AuthenticationGuard]
