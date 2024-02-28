@@ -193,6 +193,16 @@ export class AddProductComponent implements OnInit {
   categories: Array<any> = [];
   productCategory: FormControl = new FormControl('');
   productAttributes: Array<any> = [];
+  isCategoryMultiple: boolean = true;
+  isBrandMultiple: boolean = false;
+  isProductMultiple: boolean = true;
+  tagsForm: FormGroup;
+  productTags: any = {
+    topRightTag: "",
+    topLeftTag: "",
+    bottomRightTag: "",
+    bottomLeftTag: "",
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -238,13 +248,41 @@ export class AddProductComponent implements OnInit {
   }
 
   onCategoryTriggered(event: any) {
-    this.productCategories.includes(event._id) ? this.HotToastService.info('Category already added') : this.productCategories.push(event._id)
-    this.productCategories.includes(event._id) ? this.HotToastService.info('Category already added') : this.getDefaultCategories(event.slug)
+    const isIdPresent = this.productCategories.some(category => category._id == event._id);
+    if (isIdPresent) {
+      this.HotToastService.info('Category already added')
+    } else {
+      this.productCategories.push(event)
+      this.getDefaultCategories(event.slug)
+    }
     this.parentForm.get('parentCategories')?.setValue(this.productCategories)
   }
 
-  onProductTriggered(event: any) {
-    this.relatedProducts.includes(event._id) ? this.HotToastService.info('Product already added') : this.relatedProducts.push(event._id)
+  onProductsTriggered(event: any) {
+    const isIdPresent = this.relatedProducts.some(product => product._id == event._id);
+    if (isIdPresent) {
+      this.HotToastService.info('Category already added')
+    } else {
+      this.productCategories.push(event)
+    }
+    this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts)
+  }
+
+  onTagsTriggered(event: any, type: string) {
+    switch (type) {
+      case 'topright':
+        this.tagsForm.get('topRightTag')?.setValue(event._id)
+        break
+      case 'topleft':
+        this.tagsForm.get('topLeftTag')?.setValue(event._id)
+        break
+      case 'bottomright':
+        this.tagsForm.get('bottomRightTag')?.setValue(event._id)
+        break
+      case 'bottomleft':
+        this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
+        break
+    }
   }
 
   getDefaultCategories(category: string) {
@@ -296,6 +334,7 @@ export class AddProductComponent implements OnInit {
           this.brandDetails = res?.result?.brand
           this.previewDetails = res?.result?.thumbnail?.path
           this.productCategories = res?.result?.parentCategories
+          this.productCategories.map((item: any) => this.getDefaultCategories(item.slug))
           this.getAttributes(res?.result?.category?.catid)
           res?.result?.category ? this.getDefaultCategories(res?.result?.category?.slug) : null
           this.parentForm.get('category')?.setValue(res?.result?.category?._id)
@@ -384,8 +423,22 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  toggleAttributes(attribute: any) {
+  toggleAttributes(attributeDetails: any, valueDetails: any) {
+    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id);
+    if (isIdPresent) {
+      const index = this.productAttributes.findIndex(attribute => attribute.type == attributeDetails.id);
+      this.productAttributes[index].value = valueDetails._id
+    }else{
+      this.productAttributes.push({
+        type: attributeDetails.id,
+        value: valueDetails._id
+      })
+    }
+  }
 
+  attributeExists(attributeDetails: any, valueDetails: any) {
+    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id && attribute.value == valueDetails._id);
+    return isIdPresent ? 'active' : null
   }
 
   ngOnInit(): void {
@@ -397,6 +450,13 @@ export class AddProductComponent implements OnInit {
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
+
+    this.tagsForm = new FormGroup({
+      topRightTag: new FormControl(""),
+      topLeftTag: new FormControl(""),
+      bottomRightTag: new FormControl(""),
+      bottomLeftTag: new FormControl("")
+    })
 
     this.slug = this.route.snapshot.queryParams.product || ''
     this.slug ? this.getParentDetails(this.slug) : null
@@ -439,7 +499,8 @@ export class AddProductComponent implements OnInit {
       hsn: new FormControl(""),
       cod: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
       shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) })
+      return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      replace: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
     })
 
     this.form = new FormGroup({

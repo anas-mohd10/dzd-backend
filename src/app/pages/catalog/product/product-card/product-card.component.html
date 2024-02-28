@@ -243,7 +243,7 @@
                   </select>
                </div>
                <div class="col-lg-6 mb-3" *ngIf="editForm.get('returnable')?.value == 'true'">
-                  <label class="fs-6 mb-3">Return days</label>
+                  <label class="fs-6 mb-3">Days</label>
                   <input type="text" class="form-control fs-6" placeholder="Return days" formControlName="returnDays"
                      [ngClass]="{'is-invalid': editFormControls.returnDays.errors?.pattern}" />
                   <div class="fs-5 fw-normal mt-2 text-danger" *ngIf="editFormControls.returnDays.errors?.pattern">
@@ -265,6 +265,26 @@
                   <label class="fs-6 mb-3">Shipping charge</label>
                   <input type="text" class="form-control fs-6" placeholder="Shipping cost"
                      formControlName="shippingCost"
+                     [ngClass]="{'is-invalid': editFormControls.shippingCost.errors?.pattern}" />
+                  <div class="fs-5 fw-normal mt-2 text-danger" *ngIf="editFormControls.shippingCost.errors?.pattern">
+                     Please enter a valid amount
+                  </div>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-lg-6 mb-3">
+                  <label class="fs-6 mb-3" for="shipping">Replace option available?</label>
+                  <select name="shipping" id="shipping" formControlName="replace" class="form-select">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="false">Yes</option>
+                     <option value="true">No</option>
+                  </select>
+               </div>
+               <div class="col-lg-6 mb-3" *ngIf="editForm.get('replace')?.value == 'true'">
+                  <label class="fs-6 mb-3">Days</label>
+                  <input type="text" class="form-control fs-6" placeholder="Replace applicable days"
+                     formControlName="replaceDays"
                      [ngClass]="{'is-invalid': editFormControls.shippingCost.errors?.pattern}" />
                   <div class="fs-5 fw-normal mt-2 text-danger" *ngIf="editFormControls.shippingCost.errors?.pattern">
                      Please enter a valid amount

@@ -3,6 +3,31 @@ label,
   font-weight: normal !important;
 }
 
+.attribute {
+
+  &.text {
+    background: #dddddd;
+
+    &.active {
+      background: #00bdab;
+      color: #ffffff;
+    }
+  }
+}
+
+.color-box {
+  border: 1px solid #dddddd;
+
+  .color {
+    height: 40px;
+    width: 40px;
+  }
+  
+  &.active{
+    border: 1px solid #00bdab;
+  }
+}
+
 .product-preview {
   height: 180px;
   width: 180px;

@@ -19,6 +19,7 @@ export class ProductDropdownComponent implements OnInit, OnChanges {
   products: Array<BrandProps> = [];
   productDetails: BrandProps;
   @Input('productDetails') product?: BrandProps;
+  @Input('isMultiple') isMultiple: boolean = false
   @Output() productTrigered = new EventEmitter<any>();
   searchKeyword: FormControl = new FormControl('', Validators.required)
 

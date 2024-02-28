@@ -12,6 +12,7 @@ export class CategoryDropdownComponent implements OnInit, OnChanges {
   categories: Array<any> = [];
   categoryDetails: any;
   @Input('categoryDetails') category?: any;
+  @Input('isMultiple') isMultiple: boolean = false;
   @Output() categoryTriggered = new EventEmitter<any>();
   searchKeyword: FormControl = new FormControl('', Validators.required)
 
@@ -43,10 +44,14 @@ export class CategoryDropdownComponent implements OnInit, OnChanges {
     })
   }
 
-  categoryClicked(brand: any) {
-    this.categoryTriggered.emit(brand);
-    this.categoryDetails = brand;
-    this.searchKeyword.setValue(brand.name);
+  categoryClicked(category: any) {
+    this.categoryTriggered.emit(category);
+    this.categoryDetails = category;
+    if (this.isMultiple) {
+      this.searchKeyword.setValue('');
+    } else {
+      this.searchKeyword.setValue(category.name);
+    }
     this.categories = [];
   }
 

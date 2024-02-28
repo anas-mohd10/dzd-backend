@@ -69,14 +69,6 @@ export class ProductCardComponent implements OnInit {
     private ElementRef: ElementRef
   ) { }
 
-  // @HostListener('document:click', ['$event'])
-  // onClick(event: Event): void {
-  //   if (!this.ElementRef.nativeElement.contains(event.target)) {
-  //     // Clicked outside the parent div, close the dropdown
-  //     this.isCategoryDropdown = false;
-  //   }
-  // }
-
   get editFormControls() {
     return this.editForm.controls
   }
@@ -100,9 +92,11 @@ export class ProductCardComponent implements OnInit {
       isActive: new FormControl('true'),
       shippingMethod: new FormControl('Unpaid'),
       shipping: new FormControl('true'),
-      shippingCost: new FormControl(1, Validators.pattern("^[1-9]*")),
+      shippingCost: new FormControl(1, Validators.pattern("^[0-9]*")),
       returnable: new FormControl('false'),
-      returnDays: new FormControl(1, Validators.pattern("^[1-9]*")),
+      returnDays: new FormControl(1, Validators.pattern("^[0-9]*")),
+      replace: new FormControl('false'),
+      replaceDays: new FormControl(1, Validators.pattern("^[0-9]*")),
       cod: new FormControl('false'),
       codCharge: new FormControl(0, Validators.pattern("^[0-9]*")),
       tax: new FormControl('', Validators.required),

@@ -20,6 +20,7 @@ export class BrandDropdownComponent implements OnInit, OnChanges {
   brands: Array<BrandProps> = [];
   brandDetails: BrandProps;
   @Input('brandDetails') brand?: BrandProps;
+  @Input('isMultiple') isMultiple: boolean = false;
   @Output() brandTriggered = new EventEmitter<any>();
   searchKeyword: FormControl = new FormControl('', Validators.required)
 
@@ -55,7 +56,11 @@ export class BrandDropdownComponent implements OnInit, OnChanges {
   brandClicked(brand: BrandProps) {
     this.brandTriggered.emit(brand);
     this.brandDetails = brand;
-    this.searchKeyword.setValue(brand.name);
+    if (this.isMultiple) {
+      this.searchKeyword.setValue('');
+    } else {
+      this.searchKeyword.setValue(brand.name);
+    }
     this.brands = [];
   }
 

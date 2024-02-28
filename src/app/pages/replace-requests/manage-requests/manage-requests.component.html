@@ -21,105 +21,116 @@
             </div>
         </div>
     </div>
-    <div class="card my-4">
-        <div class="card-body">
-            <div>
-                <h1 class="fw-bold my-3">
+    <div class="my-4">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="fw-bold mb-3">
                     Request {{ replaceId }}
                 </h1>
                 <div class="fs-5 text-muted fw-bold">Order {{replaceDetails?.order?.orderNo}}</div>
                 <div class="fs-6 text-muted">Request submitted on {{getSubmittedDate(replaceDetails?.createdAt)}}</div>
             </div>
-            <div class="row my-3">
-                <div class="col-lg-9">
-                    <div>
+        </div>
+        <div class="row my-5">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
                         <div class="fs-4 fw-bold">Customer details</div>
-                        <hr>
-                        <div class="fs-6 mt-1">
+                        <div class="fs-6 mt-2">
                             <div>{{replaceDetails?.customer?.name}}</div>
                             <div>{{replaceDetails?.customer?.countryCode}} {{replaceDetails?.customer?.mobile}},
                                 {{replaceDetails?.customer?.email}}</div>
                         </div>
                     </div>
-                    <div class="my-8">
-                        <div class="fs-4 fw-bold">Product details</div>
-                        <hr>
-                        <div class="d-flex align-items-start gap-3 justify-content-start">
-                            <a routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
-                                [queryParams]="{'id': replaceDetails?.product?.prodid}">
-                                <img height="80px" class="rounded cursor-pointer" width="80px"
-                                    src="{{base}}{{replaceDetails?.product?.thumbnail}}"
-                                    alt="{{replaceDetails?.product?.name}}">
-                            </a>
-                            <div class="fs-6 mt-1">
-                                <div>{{replaceDetails?.product?.name}}</div>
-                                <div>SKU : {{replaceDetails?.product?.sku}}</div>
-                                <div class="my-2 fs-5">
-                                    <span class="fw-bold">Quantity:</span>
-                                    {{replaceDetails?.quantity}}
-                                </div>
-                                <div class="bg-secondary p-2 rounded">
-                                    The initial sale price of this product was <span
-                                        class="fw-bold">{{settings?.currency}}
-                                        {{replaceDetails?.productDetails?.pricePerUnit}}</span>.
-                                    The total amount for the replacement will be <span
-                                        class="fw-bold">{{settings?.currency}}
-                                        {{replaceDetails?.productDetails?.pricePerUnit *
-                                        replaceDetails?.quantity}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="fs-4 fw-bold">Additional details</div>
-                        <hr>
-                        <div>
-                            <div class="fs-5 fw-bold">File attachments</div>
-                            <ng-container *ngIf="replaceDetails?.images?.length > 0">
-                                <div class="d-flex my-2 align-items-center flex-wrap gap-3">
-                                    <div *ngFor="let image of replaceDetails?.images">
-                                        <img height="80px" class="rounded" width="80px" src="{{base}}{{image}}"
-                                            alt="Attachment">
+                </div>
+                <div class="mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="fs-4 fw-bold">Product details</div>
+                            <div class="d-flex align-items-start my-2 gap-3 justify-content-start">
+                                <a routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
+                                    [queryParams]="{'id': replaceDetails?.product?.prodid}">
+                                    <img height="80px" class="rounded cursor-pointer" width="80px"
+                                        src="{{base}}{{replaceDetails?.product?.thumbnail}}"
+                                        alt="{{replaceDetails?.product?.name}}">
+                                </a>
+                                <div class="fs-6 mt-1">
+                                    <div>{{replaceDetails?.product?.name}}</div>
+                                    <div>SKU : {{replaceDetails?.product?.sku}}</div>
+                                    <div class="my-2 fs-5">
+                                        <span class="fw-bold">Quantity:</span>
+                                        {{replaceDetails?.quantity}}
                                     </div>
                                 </div>
-                            </ng-container>
-                            <ng-container *ngIf="replaceDetails?.images?.length === 0">
-                                <div class="fs-6 my-2 text-muted">No attachments</div>
-                            </ng-container>
-                        </div>
-                        <div class="d-flex flex-wrap my-3 align-items-center justify-content-start gap-3">
-                            <div class="fs-5 fw-bold">Reason for replacement : </div>
-                            <div class="fs-6 my-1">{{replaceDetails?.reason}}</div>
-                        </div>
-                        <div class="d-flex flex-wrap my-3 align-items-center justify-content-start gap-3">
-                            <div class="fs-5 fw-bold">Comments : </div>
-                            <div class="fs-6 my-1">{{replaceDetails?.comments}}</div>
+                            </div>
+                            <div class="bg-success bg-opacity-25 p-2 rounded">
+                                The initial sale price of this product was <span class="fw-bold">{{settings?.currency}}
+                                    {{replaceDetails?.productDetails?.pricePerUnit}}</span>.
+                                The total amount for the replacement will be <span
+                                    class="fw-bold">{{settings?.currency}}
+                                    {{replaceDetails?.productDetails?.pricePerUnit *
+                                    replaceDetails?.quantity}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <form [formGroup]="form">
-                        <div class="form-group mb-3">
-                            <label for="note" class="form-label mb-2 fw-normal">Note</label>
-                            <textarea class="form-control" formControlName="note" placeholder="Enter any notes here"
-                                id="note" rows="3" resize="false"></textarea>
-                        </div>
-                        <div class="form-group mb-5">
-                            <label for="status" class="form-label mb-2 fw-normal">Status</label>
-                            <select id="status" class="form-select" formControlName="status">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option value="requested" disabled>Requested</option>
-                                <option value="initiated">Initiated</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                        </div>
-                        <ng-container>
-                            <div class="d-flex justify-content-end">
-                                <button class="btn w-100 btn-primary" (click)="saveReplaceDetails()">Save
-                                    changes</button>
+            </div>
+            <div class="col-lg-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="fs-4 mb-2 fw-bold">Process the request here</div>
+                        <form [formGroup]="form">
+                            <div class="form-group mb-3">
+                                <label for="note" class="form-label mb-2 fw-normal">Note</label>
+                                <textarea class="form-control" formControlName="note" placeholder="Enter any notes here"
+                                    id="note" rows="3" resize="false"></textarea>
+                            </div>
+                            <div class="form-group mb-5">
+                                <label for="status" class="form-label mb-2 fw-normal">Status</label>
+                                <select id="status" class="form-select" formControlName="status">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option value="requested" disabled>Requested</option>
+                                    <option value="initiated">Initiated</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <ng-container>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn w-100 btn-primary" (click)="saveReplaceDetails()">Save
+                                        changes</button>
+                                </div>
+                            </ng-container>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="fs-4 fw-bold">Additional details</div>
+                    <div class="mt-2">
+                        <div class="fs-5 fw-bold">File attachments</div>
+                        <ng-container *ngIf="replaceDetails?.images?.length > 0">
+                            <div class="d-flex my-2 align-items-center flex-wrap gap-3">
+                                <div *ngFor="let image of replaceDetails?.images">
+                                    <img height="80px" class="rounded" width="80px" src="{{base}}{{image}}"
+                                        alt="Attachment">
+                                </div>
                             </div>
                         </ng-container>
-                    </form>
+                        <ng-container *ngIf="replaceDetails?.images?.length === 0">
+                            <div class="fs-6 my-2 text-muted">No attachments</div>
+                        </ng-container>
+                    </div>
+                    <div class="d-flex flex-wrap my-3 align-items-center justify-content-start gap-3">
+                        <div class="fs-5 fw-bold">Reason for replacement : </div>
+                        <div class="fs-6 my-1">{{replaceDetails?.reason}}</div>
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-3">
+                        <div class="fs-5 fw-bold">Comments : </div>
+                        <div class="fs-6 my-1">{{replaceDetails?.comments}}</div>
+                    </div>
                 </div>
             </div>
         </div>
