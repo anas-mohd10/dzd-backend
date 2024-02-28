@@ -84,7 +84,6 @@ export class ManageRequestsComponent implements OnInit {
   }
 
   saveReplaceDetails() {
-    console.log(this.replaceDetails);
     this.ReplaceRequestsService.updateReplace({
       ...this.form.value,
       reference: this.replaceId,
