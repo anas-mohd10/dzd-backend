@@ -20,431 +20,452 @@
       </div>
     </div>
   </div>
-  <div class="row mt-10">
-    <div class="col-sm-12 fs-6">
-      <div class="card">
-        <div class="card-body">
+  <div class="row mt-4">
+    <div class="card">
+      <div class="card-body">
 
-          <tabset type="pills" [justified]="true" #staticTabs>
-            <tab heading="Basic details (1)">
-              <form [formGroup]="parentForm">
-                <div class="row my-6">
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
-                      formControlName="name" />
-                  </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3">HSN</label>
-                    <input type="text" class="form-control fs-6" formControlName="hsn" />
-                  </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">SKU</label>
-                    <input type="text" class="form-control fs-6" formControlName="sku" />
-                  </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Tax</label>
-                    <select formControlName="tax" id="tax" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3">Brand</label>
-                    <app-brand-dropdown [isMultiple]="isBrandMultiple" [brandDetails]="brandDetails"
-                      (brandTriggered)="onBrandTriggered($event)"></app-brand-dropdown>
-                  </div>
-                  <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3 required">Category</label>
-                    <app-category-dropdown [isMultiple]="isCategoryMultiple"
-                      (categoryTriggered)="onCategoryTriggered($event)"></app-category-dropdown>
-                    <ng-container *ngIf="productCategories.length > 0">
-                      <div class="mt-2 d-flex flex-wrap gap-3 align-items-center justify-content-start">
-                        <ng-container *ngFor="let category of productCategories; let i = index">
-                          <div class="bg-secondary p-2 rounded">
-                            {{category.name}}
-                          </div>
-                        </ng-container>
-                      </div>
-                    </ng-container>
-                  </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3">Default category</label>
-                    <select formControlName="category" id="defaultCategory" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let category of defaultCategories" value="{{category._id}}">
-                        {{category.name}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required" for="isActive">Status</label>
-                    <select formControlName="isActive" id="isActive" class="form-select">
+        <tabset type="pills" [justified]="true" #staticTabs>
+          <tab heading="Basic details (1)">
+            <form [formGroup]="parentForm">
+              <div class="row my-6">
+                <div class="col-lg-6 mb-3 form-group">
+                  <label class="fs-6 mb-3 required">Name</label>
+                  <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
+                    formControlName="name" />
+                </div>
+                <div class="col-lg-6 mb-3 form-group">
+                  <label class="fs-6 mb-3">HSN</label>
+                  <input type="text" class="form-control fs-6" formControlName="hsn" />
+                </div>
+                <div class="col-lg-6 mb-3 form-group">
+                  <label class="fs-6 mb-3 required">SKU</label>
+                  <input type="text" class="form-control fs-6" formControlName="sku" />
+                </div>
+                <div class="col-lg-6 mb-3 form-group">
+                  <label class="fs-6 mb-3 required">Tax</label>
+                  <select formControlName="tax" id="tax" class="form-select">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-6 form-group mb-3">
+                  <label class="fs-6 mb-3">Brand</label>
+                  <app-brand-dropdown [isMultiple]="isBrandMultiple" [brandDetails]="brandDetails"
+                    (brandTriggered)="onBrandTriggered($event)"></app-brand-dropdown>
+                </div>
+                <div class="col-lg-6 form-group mb-3">
+                  <label class="fs-6 mb-3 required">Category</label>
+                  <app-category-dropdown [isMultiple]="isCategoryMultiple"
+                    (categoryTriggered)="onCategoryTriggered($event)"></app-category-dropdown>
+                  <ng-container *ngIf="productCategories.length > 0">
+                    <div class="mt-2 d-flex flex-wrap gap-3 align-items-center justify-content-start">
+                      <ng-container *ngFor="let category of productCategories; let i = index">
+                        <div class="bg-secondary p-2 rounded">
+                          {{category.name}}
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="col-lg-6 mb-3 form-group">
+                  <label class="fs-6 mb-3">Default category</label>
+                  <select formControlName="category" id="defaultCategory" class="form-select">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let category of defaultCategories" value="{{category._id}}">
+                      {{category.name}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-lg-6 mb-3 form-group">
+                  <label class="fs-6 mb-3 required" for="isActive">Status</label>
+                  <select formControlName="isActive" id="isActive" class="form-select">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                      {{status == 'true' ? 'True' : 'False'}}
+                    </option>
+                  </select>
+                </div>
+                <div class="row px-0 mx-0" formGroupName="cod">
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="isPresent">COD available</label>
+                    <select formControlName="isPresent" id="isPresent" class="form-select">
                       <option value="" disabled>-- Select an option --</option>
                       <option *ngFor="let status of ['true', 'false']" value="{{status}}">
                         {{status == 'true' ? 'True' : 'False'}}
                       </option>
                     </select>
                   </div>
-                  <div class="row px-0 mx-0" formGroupName="cod">
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="isPresent">COD available</label>
-                      <select formControlName="isPresent" id="isPresent" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                          {{status == 'true' ? 'True' : 'False'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="value">Charge</label>
-                      <input type="number" class="form-control fs-6" formControlName="value" />
-                    </div>
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="value">Charge</label>
+                    <input type="number" class="form-control fs-6" formControlName="value" />
                   </div>
-                  <div class="row px-0 mx-0" formGroupName="return">
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="isPresent">Return available</label>
-                      <select formControlName="isPresent" id="isPresent" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                          {{status == 'true' ? 'True' : 'False'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="value">Days</label>
-                      <input type="number" class="form-control fs-6" formControlName="value" />
-                    </div>
+                </div>
+                <div class="row px-0 mx-0" formGroupName="return">
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="isPresent">Return available</label>
+                    <select formControlName="isPresent" id="isPresent" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                        {{status == 'true' ? 'True' : 'False'}}
+                      </option>
+                    </select>
                   </div>
-                  <div class="row px-0 mx-0" formGroupName="replace">
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="isPresent">Replace option available</label>
-                      <select formControlName="isPresent" id="isPresent" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                          {{status == 'true' ? 'True' : 'False'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="value">Days</label>
-                      <input type="number" class="form-control fs-6" formControlName="value" />
-                    </div>
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="value">Days</label>
+                    <input type="number" class="form-control fs-6" formControlName="value" />
                   </div>
-                  <div class="row px-0 mx-0" formGroupName="shipping">
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="isPresent">Free shipping available</label>
-                      <select formControlName="isPresent" id="isPresent" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                          {{status == 'true' ? 'True' : 'False'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="value">Charge</label>
-                      <input type="number" class="form-control fs-6" formControlName="value" />
-                    </div>
+                </div>
+                <div class="row px-0 mx-0" formGroupName="replace">
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="isPresent">Replace option available</label>
+                    <select formControlName="isPresent" id="isPresent" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                        {{status == 'true' ? 'True' : 'False'}}
+                      </option>
+                    </select>
                   </div>
-                  <div class="col-lg-3 mb-3 form-group">
-                    <label class="fs-6 mb-3">Thumbnail</label>
-                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                      <app-assets (mediaClicked)="handleThumbnail($event)"
-                        [previewDetails]="previewDetails"></app-assets>
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="value">Days</label>
+                    <input type="number" class="form-control fs-6" formControlName="value" />
+                  </div>
+                </div>
+                <div class="row px-0 mx-0" formGroupName="shipping">
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="isPresent">Free shipping available</label>
+                    <select formControlName="isPresent" id="isPresent" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                        {{status == 'true' ? 'True' : 'False'}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-lg-6 mb-3 from-group">
+                    <label class="fs-6 mb-3" for="value">Charge</label>
+                    <input type="number" class="form-control fs-6" formControlName="value" />
+                  </div>
+                </div>
+                <div class="col-lg-3 mb-3 form-group">
+                  <label class="fs-6 mb-3">Thumbnail</label>
+                  <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                    <app-assets (mediaClicked)="handleThumbnail($event)" [previewDetails]="previewDetails"></app-assets>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button class="btn border border-danger text-danger bg-white">Cancel</button>
+              <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
+              <button class="btn btn-primary" *ngIf="!parentDetails" (click)="createParent()">
+                Save and Continue
+              </button>
+            </div>
+          </tab>
+          <tab heading="Product Details (2)">
+            <div class="my-6">
+              <form [formGroup]="form">
+
+                <div class="row">
+                  <div class="col-lg-8 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Name</label>
+                    <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
+                      formControlName="name" />
+                  </div>
+                </div>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Price Details</div>
+                  <p class="text-muted">Easily manage price details to showacse your product</p>
+                  <div class="row" formGroupName="price">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Maximum retail price</label>
+                      <input type="text" class="form-control fs-6" formControlName="mrp" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Offer price</label>
+                      <input type="text" class="form-control fs-6" formControlName="offer" />
                     </div>
                   </div>
                 </div>
-              </form>
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <button class="btn border border-danger text-danger bg-white">Cancel</button>
-                <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
-                <button class="btn btn-primary" *ngIf="!parentDetails" (click)="createParent()">
-                  Save and Continue
-                </button>
-              </div>
-            </tab>
-            <tab heading="Product Details (2)">
-              <div class="my-6">
-                <form [formGroup]="form">
 
-                  <div class="row">
-                    <div class="col-lg-8 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Name</label>
-                      <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
-                        formControlName="name" />
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Product category and attributes</div>
+                  <p class="text-muted">Easily manage price details to showacse your product</p>
+                  <div class="row mb-3">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3" for="productCategory">Category</label>
+                      <select [formControl]="productCategory" id="productCategory"
+                        (change)="toggleProductCategory($event, 'add')" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
+                          {{category.name}}
+                        </option>
+                      </select>
                     </div>
-                  </div>
-
-                  <div class="my-4">
-                    <div class="fs-3 fw-bold">Price Details</div>
-                    <p class="text-muted">Easily manage price details to showacse your product</p>
-                    <div class="row" formGroupName="price">
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3 required">Maximum retail price</label>
-                        <input type="text" class="form-control fs-6" formControlName="mrp" />
-                      </div>
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3 required">Offer price</label>
-                        <input type="text" class="form-control fs-6" formControlName="offer" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="my-4">
-                    <div class="fs-3 fw-bold">Product category and attributes</div>
-                    <p class="text-muted">Easily manage price details to showacse your product</p>
-                    <div class="row mb-3">
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3" for="productCategory">Category</label>
-                        <select [formControl]="productCategory" id="productCategory"
-                          (change)="toggleProductCategory($event, 'add')" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
+                    <ng-container *ngIf="categories.length > 0">
+                      <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                        <ng-container *ngFor="let category of categories">
+                          <div class="bg-secondary cursor-pointer p-2 rounded"
+                            (change)="toggleProductCategory(category._id, 'remove')">
                             {{category.name}}
-                          </option>
-                        </select>
+                          </div>
+                        </ng-container>
                       </div>
-                      <ng-container *ngIf="categories.length > 0">
-                        <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                          <ng-container *ngFor="let category of categories">
-                            <div class="bg-secondary cursor-pointer p-2 rounded"
-                              (change)="toggleProductCategory(category._id, 'remove')">
-                              {{category.name}}
-                            </div>
-                          </ng-container>
-                        </div>
-                      </ng-container>
-                    </div>
-                    <div>
-                      <label class="fs-6" for="attributes">Attributes</label>
-                      <div id="attributes">
-                        <ng-container *ngIf="attributes.length > 0">
-                          <div class="my-3">
-                            <ng-container *ngFor="let attribute of attributes">
-                              <div class="my-3">
-                                <div class="fs-5 mb-1">{{attribute.name}}</div>
-                                <div *ngIf="attribute.type == 'text'">
-                                  <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
-                                    <ng-container *ngFor="let value of attribute?.values">
-                                      <div
-                                        class="p-2 rounded attribute text cursor-pointer {{attributeExists(attribute, value)}}"
-                                        (click)="toggleAttributes(attribute, value)">
-                                        {{value.value}}
-                                      </div>
-                                    </ng-container>
-                                  </div>
+                    </ng-container>
+                  </div>
+                  <div class="form-group">
+                    <label class="fs-6" for="attributes">Attributes</label>
+                    <div id="attributes">
+                      <ng-container *ngIf="attributes.length > 0">
+                        <div class="my-3">
+                          <ng-container *ngFor="let attribute of attributes">
+                            <div class="my-3">
+                              <div class="fs-5 mb-1">{{attribute.name}}</div>
+                              <div *ngIf="attribute.type == 'text'">
+                                <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
+                                  <ng-container *ngFor="let value of attribute?.values">
+                                    <div
+                                      class="p-2 rounded attribute text cursor-pointer {{attributeExists(attribute, value)}}"
+                                      (click)="toggleAttributes(attribute, value)">
+                                      {{value.value}}
+                                    </div>
+                                  </ng-container>
                                 </div>
-                                <div *ngIf="attribute.type == 'color'">
-                                  <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
-                                    <ng-container *ngFor="let value of attribute?.values">
-                                      <div class="p-2 color-box rounded {{attributeExists(attribute, value)}}">
-                                        <div class="attribute color rounded cursor-pointer"
+                              </div>
+                              <div *ngIf="attribute.type == 'color'">
+                                <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
+                                  <ng-container *ngFor="let value of attribute?.values">
+                                    <div class="p-2 color-box rounded {{attributeExists(attribute, value)}}">
+                                      <div class="attribute color rounded cursor-pointer"
                                         (click)="toggleAttributes(attribute, value)"
                                         [ngStyle]="{'background': value?.value}">
                                       </div>
-                                      </div>
-                                    </ng-container>
-                                  </div>
+                                    </div>
+                                  </ng-container>
                                 </div>
                               </div>
-                            </ng-container>
-                          </div>
-                        </ng-container>
-                        <ng-container *ngIf="attributes.length == 0">
-                          No attributes found
-                        </ng-container>
-                      </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="attributes.length == 0">
+                        No attributes found
+                      </ng-container>
                     </div>
                   </div>
+                </div>
 
-                  <div class="my-4">
-                    <div class="fs-3 fw-bold">Inventory details</div>
-                    <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
-                    <div class="row">
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3 required">Stock</label>
-                        <input type="text" class="form-control fs-6" formControlName="stock" />
-                      </div>
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3 required">SKU</label>
-                        <input type="text" class="form-control fs-6" formControlName="sku" />
-                      </div>
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3 required">Minimum order quantity</label>
-                        <input type="text" class="form-control fs-6" formControlName="moq" />
-                      </div>
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3 required">Maximum order quantity</label>
-                        <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
-                      </div>
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label class="fs-6 mb-3">Stock warning</label>
-                        <input type="text" class="form-control fs-6" formControlName="stockWarning" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="my-4">
-                    <div class="fs-3 fw-bold">Unit and measurement</div>
-                    <p class="text-muted">Update the unit of measurement details of the product easily</p>
-                    <div class="row" formGroupName="unit">
-                      <div class="form-group mb-3 col-lg-6">
-                        <label for="type" class="fs-6 mb-3">Unit of measurement</label>
-                        <select formControlName="type" id="type" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let unit of ['kilograms', 'grams', 'pack', 'number']" value="{{unit}}">
-                            {{unit}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="form-group mb-3 col-lg-6">
-                        <label for="weight" class="fs-6 mb-3">Weight</label>
-                        <input type="text" id="weight" class="form-control fs-6" formControlName="value" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="my-4">
-                    <div class="fs-3 fw-bold">Additional details</div>
-                    <p class="text-muted">Update the additional details of the product</p>
-                    <div class="row" formGroupName="details">
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label for="additionalButton" class="fs-6 mb-3">Additional button</label>
-                        <input type="text" id="additionalButton" class="form-control fs-6"
-                          formControlName="additionalButton" />
-                      </div>
-                      <div class="col-lg-6 mb-3 form-group">
-                        <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
-                        <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
-                          formControlName="buttonRedirectUrl" />
-                      </div>
-                    </div>
-                  </div>
-
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Inventory details</div>
+                  <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
                   <div class="row">
                     <div class="col-lg-6 mb-3 form-group">
-                      <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
-                      <input id="searchKeywords" class="form-control fs-6"
-                        (keyup.Enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
-                      <ng-container *ngIf="searchKeywords.length > 0">
-                        <div
-                          class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                          <ng-container *ngFor="let keyword of searchKeywords">
-                            <div class="bg-secondary cursor-pointer p-2 rounded"
-                              (click)="toggleSearchKeywords(keyword, 'remove')">
-                              {{keyword}}
-                            </div>
-                          </ng-container>
-                        </div>
-                      </ng-container>
+                      <label class="fs-6 mb-3 required">Stock</label>
+                      <input type="text" class="form-control fs-6" formControlName="stock" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
-                      <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
-                      <app-product-dropdown [isMultiple]="isProductMultiple" (productTrigered)="onProductsTriggered($event)"></app-product-dropdown>
-                      <ng-container *ngIf="relatedProducts.length > 0">
-                        <div class="mt-2 d-flex flex-wrap align-items-center justify-content-start">
-                          <ng-container *ngFor="let product of relatedProducts; let i = index">
-                            <div class="bg-secondary p-2 rounded">
-                              {{product.name}}
-                            </div>
-                          </ng-container>
-                        </div>
-                      </ng-container>
+                      <label class="fs-6 mb-3 required">SKU</label>
+                      <input type="text" class="form-control fs-6" formControlName="sku" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Minimum order quantity</label>
+                      <input type="text" class="form-control fs-6" formControlName="moq" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Maximum order quantity</label>
+                      <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3">Stock warning</label>
+                      <input type="text" class="form-control fs-6" formControlName="stockWarning" />
                     </div>
                   </div>
-                </form>
-              </div>
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
-              </div>
-            </tab>
-
-            <tab heading="Product Medias (3)">
-              <div class="my-6">
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3">Video</label>
-                  <input type="text" class="form-control" formControlName="video" />
                 </div>
-                <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product images</label>
-                  <div class="row" id="images">
-                    <ng-container *ngFor="let image of images">
-                      <div class="col-lg-2">
-                        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                          <div class="position-absolute bg-secondary">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Unit and measurement</div>
+                  <p class="text-muted">Update the unit of measurement details of the product easily</p>
+                  <div class="row" formGroupName="unit">
+                    <div class="form-group mb-3 col-lg-6">
+                      <label for="type" class="fs-6 mb-3">Unit of measurement</label>
+                      <select formControlName="type" id="type" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let unit of ['kilograms', 'grams', 'pack', 'number']" value="{{unit}}">
+                          {{unit}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group mb-3 col-lg-6">
+                      <label for="weight" class="fs-6 mb-3">Weight</label>
+                      <input type="text" id="weight" class="form-control fs-6" formControlName="value" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Additional details</div>
+                  <p class="text-muted">Update the additional details of the product</p>
+                  <div class="row" formGroupName="details">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label for="additionalButton" class="fs-6 mb-3">Additional button</label>
+                      <input type="text" id="additionalButton" class="form-control fs-6"
+                        formControlName="additionalButton" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
+                      <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
+                        formControlName="buttonRedirectUrl" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
+                    <input id="searchKeywords" class="form-control fs-6"
+                      (keyup.Enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
+                    <ng-container *ngIf="searchKeywords.length > 0">
+                      <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                        <ng-container *ngFor="let keyword of searchKeywords">
+                          <div class="bg-secondary cursor-pointer p-2 rounded"
+                            (click)="toggleSearchKeywords(keyword, 'remove')">
+                            {{keyword}}
                           </div>
-                          <img src="{{base}}/{{image.path}}" class="rounded" class="h-100 w-100" alt="{{image.title}}">
-                        </div>
+                        </ng-container>
                       </div>
                     </ng-container>
-                    <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productMediaClicked($event)" [previewEnabled]="false"></app-assets>
+                  </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
+                    <app-product-dropdown [isMultiple]="isProductMultiple"
+                      (productTrigered)="onProductsTriggered($event)"></app-product-dropdown>
+                    <ng-container *ngIf="relatedProducts.length > 0">
+                      <div class="mt-2 d-flex flex-wrap align-items-center justify-content-start">
+                        <ng-container *ngFor="let product of relatedProducts; let i = index">
+                          <div class="bg-secondary p-2 rounded">
+                            {{product.name}}
+                          </div>
+                        </ng-container>
                       </div>
-                    </div>
+                    </ng-container>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
-                  <div class="row" id="thumbnail">
-                    <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productThumbnailClicked($event)"></app-assets>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label for="tags" class="fs-6 mb-3">Product tags</label>
-                  <div class="row" id="tags">
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Top left</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'topleft')" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Top right</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'topright')" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Bottom left</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomleft')" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Bottom right</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomright')" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+              </form>
+            </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
+              <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
+            </div>
+          </tab>
+          <tab heading="Product Medias (3)">
+            <div class="my-6">
+              <div class="mb-3 form-group">
+                <label class="fs-6 mb-3">Video</label>
+                <input type="text" class="form-control" formControlName="video" />
               </div>
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
-                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+              <div class="mb-3">
+                <label for="images" class="fs-6 mb-3">Product images</label>
+                <div class="row" id="images">
+                  <ng-container *ngFor="let image of images">
+                    <div class="col-lg-2">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="position-absolute bg-secondary">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}/{{image.path}}" class="rounded" class="h-100 w-100" alt="{{image.title}}">
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="col-lg-2">
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'"
+                        [previewEnabled]="false"></app-assets>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </tab>
+              <div class="mb-3">
+                <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
+                <div class="row" id="thumbnail">
+                  <div class="col-lg-2">
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets [image]="'cover'" (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="tags" class="fs-6 mb-3">Product tags</label>
+                <div class="row" id="tags">
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Top left</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'topleft')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Top right</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'topright')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Bottom left</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomleft')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Bottom right</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomright')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="images" class="fs-6 mb-3">Product icons</label>
+                <div class="row" id="images">
+                  <ng-container *ngFor="let icon of icons">
+                    <div class="col-lg-2">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="position-absolute bg-secondary">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}/{{icon.path}}" class="rounded" class="h-100 w-100 object-cover"
+                          alt="{{icon.title}}">
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="col-lg-2">
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
+              <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+            </div>
+          </tab>
+        </tabset>
 
-          </tabset>
-
-          <!-- <nav style="pointer-events: none;">
+        <!-- <nav style="pointer-events: none;">
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
               <button class="nav-link fw-bolder" [ngClass]="{'active': !headAdded}" id="nav-home-tab"
                 data-bs-toggle="tab" data-bs-target="#basic-details" type="button" role="tab" aria-controls="nav-home"
@@ -1153,7 +1174,7 @@
               </div>
             </div>
           </div> -->
-        </div>
       </div>
     </div>
   </div>
+</div>

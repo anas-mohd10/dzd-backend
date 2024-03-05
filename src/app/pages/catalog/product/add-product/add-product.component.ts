@@ -197,12 +197,15 @@ export class AddProductComponent implements OnInit {
   isBrandMultiple: boolean = false;
   isProductMultiple: boolean = true;
   tagsForm: FormGroup;
+  icons: Array<any> = [];
   productTags: any = {
     topRightTag: "",
     topLeftTag: "",
     bottomRightTag: "",
     bottomLeftTag: "",
   }
+  addOnItemsForm: FormGroup
+  addOnItems: Array<any> = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -307,6 +310,10 @@ export class AddProductComponent implements OnInit {
     this.images.push(event)
   }
 
+  productIconClicked(event: any) {
+    this.icons.push(event)
+  }
+
   removeProductMedia(image: any) {
     this.images = this.images.filter((item: any) => item._id != image._id)
   }
@@ -358,6 +365,10 @@ export class AddProductComponent implements OnInit {
         }
       }
     })
+  }
+
+  toggleAddOnItems(){
+
   }
 
   saveChanges() {
@@ -439,6 +450,10 @@ export class AddProductComponent implements OnInit {
   attributeExists(attributeDetails: any, valueDetails: any) {
     const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id && attribute.value == valueDetails._id);
     return isIdPresent ? 'active' : null
+  }
+
+  searchProducts(){
+    
   }
 
   ngOnInit(): void {
@@ -695,8 +710,6 @@ export class AddProductComponent implements OnInit {
       this.isCod = false;
     }
   }
-
-
 
   appendMainCategory() {
     for (let _main of this.maincategories) {
