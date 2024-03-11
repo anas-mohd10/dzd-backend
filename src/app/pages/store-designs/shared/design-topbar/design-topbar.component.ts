@@ -14,6 +14,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   @Input() isDraft?: boolean = false;
   @Output() device = new EventEmitter();
   deviceType: string = 'desktop';
+  hideTopbarDetails: boolean = false
 
   constructor(
     private AppSettingsService: AppSettingsService,
@@ -23,8 +24,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
-    console.log(this.page);
+    this.page == 'app-images' ? this.hideTopbarDetails = true : null
   }
 
   ngOnInit(): void {

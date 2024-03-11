@@ -12,12 +12,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogComponent } from './catalog/catalog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ThemeComponent } from './theme/theme.component';
+import { AppImagesComponent } from './app-images/app-images.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     CatalogComponent,
-    ThemeComponent
+    ThemeComponent,
+    AppImagesComponent
   ],
   imports: [
     CommonModule,

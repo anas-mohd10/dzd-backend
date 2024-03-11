@@ -1,8 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
+import { BrandService } from 'src/app/includes/services/brand.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
+import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CsvService } from 'src/app/includes/services/csv.service';
+import { ProductService } from 'src/app/includes/services/product.service';
 
 @Component({
   selector: 'app-uploads-list',
@@ -20,11 +25,28 @@ export class UploadsListComponent implements OnInit {
   limit: number = 20
   modalRef?: BsModalRef
   importForm: FormGroup
+  types: Array<{ title: string, type: string }> = [
+    { title: 'Category', type: 'category' },
+    { title: 'Product', type: 'product' },
+    { title: 'Brand', type: 'brand' },
+    { title: 'Collection', type: 'collection' }
+  ];
+  fileData: any;
+  fileName: string;
+  fileSize: number;
+  file: FormControl = new FormControl("")
+  importType: FormControl = new FormControl("", Validators.required)
+  isFile: boolean = false
 
   constructor(
     private CsvService: CsvService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private CategoryService: CategoryService,
+    private BrandService: BrandService,
+    private HotToastService: HotToastService,
+    private CollectionService: CollectionService,
+    private ProductService: ProductService
   ) { }
 
   open(template: TemplateRef<any>) {
@@ -52,6 +74,80 @@ export class UploadsListComponent implements OnInit {
     })
 
     this.getFileImports()
+  }
+
+  handleFileUpload(event: any) {
+    let extensionCheck: boolean = event.files[0]?.name.toLowerCase().endsWith('.csv');
+    if (extensionCheck) {
+      this.fileData = event.files[0];
+      this.fileName = this.fileData.name;
+      this.fileSize = this.fileData.size / 1024
+    } else {
+      this.HotToastService.error("Please upload a CSV file")
+    }
+  }
+
+  closeFileUpload() {
+    this.fileData = null
+    this.fileName = ''
+    this.fileSize = 0
+  }
+
+  upload() {
+    let formdata = new FormData()
+    formdata.append("file", this.fileData)
+    if (this.isFile) {
+      switch (this.importType.value) {
+        case 'category':
+          this.CategoryService.bulkFileUpload(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+
+              } else {
+
+              }
+            }
+          })
+          break
+        case 'brand':
+          this.BrandService.bulkFileUpload(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+
+              } else {
+
+              }
+            }
+          })
+          break
+        case 'collection':
+          this.CollectionService.bulkFileUpload(formdata).subscribe((res: any) => {
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+
+              } else {
+
+              }
+            }
+          })
+          break
+        case 'product':
+          this.ProductService.bulkFileUpload(formdata).subscribe((res: any) => {
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+
+              } else {
+
+              }
+            }
+          })
+          break
+        case 'users':
+          break
+      }
+    } else {
+
+    }
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {

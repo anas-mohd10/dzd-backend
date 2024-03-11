@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { BulkFileUploadComponent } from './bulk-file-upload/bulk-file-upload.component';
 import { BulkMediaUploadComponent } from './bulk-media-upload/bulk-media-upload.component';
 import { UploadsListComponent } from './uploads-list/uploads-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { UploadsListComponent } from './uploads-list/uploads-list.component';
   imports: [
     CommonModule,
     BulkUploadRoutingModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ]
 })
 export class BulkUploadModule { }

@@ -37,7 +37,11 @@ export class HomeComponent implements OnInit {
     { title: 'Noble Nodes', type: 'noble-nodes', icon: '../../../../assets/widgets/noble-nodes.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Prime Plates', type: 'prime-plates', icon: '../../../../assets/widgets/prime-plates.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Elite Elements', type: 'elite-elements', icon: '../../../../assets/widgets/elite-elements.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
-    { title: 'Sale timer', type: 'sale-timer', icon: '../../../../assets/widgets/sale-timer.png', description: 'This widget is used to showcase a sale timer.' },
+    { title: 'Sale Timer', type: 'sale-timer', icon: '../../../../assets/widgets/sale-timer.png', description: 'This widget is used to showcase a sale timer.' },
+    { title: 'Twin Towers', type: 'twin-towers', icon: '../../../../assets/widgets/twin-towers.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
+    { title: 'Slider Spotlight', type: 'slider-spotlight', icon: '../../../../assets/widgets/slider-spotlight.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Trending Teasers', type: 'trending-teasers', icon: '../../../../assets/widgets/trending-teasers.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Stellar Selections', type: 'stellar-selections', icon: '../../../../assets/widgets/stellar-selections.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
   ]
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
@@ -424,6 +428,9 @@ export class HomeComponent implements OnInit {
       html: new FormControl(""),
       htmlStyles: new FormControl(""),
       video: new FormControl(""),
+      view: new FormControl("grid"),
+      gridsPerCount: new FormControl("4"),
+      slidesPerCount: new FormControl("3")
     })
 
     this.saleForm = new FormGroup({

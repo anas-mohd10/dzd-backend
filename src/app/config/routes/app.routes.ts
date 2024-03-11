@@ -293,7 +293,8 @@ export const appRoutes = {
   designs: {
     home: "/designs/home",
     catalogs: "/designs/catalogs",
-    theme: "/designs/theme"
+    theme: "/designs/theme",
+    appImages: "/designs/app-images"
   },
   customMailers: `${app}/custom-mailers`,
   mailerDetails: `${app}/mailer-details`,

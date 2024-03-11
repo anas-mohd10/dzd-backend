@@ -190,10 +190,33 @@
                     </div>
                 </div>
                 <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
-                    <p class="mb-2 text-muted">
+                    <p class="mb-3 text-muted">
                         In this section you can write content and upload images from your
                         computer or can use from variety of images from web.
                     </p>
+                    <div class="mb-2" *ngIf="widgetDetails?.widgetType == 'image-slider'">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="widgetView" class="form-label">View</label>
+                                    <select formControlName="view" id="widgetView" class="form-select">
+                                        <option value="" disabled>-- Select an option --</option>
+                                        <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" *ngIf="form.get('view')?.value == 'slider'">
+                                    <label for="slidesPerCount" class="form-label">Slides Per Count</label>
+                                    <input type="text" id="slidesPerCount" formControlName="slidesPerCount" class="form-control">
+                                </div>
+                                <div class="form-group" *ngIf="form.get('view')?.value == 'grid'">
+                                    <label for="gridsPerView" class="form-label">Grids Per Count</label>
+                                    <input type="text" id="gridsPerView" formControlName="gridsPerCount" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-2 p-4 rounded border border-secondary">
                         <div class="modal-images">
                             <ng-container *ngFor="let image of widgetImages; let i = index">

@@ -41,3 +41,22 @@
         }
     }
 }
+
+
+.file {
+
+    .file-mask {
+        z-index: 99;
+        pointer-events: none;
+    }
+
+    input {
+        opacity: 0;
+    }
+}
+
+.remove {
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+}
