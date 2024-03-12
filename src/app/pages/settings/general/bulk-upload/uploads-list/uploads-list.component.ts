@@ -24,7 +24,6 @@ export class UploadsListComponent implements OnInit {
   page: number = 1
   limit: number = 20
   modalRef?: BsModalRef
-  importForm: FormGroup
   types: Array<{ title: string, type: string }> = [
     { title: 'Category', type: 'category' },
     { title: 'Product', type: 'product' },
@@ -37,6 +36,14 @@ export class UploadsListComponent implements OnInit {
   file: FormControl = new FormControl("")
   importType: FormControl = new FormControl("", Validators.required)
   isFile: boolean = false
+  statusFilters: Array<{ title: string, status: string }> = [
+    { title: 'All', status: '' },
+    { title: 'Progress', status: 'progress' },
+    { title: 'Completed', status: 'completed' },
+    { title: 'Failed', status: 'failed' },
+    { title: 'Awaiting', status: 'awaiting' }
+  ]
+  createdAt: string;
 
   constructor(
     private CsvService: CsvService,
@@ -55,21 +62,12 @@ export class UploadsListComponent implements OnInit {
 
   close() {
     this.modalRef?.hide()
-    this.importForm.patchValue({ import: "images", type: "others" })
-  }
-
-  toggleImportParams(type: string, params: string) {
-    this.importForm.patchValue({ [type]: params })
+    this.importType.setValue("")
+    this.closeFileUpload()
   }
 
   ngOnInit(): void {
-    this.importForm = new FormGroup({
-      import: new FormControl("images"),
-      type: new FormControl("others"),
-    })
-
     this.form = new FormGroup({
-      createdAt: new FormControl(""),
       status: new FormControl("")
     })
 
@@ -82,6 +80,7 @@ export class UploadsListComponent implements OnInit {
       this.fileData = event.files[0];
       this.fileName = this.fileData.name;
       this.fileSize = this.fileData.size / 1024
+      this.fileSize > 2 ? this.HotToastService.error("File size should be less than 2MB") : this.isFile = true;
     } else {
       this.HotToastService.error("Please upload a CSV file")
     }
@@ -91,18 +90,21 @@ export class UploadsListComponent implements OnInit {
     this.fileData = null
     this.fileName = ''
     this.fileSize = 0
+    this.file.reset()
   }
 
   upload() {
     let formdata = new FormData()
     formdata.append("file", this.fileData)
+    console.log(this.isFile, this.importType.value);
+
     if (this.isFile) {
       switch (this.importType.value) {
         case 'category':
           this.CategoryService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
-
+                this.onSuccess(res?.message)
               } else {
 
               }
@@ -113,21 +115,25 @@ export class UploadsListComponent implements OnInit {
           this.BrandService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
-
+                this.onSuccess(res?.message)
               } else {
-
+                this.HotToastService.error(res?.message)
               }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
             }
           })
           break
         case 'collection':
-          this.CollectionService.bulkFileUpload(formdata).subscribe((res: any) => {
+          this.CollectionService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
-
+                this.onSuccess(res?.message)
               } else {
-
+                this.HotToastService.error(res?.message)
               }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
             }
           })
           break
@@ -150,6 +156,12 @@ export class UploadsListComponent implements OnInit {
     }
   }
 
+  onSuccess(message: string) {
+    this.HotToastService.success(message)
+    this.close()
+    this.getFileImports()
+  }
+
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
     this.page = event.pageIndex
     this.limit = event.pageSize
@@ -157,11 +169,17 @@ export class UploadsListComponent implements OnInit {
   }
 
   clearFilters() {
-    this.form.reset()
+    this.createdAt = ''
+    this.page = 1
+    this.limit = 20
+    this.getFileImports()
+    this.form.get('status')?.setValue('')
   }
 
   getFileImports() {
-    this.CsvService.getFileImports({ page: this.page, limit: this.limit, ...this.form.value }).subscribe({
+    this.CsvService.getFileImports({ 
+      page: this.page, limit: this.limit, 
+      ...this.form.value, date: this.createdAt }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.fileImports = res?.result?.data
