@@ -5,9 +5,9 @@ import { UpdateAppSettingsComponent } from './update-app-settings/update-app-set
 import { ViewAppSettingsComponent } from './view-app-settings/view-app-settings.component';
 
 const routes: Routes = [
-  { path: '', component: ViewAppSettingsComponent },
-  { path: 'add', component: AddAppSettingsComponent },
-  { path: 'update', component: UpdateAppSettingsComponent }
+  // { path: '', component: ViewAppSettingsComponent },
+  // { path: '', component: AddAppSettingsComponent },
+  { path: '', component: UpdateAppSettingsComponent }
 ];
 
 @NgModule({

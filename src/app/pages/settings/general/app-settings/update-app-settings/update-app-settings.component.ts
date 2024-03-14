@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { HotToastService } from '@ngneat/hot-toast';
 
 interface Media {
   title: string;
@@ -59,12 +59,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       { class: 'sen', name: 'Sen' },
     ]
   };
-
-  fontFamily: Array<any> = ['Manrope', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
-
+  fontFamily: Array<any> = ['Manrope', 'Figtree', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
   logo?: string
   favicon?: string
-
   primary: string = ''
   secondary: string = ''
 
@@ -72,15 +69,21 @@ export class UpdateAppSettingsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
-    private Router: Router,
     private AppSettingsService: AppSettingsService,
-    private toastr: ToastrService,
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
-    this.initform()
-    this.refid = this.ActivatedRoute.snapshot.queryParams.id || ''
+    this.initform();
+    this.refid = this.ActivatedRoute.snapshot.queryParams.id || '1';
+    this.getSettings();
+  }
 
+  get formControls() {
+    return this.form.controls
+  }
+
+  getSettings() {
     this.AppSettingsService.getGeneralSettingsbyId(this.refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.data = res?.result
@@ -114,10 +117,6 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
-  }
-
-  get formControls() {
-    return this.form.controls
   }
 
   initform() {
@@ -156,11 +155,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.value);
-    
     if (!this.form.valid) {
-      console.log("I'm not validated");
-      
       this.isSubmitted = true
       return
     }
@@ -198,15 +193,17 @@ export class UpdateAppSettingsComponent implements OnInit {
       }
     }
 
-    const formdata = new FormData();
-    formdata.append('data', JSON.stringify(data))
-
-    this.AppSettingsService.updateGeneralSettings(formdata).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.Router.navigate([this.appRoute.storeSettings.STORE_SETTINGS])
-      } else {
-        this.toastr.error(res?.message);
+    this.AppSettingsService.updateGeneralSettings(data).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.getSettings()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      },
+      error: (err) => {
+        this.HotToastService.error(err?.error?.message)
       }
     })
   }

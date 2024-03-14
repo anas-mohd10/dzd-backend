@@ -210,7 +210,7 @@ export class AddProductComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
+    private Router: Router,
     private ProductService: ProductService,
     private BrandService: BrandService,
     private categoryService: CategoryService,
@@ -367,7 +367,7 @@ export class AddProductComponent implements OnInit {
     })
   }
 
-  toggleAddOnItems(){
+  toggleAddOnItems() {
 
   }
 
@@ -376,16 +376,21 @@ export class AddProductComponent implements OnInit {
       return
     }
 
+    let files = this.images.map((item: any) => item._id)
+    this.form.value.relatedProducts ? null : this.form.get('relatedProducts')?.setValue([])
+
     let payload = {
       ...this.form.value,
-      files: this.images,
+      files: files,
+      product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.productAttributes
     }
 
     this.ProductService.addProduct(payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-
+          this.Router.navigate(['/app/product'])
+          this.HotToastService.success(res?.message)
         } else {
           this.HotToastService.error(res?.message)
         }
@@ -406,11 +411,14 @@ export class AddProductComponent implements OnInit {
       return
     }
 
+    if (!this.parentForm.value.brand) this.parentForm.get('brand')?.setValue(null)
+
     this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res.message)
           this.getParentDetails(res?.result?.slug)
+          this.form.get('name')?.setValue(this.parentForm.value.name)
         } else {
           this.HotToastService.error(res.message)
         }
@@ -439,7 +447,7 @@ export class AddProductComponent implements OnInit {
     if (isIdPresent) {
       const index = this.productAttributes.findIndex(attribute => attribute.type == attributeDetails.id);
       this.productAttributes[index].value = valueDetails._id
-    }else{
+    } else {
       this.productAttributes.push({
         type: attributeDetails.id,
         value: valueDetails._id
@@ -452,8 +460,8 @@ export class AddProductComponent implements OnInit {
     return isIdPresent ? 'active' : null
   }
 
-  searchProducts(){
-    
+  searchProducts() {
+
   }
 
   ngOnInit(): void {
@@ -533,9 +541,11 @@ export class AddProductComponent implements OnInit {
       files: new FormControl(""),
       video: new FormControl(""),
       unit: new FormGroup({
-        type: new FormControl("pack"),
-        value: new FormControl(1)
+        type: new FormControl("grams"),
+        value: new FormControl(500)
       }),
+      origin: new FormControl(""),
+      overview: new FormControl(""),
       details: new FormGroup({
         additionalButton: new FormControl(""),
         buttonRedirectUrl: new FormControl(""),
@@ -1041,7 +1051,7 @@ export class AddProductComponent implements OnInit {
             this.ChangeDetectorRef.markForCheck()
           } else if (res.errorCode == 0) {
             this.toastr.success(res?.message);
-            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+            this.Router.navigate([this.appRoute.product.PRODUCT_LIST]);
             this.ngOnInit();
           }
         });
@@ -1192,7 +1202,7 @@ export class AddProductComponent implements OnInit {
             })
           }
 
-          this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+          this.Router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
           this.getProductHead(res?.result?.prodid)
           this.slug = res?.result?.prodid
           this.ChangeDetectorRef.markForCheck()
@@ -1230,7 +1240,7 @@ export class AddProductComponent implements OnInit {
               }
             })
           }
-          this.router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
+          this.Router.navigate([this.appRoute.product.ADD_PRODUCT], { queryParams: { id: res?.result?.prodid } })
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.toastr.error(res?.message)

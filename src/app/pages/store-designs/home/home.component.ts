@@ -286,6 +286,8 @@ export class HomeComponent implements OnInit {
     this.widgetImagePreviewIndex = null
     this.widgetImagePreview = null
     this.form.reset()
+    this.saleForm.reset()
+    this.saleForm.get('saleButtonVisibility')?.setValue(true)
   }
 
   updateWidget(type?: string) {
@@ -305,6 +307,7 @@ export class HomeComponent implements OnInit {
         refid: this.widgetDetails?.refid,
         widgetType: this.widgetDetails?.widgetType,
         ...this.saleForm.value,
+        startDate: this.saleForm.get("startDate")?.value ? this.saleForm.get('startDate')?.value : new Date(new Date().setHours(0, 0, 0, 0)).toUTCString(),
       }
     } else if (this.widgetDetails?.widgetType == 'products') {
       widgetPayload = {

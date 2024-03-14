@@ -1,25 +1,25 @@
-<div class="content container-fluid">
+<div>
   <div class="page-header">
-    <div class="row align-items-center">
-      <div class="col">
-        <h1 class="fw-bolder">
-          {{ editMode ? "Update Product" : "Add Product" }}
-        </h1>
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product Head</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.product.ADD_PRODUCT}}">
-              {{ editMode ? "Update Product" : "Add Product"}}</a>
-          </li>
-        </ul>
-      </div>
+    <div class="page-title">
+        <h1 class="fw-bolder">Add products</h1>
     </div>
-  </div>
+    <div class="row">
+        <div class="col d-flex align-items-start justify-content-between">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                  <a routerLink="{{ appRoute.product.ADD_PRODUCT }}">Add products</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
   <div class="row mt-4">
     <div class="card">
       <div class="card-body">
@@ -169,8 +169,21 @@
                 <div class="row">
                   <div class="col-lg-8 mb-3 form-group">
                     <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
+                    <input type="text" class="form-control fs-6" placeholder="Eg. Australian Avocado"
                       formControlName="name" />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-8 mb-3 form-group">
+                    <label class="fs-6 mb-3">Overview</label>
+                    <input type="text" class="form-control fs-6" placeholder="Eg. 2 - 3 pieces per 500 gm"
+                      formControlName="overview" />
+                  </div>
+                  <div class="col-lg-4 mb-3 form-group">
+                    <label class="fs-6 mb-3">Origin</label>
+                    <input type="text" class="form-control fs-6" placeholder="Eg. Australia"
+                      formControlName="origin" />
                   </div>
                 </div>
 
@@ -180,11 +193,11 @@
                   <div class="row" formGroupName="price">
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">Maximum retail price</label>
-                      <input type="text" class="form-control fs-6" formControlName="mrp" />
+                      <input type="text" class="form-control fs-6" formControlName="mrp" placeholder="Eg. 18" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">Offer price</label>
-                      <input type="text" class="form-control fs-6" formControlName="offer" />
+                      <input type="text" class="form-control fs-6" formControlName="offer" placeholder="Eg. 10.95"/>
                     </div>
                   </div>
                 </div>
@@ -215,13 +228,13 @@
                     </ng-container>
                   </div>
                   <div class="form-group">
-                    <label class="fs-6" for="attributes">Attributes</label>
+                    <div class="fs-4 fw-bold" for="attributes">Attributes</div>
                     <div id="attributes">
                       <ng-container *ngIf="attributes.length > 0">
                         <div class="my-3">
                           <ng-container *ngFor="let attribute of attributes">
                             <div class="my-3">
-                              <div class="fs-5 mb-1">{{attribute.name}}</div>
+                              <div class="fs-5 mb-3 fw-bold">{{attribute.name}}</div>
                               <div *ngIf="attribute.type == 'text'">
                                 <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
                                   <ng-container *ngFor="let value of attribute?.values">
@@ -250,7 +263,7 @@
                         </div>
                       </ng-container>
                       <ng-container *ngIf="attributes.length == 0">
-                        No attributes found
+                        <div class="my-2">No attributes found</div>
                       </ng-container>
                     </div>
                   </div>

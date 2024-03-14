@@ -220,34 +220,6 @@ nav {
   margin: 10px 0 0 0;
 }
 
-.nav-link {
-  color: black !important;
-
-  &.active {
-    color: #00bdab !important;
-    background: none;
-    border: none;
-    position: relative;
-
-    &:before {
-      content: "";
-
-      content: "";
-      position: absolute;
-      width: 80%;
-      height: 2px;
-      bottom: 0;
-      left: 50%;
-      right: 50%;
-      transform: translateX(-50%);
-      background-color: #00bdab;
-    }
-  }
-}
-
-
-
-
 .addedProductsWrapper {
   .example-list {
     display: grid;
@@ -374,18 +346,6 @@ label.fs-6.mb-3 {
   font-size: 16px !important;
   font-weight: 500 !important;
   text-transform: capitalize;
-}
-
-.breadcrumb .breadcrumb-item:after {
-  color: #20BDAB;
-  padding: 0 1px;
-  font-size: 25px;
-  margin-bottom: 2px;
-
-}
-
-.breadcrumb .breadcrumb-item {
-  padding: 0;
 }
 
 h3.page-title.fw-bolder.fs-2 {

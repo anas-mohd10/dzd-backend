@@ -303,10 +303,17 @@
                                 <button *ngIf="saleForm.get('saleThumbnail')?.value" class="btn btn-danger w-100 my-2" (click)="removeSaleThumbnail()">Remove thumbnail</button>
                             </div>
                             <div class="col-lg-9 row">
-                                <div class="col-lg-9 form-group mb-3">
+                                <div class="col-lg-6 form-group mb-3">
                                     <label for="saleTitle" class="form-label">Title</label>
                                     <input type="text" id="saleTitle" placeholder="Last chance! 50% OFF"
                                         formControlName="saleTitle" class="form-control">
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="date" class="form-label">Valid from</label>
+                                    <input id="date" type="text" placeholder="-- Select a date --" class="form-control"
+                                        bsDatepicker
+                                        [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                                        formControlName="startDate">
                                 </div>
                                 <div class="col-lg-3">
                                     <label for="date" class="form-label">Valid till</label>
