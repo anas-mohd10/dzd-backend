@@ -189,6 +189,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
                     <p class="mb-3 text-muted">
                         In this section you can write content and upload images from your
@@ -201,18 +202,21 @@
                                     <label for="widgetView" class="form-label">View</label>
                                     <select formControlName="view" id="widgetView" class="form-select">
                                         <option value="" disabled>-- Select an option --</option>
-                                        <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}</option>
+                                        <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group" *ngIf="form.get('view')?.value == 'slider'">
                                     <label for="slidesPerCount" class="form-label">Slides Per Count</label>
-                                    <input type="text" id="slidesPerCount" formControlName="slidesPerCount" class="form-control">
+                                    <input type="text" id="slidesPerCount" formControlName="slidesPerCount"
+                                        class="form-control">
                                 </div>
                                 <div class="form-group" *ngIf="form.get('view')?.value == 'grid'">
                                     <label for="gridsPerView" class="form-label">Grids Per Count</label>
-                                    <input type="text" id="gridsPerView" formControlName="gridsPerCount" class="form-control">
+                                    <input type="text" id="gridsPerView" formControlName="gridsPerCount"
+                                        class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -246,6 +250,18 @@
                             </div>
                             <div class="col-lg-9">
                                 <form [formGroup]="widgetForm">
+                                    <div class="my-4" *ngIf="widgetImagePreview.redirection">
+                                        <a target="_blank"
+                                            href="{{settings?.domain}}{{widgetImagePreview.redirection}}">
+                                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                                stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
+                                                </path>
+                                            </svg> {{settings?.domain}}{{widgetImagePreview.redirection}}
+                                        </a>
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-6 form-group mb-3">
                                             <label for="title" class="form-label">Title</label>
@@ -255,11 +271,46 @@
                                         <div class="col-lg-6 form-group mb-3">
                                             <label for="redirectionType" class="form-label">Call to action</label>
                                             <select id="redirectionType" formControlName="redirectionType"
-                                                class="form-select">
+                                                class="form-select" (change)="onRedirectionSelected()">
                                                 <option value="" disabled>-- Select an option --</option>
                                                 <option *ngFor="let redirectionItem of redirectionItems"
                                                     value="{{redirectionItem?.value}}">{{redirectionItem?.key}}</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" *ngIf="widgetForm.get('redirectionType')?.value">
+                                        <div class="col-lg-8 form-group mb-3">
+                                            <label for="redirectionSearch" class="form-label">Redirection</label>
+                                            <input *ngIf="widgetForm.get('redirectionType')?.value == 'search-filters'"
+                                                type="text" id="redirectionSearch" placeholder="Search redirections"
+                                                class="form-control" [formControl]="redirectionQuery"
+                                                (ngModelChange)="redirectionQueryChange()">
+                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'static-pages'"
+                                                [formControl]="redirectionQuery" id="redirectionSearch"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let page of staticPages" value="{{page.url}}">
+                                                    {{page.title}}</option>
+                                            </select>
+                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'category'"
+                                                [formControl]="redirectionQuery" id="redirectionSearch"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let category of categories" value="{{category.slug}}">
+                                                    {{category.name}}</option>
+                                            </select>
+                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'blogs'"
+                                                [formControl]="redirectionQuery" id="redirectionSearch"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let blog of blogs" value="{{blog.slug}}">
+                                                    {{blog.title}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4 form-group mb-3">
+                                            <label for="continue" class="form-label">&nbsp;</label>
+                                            <input type="button" class="w-100 btn btn-primary" value="Continue"
+                                                (click)="continueRedirectionQuery()" id="continue">
                                         </div>
                                     </div>
                                 </form>
@@ -300,7 +351,8 @@
                                         [previewDetails]="saleThumbnailDetails">
                                     </app-assets>
                                 </div>
-                                <button *ngIf="saleForm.get('saleThumbnail')?.value" class="btn btn-danger w-100 my-2" (click)="removeSaleThumbnail()">Remove thumbnail</button>
+                                <button *ngIf="saleForm.get('saleThumbnail')?.value" class="btn btn-danger w-100 my-2"
+                                    (click)="removeSaleThumbnail()">Remove thumbnail</button>
                             </div>
                             <div class="col-lg-9 row">
                                 <div class="col-lg-6 form-group mb-3">
@@ -361,91 +413,91 @@
                     </div>
                 </div>
 
-                <div *ngIf="widgetDetails?.widgetType == 'products'">
-                    <form [formGroup]="productForm">
-                        <div class="mb-3 ratio ratio-21x9 h-auto">
-                            <app-assets [image]="'cover'" (mediaClicked)="productMediaTriggered($event, 'cover')"
-                                [previewDetails]="collectionCoverDetails"></app-assets>
-                        </div>
-                        <div class="row mx-0">
-                            <div class="col-lg-3">
-                                <div class="w-100 ratio ratio-1x1 h-auto">
-                                    <app-assets (mediaClicked)="productMediaTriggered($event, 'thumbnail')"
-                                        [previewDetails]="collectionThumbnailDetails"></app-assets>
-                                </div>
-                            </div>
-                            <div class="col-lg-9">
-                                <div class="form-group mb-3">
-                                    <label for="productTitle" class="form-label required">Title</label>
-                                    <input type="text" id="productTitle" class="form-control" formControlName="title">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="productDescription" class="form-label">Description</label>
-                                    <input type="text" id="productDescription" class="form-control"
-                                        formControlName="description">
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6 form-group mb-3">
-                                        <label for="productView" class="form-label">Type</label>
-                                        <select formControlName="type" id="productView" class="form-select">
-                                            <option value="" disabled>-- Select an option --</option>
-                                            <option *ngFor="let item of ['slider', 'grid']" value="{{item}}">
-                                                {{item == 'slider' ? 'Slider': 'Grid'}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 form-group mb-3"
-                                        *ngIf="productForm.get('type')?.value == 'grid'">
-                                        <label for="productCount" class="form-label required">Count</label>
-                                        <input type="text" id="productCount" class="form-control"
-                                            formControlName="count"
-                                            [ngClass]="{'is-invalid': productForm.get('count')?.errors?.pattern}">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <ng-container *ngIf="widgetProducts.length > 0">
-                                        <div class="widget-products mb-5">
-                                            <ng-container *ngFor="let product of widgetProducts">
-                                                <div class="product border border-secondary p-3 shadow-sm rounded">
-                                                    <img class="rounded" height="30px" width="30px"
-                                                        src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}">
-                                                    <div class="mt-2 product-name">{{product?.name}}</div>
-                                                    <div class="remove-product bg-danger text-white"
-                                                        (click)="toggleProducts(product)">
-                                                        <svg height="16" width="16" data-slot="icon" fill="none"
-                                                            stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
-                                                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M6 18 18 6M6 6l12 12"></path>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                    </ng-container>
+                <div *ngIf="widgetProductTypes.includes(widgetDetails?.widgetType)">
 
-                                    <div class="form-group mb-3">
-                                        <label for="productKeyword" class="form-label">Search products</label>
-                                        <input type="text" id="productKeyword" class="form-control"
-                                            [formControl]="productKeyword" (ngModelChange)="getProducts()">
+                    <div class="p-3">
+                        <div class="row gap-2">
+                            <ng-container
+                                *ngFor="let type of [
+                                    {type: 'products', title: 'Products', description: 'In this section you can select set of products manually to display.'}, 
+                                    {type: 'collections', title: 'Collections', description: 'In this section we will display your products dynamically. Select the collection which you want to display.'}]">
+                                <div (click)="toggleProductSelection(type.type)"
+                                    class="col-lg-5 p-3 rounded border d-flex align-items-start justify-content-start gap-2"
+                                    [ngClass]="{'border-secondary': type.type != selectedProductType, 'border-primary': type.type == selectedProductType}">
+                                    <div class="checkbox" [ngClass]="{'checked': type.type == selectedProductType}">
                                     </div>
-                                    <ng-container *ngIf="products.length > 0">
-                                        <div class="products">
-                                            <ng-container *ngFor="let product of products">
-                                                <div class="product shadow-sm p-3 rounded mb-3 d-flex align-items-center justify-content-start"
-                                                    (click)="toggleProducts(product)"
-                                                    [ngClass]="{'border border-primary': isIdInArray(product?._id, widgetProducts)}">
-                                                    <img class="rounded" height="30px" width="30px"
-                                                        src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}">
-                                                    <div class="ms-2">{{product?.name}}</div>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                    </ng-container>
+                                    <div style="width: calc(100% - 30px)">
+                                        <div class="fw-bold fs-5">{{type.title}}</div>
+                                        <div class="text-muted">{{type.description}}</div>
+                                    </div>
                                 </div>
-                            </div>
+                            </ng-container>
                         </div>
-                    </form>
+                    </div>
+
+                    <div *ngIf="selectedProductType == 'products'">
+                        <ng-container *ngIf="smartTileProducts.length > 0">
+                            <div class="fs-4 fw-bold my-3">Featured products</div>
+                            <div class="my-4 mt-0 smart-tile-products row pt-0 p-3">
+                                <ng-container *ngFor="let product of smartTileProducts; let i = index">
+                                    <div (click)="toggleTileProducts(product)"
+                                        class="rounded cursor-pointer col-lg-4 p-4 border border-secondary d-flex align-items-center justify-content-start gap-3">
+                                        <div>
+                                            <img class="rounded" height="40" width="40"
+                                                src="{{base}}{{product.thumbnail?.path}}"
+                                                onerror="this.src = '../../../../../assets/images/default.png'"
+                                                alt="{{product.name}}">
+                                        </div>
+                                        <div>
+                                            <div class="tile-product">{{product?.name}}</div>
+                                            <div>{{product.sku}}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                        <div class="form-group">
+                            <label for="tileProducts" class="form-label">Products</label>
+                            <input type="text" class="form-control" placeholder="Search products"
+                                [formControl]="tileProductsInput" (ngModelChange)="getTileProducts()">
+                        </div>
+
+                        <ng-container *ngIf="tileProducts.length > 0">
+                            <div class="fs-5 mt-3" *ngIf="tileProductsInput.value">Showing results for <span
+                                    class="text-primary">{{tileProductsInput.value}} ( {{tileProducts.length}} products
+                                    found )</span></div>
+                            <div class="my-3 row tile-products pt-0 p-3">
+                                <ng-container *ngFor="let product of tileProducts; let i = index">
+                                    <div (click)="toggleTileProducts(product)"
+                                        [ngClass]="{'border-primary' : isTileProductExists(product), 'border-secondary':  !isTileProductExists(false)}"
+                                        class="rounded cursor-pointer col-lg-4 p-4 border d-flex align-items-center justify-content-start gap-3">
+                                        <div>
+                                            <img class="rounded" height="40" width="40"
+                                                src="{{base}}{{product.thumbnail?.path}}"
+                                                onerror="this.src = '../../../../../assets/images/default.png'"
+                                                alt="{{product.name}}">
+                                        </div>
+                                        <div>
+                                            <div class="tile-product">{{product?.name}}</div>
+                                            <div>{{product.sku}}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="selectedProductType == 'collections'">
+                        <div class="form-group">
+                            <label for="collections" class="form-label">Collections</label>
+                            <select [formControl]="widgetCollection" id="collections" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let collection of collections; let i = index"
+                                    value="{{collection._id}}">
+                                    {{collection.title}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

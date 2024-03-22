@@ -277,8 +277,8 @@
                   <label class="fs-6 mb-3" for="shipping">Replace option available?</label>
                   <select name="shipping" id="shipping" formControlName="replace" class="form-select">
                      <option value="" disabled>-- Select an option --</option>
-                     <option value="false">Yes</option>
-                     <option value="true">No</option>
+                     <option value="true">Yes</option>
+                     <option value="false">No</option>
                   </select>
                </div>
                <div class="col-lg-6 mb-3" *ngIf="editForm.get('replace')?.value == 'true'">
@@ -327,7 +327,7 @@
          <ng-container *ngFor="let product of childProducts">
             <div class="product_card" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
                [queryParams]="{id: product?.prodid}" (click)="closeProducts()">
-               <img src="{{base}}/{{product?.thumbnail}}" alt="{{product?.name}}">
+               <img src="{{base}}/{{product?.thumbnail}}" onerror="this.src = '../../../../../assets/images/default.png'" alt="{{product?.name}}">
                <div class="fs-6 product_name">{{product?.name}}</div>
                <div class="d-flex align-items-center justify-content-start">
                   <div class="fs-6 me-2"> {{settings?.currency}} {{product?.price?.selling}}</div>

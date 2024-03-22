@@ -22,8 +22,6 @@
     </div>
   </div>
 
-
-
   <div class="mb-3 mt-3 d-flex align-items-center justify-content-end" *ngIf="loaded">
     <button class="me-2 btn btn-secondary cursor-pointer fs-6" color="primary"
       routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
@@ -226,7 +224,7 @@
                   </div>
                   <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
                   <div class="fs-6">
-                    <code class="m-0 p-0">SKU: {{product?.sku}}</code>
+                    <div class="m-0 p-0">SKU: {{product?.sku}}</div>
                   </div>
                 </div>
               </div>

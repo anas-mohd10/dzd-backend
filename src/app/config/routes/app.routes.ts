@@ -302,4 +302,5 @@ export const appRoutes = {
     import: `${app}/bulk-import`,
   },
   replaceRequests:`${app}/replace-requests`,
+  guestCustomers: `${app}/guests`,
 }

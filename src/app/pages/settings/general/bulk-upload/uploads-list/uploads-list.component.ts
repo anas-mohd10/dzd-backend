@@ -43,6 +43,7 @@ export class UploadsListComponent implements OnInit {
     { title: 'Failed', status: 'failed' },
     { title: 'Awaiting', status: 'awaiting' }
   ]
+  isSubmitting: boolean = false
   createdAt: string;
 
   constructor(
@@ -64,6 +65,7 @@ export class UploadsListComponent implements OnInit {
     this.modalRef?.hide()
     this.importType.setValue("")
     this.closeFileUpload()
+    this.isSubmitting = false
   }
 
   ngOnInit(): void {
@@ -80,7 +82,7 @@ export class UploadsListComponent implements OnInit {
       this.fileData = event.files[0];
       this.fileName = this.fileData.name;
       this.fileSize = this.fileData.size / 1024
-      this.fileSize > 2 ? this.HotToastService.error("File size should be less than 2MB") : this.isFile = true;
+      this.fileSize > 20 ? this.HotToastService.error("File size should be less than 20MB") : this.isFile = true;
     } else {
       this.HotToastService.error("Please upload a CSV file")
     }
@@ -96,9 +98,9 @@ export class UploadsListComponent implements OnInit {
   upload() {
     let formdata = new FormData()
     formdata.append("file", this.fileData)
-    console.log(this.isFile, this.importType.value);
 
     if (this.isFile) {
+      this.isSubmitting = true
       switch (this.importType.value) {
         case 'category':
           this.CategoryService.bulkFileUpload(formdata).subscribe({
@@ -106,8 +108,10 @@ export class UploadsListComponent implements OnInit {
               if (res?.errorCode == 0) {
                 this.onSuccess(res?.message)
               } else {
-
+                this.HotToastService.error(res?.message)
               }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
             }
           })
           break
@@ -138,13 +142,16 @@ export class UploadsListComponent implements OnInit {
           })
           break
         case 'product':
-          this.ProductService.bulkFileUpload(formdata).subscribe((res: any) => {
+          this.ProductService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
-
+                this.onSuccess(res?.message)
               } else {
-
+                this.HotToastService.error(res?.message)
               }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
+              this.isSubmitting = false
             }
           })
           break
@@ -152,7 +159,7 @@ export class UploadsListComponent implements OnInit {
           break
       }
     } else {
-
+      this.HotToastService.error("Please upload a CSV file")
     }
   }
 
@@ -177,9 +184,10 @@ export class UploadsListComponent implements OnInit {
   }
 
   getFileImports() {
-    this.CsvService.getFileImports({ 
-      page: this.page, limit: this.limit, 
-      ...this.form.value, date: this.createdAt }).subscribe({
+    this.CsvService.getFileImports({
+      page: this.page, limit: this.limit,
+      ...this.form.value, date: this.createdAt
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.fileImports = res?.result?.data

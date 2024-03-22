@@ -112,7 +112,7 @@
                               cf.email.errors?.required
                             }" (change)="checkEmail($event.target)" />
                         </div>
-                        <div class="text-danger" *ngIf="cf.email.errors?.pattern">Please, Enter Valid Email</div>
+                        <div class="mt-2 p-2 alert alert-danger" *ngIf="cf.email.errors?.pattern">Enter a valid email</div>
                      </div>
                      <div class="col-6">
                         <div class="form-group mb-3">
@@ -135,7 +135,8 @@
                               cf.mobile.errors?.required
                             }" />
                         </div>
-                        <div class="text-danger" *ngIf="cf.mobile.errors?.pattern">Please, Enter Valid Phone Number
+                        <div class="mt-2 p-2 alert alert-danger" *ngIf="cf.mobile.errors?.pattern">
+                           Enter a valid mobile number
                         </div>
                      </div>
 
@@ -433,7 +434,7 @@
 
       <div class="row my-8">
          <div class="col-lg-4">
-            <div class="form-group mb-3">
+            <!-- <div class="form-group mb-3">
                <label for="amount" class="form-label mb-3 required">Points</label>
                <input type="text" id="amount" [formControl]="points" placeholder="Loyalty points" class="form-control"
                   [ngClass]="{'is-invalid': (points.touched || isLoyaltySubmitted) && points.errors?.required || points.errors?.pattern }">
@@ -446,7 +447,7 @@
             <div class="d-flex justify-content-end align-items-center">
                <button class="btn btn-secondary w-50 me-1" (click)="addToWallet('debit')">Withdraw</button>
                <button class="btn btn-primary w-50 ms-1" (click)="addToWallet('credit')">Add points</button>
-            </div>
+            </div> -->
          </div>
          <div class="col-lg-8">
             <div class="mb-2 d-flex justify-content-between align-items-end">

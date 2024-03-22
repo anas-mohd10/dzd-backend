@@ -104,7 +104,7 @@ export class ProductCardComponent implements OnInit {
       hsn: new FormControl(''),
       parentCategory: new FormControl('', Validators.required),
       defaultCategory: new FormControl('', Validators.required),
-      brand: new FormControl('', Validators.required),
+      brand: new FormControl(''),
     });
 
     this.getProductHeads()
@@ -396,6 +396,8 @@ export class ProductCardComponent implements OnInit {
     let parentRefid = this.productCategory.map((category) => { return category.catid })
     if (parentCategory.length > 0) this.editForm.get('parentCategory')?.setValue(parentCategory)
     if (!this.editForm.valid) {
+      console.log('Error caught')
+      console.log(this.editForm.value)
       this.isSubmitted = true
       return
     }
@@ -414,6 +416,10 @@ export class ProductCardComponent implements OnInit {
         value: this.editForm.value.codCharge,
         isPresent: this.editForm.value.cod
       },
+      replace: {
+        value: this.editForm.value.replaceDays,
+        isPresent: this.editForm.value.replaceable
+      },
       prodid: this.headDetails?.prodid,
       return: {
         value: this.editForm.value.returnDays,
@@ -431,6 +437,8 @@ export class ProductCardComponent implements OnInit {
         break
       }
     }
+
+    console.log(payload)
 
     this.ProductHeadService.updateProductHead(payload).subscribe({
       next: (res: any) => {

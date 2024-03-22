@@ -1,0 +1,30 @@
+.table-responsive {
+    border-radius: 10px;
+ 
+    .common_thead {
+       background: #E4E7F4;
+ 
+       th {
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 15px;
+          text-transform: capitalize;
+          color: #000;
+       }
+    }
+ 
+    tr {
+       border-bottom: 1px solid #E8E8E8;
+    }
+ 
+    tbody {
+       background: #ffff;
+       tr {
+          td {
+             svg {
+                cursor: pointer;
+             }
+          }
+       }
+    }
+ }
