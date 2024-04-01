@@ -1,0 +1,226 @@
+<app-design-topbar [page]="'about-us'"></app-design-topbar>
+<app-design-sidebar></app-design-sidebar>
+
+<div class="storedesign-wrapper p-6">
+    <h4 class="fs-2 fw-bold">About Us</h4>
+    <div>
+        <form [formGroup]="form">
+            <div class="row mb-3">
+                <div class="col-lg-3">
+                    <div class="ratio ratio-1x1">
+                        <app-assets (mediaClicked)="onMediaSelected('thumbnail', $event)"
+                            [previewDetails]="thumbnailPreview"></app-assets>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="form-group mb-3">
+                        <label class="form-label required">Title</label>
+                        <input type="text" placeholder="We provide high quality farm fresh fruits"
+                            formControlName="title" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label required">Description</label>
+                        <textarea type="text" rows="5"
+                            placeholder="Customers can taste the quality of service and freshness of the fruits and vegetables in every order they receive."
+                            formControlName="description" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-lg-7">
+                    <div class="form-group mb-3">
+                        <label class="form-label required">Short Title</label>
+                        <input type="text" placeholder="Service sectors" formControlName="shortTitle"
+                            class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="form-label required">Short Description</label>
+                        <textarea type="text"
+                            placeholder="Our customers includes retail outlets, food service companies, schools, hotels, farm markets, restaurants, government institutions and organisations and hospitality service providers."
+                            formControlName="shortDescription" rows="5" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-group mb-3">
+                        <label class="form-label required">Legacy Items</label>
+                        <div *ngIf="legacyItems.length > 0"
+                            class="d-flex mb-3 gap-4 align-items-start jusitfy-content-between">
+                            <ng-container *ngFor="let legacyItem of legacyItems; let i = index">
+                                <div class="w-25 position-relative p-3 rounded bg-white">
+                                    <div class="fs-3 fw-bold">{{legacyItem.title}}</div>
+                                    <div class="fs-5">{{legacyItem.placeholder}}</div>
+                                    <div class="remove-legacy rounded bg-secondary position-absolute"
+                                        (click)="removeItems('legacyItems', i)">
+                                        <svg height="16" width=16 data-slot="icon" fill="none" stroke-width="1.5"
+                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6 18 18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+
+                        <div *ngIf="legacyItems.length < 3" (click)="openLegacy(legacyTemplate)"
+                            class="rounded p-4 cursor-pointer bg-secondary d-flex align-items-center justify-content-center">
+                            <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                            </svg>
+                            <div class="fs-6">Add items</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">Features</label>
+                <div class="row">
+                    <ng-container *ngFor="let feature of features; let i = index">
+                        <div class="col-lg-6 mb-3">
+                            <div
+                                class="p-4 position-relative rounded h-100 bg-white d-flex align-items-start justify-content-start gap-3">
+                                <div>
+                                    <img class="rounded" src="{{base}}{{feature.thumbnail?.path}}" height="100"
+                                        width="100" alt="{{feature.title}}"
+                                        onerror="this.src = '../../../../../assets/images/default.png'">
+                                </div>
+                                <div>
+                                    <div class="fs-4 mb-1 fw-bold">{{feature.title}}</div>
+                                    <div class="text-muted">{{feature.description}}</div>
+                                </div>
+                                <div class="remove-feature rounded bg-secondary position-absolute"
+                                    (click)="removeItems('features', i)">
+                                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="col-lg-6 mb-3">
+                        <div (click)="openFeature(featureTemplate)"
+                            class="rounded h-100 p-4 cursor-pointer bg-secondary d-flex align-items-center justify-content-center">
+                            <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                            </svg>
+                            <div class="fs-6">Add items</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-3">
+                <div class="form-group mb-3">
+                    <label for="storyTitle" class="form-label">Story Title</label>
+                    <input id="storyTitle" type="text" formControlName="storyTitle" placeholder="Brands"
+                        class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="storyDescription" class="form-label">Story Description</label>
+                    <textarea id="storyDescription" formControlName="storyDescription" rows="5" class="form-control"
+                        placeholder="We are the source of fresh fruits and vegetables from across carrying the finest brands"></textarea>
+                </div>
+                <div>
+                    <label for="storyThumbnails" class="form-label">Story Thumbnails</label>
+                    <div class="row" id="storyThumbnails">
+                        <ng-container *ngFor="let storyThumbnail of storyThumbnails;let i = index">
+                            <div class="col-lg-2 mb-3">
+                                <div class="w-full ratio ratio-1x1 position-relative">
+                                    <div (click)="removeItems('storyThumbnails', i)"
+                                        class="position-absolute rounded bg-secondary remove-thumbnail">
+                                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6 18 18 6M6 6l12 12">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <img src="{{base}}{{storyThumbnail?.path}}" onerror="this.src = '../../../../../assets/images/default.png'" alt="{{storyThumbnail?.title}}">
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="col-lg-2">
+                            <div class="ratio ratio-1x1">
+                                <app-assets (mediaClicked)="onStoryThumbnailSelected($event)"
+                                    [previewEnabled]="false"></app-assets>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<ng-template #legacyTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Legacy Items</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeLegacy()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="legacyForm">
+            <div class="form-group">
+                <label class="form-label required">Title</label>
+                <input class="form-control" formControlName="title" placeholder="28+" [ngClass]="{'is-invalid': (legacyControls.title.touched || isLegacySubmitted) &&
+                legacyControls.title.errors?.required}">
+            </div>
+            <div class="form-group my-3">
+                <label class="form-label required">Placeholder</label>
+                <input class="form-control" formControlName="placeholder" placeholder="Years" [ngClass]="{'is-invalid': (legacyControls.placeholder.touched || isLegacySubmitted) &&
+                legacyControls.placeholder.errors?.required}">
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="saveLegacyItem()">Save items</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #featureTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Feature</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeFeature()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="featureForm">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="ratio ratio-1x1">
+                        <app-assets (mediaClicked)="onFeatureMediaSelected($event)"></app-assets>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="form-group">
+                        <label class="form-label required">Title</label>
+                        <input class="form-control" formControlName="title" placeholder="Modern facility" [ngClass]="{'is-invalid': (featureControls.title.touched || isFeatureSubmitted) &&
+                        featureControls.title.errors?.required}">
+                    </div>
+                    <div class="form-group my-3">
+                        <label class="form-label required">Description</label>
+                        <textarea class="form-control" formControlName="description"
+                            placeholder="We operates a fleet of refrigerated trucks to carry the products and delivery the order on time"
+                            [ngClass]="{'is-invalid': (featureControls.description.touched || isFeatureSubmitted) &&
+                        featureControls.description.errors?.required}"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="saveFeatureItem()">Save feature</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { DeliverySlotsService } from 'src/app/includes/services/delivery-slots.service';
 
 @Component({
@@ -19,13 +20,18 @@ export class DeliverySlotsComponent implements OnInit {
   slotDetails: any
   isEditMode: boolean = false
   deliveryQuery: string
+  days: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   isSubmitted: boolean = false
+  activeDay: string = 'Sunday';
+  settings: any;
+  futureDays: FormControl = new FormControl(7)
 
   constructor(
     private DeliveryService: DeliverySlotsService,
     private BsModalService: BsModalService,
     private Toast: HotToastService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   get formControls() {
@@ -39,45 +45,68 @@ export class DeliverySlotsComponent implements OnInit {
       isActive: new FormControl('true')
     })
 
+    this.getSettings()
     this.getSlots()
   }
 
+  toggleDelivery() {
+    this.AppSettingsService.updateSettings({ isDeliverySlots: !this.settings.isDeliverySlots }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSettings()
+          this.Toast.success(res?.message || "Delivery slot updated")
+        } else {
+          this.Toast.error(res?.message || "Something went wrong")
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message || 'Something went wrong')
+      }
+    })
+  }
+
+  getSettings() {
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
   getSlots() {
-    this.DeliveryService.getSlots().subscribe({
+    this.DeliveryService.getDeliverySlots().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.slots = res?.result
-          this.slots.sort((a, b) => {
-            const timeA = new Date(`1970-01-01T${a.from}`);
-            const timeB = new Date(`1970-01-01T${b.from}`);
-            if (timeA < timeB) {
-              return -1;
-            } else if (timeA > timeB) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
           this.ChangeDetectorRef.markForCheck()
+        } else {
+
         }
       }, error: (err) => { }
     })
   }
 
-  open(template: TemplateRef<any>, delivery?: string) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
-    if (delivery) {
-      this.isEditMode = true
-      this.DeliveryService.getSlotDetails(delivery).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.slotDetails = res?.result
-            for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
-            this.ChangeDetectorRef.markForCheck()
-          }
-        }, error: (err) => { }
-      })
-    }
+  toggleSlot(slotId: string, slotStatus: boolean) {
+    this.DeliveryService.updateSlot({ refid: slotId, isActive: !slotStatus }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSlots()
+          this.Toast.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  open(template: TemplateRef<any>, deliveryDay?: string) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
+    
   }
 
   close() {

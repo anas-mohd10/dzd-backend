@@ -13,13 +13,17 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ThemeComponent } from './theme/theme.component';
 import { AppImagesComponent } from './app-images/app-images.component';
+import { ContactComponent } from './contact/contact.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     CatalogComponent,
     ThemeComponent,
-    AppImagesComponent
+    AppImagesComponent,
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     CommonModule,

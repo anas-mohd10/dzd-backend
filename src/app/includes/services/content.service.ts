@@ -24,4 +24,13 @@ export class ContentService {
     return this.http.get(`${url}`);
   }
 
+  manageContactCms(data: any) {
+    const url = this.commonService.getFullUrl(this.contentEndoints.manageContactCms);
+    return this.http.post(`${url}`, data);
+  }
+
+  getContactCmsDetails(){
+    const url = this.commonService.getFullUrl(this.contentEndoints.contactCmsDetails);
+    return this.http.get(`${url}`);
+  }
 }

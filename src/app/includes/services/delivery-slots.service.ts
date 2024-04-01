@@ -18,8 +18,13 @@ export class DeliverySlotsService {
     return this.http.post(`${url}`, data)
   }
 
-  getSlots() {
-    const url = this.commonService.getFullUrl(deliverySlots.get);
+  getSlots(day: string) {
+    const url = this.commonService.getFullUrl(deliverySlots.get + "?day=" + day);
+    return this.http.get(`${url}`)
+  }
+
+  getDeliverySlots(type?: string, day?: string) {
+    const url = this.commonService.getFullUrl(deliverySlots.get + `?type=${type ? type : ''}&day=${day ? day : ''}`);
     return this.http.get(`${url}`)
   }
 

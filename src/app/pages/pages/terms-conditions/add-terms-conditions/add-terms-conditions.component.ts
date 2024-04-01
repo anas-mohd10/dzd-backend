@@ -6,6 +6,8 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { TermsConditionsService } from 'src/app/includes/services/terms-conditions.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { HotToastService } from '@ngneat/hot-toast';
+
 
 @Component({
   selector: 'app-add-terms-conditions',
@@ -45,12 +47,19 @@ export class AddTermsConditionsComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
+      { class: 'figtree', name: 'Figtree' },
     ]
   };
 
 
-  constructor(private termsconditionsService: TermsConditionsService, private formBuilder: FormBuilder, private router: Router,
-    private toastr: ToastrService) { }
+  constructor(
+    private termsconditionsService: TermsConditionsService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private HotToastService: HotToastService,
+    private toastr: ToastrService) {
+      
+    }
 
   ngOnInit(): void {
     this.initForm()
@@ -119,9 +128,9 @@ export class AddTermsConditionsComponent implements OnInit {
 
   afterResult(errorcode: any, message: any) {
     if (errorcode != 0) {
-      this.toastr.error(message);
+      this.HotToastService.error(message);
     } else if (errorcode == 0) {
-      this.toastr.success(message);
+      this.HotToastService.success(message);
       this.isHidden = true
       this.ngOnInit()
     }

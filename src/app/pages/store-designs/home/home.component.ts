@@ -552,6 +552,9 @@ export class HomeComponent implements OnInit {
       video: new FormControl(""),
       view: new FormControl("grid"),
       gridsPerCount: new FormControl("4"),
+      buttonVisibility: new FormControl(false),
+      buttonText: new FormControl(""),
+      buttonLink: new FormControl(""),
       slidesPerCount: new FormControl("3")
     })
 

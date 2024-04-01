@@ -3,3 +3,36 @@
 .btn-secondary {
     font-weight: 400 !important;
 }
+
+.checkbox{
+    height: 24px;
+    width: 24px;
+    border: 2px solid #aaaaaa;
+    border-radius: 4px;
+    position: relative;
+    background: #ffffff;
+    cursor: pointer;
+
+    &.checked{
+
+        &::after{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            content: '';
+            height: 12px;
+            width: 12px;
+            background: #00bdab;
+            border-radius: 2px;
+        }
+        
+        border: 2px solid #00bdab;
+    }
+}
+
+.delivery-slots{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: .5rem;
+}
