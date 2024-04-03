@@ -10,13 +10,14 @@ import { CustomersService } from 'src/app/includes/services/customers.service';
 })
 export class WishlistListComponent implements OnInit {
   appRoute = appRoutes
-  limit: FormControl = new FormControl('20')
+  limit: number = 20
   page: number = 1
   isLastPage: boolean = false
   customers: Array<any> = []
   keyword: FormControl = new FormControl('')
   sort: FormControl = new FormControl('')
-  totalResults: string = ''
+  totalResults: number = 0
+  totalPages: number = 1
   topWishlisted: Array<any> = []
 
   constructor(
@@ -42,6 +43,12 @@ export class WishlistListComponent implements OnInit {
     this.searchCustomers()
   }
 
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.searchCustomers()
+  }
+
   getNextPage() {
     this.page += 1
     this.searchCustomers()
@@ -53,17 +60,16 @@ export class WishlistListComponent implements OnInit {
   }
 
   searchCustomers() {
-    let payload = {
+    this.CustomersService.getWishlist({
       keyword: this.keyword.value,
       page: this.page,
-      limit: this.limit.value,
+      limit: this.limit,
       sort: this.sort.value
-    }
-
-    this.CustomersService.getWishlist(payload).subscribe((res: any) => {
+    }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.customers = res?.result?.data
         this.totalResults = res?.result?.totalResults
+        this.totalPages = res?.result?.totalPages
         this.isLastPage = res?.result?.isLastPage
         this.ChangeDetectorRef.markForCheck()
       }

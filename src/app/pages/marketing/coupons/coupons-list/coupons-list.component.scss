@@ -15,106 +15,56 @@ input[type=button] {
   font-weight: normal !important;
 }
 
-.filteringWrapper {
-  .filtering {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 8px;
+.offer-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
 
-    span {
-      color: #8B909A;
-      line-height: 18px;
-    }
+.w-80 {
+  width: 80px;
+  margin: 0 12px 0 0;
+  align-self: stretch;
 
-    select {
-      border: 1px solid #E8E8E8;
-      border-radius: 6px;
-      padding: 5px;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .paginationBefore,
-    .paginationNext {
-      height: 30px;
-      width: 30px;
-      border-radius: 15px;
-      display: grid;
-      place-items: center;
-      background: $background;
-      cursor: pointer;
-
-      &.disabled {
-        opacity: 0.5;
-        pointer-events: none;
-      }
-    }
-
-    .paginationPage {
-      margin: 0 10px;
-    }
+  img {
+    object-fit: cover;
   }
 }
 
-.couponCards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+.w-calc {
+  width: calc(100% - 92px);
+  align-self: stretch;
+}
 
-  .couponCard {
-    // padding: 10px;
-    background: #ffffff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    position: relative;
+.w-37 {
+  width: 37px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+  align-self: stretch;
+}
 
-    &.completed {
-      opacity: 0.7;
-      pointer-events: none;
-    }
+.w-calc37 {
+  width: calc(100% - 47px);
+  align-self: stretch;
+}
 
-    .completedBadge {
-      position: absolute;
-      top: .625rem;
-      right: .625rem;
-    }
+.message{
+  color: #505050;
+}
 
-    .editButton {
-      position: absolute;
-      top: .625rem;
-      right: .625rem;
-      height: 30px;
-      width: 30px;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      border-radius: 5px;
 
-      &:hover {
-        background: $hover;
-      }
-    }
+.offerCoupon{
+  position: relative;
+  -webkit-mask-image: url('../../../../../assets/images/coupon.png');
+  mask-image: url('../../../../../assets/images/coupon.png');
+  -webkit-mask-position: top right;
+  mask-position: top right;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 375px 125px;
+  mask-size: 375px 125px;
 
-    .couponImage {
-      img {
-        height: 100px;
-        width: 100px;
-        border-radius: 10px;
-      }
-    }
-
-    .alert {
-      width: max-content;
-      border-radius: 0%;
-    }
-  }
 }

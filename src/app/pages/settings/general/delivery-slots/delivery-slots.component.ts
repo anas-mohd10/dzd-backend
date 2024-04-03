@@ -1,10 +1,17 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { DeliverySlotsService } from 'src/app/includes/services/delivery-slots.service';
+
+interface DeliverySlotInputs {
+  from: string,
+  to: string,
+  refid: boolean,
+  ordersPerSlot: number
+}
 
 @Component({
   selector: 'app-delivery-slots',
@@ -15,7 +22,7 @@ export class DeliverySlotsComponent implements OnInit {
   appRoute = appRoutes
   modalRef?: BsModalRef
   confirmRef?: BsModalRef
-  form: FormGroup
+  form: FormGroup = new FormGroup({})
   slots: Array<any> = []
   slotDetails: any
   isEditMode: boolean = false
@@ -25,25 +32,33 @@ export class DeliverySlotsComponent implements OnInit {
   activeDay: string = 'Sunday';
   settings: any;
   futureDays: FormControl = new FormControl(7)
+  slotItems: Array<DeliverySlotInputs> = [];
+  addModalRef?: BsModalRef
+  @ViewChild('template') template: any;
 
   constructor(
     private DeliveryService: DeliverySlotsService,
     private BsModalService: BsModalService,
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private FormBuilder: FormBuilder
   ) { }
 
   get formControls() {
     return this.form.controls
   }
 
+  updateSlotItems() {
+
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
-      from: new FormControl('', Validators.required),
-      to: new FormControl('', Validators.required),
-      isActive: new FormControl('true')
-    })
+      from: new FormControl('', [Validators.required, Validators.maxLength(5), Validators.pattern(/^[\d:]+$/)]),
+      to: new FormControl('', [Validators.required, Validators.maxLength(5), Validators.pattern(/^[\d:]+$/)]),
+      ordersPerSlot: new FormControl('', [Validators.required, Validators.min(1), Validators.max(100)]),
+    });
 
     this.getSettings()
     this.getSlots()
@@ -69,6 +84,7 @@ export class DeliverySlotsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settings = res?.result
+          this.futureDays.setValue(this.settings?.futureDays)
           this.ChangeDetectorRef.markForCheck()
         }
       }
@@ -88,8 +104,11 @@ export class DeliverySlotsComponent implements OnInit {
     })
   }
 
-  toggleSlot(slotId: string, slotStatus: boolean) {
-    this.DeliveryService.updateSlot({ refid: slotId, isActive: !slotStatus }).subscribe({
+  toggleSlot(event: { switchId: string, toggleState: boolean }) {
+    this.DeliveryService.updateSlot({
+      refid: event.switchId,
+      isActive: event.toggleState
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getSlots()
@@ -104,9 +123,114 @@ export class DeliverySlotsComponent implements OnInit {
     })
   }
 
-  open(template: TemplateRef<any>, deliveryDay?: string) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
-    
+  open(template: TemplateRef<any>, deliveryDay: string) {
+    this.activeDay = deliveryDay
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+    this.DeliveryService.getSlotDetailsPerDay(deliveryDay).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.slotItems = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  toggleFutureDays(){
+    this.AppSettingsService.updateSettings({ futureDays: this.futureDays.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSettings()
+          this.Toast.success(res?.message || "Delivery future days updated")
+        } else {
+          this.Toast.error(res?.message || "Something went wrong")
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message || 'Something went wrong')
+      }
+    })
+  }
+
+  openAdd(template: TemplateRef<any>) {
+    this.addModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
+    this.modalRef?.hide()
+  }
+
+  closeAdd() {
+    this.addModalRef?.hide()
+    this.modalRef = this.BsModalService.show(this.template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+    this.DeliveryService.getSlotDetailsPerDay(this.activeDay).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.slotItems = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  saveDeliverySlot() {
+    if (!this.form.valid) {
+      this.isSubmitted = true
+      return
+    }
+
+    this.DeliveryService.addSlot({ day: this.activeDay, ...this.form.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSlots()
+          this.form.reset()
+          this.Toast.success(res?.message)
+          this.addModalRef?.hide()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  deleteSlot(slotId: any) {
+    this.DeliveryService.deleteSlot(slotId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getSlots()
+          this.modalRef?.hide()
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  updateSlots() {
+    this.DeliveryService.updateSlots({ slots: this.slotItems }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getSlots()
+          this.modalRef?.hide()
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
   }
 
   close() {

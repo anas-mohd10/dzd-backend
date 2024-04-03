@@ -94,7 +94,6 @@ export class AddStoreComponent implements OnInit {
     }
 
     const payload = this.createPayload()
-    if (this.slots.length > 0) {
       this.StoresService.add(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
@@ -103,9 +102,6 @@ export class AddStoreComponent implements OnInit {
           this.Toast.error(res?.message)
         }
       })
-    } else {
-      this.Toast.error('Add time slots to proceed')
-    }
   }
 
   createPayload() {
@@ -127,7 +123,6 @@ export class AddStoreComponent implements OnInit {
       isActive: this.form.get('isActive')?.value,
       isClickPoint: this.form.get('isClickPoint')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
-      slots: this.slots
     }
 
     return data

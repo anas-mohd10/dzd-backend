@@ -1,95 +1,90 @@
-<div class="storesContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bolder">Stores</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.stores.STORE_LIST}}">Stores</a>
-                    </li>
-                </ul>
+<div>
+    <div class="page-header col d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bolder">Stores</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.stores.STORE_LIST}}">Stores</a>
+                </li>
+            </ul>
         </div>
-    </div>
-
-    <div class="buttonContainer">
         <button type="button" class="btn btn-primary" routerLink="{{appRoute.stores.ADD_STORE}}">
-            Add Store
+            Add New Store
         </button>
     </div>
 
-    <div class="resultContainer">
-        <ng-container *ngIf="data.length > 0">
-            <div class="stores">
-                <ng-container *ngFor="let store of data">
-                    <div class="store">
-                        <div class="editButton" routerLink="{{appRoute.stores.UPDATE_STORE}}"
-                            [queryParams]="{'store': store?.refid}">
-                            <img src="../../../../../assets/icons/edit.svg" alt="Icon">
-                        </div>
-                        <div class="featuredStore" *ngIf="store?.isFeatured">
-                            <div class="featuredIcon">
-                                <img src="../../../../../../assets/icons/verified.svg" alt="Icon">
-                                <div class="tooltipWrapper">Featured store</div>
-                            </div>
-                        </div>
-                        <div class="clickPoint" *ngIf="store?.isClickPoint">
-                            <div class="clickIcon">
-                                <svg height="24px" width="24px" fill="none" stroke="currentColor" stroke-width="1.5"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z">
-                                    </path>
-                                </svg>
-                                <div class="tooltipWrapper">Click and collect point</div>
-                            </div>
-                        </div>
-                        <div class="storeCity fs-5">{{store?.address?.city}}</div>
-                        <div class="storeAddress">
-                            <img src="../../../../../../assets/icons/location.svg" alt="Icon">
-                            <div class="storeValue">
-                                <div class="storeLabel fs-5">Address</div>
-                                <div>{{store?.address?.firstlane ? store?.address?.firstlane : ''}}
-                                    {{store?.address?.secondlane ? ', '+store?.address?.secondlane : ''}}
-                                    {{store?.address?.area ? ', '+store?.address?.area : ''}} {{store?.address?.landmark
-                                    ? ', '+store?.address?.landmark : ''}}</div>
-                            </div>
-                        </div>
-                        <div class="storeEmail">
-                            <img src="../../../../../../assets/icons/email.svg" alt="Icon">
-                            <div class="storeValue">
-                                <div class="storeLabel fs-5">Email Address</div>
-                                <div>{{store?.contact?.email}}</div>
-                            </div>
-                        </div>
-                        <div class="storeMobile">
-                            <img src="../../../../../../assets/icons/mobile.svg" alt="Icon">
-                            <div class="storeValue">
-                                <div class="storeLabel fs-5">Mobile Number</div>
-                                <div>{{store?.contact?.countryCode}} {{store?.contact?.mobile}}</div>
-                            </div>
-                        </div>
-                        <div class="storeDirection">
-                            <a class="storeLink" href="{{store?.map}}" target="_blank">
-                                <div>Go directions</div> <img src="../../../../../../assets/icons/map.svg" alt="Icon">
-                            </a>
-                        </div>
+    <div class="stores my-3">
+        <ng-container *ngFor="let store of data">
+            <div class="store">
+                <div class="editButton" routerLink="{{appRoute.stores.UPDATE_STORE}}"
+                    [queryParams]="{'store': store?.refid}">
+                    <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                </div>
+                <div class="featuredStore" *ngIf="store?.isFeatured">
+                    <div class="featuredIcon">
+                        <img src="../../../../../../assets/icons/verified.svg" alt="Icon">
+                        <div class="tooltipWrapper">Featured store</div>
                     </div>
-                </ng-container>
+                </div>
+                <div class="clickPoint" *ngIf="store?.isClickPoint">
+                    <div class="clickIcon">
+                        <svg height="24px" width="24px" fill="none" stroke="currentColor" stroke-width="1.5"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z">
+                            </path>
+                        </svg>
+                        <div class="tooltipWrapper">Click and collect point</div>
+                    </div>
+                </div>
+                <div class="storeCity fs-5">{{store?.address?.city}}</div>
+                <div class="storeAddress">
+                    <img src="../../../../../../assets/icons/location.svg" alt="Icon">
+                    <div class="storeValue">
+                        <div class="storeLabel fs-5">Address</div>
+                        <div>{{store?.address?.firstlane ? store?.address?.firstlane : ''}}
+                            {{store?.address?.secondlane ? ', '+store?.address?.secondlane : ''}}
+                            {{store?.address?.area ? ', '+store?.address?.area : ''}} {{store?.address?.landmark
+                            ? ', '+store?.address?.landmark : ''}}</div>
+                    </div>
+                </div>
+                <div class="storeEmail">
+                    <img src="../../../../../../assets/icons/email.svg" alt="Icon">
+                    <div class="storeValue">
+                        <div class="storeLabel fs-5">Email Address</div>
+                        <div>{{store?.contact?.email}}</div>
+                    </div>
+                </div>
+                <div class="storeMobile">
+                    <img src="../../../../../../assets/icons/mobile.svg" alt="Icon">
+                    <div class="storeValue">
+                        <div class="storeLabel fs-5">Mobile Number</div>
+                        <div>{{store?.contact?.countryCode}} {{store?.contact?.mobile}}</div>
+                    </div>
+                </div>
+                <div class="storeDirection">
+                    <a class="storeLink" href="{{store?.map}}" target="_blank">
+                        <div>Go directions</div> <img src="../../../../../../assets/icons/map.svg" alt="Icon">
+                    </a>
+                </div>
             </div>
         </ng-container>
-        <div *ngIf="data.length == 0">
-            <div class="emptyNote">
-                <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
-                <div class="fs-3 fw-bolder">No result found</div>
-                <div class="fs-5 note">We couldn't find any item based on your search.</div>
+    </div>
+
+    <div *ngIf="data.length == 0">
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="emptyNote m-0">
+                    <div class="fs-3 fw-bold">No stores found</div>
+                    <div class="fs-5 note text-muted my-2">We couldn't find any item based on your search.</div>
+                </div>
             </div>
         </div>
     </div>

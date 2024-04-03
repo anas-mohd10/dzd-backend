@@ -1,9 +1,9 @@
 <div>
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bold">Delivery slots</h1>
-    </div>
-    <div class="d-flex align-items-start justify-content-between">
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Delivery slots</h1>
+      </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
           <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -12,19 +12,19 @@
           <a routerLink="{{ appRoute.deliverySlots }}">Delivery slots</a>
         </li>
       </ul>
-      <div class="row justify-content-end">
-        <div class="col-lg-5 d-flex align-items-center justify-content-start gap-2">
-          <div class="fs-5">Enabled delivery slots</div>
-          <div class="checkbox" [ngClass]="{'checked': settings?.isDeliverySlots == true}" (click)="toggleDelivery()">
-          </div>
-        </div>
-        <div class="col-lg-6 d-flex align-items-center justify-content-start gap-2">
-          <div class="fs-5">Delivery available in future days</div>
-          <select [formControl]="futureDays" class="form-select" style="width: 80px">
-            <option value="" disabled>-- Select an option --</option>
-            <option *ngFor="let day of [3, 7, 9, 12]" value="{{day}}">{{day}}</option>
-          </select>
-        </div>
+    </div>
+    <div class="row justify-content-end">
+      <div class="col-lg-5 d-flex align-items-center justify-content-start gap-2">
+        <div class="fs-5">Enabled delivery slots</div>
+        <app-switch (switchToggled)="toggleDelivery()" [switchId]=""
+          [isToggledProps]="settings?.isDeliverySlots"></app-switch>
+      </div>
+      <div class="col-lg-6 d-flex align-items-center justify-content-start gap-2">
+        <div class="fs-5">Delivery available in future days</div>
+        <select (change)="toggleFutureDays()" [formControl]="futureDays" class="form-select" style="width: 80px">
+          <option value="" disabled>-- Select an option --</option>
+          <option *ngFor="let day of [3, 7, 9, 12]" value="{{day}}">{{day}}</option>
+        </select>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
         <div class="d-flex align-items-center mb-3 justify-content-between">
           <div class="fs-4 fw-bold">{{slot.day}} slots</div>
           <div (click)="open(template, slot.day)"
-            class="p-2 cursor-pointer border border-secondary rounded d-flex align-items-center justify-content-center gap-2">
+            class="p-2 fs-6 cursor-pointer border border-secondary rounded d-flex align-items-center justify-content-center gap-2">
             <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -50,8 +50,8 @@
           <ng-container *ngFor="let slotItem of slot?.slots; let j = index">
             <div class="p-2 rounded border border-secondary d-flex align-items-center justify-content-between">
               <div class="fs-5">{{slotItem.from}} - {{slotItem.to}}</div>
-              <div class="checkbox" [ngClass]="{'checked': slotItem?.isActive == true}" (click)="toggleSlot(slotItem?.refid, slotItem?.isActive)">
-              </div>
+              <app-switch [isToggledProps]="slotItem?.isActive" [switchId]="slotItem.refid"
+                (switchToggled)="toggleSlot($event)"></app-switch>
             </div>
           </ng-container>
         </div>
@@ -68,13 +68,58 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Slot details</h4>
+    <h4 class="modal-title pull-left">{{activeDay}} Slots</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
   <div class="modal-body">
+    <form (ngSubmit)="updateSlotItems()">
+      <div class="row" *ngFor="let item of slotItems; let i = index">
+        <div class="col-lg-3 mb-3 form-group">
+          <label class="form-label">From</label>
+          <input class="form-control" type="text" [(ngModel)]="item.from" name="from{{i}}">
+        </div>
+        <div class="col-lg-3 mb-3 form-group">
+          <label class="form-label">To</label>
+          <input class="form-control" type="text" [(ngModel)]="item.to" name="to{{i}}">
+        </div>
+        <div class="col-lg-3 mb-3 form-group">
+          <label class="form-label">Orders Per Slot</label>
+          <input class="form-control" type="text" [(ngModel)]="item.ordersPerSlot" name="ordersPerSlot{{i}}">
+        </div>
+        <div class="col-lg-3 mb-3 form-group">
+          <label class="form-label">&nbsp;</label>
+          <input type="button" class="w-100 btn btn-danger" (click)="deleteSlot(item.refid)" value="Remove">
+        </div>
+      </div>
+    </form>
 
+    <ng-container *ngIf="slotItems.length == 0">
+      <div class="d-flex flex-column text-muted my-4 align-items-center justify-content-center">
+        <div>
+          <svg height="40" width="40" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z">
+            </path>
+          </svg>
+        </div>
+        <div class="fs-5">No timeslots found</div>
+      </div>
+    </ng-container>
+
+    <div class="d-flex my-3 align-items-center justify-content-between gap-2">
+      <button class="btn d-flex align-items-center justify-content-center gap-2 w-50 bg-secondary"
+        [ngClass]="{'w-50' : slotItems.length > 0, 'w-100': slotItems.length == 0}" (click)="openAdd(addTemplate)">
+        Add New Slot
+        <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+        </svg>
+      </button>
+      <button *ngIf="slotItems.length > 0" class="btn w-50 btn-primary" (click)="updateSlots()">Update Changes</button>
+    </div>
   </div>
 </ng-template>
 
@@ -87,5 +132,37 @@
     <button type="button" class="btn btn-primary" (click)="decline()">
       No
     </button>
+  </div>
+</ng-template>
+
+<ng-template #addTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add {{activeDay}} Time Slot</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <form [formGroup]="form" class="mb-3">
+      <div class="form-group mb-3">
+        <label for="from" class="form-label">From</label>
+        <input type="text" id="from" placeholder="11:00" formControlName="from" class="form-control">
+      </div>
+      <div class="form-group mb-3">
+        <label for="to" class="form-label">To</label>
+        <input type="text" id="to" placeholder="13:00" formControlName="to" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="ordersPerSlot" class="form-label">Order Per Slot</label>
+        <input type="text" id="ordersPerSlot" placeholder="10" formControlName="ordersPerSlot" class="form-control">
+      </div>
+    </form>
+
+    <div class="d-flex gap-2 align-items-center justify-content-center">
+      <button class="btn w-50 btn-secondary" (click)="closeAdd()">Cancel</button>
+      <button class="btn w-50 btn-primary" (click)="saveDeliverySlot()">Save slot</button>
+    </div>
+
   </div>
 </ng-template>

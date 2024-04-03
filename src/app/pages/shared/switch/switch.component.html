@@ -1,0 +1,3 @@
+<div class="switch-box on-state cursor-pointer" [ngClass]="{'on-state': isToggled == true}" (click)="toggleSwitch()">
+    <div [ngClass]="{'switch-off': isToggled == false, 'switch-on': isToggled == true}"></div>
+</div>

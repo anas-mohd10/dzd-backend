@@ -33,6 +33,11 @@ export class DeliverySlotsService {
     return this.http.get(`${url}/${data}`)
   }
 
+  getSlotDetailsPerDay(data: string) {
+    const url = this.commonService.getFullUrl(deliverySlots.deliverySlots);
+    return this.http.get(`${url}/${data}`)
+  }
+
   activeSlots() {
     const url = this.commonService.getFullUrl(deliverySlots.get + "?type=active");
     return this.http.get(`${url}`)
@@ -45,6 +50,11 @@ export class DeliverySlotsService {
 
   updateSlot(data: any) {
     const url = this.commonService.getFullUrl(deliverySlots.update);
+    return this.http.put(`${url}`, data)
+  }
+
+  updateSlots(data: any) {
+    const url = this.commonService.getFullUrl(deliverySlots.updateDeliverySlots);
     return this.http.put(`${url}`, data)
   }
 

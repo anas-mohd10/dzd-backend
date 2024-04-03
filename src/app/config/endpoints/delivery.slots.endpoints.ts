@@ -3,4 +3,6 @@ export const deliverySlots = {
     update: '/update-delivery-slot',
     delete: '/delete-delivery-slot',
     get: '/delivery-slots',
+    deliverySlots: '/delivery-slots-per-day',
+    updateDeliverySlots: '/update-delivery-slots'
 }

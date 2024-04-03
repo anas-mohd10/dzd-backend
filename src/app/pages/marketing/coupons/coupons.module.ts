@@ -11,6 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     DataTablesModule,
     ImageCropperModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
     TabsModule,
     ToastrModule.forRoot({

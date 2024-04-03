@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-coupons-list',
@@ -16,14 +17,16 @@ export class CouponsListComponent implements OnInit {
   base: any
   settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl('18')
+  limit: number = 20
+  totalResults: number = 0
+  totalPages: number = 1
   lastPage: Boolean = false;
-  totalResults: string = ''
 
   constructor(
     private CouponsService: CouponsService,
     private FormBuilder: FormBuilder,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -47,24 +50,52 @@ export class CouponsListComponent implements OnInit {
     this.getCoupons()
   }
 
-  getNextPage() {
-    this.page += 1
-    this.getCoupons()
-  }
-
-  getPreviousPage() {
-    this.page -= 1
-    this.getCoupons()
-  }
-
   toggleTab(type: string) {
     console.log(type);
+  }
+
+  switchToggled(event: { switchId: string, toggleState: boolean }) {
+    this.CouponsService.updateCoupon({ refid: event.switchId, isActive: event.toggleState }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getCoupons()
+          this.HotToastService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  deleteOffer(offerId: string) {
+    this.CouponsService.updateCoupon({ refid: offerId, isDelete: true }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getCoupons()
+          this.HotToastService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getCoupons()
   }
 
   getCoupons() {
     let payload = {
       title: this.form.get('title')?.value,
-      limit: this.limit.value,
+      limit: this.limit,
       page: this.page,
       isActive: this.form.get('isActive')?.value,
       fromDate: this.form.get('fromDate')?.value,

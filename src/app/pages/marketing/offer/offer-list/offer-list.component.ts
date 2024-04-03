@@ -4,6 +4,8 @@ import { OfferService } from '../../../../includes/services/offer.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment.prod';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { HotToastService } from '@ngneat/hot-toast';
+
 @Component({
   selector: 'app-offer-list',
   templateUrl: './offer-list.component.html',
@@ -16,15 +18,17 @@ export class OfferListComponent implements OnInit {
   base: any
   settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl("18")
+  limit: number = 20
   lastPage: Boolean = false;
-  totalResults: string = ''
+  totalResults: number = 0
+  totalPages: number = 0
 
   constructor(
     private OfferService: OfferService,
     private FormBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -52,22 +56,51 @@ export class OfferListComponent implements OnInit {
     this.getOffers()
   }
 
-  getNextPage() {
-    this.page += 1
-    this.getOffers()
+
+  switchToggled(event: { switchId: string, toggleState: boolean }) {
+    console.log(event);
+    this.OfferService.updateOffer(event.switchId, { refid: event.switchId, isActive: event.toggleState }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOffers()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
   }
 
-  getPreviousPage() {
-    this.page -= 1
+  deleteOffer(offerId: string) {
+    this.OfferService.updateOffer(offerId, { refid: offerId, isDelete: true }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOffers()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getOffers()
   }
 
   getOffers() {
-    this.OfferService.searchOffers({ ...this.form.value, page: this.page, limit: this.limit.value }).subscribe((res: any) => {
+    this.OfferService.searchOffers({ ...this.form.value, page: this.page, limit: this.limit }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.offers = res?.result?.data
         this.page = res?.result?.page
         this.lastPage = res?.result?.lastPage
+        this.totalPages = res?.result?.totalPages
         this.totalResults = res?.result?.totalResults
         for (let offer of this.offers) {
           offer.fromDate = new Date(offer?.fromDate).toDateString()
