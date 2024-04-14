@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core'
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal'
 import { appRoutes } from 'src/app/config/routes'
 import { EnquiryService } from 'src/app/includes/services/enquiry.service'
+
 
 @Component({
   selector: 'app-enquires',
@@ -13,17 +15,20 @@ export class EnquiresComponent implements OnInit {
   enquires: Array<any> = []
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
-  limit: FormControl = new FormControl("18")
-  query: any = {}
+  limit: number = 30
   page: number = 1
+  totalPages: number = 1
+  totalResults: number = 0
+  query: any = {}
   form: FormGroup
   enquiry: any = {}
-  lastPage: Boolean = false
-  totalResults: string = ''
+  lastPage: Boolean = false;
+  modalRef: BsModalRef
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
-    private EnquiryService: EnquiryService
+    private EnquiryService: EnquiryService,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
@@ -40,30 +45,28 @@ export class EnquiresComponent implements OnInit {
       keyword: this.keyword.value,
       isActive: this.isActive.value,
       page: this.page,
-      limit: this.limit?.value
+      limit: this.limit
     }
     this.EnquiryService.searchEnquiry(this.query).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.enquires = res?.result?.data
         this.lastPage = res?.result?.lastPage
         this.totalResults = res?.result?.totalResults
+        this.totalPages = res?.result?.totalPages
         this.page = res?.result?.page
         this.ChangeDetectorRef.markForCheck()
       }
     })
   }
 
-  getEnquiry(data: any) {
+  open(template: TemplateRef<any>, data: any){
+    this.modalRef = this.BsModalService.show(template, {class: 'modal-lg modal-dialog-centered'})
     this.enquiry = data
   }
 
-  getPreviousPage() {
-    this.page -= 1
-    this.getEnquiries()
-  }
-
-  getNextPage() {
-    this.page += 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getEnquiries()
   }
 }

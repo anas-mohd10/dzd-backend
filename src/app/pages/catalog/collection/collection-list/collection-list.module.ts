@@ -5,12 +5,14 @@ import { RouterModule } from '@angular/router';
 import { CollectionListComponent } from './collection-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { ArchivedCollectionComponent } from '../archived-collection/archived-collection.component';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [CollectionListComponent],
   imports: [
     CommonModule,
     DataTablesModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([

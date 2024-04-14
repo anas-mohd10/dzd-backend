@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { AppSettings, PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { PageTasks } from '../../../../config/constants';
+import { FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -8,7 +8,6 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ToastrService } from 'ngx-toastr';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
@@ -218,7 +217,6 @@ export class AddProductComponent implements OnInit {
     private toastr: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ProductHeadService: ProductHeadService,
-    private ElementRef: ElementRef,
     private AttributeService: AttributeService,
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService
@@ -340,10 +338,10 @@ export class AddProductComponent implements OnInit {
           this.parentForm.patchValue(res.result)
           this.brandDetails = res?.result?.brand
           this.previewDetails = res?.result?.thumbnail?.path
-          this.productCategories = res?.result?.parentCategories
+          this.productCategories = res?.result?.parentCategory.id
           this.productCategories.map((item: any) => this.getDefaultCategories(item.slug))
-          this.getAttributes(res?.result?.category?.catid)
-          res?.result?.category ? this.getDefaultCategories(res?.result?.category?.slug) : null
+          res?.result?.defaultCategory?.id ? this.getAttributes(res?.result?.defaultCategory?.id?.catid) : null
+          res?.result?.defaultCategory?.id ? this.getDefaultCategories(res?.result?.defaultCategory?.id?.slug) : null
           this.parentForm.get('category')?.setValue(res?.result?.category?._id)
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
           this.ChangeDetectorRef.markForCheck()
@@ -379,11 +377,17 @@ export class AddProductComponent implements OnInit {
     let files = this.images.map((item: any) => item._id)
     this.form.value.relatedProducts ? null : this.form.get('relatedProducts')?.setValue([])
 
+    console.log(this.categories)
+
     let payload = {
       ...this.form.value,
       files: files,
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
-      attributes: this.productAttributes
+      attributes: this.productAttributes,
+      category: {
+        id: this.categories.map((category: any) => category?._id),
+        refid: this.categories.map((category: any) => category?.catid),
+      }
     }
 
     this.ProductService.addProduct(payload).subscribe({
@@ -502,13 +506,13 @@ export class AddProductComponent implements OnInit {
     })
 
 
-    this.ProductService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.productImages = res?.result?.images
-        this.productImagesLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    // this.ProductService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
+    //   if (res?.errorCode == 0) {
+    //     this.productImages = res?.result?.images
+    //     this.productImagesLastPage = res?.result?.isLastPage
+    //     this.ChangeDetectorRef.markForCheck()
+    //   }
+    // })
 
     this.parentForm = new FormGroup({
       name: new FormControl("", Validators.required),
@@ -540,10 +544,7 @@ export class AddProductComponent implements OnInit {
       thumbnail: new FormControl(""),
       files: new FormControl(""),
       video: new FormControl(""),
-      unit: new FormGroup({
-        type: new FormControl("grams"),
-        value: new FormControl(500)
-      }),
+      unit: new FormControl(""),
       origin: new FormControl(""),
       overview: new FormControl(""),
       details: new FormGroup({
@@ -574,50 +575,13 @@ export class AddProductComponent implements OnInit {
     });
     //Tax class details
 
-    this.ProductService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.thumbnailImages = res?.result?.images
-        this.thumbnailImagesLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  selectProductImage(file: any) {
-    this.productFile.push(file)
-    this.croppedImage = null
-  }
-
-  selectThumbnailImage(file: any) {
-    this.thumbnailFile = file
-    this.thumbnailImage = null
-    this.thumbnailFilename = null
-  }
-
-  loadMoreProductImages() {
-    this.productImagePage = this.productImagePage + 1
-    this.ProductService.productImages({ page: this.productImagePage }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.productImages = [...this.productImages, ...res?.result?.images]
-        this.productImagesLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  mainCategory() {
-
-  }
-
-  loadMoreThumbnailImages() {
-    this.thumbnailImagePage = this.thumbnailImagePage + 1
-    this.ProductService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.thumbnailImages = [...this.thumbnailImages, ...res?.result?.images]
-        this.thumbnailImagesLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    // this.ProductService.productThumbnailImages({ page: this.thumbnailImagePage }).subscribe((res: any) => {
+    //   if (res?.errorCode == 0) {
+    //     this.thumbnailImages = res?.result?.images
+    //     this.thumbnailImagesLastPage = res?.result?.isLastPage
+    //     this.ChangeDetectorRef.markForCheck()
+    //   }
+    // })
   }
 
   initForm() {
@@ -669,56 +633,6 @@ export class AddProductComponent implements OnInit {
       isActive: ['true', Validators.required],
       isArchive: ['false', Validators.required],
     })
-
-    this.productform.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.background = AppSettings.BACKGROUND
-    this.productform.get('border')?.setValue(AppSettings.BORDER)
-    this.border = AppSettings.BORDER
-    this.productform.get('color')?.setValue(AppSettings.COLOR)
-    this.color = AppSettings.COLOR
-    this.productform.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.productform.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.productform.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
-  }
-
-  handleProductType(event: any) {
-    this.type = event.value;
-    if (this.type == 'true') {
-      this.isSingle = true;
-    } else if (this.type == 'false') {
-      this.isSingle = false;
-    }
-  }
-
-  checkReturnable(event: any) {
-    this.returnValue = event.value;
-    if (this.returnValue == 'true') {
-      this.isReturn = true;
-    }
-    if (this.returnValue == 'false') {
-      this.isReturn = false;
-    }
-  }
-
-  checkShippingMethod(event: any) {
-    console.log(event.value);
-    this.method = event.value;
-    if (this.method === 'Paid') {
-      this.isShipping = true;
-    }
-    if (this.method == 'Unpaid' || this.method == 'External') {
-      this.isShipping = false;
-    }
-  }
-
-  checkCod(event: any) {
-    this.cod = event.value;
-    if (this.cod == 'true') {
-      this.isCod = true;
-    }
-    if (this.cod == 'false') {
-      this.isCod = false;
-    }
   }
 
   appendMainCategory() {
@@ -814,23 +728,6 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  addImage() {
-    this.imageFiles.push({
-      fileString: this.croppedImage,
-      filename: this.filename,
-      url: this.url,
-      id: this.imageFiles.length
-    })
-    this.files.push({
-      id: this.files.length,
-      file: this.croppedImage,
-      name: this.filename
-    })
-    this.croppedImage = ''
-    this.filename = ''
-    this.loadImage = false
-  }
-
   drop(event: CdkDragDrop<string[]>) {
     let products = [...this.imageFiles]
     moveItemInArray(products, event.previousIndex, event.currentIndex);
@@ -838,162 +735,6 @@ export class AddProductComponent implements OnInit {
     let productsFiles = [...this.files]
     moveItemInArray(productsFiles, event.previousIndex, event.currentIndex);
     this.files = [...productsFiles]
-  }
-
-  removeFile(id: any) {
-    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
-    this.files = this.files.filter((_data: any) => _data.id != id)
-  }
-
-  handleInputChange(event: any) {
-    if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (e: any) => {
-        this.url = e.target.result
-      }
-    }
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-    this.ChangeDetectorRef.markForCheck()
-  }
-
-  handleInputThumbnailChange(event: any) {
-    this.fileThumbnaildata = <File>event.target.files[0];
-    this.thumbnailFilename = this.fileThumbnaildata.name
-    this.imageThumbnailChangedEvent = event;
-    this.loadThumbnailImage = true
-    this.ChangeDetectorRef.markForCheck()
-  }
-
-  handleInputBasicChange(event: any) {
-    this.filebasicdata = <File>event.target.files[0];
-    this.basicfilename = this.filebasicdata.name
-    this.imageBasicChangedEvent = event;
-    this.loadBasicImage = true
-    this.ChangeDetectorRef.markForCheck()
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    setTimeout(() => {
-      this.croppedImage = event.base64;
-    }, 800)
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  imageThumbnailCropped(event: ImageCroppedEvent) {
-    setTimeout(() => {
-      this.thumbnailImage = event.base64;
-    }, 800)
-  }
-
-  thumbnailImageLoaded() {
-    // show cropper
-  }
-
-  cropperThumbnailReady() {
-    // cropper ready
-  }
-
-  loadThumbnailImageFailed() {
-    // show message
-  }
-
-  removeThumbnailImage() {
-    this.thumbnailImage = ''
-    this.loadThumbnailImage = false
-  }
-
-  imageBasicCropped(event: ImageCroppedEvent) {
-    setTimeout(() => {
-      this.basicImage = event.base64;
-    }, 800)
-  }
-
-  basicImageLoaded() {
-    // show cropper
-  }
-
-  cropperBasicReady() {
-    // cropper ready
-  }
-
-  loadBasicImageFailed() {
-    // show message
-  }
-
-  removeBasicImage() {
-    this.basicImage = ''
-    this.loadBasicImage = false
-  }
-
-  videoUpload(event: any) {
-    if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (e: any) => {
-        this.toastr.info('Video uploading in progress', '', { timeOut: 2000 })
-        setTimeout(() => {
-          this.video = e.target.result
-          this.toastr.success('Video successfully uploaded', '', { timeOut: 2000 })
-          this.videoFile = {
-            video: this.video,
-            name: event.target.files[0].name
-          }
-          this.ChangeDetectorRef.markForCheck()
-        }, 2000)
-      }
-    }
-  }
-
-  selectAttribute(attrType: any, type: any, id: any, refid: any, value: any, valueid: any, valuerefid: any) {
-    if (this.selectedAttributesValues.some((e: any) => e.type === type)) {
-      let index = this.attributesValues.findIndex((e: any) => e?.head?.name === type);
-      this.attributesValues.splice(index, 1)
-      this.attributesValues.splice(index, 0, {
-        head: { name: type, id: id, refid: refid, type: attrType },
-        value: { name: value, id: valueid, refid: valuerefid }
-      })
-      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
-    } else {
-      this.attributesValues.push({
-        head: { name: type, id: id, refid: refid, type: attrType },
-        value: { name: value, id: valueid, refid: valuerefid }
-      })
-      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
-    }
-  }
-
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
-  getUnit() {
-    this.isUnit = true
   }
 
   onSubmit() {
@@ -1005,32 +746,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  onSubmitAddMore() {
-    this.productform.reset()
-  }
-
-  check360(event: any) {
-    if (event.value) this.is360Enabled = !this.is360Enabled
-  }
-
-  objUpload(event: any) {
-    if (event) {
-      const file = <File>event.target.files[0];
-      const filename = file.name
-      this.objFilename = filename
-      const extension = filename.slice((Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
-      if (extension == 'obj') {
-        this.objFile = file
-        this.isValidObjFile = true
-        this.showObjFile = true
-      } else {
-        this.isValidObjFile = false
-        this.showObjFile = false
-      }
-    }
-  }
-
-
   updateProduct() { }
 
   addProduct() {
@@ -1041,7 +756,6 @@ export class AddProductComponent implements OnInit {
     const payload = this.createPayload()
     if (payload) {
       this.disableButton = true
-      // this.toastr.info('Adding product...', '', { timeOut: 2000 })
       this.submitting = true
       setTimeout(() => {
         this.ProductService.addProduct(payload).subscribe((res: any) => {
@@ -1135,40 +849,6 @@ export class AddProductComponent implements OnInit {
       thumbnail: this.thumbnailFile
     }
     return data
-  }
-
-  goToNextTab(e: any) {
-    switch (e) {
-      case 'product':
-        this.showProduct = true
-        this.showMedia = false
-        this.headAdded = true
-        window.scrollTo(0, 0);
-        break
-      case 'media':
-        this.showProduct = false
-        this.showMedia = true
-        this.headAdded = true
-        window.scrollTo(0, 0);
-        break
-    }
-  }
-
-  goToPreviousTab(e: any) {
-    switch (e) {
-      case 'product':
-        this.showProduct = true
-        this.showMedia = false
-        this.headAdded = true
-        window.scrollTo(0, 0);
-        break
-      case 'basic':
-        this.showProduct = false
-        this.showMedia = false
-        this.headAdded = false
-        window.scrollTo(0, 0);
-        break
-    }
   }
 
   addHead() {

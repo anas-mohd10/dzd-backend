@@ -47,6 +47,7 @@ export class UpdateStoreComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.form.get('name')?.patchValue(res?.result?.name)
           this.form.get('email')?.patchValue(res?.result?.contact?.email)
+          this.form.get('tel')?.patchValue(res?.result?.contact?.tel)
           this.form.get('mobile')?.patchValue(res?.result?.contact?.mobile)
           this.form.get('map')?.patchValue(res?.result?.map)
           this.form.get('firstlane')?.patchValue(res?.result?.address?.firstlane)
@@ -69,6 +70,7 @@ export class UpdateStoreComponent implements OnInit {
   initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
+      tel: new FormControl('', [Validators.pattern("^[0-9]{6,15}$")]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
       firstlane: new FormControl(''),
@@ -100,20 +102,14 @@ export class UpdateStoreComponent implements OnInit {
     }
 
     const payload = this.createPayload()
-
-    if (this.slots.length > 0) {
-      console.log(payload)
-      this.StoresService.update(payload).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
-          this.Router.navigate([appRoutes.stores.STORE_LIST])
-        } else {
-          this.ToastrService.error(res?.message)
-        }
-      })
-    } else {
-      this.ToastrService.error('Add time slots to proceed')
-    }
+    this.StoresService.update(payload).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.ToastrService.success(res?.message)
+        this.Router.navigate([appRoutes.stores.STORE_LIST])
+      } else {
+        this.ToastrService.error(res?.message)
+      }
+    })
   }
 
   createPayload() {
@@ -123,6 +119,7 @@ export class UpdateStoreComponent implements OnInit {
         email: this.form.get('email')?.value,
         mobile: this.form.get('mobile')?.value,
         countryCode: this.form.get('countryCode')?.value,
+        tel: this.form.get('tel')?.value,
       },
       address: {
         firstlane: this.form.get('firstlane')?.value,
@@ -136,7 +133,6 @@ export class UpdateStoreComponent implements OnInit {
       isFeatured: this.form.get('isFeatured')?.value,
       isClickPoint: this.form.get('isClickPoint')?.value,
       isDelete: this.form.get('isDelete')?.value,
-      slots: this.slots,
       refid: this.refid
     }
 

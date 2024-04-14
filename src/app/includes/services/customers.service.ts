@@ -96,6 +96,11 @@ export class CustomersService {
     return this.http.get(`${url}`)
   }
 
+  bulkFileUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.usersBulkImport);
+    return this.http.post(`${url}`, data);
+  }
+
   updateCustomerAddress(data: any) {
     const url = this.commonService.getFullUrl(this.customerEndpoints.update_customer_address);
     return this.http.put(`${url}`, data)

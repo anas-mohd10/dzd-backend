@@ -86,7 +86,7 @@ export class UpdateCustomersComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       countryCode: ['', Validators.required],
-      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{9}$")]],
       isActive: ['true', Validators.required],
     });
 

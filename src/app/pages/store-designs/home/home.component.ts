@@ -71,6 +71,7 @@ export class HomeComponent implements OnInit {
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },
+    { key: "Open all products", value: "all-products" },
     { key: "Open brand products", value: "brands" },
     { key: "Open collection products", value: "collection" },
     { key: "Open product details", value: "products" },
@@ -174,6 +175,10 @@ export class HomeComponent implements OnInit {
       case 'category':
         this.getCategories()
         break
+      case 'all-products':
+        this.widgetForm.get('redirection')?.setValue("/products")
+        this.redirectionQuery.setValue("/products")
+        break
     }
   }
 
@@ -193,17 +198,17 @@ export class HomeComponent implements OnInit {
 
   continueRedirectionQuery() {
     switch (this.widgetForm.value.redirectionType) {
-      case 'search-filters':
-        this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value)
-        break
       case 'blogs':
         this.widgetForm.get('redirection')?.setValue("/blogs/" + this.redirectionDetails.slug)
         break
       case 'static-pages':
         this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value)
         break
+      case 'search-filters':
+        this.widgetForm.get('redirection')?.setValue("/products" + this.redirectionQuery.value)
+        break
       case 'category':
-        this.widgetForm.get('redirection')?.setValue("/products/" + this.redirectionQuery.value)
+        this.widgetForm.get('redirection')?.setValue("/products?category=" + this.redirectionQuery.value)
         break
     }
     this.addWidgetDetails()

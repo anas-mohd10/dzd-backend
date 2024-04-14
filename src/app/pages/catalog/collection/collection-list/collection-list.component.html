@@ -20,115 +20,65 @@
       </div>
     </div>
   </div>
-  <div class="collection-form-container">
-    <form [formGroup]="form">
-      <div class="row align-items-end justify-content-end">
-        <div class="search-input col-sm-4" style="padding: 0;">
-          <input type="text" placeholder="Search collections here..." class="form-control fs-6"
-            formControlName="keyword" (ngModelChange)="getCollections()">
-        </div>
-        <div class="search-status col-lg-2">
-          <label for="isActive" class="fs-6 mb-1">Status</label>
-          <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-            (change)="getCollections()">
-            <option value="" disabled>--Select an option--</option>
-            <option value=true>Active</option>
-            <option value=false>Inactive</option>
-          </select>
-        </div>
-        <div class="search-featured col-lg-2">
-          <label for="isFeatured" class="fs-6 mb-1">Featured</label>
-          <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured"
-            (change)="getCollections()">
-            <option value="" disabled>--Select an option--</option>
-            <option value=true>Featured</option>
-            <option value=false>Non featured</option>
-          </select>
-        </div>
-        <div class="search-submit col-lg-2">
-          <button type="button" class="form-control fs-6 bg-secondary text-dark" (click)="clearFilters()"
-            style="outline: none; border: none;">Clear filters</button>
-        </div>
+
+  <div class="card p-4 my-4">
+    <div class="row">
+      <div class="col-lg-6">
+        <input type="text" id="keyword" placeholder="Search collections here..." class="form-control"
+          [formControl]="keyword" (ngModelChange)="getCollections()">
       </div>
-    </form>
+      <div class="col-lg-4">
+        <select name="isActive" id="isActive" class="form-select" [formControl]="isActive" (change)="getCollections()">
+          <option value="" disabled>--Select an option--</option>
+          <option value=true>Active</option>
+          <option value=false>Inactive</option>
+        </select>
+      </div>
+      <div class="col-lg-2">
+        <button type="button" id="clear" class="w-100 btn bg-secondary" (click)="clearFilters()">Clear
+          filters</button>
+      </div>
+    </div>
   </div>
 
-  <div class="mb-3 mt-3 d-flex align-items-center justify-content-between">
-    <div class="total-count-container col-lg-3 bg-dark">
-      <h4 class="text-white fs-6">Total {{totalResults ? totalResults : 0}} collections</h4>
-    </div>
-    <div>
-      <button class="btn btn-secondary cursor-pointer fs-6" color="primary"
-        routerLink="{{ appRoute.collection.ARCHIVED_COLLECTION}}">Archived Collections</button>
-    </div>
-  </div>
-
-  <div class="collection-card-container view-container">
-    <ng-container *ngFor="let collection of collections">
-      <div class="collection-card card-hover">
-        <div class="editButton">
-          <div routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-            [queryParams]="{ collection: collection?.slug }">
-            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
-          </div>
-        </div>
-
-        <div class="collection-image">
-          <img src='{{base}}/{{collection?.file}}' alt="Image"
-            onerror="this.src = '../../../../../assets/images/default.png'" />
-        </div>
-
-        <div class="collectionDetails">
-          <div class="mb-3">
-            <div class="collection-name fs-4">{{collection?.name}}</div>
-            <div class="collection-subname fs-6">{{collection?.subname ? collection?.subname : '-'}}</div>
-          </div>
-          <div class="d-flex align-items-center justify-content-start">
-            <div class="fs-6 me-1 alert alert-success p-1" [ngClass]="{'alert-danger': !collection?.isActive}">
-              {{collection?.isActive ? 'Active' : 'Inactive'}}
-            </div>
-            <div class="fs-6 ms-1 alert alert-info p-1" *ngIf="collection?.isFeatured">
-              {{collection?.isFeatured ? 'Featured' : null}}
+  <div>
+    <div class="collection-cards">
+      <ng-container *ngFor="let collection of collections">
+        <div class="collection-card">
+          <div class="editButton">
+            <div routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+              [queryParams]="{ collection: collection?.slug }">
+              <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
             </div>
           </div>
-        </div>
 
+          <div class="collection-image">
+            <img src='{{base}}/{{collection?.thumbnail?.path}}' alt="{{collection?.name}}"
+              onerror="this.src = '../../../../../assets/images/default.png'" />
+          </div>
+
+          <div class="collectionDetails">
+            <div class="fw-bolder fs-4">{{collection?.name}}</div>
+            <div class="fs-6 alert my-2 p-1"
+              [ngClass]="{'alert-danger': collection?.isActive == false, 'alert-success': collection?.isActive == true}">
+              {{collection?.isActive == true ? 'Active' : 'Inactive'}}
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="collections.length == 0">
+      <div class="emptyNote">
+        <div class="fs-3 fw-bolder">No result found</div>
+        <div class="fs-6 note">We couldn't find any item based on your search</div>
       </div>
     </ng-container>
   </div>
 
-  <ng-container *ngIf="collections.length == 0">
-    <div class="emptyNote">
-      <div class="fs-3 fw-bolder">No result found</div>
-      <div class="fs-6 note">We couldn't find any item based on your search</div>
-    </div>
-  </ng-container>
-
-  <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-    <div class="filtering">
-      <span class="fs-6 text-dark">Show</span>
-      <select [formControl]="limit" (change)="getCollections()">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="40">40</option>
-      </select>
-      <span class="fs-6 text-dark">entries</span>
-    </div>
-    <div class="filteringResultCount fs-6">
-      Showing <span class="me-1 ms-1">{{collections.length}}</span> of <span class="ms-1">{{totalResults ?
-        totalResults : '0'}}</span>
-    </div>
-    <div class="pagination">
-      <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-        <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-      </div>
-      <div class="paginationPage">{{page}} of {{totalPages}}</div>
-      <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
-        <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-      </div>
-    </div>
+  <div class="my-4">
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
+      [pageIndex]="page" [pageSize]="limit"></app-pagination>
   </div>
-
 </div>

@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
@@ -34,6 +35,10 @@ export class ShippingComponent implements OnInit {
     title: 'Minimum',
     description: 'No shipping charges will be applied for orders exceeding the minimum cart amount.',
     value: 'minimum'
+  }, {
+    title: 'City',
+    description: 'The shipping cost will be determined by user delivery address',
+    value: 'city'
   }]
   isMinimum: boolean = false
   form: FormGroup
@@ -42,7 +47,8 @@ export class ShippingComponent implements OnInit {
     private ShippingService: ShippingService,
     private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private HotToastService: HotToastService
   ) { }
 
   get formControls() {
@@ -64,18 +70,18 @@ export class ShippingComponent implements OnInit {
   }
 
   checked(item: any) {
-    this.form.get('cost')?.setValue(item.value)
-    item.value == 'minimum' ? this.isMinimum = true : this.isMinimum = false
+    this.form.get('cost')?.setValue(item.switchId)
+    item.switchId == 'minimum' ? this.isMinimum = true : this.isMinimum = false
     this.ShippingService.manageShipping(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getDetails()
-          this.ToastrService.success(res.message)
+          this.HotToastService.success(res.message)
         } else {
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.error.message)
+        this.HotToastService.error(err.error.message)
       }
     })
     this.ChangeDetectorRef.markForCheck()
@@ -90,12 +96,12 @@ export class ShippingComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getDetails()
-          this.ToastrService.success(res.message)
+          this.HotToastService.success(res.message)
         } else {
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.error.message)
+        this.HotToastService.error(err.error.message)
       }
     })
     this.ChangeDetectorRef.markForCheck()
@@ -110,10 +116,10 @@ export class ShippingComponent implements OnInit {
           if (this.shippingDetails?.cost == 'minimum') this.isMinimum = true
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.error.message)
+        this.HotToastService.error(err.error.message)
       }
     })
   }

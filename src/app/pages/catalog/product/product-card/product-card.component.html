@@ -206,7 +206,7 @@
 
             <div class="col-lg-6 mb-3">
                <label class="fs-6 mb-3 required" for="defaultCategory">Default category</label>
-               <select name="defaultCategory" id="defaultCategory" formControlName="defaultCategory" class="form-select"
+               <select name="defaultCategory" id="defaultCategory" formControlName="defaultCategory" class="form-select" (change)="selectDefaultCategory()"
                   [ngClass]="{'is-invalid': (formControls.defaultCategory.touched || isSubmitted) && formControls.defaultCategory.errors?.required}">
                   <option value="" disabled>-- Select an option --</option>
                   <option *ngFor="let category of defaultCategories" value="{{category?._id}}">{{category?.name}}

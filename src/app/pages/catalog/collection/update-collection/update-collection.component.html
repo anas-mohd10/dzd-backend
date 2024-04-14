@@ -1,283 +1,157 @@
-<div class="content container-fluid">
-  <!-- Page Header -->
+<div>
   <div class="page-header">
-    <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fs-2 fw-bolder">
-          {{ editMode ? "Update Collection" : "Add Collection" }}
-        </h3>
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}" [queryParams]="{ collection: collection }">{{
-              editMode ? "Update Collection" : "Add Collection" }}</a>
-          </li>
-        </ul>
-      </div>
+    <div class="page-title">
+      <h1 class="fw-bolder">Update Collection</h1>
+    </div>
+    <div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+            [queryParams]="{'collection': collectionSlug}">Update Collection</a>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div class="mt-4">
-    <div class="card" ngForm>
+  <div class="my-4">
+    <div class="card">
       <div class="card-body">
-        <form (ngSubmit)="onSubmit()" [formGroup]="collectionForm" (keydown.Enter)="$event.preventDefault()">
+        <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
 
-          <div class="mediaWrapper">
-
-            <div class="coverImageWrapper">
-              <input type="file" class="form-control fs-6" name="image" accept="image/*" [formControl]="coverImage"
-                (change)="bannerFile($event)" required>
-              <img [src]="banner ? banner : '../../../../../../assets/images/Preview_Background.png'" alt="Media">
-              <div *ngIf="banner" class="removeCover" (click)="removeCoverImage()">
-                <svg height="20px" width="20px" fill="none" stroke="#ffffff" stroke-width="1.5" viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0">
-                  </path>
-                </svg>
-              </div>
+          <div>
+            <div class="ratio ratio-21x9">
+              <app-assets (mediaClicked)="handleCollectionCover($event)" [previewDetails]="previews.coverPreview"></app-assets>
             </div>
 
-            <div class="mediaImageWrapper">
-              <div class="editMediaButton" (click)="openQuesModal(quesModal)">
-                <svg height="20px" width="20px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24">
-                  <path
-                    d="M16.5962 1.03665L22.9428 7.38325C23.1381 7.57852 23.1381 7.8951 22.9428 8.09036C22.8679 8.16526 22.7712 8.21444 22.6665 8.23081L21.1924 8.46127L15.5356 2.80441L15.7477 1.31949C15.7868 1.04612 16.04 0.856173 16.3134 0.895226C16.4205 0.910525 16.5197 0.960149 16.5962 1.03665ZM4.59487 20.148C8.31725 16.8165 12.5899 15.8201 17.2379 14.6275L17.6843 10.61L13.3869 6.31255L9.36936 6.75894C8.17674 11.407 7.18038 15.6796 3.84886 19.402L2.4541 18.0072C5.28253 14.7074 6.34319 11.054 7.7574 4.92573L14.1214 4.21863L19.7783 9.87552L19.0711 16.2394C12.9429 17.6537 9.28947 18.7143 5.98964 21.5427L4.59487 20.148ZM9.87872 14.1181C9.09767 13.3371 9.09767 12.0707 9.87872 11.2897C10.6598 10.5086 11.9261 10.5086 12.7071 11.2897C13.4882 12.0707 13.4882 13.3371 12.7071 14.1181C11.9261 14.8992 10.6598 14.8992 9.87872 14.1181Z">
-                  </path>
-                </svg>
-              </div>
-              <img [src]="img ? img : '../../../../../../assets/images/Preview_Background.png'" alt="Media">
-            </div>
-          </div>
-
-          <div class="row">
-
-            <h2 class="fw-bolder fs-4">Collection Details</h2>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3 required">Title</label>
-                <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
-                      'is-invalid': (cf.name.touched || isSubmitted) && cf.name.errors?.required }" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Sub title</label>
-                <input type="text" class="form-control fs-6" formControlName="subname" />
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <div>
-                <label class="fs-6 required">Products</label>
-                <div class="text-muted fs-7 mb-3">Selected products will be under this collection</div>
-                <div class="wraperBox">
-                  <div class="productAddMethod">
-                    <input type="radio" id="Autocomplete" name="Autocomplete" checked
-                      (click)="toggleProductMethod(true)">
-                    <label class="fs-6" for="Autocomplete">Autocomplete</label>
-                  </div>
-                  <div class="productAddMethod">
-                    <input type="radio" id="SKU" name="Autocomplete" (click)="toggleProductMethod(false)">
-                    <label class="fs-6" for="SKU">SKU</label>
-                  </div>
+            <div class="row my-3">
+              <div class="col-lg-3">
+                <div class="ratio ratio-1x1">
+                  <app-assets (mediaClicked)="handleCollectionThumbnail($event)" [previewDetails]="previews.thumbnailPreview"></app-assets>
                 </div>
-                <input type="text" class="form-control fs-6" [formControl]="productSku"
-                  placeholder="Enter SKU1,SKU2,SKU3 etc" *ngIf="!isAutoCompleteEnabled" class="form-control fs-6" />
-                <input type="text" class="form-control fs-6" [formControl]="product" (ngModelChange)="getProducts()"
-                  placeholder="Search product" *ngIf="isAutoCompleteEnabled" class="form-control fs-6" />
               </div>
+              <div class="col-lg-9">
 
-              <ng-container *ngIf="searchProducts.length > 0">
-                <div class="searchProductsContainer" *ngIf="isAutoCompleteEnabled">
-                  <table class="table">
-                    <thead>
-                      <tr class="fs-6">
-                        <th>&nbsp;</th>
-                        <th>Name</th>
-                        <th>Stock</th>
-                        <th>SKU</th>
-                        <th>&nbsp;</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let product of searchProducts; let i = index;">
-                        <tr>
-                          <td>
-                            <div class="productImage">
-                              <img src="{{base}}/{{product?.thumbnail}}" alt="Product">
-                            </div>
-                          </td>
-                          <td>
-                            {{product?.name}}
-                          </td>
-                          <td>
-                            {{product?.stock}}
-                          </td>
-                          <td>
-                            {{product?.sku}}
-                          </td>
-                          <td>
-                            <div *ngIf="!productIds.includes(product?._id)" (click)="addProductSku(product)">
-                              <button class="p-1 btn-primary btn">Add</button>
-                            </div>
-                            <div *ngIf="productIds.includes(product?._id)" (click)="addProductSku(product)">
-                              <button class="p-1 btn-secondary btn">Remove</button>
-                            </div>
-                          </td>
-                        </tr>
-                      </ng-container>
-                    </tbody>
-                  </table>
+                <div class="form-group">
+                  <label class="fs-6 mb-3 required">Title</label>
+                  <input type="text" class="form-control fs-6" formControlName="name"
+                    [ngClass]="{
+                        'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
                 </div>
-              </ng-container>
-              <ng-container *ngIf="productDetails.length > 0">
-                <div class="fs-7 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
-                <div class="addedProductsWrapper">
-                  <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-                    (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let product of productDetails" cdkDrag>
-                      <div class="addedProductCard">
-                        <div class="close" (click)="addProductSku(product)">
-                          <img src="../../../../../assets/icons/close.svg" alt="Icon">
-                        </div>
-                        <div class="image"><img src="{{base}}/{{product?.thumbnail}}" alt="Product"></div>
-                        <div class="name fs-6">{{product?.name}}</div>
-                        <div class="sku">SKU: {{product?.sku}}</div>
+
+                <div class="form-group my-3">
+                  <label class="fs-6 mb-3">Description</label>
+                  <input type="text" class="form-control fs-6" formControlName="subname" />
+                </div>
+
+                <div>
+                  <div>
+                    <label class="fs-6 required">Products</label>
+                    <div class="text-muted fs-7 mb-3">Selected products will be under this collection</div>
+                    <div class="wraperBox">
+                      <div class="productAddMethod">
+                        <input type="radio" id="Autocomplete" name="Autocomplete" checked
+                          (click)="toggleProductMethod(true)">
+                        <label class="fs-6" for="Autocomplete">Autocomplete</label>
+                      </div>
+                      <div class="productAddMethod">
+                        <input type="radio" id="SKU" name="Autocomplete" (click)="toggleProductMethod(false)">
+                        <label class="fs-6" for="SKU">SKU</label>
                       </div>
                     </div>
+                    <input type="text" class="form-control fs-6" [formControl]="productSku"
+                      placeholder="Enter SKU1,SKU2,SKU3 etc" *ngIf="!isAutoCompleteEnabled" class="form-control fs-6" />
+                    <input type="text" class="form-control fs-6" [formControl]="product" (ngModelChange)="getProducts()"
+                      placeholder="Search product" *ngIf="isAutoCompleteEnabled" class="form-control fs-6" />
+                  </div>
+                  <ng-container *ngIf="searchProducts.length > 0">
+                    <div class="searchProductsContainer" *ngIf="isAutoCompleteEnabled">
+                      <table class="table">
+                        <thead>
+                          <tr class="fs-6">
+                            <th>&nbsp;</th>
+                            <th>Name</th>
+                            <th>Stock</th>
+                            <th>SKU</th>
+                            <th>&nbsp;</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let product of searchProducts; let i = index;">
+                            <tr>
+                              <td>
+                                <div class="productImage">
+                                  <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product">
+                                </div>
+                              </td>
+                              <td>
+                                {{product?.name}}
+                              </td>
+                              <td>
+                                {{product?.stock}}
+                              </td>
+                              <td>
+                                {{product?.sku}}
+                              </td>
+                              <td>
+                                <div *ngIf="!productIds.includes(product?._id)" (click)="addProductSku(product)">
+                                  <button class="p-1 btn-primary btn">Add</button>
+                                </div>
+                                <div *ngIf="productIds.includes(product?._id)" (click)="addProductSku(product)">
+                                  <button class="p-1 btn-secondary btn">Remove</button>
+                                </div>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="productDetails.length > 0">
+                    <div class="fs-7 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
+                    <div class="addedProductsWrapper">
+                      <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+                        (cdkDropListDropped)="drop($event)">
+                        <div class="example-box" *ngFor="let product of productDetails" cdkDrag>
+                          <div class="addedProductCard">
+                            <div class="close" (click)="addProductSku(product)">
+                              <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                            </div>
+                            <div class="image"><img src="{{base}}/{{product?.thumbnail?.path}}" alt="{{product?.name}}">
+                            </div>
+                            <div class="name fs-6">{{product?.name}}</div>
+                            <div class="sku">SKU: {{product?.sku}}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <div class="my-3">
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Status</label>
+                    <select class="form-select mb-3" formControlName="isActive">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option value="false">Inactive</option>
+                      <option value="true">Active</option>
+                    </select>
                   </div>
                 </div>
-              </ng-container>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Featured Collection?</label>
-                <select class="form-select fs-6 mb-3" formControlName="isFeatured"
-                  (change)="getFeatured($event.target)">
-                  <option value="false" selected>No</option>
-                  <option value="true">Yes</option>
-                </select>
               </div>
             </div>
 
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Highlight Collection?</label>
-                <select class="form-select fs-6 mb-3" formControlName="isHighlighted">
-                  <option value="false">No</option>
-                  <option value="true">Yes</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-lg-6" *ngIf="isFeatured">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Visibility Type?</label>
-                <select class="form-select fs-6 mb-3" formControlName="type" (change)="getType($event.target)">
-                  <option value="grid" selected>Grid</option>
-                  <option value="slider">Slider</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-lg-6" *ngIf="isGrid">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Grid Count?</label>
-                <select class="form-select fs-6 mb-3" formControlName="count">
-                  <option disabled selected>-- Select an Option --</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Status</label>
-                <select class="form-select mb-3" formControlName="isActive">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="false">Inactive</option>
-                  <option value="true">Active</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Archive Collection?</label>
-                <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                  formControlName="isArchive">
-                  <option value="false" selected>No</option>
-                  <option value="true">Yes</option>
-                </select>
-              </div>
-            </div>
-
-            <h2 class="fw-bolder fs-4">Collection Styles</h2>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Background</label>
-                <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                  formControlName="background" (change)="getColors('background', $event.target)" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Border</label>
-                <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
-                  style="height: 50px;" (change)="getColors('border', $event.target)" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Border Radius</label>
-                <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Color</label>
-                <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                  formControlName="color" (change)="getColors('color', $event.target)" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Font Weight</label>
-                <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="form-group mb-3">
-                <label class="fs-6 mb-3">Font Size ( in px )</label>
-                <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
-              </div>
-            </div>
-
-            <div class="d-flex align-items-center justify-content-end">
-              <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                style="width: 200px; margin-right: 20px;">
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}" class=" btn btn-secondary">
                 Cancel
               </a>
-              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                Add
+              <button type="submit" (click)="onSubmit()" class="btn btn-primary">
+                Save changes
               </button>
             </div>
           </div>
@@ -286,71 +160,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #quesModal>
-  <div class="modal-body optionModal">
-    <div class="optionCard">
-      <input type="file" class="form-control fs-6" name="image" accept="image/*" (change)="handleInputChange($event)"
-        required>
-      <div class="optionMask">
-        <svg height="30px" width="30px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
-          </path>
-        </svg>
-        Upload your file
-      </div>
-    </div>
-    <div class="optionCard" (click)="openExistingModal(existingModal)">
-      <svg height="30px" width="30px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"></path>
-      </svg>
-      Select from existing images
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #coverModal>
-  <div class="modal-body">
-    <image-cropper class="crop-section" [imageChangedEvent]="bannerChangedEvent" [maintainAspectRatio]="true"
-      [aspectRatio]="2 / 1" [cropperMaxWidth]="4000" [cropperMaxHeight]="2000" format="png"
-      (imageCropped)="bannerCropped($event)">
-    </image-cropper>
-
-    <div class="mt-3 d-flex align-items-center justify-content-end">
-      <div class="btn btn-secondary me-2 fs-6" (click)="closeMedia('cover')">Discard Changes</div>
-      <div class="btn btn-primary fs-6" (click)="saveMedia('cover')">Save Changes</div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #existingModal>
-  <div class="modal-body existingModal">
-    <div class="postedImages">
-      <ng-container *ngFor="let image of images; let i =index">
-        <div class="postedImage">
-          <input type="radio" id="image" name="image" (click)="saveExistingMedia('thumbnail', image)">
-          <img src="{{base}}/{{image}}" alt="Brand">
-        </div>
-      </ng-container>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #mediaModal>
-  <div class="modal-body mediaModal">
-    <div class="mediaWrapper">
-      <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-        [aspectRatio]="3 / 3" [cropperMaxWidth]="400" [cropperMaxHeight]="400" format="png"
-        (imageCropped)="imageCropped($event)">
-      </image-cropper>
-    </div>
-    <div class="mt-3 d-flex align-items-center justify-content-end">
-      <div class="btn btn-secondary me-2 fs-6" (click)="closeMedia('thumbnail')">Discard Changes</div>
-      <div class="btn btn-primary fs-6" (click)="saveMedia('thumbnail')">Save Changes</div>
-    </div>
-  </div>
-</ng-template>

@@ -298,20 +298,9 @@
                 <div class="my-4">
                   <div class="fs-3 fw-bold">Unit and measurement</div>
                   <p class="text-muted">Update the unit of measurement details of the product easily</p>
-                  <div class="row" formGroupName="unit">
-                    <div class="form-group mb-3 col-lg-6">
-                      <label for="type" class="fs-6 mb-3">Unit of measurement</label>
-                      <select formControlName="type" id="type" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let unit of ['kilograms', 'grams', 'pack', 'number']" value="{{unit}}">
-                          {{unit}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="form-group mb-3 col-lg-6">
-                      <label for="weight" class="fs-6 mb-3">Weight</label>
-                      <input type="text" id="weight" class="form-control fs-6" formControlName="value" />
-                    </div>
+                  <div class="form-group mb-3 col-lg-6">
+                    <label for="weight" class="fs-6 mb-3">Unit</label>
+                    <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
                   </div>
                 </div>
 
@@ -328,6 +317,21 @@
                       <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
                       <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
                         formControlName="buttonRedirectUrl" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Description</label>
+                      <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
+                        [config]="editorConfig"></angular-editor>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Long Description</label>
+                      <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
+                        [config]="editorConfig"></angular-editor>
+                    </div>
+                    <div class="form-group">
+                      <label class="fs-6 mb-3">Features</label>
+                      <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
+                        [config]="editorConfig"></angular-editor>
                     </div>
                   </div>
                 </div>

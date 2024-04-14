@@ -14,17 +14,18 @@ code:not([class*=language-]) {
   margin: 0 !important;
 }
 
+.btn-primary{
+  font-weight: 400 !important;
+}
+
 .faqWrapper {
 
   .faqCard {
     background: $white;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
 
     .faqHeader {
 
       .faqTitle {
-        font-weight: 600;
         font-size: 16px;
 
         .disabledFaq {
@@ -42,7 +43,7 @@ code:not([class*=language-]) {
           display: grid;
           place-items: center;
           background: $border;
-          border-radius: 15px;
+          border-radius: 6px;
           cursor: pointer;
           color: $secondaryText;
 

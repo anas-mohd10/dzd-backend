@@ -305,4 +305,5 @@ export const appRoutes = {
   },
   replaceRequests:`${app}/replace-requests`,
   guestCustomers: `${app}/guests`,
+  shippingCharges: `${app}/shipping-charges`
 }

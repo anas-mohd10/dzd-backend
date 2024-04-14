@@ -28,5 +28,6 @@ export const customerEndpoints = {
   referralHistory: '/referral-history',
   getLoyaltyTransactions: '/get-loyalty-history',
   getNewsletterSubscribers: '/newsletter-subscribers',
-  customerDetails: '/get-customer-details'
+  customerDetails: '/get-customer-details',
+  usersBulkImport: '/import-users'
 }

@@ -8,6 +8,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [UpdateCollectionComponent],
@@ -20,18 +21,17 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     DragDropModule,
     NgSelectModule,
     ImageCropperModule,
+    SharedModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       progressAnimation: 'decreasing',
       preventDuplicates: true,
       progressBar: true,
     }),
-    RouterModule.forChild([
-      {
-        path: '',
-        component: UpdateCollectionComponent,
-      },
-    ]),
+    RouterModule.forChild([{
+      path: '',
+      component: UpdateCollectionComponent,
+    }]),
   ],
 })
 export class UpdateCollectionModule { }

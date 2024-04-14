@@ -45,7 +45,7 @@ export class OrdersListComponent implements OnInit {
     }
   }
   page: number = 1
-  limit: number = 20
+  limit: number = 5
   keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'

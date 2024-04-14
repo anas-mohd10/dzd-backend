@@ -210,7 +210,11 @@
             {{order?.orderDate}} <br>
             {{order.orderTime}}
           </td>
-          <td>{{order?.customerId?.name}}</td>
+          <td>
+
+            <div>{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
+            <div class="alert alert-success p-1 my-1 d-flex align-items-center justify-content-center">{{order?.customerType}}</div>
+          </td>
           <td>{{order?.total}}</td>
           <td>{{order?.source}}</td>
           <td>

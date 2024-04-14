@@ -11,6 +11,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
+import { HotToastService } from '@ngneat/hot-toast';
+
 
 @Component({
   selector: 'app-product-card',
@@ -51,8 +53,9 @@ export class ProductCardComponent implements OnInit {
   productCategory: Array<any> = []
   defaultCategories: Array<any> = []
   isCategoryDropdown: boolean = false
-  brandDetails: any
-  headDetails: any
+  brandDetails: any;
+  headDetails: any;
+  defaultCategory: any;
 
   constructor(
     private ProductService: ProductService,
@@ -66,7 +69,8 @@ export class ProductCardComponent implements OnInit {
     private ToastrService: ToastrService,
     private TaxClassesService: TaxClassesService,
     private BrandService: BrandService,
-    private ElementRef: ElementRef
+    private ElementRef: ElementRef,
+    private HotToastService: HotToastService
   ) { }
 
   get editFormControls() {
@@ -275,6 +279,10 @@ export class ProductCardComponent implements OnInit {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
   }
 
+  selectDefaultCategory() {
+    this.defaultCategory = this.defaultCategories.map((defaultCategory) => defaultCategory._id == this.editForm.get('defaultCategory')?.value)
+  }
+
   close() {
     this.modalRef?.hide()
     this.productDetails = {}
@@ -395,9 +403,8 @@ export class ProductCardComponent implements OnInit {
     let parentCategory = this.productCategory.map((category) => { return category._id })
     let parentRefid = this.productCategory.map((category) => { return category.catid })
     if (parentCategory.length > 0) this.editForm.get('parentCategory')?.setValue(parentCategory)
+    if (this.editForm.value) this.editForm.get('brand')?.setValue(null)
     if (!this.editForm.valid) {
-      console.log('Error caught')
-      console.log(this.editForm.value)
       this.isSubmitted = true
       return
     }
@@ -426,8 +433,8 @@ export class ProductCardComponent implements OnInit {
         isPresent: this.editForm.value.returnable
       },
       defaultCategory: {
-        id: this.editForm.value.defaultCategory,
-        refid: ''
+        id: this.defaultCategory[0]['_id'],
+        refid: this.defaultCategory[0]['catid']
       }
     }
 
@@ -438,20 +445,18 @@ export class ProductCardComponent implements OnInit {
       }
     }
 
-    console.log(payload)
-
     this.ProductHeadService.updateProductHead(payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.modalRef?.hide()
           this.productDetails = {}
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.getProductHeads()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.error?.message)
+        this.HotToastService.error(err?.error?.message)
       }
     })
   }

@@ -1,15 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
-import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/includes/services/product.service';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { environment } from 'src/environments/environment.prod';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HotToastService } from '@ngneat/hot-toast';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-update-collection',
@@ -17,189 +14,89 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./update-collection.component.scss'],
 })
 export class UpdateCollectionComponent implements OnInit {
-  collectionForm: FormGroup;
-  task = PageTasks.UPDATE;
-
-  editMode = false;
-  fileData: any;
+  form: FormGroup;
   appRoute = appRoutes;
-  collectionData: any;
-  collection: any;
-  collectionName: any;
-  products: any = [];
-  valueArray: any = [];
-  productArray: any = [];
-  productNames: any = [];
-  productValues: any = [];
-  isSubmitted: boolean;
-  uploadedimg: any;
-  array: any = [];
-  filedata: File;
-  filename: string;
-  imageChangedEvent: any;
-  loadImage: boolean;
-  croppedImage: any;
-  base: any
-
-  background: any
-  border: any
-  color: any
-  restore = new FormControl('false');
-  isArchived: boolean;
-  selectedProducts: any = []
-
-  isFeatured: boolean = false
-  isGrid: boolean = false
-
-  images: any = []
-  file: any
-
-  bannerFiledata: File;
-  bannerFilename: string;
-  bannerChangedEvent: any = '';
-  loadBanner: boolean = false;
-  bannerimg: any;
-  croppedBanner: any
-
-  product: FormControl = new FormControl('')
-  productSku: FormControl = new FormControl('')
-  searchProducts: Array<any> = []
-  isAutoCompleteEnabled: boolean = true
+  products: Array<any> = [];
+  isSubmitted: boolean = false;
+  page: number = 1;
+  selectedProducts: any = [];
+  product: FormControl = new FormControl('');
+  productSku: FormControl = new FormControl('');
+  searchProducts: Array<any> = [];
+  isAutoCompleteEnabled: boolean = true;
   productIds: Array<any> = [];
-  productDetails: Array<any> = []
-
-  img: any;
-  banner: any;
-  coverModalRef?: BsModalRef;
-  mediaModalRef?: BsModalRef;
-  existModalRef?: BsModalRef;
-  quesModalRef?: BsModalRef;
-  @ViewChild('coverModal') coverModal: any;
-  @ViewChild('mediaModal') mediaModal: any;
-  @ViewChild('existingModal') existingModal: any;
-  @ViewChild('quesModal') quesModal: any;
-  coverImage: FormControl = new FormControl('');
+  productDetails: Array<any> = [];
+  base: string = environment.base;
+  collectionSlug: string = '';
+  previews: any = { thumbnailPreview: '', coverPreview: '' }
+  collectionDetails: any;
 
   constructor(
-    private collectionService: CollectionService,
-    private productService: ProductService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService,
-    private cdr: ChangeDetectorRef,
-    private BsModalService: BsModalService
+    private CollectionService: CollectionService,
+    private ProductService: ProductService,
+    private Router: Router,
+    private HotToastService: HotToastService,
+    private ActivatedRoute: ActivatedRoute,
+    private ChangeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
-    this.managePage();
-    this.initForm();
-    this.collection = this.route.snapshot.queryParams.collection || '';
-    this.getProduct();
-    this.getCollection()
-    this.base = environment.base
+    this.collectionSlug = this.ActivatedRoute.snapshot.queryParams.collection || ""
 
-    this.collectionService.collectionImages({}).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.images = res?.result?.images
-        this.cdr.markForCheck()
+    this.CollectionService.getCollectionBySlug(this.collectionSlug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.form.patchValue(res?.result[0])
+          this.collectionDetails = res?.result[0]
+          if (res?.result[0]?.thumbnail?.path) {
+            this.previews.thumbnailPreview = res?.result[0]?.thumbnail?.path
+            this.form.get('thumbnail')?.setValue(res?.result[0]?.thumbnail?._id)
+          }
+          if (res?.result[0]?.cover?.path) {
+            this.previews.coverPreview = res?.result[0]?.cover?.path
+            this.form.get('cover')?.setValue(res?.result[0]?.cover?._id)
+          }
+          this.productDetails = res?.result[0]?.products
+          this.ChangeDetectorRef.markForCheck()
+        }
       }
     })
-  }
 
-  initForm() {
-    this.collectionForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      subname: [''],
-      products: [],
-      isFeatured: ['false', Validators.required],
-      isHighlighted: ['false', Validators.required],
-      isActive: ['true', Validators.required],
-      isArchive: ['false', Validators.required],
-      background: [''],
-      type: ['slider'],
-      count: ['0'],
-      border: [''],
-      radius: [''],
-      color: [''],
-      fontSize: [''],
-      fontWeight: ['']
+    this.form = new FormGroup({
+      name: new FormControl("", Validators.required),
+      subname: new FormControl(""),
+      products: new FormControl("", Validators.required),
+      isActive: new FormControl(true),
+      thumbnail: new FormControl(null),
+      cover: new FormControl(null),
     });
   }
 
-  get cf() {
-    return this.collectionForm.controls;
+  handleCollectionCover(event: any) {
+    this.form.get('cover')?.setValue(event._id)
   }
 
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
+  get formControls() {
+    return this.form.controls
   }
 
-  getProduct() {
-    this.productService.getProduct().subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.products = res?.result
-          break;
-      }
-    });
-  }
-
-  getCollection() {
-    this.collectionService.getCollectionBySlug(this.collection).subscribe((res: any) => {
-      switch (res?.errorCode) {
-        case 0:
-          this.collectionData = res?.result[0];
-          this.img = this.base + "/" + res?.result[0].file
-          this.banner = res?.result[0].banner ? this.base + "/" + res?.result[0].banner : null
-          for (let key of Object.keys(this.collectionData)) {
-            this.collectionForm.get(key)?.setValue(this.collectionData[key])
-          }
-
-          this.collectionForm.get('background')?.setValue(this.collectionData.style.background);
-          this.collectionForm.get('border')?.setValue(this.collectionData.style.border);
-          this.collectionForm.get('radius')?.setValue(this.collectionData.style.radius);
-          this.collectionForm.get('color')?.setValue(this.collectionData.style.text.color);
-          this.collectionForm.get('fontSize')?.setValue(this.collectionData.style.text.fontSize);
-          this.collectionForm.get('fontWeight')?.setValue(this.collectionData.style.text.fontWeight);
-
-          this.color = this.collectionData?.style.text.color
-          this.background = this.collectionData?.style.background
-          this.border = this.collectionData?.style.border
-          this.selectedProducts = this.collectionData?.products
-          for (let product of this.collectionData?.products) this.productIds.push(product?._id)
-          if (this.collectionData?.isFeatured == true) this.isFeatured = !this.isFeatured
-          if (this.collectionData?.type == 'grid') this.isGrid = !this.isGrid
-          if (this.collectionData.isArchive == true) this.isArchived = true
-          this.productDetails = [...this.collectionData?.products]
-          this.cdr.markForCheck()
-          break
-      }
-    });
-  }
-
-  toggleProductMethod(type: any) {
-    this.isAutoCompleteEnabled = type
+  handleCollectionThumbnail(event: any) {
+    this.form.get('thumbnail')?.setValue(event._id)
   }
 
   getProducts() {
     if (this.product.value) {
-      this.productService.findProducts({ name: this.product.value }).subscribe((res: any) => {
+      this.ProductService.findProducts({ name: this.product.value }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.searchProducts = res?.result
-          this.cdr.markForCheck()
+          this.ChangeDetectorRef.markForCheck()
         }
       })
     } else { this.searchProducts = [] }
+  }
+
+  toggleProductMethod(type: any) {
+    this.isAutoCompleteEnabled = type
   }
 
   addProductSku(product: any) {
@@ -212,233 +109,42 @@ export class UpdateCollectionComponent implements OnInit {
     }
   }
 
+  onSubmit() {
+    this.selectedProducts = []
+    if (this.isAutoCompleteEnabled) {
+      for (let product of this.productDetails) this.selectedProducts.push(product._id)
+      this.form.get('products')?.setValue(this.selectedProducts)
+    } else {
+      this.selectedProducts = this.productSku?.value.split(',')
+      this.form.get('products')?.setValue(this.selectedProducts)
+    }
+
+    if (!this.form.valid) {
+      this.isSubmitted = true
+      return;
+    }
+
+    this.CollectionService.updateCollection({
+      ...this.form.value,
+      colid: this.collectionDetails.colid, slug: this.collectionSlug,
+      isSku: this.isAutoCompleteEnabled ? false : true
+    }).subscribe({
+      next: (res: any) => {
+        if (res.errorCode != 0) {
+          this.HotToastService.error(res?.messaage);
+        } else if (res.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    });
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     let products = [...this.productDetails]
     moveItemInArray(products, event.previousIndex, event.currentIndex);
     this.productDetails = [...products]
   }
-
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
-  getType(event: any) {
-    event.value == 'grid' ? this.isGrid = !this.isGrid : null
-  }
-
-  getFeatured(event: any) {
-    event.value == 'true' ? this.isFeatured = true : this.isFeatured = false
-  }
-
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateCollection();
-    } else {
-      this.addCollection();
-    }
-  }
-
-  selectImage(file: any) {
-    this.file = file
-  }
-
-  addCollection() { }
-
-  updateCollection() {
-    if (!this.collectionForm.valid) {
-      return;
-    }
-
-    this.selectedProducts = []
-    if (!this.isAutoCompleteEnabled) {
-      this.selectedProducts = this.productSku?.value.split(',')
-    } else {
-      for (let product of this.productDetails) this.selectedProducts.push(product._id)
-    }
-
-    const payload = this.createPayload()
-    this.collectionService.updateCollection(payload).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-      }
-    });
-  }
-
-  restoreCollection() {
-    if (this.restore.value == "true") {
-      this.collectionService.restoreCollection({ colid: this.collectionData?.colid }).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.toastr.success(res?.message);
-          this.router.navigate([this.appRoute.collection.ARCHIVED_COLLECTION]);
-        } else {
-          this.toastr.error(res?.message);
-        }
-      })
-    } else {
-      this.router.navigate([this.appRoute.collection.ARCHIVED_COLLECTION]);
-    }
-  }
-
-  createPayload() {
-    let data = {
-      name: this.collectionForm.get('name')?.value,
-      subname: this.collectionForm.get('subname')?.value,
-      isFeatured: this.collectionForm.get('isFeatured')?.value,
-      isArchive: this.collectionForm.get('isArchive')?.value,
-      isHighlighted: this.collectionForm.get('isHighlighted')?.value,
-      isActive: this.collectionForm.get('isActive')?.value,
-      filestring: this.croppedImage,
-      filename: this.filename,
-      products: this.selectedProducts,
-      type: this.collectionForm.get('type')?.value,
-      count: this.collectionForm.get('count')?.value,
-      file: this.file ? this.file : this.collectionData?.file,
-      bannerstring: this.croppedBanner,
-      bannername: this.bannerFilename,
-      banner: this.collectionData?.banner,
-      style: {
-        background: this.collectionForm.get('background')?.value,
-        border: this.collectionForm.get('border')?.value,
-        radius: this.collectionForm.get('radius')?.value,
-        text: {
-          color: this.collectionForm.get('color')?.value,
-          fontSize: this.collectionForm.get('fontSize')?.value,
-          fontWeight: this.collectionForm.get('fontWeight')?.value,
-        }
-      },
-      colid: this.collectionData?.colid,
-      isSku: !this.isAutoCompleteEnabled ? true : false
-    }
-
-    return data
-  }
-
-  //Media management starts
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-    this.BsModalService.show(this.mediaModal, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
-    this.quesModalRef?.hide()
-  }
-
-  bannerFile(event: any) {
-    this.bannerFiledata = <File>event.target.files[0];
-    this.bannerFilename = this.bannerFiledata.name
-    this.bannerChangedEvent = event;
-    this.loadBanner = true
-    this.BsModalService.show(this.coverModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  bannerCropped(event: ImageCroppedEvent) {
-    this.croppedBanner = event.base64;
-  }
-
-  openQuesModal(template: TemplateRef<any>) {
-    this.quesModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
-  }
-
-  openCoverModal(template: TemplateRef<any>) {
-    this.coverModalRef = this.BsModalService.show(template);
-  }
-
-  openMediaModal(template: TemplateRef<any>) {
-    this.mediaModalRef = this.BsModalService.show(template);
-  }
-
-  openExistingModal(template: TemplateRef<any>) {
-    this.existModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
-    this.quesModalRef?.hide()
-  }
-
-  closeMedia(type: any) {
-    if (type == 'cover') {
-      this.croppedBanner = ''
-      this.bannerFilename = ''
-    } else if (type == 'thumbnail') {
-      this.croppedImage = ''
-      this.filename = ''
-    }
-    this.BsModalService.hide()
-  }
-
-  saveMedia(type: any) {
-    if (type == 'cover') {
-      this.collectionService.updateMedias({ collection: this.collectionData?.colid, media: { url: this.croppedBanner, name: this.bannerFilename } }, type).subscribe({
-        next: (res: any) => {
-          this.getCollection()
-          this.toastr.success(res.message)
-        }, error: (err: any) => {
-          this.toastr.error(err.message)
-        }
-      })
-    } else if (type == 'thumbnail') {
-      this.collectionService.updateMedias({ collection: this.collectionData?.colid, media: { url: this.croppedImage, name: this.filename } }, type).subscribe({
-        next: (res: any) => {
-          this.getCollection()
-          this.toastr.success(res.message)
-        }, error: (err: any) => {
-          this.toastr.error(err.message)
-        }
-      })
-    }
-
-    this.BsModalService.hide()
-  }
-
-  saveExistingMedia(type: any, image: any) {
-    if (type == 'cover') {
-      this.collectionService.updateMedias({ collection: this.collectionData?.colid, url: image }, type).subscribe({
-        next: (res: any) => {
-          this.getCollection()
-          this.toastr.success(res.message)
-        }, error: (err: any) => {
-          this.toastr.error(err.message)
-        }
-      })
-    } else if (type == 'thumbnail') {
-      this.collectionService.updateMedias({ collection: this.collectionData?.colid, url: image }, type).subscribe({
-        next: (res: any) => {
-          this.getCollection()
-          this.toastr.success(res.message)
-        }, error: (err: any) => {
-          this.toastr.error(err.message)
-        }
-      })
-    }
-
-    this.BsModalService.hide()
-  }
-
-  removeCoverImage() {
-    this.collectionService.removeCoverImage(this.collectionData.colid).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.getCollection()
-          this.toastr.success(res.message)
-          this.coverImage.reset()
-        } else {
-          this.toastr.error(res.message)
-        }
-      }, error: (err: any) => {
-        this.toastr.error(err.message)
-      }
-    })
-  }
-  //Media management ends
 }

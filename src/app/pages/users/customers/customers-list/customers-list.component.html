@@ -71,7 +71,7 @@
                               <td>{{i + 1}}</td>
                               <td>{{customer?.name}}</td>
                               <td>{{customer?.email}}</td>
-                              <td>{{customer?.mobile}}</td>
+                              <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
                               <td>
                                  <span class="alert alert-success p-1 fs-6"
                                     [ngClass]="{'alert-danger': !customer?.isActive}">

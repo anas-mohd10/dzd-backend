@@ -32,6 +32,7 @@ import { BannerImagesComponent } from './marketing/banner-images/banner-images.c
 import { CustomMailersComponent } from './settings/general/custom-mailers/custom-mailers.component';
 import { MailerDetailsComponent } from './settings/general/mailer-details/mailer-details.component';
 import { GuestsComponent } from './users/guests/guests.component';
+import { ShippingChargeComponent } from './settings/general/shipping-charge/shipping-charge.component';
 
 export const Routing: Routes = [
   {
@@ -90,17 +91,17 @@ export const Routing: Routes = [
           {
             path: '',
             loadChildren: () => import('./catalog/collection/collection-list/collection-list.module').then((m) => m.CollectionModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
           {
             path: 'add',
             loadChildren: () => import('./catalog/collection/add-collection/add-collection.module').then((m) => m.AddCollectionModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
           {
             path: 'update',
             loadChildren: () => import('./catalog/collection/update-collection/update-collection.module').then((m) => m.UpdateCollectionModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]
@@ -388,6 +389,10 @@ export const Routing: Routes = [
       }, {
         path: 'banner-images',
         component: BannerImagesComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'shipping-charges',
+        component: ShippingChargeComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'store-popup',

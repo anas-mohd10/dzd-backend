@@ -22,7 +22,7 @@
 
         <div class="orderDetails">
             <h4 class="orderId">Order ID: <span>#{{order}}</span></h4>
-            <p>Thank you for buying from Sajidha Hypermarket</p>
+            <p>Thank you for buying from {{settings?.name}}</p>
 
             <table class="table table-striped table-bordered twocolumn-table">
                 <thead>
@@ -127,7 +127,7 @@
         </div>
 
         <div class="Declaration--letter">
-            <h6>Sajidha Hypermarket Declaration Letter
+            <h6>{{settings?.name}} Declaration Letter
                 To Whomsoever It May Concern</h6>
             <label>I, {{orderDetails?.customerId?.name}}, have placed the order for</label>
             <table class="table table-striped table-bordered mt-5 bottomTwo">

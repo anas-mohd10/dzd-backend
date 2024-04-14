@@ -1,0 +1,126 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div class="page-title">
+            <h1 class="fw-bolder">Shipping charges</h1>
+            <ul class="breadcrumb gap-1">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.shippingSettings}}">Shipping settings</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.shippingCharges}}">Shipping charges</a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-primary d-flex align-items-center justify-content-center gap-1" (click)="open(template)">
+            Add new charge
+            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="fs-3 fw-bold">Available Country to Sell </div>
+                <div class="text-muted">Orders will be allowed from the country selected below.</div>
+                <div class="my-2">
+                    <div class="bg-secondary rounded-pill py-1 cursor-pointer px-3" style="width: max-content">
+                        {{shippingDetails.country}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-4 card">
+            <div class="card-body">
+                <div class="fs-3 fw-bold">Blacklisted City</div>
+                <div class="text-muted">Below are the list of the blacklisted cities from which orders won't be allowed.
+                </div>
+
+                <ng-container *ngIf="blacklistedCities.length > 0">
+                    <div class="my-3 d-flex align-items-center justify-content-start gap-1 flex-wrap">
+                        <ng-container *ngFor="let blacklistedCity of blacklistedCities; let i = index">
+                            <div class="bg-secondary rounded-pill py-1 cursor-pointer px-3" style="width: max-content">
+                                {{blacklistedCity.city}}
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="blacklistedCities.length == 0">
+                    <div class="fs-5 text-muted my-3">
+                        No blacklisted city found
+                    </div>
+                </ng-container>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="fs-3 fw-bold">City Charges </div>
+                <div class="text-muted">List of the cities with shipping charges.</div>
+                
+                <ng-container *ngIf="cityCharges.length > 0">
+                    <div class="my-3">
+                        <ng-container *ngFor="let cityCharge of cityCharges; let i = index">
+                            <div class="border border-secondary my-2 rounded p-4 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="fs-5">{{cityCharge.city}}</div>
+                                    <div>{{settings?.currency}} {{cityCharge.charge}}</div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-end gap-2">
+                                    <app-switch [switchId]="cityCharge.city" [isToggledProps]="cityCharge.isBlacklisted" (switchToggled)="switchToggled($event)"></app-switch>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="cityCharges.length == 0">
+                    <div class="fs-5 text-muted my-3">
+                        No city charges found
+                    </div>
+                </ng-container>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Shipping charge</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="form-group mb-3">
+                <label for="city" class="form-label required">City</label>
+                <select formControlName="city" id="city" class="form-select"
+                    [ngClass]="{'is-invalid': (formControls.city.touched || !isSubmitted) && (formControls.city.errors?.required)}">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let cityItem of cityItems" value="{{cityItem.title}}">
+                        {{cityItem.title}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="charge" class="form-label required">Shipping Charge</label>
+                <input type="text"
+                    [ngClass]="{'is-invalid': (formControls.charge.touched || !isSubmitted) && (formControls.charge.errors?.required || formControls.charge.errors?.pattern)}"
+                    id="charge" class="form-control" formControlName="charge" placeholder="50">
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="saveCityCharge()">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

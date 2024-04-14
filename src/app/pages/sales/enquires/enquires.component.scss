@@ -15,30 +15,6 @@ input[type="button"] {
   font-weight: normal !important;
 }
 
-.filteringWrapper {
-  .filtering {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 8px;
-
-    span {
-      color: #8b909a;
-      line-height: 18px;
-    }
-
-    select {
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      padding: 5px;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-}
-
 .enquiresContainer {
   .resultsContainer {
     margin: 20px 0 0 0;
@@ -51,7 +27,6 @@ input[type="button"] {
       border-radius: 10px;
       padding: 10px;
       position: relative;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 
       .editButton {
         position: absolute;
@@ -76,17 +51,6 @@ input[type="button"] {
             }
         }
         
-      }
-
-      .name,
-      .mobile,
-      .email,
-      .date {
-        margin: 0 0 5px 0;
-
-        img {
-          margin: 0 5px 0 0;
-        }
       }
     }
   }

@@ -416,6 +416,7 @@ export class UpdateProductComponent implements OnInit {
     this.productService.getProductbyId({ prodid: this.prodid }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.isUnit = true
+        console.log("Product details :: " + res?.result[0])
         this.productDetails = res?.result[0]
 
         for (let _keys of Object.keys(this.productDetails?.productTags)) {

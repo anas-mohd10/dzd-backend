@@ -7,6 +7,7 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CsvService } from 'src/app/includes/services/csv.service';
+import { CustomersService } from 'src/app/includes/services/customers.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 
 @Component({
@@ -28,6 +29,7 @@ export class UploadsListComponent implements OnInit {
     { title: 'Category', type: 'category' },
     { title: 'Product', type: 'product' },
     { title: 'Brand', type: 'brand' },
+    { title: 'User', type: 'user' },
     { title: 'Collection', type: 'collection' }
   ];
   fileData: any;
@@ -54,7 +56,8 @@ export class UploadsListComponent implements OnInit {
     private BrandService: BrandService,
     private HotToastService: HotToastService,
     private CollectionService: CollectionService,
-    private ProductService: ProductService
+    private ProductService: ProductService,
+    private CustomersService: CustomersService
   ) { }
 
   open(template: TemplateRef<any>) {
@@ -82,7 +85,7 @@ export class UploadsListComponent implements OnInit {
       this.fileData = event.files[0];
       this.fileName = this.fileData.name;
       this.fileSize = this.fileData.size / 1024
-      this.fileSize > 20 ? this.HotToastService.error("File size should be less than 20MB") : this.isFile = true;
+      this.fileSize > 100 ? this.HotToastService.error("File size should be less than 100MB") : this.isFile = true;
     } else {
       this.HotToastService.error("Please upload a CSV file")
     }
@@ -141,6 +144,20 @@ export class UploadsListComponent implements OnInit {
             }
           })
           break
+        case 'user':
+          this.CustomersService.bulkFileUpload(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+                this.onSuccess(res?.message)
+              } else {
+                this.HotToastService.error(res?.message)
+              }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
+              this.isSubmitting = false
+            }
+          })
+          break
         case 'product':
           this.ProductService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {
@@ -154,8 +171,6 @@ export class UploadsListComponent implements OnInit {
               this.isSubmitting = false
             }
           })
-          break
-        case 'users':
           break
       }
     } else {

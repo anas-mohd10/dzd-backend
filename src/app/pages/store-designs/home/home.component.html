@@ -187,18 +187,24 @@
                                     <div class="row">
                                         <div class="col-lg-6 form-group mb-3">
                                             <label for="buttonVisibility" class="form-label">Button visibility</label>
-                                            <select formControlName="buttonVisibility" id="buttonVisibility" class="form-select">
+                                            <select formControlName="buttonVisibility" id="buttonVisibility"
+                                                class="form-select">
                                                 <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' : 'Hidden'}}</option>
+                                                <option *ngFor="let value of [true, false]" value="{{value}}">{{value ==
+                                                    true ? 'Visible' : 'Hidden'}}</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-6 form-group mb-3">
                                             <label for="buttonText" class="form-label">Button text</label>
-                                            <input type="text" placeholder="View more" id="buttonText" formControlName="buttonText" class="form-control">
+                                            <input type="text" placeholder="View more" id="buttonText"
+                                                formControlName="buttonText" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label for="buttonLink" class="form-label">Button redirection</label>
-                                            <input type="text" placeholder="View more" id="buttonLink" formControlName="buttonLink" placeholder="https://freshfruitmart.storedada.net/products/vegetables" class="form-control">
+                                            <input type="text" placeholder="View more" id="buttonLink"
+                                                formControlName="buttonLink"
+                                                placeholder="https://freshfruitmart.storedada.net/products/vegetables"
+                                                class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -302,6 +308,9 @@
                                                 type="text" id="redirectionSearch" placeholder="Search redirections"
                                                 class="form-control" [formControl]="redirectionQuery"
                                                 (ngModelChange)="redirectionQueryChange()">
+                                            <input *ngIf="widgetForm.get('redirectionType')?.value == 'all-products'"
+                                                type="text" id="redirectionSearch" placeholder="Product redirection to all products"
+                                                class="form-control" [formControl]="redirectionQuery" [disabled]="true" >
                                             <select *ngIf="widgetForm.get('redirectionType')?.value == 'static-pages'"
                                                 [formControl]="redirectionQuery" id="redirectionSearch"
                                                 class="form-select">

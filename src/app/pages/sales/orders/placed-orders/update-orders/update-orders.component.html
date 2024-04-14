@@ -23,12 +23,12 @@
   <div class="topButtons d-flex align-items-center justify-content-end gap-3"
     [ngClass]="{'cancelledWrapper': isCancelled}">
     <div class="position-relative btns-sx" *ngIf="isCancelEligible">
-      <div class="btn border text-danger border-danger" (click)="open(confirmation)">
+      <div class="btn border bg-white text-danger border-danger" (click)="open(confirmation)">
         Cancel Order
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <div class="btn border text-primary border-primary">
+      <div class="btn border text-primary bg-white border-primary">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt"
           viewBox="0 0 16 16">
           <path
@@ -40,8 +40,8 @@
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <a class="btn border text-primary border-primary" href="/packing-slip?order={{orderNumber?.split('#')[1]}}"
-        target="_blank">
+      <a class="btn border bg-white text-primary border-primary"
+        href="/packing-slip?order={{orderNumber?.split('#')[1]}}" target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
           <path d="M0 0h24v24H0V0z" fill="none" />
           <path
@@ -109,8 +109,13 @@
                 </div>
               </div>
               <div class="itemDetails">
+                <div class="itemTitle">Customer Type</div>
+                <div class="itemResponse">{{order?.customerType}}
+                </div>
+              </div>
+              <div class="itemDetails">
                 <div class="itemTitle">Order Total</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.total}}</div>
+                <div class="itemResponse">{{settings.currency}} {{order?.total}}</div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Shipping Method</div>
@@ -118,14 +123,15 @@
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Delivery</div>
-                <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">{{order?.deliveryType == '1' ?
-                  'Click
-                  and collect' : 'Home delivery' }}</div>
+                <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">
+                  {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
+                </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Delivery slot</div>
-                <div class="itemResponse">{{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' +
-                  order?.deliverySlot?.to : '-'}}</div>
+                <div class="itemResponse">
+                  {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' +  order?.deliverySlot?.to : '-'}}
+                </div>
               </div>
             </div>
           </div>
@@ -180,7 +186,7 @@
                 </div>
               </div>
               <div class="itemDetails">
-                <div class="itemTitle">Coupon discount</div>
+                <div class="itemTitle">Discount</div>
                 <div class="itemResponse">
                   {{settings?.currency}}
                   {{order?.discount ? order?.discount : '0.00'}}
@@ -197,7 +203,7 @@
                 <div class="itemTitle">Grand total</div>
                 <div class="itemResponse">
                   {{settings?.currency}}
-                  {{order?.credit?.total ? order?.credit?.total : '0.00'}}
+                  {{order?.total ? order?.total : '0.00'}}
                 </div>
               </div>
             </div>
@@ -212,8 +218,11 @@
                 Customer Address
               </div>
               <div class="my-2">
-                <p class="my-1 fs-5 fw-bold">
+                <p class="my-1 fs-5 fw-bold" *ngIf="order?.customerId">
                   {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
+                </p>
+                <p class="my-1 fs-5 fw-bold" *ngIf="order?.guestId">
+                  {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
                 </p>
                 <div class="fs-6 text-muted">
                   {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
@@ -230,8 +239,11 @@
                 Shipping Address
               </div>
               <div class="my-2">
-                <p class="my-1 fs-5 fw-bold">
+                <p class="my-1 fs-5 fw-bold" *ngIf="order?.customerId">
                   {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
+                </p>
+                <p class="my-1 fs-5 fw-bold" *ngIf="order?.guestId">
+                  {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
                 </p>
                 <div class="fs-6 text-muted">
                   {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
@@ -244,19 +256,19 @@
           </div>
           <div class="card">
             <div class="card-body">
-              <div class="fs-3 fw-bolder">Click and Collect Details</div>
+              <div class="fs-3 fw-bolder">Branch Details</div>
               <div class="my-2">
                 <div class="d-flex align-items-center justify-content-between my-1">
                   <div class="fs-6">Date</div>
                   <div class="fs-6">{{order?.deliveryDate ? order?.deliveryDate : 'Not avaialble'}}</div>
                 </div>
-                <div class="d-flex align-items-center justify-content-between mb-1">
+                <!-- <div class="d-flex align-items-center justify-content-between mb-1">
                   <div class="fs-6">Time</div>
                   <div class="fs-6">
                     {{order?.deliveryTime?.from ?
                     order?.deliveryTime?.from + ' -' + order?.deliveryTime?.to : 'Not available'}}
                   </div>
-                </div>
+                </div> -->
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="fs-6">Store</div>
                   <div class="fs-6">
@@ -333,8 +345,9 @@
                     <div class="d-flex flex-wrap align-items-start justify-content-between">
                       <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
                         <div class="productThumbnail">
-                          <img class="border border-secondary rounded" src="{{base}}/{{product?.productId?.thumbnail}}"
-                            alt="{{product?.productId?.name}}">
+                          <img class="border border-secondary rounded"
+                            src="{{base}}/{{product?.productId?.thumbnail?.path}}" alt="{{product?.productId?.name}}"
+                            onerror="this.src =  '../../../../../assets/images/default.png'">
                         </div>
                         <div>
                           <div>{{product?.productId?.name}}</div>
@@ -365,8 +378,8 @@
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Status:</div>
-                          <div>
-                            <select class="form-select p-2" (click)="getStatusList(product.currentStatus.status)"
+                          <div class="w-75">
+                            <select class="form-select w-50 p-2" (click)="getStatusList(product.currentStatus.status)"
                               (change)="updateOrderStatus($event, product?.productId?._id)">
                               <option disabled>-- Select a option --</option>
                               <option selected disabled>{{product.currentStatus.status}}</option>
@@ -376,15 +389,14 @@
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Payment:</div>
-                          <div>
-                            <select name="payment" class="form-select p-2" id="payment"
+                          <div class="w-75">
+                            <select name="payment" class="form-select w-50 p-2" id="payment"
                               (change)="updateProductPayment($event, product)">
                               <option disabled>-- Select an option --</option>
                               <option selected disabled>
                                 {{product?.paymentStatus == 'PENDING' ? 'Pending' : 'Paid'}}
                               </option>
                               <option *ngIf="product?.paymentStatus == 'PENDING'" value="PAID">Paid</option>
-                              <option *ngIf="product?.paymentStatus == 'PAID'" value="PENDING">Pending</option>
                             </select>
                           </div>
                         </div>
@@ -392,11 +404,11 @@
                       <div class="w-100 mt-4">
                         <div class="historySwiper">
                           <swiper [config]="swiperConfig">
-                            <ng-container *ngFor="let history of product?.history">
+                            <ng-container *ngFor="let history of product?.history; let i = index">
                               <ng-template swiperSlide>
-                                <div class="history">
-                                  <div class="fs-5 mb-2 fw-bolder">Order {{history?.status}}</div>
-                                  <div class="text-muted">{{history?.date}}</div>
+                                <div class="order-tracking completed">
+                                  <span class="is-complete"></span>
+                                  <p>{{history?.status}}<br><span>{{history?.date}}</span></p>
                                 </div>
                               </ng-template>
                             </ng-container>

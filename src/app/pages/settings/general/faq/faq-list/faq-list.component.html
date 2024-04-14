@@ -1,29 +1,24 @@
-<div class="contact-page-container">
-  <div class="page-header">
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
     <div class="page-title">
       <h1 class="fw-bolder">FAQs</h1>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.faq.FAQ_LIST}}">FAQs</a>
+        </li>
+      </ul>
     </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.faq.FAQ_LIST}}">FAQs</a>
-          </li>
-        </ul>
-        <button class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.faq.ADD_FAQ }}" style="width: 200px;">
-          Add FAQ
-        </button>
-      </div>
-    </div>
+    <button class="btn btn-primary" color="primary" routerLink="{{ appRoute.faq.ADD_FAQ }}">
+      Add Questions
+    </button>
   </div>
 
   <div class="faqWrapper mt-5">
     <ng-container *ngFor="let faq of faqs; let i = index">
-      <div class="faqCard mb-3">
+      <div class="rounded bg-white faqCard mb-3">
         <div class="faqHeader p-3 d-flex align-items-center justify-content-between">
           <div class="faqTitle">{{faq?.question}} </div>
           <div class="faqButtons d-flex align-items-center justify-content-start">
@@ -43,7 +38,7 @@
             </div>
           </div>
         </div>
-        <div class="faqContent fs-6" [ngClass]="{'show': i+1 == activeFaq}">{{faq?.answer}}</div>
+        <div class="faqContent fs-6 text-muted" [ngClass]="{'show': i+1 == activeFaq}">{{faq?.answer}}</div>
       </div>
     </ng-container>
   </div>

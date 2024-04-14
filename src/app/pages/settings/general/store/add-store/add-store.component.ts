@@ -7,7 +7,6 @@ import { appRoutes } from 'src/app/config/routes';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { TimeslotsService } from 'src/app/includes/services/timeslots.service';
 
-
 @Component({
   selector: 'app-add-store',
   templateUrl: './add-store.component.html',
@@ -45,6 +44,7 @@ export class AddStoreComponent implements OnInit {
   initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
+      tel: new FormControl('', [Validators.pattern("^[0-9]{6,15}$")]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
       firstlane: new FormControl(''),
@@ -111,6 +111,7 @@ export class AddStoreComponent implements OnInit {
         email: this.form.get('email')?.value,
         mobile: this.form.get('mobile')?.value,
         countryCode: this.form.get('countryCode')?.value,
+        tel: this.form.get('tel')?.value,
       },
       address: {
         firstlane: this.form.get('firstlane')?.value,
