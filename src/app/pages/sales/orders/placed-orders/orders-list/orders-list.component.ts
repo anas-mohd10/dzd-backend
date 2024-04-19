@@ -7,7 +7,7 @@ import SwiperCore, { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
-
+import { routes } from 'src/app/app-routing.module';
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
@@ -45,7 +45,7 @@ export class OrdersListComponent implements OnInit {
     }
   }
   page: number = 1
-  limit: number = 5
+  limit: number = 20
   keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'
@@ -107,6 +107,10 @@ export class OrdersListComponent implements OnInit {
   isTagSubmitted: boolean = false
   totalResults: number = 0
   totalPages: number = 1
+  toggledOrders: Array<any> = [];
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  checkStatusList: Array<any> = ['PENDING', 'PLACED', 'FAILED']
 
   constructor(
     private OrdersService: OrdersService,
@@ -139,6 +143,34 @@ export class OrdersListComponent implements OnInit {
   closeTag() {
     this.tagRef?.hide()
     this.tagOrder = ''
+  }
+
+  convertTimeFormat(timeString: any) {
+    const [start, end] = timeString.split(' - ');
+    const startTime = this.convertTo12HourFormat(start);
+    const endTime = this.convertTo12HourFormat(end);
+    return `${startTime} - ${endTime}`;
+  }
+
+  convertTo12HourFormat(time: any) {
+    const [hours, minutes] = time.split(':');
+    let period = 'AM';
+    let hour = parseInt(hours, 10);
+
+    if (hour >= 12) {
+      period = 'PM';
+      if (hour > 12) { hour -= 12 }
+    }
+
+    return `${hour}:${minutes} ${period}`;
+  }
+
+  convertDate(dateString: any) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = this.months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${this.weekDays[date.getDay()]} ${day} ${month} ${year}`;
   }
 
   removeTag(order: string, tag: number) {
@@ -194,6 +226,32 @@ export class OrdersListComponent implements OnInit {
     }
     this.initForm()
     this.getOrders()
+  }
+
+  toggleOrders(order?: { order: string, status: string }) {
+    if (order) {
+      if (this.checkStatusList.includes(order?.status)) {
+        this.Toast.error('Please accept this order to confirm your selection')
+      } else {
+        this.toggledOrders.includes(order.order.split('#')[1]) ?
+          this.toggledOrders = this.toggledOrders.filter(o => o != order.order.split('#')[1]) :
+          this.toggledOrders.push(order.order.split('#')[1])
+      }
+    } else {
+      this.toggledOrders.length == this.orders.length ?
+        this.toggledOrders = [] :
+        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? this.Toast.error('Please accept orders to confirm your selection') : order.orderNo.split('#')[1])
+    }
+  }
+
+  bulkPrintInvoice() {
+    let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
+    this.Router.navigate([`/bulk-invoices`], { queryParams: { 'order': queryString } })
+  }
+
+  bulkPrintPackingSlips() {
+    let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
+    this.Router.navigate([`/bulk-packing-slips`], { queryParams: { 'order': queryString } })
   }
 
   exportOrders() {

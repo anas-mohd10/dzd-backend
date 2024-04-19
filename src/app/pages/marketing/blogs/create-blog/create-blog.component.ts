@@ -39,6 +39,7 @@ export class CreateBlogComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
       { class: 'sen', name: 'Sen' },
+      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ]
   };
 
@@ -75,7 +76,7 @@ export class CreateBlogComponent implements OnInit {
   handleThumbnail(event: any) {
     this.form.get('thumbnail')?.setValue(event._id)
   }
-  
+
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true

@@ -45,6 +45,7 @@ export class AddPrivacyPolicyComponent implements OnInit, OnDestroy {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
+      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ]
   };
 

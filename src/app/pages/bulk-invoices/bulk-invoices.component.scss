@@ -1,3 +1,14 @@
+/* order-print.component.css */
+.order-container {
+    page-break-after: always;
+    /* Ensures each order starts on a new page */
+}
+
+.page-break {
+    page-break-after: always;
+    /* Additional page break if not the last order */
+}
+
 @media print {
     a[href]:after {
         content: none !important;

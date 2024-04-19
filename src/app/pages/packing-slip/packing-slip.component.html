@@ -1,174 +1,136 @@
-<div class="printWrapper">
-    <div class="a4--frame">
-        <div class="datedOn"> {{date}} </div>
+<div class="bg-white py-3">
+    <div id="printBtn" class="noPrint btn btn-primary" onclick="print('printWrapper')">Print packing slip</div>
+    <div class="printWrapper">
+        <div class="a4--frame">
+            <div class="fs-5"> {{date}} </div>
 
-        <div class="d-flex justify-content-between" style="border-bottom: 1px dashed #111111;">
-            <div class="shippmentAddress">
-                <label>Ship to:</label>
-                <p class="address">
-                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
-                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
-                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
-                    {{orderDetails?.address?.pincode}}
-                </p>
-
+            <div class="d-flex justify-content-between" style="border-bottom: 1px dashed #dbdbdb;">
+                <div class="shippmentAddress">
+                    <div class="text-muted fs-5 fw-bolder">Ship to:</div>
+                    <div class="fs-5">
+                        <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}</div>
+                        <div>{{orderDetails?.address?.city}}</div>
+                        <div>{{orderDetails?.address?.landmark}}</div>
+                        <div>{{orderDetails?.address?.pincode}} {{orderDetails?.address?.state}}</div>
+                    </div>
+                </div>
+                <div>
+                    <p class="fs-5 fw-bolder">Phone : <span class="fw-normal"> {{orderDetails?.customerId?.countryCode}}
+                            {{orderDetails?.customerId?.mobile}} </span></p>
+                    <p class="fs-5 fw-bolder">Payment Method : <span class="fw-normal"> {{orderDetails?.paymentMethod}}</span></p>
+                </div>
             </div>
-            <div>
-                <p class="phoneNo">Phone : <span> {{orderDetails?.customerId?.countryCode}}
-                        {{orderDetails?.customerId?.mobile}} </span></p>
-                <p class="phoneNo">Payment Method : <span> {{orderDetails?.paymentMethod}}</span></p>
-            </div>
-        </div>
 
-        <div class="orderDetails">
-            <h4 class="orderId">Order ID: <span>#{{order}}</span></h4>
-            <p>Thank you for buying from {{settings?.name}}</p>
+            <div class="orderDetails">
+                <h4 class="orderId">Order ID: <span>#{{order}}</span></h4>
+                <div class="my-2">Thank you for buying from {{settings?.name}}</div>
 
-            <table class="table table-striped table-bordered twocolumn-table">
-                <thead>
-                    <tr>
-                        <th>
-                            Delivery Address
-                        </th>
-                        <th>
-                            Order Details
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
-                            {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
-                            {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
-                            {{orderDetails?.address?.pincode}}
-                        </td>
-                        <td>
-                            <div class="flexWraper">
-                                <span class="label"> Order Date:</span>
-                                <span>{{orderDetails?.orderDate}}</span>
-                            </div>
-                            <div class="flexWraper">
-                                <span class="label"> Shipping Service:</span>
-                                <span> Standard</span>
-                            </div>
-                            <div class="flexWraper">
-                                <span class="label"> Buyer Name:</span>
-                                <span> {{orderDetails?.customerId?.name}}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-striped table-bordered orderDetails-Table">
-                <thead>
-                    <tr>
-                        <th>
-                            Quantity
-                        </th>
-                        <th>
-                            Product Details
-                        </th>
-                        <th>
-                            Unit Price
-                        </th>
-                        <th>
-                            Item subtotal
-                        </th>
-                        <th>
-                            Tax
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let product of orderDetails?.products; let i = index">
+                <table class="table fs-5 table-bordered twocolumn-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Delivery Address
+                            </th>
+                            <th>
+                                Order Details
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <tr>
                             <td>
-                                {{product?.quantity}}
+                                {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                                {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
+                                {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
+                                {{orderDetails?.address?.pincode}}
                             </td>
                             <td>
-                                {{product?.productId?.name}}
-                                SKU: {{product?.productId?.sku}}
-                            </td>
-                            <td>
-                                {{settings?.currency}} {{product?.pricePerUnit}}
-                            </td>
-                            <td>
-                                {{settings?.currency}} {{product?.total}}
-                            </td>
-                            <td>
-                                {{settings?.currency}} {{product?.taxTotal}}
+                                <div class="flexWraper">
+                                    <span class="label fw-bold"> Order Date:</span>
+                                    <span>{{orderDetails?.orderDate}}</span>
+                                </div>
+                                <div class="flexWraper my-2">
+                                    <span class="label fw-bold"> Shipping Service:</span>
+                                    <span> Standard</span>
+                                </div>
+                                <div class="flexWraper">
+                                    <span class="label fw-bold"> Buyer Name:</span>
+                                    <span> {{orderDetails?.customerId?.name}}</span>
+                                </div>
+                                <div class="flexWraper my-2">
+                                    <span class="label fw-bold"> Shipping Slot:</span>
+                                    <span> {{orderDetails?.deliverySlot?.from}} -
+                                        {{orderDetails?.deliverySlot?.to}}</span>
+                                </div>
                             </td>
                         </tr>
-                    </ng-container>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4">
-                            Delivery Charges
-                        </td>
-                        <td colspan="2">
-                            {{settings?.currency}} {{orderDetails?.shippingCost}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            Grand Total
-                        </td>
-                        <td colspan="2">
-                            {{settings?.currency}} {{orderDetails?.total}}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-
-            <p class="orderDetails-Captions" [innerHTML]="settings?.notes?.packingSlip">
-            </p>
-        </div>
-
-        <div class="Declaration--letter">
-            <h6>{{settings?.name}} Declaration Letter
-                To Whomsoever It May Concern</h6>
-            <label>I, {{orderDetails?.customerId?.name}}, have placed the order for</label>
-            <table class="table table-striped table-bordered mt-5 bottomTwo">
-                <thead>
-                    <tr>
-                        <th>
-                            Quantity
-                        </th>
-                        <th>
-                            Product Details
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let product of orderDetails?.products">
+                    </tbody>
+                </table>
+                <table class="table table-bordered orderDetails-Table">
+                    <thead>
                         <tr>
-                            <td>
-                                {{product?.quantity}}
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Product Details
+                            </th>
+                            <th>
+                                Unit Price
+                            </th>
+                            <th>
+                                Item subtotal
+                            </th>
+                            <th>
+                                Tax
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let product of orderDetails?.products; let i = index">
+                            <tr>
+                                <td>
+                                    {{product?.quantity}}
+                                </td>
+                                <td>
+                                    {{product?.productId?.name}}
+                                    SKU: {{product?.productId?.sku}}
+                                </td>
+                                <td>
+                                    {{settings?.currency}} {{product?.pricePerUnit}}
+                                </td>
+                                <td>
+                                    {{settings?.currency}} {{product?.total}}
+                                </td>
+                                <td>
+                                    {{settings?.currency}} {{product?.taxTotal}}
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                Delivery Charges
                             </td>
-                            <td>
-                                {{product?.productId?.name}}
-                                SKU: {{product?.productId?.sku}}
+                            <td colspan="2">
+                                {{settings?.currency}} {{orderDetails?.shippingCost}}
                             </td>
                         </tr>
-                    </ng-container>
-                </tbody>
-            </table>
+                        <tr>
+                            <td colspan="4">
+                                Grand Total
+                            </td>
+                            <td colspan="2">
+                                {{settings?.currency}} {{orderDetails?.total}}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
 
-            <div class="decLetter">
-                <p class="address">
-                    Order ID: #{{order}}
-                </p>
-                <p class="phoneNo">
-                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
-                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
-                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
-                    {{orderDetails?.address?.pincode}}
-                </p>
+                <div class="my-2 orderDetails-Captions" [innerHTML]="settings?.notes?.packingSlip">
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<div id="printBtn" class="noPrint btn btn-info" onclick="print('printWrapper')">Print</div>

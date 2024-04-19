@@ -103,6 +103,7 @@ export class NavigationMenuComponent implements OnInit {
     this.itemForm = new FormGroup({
       title: new FormControl('', Validators.required),
       menuType: new FormControl('', Validators.required),
+      icon: new FormControl(null),
       redirection: new FormControl('', Validators.required),
     })
   }
@@ -122,10 +123,13 @@ export class NavigationMenuComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.itemDetails = res?.result
         for (let _key of Object.keys(res?.result)) this.itemForm.get(_key)?.setValue(res?.result[_key])
+        this.itemForm.get('icon')?.setValue(this.itemDetails?.icon?._id)
         this.ChangeDetectorRef.markForCheck()
       }
     })
   }
+
+
 
   closeModal() {
     this.modalService.hide();
@@ -142,6 +146,15 @@ export class NavigationMenuComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
+
+  handleTitleThumbnail(event: any) {
+    this.itemForm.get('icon')?.setValue(event?._id)
+  }
+
+  removeTitleThumbnail() {
+    this.itemForm.get('icon')?.setValue(null)
+    this.itemDetails.icon = ''
   }
 
   getSettings() {
@@ -311,8 +324,11 @@ export class NavigationMenuComponent implements OnInit {
         this.MenuService.addMenu(this.itemForm.value).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.closeModal()
+            this.Toast.success(res?.message)
             this.getItems()
             this.ChangeDetectorRef.markForCheck()
+          } else {
+            this.Toast.error(res?.message)
           }
         })
         break
@@ -325,8 +341,11 @@ export class NavigationMenuComponent implements OnInit {
         this.MenuService.updateMenu({ ...this.itemForm.value, refid: this.itemDetails?.refid }).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.closeModal()
+            this.Toast.success(res?.message)
             this.getItems()
             this.ChangeDetectorRef.markForCheck()
+          } else {
+            this.Toast.error(res?.message)
           }
         })
         break

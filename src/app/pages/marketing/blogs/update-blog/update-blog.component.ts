@@ -58,6 +58,7 @@ export class UpdateBlogComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
       { class: 'sen', name: 'Sen' },
+      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ]
   };
 

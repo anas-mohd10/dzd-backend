@@ -175,6 +175,9 @@ export class HomeComponent implements OnInit {
       case 'category':
         this.getCategories()
         break
+      case 'collection':
+        this.getCollections()
+        break
       case 'all-products':
         this.widgetForm.get('redirection')?.setValue("/products")
         this.redirectionQuery.setValue("/products")
@@ -209,6 +212,9 @@ export class HomeComponent implements OnInit {
         break
       case 'category':
         this.widgetForm.get('redirection')?.setValue("/products?category=" + this.redirectionQuery.value)
+        break
+      case 'collection':
+        this.widgetForm.get('redirection')?.setValue("/products?collection=" + this.redirectionQuery.value)
         break
     }
     this.addWidgetDetails()

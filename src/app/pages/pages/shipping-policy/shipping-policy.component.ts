@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { ContentService } from 'src/app/includes/services/content.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-shipping-policy',
@@ -27,22 +27,22 @@ export class ShippingPolicyComponent implements OnInit {
     enableToolbar: true,
     showToolbar: true,
     placeholder: 'Enter shipping policy here',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
+    defaultFontName: 'Be Vietnam Pro',
+    defaultFontSize: '5',
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
+      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ]
   };
 
   constructor(
     private ContentService: ContentService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private ToastrService: HotToastService
   ) { }
 
   ngOnInit(): void {

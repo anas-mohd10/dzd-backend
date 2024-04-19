@@ -12,6 +12,10 @@ $error: #F1416C;
   font-weight: 400 !important;
 }
 
+.customer-type{
+  width: 100px;
+}
+
 
 .action-button {
   height: 2.5rem;
@@ -29,7 +33,7 @@ $error: #F1416C;
   .checkbox {
     height: 20px;
     width: 20px;
-    border: 2px solid #aaaaaa;
+    border: 2px solid #cacaca;
     border-radius: 4px;
     position: relative;
     background: #ffffff;
@@ -264,6 +268,10 @@ $error: #F1416C;
       outline: none;
     }
   }
+}
+
+.table{
+  font-size: 1rem !important;
 }
 
 .table-responsive {

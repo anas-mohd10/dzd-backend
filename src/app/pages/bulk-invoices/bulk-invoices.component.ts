@@ -7,17 +7,17 @@ import { StoresService } from 'src/app/includes/services/stores.service';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
 
 @Component({
-  selector: 'app-generate-invoice',
-  templateUrl: './generate-invoice.component.html',
-  styleUrls: ['./generate-invoice.component.scss']
+  selector: 'app-bulk-invoices',
+  templateUrl: './bulk-invoices.component.html',
+  styleUrls: ['./bulk-invoices.component.scss']
 })
-export class GenerateInvoiceComponent implements OnInit {
-  order: string = ''
-  orderDetails: any = {}
-  settings: any = {}
-  base: string = environment.base
-  store: any = {}
-  helpCenter: any
+export class BulkInvoicesComponent implements OnInit {
+  ordersQuery: string
+  orders: Array<any> = [];
+  settings: any;
+  helpCenter: any;
+  store: any;
+  base: string = environment.base;
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -30,13 +30,20 @@ export class GenerateInvoiceComponent implements OnInit {
     private HelpCenterService: HelpCenterService
   ) { }
 
-  ngOnInit(): void {
-    this.order = this.ActivatedRoute.snapshot.queryParams.order || ''
-    this.OrdersService.getOrderDetails({ order: '#' + this.order }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.orderDetails = res?.result
-        this.orderDetails.orderDate = new Date(this.orderDetails?.orderDate).toDateString()
-        this.ChangeDetectorRef.markForCheck()
+  ngOnInit() {
+    this.ordersQuery = this.ActivatedRoute.snapshot.queryParams.order || ''
+    let orders = this.ordersQuery.split('&')
+    let orderIds = orders.map((order: string) => `#${order}`)
+    this.OrdersService.bulkOrders({ orders: orderIds }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.orders = res.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err) => {
+
       }
     })
 
@@ -49,9 +56,7 @@ export class GenerateInvoiceComponent implements OnInit {
 
     this.StoresService.getStores().subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        for (let store of res?.result) {
-          if (store.isFeatured == true) this.store = store
-        }
+        for (let store of res?.result) { if (store.isFeatured == true) this.store = store }
         this.ChangeDetectorRef.markForCheck()
       }
     })
@@ -62,18 +67,7 @@ export class GenerateInvoiceComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
-
-    this.OrdersService.invoiceDetails(this.order).subscribe({
-      next: (res: any) => {
-
-      }, error: (err: any) => {
-
-      }, complete: () => {
-
-      }
-    })
   }
-
 
   convertTimeFormat(timeString: any) {
     const [start, end] = timeString.split(' - ');
@@ -98,6 +92,7 @@ export class GenerateInvoiceComponent implements OnInit {
   getDeliveryDate(date: any) {
     return `${this.weekDays[new Date(date).getDay()]} ${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
   }
+
 
   print(content: any) {
     let contents: any = document.querySelector('.' + content)?.innerHTML

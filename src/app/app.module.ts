@@ -80,6 +80,8 @@ import { CustomMailersComponent } from './pages/settings/general/custom-mailers/
 import { MailerDetailsComponent } from './pages/settings/general/mailer-details/mailer-details.component';
 import { GuestsComponent } from './pages/users/guests/guests.component';
 import { ShippingChargeComponent } from './pages/settings/general/shipping-charge/shipping-charge.component';
+import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
+import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packing-slips.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -134,6 +136,8 @@ const DragConfig = {
     MailerDetailsComponent,
     GuestsComponent,
     ShippingChargeComponent,
+    BulkInvoicesComponent,
+    BulkPackingSlipsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

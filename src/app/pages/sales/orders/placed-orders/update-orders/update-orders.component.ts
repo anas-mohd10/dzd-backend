@@ -65,6 +65,7 @@ export class UpdateOrdersComponent implements OnInit {
   isCancelEligible: boolean = false
   invoiceStatusList: Array<any> = ['PENDING', 'PLACED']
   isInvoiceAvailable: boolean = false
+  isPackingSlipAvailable: boolean = false
   modalRef?: BsModalRef;
   isCancelled: boolean = false
 
@@ -168,6 +169,8 @@ export class UpdateOrdersComponent implements OnInit {
         this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
         this.orderStatusList.includes(res.result.orderStatus) ? this.isCancelEligible = false : this.isCancelEligible = true
         this.invoiceStatusList.includes(res.result.orderStatus) ? this.isInvoiceAvailable = false : this.isInvoiceAvailable = true
+        this.invoiceStatusList.includes(res.result.orderStatus) ? this.isPackingSlipAvailable = false : this.isPackingSlipAvailable = true
+
         res.result.orderStatus == 'CANCELLED' ? this.isCancelled = true : this.isCancelled = false
         if (this.order.orderStatus == 'CANCELLED') {
           if (this.order.cancel.date) this.order.cancel.date = new Date(this.order.cancel.date).toDateString()

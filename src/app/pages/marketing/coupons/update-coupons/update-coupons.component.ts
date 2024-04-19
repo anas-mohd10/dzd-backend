@@ -99,6 +99,7 @@ export class UpdateCouponsComponent implements OnInit {
       background: [''],
       border: [''],
       radius: [''],
+      criteriaType: ['partial'],
       color: [''],
       fontSize: [''],
       fontWeight: [''],
@@ -174,6 +175,7 @@ export class UpdateCouponsComponent implements OnInit {
       this.form.get("isActive")?.setValue(this.couponDetails.isActive)
       this.form.get("isVisibility")?.setValue(this.couponDetails.isVisibility)
       this.form.get("countPerUser")?.setValue(this.couponDetails.countPerUser)
+      this.form.get('criteriaType')?.setValue(this.couponDetails.couponType)
 
       const today = new Date().toISOString()
       if (today > this.couponDetails?.fromDate) {
@@ -317,6 +319,7 @@ export class UpdateCouponsComponent implements OnInit {
         filestring: this.croppedImage,
         filename: this.filename,
         file: '',
+        couponType: this.form.get('criteriaType')?.value,
         isVisibility: this.form.get('isVisibility')?.value,
         isActive: this.form.get('isActive')?.value,
         couponid: this.slug,

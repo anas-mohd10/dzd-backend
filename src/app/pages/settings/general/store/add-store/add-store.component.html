@@ -37,7 +37,7 @@
                                 <label class="mb-1 fs-6 required">Email</label>
                                 <input type="text" class="form-control" formControlName="email"
                                     [ngClass]="{ 'is-invalid':  (fc.email.touched || !isValid) && fc.email.errors?.required }" />
-                                <div class="text-danger mt-1" *ngIf="fc.email.errors?.pattern">
+                                <div class="alert alert-danger p-1 mt-1" *ngIf="fc.email.errors?.pattern">
                                     Please enter a valid email
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                 <label class="mb-1 fs-6 required">Mobile number</label>
                                 <input type="text" class="form-control" formControlName="mobile"
                                     [ngClass]="{ 'is-invalid':  (fc.mobile.touched || !isValid) && fc.mobile.errors?.required }" />
-                                <div class="text-danger mt-1" *ngIf="fc.mobile.errors?.pattern">
+                                <div class="alert alert-danger p-1 mt-1" *ngIf="fc.mobile.errors?.pattern">
                                     Please enter a valid mobile number
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <label class="mb-1 fs-6">Telephone Number</label>
                                 <input type="text" class="form-control" formControlName="tel"
                                     [ngClass]="{ 'is-invalid':  (fc.tel.touched || !isValid) && fc.tel.errors?.required }" />
-                                <div class="text-danger mt-1" *ngIf="fc.tel.errors?.pattern">
+                                <div class="alert alert-danger p-1 mt-1" *ngIf="fc.tel.errors?.pattern">
                                     Please enter a valid telephone number
                                 </div>
                             </div>

@@ -122,7 +122,7 @@ label,
 
 .itemsWrapper {
     max-height: 250px;
-    height: 250px;
+    height: max-content;
     overflow-y: scroll;
 
     .itemCard {
@@ -196,7 +196,7 @@ label,
             cursor: pointer;
             box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
             background: $white;
-            margin: 0 0 15px 0;
+            margin: 0 0 5px 0;
             border: 1px solid $border;
 
             .categoryCardHeader {

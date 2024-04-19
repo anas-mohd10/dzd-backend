@@ -23,15 +23,17 @@
             <div class="store d-flex flex-column justify-content-between">
                 <div class="cursor-pointer" routerLink="{{appRoute.stores.UPDATE_STORE}}"
                     [queryParams]="{'store': store?.refid}">
-                    <div class="storeCity fs-5">{{store?.address?.city}}</div>
+                    <div class="storeCity fs-5">{{store?.name}}</div>
                     <div class="storeAddress">
                         <img src="../../../../../../assets/icons/location.svg" alt="Icon">
                         <div class="storeValue">
                             <div class="fs-5 mb-2">Address</div>
-                            <div>{{store?.address?.firstlane ? store?.address?.firstlane : ''}}
-                                {{store?.address?.secondlane ? ', '+store?.address?.secondlane : ''}}
-                                {{store?.address?.area ? ', '+store?.address?.area : ''}} {{store?.address?.landmark
-                                ? ', '+store?.address?.landmark : ''}}</div>
+                            <div>
+                                <div>{{store?.address?.firstlane}} {{store?.address?.secondlane}}</div>
+                                <div>{{store?.address?.area}}</div>
+                                <div>{{store?.address?.landmark}}</div>
+                                <div>{{store?.address?.city}}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="storeEmail">

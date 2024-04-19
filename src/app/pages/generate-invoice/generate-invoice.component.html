@@ -1,145 +1,147 @@
+<div id="printBtn" class="noPrint btn btn-primary" onclick="print('printWrapper')">Print invoice</div>
 <div class="printWrapper">
     <div class="a4--frame">
-        <div class="storeLogo mb-5 d-flex align-items-center justify-content-between">
-            <img src="{{base}}/{{settings?.logo}}" alt="Preview">
-            <div class="">
-                <div class="d-flex align-items-center justify-content-end storeAddress mt-2" *ngIf="store">
-                    {{store?.address?.firstlane}}, {{store?.address?.secondlane}}, {{store?.address?.area}},
-                    {{store?.address?.city}}
+        <div class="card" id="print">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <img src="{{base}}/{{settings?.logo?.path}}"
+                            style="width: 200px; min-height: 80px; object-fit: contain;" alt="logo">
+                    </div>
+                    <div class="col-4 text-right">
+                        <h4 class="fs-1 fw-bold-800 mt-2">Order #{{order}}</h4>
+                        <h4 class="fs-3 fw-bold mt-2">Invoice #{{orderDetails?.invoiceNo}}</h4>
+                    </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-end storeContact" *ngIf="helpCenter">
-                    Contact us: {{helpCenter?.phone}} | {{helpCenter?.email}}
-                </div>
-            </div>
-        </div>
-        <div class="orderPreview">
-            <div class="orderDetails">
-                <h5>Order ID : <span>#{{order}}</span></h5>
-            </div>
-        </div>
-        <div class="addressFlex">
-            <div>
-                <label>Bill To :</label>
-                <p>{{orderDetails?.customerId?.name}}</p>
-                <h4>
-                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
-                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
-                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
-                    {{orderDetails?.address?.pincode}}
-                </h4>
-                <p *ngIf="orderDetails?.gst">For : {{orderDetails?.gst}}</p>
-            </div>
-            <div>
-                <label>Shipped To :</label>
-                <p> {{orderDetails?.customerId?.name}}</p>
-                <h4>
-                    {{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
-                    {{orderDetails?.address?.area}} {{orderDetails?.address?.city}}
-                    {{orderDetails?.address?.landmark}} {{orderDetails?.address?.state}}
-                    {{orderDetails?.address?.pincode}}
-                </h4>
-            </div>
-        </div>
-        <div class="addressFlex">
-            <div>
-                <label>Payment Method:</label>
-                <h4> {{orderDetails?.paymentMethod}} </h4>
-            </div>
-            <div>
-                <label>Order Date :</label>
-                <h4> {{orderDetails?.orderDate}} </h4>
-            </div>
-        </div>
+                <h6 class="fw-bold my-2 fs-3 text-center">TAX INVOICE</h6>
+                <hr class="mt-0">
 
-        <div class="orderSummary">
-            <h2>Order Summary</h2>
-            <table class="table table-striped table-bordered orderList-Table">
-                <thead>
-                    <tr>
-                        <th> Item </th>
-                        <th> Price </th>
-                        <th> Quanity </th>
-                        <th> Total </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let product of orderDetails?.products">
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <img class="me-1 productImage" src="{{base}}/{{product?.productId?.thumbnail}}"
-                                        alt="Product">
-                                    <div class="ms-1">{{product?.productId?.name}}</div>
+                <div class="row">
+                    <div class="row fs-5">
+                        <div class="col-6">
+                            <address>
+                                <strong>Store Address:</strong><br>
+                                <div>{{store?.address?.firstlane}} {{store?.address?.secondlane}}</div>
+                                <div>{{store?.address?.area}}</div>
+                                <div>{{store?.address?.city}}</div>
+                            </address>
+                            <address>
+                                <strong>Payment Method:</strong><br>
+                                <p style="text-transform: uppercase;">{{orderDetails?.paymentMethod}} </p>
+                            </address>
+                            <address>
+                                <strong>Billed To:</strong><br>
+                                <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
                                 </div>
-                            </td>
-                            <td>
-                                {{settings?.currency}} {{product?.pricePerUnit}}
-                            </td>
-                            <td>
-                                {{product?.quantity}}
-                            </td>
-                            <td>
-                                {{settings?.currency}} {{product?.total}}
-                            </td>
-                        </tr>
-                    </ng-container>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">
-                            Total {{settings?.currency}}
-                        </td>
-                        <td>
-                            {{settings?.currency}} {{orderDetails?.total}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            Sub Total
-                        </td>
-                        <td>
-                            {{settings?.currency}} {{orderDetails?.priceBeforeTax}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            VAT 5%
-                        </td>
-                        <td>
-                            {{settings?.currency}} {{orderDetails?.tax}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            Delivery Charges
-                        </td>
-                        <td>
-                            {{settings?.currency}} {{orderDetails?.shippingCost}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            Additional Charges
-                        </td>
-                        <td>
-                            {{settings?.currency}} {{orderDetails?.additionalCharge ? orderDetails?.additionalCharge :
-                            '0.00'}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            Total
-                        </td>
-                        <td>
-                            {{settings?.currency}} {{orderDetails?.total}}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                                <div>{{orderDetails?.address?.landmark}}</div>
+                                <div>{{orderDetails?.address?.pincode}}</div>
+                                <div>{{orderDetails?.address?.state}} {{orderDetails?.address?.city}}</div>
+                            </address>
+
+                        </div>
+                        <div class="col-6 text-right">
+                            <address>
+                                <strong>Shipped To:</strong><br>
+                                <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                                </div>
+                                <div>{{orderDetails?.address?.landmark}}</div>
+                                <div>{{orderDetails?.address?.pincode}}</div>
+                                <div>{{orderDetails?.address?.state}} {{orderDetails?.address?.city}}</div>
+                                <br>
+                                <strong>Delivery Date And Time:</strong>
+                                <br>
+                                {{convertTimeFormat(orderDetails?.deliverySlot?.from + ' - ' +
+                                orderDetails?.deliverySlot?.to)}}
+                                <br>
+                                ( {{getDeliveryDate(orderDetails?.deliveryDate)}} )
+                            </address>
+                            <address>
+                                <strong>Order Date:</strong><br>
+                                {{orderDetails?.orderDate}}<br><br>
+                            </address>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="panel px-0 panel-default">
+                        <div class="panel-heading">
+                            <h3 class="fs-1 fw-bold-800 mb-2 panel-title">Order summary</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="fs-6 table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <td class="text-left"><strong>Item</strong></td>
+                                            <td class="text-center"><strong>Quantity</strong></td>
+                                            <td class="text-center"><strong>Price</strong></td>
+                                            <td class="text-right"><strong>Total in AED</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let product of orderDetails?.products">
+                                            <tr>
+                                                <td class="text-left">
+                                                    {{product?.productId?.name}}
+                                                    <br>
+                                                    ({{product?.productId?.sku}})
+                                                </td>
+                                                <td class="text-center">{{product?.quantity}}
+                                                    ({{product?.productId?.unit}})</td>
+                                                <td class="text-center">{{product?.pricePerUnit}}</td>
+                                                <td class="text-right">{{product?.total}}</td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Total MRP</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails.total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Discount</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails.discount}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Sub Total</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails.subtotal}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>VAT 5%</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails?.tax}}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Delivery Charges</strong></td>
+                                            <td class="text-right"> Free</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Total</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails.total}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-
 </div>
-
-<div id="printBtn" class="noPrint btn btn-info" onclick="print('printWrapper')">Print</div>
