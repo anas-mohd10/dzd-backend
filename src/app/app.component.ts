@@ -30,10 +30,13 @@ export class AppComponent implements OnInit {
       this.isNotificationEnabled = true;
       let messaging = getMessaging(this.FirebaseApp);
       getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
-
         if (currentToken) {
           this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
-            next: (res: any) => { }, error: (err: any) => { }
+            next: (res: any) => {
+
+            }, error: (err: any) => {
+
+            }
           })
         }
       }).catch((err) => {
@@ -53,7 +56,7 @@ export class AppComponent implements OnInit {
   listen() {
     const messaging = getMessaging(this.FirebaseApp);
     onMessage(messaging, (payload: any) => {
-      this.HotToastService.info(`<div class="d-flex align-items-center py-4"> <img src="${payload.notification.image}" width="60" class="mr-2"><div class="ps-2">${payload.notification.body}</div></div>`, payload.notification.title)
+      this.HotToastService.info(`payload.notification.body`, payload.notification.title)
     });
   }
 }

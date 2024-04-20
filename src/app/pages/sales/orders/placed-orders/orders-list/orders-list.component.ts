@@ -314,6 +314,10 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
+  convertOrderStatus(status: string) {
+    return status.split('_').join(' ').toUpperCase()
+  }
+
   initForm() {
     this.orderForm = new FormGroup({
       fromDate: new FormControl(''),

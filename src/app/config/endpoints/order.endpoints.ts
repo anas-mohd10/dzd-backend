@@ -22,5 +22,6 @@ export const orderEndpoints = {
    manageTags: '/manage-tags',
    invoiceDetails: '/invoice-details',
    exportOrderTabs: '/export-order-tabs',
+   orderPaymentAcceptance: '/order-payment-acceptance',
    updateBulkProduct: '/bulk-order-update'
 };

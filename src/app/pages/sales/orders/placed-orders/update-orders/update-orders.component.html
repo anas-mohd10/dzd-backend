@@ -28,16 +28,15 @@
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <div class="btn border text-primary bg-white border-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt"
-          viewBox="0 0 16 16">
-          <path
-            d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z" />
-          <path
-            d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
+      <button class="btn border bg-white text-primary border-primary">
+        <svg data-slot="icon" height="24" width="24" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3">
+          </path>
         </svg>
-        Store Slip
-      </div>
+        Accept payment
+      </button>
     </div>
     <div class="position-relative btns-sx" *ngIf="isPackingSlipAvailable">
       <a class="btn border bg-white text-primary border-primary"
@@ -130,7 +129,7 @@
               <div class="itemDetails">
                 <div class="itemTitle">Delivery slot</div>
                 <div class="itemResponse">
-                  {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' +  order?.deliverySlot?.to : '-'}}
+                  {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
                 </div>
               </div>
             </div>
@@ -262,17 +261,10 @@
                   <div class="fs-6">Date</div>
                   <div class="fs-6">{{order?.deliveryDate ? order?.deliveryDate : 'Not avaialble'}}</div>
                 </div>
-                <!-- <div class="d-flex align-items-center justify-content-between mb-1">
-                  <div class="fs-6">Time</div>
-                  <div class="fs-6">
-                    {{order?.deliveryTime?.from ?
-                    order?.deliveryTime?.from + ' -' + order?.deliveryTime?.to : 'Not available'}}
-                  </div>
-                </div> -->
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="fs-6">Store</div>
                   <div class="fs-6">
-                    {{order?.clickPoint ? order?.clickPoint?.name : 'Not available'}}
+                    {{order?.clickPoint ? order?.clickPoint?.address?.city : 'Not available'}}
                   </div>
                 </div>
               </div>

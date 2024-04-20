@@ -17,16 +17,16 @@ export const environment = {
   //Dev
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // base: 'http://localhost:3000',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  base: 'http://localhost:3000',
   //Local
 
   //Fresh fruit
-  apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
-  base: 'https://freshfruitmart-api.storedada.net',
+  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
+  // base: 'https://freshfruitmart-api.storedada.net',
   //Fresh fruit
 
   //Storedada

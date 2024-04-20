@@ -146,4 +146,11 @@ export class ProductService {
     return this.http.put(`${url}`, query);
   }
 
+
+  //Product details for dashboard
+  getProductDetails(productSlug: string) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.getProductDetails + `/${productSlug}`);
+    return this.http.get(`${url}`);
+  }
+  //Product details for dashboard
 }

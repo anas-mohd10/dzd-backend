@@ -33,9 +33,9 @@ export class DeliverySlotsService {
     return this.http.get(`${url}/${data}`)
   }
 
-  getSlotDetailsPerDay(data: string) {
+  getSlotDetailsPerDay(data: string, bufferHours?: number, bufferMinutes?: number) {
     const url = this.commonService.getFullUrl(deliverySlots.deliverySlots);
-    return this.http.get(`${url}/${data}`)
+    return this.http.get(`${url}/${data}?bufferHours=${bufferHours}&bufferMinutes=${bufferMinutes}`)
   }
 
   activeSlots() {

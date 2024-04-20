@@ -73,6 +73,15 @@ export class AddOrdersComponent implements OnInit {
   settings: any = {}
   deliverySlots: Array<any> = []
   deliverySlot: any;
+  emirates: Array<any> = [
+    { title: "Dubai" },
+    { title: "Abu Dhabi" },
+    { title: "Sharjah" },
+    { title: "Ajman" },
+    { title: "Fujairah" },
+    { title: "Ras Al Khaimah" },
+    { title: "Umm Al Quwain" },
+  ]
 
   constructor(
     private OrderService: OrdersService,
@@ -87,7 +96,8 @@ export class AddOrdersComponent implements OnInit {
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
-    private DeliveryService: DeliverySlotsService
+    private DeliveryService: DeliverySlotsService,
+    private DeliverySlotsService: DeliverySlotsService
   ) { }
 
   ngOnInit(): void {
@@ -157,21 +167,31 @@ export class AddOrdersComponent implements OnInit {
     for (let i = 0; i < 7; i++) {
       const date = new Date();
       date.setDate(today.getDate() + i).toLocaleString();
-      const formattedDate = this.formatDate(date)
-      dates.push(formattedDate);
+      dates.push(date);
     }
 
     return dates;
   }
 
-  formatDate(date: Date): string {
+  formatDate(date: Date, type: string) {
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const monthsOfYear = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const day = daysOfWeek[date.getDay()];
     const dateNumber = date.getDate();
     const month = monthsOfYear[date.getMonth()];
     const year = new Date().getFullYear();
-    return `${day} ${dateNumber} ${month} ${year}`;
+
+    switch (type) {
+      case 'month':
+        return month
+        break;
+      case 'day':
+        return day
+        break;
+      case 'dateNumber':
+        return dateNumber
+        break
+    }
   }
 
   getTimeSlots(e: any) {
@@ -226,10 +246,10 @@ export class AddOrdersComponent implements OnInit {
       additionalCharge: [''],
       products: [[], Validators.required],
       clickPoint: [''],
-      deliveryTime: [''],
-      deliveryDate: [''],
+      deliveryTime: ['', Validators.required],
+      deliveryDate: ['', Validators.required],
       deliveryType: ['0'],
-      deliverySlot: ['']
+      deliverySlot: ['', Validators.required]
     });
   }
 
@@ -299,7 +319,59 @@ export class AddOrdersComponent implements OnInit {
 
   selectDeliveryDate(date: any) {
     this.deliveryDate = date
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    let deliveryDay = daysOfWeek[date.getDay()]
+
+    let bufferHours: any = null
+    let bufferMinutes: any = null
+
+    if (date.getDate() == new Date().getDate()) {
+      bufferHours = new Date().getHours()
+      bufferMinutes = new Date().getMinutes()
+      if (bufferHours >= 23 && bufferHours <= 0) {
+        deliveryDay = daysOfWeek[date.getDay() + 1]
+        bufferHours = null
+        bufferMinutes = null
+      } else {
+        bufferHours = bufferHours + 1
+      }
+    }
+
+    this.DeliverySlotsService.getSlotDetailsPerDay(deliveryDay, bufferHours, bufferMinutes).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.timeslots = res?.result
+          this.timeslots.sort((a, b) => {
+            // Convert time strings to Date objects for comparison
+            const timeA = this.convertTo24Hour(a.from);
+            const timeB = this.convertTo24Hour(b.from);
+            return timeA.localeCompare(timeB);
+          });
+
+          this.deliveryTime = this.timeslots[0]['refid']
+          this.orderForm.get('deliveryTime')?.setValue(this.timeslots[0]['refid'])
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+
     this.orderForm.get('deliveryDate')?.setValue(date)
+  }
+
+  convertTo24Hour(timeString: any) {
+    const [time, period] = timeString.split(' ');
+    let [hours, minutes] = time.split(':');
+    hours = parseInt(hours);
+    if (period === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+    return `${hours.toString().padStart(2, '0')}:${minutes}`;
   }
 
   //Products management

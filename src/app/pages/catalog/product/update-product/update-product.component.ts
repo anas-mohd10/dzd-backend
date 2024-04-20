@@ -25,116 +25,15 @@ import { HotToastService } from '@ngneat/hot-toast';
 })
 
 export class UpdateProductComponent implements OnInit {
-  productform: FormGroup;
-  productheadform: FormGroup
-  task = PageTasks.UPDATE;
+  task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-
-  filedata: File;
-  fileThumbnaildata: File
-  filebasicdata: File;
-  type: any;
-  isSingle: boolean = true;
-
-  brandData: any;
-  categoryData: any;
-  taxClassData: any;
-  productsData: any;
-
-
-  categoryNames: any = [];
-  categoryid: any = [];
-
-  returnValue: any;
-  isReturn: boolean = false;
-  isShipping: boolean = false;
-  isCod: boolean = false;
-  method: any;
-  cod: any;
-
-  relProductNames: any = [];
-  relProductIds: any = [];
-
-  croppedImage: string | null | undefined;
-  thumbnailImage: string | null | undefined;
-  basicImage: string | null | undefined;
-  loadImage: boolean;
-  loadThumbnailImage: boolean;
-  loadBasicImage: boolean = false;
-  imageChangedEvent: Event | undefined;
-  imageThumbnailChangedEvent: Event | undefined;
-  filename: any;
-  thumbnailFilename: any
-  basicfilename: any
-  imageBasicChangedEvent: Event | undefined;
-
-  //Styling variables
-  background: any
-  border: any
-  color: any
-
-  selectedCategories: any = []
-  selectedBrand: any
-  selectedProducts: any = []
-  imageFiles: any = []
-  files: any = []
-
-  errors: any
-  validError: any
-  // url: any;
-  format: string | undefined;
-  url: string | ArrayBuffer | null | undefined;
-  playVideo: boolean;
-  video: string | ArrayBuffer | null;
-  videoFile: any = {}
-  disableButton: boolean = false;
-
-  productfiles: any = []
-  thumbnailfile: any = ''
-  videofile: any = ''
-  thumbnail: any
-  productvideo: any
-
-  selectedTax: any
-
-  //categories
-  maincategories: any = []
-  selectedMainCategory: any
-  subcategories: any = []
-  selectedSubCategory: any
-  showMainCategory: Boolean = false
-  parentCategory: any = []
-  subCategory: any = []
-  selectedDefaultCategory: any
-  headAdded: Boolean = false
-
-  productHeadId: any
-  basicfile: any = ''
-  isUnit: Boolean = false
-  producthhead: any
+  searchKeyowrds: any = [];
+  tumbnail: any
   attributes: any = []
-  attrCardSelected: Boolean = false
-  selectedAttribute: any = []
-  attributesRefid: any = []
-  attributesId: any = []
-  showMedia: Boolean = false
-  showProduct: Boolean = true
-  slug: any;
-  productheadfile: any;
-  isArchived: Boolean = false
-  restore = new FormControl('false')
-  prodid: any
-  img: string;
-  vid: any = ''
+  slug: string = '';
   base: string;
-  submitting: boolean;
-  isVideo: boolean;
-  settings: any = {}
-  attributesValues: any = [];
-  selectedAttributesValues: any = [];
-
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -155,237 +54,261 @@ export class UpdateProductComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'figtree', name: 'Figtree' },
-      { class: 'Manrope', name: 'Manrope' },
+      { class: 'manrope', name: 'Manrope' },
+      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ]
   };
-  videoData: any
-  videoPreview: any
-  videoInput: FormControl = new FormControl('')
-  videoThumbData: any
-  videoThumbPreview: any
-  videoThumbInput: FormControl = new FormControl('')
-  productDetails: any = {}
-  productImages: Array<string> = []
-  searchKeywords: Array<string> = [];
+  settings: any = {}
+  parentForm: FormGroup;
+  taxClassDetails: Array<any> = [];
+  brand: FormControl = new FormControl('', Validators.required)
+  brands: Array<any> = [];
+  productCategories: Array<any> = [];
+  images: Array<any> = [];
+  defaultCategories: Array<any> = [];
+  form: FormGroup;
+  parentDetails: any;
+  parentSlug: string;
+  brandDetails: any;
+  previewDetails: any;
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
-  coverData: any
-  coverPreview: any
-  coverInput: FormControl = new FormControl('')
-
-  tagsForm: FormGroup
-  isTagTriggered: boolean = false
+  searchKeywords: Array<any> = [];
+  searchKeyword: FormControl = new FormControl('');
+  relatedProducts: Array<any> = [];
+  categories: Array<any> = [];
+  productCategory: FormControl = new FormControl('');
+  productAttributes: Array<any> = [];
+  isCategoryMultiple: boolean = true;
+  isBrandMultiple: boolean = false;
+  isProductMultiple: boolean = true;
+  tagsForm: FormGroup;
+  icons: Array<any> = [];
   productTags: any = {
     topRightTag: "",
     topLeftTag: "",
     bottomRightTag: "",
     bottomLeftTag: "",
   }
+  addOnItemsForm: FormGroup
+  productSlug: string = '' // Store product slug
+  productDetails: any // Store product details
+  addOnItems: Array<any> = [];
+  thumbnailPreview: string = ''
 
   constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private productService: ProductService,
-    private brandService: BrandService,
+    private ActivatedRoute: ActivatedRoute,
+    private Router: Router,
+    private ProductService: ProductService,
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
-    private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private AttributeService: AttributeService,
-    private Toast: HotToastService,
+    private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService
   ) { }
 
-  get pf() {
-    return this.productform.controls;
+  onBrandTriggered(event: any) {
+    this.parentForm.get('brand')?.setValue(event._id)
   }
 
-  get formControls() {
-    return this.productform.controls;
-  }
-
-  selectTab(tabId: number) {
-    if (this.staticTabs?.tabs[tabId]) {
-      this.staticTabs.tabs[tabId].active = true;
-    }
-  }
-
-  handleVideo(event: any) {
-    this.videoData = event.target.files[0]
-    let reader = new FileReader();
-    reader.onload = (e: any) => { this.videoPreview = e.target.result };
-    reader.readAsDataURL(this.videoData);
-  }
-
-  removeVideo() {
-    this.videoInput.setValue('')
-    this.videoData = null
-    this.videoPreview = null
-  }
-
-  handleVideoThumb(event: any) {
-    this.videoThumbData = event.target.files[0]
-    let reader = new FileReader();
-    reader.onload = (e: any) => { this.videoThumbPreview = e.target.result };
-    reader.readAsDataURL(this.videoThumbData);
-  }
-
-  removeVideoThumb() {
-    this.videoThumbInput.setValue('')
-    this.videoThumbData = null
-    this.videoThumbPreview = null
-  }
-
-  addVideo() {
-    let formdata = new FormData()
-    this.videoData ? formdata.append("video", this.videoData) : ''
-    this.videoThumbData ? formdata.append("thumbnail", this.videoThumbData) : ''
-    formdata.append("product", this.productDetails?.slug)
-    this.productService.productVideo(formdata).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
-          this.videoData = null
-          this.videoThumbData = null
-          this.videoThumbInput.setValue('')
-          this.videoInput.setValue('')
-        } else {
-          this.ToastrService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
-      }, complete: () => {
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  deleteVideo() {
-    this.productService.deleteVideo(this.productDetails?.slug).subscribe({
-      next: (res: any) => {
-        if (res.errorCode == 0) {
-          this.ToastrService.success(res?.message)
-          this.videoData = null
-          this.videoThumbData = null
-          this.videoPreview = null
-          this.videoThumbPreview = null
-          this.videoThumbInput.setValue('')
-          this.videoInput.setValue('')
-        } else {
-          this.ToastrService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
-      }, complete: () => {
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  deleteImage(file: string) {
-    this.productService.deleteImage(this.productDetails?.slug, file).subscribe({
-      next: (res: any) => {
-        if (res.errorCode == 0) {
-
-        } else {
-          this.ToastrService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
-      }, complete: () => {
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
-  }
-
-  addKeywords(event: any) {
-    if (event.target.value && event.target.value.trim().length > 0) {
-      if (!this.searchKeywords.includes(event.target.value)) this.searchKeywords.push(event.target.value)
-      this.productform.get('searchKeywords')?.setValue('');
-    }
-  }
-
-  handleCover(event: any) {
-    this.coverData = event.target.files[0]
-    let reader = new FileReader();
-    reader.onload = (e: any) => { this.coverPreview = e.target.result };
-    reader.readAsDataURL(this.coverData);
-  }
-
-  removeCover() {
-    if (this.productDetails.cover) {
-      this.productService.removeProductCover({ slug: this.productDetails?.slug }).subscribe({
-        next: (res: any) => {
-          if (res.errorCode == 0) {
-            this.coverPreview = null
-            this.coverData = null
-            this.coverInput.setValue('')
-          } else {
-            this.ToastrService.error(res?.message)
-          }
-        }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
-        }, complete: () => {
-          this.ChangeDetectorRef.markForCheck()
-        }
-      })
+  onCategoryTriggered(event: any) {
+    const isIdPresent = this.productCategories.some(category => category._id == event._id);
+    if (isIdPresent) {
+      this.HotToastService.info('Category already added')
     } else {
-      this.coverPreview = null
-      this.coverData = null
-      this.coverInput.setValue('')
+      this.productCategories.push(event)
+      this.getDefaultCategories(event.slug)
     }
+    this.parentForm.get('parentCategories')?.setValue(this.productCategories)
   }
 
-  onTagTriggered(type: string, event: any) {
+  onProductsTriggered(event: any) {
+    const isIdPresent = this.relatedProducts.some(product => product._id == event._id);
+    if (isIdPresent) {
+      this.HotToastService.info('Products already added')
+    } else {
+      this.productCategories.push(event)
+    }
+    this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts)
+  }
+
+  onTagsTriggered(event: any, type: string) {
     switch (type) {
-      case 'topRightTag':
+      case 'topright':
         this.tagsForm.get('topRightTag')?.setValue(event._id)
-        break;
-      case 'topLeftTag':
+        break
+      case 'topleft':
         this.tagsForm.get('topLeftTag')?.setValue(event._id)
-        break;
-      case 'bottomRightTag':
+        break
+      case 'bottomright':
         this.tagsForm.get('bottomRightTag')?.setValue(event._id)
-        break;
-      case 'bottomLeftTag':
+        break
+      case 'bottomleft':
         this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
-        break;
+        break
     }
-    this.isTagTriggered = true
   }
 
-  saveTags() {
-    this.productService.productTags({
-      product: this.productDetails?.slug,
-      ...this.tagsForm.value
-    }).subscribe({
+  getDefaultCategories(category: string) {
+    this.categoryService.defaultCategories(category).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Toast.success(res?.message)
-          this.tagsForm.reset()
-          this.ChangeDetectorRef.markForCheck()
+          this.defaultCategories = [...this.defaultCategories, ...res?.result]
         } else {
-          this.Toast.error(res?.message)
+
         }
       }, error: (err: any) => {
-        this.Toast.error(err?.error?.message)
+
       }
     })
   }
 
-  removeTag(type: string) {
-    this.tagsForm.get(type)?.setValue(null)
-    this.productTags[type] = ''
-    this.isTagTriggered = true
+  handleThumbnail(event: any) {
+    this.parentForm.get('thumbnail')?.setValue(event._id)
+  }
+
+  productMediaClicked(event: any) {
+    this.images.push(event)
+  }
+
+  productIconClicked(event: any) {
+    this.icons.push(event)
+  }
+
+  removeProductMedia(image: any) {
+    this.images = this.images.filter((item: any) => item._id != image._id)
+  }
+
+  productThumbnailClicked(event: any) {
+    this.form.get('thumbnail')?.setValue(event._id)
+  }
+
+  toggleProductCategory(event: any, type: string) {
+    if (type == 'add') {
+      let categoryDetails = this.defaultCategories.filter((item: any) => item._id == event.target.value)
+      this.categories.includes(categoryDetails[0]) ? this.HotToastService.info('Category already added') : this.categories.push(categoryDetails[0])
+    } else {
+      this.categories = this.categories.filter((item: any) => item?._id != event)
+    }
+    this.productCategory.setValue('')
+  }
+
+  getAttributes(category: string) {
+    this.AttributeService.getAttributes(category).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.attributes = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  toggleAddOnItems() {
+
+  }
+
+  saveChanges() {
+    if (!this.form.valid) {
+      return
+    }
+
+    let files = this.images.map((item: any) => item._id)
+    this.form.value.relatedProducts ? null : this.form.get('relatedProducts')?.setValue([])
+
+    let payload = {
+      ...this.form.value,
+      prodid: this.productDetails.prodid,
+      slug: this.productDetails.slug,
+      files: files,
+      product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
+      attributes: this.productAttributes,
+      category: {
+        id: this.categories.map((category: any) => category?._id),
+        refid: this.categories.map((category: any) => category?.catid),
+      }
+    }
+
+    this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate(['/app/product'])
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    })
+  }
+
+  toggleTab(index: number) {
+    if (this.staticTabs?.tabs[index]) {
+      this.staticTabs.tabs[index].active = true;
+    }
+  }
+
+  toggleSearchKeywords(event: any, type: string) {
+    if (type == 'add') {
+      if (this.searchKeywords.includes(event.target.value)) {
+        this.HotToastService.info('Keyword already added')
+      } else {
+        this.searchKeywords.push(event.target.value)
+        this.searchKeyword?.setValue('')
+      }
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+    } else {
+      this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
+    }
+  }
+
+  toggleAttributes(attributeDetails: any, valueDetails: any) {
+    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id);
+    if (isIdPresent) {
+      const index = this.productAttributes.findIndex(attribute => attribute.type == attributeDetails.id);
+      this.productAttributes[index].value = valueDetails._id
+    } else {
+      this.productAttributes.push({
+        type: attributeDetails.id,
+        value: valueDetails._id
+      })
+    }
+  }
+
+  attributeExists(attributeDetails: any, valueDetails: any) {
+    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id && attribute.value == valueDetails._id);
+    return isIdPresent ? 'active' : null
+  }
+
+  searchProducts() {
+
   }
 
   ngOnInit(): void {
+    this.base = environment.base
+
     this.tagsForm = new FormGroup({
-      topRightTag: new FormControl(null),
-      topLeftTag: new FormControl(null),
-      bottomRightTag: new FormControl(null),
-      bottomLeftTag: new FormControl(null)
+      topRightTag: new FormControl(""),
+      topLeftTag: new FormControl(""),
+      bottomRightTag: new FormControl(""),
+      bottomLeftTag: new FormControl("")
+    })
+
+    this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || ''
+
+    this.ProductService.getProductDetails(this.productSlug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.form.patchValue(res?.result)
+          this.productDetails = res?.result
+          this.images = res?.result?.files
+          this.categories = res?.result?.category?.id
+          this.searchKeyowrds = res?.result?.searchKeywords
+          this.thumbnailPreview = res?.result?.thumbnail?.path
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
     })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
@@ -394,525 +317,67 @@ export class UpdateProductComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
-    this.initForm();
-    this.base = environment.base
-    this.task = this.route.snapshot.params.task || PageTasks.UPDATE;
-    this.prodid = this.route.snapshot.queryParams.id || ''
 
-    this.managePage();
-    this.getBrandDetail();
-    this.getCategoryDetail();
-    this.getTaxClassDetail();
-    this.getProducts();
-
-    this.categoryService.getMainCategories().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.maincategories = res?.result
-        this.subcategories = [...this.maincategories, ...this.subcategories]
-        this.ChangeDetectorRef.markForCheck()
-      }
+    this.parentForm = new FormGroup({
+      name: new FormControl("", Validators.required),
+      brand: new FormControl(""),
+      category: new FormControl(null), // Default category
+      parentCategories: new FormControl("", Validators.required), //Main category
+      thumbnail: new FormControl(null),
+      isActive: new FormControl("true"),
+      sku: new FormControl("", Validators.required),
+      tax: new FormControl(""),
+      hsn: new FormControl(""),
+      cod: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      replace: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
     })
 
-    this.productService.getProductbyId({ prodid: this.prodid }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.isUnit = true
-        console.log("Product details :: " + res?.result[0])
-        this.productDetails = res?.result[0]
-
-        for (let _keys of Object.keys(this.productDetails?.productTags)) {
-          if (this.productDetails?.productTags[_keys]) {
-            this.tagsForm.get(_keys)?.setValue(this.productDetails?.productTags[_keys]['_id'])
-            this.productTags[_keys] = this.productDetails?.productTags[_keys]['path']
-          }
-        }
-
-        //Product video
-        this.videoPreview = res?.result[0]?.video ? environment.base + '/' + res?.result[0]?.video : null
-        this.videoThumbPreview = res?.result[0]?.videoThumbnail ? environment.base + '/' + res?.result[0]?.videoThumbnail : null
-        //Product video
-
-        //Product images
-        this.productImages = res?.result[0]?.files ? res?.result[0]?.files : []
-        //Product images
-
-        //Product cover
-        this.coverPreview = this.productDetails?.cover ? environment.base + '/' + this.productDetails?.cover : null
-        //Product cover
-
-        this.productform.get('name')?.setValue(res?.result[0]?.name)
-
-        this.productform.get('mrpPrice')?.setValue(res?.result[0]?.price?.mrp)
-        this.productform.get('offerPrice')?.setValue(res?.result[0]?.price?.offer)
-        this.productform.get('sellingPrice')?.setValue(res?.result[0]?.price?.selling)
-
-        this.categoryService.getSubCategoriesbyId(res?.result[0]?.product?.id?.parentCategory?.id).subscribe((res: any) => {
-          if (res?.errorCode == 0) this.subcategories = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        })
-
-        this.selectedSubCategory = res?.result[0]?.category?.id
-
-        this.AttributeService.getAttributes(res?.result[0]?.product?.id?.defaultCategory?.refid).subscribe((res: any) => {
-          if (res?.errorCode == 0) this.attributes = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        })
-
-        if (res?.result[0]?.attributes.length > 0) {
-          for (let attribute of res?.result[0]?.attributes) {
-            this.attributesValues.push({
-              head: { name: attribute?.head?.id?.name, id: attribute?.head?.id?._id, refid: attribute?.head?.id?.refid, type: attribute?.head?.id?.type },
-              value: { name: attribute?.value?.id?.value, id: attribute?.value?.id?._id, refid: attribute?.value?.id?.refid }
-            })
-            this.selectedAttributesValues.push({
-              type: attribute?.head?.id?.name,
-              refid: attribute?.head?.id?.refid
-            })
-          }
-        }
-
-        this.productform.get('sku')?.setValue(res?.result[0]?.sku)
-        this.productform.get('video')?.setValue(res?.result[0]?.video)
-        this.productform.get('stock')?.setValue(res?.result[0]?.stock)
-        this.productform.get('moq')?.setValue(res?.result[0]?.moq)
-        this.productform.get('maxOrderQuantity')?.setValue(res?.result[0]?.maxOrderQuantity)
-        this.productform.get('stockWarning')?.setValue(res?.result[0]?.stockWarning)
-        this.productform.get('additionalbutton')?.setValue(res?.result[0]?.details?.additionalbutton)
-        this.productform.get('buttonredireturl')?.setValue(res?.result[0]?.details?.buttonredireturl)
-
-        this.productform.get('unit')?.setValue(res?.result[0]?.unit?.type)
-        this.productform.get('value')?.setValue(res?.result[0]?.unit?.value)
-
-        this.searchKeywords = res?.result[0]?.searchKeywords
-        this.selectedProducts = res?.result[0]?.relatedProducts
-        this.productform.get('isFeatured')?.setValue(res?.result[0]?.isFeatured)
-        this.productform.get('isActive')?.setValue(res?.result[0]?.isActive)
-        this.productform.get('isVisible')?.setValue(res?.result[0]?.isVisible)
-        this.productform.get('isArchive')?.setValue(res?.result[0]?.isArchive)
-        this.productform.get('description')?.setValue(res?.result[0]?.details?.description)
-        this.productform.get('longDescription')?.setValue(res?.result[0]?.details?.longDescription)
-        this.productform.get('features')?.setValue(res?.result[0]?.details?.features)
-
-        if (res?.result[0]?.isArchive == true) this.isArchived = true
-
-        this.productform.get('background')?.setValue(res?.result[0]?.style?.background)
-        this.productform.get('border')?.setValue(res?.result[0]?.style?.border)
-        this.productform.get('radius')?.setValue(res?.result[0]?.style?.radius)
-        this.productform.get('color')?.setValue(res?.result[0]?.style?.text?.color)
-        this.productform.get('fontSize')?.setValue(res?.result[0]?.style?.text?.fontSize)
-        this.productform.get('fontWeight')?.setValue(res?.result[0]?.style?.text?.fontWeight)
-
-        this.img = environment.base + "/" + res?.result[0]?.thumbnail
-        this.vid = environment.base + "/" + res?.result[0]?.video
-        this.isVideo = res?.result[0]?.video ? true : false
-
-        for (let file of res?.result[0]?.files) {
-          this.imageFiles.push({ fileString: '', filename: '', url: environment.base + "/" + file, id: this.imageFiles.length })
-          this.files.push({ url: file, id: this.files.length })
-        }
-
-        this.ChangeDetectorRef.markForCheck()
-      }
+    this.form = new FormGroup({
+      name: new FormControl("", Validators.required),
+      price: new FormGroup({
+        mrp: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+        offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
+        selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
+      }),
+      stock: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      moq: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      sku: new FormControl("", Validators.required),
+      maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      thumbnail: new FormControl(""),
+      files: new FormControl(""),
+      video: new FormControl(""),
+      unit: new FormControl(""),
+      origin: new FormControl(""),
+      overview: new FormControl(""),
+      details: new FormGroup({
+        additionalButton: new FormControl(""),
+        buttonRedirectUrl: new FormControl(""),
+        description: new FormControl(""),
+        features: new FormControl(""),
+        longDescription: new FormControl("")
+      }),
+      stockWarning: new FormControl(10),
+      searchKeywords: new FormControl(""),
+      relatedProducts: new FormControl(""),
+      isActive: new FormControl("true"),
+      isVisible: new FormControl("true"),
     })
-  }
 
-  drop(event: CdkDragDrop<string[]>) {
-    let products = [...this.imageFiles]
-    moveItemInArray(products, event.previousIndex, event.currentIndex);
-    this.imageFiles = [...products]
-    let productsFiles = [...this.files]
-    moveItemInArray(productsFiles, event.previousIndex, event.currentIndex);
-    this.files = [...productsFiles]
-  }
-
-  initForm() {
-    this.productform = this.formBuilder.group({
-      name: ['', Validators.required],
-      sku: ['', Validators.required],
-      mrpPrice: ['', Validators.required],
-      offerPrice: [''],
-      sellingPrice: [''],
-      stock: ['', Validators.required],
-      moq: ['', Validators.required],
-      maxOrderQuantity: ['', Validators.required],
-      stockWarning: [''],
-      description: [''],
-      features: [''],
-      longDescription: [''],
-      categories: [],
-      additionalbutton: [''],
-      buttonredireturl: [''],
-      isActive: ['true', Validators.required],
-      isVisible: ['true', Validators.required],
-      isFeatured: ['false', Validators.required],
-      isArchive: ['false', Validators.required],
-      value: [''],
-      unit: [''],
-      searchKeywords: [],
-      relatedProducts: [],
-      position: [''],
-      file: [''],
-      background: [''],
-      border: [''],
-      radius: [''],
-      color: [''],
-      fontSize: [''],
-      fontWeight: [''],
-      video: ['']
-    });
-
-    this.productform.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.background = AppSettings.BACKGROUND
-    this.productform.get('border')?.setValue(AppSettings.BORDER)
-    this.border = AppSettings.BORDER
-    this.productform.get('color')?.setValue(AppSettings.COLOR)
-    this.color = AppSettings.COLOR
-    this.productform.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.productform.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.productform.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
-  }
-
-  tagInput(event: any) {
-    let _value = event.value
-    if (_value) {
-      if (this.productform.get('searchKeywords')?.value != ' ' || '' || null) {
-        this.searchKeywords.push(this.productform.get('searchKeywords')?.value);
-        this.productform.get('searchKeywords')?.setValue('');
-      }
-    }
-  }
-
-  tagRemove(value: any) {
-    this.searchKeywords = this.searchKeywords.filter((_data: any) => _data != value)
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
-  getBrandDetail() {
-    this.brandService.getActiveBrands().subscribe((res: any) => {
-      this.brandData = res?.result;
-    });
-  }
-
-  getCategoryDetail() {
-    this.categoryService.getActiveCategory().subscribe((res: any) => {
-      this.categoryData = res?.result;
-    });
-  }
-
-  getTaxClassDetail() {
-    this.taxClassService.getTaxClasses().subscribe((res: any) => {
-      this.taxClassData = res?.result;
-    });
-  }
-
-  getProducts() {
-    this.productService.getProduct().subscribe((res: any) => {
-      this.productsData = res?.result;
-    });
-  }
-
-  addImage() {
-    this.imageFiles.push({
-      fileString: this.croppedImage,
-      filename: this.filename,
-      url: this.url,
-      id: this.imageFiles.length
-    })
-    this.files.push({
-      id: this.files.length,
-      file: this.croppedImage,
-      name: this.filename
-    })
-    this.croppedImage = ''
-    this.filename = ''
-    this.loadImage = false
-  }
-
-  removeFile(id: any) {
-    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
-    this.files = this.files.filter((_data: any) => _data.id != id)
-  }
-
-  handleInputChange(event: any) {
-    if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (e: any) => {
-        this.url = e.target.result
-      }
-    }
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-    this.ChangeDetectorRef.markForCheck()
-  }
-
-  handleInputThumbnailChange(event: any) {
-    this.fileThumbnaildata = <File>event.target.files[0];
-    this.thumbnailFilename = this.fileThumbnaildata.name
-    this.imageThumbnailChangedEvent = event;
-    this.loadThumbnailImage = true
-    this.ChangeDetectorRef.markForCheck()
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    setTimeout(() => {
-      this.croppedImage = event.base64;
-    }, 800)
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
-  imageThumbnailCropped(event: ImageCroppedEvent) {
-    setTimeout(() => {
-      this.thumbnailImage = event.base64;
-    }, 800)
-  }
-
-  thumbnailImageLoaded() {
-    // show cropper
-  }
-
-  cropperThumbnailReady() {
-    // cropper ready
-  }
-
-  loadThumbnailImageFailed() {
-    // show message
-  }
-
-  removeThumbnailImage() {
-    this.thumbnailImage = ''
-    this.loadThumbnailImage = false
-  }
-
-  videoUpload(event: any) {
-    if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[0])
-      reader.onload = (e: any) => {
-        this.ToastrService.info('Video uploading in progress', '', { timeOut: 2000 })
-        setTimeout(() => {
-          this.video = e.target.result
-          this.ToastrService.success('Video successfully uploaded', '', { timeOut: 2000 })
-          this.videoFile = {
-            video: this.video,
-            name: event.target.files[0].name
-          }
-          this.ChangeDetectorRef.markForCheck()
-        }, 2000)
-      }
-    }
-  }
-
-  selectAttribute(attrType: any, type: any, id: any, refid: any, value: any, valueid: any, valuerefid: any) {
-    if (this.selectedAttributesValues.some((e: any) => e.type === type)) {
-      let index = this.attributesValues.findIndex((e: any) => e?.head?.name === type);
-      this.attributesValues.splice(index, 1)
-      this.attributesValues.splice(index, 0, {
-        head: { name: type, id: id, refid: refid, type: attrType },
-        value: { name: value, id: valueid, refid: valuerefid }
-      })
-      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
-    } else {
-      this.attributesValues.push({
-        head: { name: type, id: id, refid: refid, type: attrType },
-        value: { name: value, id: valueid, refid: valuerefid }
-      })
-      this.selectedAttributesValues.push({ type: type, refid: valuerefid })
-    }
-  }
-
-  getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
-    }
-  }
-
-  getUnit() {
-    this.isUnit = true
-  }
-
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateProduct();
-    } else {
-      this.addProduct();
-    }
-  }
-
-  updateProduct() {
-    if (!this.productform.valid) {
-      return;
-    }
-
-    const payload = this.createPayload()
-    if (payload) {
-      this.disableButton = true
-      this.submitting = true
-      setTimeout(() => {
-        this.productService.updateProduct(this.prodid, payload).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.ToastrService.error(res?.message);
-            this.submitting = false
-            this.ChangeDetectorRef.markForCheck()
-          } else {
-            this.ToastrService.success(res?.message);
-            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
-          }
-        });
-      }, 2000)
-    }
-  }
-
-  addProduct() {
-  }
-
-  createPayload() {
-    let categoryRefid = []
-    for (let category of this.subcategories) {
-      for (let _category of this.selectedSubCategory) {
-        if (category?._id == _category) {
-          categoryRefid.push(category.catid)
-        }
-      }
-    }
-
-    const data = {
-      name: this.productform.get('name')?.value,
-      sku: this.productform.get('sku')?.value,
-      stock: this.productform.get('stock')?.value,
-      moq: this.productform.get('moq')?.value,
-      maxOrderQuantity: this.productform.get('maxOrderQuantity')?.value,
-      price: {
-        mrp: this.productform.get('mrpPrice')?.value,
-        offer: this.productform.get('offerPrice')?.value,
-        selling: this.productform.get('sellingPrice')?.value,
-      },
-      style: {
-        background: this.productform.get('background')?.value,
-        border: this.productform.get('border')?.value,
-        radius: this.productform.get('radius')?.value,
-        text: {
-          color: this.productform.get('color')?.value,
-          fontSize: this.productform.get('fontSize')?.value,
-          fontWeight: this.productform.get('fontWeight')?.value,
-        }
-      },
-      unit: {
-        value: this.productform.get('value')?.value,
-        type: this.productform.get('unit')?.value,
-      },
-      details: {
-        description: this.productform.get('description')?.value,
-        longDescription: this.productform.get('longDescription')?.value,
-        features: this.productform.get('features')?.value,
-        additionalbutton: this.productform.get('additionalbutton')?.value,
-        buttonredireturl: this.productform.get('buttonredireturl')?.value,
-      },
-      category: {
-        id: this.selectedSubCategory,
-        refid: categoryRefid
-      },
-      video: this.productform.get('video')?.value,
-      attributes: this.attributesValues,
-      stockWarning: this.productform.get('stockWarning')?.value,
-      isActive: this.productform.get('isActive')?.value,
-      isArchive: this.productform.get('isArchive')?.value,
-      isVisible: this.productform.get('isVisible')?.value,
-      isFeatured: this.productform.get('isFeatured')?.value,
-      searchKeywords: this.searchKeywords,
-      relatedProducts: this.selectedProducts,
-      files: this.files,
-      // video: this.videoFile,
-      thumbFilename: this.thumbnailFilename,
-      thumbFilestring: this.thumbnailImage,
-      prodid: this.prodid
-    }
-    return data
-  }
-
-  restoreProduct() {
-    if (this.restore.value == 'true') {
-      this.productService.restoreProducts({ prodid: this.prodid }).subscribe((res: any) => {
+    //Tax class details
+    this.taxClassService.getTaxClasses().subscribe({
+      next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message);
-          this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
+          this.taxClassDetails = res?.result;
         } else {
-          this.ToastrService.error(res?.message);
+
         }
-      })
-    } else {
-      this.router.navigate([this.appRoute.product.ARCHIVED_PRODUCT]);
-    }
+      }, error: (err: any) => {
+
+      }
+    });
+    //Tax class details
   }
 
-  //<----- Product head management ----->
-  goToNextTab(e: any) {
-    switch (e) {
-      case 'product':
-        this.showProduct = true
-        this.showMedia = false
-        this.headAdded = true
-        window.scrollTo(0, 0);
-        break
-      case 'media':
-        this.showProduct = false
-        this.showMedia = true
-        this.headAdded = true
-        window.scrollTo(0, 0);
-        break
-    }
-  }
-
-  goToPreviousTab(e: any) {
-    switch (e) {
-      case 'product':
-        this.showProduct = true
-        this.showMedia = false
-        this.headAdded = true
-        window.scrollTo(0, 0);
-        break
-      case 'basic':
-        this.showProduct = false
-        this.showMedia = false
-
-        document.querySelector('.nav-home-tab')?.classList.add('active')
-        this.headAdded = false
-        window.scrollTo(0, 0);
-        break
-    }
-  }
 }

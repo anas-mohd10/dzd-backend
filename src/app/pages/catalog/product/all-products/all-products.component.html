@@ -1,307 +1,222 @@
-<div class="product-page-container">
+<div>
 
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Products</h1>
+  <div class="page-header d-flex align-items-center justify-content-between gap-2">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bolder">Products</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
+        </li>
+      </ul>
     </div>
-    <div class="row">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
-          </li>
-        </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.product.ADD_PRODUCT }}" style="width: 200px">
-          Add Product
-        </button>
+    <div class="d-flex align-items-center gap-2 justify-content-end">
+      <button class="btn btn-primary" routerLink="{{ appRoute.product.ADD_PRODUCT }}">
+        Add Product
+      </button>
+
+      <button class="btn btn-secondary" routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}">
+        Archived Products
+      </button>
+
+      <!-- <div class="d-flex align-items-center justify-content-end">
+        <div class="pageViewButtons d-flex align-items-center justify-content-end">
+          <div class="viewBtn rounded me-2" (click)="changeView('table')" [ngClass]="{'activeBtn': isTableView}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list"
+              viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+            </svg>
+          </div>
+          <div class="viewBtn rounded" (click)="changeView('grid')" [ngClass]="{'activeBtn': !isTableView}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-fill"
+              viewBox="0 0 16 16">
+              <path
+                d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z" />
+            </svg>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="card my-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="form-group">
+            <input type="text" placeholder="Search for products here" class="form-control fs-6" [formControl]="name"
+              (ngModelChange)="getProducts()">
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <input type="submit" value="Clear filters" class="btn w-100 btn-secondary" (click)="clearFilters()">
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-3 form-group">
+          <label for="categories" class="form-label">Category</label>
+          <select [formControl]="productCategory" id="categories" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let category of categories" value="{{category.catid}}">{{category?.name}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3 form-group">
+          <label for="status" class="form-label">Status</label>
+          <select [formControl]="isActive" id="status" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let statusItem of statusFilters" value="{{statusItem.value}}">{{statusItem?.key}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3 form-group">
+          <label for="stock" class="form-label">Stock</label>
+          <select [formControl]="stock" id="stock" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let stockItem of stockFilters" value="{{stockItem.value}}">{{stockItem?.key}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3 form-group">
+          <label for="sort" class="form-label">Price</label>
+          <select [formControl]="sort" id="sort" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let sortItem of sortFilters" value="{{sortItem.value}}">{{sortItem?.key}}</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="mb-3 mt-3 d-flex align-items-center justify-content-end" *ngIf="loaded">
-    <button class="me-2 btn btn-secondary cursor-pointer fs-6" color="primary"
-      routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}" style="width: 200px">
-      Archived Products
-    </button>
-
-    <div class="d-flex align-items-center justify-content-end" *ngIf="loaded">
-      <div class="pageViewButtons d-flex align-items-center justify-content-end">
-        <div class="viewBtn rounded me-2" (click)="changeView('table')" [ngClass]="{'activeBtn': isTableView}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-list"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
-          </svg>
-        </div>
-        <div class="viewBtn rounded" (click)="changeView('grid')" [ngClass]="{'activeBtn': !isTableView}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-fill"
-            viewBox="0 0 16 16">
-            <path
-              d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z" />
-          </svg>
+  <div class="row">
+    <div>
+      <div class="d-flex justify-content-center" *ngIf="!loaded">
+        <div class="spinner-border m-5 text-primary" role="status" style="width: 3rem; height: 3rem;">
+          <span class="sr-only">Loading...</span>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="variant-product-result-container view-container row">
-    <div class="card card-table">
-      <div class="card-body row">
-        <div class="col-lg-3">
-
-          <input type="text" placeholder="Search for products here" class="form-control fs-6" [formControl]="name"
-            (ngModelChange)="getProducts()">
-
-          <div class="cursorPointer fs-6 text-info mt-3 d-flex justify-content-end align-items-center"
-            (click)="clearFilters()">
-            Reset All
-          </div>
-
-          <div class="accordion">
-            <div class="accordionWrapper" [ngClass]="{'active': activeAccordion == 'category'}">
-              <div class="accordionHeader" (click)="toggleFilters('category')">
-                <div class="title">Category</div>
-                <div class="icon">
-                  <svg height="22px" width="22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <path
-                      d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z">
-                    </path>
-                  </svg>
-                </div>
+      <div class="productCards" *ngIf="loaded && !isTableView">
+        <ng-container *ngFor="let product of products">
+          <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
+            [queryParams]="{product: product?.slug}">
+            <div class="product-image">
+              <img src='{{base}}/{{product?.thumbnail}}' alt="product image"
+                onerror="this.src = '../../../../../assets/images/default.png'" />
+              <div class="p-2 product-status-{{product?.isActive}} fs-6">
+                {{product?.isActive ? 'Active' : 'Inactive'}}
               </div>
-              <div class="accordionBody categoryWrapper">
-                <ng-container *ngFor="let category of categories">
-                  <div class="accordionItem" (click)="addFilters('category', category?.catid)">
-                    <div class="checkbox" [ngClass]="{'checked': categoryItems.includes(category?.catid)}"></div>
-                    <div class="accordionName">{{category?.name}}</div>
-                  </div>
-                </ng-container>
+              <div class="product-offer fs-6 p-2" *ngIf="product?.price?.offer != product?.price?.mrp">
+                {{product?.message?.text}}
+              </div>
+              <div class="product-out-stock fs-6 p-2" *ngIf="product?.stock == 0">
+                Out of Stock
+              </div>
+              <div class="product-limited-stock p-2"
+                *ngIf="product?.stock <= product?.stockWarning && product?.stock > 0">
+                Limited stock
               </div>
             </div>
-
-            <div class="accordionWrapper" [ngClass]="{'active': activeAccordion == 'stock'}">
-              <div class="accordionHeader" (click)="toggleFilters('stock')">
-                <div class="title">Stock</div>
-                <div class="icon">
-                  <svg height="22px" width="22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <path
-                      d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z">
-                    </path>
-                  </svg>
+            <div class="product-details">
+              <div class="product-brand">{{product?.brand?.name}}</div>
+              <div class="product-name mb-1">{{product?.name}}</div>
+              <div class="product-price">
+                <div class="d-flex">
+                  <div class="product-offerprice fs-5" *ngIf="product?.price?.selling != product?.price?.mrp">
+                    {{settings?.currency}} {{product?.price?.selling}}</div>
+                  <div class="product-offerprice fs-5" *ngIf="product?.price?.selling == product?.price?.mrp">
+                    {{settings?.currency}}
+                    {{product?.price?.mrp}}
+                  </div>
+                  <div class="product-mrpprice" *ngIf="product?.price?.selling != product?.price?.mrp"
+                    [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.selling}">
+                    {{settings?.currency}} {{product?.price?.mrp}}</div>
+                </div>
+                <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
+                  <div>{{product?.rating}}</div>
                 </div>
               </div>
-              <div class="accordionBody">
-                <ng-container *ngFor="let stockItem of stockFilters">
-                  <div class="accordionItem" (click)="addFilters(stockItem?.label, stockItem?.value)">
-                    <div class="checkbox" [ngClass]="{'checked': stock.value == stockItem?.value}"></div>
-                    <div class="accordionName">{{stockItem?.key}}</div>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
-
-            <div class="accordionWrapper" [ngClass]="{'active': activeAccordion == 'status'}">
-              <div class="accordionHeader" (click)="toggleFilters('status')">
-                <div class="title">Status</div>
-                <div class="icon">
-                  <svg height="22px" width="22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <path
-                      d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z">
-                    </path>
-                  </svg>
-                </div>
-              </div>
-              <div class="accordionBody">
-                <ng-container *ngFor="let statusItem of statusFilters">
-                  <div class="accordionItem" (click)="addFilters(statusItem?.label, statusItem?.value)">
-                    <div class="checkbox" [ngClass]="{'checked': isActive.value == statusItem?.value}"></div>
-                    <div class="accordionName">{{statusItem?.key}}</div>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
-
-            <div class="accordionWrapper" [ngClass]="{'active': activeAccordion == 'sort'}">
-              <div class="accordionHeader" (click)="toggleFilters('sort')">
-                <div class="title">Sort</div>
-                <div class="icon">
-                  <svg height="22px" width="22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <path
-                      d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z">
-                    </path>
-                  </svg>
-                </div>
-              </div>
-              <div class="accordionBody">
-                <ng-container *ngFor="let sortItem of sortFilters">
-                  <div class="accordionItem" (click)="addFilters(sortItem?.label, sortItem?.value)">
-                    <div class="checkbox" [ngClass]="{'checked': sort.value == sortItem?.value}"></div>
-                    <div class="accordionName">{{sortItem?.key}}</div>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
-
-            <div class="accordionWrapper" [ngClass]="{'active': activeAccordion == 'visibility'}">
-              <div class="accordionHeader" (click)="toggleFilters('visibility')">
-                <div class="title">Visibility</div>
-                <div class="icon">
-                  <svg height="22px" width="22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <path
-                      d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z">
-                    </path>
-                  </svg>
-                </div>
-              </div>
-              <div class="accordionBody">
-                <ng-container *ngFor="let visibleItem of visibleFilters">
-                  <div class="accordionItem" (click)="addFilters(visibleItem?.label, visibleItem?.value)">
-                    <div class="checkbox" [ngClass]="{'checked': isVisible.value == visibleItem?.value}"></div>
-                    <div class="accordionName">{{visibleItem?.key}}</div>
-                  </div>
-                </ng-container>
+              <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
+              <div class="fs-6">
+                <div class="m-0 p-0">SKU: {{product?.sku}}</div>
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+      </div>
 
-        <div class="col-lg-9">
+      <div class="productTable" *ngIf="loaded && isTableView">
+        <ng-container *ngIf="products.length > 0">
+          <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Updated On</th>
+                <th>Status</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let product of products; let i = index">
+                <tr>
+                  <td>
+                    <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
+                      class="rounded" onerror="this.src = '../../../../../assets/images/default.png'">
+                  </td>
+                  <td>{{product?.name}}</td>
+                  <td>{{product?.sku}}</td>
+                  <td>
 
-          <div class="d-flex justify-content-center" *ngIf="!loaded">
-            <div class="spinner-border m-5 text-primary" role="status" style="width: 3rem; height: 3rem;">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div>
-
-          <div class="productCards" *ngIf="loaded && !isTableView">
-            <ng-container *ngFor="let product of products">
-              <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
-                [queryParams]="{id: product?.prodid}">
-                <div class="product-image">
-                  <img src='{{base}}/{{product?.thumbnail}}' alt="product image"
-                    onerror="this.src = '../../../../../assets/images/default.png'" />
-                  <div class="p-2 product-status-{{product?.isActive}} fs-6">
-                    {{product?.isActive ? 'Active' : 'Inactive'}}
-                  </div>
-                  <div class="product-offer fs-6 p-2" *ngIf="product?.price?.offer != product?.price?.mrp">
-                    {{product?.message?.text}}
-                  </div>
-                  <div class="product-out-stock fs-6 p-2" *ngIf="product?.stock == 0">
-                    Out of Stock
-                  </div>
-                  <div class="product-limited-stock p-2"
-                    *ngIf="product?.stock <= product?.stockWarning && product?.stock > 0">
-                    Limited stock
-                  </div>
-                </div>
-                <div class="product-details">
-                  <div class="product-brand">{{product?.brand?.name}}</div>
-                  <div class="product-name mb-1">{{product?.name}}</div>
-                  <div class="product-price">
-                    <div class="d-flex">
-                      <div class="product-offerprice fs-5" *ngIf="product?.price?.selling != product?.price?.mrp">
-                        {{settings?.currency}} {{product?.price?.selling}}</div>
-                      <div class="product-offerprice fs-5" *ngIf="product?.price?.selling == product?.price?.mrp">
-                        {{settings?.currency}}
-                        {{product?.price?.mrp}}
-                      </div>
-                      <div class="product-mrpprice" *ngIf="product?.price?.selling != product?.price?.mrp"
-                        [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.selling}">
-                        {{settings?.currency}} {{product?.price?.mrp}}</div>
-                    </div>
-                    <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
-                      <div>{{product?.rating}}</div>
-                    </div>
-                  </div>
-                  <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
-                  <div class="fs-6">
-                    <div class="m-0 p-0">SKU: {{product?.sku}}</div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-          </div>
-
-          <div class="productTable" *ngIf="loaded && isTableView">
-            <ng-container *ngIf="products.length > 0">
-              <div class="table-responsive overflow-auto">
-                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
-                  <thead class="common_thead">
-                    <tr class="text-left fs-6 text-gray-400">
-                      <th style="min-width: 60px">&nbsp;</th>
-                      <th style="min-width: 60px">&nbsp;</th>
-                      <th style="min-width: 180px">Name</th>
-                      <th style="min-width: 100px">SKU</th>
-                      <th style="min-width: 100px">Price</th>
-                      <th style="min-width: 100px">Stock</th>
-                      <th style="min-width: 100px">Status</th>
-                      <th style="min-width: 100px">&nbsp;</th>
-                    </tr>
-                  </thead>
-                  <tbody class="fs-6">
-                    <ng-container *ngFor="let product of products; let i = index">
-                      <tr>
-                        <td>{{i+1}}</td>
-                        <td>
-                          <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product" height="60px" width="60px"
-                            class="rounded img-fluid" onerror="this.src = '../../../../../assets/images/default.png'">
-                        </td>
-                        <td>{{product?.name}}</td>
-                        <td>{{product?.sku}}</td>
-                        <td> {{settings?.currency}} {{product?.price?.offer}}</td>
-                        <td>{{product?.stock}}</td>
-                        <td> {{product?.isActive ? 'Active' : 'Inactive'}}</td>
-                        <td routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}">
-                          <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
-                        </td>
-                      </tr>
+                    <ng-container *ngFor="let category of product?.category?.id; let i = index">
+                      <div>{{category?.name}}</div>
                     </ng-container>
-                  </tbody>
-                </table>
-              </div>
-            </ng-container>
-          </div>
 
-          <div *ngIf="products.length == 0 && loaded">
-            <div class="emptyNote">
-              <img src="../../../../../assets/icons/empty.gif" alt="Icon">
-              <div class="fs-3 fw-bolder">No result found</div>
-              <div class="fs-6 note">We couldn't find any item based on your search</div>
-            </div>
-          </div>
+                  </td>
+                  <td> {{settings?.currency}} {{product?.price?.offer}}</td>
+                  <td>{{product?.stock}}</td>
+                  <td>{{formdateDate(product?.updatedAt)}}</td>
+                  <td>
+                    <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.slug"
+                      (switchToggled)="updateProduct($event)"></app-switch>
+                  </td>
+                  <td routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{product: product?.slug}">
+                    <div
+                      class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
+                      <svg data-slot="icon" height="20" width="20" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
+                        </path>
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </ng-container>
+      </div>
 
-          <div *ngIf="loaded" class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-            <div class="filtering">
-              <span class="fs-6 text-dark">Show</span>
-              <select [formControl]="limit" (change)="getProducts()">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-              </select>
-              <span class="fs-6 text-dark">entries</span>
-            </div>
-            <div class="pagination">
-              <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-                <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-              </div>
-              <div class="paginationPage">{{page}}</div>
-              <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-                <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-              </div>
-            </div>
-          </div>
+      <div *ngIf="products.length == 0 && loaded">
+        <div class="emptyNote">
+          <img src="../../../../../assets/icons/empty.gif" alt="Icon">
+          <div class="fs-3 fw-bolder">No result found</div>
+          <div class="fs-6 note">We couldn't find any item based on your search</div>
         </div>
+      </div>
+
+      <div *ngIf="loaded">
+        <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"
+          (pageTrigger)="onPageTriggered($event)"></app-pagination>
       </div>
     </div>
   </div>

@@ -1,926 +1,369 @@
-<div class="content container-fluid">
+<div>
   <div class="page-header">
-    <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fw-bolder fs-2">
-          {{ editMode ? "Update Product" : "Add Product" }}
-        </h3>
+    <div class="page-title">
+      <h1 class="fw-bolder">Update product</h1>
+    </div>
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.product.PRODUCT_LIST }}">Product Head</a>
+            <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{ id: prodid }">
-              {{ editMode ? "Update Product" : "Add Product" }}
+            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: productSlug }">
+              Update product
             </a>
           </li>
         </ul>
       </div>
     </div>
   </div>
+
   <div class="mt-4">
     <div class="card">
       <div class="card-body">
 
-        <!-- <form [formGroup]="productform">
-          <div>
-            <tabset #staticTabs>
-              <tab heading="Product Information" id="tab1">
-                <div class="my-3" (keydown.Enter)="$event.preventDefault()">
+        <tabset type="pills" [justified]="true" #staticTabs>
+          <tab heading="Product Details">
+            <div class="my-6">
+              <form [formGroup]="form">
 
-                  <div class="form-group mb-3">
-                    <label for="name" class="form-label required">Name</label>
-                    <input type="text" placeholder="iPhone 14 Pro Max" formControlName="name" class="form-control"
-                      [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}">
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group mb-3">
-                        <label for="name" class="form-label required">Maximum Retail Price</label>
-                        <input type="text" placeholder="10" formControlName="mrpPrice" class="form-control"
-                          [ngClass]="{ 'is-invalid':(formControls.mrpPrice.touched || isSubmitted) && formControls.mrpPrice.errors?.required}">
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group mb-3">
-                        <label for="name" class="form-label">Offer price</label>
-                        <input type="text" placeholder="8" formControlName="offerPrice" class="form-control">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-group mb-3">
-                    <label for="name" class="form-label required">SKU</label>
-                    <input type="text" placeholder="W22T-Pol-SB" formControlName="sku" class="form-control"
-                      [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}">
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label for="name" class="form-label required">Stock</label>
-                        <input type="text" placeholder="30" formControlName="stock" class="form-control"
-                          [ngClass]="{ 'is-invalid': (formControls.stock.touched || isSubmitted) && formControls.stock.errors?.required}">
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label required">Maximum order quantity</label>
-                        <input type="number" class="form-control fs-6" formControlName="maxOrderQuantity"
-                          [ngClass]="{ 'is-invalid': (formControls.maxOrderQuantity.touched || isSubmitted) && formControls.maxOrderQuantity.errors?.required}" />
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label required">Minimum order quantity</label>
-                        <input type="number" class="form-control fs-6" formControlName="moq"
-                          [ngClass]="{ 'is-invalid':(formControls.moq.touched || isSubmitted) && formControls.moq.errors?.required}" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label for="name" class="form-label">Stock warning</label>
-                        <input type="text" class="form-control fs-6" formControlName="stockWarning" />
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label">Additional button text</label>
-                        <input type="text" class="form-control fs-6" formControlName="additionalbutton" />
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label">Addition button redirection</label>
-                        <input type="text" class="form-control fs-6" formControlName="buttonredireturl" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="form-group mb-3">
-                        <label class="form-label">Unit of Mesasurement</label>
-                        <select class="form-select" formControlName="unit">
-                          <option value="" disabled>-- Select an unit value --</option>
-                          <option value="Kg">Kilograms</option>
-                          <option value="Grams">Grams</option>
-                          <option value="Number of">Number of</option>
-                          <option value="Pack of">Pack of</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="form-group mb-3" *ngIf="productform.get('unit')?.value">
-                        <label class="form-label">Measurement</label>
-                        <input type="number" class="form-control" formControlName="value">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="form-group mb-3">
-                    <label for="keywords" class="form-label">Search keywords</label>
-                    <input type="text" name="keywords" id="keywords" class="form-control"
-                      formControlName="searchKeywords" (keyup.Enter)="addKeywords($event)">
-                    <div class="search-keywords mt-3" *ngIf="searchKeywords.length > 0">
-                      <ng-container *ngFor="let keyword of searchKeywords; let i = index">
-                        <div class="rounded bg-secondary p-2 search-keyword">{{keyword}}</div>
-                      </ng-container>
-                    </div>
-                  </div>
-
-                  <div class="form-group mb-3">
-                    <label for="relatedProducts" class="form-label">Related Products</label>
-                    <div class="form-control">
-                      <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
-                        placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
-                      </ng-select>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label">Product status</label>
-                        <select class="form-select" formControlName="isActive">
-                          <option value="" disabled>-- Select an unit value --</option>
-                          <option value="true">Active</option>
-                          <option value="false">Inactive</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label">Product visibility</label>
-                        <select class="form-select" formControlName="isVisible">
-                          <option value="" disabled>-- Select an unit value --</option>
-                          <option value="true">Visible</option>
-                          <option value="false">Hidden</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-lg-4">
-                      <div class="form-group mb-3">
-                        <label class="form-label">Archive this product?</label>
-                        <select class="form-select" formControlName="isArchive">
-                          <option value="" disabled>-- Select an unit value --</option>
-                          <option value="true">Yes</option>
-                          <option value="false">No</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class="d-flex justify-content-end">
-                  <button class="btn btn-primary" (click)="selectTab(1)">Continue</button>
-                </div>
-              </tab>
-              <tab heading="Product Description">
-                <div class="my-3">
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3">Description</label>
-                    <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
-                      [config]="editorConfig"></angular-editor>
-                  </div>
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3">Long Description</label>
-                    <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
-                      [config]="editorConfig"></angular-editor>
-                  </div>
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3">Features</label>
-                    <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
-                      [config]="editorConfig"></angular-editor>
-                  </div>
-                </div>
-              </tab>
-              <tab heading="Product Medias">
-                <div class="my-3">
-                  <div class="cover-wrapper mb-3">
-                    <div class="fs-5 mb-2">Product details page cover</div>
-                    <div class="cover-container">
-                      <img *ngIf="coverPreview" src="{{coverPreview}}" alt="{{productDetails?.name}}"
-                        class="product-cover">
-                      <div class="cover-mask" *ngIf="!coverPreview">
-                        <div>
-                          <svg height="88px" width="88px" fill="none" stroke="#00bdab" stroke-width="1.5"
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5">
-                            </path>
-                          </svg>
-                        </div>
-                        <p class="text-muted">Click on the button or drag and drop cover file here</p>
-                        <button class="btn btn-primary mt-4">Browse here</button>
-                      </div>
-                      <input type="file" accept="image/*" class="form-control fs-6" [formControl]="coverInput"
-                        (change)="handleCover($event)">
-                    </div>
-                  </div>
-
-                  <div class="video-wrapper mb-3">
-                    <div class="fs-5 mb-2">Product Video</div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="video-container">
-                          <div class="video-mask">
-                            <div>
-                              <svg height="88px" width="88px" fill="none" stroke="#00bdab" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z">
-                                </path>
-                              </svg>
-                            </div>
-                            <p class="text-muted">Click on the button or drag and drop video file here</p>
-                            <button class="btn btn-primary mt-4">Browse here</button>
-                          </div>
-                          <input type="file" accept="video/*" (change)="handleVideo($event)" [formControl]="videoInput"
-                            class="form-control">
-                        </div>
-                        <div class="mt-3" *ngIf="videoPreview">
-                          <div class="mx-auto video-preview">
-                            <video src="{{videoPreview}}" autoplay class="video-player">
-                            </video>
-                            <div class="delete-remove" (click)="deleteVideo()">
-                              <svg height="20px" width="20px" fill="none" stroke="#ffffff" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="video-container">
-                          <div class="video-mask">
-                            <div>
-                              <svg height="88px" width="88px" fill="none" stroke="#00bdab" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5">
-                                </path>
-                              </svg>
-                            </div>
-                            <p class="text-muted">Click on the button or drag and drop thumbnail file here</p>
-                            <button class="btn btn-primary mt-4">Browse here</button>
-                          </div>
-                          <input type="file" accept="image/*" [formControl]="videoThumbInput" class="form-control"
-                            (change)="handleVideoThumb($event)">
-                        </div>
-                        <div class="mt-3" *ngIf="videoThumbPreview">
-                          <div class="video-preview mx-auto">
-                            <img src="{{videoThumbPreview}}" class="video-player" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="d-flex mt-3 justify-content-end" *ngIf="videoData">
-                      <button class="btn btn-primary" (click)="addVideo()">Save and continue</button>
-                    </div>
-                  </div>
-                </div>
-              </tab>
-            </tabset>
-          </div>
-        </form> -->
-
-        <nav style="pointer-events: none;">
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <button class="nav-link" [ngClass]="{'active': showProduct}" id="nav-profile-tab" data-bs-toggle="tab"
-              data-bs-target="#product-details" type="button" role="tab" aria-controls="nav-profile"
-              aria-selected="false">Product Details</button>
-            <button class="nav-link" id="nav-contact-tab" [ngClass]="{'active': showMedia}" data-bs-toggle="tab"
-              data-bs-target="#media" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Product
-              Media</button>
-          </div>
-        </nav>
-
-        <div class="tab-content" id="nav-tabContent" [ngClass]="{'archived-content': isArchived}">
-          <div class="tab-pane fade product-details-container" [ngClass]="{'active': showProduct, 'show': showProduct}"
-            id="product-details" role="tabpanel" aria-labelledby="nav-profile-tab">
-            <form [formGroup]="productform" (keydown.Enter)="$event.preventDefault()">
-              <div class="row">
-                <h2 class="form-title">Product Details</h2>
-                <!-- Product name -->
-                <div class="col-12">
-                  <div class="col-sm-6 form-group">
+                <div class="row">
+                  <div class="col-lg-8 mb-3 form-group">
                     <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" class="form-control fs-6" formControlName="name"
-                      placeholder="Eg. iPhone 14 Pro Max Gold 256GB" [ngClass]="{
-                    'is-invalid': (pf.name.touched || isSubmitted) && pf.name.errors?.required}" />
+                    <input type="text" class="form-control fs-6" placeholder="Eg. Australian Avocado"
+                      formControlName="name" />
                   </div>
                 </div>
-                <!-- Product name -->
-                <hr>
-                <!-- Product price details -->
+
                 <div class="row">
-                  <h3 class="form-subtitle">Price Details</h3>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Price (Maximum Retail Price)</label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">{{settings?.currency}}</span>
-                      <input type="number" class="form-control" formControlName="mrpPrice" [ngClass]="{
-                      'is-invalid':(pf.mrpPrice.touched || isSubmitted) &&pf.mrpPrice.errors?.required}" />
-                    </div>
+                  <div class="col-lg-8 mb-3 form-group">
+                    <label class="fs-6 mb-3">Overview</label>
+                    <input type="text" class="form-control fs-6" placeholder="Eg. 2 - 3 pieces per 500 gm"
+                      formControlName="overview" />
                   </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Offer Price</label>
-                    <div class="input-group mb-3">
-                      <span class="input-group-text">{{settings?.currency}}</span>
-                      <input type="number" class="form-control" formControlName="offerPrice" />
+                  <div class="col-lg-4 mb-3 form-group">
+                    <label class="fs-6 mb-3">Origin</label>
+                    <input type="text" class="form-control fs-6" placeholder="Eg. Australia" formControlName="origin" />
+                  </div>
+                </div>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Price Details</div>
+                  <p class="text-muted">Easily manage price details to showacse your product</p>
+                  <div class="row" formGroupName="price">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Maximum retail price</label>
+                      <input type="text" class="form-control fs-6" formControlName="mrp" placeholder="Eg. 18" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Offer price</label>
+                      <input type="text" class="form-control fs-6" formControlName="offer" placeholder="Eg. 10.95" />
                     </div>
                   </div>
                 </div>
-                <!-- Product price details -->
-                <hr>
-                <!-- Product category, attributes details -->
-                <div class="row">
-                  <h3 class="form-subtitle">Product Category and Attributes Details</h3>
-                  <div class="col-12">
-                    <div class=" col-sm-6 form-group">
-                      <label class="fs-6 mb-3">Product Category</label>
-                      <ng-select [items]="subcategories" bindLabel="name" bindValue="_id"
-                        [(ngModel)]="selectedSubCategory" placeholder="Select product category" [multiple]=true
-                        [ngModelOptions]="{standalone: true}">
-                      </ng-select>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Product category and attributes</div>
+                  <p class="text-muted">Easily manage price details to showacse your product</p>
+                  <div class="row mb-3">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3" for="productCategory">Category</label>
+                      <select [formControl]="productCategory" id="productCategory"
+                        (change)="toggleProductCategory($event, 'add')" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
+                          {{category.name}}
+                        </option>
+                      </select>
                     </div>
-                  </div>
-                  <div class="col-12 form-group">
-                    <label class="fs-6 mb-3">Select product Attribute</label>
-
-                    <ng-container *ngIf="attributes.length == 0">
-                      <div style="font-size: 1.5rem; margin: 20px 0 0 0; font-weight: 600;">No attributes found</div>
-                    </ng-container>
-
-                    <div class="attributes-container" *ngIf="attributes.length > 0">
-                      <ng-container *ngFor="let attribute of attributes">
-                        <div class="attribute-card">
-                          <div class="attribute-name">{{attribute?.name}}</div>
-                          <div class="attribute-values">
-                            <ng-container *ngFor="let value of attribute?.values">
-                              <div *ngIf="attribute?.type == 'text'"
-                                (click)="selectAttribute(attribute?.type, attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
-                                class="attr-value attr-text">
-                                {{value?.value}}
-                              </div>
-                              <div *ngIf="attribute?.type == 'color'"
-                                (click)="selectAttribute(attribute?.type, attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
-                                class="attr-value attr-color" [ngStyle]="{'background': value?.value}"></div>
-                              <div *ngIf="attribute?.type == 'file'">
-                                <img src="{{base}}/{{value?.value}}"
-                                  (click)="selectAttribute(attribute?.type,attribute?.name, attribute?.id, attribute?.refid,value?.value, value?._id, value?.refid)"
-                                  alt="" srcset=""
-                                  style="height: 4.4375rem; width: 4.4375rem; margin: 0.625rem 0.625rem 0 0; border-radius: 0.375rem;">
-                              </div>
-                            </ng-container>
+                    <ng-container *ngIf="categories.length > 0">
+                      <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                        <ng-container *ngFor="let category of categories">
+                          <div class="bg-secondary cursor-pointer p-2 rounded"
+                            (change)="toggleProductCategory(category._id, 'remove')">
+                            {{category.name}}
                           </div>
-                        </div>
-                      </ng-container>
-                    </div>
-
-                    <div class="selectedAttributesContainer">
-                      <h2 class="form-title fw-bolder" *ngIf="attributesValues.length > 0">Selected Attributes</h2>
-                      <div class="selectedAttributes" *ngIf="attributesValues.length > 0">
-                        <ng-container *ngFor="let selected of attributesValues; let i=index">
-                          <ng-container *ngIf="selected?.head?.type == 'text'">
-                            <div class="attributeCard">
-                              <div class="attributeName">{{selected?.head?.name}}</div>
-                              <div class="textAttribute"> {{selected?.value?.name}}</div>
-                            </div>
-                          </ng-container>
-
-                          <ng-container *ngIf="selected?.head?.type == 'color'">
-                            <div class="attributeCard">
-                              <div class="attributeName">{{selected?.head?.name}}</div>
-                              <div class="colorAttribute" [ngStyle]="{'background': selected?.value?.name}"></div>
-                            </div>
-                          </ng-container>
                         </ng-container>
                       </div>
-                    </div>
+                    </ng-container>
                   </div>
-                </div>
-                <!-- Product category, attributes details -->
-                <hr>
-                <!-- Product stock, moq details -->
-                <div class="row">
-                  <h3 class="form-subtitle">Sku, Moq & Stock Details</h3>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Stock Keeping Unit</label>
-                    <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
-                    'is-invalid': (pf.sku.touched || isSubmitted) && pf.sku.errors?.required}" />
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Stock</label>
-                    <input type="number" class="form-control fs-6" formControlName="stock" [ngClass]="{
-                    'is-invalid': (pf.stock.touched || isSubmitted) && pf.stock.errors?.required}" />
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Minimum Order Quantity</label>
-                    <input type="number" class="form-control fs-6" formControlName="moq" [ngClass]="{
-                    'is-invalid':(pf.moq.touched || isSubmitted) && pf.moq.errors?.required}" />
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3 required">Maximum Order Quantity</label>
-                    <input type="number" class="form-control fs-6" formControlName="maxOrderQuantity"
-                      [ngClass]="{
-                      'is-invalid':(pf.maxOrderQuantity.touched || isSubmitted) && pf.maxOrderQuantity.errors?.required}" />
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Stock Warning</label>
-                    <input type="text" class="form-control fs-6" formControlName="stockWarning" />
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Additional Button Text</label>
-                    <input type="text" class="form-control fs-6" formControlName="additionalbutton" />
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Button Redirect URL</label>
-                    <input type="text" class="form-control fs-6" formControlName="buttonredireturl" />
-                  </div>
-                </div>
-                <!-- Product stock, moq details -->
-                <hr>
-                <!-- Product stock, moq details -->
-                <div class="row">
-                  <h3 class="form-subtitle">Unit and Value Details</h3>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Unit</label>
-                    <select class="form-select" formControlName="unit"
-                      [ngClass]="{'is-invalid': (pf.unit.touched || isSubmitted) && pf.unit.errors?.required}"
-                      aria-placeholder="Eg. Kilograms" (change)="getUnit()">
-                      <option value="" disabled>-- Select an unit value --</option>
-                      <option value="Kg">Kilograms</option>
-                      <option value="Grams">Grams</option>
-                      <option value="Number of">Number of</option>
-                      <option value="Pack of">Pack of</option>
-                    </select>
-                  </div>
-                  <div class="col-12 col-sm-6 form-group" *ngIf="isUnit">
-                    <label class="fs-6 mb-3">Value</label>
-                    <input type="number" class="form-control" formControlName="value"
-                      [ngClass]="{'is-invalid': (pf.value.touched || isSubmitted) && pf.value.errors?.required}">
-                  </div>
-                </div>
-                <!-- Product stock, moq details -->
-                <hr>
-                <!-- Product additional details -->
-                <div class="row">
-                  <h3 class="form-subtitle">Additional Details</h3>
-                  <div class="col-lg-6 form-group">
-                    <label class="fs-6 mb-3">Search Keywords</label>
-                    <input class="form-control fs-6" formControlName="searchKeywords"
-                      (keyup.Enter)="tagInput($event.target)" />
-                    <div class="tag-inputs" *ngIf="searchKeywords.length > 0">
-                      <ng-container *ngFor="let value of searchKeywords">
-                        <span class="tag-input bg-primary">
-                          <div class="tag-name fs-6">{{ value }}</div>
-                          <i class="bi bi-x" (click)="tagRemove(value)"></i>
-                        </span>
+                  <div class="form-group">
+                    <div class="fs-4 fw-bold" for="attributes">Attributes</div>
+                    <div id="attributes">
+                      <ng-container *ngIf="attributes.length > 0">
+                        <div class="my-3">
+                          <ng-container *ngFor="let attribute of attributes">
+                            <div class="my-3">
+                              <div class="fs-5 mb-3 fw-bold">{{attribute.name}}</div>
+                              <div *ngIf="attribute.type == 'text'">
+                                <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
+                                  <ng-container *ngFor="let value of attribute?.values">
+                                    <div
+                                      class="p-2 rounded attribute text cursor-pointer {{attributeExists(attribute, value)}}"
+                                      (click)="toggleAttributes(attribute, value)">
+                                      {{value.value}}
+                                    </div>
+                                  </ng-container>
+                                </div>
+                              </div>
+                              <div *ngIf="attribute.type == 'color'">
+                                <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
+                                  <ng-container *ngFor="let value of attribute?.values">
+                                    <div class="p-2 color-box rounded {{attributeExists(attribute, value)}}">
+                                      <div class="attribute color rounded cursor-pointer"
+                                        (click)="toggleAttributes(attribute, value)"
+                                        [ngStyle]="{'background': value?.value}">
+                                      </div>
+                                    </div>
+                                  </ng-container>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="attributes.length == 0">
+                        <div class="my-2">No attributes found</div>
                       </ng-container>
                     </div>
                   </div>
-                  <div class="col-lg-6 form-group mb-3">
-                    <label for="relatedProducts" class="form-label">Related Products</label>
-                    <div class="form-control">
-                      <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="selectedProducts"
-                        placeholder="Select category" [multiple]=true [ngModelOptions]="{standalone: true}">
-                      </ng-select>
+                </div>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Inventory details</div>
+                  <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
+                  <div class="row">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Stock</label>
+                      <input type="text" class="form-control fs-6" formControlName="stock" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">SKU</label>
+                      <input type="text" class="form-control fs-6" formControlName="sku" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Minimum order quantity</label>
+                      <input type="text" class="form-control fs-6" formControlName="moq" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Maximum order quantity</label>
+                      <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3">Stock warning</label>
+                      <input type="text" class="form-control fs-6" formControlName="stockWarning" />
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-lg-6 form-group">
-                    <label class="fs-6 mb-3">Featured Product?</label>
-                    <select class="form-select" formControlName="isFeatured"
-                      [ngClass]="{'is-invalid': (pf.isFeatured.touched || isSubmitted) && pf.isFeatured.errors?.required}">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Unit and measurement</div>
+                  <p class="text-muted">Update the unit of measurement details of the product easily</p>
+                  <div class="form-group mb-3 col-lg-6">
+                    <label for="weight" class="fs-6 mb-3">Unit</label>
+                    <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
                   </div>
-                  <div class="col-lg-6 form-group">
-                    <label class="fs-6 mb-3">Active Product?</label>
-                    <select class="form-select" formControlName="isActive"
-                      [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Visible Product?</label>
-                    <select class="form-select" formControlName="isVisible"
-                      [ngClass]="{'is-invalid': (pf.isVisible.touched || isSubmitted) && pf.isVisible.errors?.required}">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                    <div class="fs-7 mt-3">Visibilty is used to show / hide product in product listing</div>
-                  </div>
-                  <div class="col-12 col-sm-6 form-group">
-                    <label class="fs-6 mb-3">Archive Product?</label>
-                    <select class="form-select" formControlName="isArchive"
-                      [ngClass]="{'is-invalid': (pf.isActive.touched || isSubmitted) && pf.isActive.errors?.required}">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 form-group">
+                </div>
+
+                <div class="my-4">
+                  <div class="fs-3 fw-bold">Additional details</div>
+                  <p class="text-muted">Update the additional details of the product</p>
+                  <div class="row" formGroupName="details">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label for="additionalButton" class="fs-6 mb-3">Additional button</label>
+                      <input type="text" id="additionalButton" class="form-control fs-6"
+                        formControlName="additionalButton" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
+                      <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
+                        formControlName="buttonRedirectUrl" />
+                    </div>
+                    <div class="mb-3 form-group">
                       <label class="fs-6 mb-3">Description</label>
                       <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
                         [config]="editorConfig"></angular-editor>
                     </div>
-                    <div class="col-12 form-group">
+                    <div class="mb-3 form-group">
                       <label class="fs-6 mb-3">Long Description</label>
                       <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
                         [config]="editorConfig"></angular-editor>
                     </div>
-                    <div class="col-12 form-group">
+                    <div class="form-group">
                       <label class="fs-6 mb-3">Features</label>
                       <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
                         [config]="editorConfig"></angular-editor>
                     </div>
-                    <div class="form-group mb-3">
-                      <label for="video" class="form-label">Video</label>
-                      <input type="text" placeholder="Video link" formControlName="video" class="form-control">
-                    </div>
                   </div>
                 </div>
-                <!-- Product additional details -->
-                <hr>
-                <!-- Product style details -->
+
                 <div class="row">
-                  <h3 class="form-subtitle">Product Style Details</h3>
-                  <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Background</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                        formControlName="background" (change)="getColors('background', $event.target)" />
-                      <span>{{background}}</span>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Border</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                        formControlName="border" (change)="getColors('border', $event.target)" />
-                      <span>{{border}}</span>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Border Radius</label>
-                      <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Color</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                        formControlName="color" (change)="getColors('color', $event.target)" />
-                      <span>{{color}}</span>
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Font Weight</label>
-                      <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
-                    </div>
-                  </div>
-                  <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Font Size ( in px )</label>
-                      <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
-                    </div>
-                  </div>
-                </div>
-                <!-- Product style details -->
-              </div>
-            </form>
-            <div class="col-12 d-flex align-items-center justify-content-end">
-              <a class=" btn btn-secondary btn-sm fs-6 fw-bolder text-dark" style="width: 200px; margin-right: 20px;"
-                routerLink="{{appRoute.product.PRODUCT_LIST}}">Cancel</a>
-              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
-                (click)="goToNextTab('media')">Next</button>
-            </div>
-          </div>
-
-          <div class="tab-pane fade product-media-container" [ngClass]="{'active': showMedia, 'show': showMedia}"
-            id="media" role="tabpanel" aria-labelledby="nav-contact-tab">
-            <div class="row">
-
-              <h2 class="form-title">Product Media</h2>
-              <div class="col-12">
-                <h3 class="form-subtitle required">Product Images</h3>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload">
-                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                      (change)="handleInputChange($event)" style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset="">
-                      </div>
-                      <div class="right-text d-flex flex-column">
-                        <span class="right-text-title fs-4 fw-bolder">
-                          Click to upload
-                        </span>
-                        <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
-                          Upload up to 1 file
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <ng-container *ngIf=" loadImage">
-                  <div class="col-12 preview-section" style="margin-top: 50px;">
-                    <div class="crop-image col-sm-6">
-                      <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="2400"
-                        [cropperMaxHeight]="2400" format="png" (imageCropped)="imageCropped($event)"
-                        (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                        (loadImageFailed)="loadImageFailed()">
-                      </image-cropper>
-                    </div>
-                    <div class="uploads uploaded col-sm-6">
-                      <div class="close-icon">
-                        <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                      </div>
-                      <img class="preview-img" id="previewImage" [src]="croppedImage">
-                    </div>
-                  </div>
-                  <button class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="addImage()">Save</button>
-                </ng-container>
-
-
-                <!-- <div *ngIf="productImages.length > 0" class="mt-3 product-images">
-                    <ng-container *ngFor="let image of productImages; let i=index">
-                      <div class="product-image">
-                        <img src="{{base}}/{{image}}" alt="{{productDetails?.name}}">
-                        <div class="delete-image" (click)="deleteImage(image)">
-                          <svg height="20px" width="20px" fill="none" stroke="#ffffff" stroke-width="1.5"
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                          </svg>
-                        </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
+                    <input id="searchKeywords" class="form-control fs-6"
+                      (keyup.Enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
+                    <ng-container *ngIf="searchKeywords.length > 0">
+                      <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                        <ng-container *ngFor="let keyword of searchKeywords">
+                          <div class="bg-secondary cursor-pointer p-2 rounded"
+                            (click)="toggleSearchKeywords(keyword, 'remove')">
+                            {{keyword}}
+                          </div>
+                        </ng-container>
                       </div>
                     </ng-container>
-                  </div> -->
-
-                <div class="col-12" *ngIf="imageFiles.length != 0">
-                  <div class="addedProductsWrapper">
-                    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
-                      (cdkDropListDropped)="drop($event)">
-                      <div class="example-box" *ngFor="let image of imageFiles; let i=index" cdkDrag>
-                        <div class="addedProductCard">
-                          <div class="close" (click)="removeFile(i)">
-                            <img src="../../../../../assets/icons/close.svg" alt="Icon">
+                  </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
+                    <app-product-dropdown [isMultiple]="isProductMultiple"
+                      (productTrigered)="onProductsTriggered($event)"></app-product-dropdown>
+                    <ng-container *ngIf="relatedProducts.length > 0">
+                      <div class="mt-2 d-flex flex-wrap align-items-center justify-content-start">
+                        <ng-container *ngFor="let product of relatedProducts; let i = index">
+                          <div class="bg-secondary p-2 rounded">
+                            {{product.name}}
                           </div>
-                          <div class="image">
-                            <img src="{{image?.url}}" alt="Product">
-                          </div>
-                        </div>
+                        </ng-container>
                       </div>
+                    </ng-container>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3" for="status">Active status</label>
+                    <select formControlName="isActive" id="status" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3" for="visibility">Visibility</label>
+                    <select formControlName="isVisible" id="visibility" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' : 'Hidden'}}</option>
+                    </select>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
+            </div>
+          </tab>
+          <tab heading="Product Medias">
+            <div class="my-6">
+              <div class="mb-3 form-group">
+                <label class="fs-6 mb-3">Video</label>
+                <input type="text" class="form-control" formControlName="video" />
+              </div>
+              <div class="mb-3">
+                <label for="images" class="fs-6 mb-3">Product images</label>
+                <div class="row" id="images">
+                  <ng-container *ngFor="let image of images">
+                    <div class="col-lg-2">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="position-absolute bg-secondary">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}/{{image.path}}" class="rounded" class="h-100 w-100" alt="{{image.title}}">
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="col-lg-2">
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'"
+                        [previewEnabled]="false"></app-assets>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div class="col-12">
-                <h3 class="form-subtitle required fw-bolder">Thumbnail Image</h3>
-                <div class="form-group col-sm-6">
-                  <div class="image-upload">
-                    <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                      (change)="handleInputThumbnailChange($event)" style="height: 100px;" required>
-                    <div class="image-upload-div">
-                      <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt=""
-                          srcset="">
-                      </div>
-                      <div class="right-text d-flex flex-column">
-                        <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
-                        <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload up to 1
-                          file</span>
-                      </div>
+              <div class="mb-3">
+                <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
+                <div class="row" id="thumbnail">
+                  <div class="col-lg-2">
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets [image]="'cover'" [previewDetails]="thumbnailPreview" (mediaClicked)="productThumbnailClicked($event)"></app-assets>
                     </div>
-                  </div>
-                  <div class="uploaded-image col-sm-6 mt-5">
-                    <img src="{{img}}" alt="" style="width: 150px; height: 150px">
-                  </div>
-                </div>
-                <ng-container *ngIf="loadThumbnailImage">
-                  <div class="col-12 preview-section" style="margin-top: 50px;">
-                    <div class="crop-image col-sm-6">
-                      <image-cropper class="crop-section" [imageChangedEvent]="imageThumbnailChangedEvent"
-                        [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="2400"
-                        [cropperMaxHeight]="2400" format="jpeg" (imageCropped)="imageThumbnailCropped($event)"
-                        (imageLoaded)="thumbnailImageLoaded()" (cropperReady)="cropperThumbnailReady()"
-                        (loadImageFailed)="loadThumbnailImageFailed()">
-                      </image-cropper>
-                    </div>
-                    <div class="uploads uploaded col-sm-6">
-                      <div class="close-icon">
-                        <i class="bi bi-x-lg text-white" (click)="removeThumbnailImage()"></i>
-                      </div>
-                      <img class="preview-img" id="previewImage" [src]="thumbnailImage">
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-
-              <!-- Product video -->
-
-              <div class="row">
-                <!-- <div class="col-lg-6">
-                  <div class="video-wrapper mb-3">
-                    <div class="fs-5 mb-2">Product Video</div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="video-container">
-                          <div class="video-mask">
-                            <div>
-                              <svg height="88px" width="88px" fill="none" stroke="#00bdab" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z">
-                                </path>
-                              </svg>
-                            </div>
-                            <p class="text-muted text-center">Click on the button or drag and drop video file here</p>
-                            <button class="btn btn-primary mt-4">Browse here</button>
-                          </div>
-                          <input type="file" accept="video/*" (change)="handleVideo($event)" [formControl]="videoInput"
-                            class="form-control">
-                        </div>
-                        <div class="mt-3" *ngIf="videoPreview">
-                          <div class="mx-auto video-preview">
-                            <video src="{{videoPreview}}" autoplay class="video-player">
-                            </video>
-                            <div class="delete-remove" (click)="deleteVideo()">
-                              <svg height="20px" width="20px" fill="none" stroke="#ffffff" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                              </svg>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="video-container">
-                          <div class="video-mask">
-                            <div>
-                              <svg height="88px" width="88px" fill="none" stroke="#00bdab" stroke-width="1.5"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5">
-                                </path>
-                              </svg>
-                            </div>
-                            <p class="text-muted text-center">Click on the button or drag and drop thumbnail file here
-                            </p>
-                            <button class="btn btn-primary mt-4">Browse here</button>
-                          </div>
-                          <input type="file" accept="image/*" [formControl]="videoThumbInput" class="form-control"
-                            (change)="handleVideoThumb($event)">
-                        </div>
-                        <div class="mt-3" *ngIf="videoThumbPreview">
-                          <div class="video-preview mx-auto">
-                            <img src="{{videoThumbPreview}}" class="video-player" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="d-flex mt-3 justify-content-end" *ngIf="videoData">
-                      <button class="btn btn-primary" (click)="addVideo()">Save and continue</button>
-                    </div>
-                  </div>
-                </div> -->
-
-                <div class="my-5">
-                  <div class="fs-4 fw-bolder">Product tags</div>
-                  <div class="my-2">
-                    <div class="row">
-                      <div class="col-lg-6 mb-3">
-                        <div class="fs-6 mb-2 text-muted">Top right</div>
-                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('topRightTag')"
-                            *ngIf="productTags?.topRightTag">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('topRightTag', $event)"
-                            [previewDetails]="productTags?.topRightTag"></app-assets>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 mb-3">
-                        <div class="fs-6 mb-2 text-muted">Top left</div>
-                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('topLeftTag')"
-                            *ngIf="productTags?.topLeftTag">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('topLeftTag', $event)"
-                            [previewDetails]="productTags?.topLeftTag"></app-assets>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 mb-3">
-                        <div class="fs-6 mb-2 text-muted">Bottom right</div>
-                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('bottomRightTag')"
-                            *ngIf="productTags?.bottomRightTag">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('bottomRightTag', $event)"
-                            [previewDetails]="productTags?.bottomRightTag"></app-assets>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 mb-3">
-                        <div class="fs-6 mb-2 text-muted">Bottom left</div>
-                        <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                          <div class="remove-tag bg-danger" (click)="removeTag('bottomLeftTag')"
-                            *ngIf="productTags?.bottomLeftTag">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <app-assets [image]="'cover'" (mediaClicked)="onTagTriggered('bottomLeftTag', $event)"
-                            [previewDetails]="productTags?.bottomLeftTag"></app-assets>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-end" *ngIf="isTagTriggered">
-                    <button class="btn btn-primary" (click)="saveTags()">Save tags</button>
                   </div>
                 </div>
               </div>
-
-              <div class="col-12 d-flex align-items-center justify-content-end">
-                <a class=" btn btn-secondary btn-sm fs-6 fw-bolder text-dark" style="width: 200px; margin-right: 20px;"
-                  (click)="goToPreviousTab('product')">Back</a>
-                <button type="submit" class="btn btn-primary fw-bolder btn-sm fs-6" style="width: 200px"
-                  (click)="onSubmit()" *ngIf="!submitting">Update</button>
-                <button class="btn btn-primary btn-sm fs-6" style="width: 200px" type="button" disabled
-                  *ngIf="submitting">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  Submitting
-                </button>
+              <div class="mb-3">
+                <label for="tags" class="fs-6 mb-3">Product tags</label>
+                <div class="row" id="tags">
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Top left</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'topleft')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Top right</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'topright')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Bottom left</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomleft')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="fs-6 mb-2 text-muted">Bottom right</div>
+                    <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
+                      <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomright')" [image]="'cover'"
+                        [previewEnabled]="true"></app-assets>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="images" class="fs-6 mb-3">Product icons</label>
+                <div class="row" id="images">
+                  <ng-container *ngFor="let icon of icons">
+                    <div class="col-lg-2">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="position-absolute bg-secondary">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}/{{icon.path}}" class="rounded" class="h-100 w-100 object-cover"
+                          alt="{{icon.title}}">
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="col-lg-2">
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
+              <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+            </div>
+          </tab>
+        </tabset>
 
-          <div class="restore-container">
-            <ng-container *ngIf="isArchived">
-              <div class="col-12 d-flex align-items-center justify-content-end">
-                <div class="form-group col-sm-6">
-                  <label class="fs-6 mb-3">Restore Product?</label>
-                  <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg" [formControl]="restore">
-                    <option value="false" selected>No</option>
-                    <option value="true">Yes</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-12 d-flex align-items-center justify-content-end">
-                <a routerLink="{{ appRoute.product.ARCHIVED_PRODUCT}}"
-                  class=" btn btn-secondary btn-sm fs-6 fw-bolder text-dark" style="width: 200px; margin-right: 20px;">
-                  Cancel
-                </a>
-                <button type="submit" class="btn btn-dark btn-sm fs-6 fw-bolder" style="width: 200px"
-                  (click)="restoreProduct()">Restore</button>
-              </div>
-            </ng-container>
-          </div>
-
-        </div>
       </div>
     </div>
   </div>
+</div>

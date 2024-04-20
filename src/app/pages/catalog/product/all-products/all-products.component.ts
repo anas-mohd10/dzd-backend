@@ -5,7 +5,8 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment.prod';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-all-products',
@@ -15,43 +16,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AllProductsComponent implements OnInit {
   appRoute = appRoutes
   products: Array<any> = []
-  productform: any;
-
-  pages: any = []
-  nextpages: any = []
-  currpage: any = 1;
-  selectedpage: any = 1
-  max: any = 3
-  totalcount: any;
-  totaldata: any;
-  count: any = 0
-  showFilter: boolean = false;
-  isData: boolean = true;
-  showBtn: boolean = true;
-  showLessBtn: boolean = false;
-  isNext: boolean = true
   filters: any = [];
-  show: any;
-  shifted: any
   categories: any;
   base: string;
   loaded: boolean = false
-
   settings: any = {}
-  page: any = 1;
+  page: number = 1;
   type: String = ''
   name: FormControl = new FormControl('')
-  limit: FormControl = new FormControl('20')
+  limit: number = 20;
   isActive: FormControl = new FormControl('')
   isVisible: FormControl = new FormControl('')
   isFeatured: FormControl = new FormControl('')
   stock: FormControl = new FormControl('')
   sort: FormControl = new FormControl('')
   category: FormControl = new FormControl('')
-  lastPage: Boolean = false
   categoryItems: Array<any> = []
-  isTableView: boolean = false
-  activeAccordion: string = 'category'
+  isTableView: boolean = true;
+  activeAccordion: string = 'category';
+  isFilters: boolean = false;
+  totalResults: any;
+  totalPages: any;
+  productCategory: FormControl = new FormControl('');
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   stockFilters: Array<any> = [
     { key: 'In Stock', value: '1', label: 'stock' },
@@ -75,12 +62,12 @@ export class AllProductsComponent implements OnInit {
   ]
 
   constructor(
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private ProductService: ProductService,
     private CategoryService: CategoryService,
     private AppSettingsService: AppSettingsService,
     private ActivatedRoute: ActivatedRoute,
-    private Router: Router
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -98,21 +85,25 @@ export class AllProductsComponent implements OnInit {
         break
     }
 
+    this.CategoryService.getCategory().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.categories = res?.result
+        this.ChangeDetectorRef.markForCheck();
+      }
+    })
+
     this.getProducts()
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
-        this.cdr.markForCheck()
+        this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
 
-    this.CategoryService.getCategory().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.categories = res?.result
-        this.cdr.markForCheck();
-      }
-    })
+  formdateDate(date: any) {
+    return `${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
   }
 
   changeView(type: string) {
@@ -124,6 +115,7 @@ export class AllProductsComponent implements OnInit {
   }
 
   getProducts() {
+    let categoryItems = this.categoryItems.map((item: any) => item.catid)
     const payload = {
       name: this.name?.value,
       isActive: this.isActive?.value,
@@ -131,42 +123,32 @@ export class AllProductsComponent implements OnInit {
       isVisible: this.isVisible?.value,
       stock: this.stock?.value,
       sort: this.sort?.value,
-      categories: this.categoryItems,
+      categories: categoryItems,
       page: this.page,
-      limit: this.limit?.value
+      limit: this.limit
     }
 
     this.ProductService.searchProducts(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result?.data
-        this.getProductOffers()
-        this.totalcount = res?.result?.total_item
-        this.lastPage = res?.result?.lastPage
+        this.totalResults = res?.result?.totalResults
+        this.totalPages = res?.result?.totalPages
         this.page = res?.result?.page
         this.loaded = true
-        this.cdr.markForCheck();
+        this.ChangeDetectorRef.markForCheck();
       }
     })
   }
 
-  getProductOffers() {
-    for (let _product of this.products) {
-      const diff = _product?.price?.mrp - _product.price?.selling
-      const percentage_off = Math.round((diff / _product?.price?.mrp) * 100)
-      const message = {
-        text: `${percentage_off} % Off`,
-      }
-      _product['message'] = message
-    }
-  }
-
-  getNextPage() {
-    this.page += 1
+  onCategoryTriggered() {
+    let categoryDetails = this.categories.filter((category: any) => category.catid == this.productCategory.value)
+    !this.categoryItems.includes(categoryDetails[0]) ? this.categoryItems.push(categoryDetails[0]) : this.categoryItems = this.categoryItems.filter(item => item.catid !== this.productCategory.value)
     this.getProducts()
   }
 
-  getPreviousPage() {
-    this.page -= 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getProducts()
   }
 
@@ -178,16 +160,31 @@ export class AllProductsComponent implements OnInit {
     this.sort?.setValue('')
     this.name?.setValue('')
     this.page = 1
-    this.limit.setValue('20')
+    this.limit = 20
     this.categoryItems = []
     this.getProducts()
+  }
+
+  updateProduct(event: { switchId: string, toggleState: boolean }) {
+    this.ProductService.updateProduct(event.switchId, { slug: event.switchId, isActive: event.toggleState }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getProducts()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
   }
 
   toggleFilters(type: any) {
     this.activeAccordion != type ? this.activeAccordion = type : this.activeAccordion = ''
   }
 
-  addFilters(type: any, value: any) {
+  addFilters(type: any, value?: any) {
     switch (type) {
       case 'stock':
         this.stock?.value != value ? this.stock?.setValue(value) : this.stock?.setValue('')
@@ -202,7 +199,8 @@ export class AllProductsComponent implements OnInit {
         this.sort?.value != value ? this.sort?.setValue(value) : this.sort?.setValue('')
         break
       case 'category':
-        !this.categoryItems.includes(value) ? this.categoryItems.push(value) : this.categoryItems = this.categoryItems.filter(item => item !== value)
+        let categoryDetails = this.categories.filter((category: any) => category.catid == this.productCategory.value)
+        !this.categoryItems.includes(categoryDetails[0]) ? this.categoryItems.push(categoryDetails[0]) : this.categoryItems = this.categoryItems.filter(item => item.catid !== this.productCategory.value)
         break
     }
 
