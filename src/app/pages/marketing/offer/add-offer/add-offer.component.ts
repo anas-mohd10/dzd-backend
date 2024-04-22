@@ -1,15 +1,14 @@
 import { ProductService } from 'src/app/includes/services/product.service';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-add-offer',
@@ -43,13 +42,12 @@ export class AddOfferComponent implements OnInit {
   isProceedable: boolean = true
 
   constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastr: ToastrService,
+    private FormBuilder: FormBuilder,
+    private Router: Router,
+    private HotToastService: HotToastService,
     private offerService: OfferService,
     private productService: ProductService,
-    private cdr: ChangeDetectorRef,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private CategoryService: CategoryService,
     private CollectionService: CollectionService,
     private BrandService: BrandService
@@ -66,33 +64,33 @@ export class AddOfferComponent implements OnInit {
 
     this.productService.getActiveProduct().subscribe((res: any) => {
       this.productsdata = res?.result
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
 
     this.CategoryService.getActiveCategory().subscribe((res: any) => {
       this.categoriesdata = res?.result
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
 
     this.CollectionService.getActiveCollection().subscribe((res: any) => {
       this.collectionsdata = res?.result
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
 
     this.BrandService.getActiveBrands().subscribe((res: any) => {
       this.brandsdata = res?.result
-      this.cdr.markForCheck()
+      this.ChangeDetectorRef.markForCheck()
     })
   }
 
   initForm() {
-    this.offerForm = this.formBuilder.group({
+    this.offerForm = this.FormBuilder.group({
       title: ['', Validators.required],
-      file: [''],
       description: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       type: ['percentage'],
+      offerType: ['partial'],
       value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       isActive: ['true'],
     });
@@ -101,7 +99,7 @@ export class AddOfferComponent implements OnInit {
     this.offerForm.get('endDate')?.setValue(this.toDate)
   }
 
-  get of() {
+  get formControls() {
     return this.offerForm.controls;
   }
 
@@ -149,34 +147,6 @@ export class AddOfferComponent implements OnInit {
     }
   }
 
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -192,27 +162,20 @@ export class AddOfferComponent implements OnInit {
       return;
     }
 
-    this.categories.length > 0 || this.products.length > 0 || this.collections.length > 0 || this.brands.length > 0 ? this.isProceedable = true : this.isProceedable = false
-    if (this.isValidValue) {
-      if (this.isProceedable) {
-        this.offerService.addOffer({
-          ...this.offerForm.value,
-          categories: this.categories.length > 0 ? this.categories : null,
-          products: this.products.length > 0 ? this.products : null,
-          collections: this.collections.length > 0 ? this.collections : null,
-          brands: this.brands.length > 0 ? this.brands : null,
-          filestring: this.croppedImage,
-          filename: this.filename,
-        }).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
-          } else if (res.errorCode == 0) {
-            this.toastr.success(res?.message);
-            this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-          }
-        });
+    this.offerService.addOffer({
+      ...this.offerForm.value,
+      categories: this.categories.length > 0 ? this.categories : null,
+      products: this.products.length > 0 ? this.products : null,
+      collections: this.collections.length > 0 ? this.collections : null,
+      brands: this.brands.length > 0 ? this.brands : null,
+    }).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.HotToastService.error(res?.message);
+      } else if (res.errorCode == 0) {
+        this.HotToastService.success(res?.message);
+        this.Router.navigate([this.appRoute.offer.OFFER_LIST]);
       }
-    }
+    })
   }
 
   updateBrand() { }

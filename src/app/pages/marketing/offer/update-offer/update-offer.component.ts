@@ -95,11 +95,11 @@ export class UpdateOfferComponent implements OnInit {
   initForm() {
     this.offerForm = this.formBuilder.group({
       title: ['', Validators.required],
-      file: [''],
       description: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       type: ['percentage'],
+      offerType: ['partial'],
       value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       isActive: ['true'],
       isDelete: ['false']
@@ -109,7 +109,7 @@ export class UpdateOfferComponent implements OnInit {
     this.offerForm.get('endDate')?.setValue(this.toDate)
   }
 
-  get of() {
+  get formControls() {
     return this.offerForm.controls;
   }
 
@@ -162,28 +162,6 @@ export class UpdateOfferComponent implements OnInit {
     return item._id === selected;
   }
 
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  imageLoaded() { }
-
-  cropperReady() { }
-
-  loadImageFailed() { }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
-
   onSubmit() {
     this.isSubmitted = true;
     if (this.editMode) {
@@ -202,6 +180,7 @@ export class UpdateOfferComponent implements OnInit {
         this.offerForm.get('isActive')?.setValue(this.offerDetails.isActive);
         this.offerForm.get('type')?.setValue(this.offerDetails.type);
         this.offerForm.get('value')?.setValue(this.offerDetails.value);
+        this.offerForm.get('offerType')?.setValue(this.offerDetails.offerType);
         this.offerForm.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
         this.offerForm.get('startDate')?.setValue(new Date(this.offerDetails.startDate).toISOString().split('T')[0]);
         this.offerForm.get('endDate')?.setValue(new Date(this.offerDetails.endDate).toISOString().split('T')[0]);
@@ -246,4 +225,3 @@ export class UpdateOfferComponent implements OnInit {
     }
   }
 }
- 

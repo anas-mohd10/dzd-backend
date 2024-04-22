@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -86,9 +86,8 @@ export class AddOrdersComponent implements OnInit {
   constructor(
     private OrderService: OrdersService,
     private customerService: CustomersService,
-    private ActivatedRoute: ActivatedRoute,
     private Router: Router,
-    private ToastrService: ToastrService,
+    private ToastrService: HotToastService,
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private couponsService: CouponsService,
@@ -96,7 +95,6 @@ export class AddOrdersComponent implements OnInit {
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
-    private DeliveryService: DeliverySlotsService,
     private DeliverySlotsService: DeliverySlotsService
   ) { }
 
@@ -137,23 +135,7 @@ export class AddOrdersComponent implements OnInit {
       longitude: new FormControl(''),
     })
 
-    this.DeliveryService.activeSlots().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.deliverySlots = res?.result
-        this.ChangeDetectorRef.markForCheck()
-        this.deliverySlots.sort((a, b) => {
-          const timeA = new Date(`1970-01-01T${a.from}`);
-          const timeB = new Date(`1970-01-01T${b.from}`);
-          if (timeA < timeB) {
-            return -1;
-          } else if (timeA > timeB) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
-      }
-    })
+    this.selectDeliveryDate(this.deliveryDate)
   }
 
   get addressControls() {
@@ -245,8 +227,8 @@ export class AddOrdersComponent implements OnInit {
       transactionId: [''],
       additionalCharge: [''],
       products: [[], Validators.required],
-      clickPoint: [''],
-      deliveryTime: ['', Validators.required],
+      clickPoint: ['', Validators.required],
+      deliveryTime: [''],
       deliveryDate: ['', Validators.required],
       deliveryType: ['0'],
       deliverySlot: ['', Validators.required]
@@ -314,7 +296,7 @@ export class AddOrdersComponent implements OnInit {
 
   selectDeliveryTime(time: any) {
     this.deliveryTime = time
-    this.orderForm.get('deliveryTime')?.setValue(time)
+    this.orderForm.get('deliverySlot')?.setValue(time?.refid)
   }
 
   selectDeliveryDate(date: any) {
@@ -349,7 +331,7 @@ export class AddOrdersComponent implements OnInit {
           });
 
           this.deliveryTime = this.timeslots[0]['refid']
-          this.orderForm.get('deliveryTime')?.setValue(this.timeslots[0]['refid'])
+          this.orderForm.get('deliverySlot')?.setValue(this.timeslots[0]['refid'])
           this.ChangeDetectorRef.markForCheck()
         } else {
 

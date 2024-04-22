@@ -97,7 +97,7 @@ export class OrdersListComponent implements OnInit {
     status: 'Cancelled',
     value: 'CANCELLED',
     totalOrders: 0
-  },]
+  }]
   lastPage: Boolean = false
   type: any = null
 
@@ -111,6 +111,10 @@ export class OrdersListComponent implements OnInit {
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   checkStatusList: Array<any> = ['PENDING', 'PLACED', 'FAILED']
+
+  successOrders: Array<string> = ['PLACED', 'SHIPPED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
+  acceptedOrders: Array<string> = ['ACCEPTED']
+  cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
 
   constructor(
     private OrdersService: OrdersService,
@@ -143,6 +147,10 @@ export class OrdersListComponent implements OnInit {
   closeTag() {
     this.tagRef?.hide()
     this.tagOrder = ''
+  }
+
+  formatOrderStatus(orderStatus: string){
+    return `${orderStatus.charAt(0).toUpperCase()}${orderStatus.slice(1).toLowerCase()}`
   }
 
   convertTimeFormat(timeString: any) {

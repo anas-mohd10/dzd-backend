@@ -127,7 +127,7 @@ export class OrdersService {
   }
 
   orderPaymentAcceptance(order: string) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.orderPaymentAcceptance + `/?order=${order}`);
+    const url = this.commonService.getFullUrl(this.orderEndpoints.orderPaymentAcceptance + `?order=${order}`);
     return this.http.get(`${url}`)
   }
 }

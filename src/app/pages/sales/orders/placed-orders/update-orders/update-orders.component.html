@@ -28,13 +28,8 @@
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <button class="btn border bg-white text-primary border-primary">
-        <svg data-slot="icon" height="24" width="24" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3">
-          </path>
-        </svg>
+      <button class="btn border bg-white text-primary border-primary" (click)="acceptOrderPayment()"
+        *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
         Accept payment
       </button>
     </div>
@@ -124,12 +119,6 @@
                 <div class="itemTitle">Delivery</div>
                 <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">
                   {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Delivery slot</div>
-                <div class="itemResponse">
-                  {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
                 </div>
               </div>
             </div>
@@ -257,14 +246,20 @@
             <div class="card-body">
               <div class="fs-3 fw-bolder">Branch Details</div>
               <div class="my-2">
-                <div class="d-flex align-items-center justify-content-between my-1">
-                  <div class="fs-6">Date</div>
-                  <div class="fs-6">{{order?.deliveryDate ? order?.deliveryDate : 'Not avaialble'}}</div>
-                </div>
                 <div class="d-flex align-items-center justify-content-between">
+                  <div class="fs-6">Date</div>
+                  <div class="fs-6">{{order?.deliveryDate ? formdateDate(order?.deliveryDate) : 'Not avaialble'}}</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between my-1">
                   <div class="fs-6">Store</div>
                   <div class="fs-6">
                     {{order?.clickPoint ? order?.clickPoint?.address?.city : 'Not available'}}
+                  </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="fs-6">Delivery slot</div>
+                  <div class="fs-6">
+                    {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
                   </div>
                 </div>
               </div>
@@ -281,7 +276,8 @@
               </div>
               <div class="my-2">
                 <div class="form-group">
-                  <textarea [formControl]="orderNote" rows="4" class="form-control" draggable="true"></textarea>
+                  <textarea [formControl]="orderNote" (change)="isNoteDetected = true" rows="4" class="form-control"
+                    draggable="true"></textarea>
                 </div>
                 <div class="my-2 d-flex align-items-center justify-content-end">
                   <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected">Save notes</button>
@@ -316,21 +312,28 @@
             <div class="products my-2">
               <div class="row mb-4">
                 <div class="col-lg-1 d-flex align-items-center">
-                  <div class="checkbox" [ngClass]="{'checked': bulkProducts.length == order?.products?.length}"
+                  <div class="checkbox"
+                    [ngClass]="{'checked': bulkProducts.length == order?.products?.length, 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
                     (click)="toggleBulkProduct()"></div>
                 </div>
-                <div class="col-lg-8"> </div>
-                <div class="col-lg-3">
-                  <select class="form-select fs-6" (change)="updateBulkProduct($event)">
-                    <option disabled selected>-- Select a status --</option>
-                    <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
-                  </select>
+                <div class="col-lg-7"> </div>
+                <div class="col-lg-4">
+                  <div class="d-flex align-items-center justify-content-end gap-2">
+                    <label for="bulkStatus" class="fs-6">Status :</label>
+                    <select id="bulkStatus"
+                      [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
+                      class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
+                      <option disabled selected>-- Select a status --</option>
+                      <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
               <ng-container *ngFor="let product of order?.products; let i = index">
                 <div class="row mb-8">
                   <div class="col-lg-1">
-                    <div class="checkbox" [ngClass]="{'checked': bulkProducts.includes(product)}"
+                    <div class="checkbox"
+                      [ngClass]="{'checked': bulkProducts.includes(product), 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
                       (click)="toggleBulkProduct(product)"> </div>
                   </div>
                   <div class="col-lg-11">
@@ -370,25 +373,13 @@
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Status:</div>
-                          <div class="w-75">
+                          <div class="w-75"
+                            [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
                             <select class="form-select w-50 p-2" (click)="getStatusList(product.currentStatus.status)"
                               (change)="updateOrderStatus($event, product?.productId?._id)">
                               <option disabled>-- Select a option --</option>
                               <option selected disabled>{{product.currentStatus.status}}</option>
                               <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                          <div class="w-25">Payment:</div>
-                          <div class="w-75">
-                            <select name="payment" class="form-select w-50 p-2" id="payment"
-                              (change)="updateProductPayment($event, product)">
-                              <option disabled>-- Select an option --</option>
-                              <option selected disabled>
-                                {{product?.paymentStatus == 'PENDING' ? 'Pending' : 'Paid'}}
-                              </option>
-                              <option *ngIf="product?.paymentStatus == 'PENDING'" value="PAID">Paid</option>
                             </select>
                           </div>
                         </div>

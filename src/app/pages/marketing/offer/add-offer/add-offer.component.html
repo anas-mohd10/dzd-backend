@@ -1,11 +1,10 @@
-<div class="content container-fluid">
-
+<div>
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update Offer" : "Add Offer" }}</h1>
+      <h1 class="fw-bolder">Add offers</h1>
     </div>
     <div class="row align-items-center">
-      <div class="col d-flex align-items-start justify-content-between">
+      <div class="d-flex align-items-start justify-content-between">
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-6">
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -14,9 +13,7 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.offer.ADD_OFFER }}">
-              {{editMode ? "Update Offer" : "Add Offer"}}
-            </a>
+            <a routerLink="{{ appRoute.offer.ADD_OFFER }}">Add offers</a>
           </li>
         </ul>
       </div>
@@ -28,18 +25,14 @@
       <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
         <div class="row">
 
-          <div class="mb-4">
-            <h2 class="form-title">Offer Details</h2>
-          </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Title</label>
               <input type="text" class="form-control fs-6" placeholder="Eg. Apple Offers" formControlName="title"
                 [ngClass]="{
                     'is-invalid':
-                    (of.title.touched || isSubmitted) &&
-                    of.title.errors?.required
+                    (formControls.title.touched || isSubmitted) &&
+                    formControls.title.errors?.required
                   }" />
             </div>
           </div>
@@ -55,7 +48,7 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Type</label>
               <select class="form-select fs-6" formControlName="type"
-                [ngClass]="{  'is-invalid': (of.type.touched || isSubmitted) && of.type.errors?.required}">
+                [ngClass]="{  'is-invalid': (formControls.type.touched || isSubmitted) && formControls.type.errors?.required}">
                 <option value="" disabled>-- Select an option --</option>
                 <option value="percentage">Percentage</option>
                 <option value="fixed">Fixed Amount</option>
@@ -68,11 +61,11 @@
               <label class="fs-6 mb-3 required">Value</label>
               <input type="text" placeholder="Eg. 10" class="form-control fs-6" formControlName="value"
                 (change)="validateValue()" [ngClass]="{
-                    'is-invalid': (of.value.touched || isSubmitted) && of.value.errors?.required}" />
+                    'is-invalid': (formControls.value.touched || isSubmitted) && formControls.value.errors?.required}" />
               <div class="alert alert-danger p-2 mt-2" role="alert" *ngIf="!isValidValue">
                 Maximum value : 100
               </div>
-              <div class="alert alert-danger p-3 mt-2" *ngIf="of.value.errors?.pattern">This field accepts only numbers
+              <div class="alert alert-danger p-3 mt-2" *ngIf="formControls.value.errors?.pattern">This field accepts only numbers
               </div>
             </div>
           </div>
@@ -82,8 +75,8 @@
               <label class="fs-6 mb-3">Start Date</label>
               <input type="date" class="form-control fs-6" [min]="minDate" formControlName="startDate" [ngClass]="{
                       'is-invalid':
-                        (of.startDate.touched || isSubmitted) &&
-                        of.startDate.errors?.required
+                        (formControls.startDate.touched || isSubmitted) &&
+                        formControls.startDate.errors?.required
                     }" />
             </div>
           </div>
@@ -92,16 +85,22 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">End Date</label>
               <input type="date" [min]="minDate" class="form-control fs-6" formControlName="endDate"
-                [ngClass]="{ 'is-invalid': (of.endDate.touched || isSubmitted) && of.endDate.errors?.required }" />
+                [ngClass]="{ 'is-invalid': (formControls.endDate.touched || isSubmitted) && formControls.endDate.errors?.required }" />
             </div>
           </div>
 
-          <div class="col-lg-12" *ngIf="!isProceedable">
-            <div class="alert alert-danger p-3 fs-6" role="alert">Select atleast one of the below
+          <div>
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Offer type</label>
+              <select class="form-select fs-6" formControlName="offerType">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="partial">Module</option>
+                <option value="complete">Store</option>
+              </select>
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
               <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
@@ -111,7 +110,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
               <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
@@ -121,7 +120,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
               <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
@@ -131,7 +130,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
               <ng-select [items]="brandsdata" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
@@ -152,50 +151,12 @@
             </div>
           </div>
 
-          <div class="col-lg-12">
-            <label class="fs-6 mb-3">Media</label>
-            <div class="col-lg-6">
-              <div class="form-group">
-                <div class="image-upload">
-                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                    (change)="handleInputChange($event)" style="height: 100px;" required>
-                  <div class="image-upload-div">
-                    <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg" alt="" srcset="">
-                    </div>
-                    <div class="right-text d-flex flex-column"><span class="right-text-title fs-4 fw-bolder">Click to
-                        upload</span> <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">Upload
-                        up to 1
-                        file</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <ng-container *ngIf="loadImage">
-            <div class="col-12 preview-section">
-              <div class="crop-image col-sm-6">
-                <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                  [aspectRatio]="3 / 3" [cropperMaxWidth]="1600" [cropperMaxHeight]="1600" format="png"
-                  (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                  (loadImageFailed)="loadImageFailed()">
-                </image-cropper>
-              </div>
-              <div class="uploads uploaded col-sm-6">
-                <div class="close-icon">
-                  <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                </div>
-                <img class="preview-img" id="previewImage" [src]="croppedImage">
-              </div>
-            </div>
-          </ng-container>
-          <div class="col-12 d-flex align-items-center justify-content-end">
-            <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-              style="width: 200px; margin-right: 20px;">
+          <div class="d-flex align-items-center justify-content-end gap-2">
+            <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class="btn btn-secondary fs-6">
               Cancel
             </a>
-            <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-              Add
+            <button type="submit" class="btn btn-primary fs-6"S>
+              Save changes
             </button>
           </div>
         </div>

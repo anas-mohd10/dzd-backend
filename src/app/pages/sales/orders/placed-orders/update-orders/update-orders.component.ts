@@ -13,6 +13,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
 import SwiperCore, { SwiperOptions } from 'swiper';
 
+
 @Component({
   selector: 'app-update-orders',
   templateUrl: './update-orders.component.html',
@@ -83,6 +84,8 @@ export class UpdateOrdersComponent implements OnInit {
   orderNote: FormControl = new FormControl('')
   reason: FormControl = new FormControl('')
   isNoteDetected: boolean = false
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 
   constructor(
     private OrdersService: OrdersService,
@@ -108,6 +111,25 @@ export class UpdateOrdersComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.settings = res?.result
         this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  formdateDate(date: any) {
+    return `${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
+  }
+
+  acceptOrderPayment() {
+    this.OrdersService.orderPaymentAcceptance(this.order?.orderNo.split('#')[1]).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrderDetails()
+          this.Toast.success(res?.message)
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
       }
     })
   }
@@ -145,7 +167,7 @@ export class UpdateOrdersComponent implements OnInit {
             this.Toast.error(res?.message)
           }
         }, error: (err: any) => {
-          this.Toast.error(err?.message)
+          this.Toast.error(err?.error?.message)
         }
       })
     }
@@ -197,7 +219,7 @@ export class UpdateOrdersComponent implements OnInit {
         this.statusList = res?.result
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error("Couldn't fetch order status list")
+        this.Toast.error("Couldn't fetch order status list")
       }
     })
   }
@@ -212,22 +234,12 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
-          switch (event.target.value) {
-            case 'ACCEPTED':
-              this.expectedModalRef = this.BsModalService.show(this.expectedDeliveryModal,
-                { class: 'modal-dialog-centered', ignoreBackdropClick: true })
-              break
-            case 'OUT FOR DELIVERY':
-              this.deliveryModalRef = this.BsModalService.show(this.deliveryModal,
-                { class: 'modal-dialog-centered', ignoreBackdropClick: true })
-              break
-          }
-          this.ToastrService.success(res.message)
+          this.Toast.success(res.message)
         } else {
-          this.ToastrService.error(res.message)
+          this.Toast.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.Toast.error(err?.error?.message)
       }
     })
   }

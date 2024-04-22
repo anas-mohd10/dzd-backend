@@ -168,15 +168,13 @@
     </div>
   </div>
 
-  <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-    *ngIf="orders.length > 0">
+  <table class="table table-head-custom table-vertical-center table-head-bg table-borderless" *ngIf="orders.length > 0">
     <thead>
       <tr class="text-left">
         <th>
           <div class="d-flex align-items-center justify-content-start">
             <div class="checkbox" (click)="toggleOrders()"
-              [ngClass]="{'checked': toggledOrders?.length == orders?.length}"></div>
-            <div class="ms-3">All</div>
+              [ngClass]="{'checked': toggledOrders.length == orders.length}"></div>
           </div>
         </th>
         <th>Order</th>
@@ -196,7 +194,7 @@
         <tr>
           <td>
             <div class="checkbox" (click)="toggleOrders({order: order?.orderNo, status: order?.orderStatus})"
-              [ngClass]="{'checked': toggledOrders?.includes(order?.orderNo.split('#')[1])}"></div>
+              [ngClass]="{'checked': toggledOrders.includes(order?.orderNo.split('#')[1])}"></div>
           </td>
           <td>{{order?.orderNo}}</td>
           <td>
@@ -246,11 +244,11 @@
           </td>
           <td>{{order?.paymentMethod}}</td>
           <td>
-            <span class="paid fs-6"
-              [ngClass]="{'unpaid': !order?.paymentStatus || order?.paymentStatus == 'Pending' || order?.paymentStatus == 'PENDING' || order?.paymentStatus == 'Cancelled'}">
-              {{order?.orderStatus == 'PAID' || order?.paymentStatus == 'Paid' ? 'Paid' : order?.paymentStatus
-              == 'CANCELLED' ? 'Cancelled' :'Pending'}}
-            </span>
+            <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{'success-orders': successOrders.includes(order?.orderStatus), 
+              'accepted-orders': acceptedOrders.includes(order?.orderStatus), 
+              'cancelled-orders': cancelledOrders.includes(order?.orderStatus)}">
+              {{formatOrderStatus(order?.orderStatus)}}
+            </div>
           </td>
           <td>
             <div class="d-flex align-items-center justify-content-start gap-3">
@@ -259,7 +257,8 @@
                 routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
                 <img src="../../../../../../assets/icons/eye.svg" alt="View order details">
               </div>
-              <a *ngIf="!checkStatusList.includes(order?.orderStatus)" href="/generate-invoice?order={{order?.orderNo?.split('#')[1]}}" target="_blank"
+              <a *ngIf="!checkStatusList.includes(order?.orderStatus)"
+                href="/generate-invoice?order={{order?.orderNo?.split('#')[1]}}" target="_blank"
                 class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
                 <img src="../../../../../../assets/icons/print.svg" alt="Genarete Invoice">
               </a>

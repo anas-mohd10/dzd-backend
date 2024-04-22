@@ -13,8 +13,7 @@
         </li>
       </ul>
     </div>
-    <button class="btn btn-primary cursor-pointer fs-6" color="primary" routerLink="{{ appRoute.offer.ADD_OFFER }}"
-      style="width: 200px">
+    <button class="btn btn-primary cursor-pointer fs-6" routerLink="{{ appRoute.offer.ADD_OFFER }}">
       Add offer
     </button>
   </div>
@@ -22,10 +21,10 @@
   <div class="card p-4 my-3">
     <form [formGroup]="form">
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getOffers()" />
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getOffers()" />
         </div>
         <div class="col-lg-2">
@@ -40,7 +39,7 @@
           <input type="button" class="form-control fs-6" style="color: #00bcaa; border: #00bcaa 1px solid"
             value="Clear filters" (click)="clearFilters()" />
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-4">
           <input type="text" placeholder="Search offers" class="form-control fs-6" formControlName="name"
             (ngModelChange)="getOffers()" />
         </div>

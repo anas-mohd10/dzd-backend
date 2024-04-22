@@ -12,7 +12,7 @@ $error: #F1416C;
   font-weight: 400 !important;
 }
 
-.customer-type{
+.customer-type {
   width: 100px;
 }
 
@@ -156,65 +156,23 @@ $error: #F1416C;
   margin-left: 0;
 }
 
-.placed {
-  background: #2f6fe580;
-  color: #ffffff !important;
+//Order status designs
+.accepted-orders {
+  background: #2f6fe5;
+  color: #ffffff;
 }
 
-.accepted {
-  background: #2fe59080;
+.success-orders {
+  background: #2b9e68;
+  color: #ffffff
 }
 
-.delivered {
-  background: #662fe580;
-  color: #ffffff !important;
+.cancelled-orders {
+  background: #bb2b2b;
+  color: #ffffff;
 }
 
-.cancelled {
-  background: #e52f2f80;
-  color: #ffffff !important;
-}
-
-.refunded {
-  background: #e52f8480;
-  color: #ffffff !important;
-}
-
-.packed {
-  background: #2fd3e580;
-}
-
-.shipped {
-  background: #5177c880;
-  color: #ffffff !important;
-}
-
-.paymentStatus {
-  font-weight: 600;
-  padding: .625rem 1.25rem;
-  border-radius: .625rem;
-}
-
-.top-form-container {
-  margin-top: 20px;
-}
-
-.fw-bolder.fs-2.mb-2.mt-5.text-inverse-white {
-  margin: 0 !important;
-}
-
-.paymentmethd {
-  background-color: #28C76F;
-  padding: 5px 10px;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 14px;
-  text-transform: capitalize;
-  color: #FFFFFF;
-  border-radius: 4px;
-  border: none;
-  outline: none;
-}
+//Order status designs
 
 .calender_form {
   padding: 35px 25px 20px 25px;
@@ -270,25 +228,15 @@ $error: #F1416C;
   }
 }
 
-.table{
+.table {
   font-size: 1rem !important;
-}
-
-.table-responsive {
-  padding: 0 25px;
-
-  tr {
-    border-bottom: 1px solid #E8E8E8;
-  }
 
   tbody {
-    font-size: 14px !important;
 
     tr {
+
       td {
-        img {
-          cursor: pointer;
-        }
+        vertical-align: middle;
       }
     }
   }
