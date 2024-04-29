@@ -144,6 +144,12 @@ export class AllProductsComponent implements OnInit {
     let categoryDetails = this.categories.filter((category: any) => category.catid == this.productCategory.value)
     !this.categoryItems.includes(categoryDetails[0]) ? this.categoryItems.push(categoryDetails[0]) : this.categoryItems = this.categoryItems.filter(item => item.catid !== this.productCategory.value)
     this.getProducts()
+    this.productCategory.setValue('')
+  }
+
+  onCategoryRemoved(category: any){
+    this.categoryItems = this.categoryItems.filter(item => item.catid != category.catid)
+    this.getProducts()  
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {

@@ -14,12 +14,11 @@ export class BrandCardComponent implements OnInit {
   brands: Array<any> = [];
   form: FormGroup;
   base: any
-  settings: any = {}
   page: number = 1
-  limit: FormControl = new FormControl('40')
+  limit: number = 20
   isLastPage: Boolean = false;
-  totalResults: string = ''
-  totalPages: string = ''
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private BrandService: BrandService,
@@ -33,26 +32,22 @@ export class BrandCardComponent implements OnInit {
     this.getBrands()
   }
 
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getBrands()
+  }
+
   initForm() {
-    this.form = this.FormBuilder.group({
-      keyword: [''],
-      isActive: [''],
-      isFeatured: [''],
+    this.form = new FormGroup({
+      keyword: new FormControl(''),
+      isActive: new FormControl(''),
+      isFeatured: new FormControl(''),
     });
   }
 
   clearFilters() {
     this.initForm()
-    this.getBrands()
-  }
-
-  getNextPage() {
-    this.page += 1
-    this.getBrands()
-  }
-
-  getPreviousPage() {
-    this.page -= 1
     this.getBrands()
   }
 
@@ -62,7 +57,11 @@ export class BrandCardComponent implements OnInit {
   }
 
   getBrands() {
-    this.BrandService.searchBrand({ ...this.form.value, page: this.page, limit: this.limit.value }).subscribe((res: any) => {
+    this.BrandService.searchBrand({
+      ...this.form.value,
+      page: this.page,
+      limit: this.limit
+    }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.brands = res?.result?.data
         this.page = res?.result?.page

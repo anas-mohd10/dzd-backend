@@ -6,6 +6,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [AddBrandComponent],
@@ -20,6 +21,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
       preventDuplicates: true,
       progressBar: true,
     }),
+    SharedModule,
     RouterModule.forChild([
       {
         path: '',

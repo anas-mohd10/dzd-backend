@@ -82,6 +82,7 @@ import { GuestsComponent } from './pages/users/guests/guests.component';
 import { ShippingChargeComponent } from './pages/settings/general/shipping-charge/shipping-charge.component';
 import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
 import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packing-slips.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -162,6 +163,7 @@ const DragConfig = {
     NgApexchartsModule,
     AngularEditorModule,
     ReactiveFormsModule,
+    DragDropModule,
     NgbModule,
     NgSelectModule,
     LayoutModule,

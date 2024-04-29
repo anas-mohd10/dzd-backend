@@ -22,6 +22,13 @@ export const environment = {
   // base: 'https://freshfruitmart-api.storedada.net',
   //Fresh fruit
 
+  //Vperfumes
+  // apiUrl: 'https://https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://https://vperfumes-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://https://vperfumes-api.storedada.net/api/v1/a/',
+  // base: 'https://https://vperfumes-api.storedada.net',
+  //Vperfumes
+
   //Storedada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
   // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',

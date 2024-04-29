@@ -124,12 +124,14 @@ label {
 }
 
 .addedProductsWrapper {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  overflow-x: scroll;
+
 
   .addedProductCard {
-    padding: 10px;
     border: 1px solid #e7e7e7;
     border-radius: 10px;
     display: flex;
@@ -137,6 +139,8 @@ label {
     justify-content: flex-start;
     flex-direction: column;
     position: relative;
+    height: 250px;
+    width: 190px;
 
     .close {
       position: absolute;
@@ -151,8 +155,9 @@ label {
     }
 
     .image {
-      height: 100px;
-      width: 100px;
+      height: auto;
+      width: 100%;
+      aspect-ratio: 1;
 
       img {
         height: 100%;
@@ -165,7 +170,7 @@ label {
       -o-text-overflow: ellipsis;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       margin: 5px 0;
     }
@@ -178,12 +183,11 @@ label {
   width: 1000px;
   max-width: 100%;
   min-height: 60px;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  display: flex;
+  overflow-x: scroll;
   gap: 10px;
   background: white;
   border-radius: 4px;
-  overflow: hidden;
 }
 
 .example-box {
@@ -196,8 +200,7 @@ label {
   cursor: move;
   background: white;
   font-size: 14px;
-  flex-grow: 1;
-  flex-basis: 0;
+
 }
 
 .cdk-drag-preview {
@@ -226,8 +229,9 @@ label {
   }
 
   .image {
-    height: 100px;
-    width: 100px;
+    height: auto;
+    width: 100%;
+    aspect-ratio: 1;
 
     img {
       height: 100%;

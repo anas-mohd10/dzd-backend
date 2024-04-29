@@ -14,17 +14,20 @@
       </ul>
     </div>
     <div class="row justify-content-end">
-      <div class="col-lg-5 d-flex align-items-center justify-content-start gap-2">
+      <div class="col-lg-4 d-flex align-items-center justify-content-start gap-2">
         <div class="fs-5">Enabled delivery slots</div>
         <app-switch (switchToggled)="toggleDelivery()" [switchId]=""
           [isToggledProps]="settings?.isDeliverySlots"></app-switch>
       </div>
-      <div class="col-lg-6 d-flex align-items-center justify-content-start gap-2">
+      <div class="col-lg-4 d-flex align-items-center justify-content-start gap-2">
         <div class="fs-5">Delivery available in future days</div>
         <select (change)="toggleFutureDays()" [formControl]="futureDays" class="form-select" style="width: 80px">
           <option value="" disabled>-- Select an option --</option>
           <option *ngFor="let day of [3, 7, 9, 12]" value="{{day}}">{{day}}</option>
         </select>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-primary w-100" (click)="openAdd(addTemplate)">Add new slot</button>
       </div>
     </div>
   </div>
@@ -39,8 +42,9 @@
             <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round"
-                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10">
+                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
               </path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
             </svg>
             Edit slots
           </div>
@@ -137,14 +141,25 @@
 
 <ng-template #addTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Add {{activeDay}} Time Slot</h4>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+    <h4 class="modal-title pull-left">Add time slots</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeAdd()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
   <div class="modal-body">
 
     <form [formGroup]="form" class="mb-3">
+      <div class="form-group mb-3">
+        <label for="days" class="form-label">Days</label>
+        <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+          <ng-container *ngFor="let day of days">
+            <div class="border cursor-pointer rounded p-2" (click)="toggleDays(day)"
+              [ngClass]="{'border-primary' : selectedDays.includes(day), 'border-secondary': !selectedDays.includes(day)}">
+              {{day}}
+            </div>
+          </ng-container>
+        </div>
+      </div>
       <div class="form-group mb-3">
         <label for="from" class="form-label">From</label>
         <input type="text" id="from" placeholder="11:00" formControlName="from" class="form-control">

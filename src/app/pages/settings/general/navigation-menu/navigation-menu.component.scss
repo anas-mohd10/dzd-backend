@@ -11,6 +11,32 @@ $background: #f1f1f1;
 $error: #F1416C;
 $black: #000000;
 
+//Custom classes
+.w-min {
+    min-width: max-content;
+}
+
+//Custom classes
+
+.scroll-transition {
+    transition: all 0.7s ease;
+    /* Adjust duration and timing function as needed */
+}
+
+@keyframes scroll-left {
+    from {
+        scroll-behavior: smooth;
+        scroll-left: 0;
+    }
+
+    to {
+        scroll-behavior: smooth;
+        scroll-left: 100px;
+        /* Adjust the scroll amount */
+    }
+}
+
+
 label,
 .btn-secondary {
     font-weight: normal !important;
@@ -39,7 +65,7 @@ label,
 
     .categoryCard {
         cursor: pointer;
-        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
+        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.01);
         background: $white;
         margin: 0 0 15px 0;
         border: 1px solid $border;

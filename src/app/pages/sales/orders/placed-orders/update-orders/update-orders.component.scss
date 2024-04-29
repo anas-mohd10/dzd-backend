@@ -22,25 +22,11 @@ label,
 .pageWrapper {
     position: relative;
 
-    .cancelledOrderDetails {
-        position: absolute;
-        z-index: 99;
-        top: 40px;
-        right: 40px;
-        background: #ffffff;
-        padding: 2rem;
-        border-radius: 0.75rem;
-
-        p {
-            font-size: 14px;
-            margin: 0;
-        }
-    }
 }
 
 .cancelledWrapper {
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.6;
 }
 
 .toolTip {

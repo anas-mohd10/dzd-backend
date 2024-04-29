@@ -28,9 +28,12 @@
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <button class="btn border bg-white text-primary border-primary" (click)="acceptOrderPayment()"
+      <button class="btn border d-flex align-items-center justify-content-center bg-white text-primary border-primary" (click)="acceptOrderPayment()"
         *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
         Accept payment
+        <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>        
       </button>
     </div>
     <div class="position-relative btns-sx" *ngIf="isPackingSlipAvailable">
@@ -58,15 +61,22 @@
 
   <div class="position-relative mt-4">
 
-    <div class="cancelledOrderDetails shadow" *ngIf="isCancelled">
-      <div class="alert m-0 alert-danger">
-        <div class="fs-3 mb-3 fw-bolder">Unfortunately this order has been cancelled</div>
-        <p>Reason for cancellation : {{order?.cancel?.reason ? order?.cancel?.reason : 'Not available'}}</p>
-        <p>Cancelled on {{order?.cancel?.date}}</p>
+    <div class="alert alert-warning fs-6" *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
+      Please proceed with the payment to facilitate the processing of the order request
+    </div>
+
+    <div *ngIf="isCancelled">
+      <div class="alert mb-4 alert-danger">
+        <div class="fs-3 fw-bold">Order has been cancelled</div>
+        <div class="my-3">
+          <div class="fs-6">Reason for cancellation :</div> 
+          <div class="fs-5">{{order?.cancel?.reason ? order?.cancel?.reason : 'Not available'}}</div>
+        </div>
+        <div class="fs-6">Cancelled on {{order?.cancel?.date}}</div>
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" [ngClass]="{'cancelledWrapper': isCancelled}">
       <div class="col-lg-6 mb-3">
         <div class="card h-100">
           <div class="card-body">
@@ -303,7 +313,7 @@
     </div>
 
     <div [ngClass]="{'cancelledWrapper': isCancelled}">
-      <div class="my-3">
+      <div>
         <div class="card">
           <div class="card-body">
             <div class="fs-3 fw-bolder">
@@ -323,7 +333,7 @@
                     <select id="bulkStatus"
                       [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
                       class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
-                      <option disabled selected>-- Select a status --</option>
+                      <option value="" disabled selected>-- Select a status --</option>
                       <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
                     </select>
                   </div>
@@ -378,8 +388,8 @@
                             <select class="form-select w-50 p-2" (click)="getStatusList(product.currentStatus.status)"
                               (change)="updateOrderStatus($event, product?.productId?._id)">
                               <option disabled>-- Select a option --</option>
-                              <option selected disabled>{{product.currentStatus.status}}</option>
-                              <option *ngFor="let status of statusList" value={{status.value}}>{{status.key}}</option>
+                              <option value="{{product.currentStatus.status}}" selected disabled>{{product.currentStatus.status}}</option>
+                              <option *ngFor="let status of statusList" value="{{status.value}}">{{status.key}}</option>
                             </select>
                           </div>
                         </div>
@@ -405,7 +415,7 @@
             </div>
           </div>
         </div>
-        <div class="card">
+        <div class="card mt-3">
           <div class="card-body">
             <div class="fs-3 my-2 fw-bolder">
               Payment Details

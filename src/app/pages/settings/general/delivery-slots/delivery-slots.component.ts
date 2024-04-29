@@ -35,6 +35,7 @@ export class DeliverySlotsComponent implements OnInit {
   slotItems: Array<DeliverySlotInputs> = [];
   addModalRef?: BsModalRef
   @ViewChild('template') template: any;
+  selectedDays: Array<any> = []
 
   constructor(
     private DeliveryService: DeliverySlotsService,
@@ -77,6 +78,14 @@ export class DeliverySlotsComponent implements OnInit {
         this.Toast.error(err?.error?.message || 'Something went wrong')
       }
     })
+  }
+
+  toggleDays(day: string) {
+    if (this.selectedDays.includes(day)) {
+      this.selectedDays = this.selectedDays.filter(item => item != day)
+    } else {
+      this.selectedDays.push(day)
+    }
   }
 
   getSettings() {
@@ -140,7 +149,7 @@ export class DeliverySlotsComponent implements OnInit {
     })
   }
 
-  toggleFutureDays(){
+  toggleFutureDays() {
     this.AppSettingsService.updateSettings({ futureDays: this.futureDays.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -160,21 +169,11 @@ export class DeliverySlotsComponent implements OnInit {
     this.modalRef?.hide()
   }
 
+
   closeAdd() {
     this.addModalRef?.hide()
-    this.modalRef = this.BsModalService.show(this.template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
-    this.DeliveryService.getSlotDetailsPerDay(this.activeDay).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.slotItems = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
-    })
+    this.form.reset()
+    this.selectedDays = []
   }
 
   saveDeliverySlot() {
@@ -183,13 +182,14 @@ export class DeliverySlotsComponent implements OnInit {
       return
     }
 
-    this.DeliveryService.addSlot({ day: this.activeDay, ...this.form.value }).subscribe({
+    this.DeliveryService.addSlot({ days: this.selectedDays, ...this.form.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getSlots()
           this.form.reset()
           this.Toast.success(res?.message)
           this.addModalRef?.hide()
+          this.selectedDays = []
         } else {
           this.Toast.error(res?.message)
         }

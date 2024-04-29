@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
@@ -9,6 +9,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { MenuService } from 'src/app/includes/services/menu.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -28,6 +29,12 @@ export class NavigationMenuComponent implements OnInit {
   menuType: FormControl = new FormControl('1')
   settings: any = {}
   itemForm!: FormGroup
+
+
+  @ViewChild('scrollItems') scrollItems: ElementRef = new ElementRef<any>({})
+  translateXValue = 0;
+
+
   types: Array<any> = [{
     key: 'Mega Menu',
     value: '1'
@@ -74,6 +81,51 @@ export class NavigationMenuComponent implements OnInit {
     private MenuService: MenuService,
     private Toast: HotToastService
   ) { }
+
+  //Rearrange menu items
+  drop(event: any) {
+    let items = [...this.savedItems]
+    console.log(this.savedItems, " :: Before rearrange")
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.savedItems = [...items]
+    console.log(this.savedItems, " :: After rearrange")
+    this.rearrangeMenuItems()
+  }
+
+  rearrangeMenuItems() {
+    let items = this.savedItems.map((item: any, index: number) => {
+      return { index: index, refid: item.refid }
+    })
+
+    this.MenuService.rearrangeMenu({ items: items }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getItems()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+  //Rearrange menu items
+
+  getTransformStyle() {
+    return `transform: translateX(${this.translateXValue}px);`;
+  }
+
+  moveItems(direction: 'left' | 'right') {
+    const scrollAmount = 600; // Adjust this value as needed
+
+    if (direction === 'left') {
+      this.translateXValue -= scrollAmount;
+    } else {
+      this.translateXValue += scrollAmount;
+    }
+  }
+
 
   ngOnInit(): void {
     this.getCategories()

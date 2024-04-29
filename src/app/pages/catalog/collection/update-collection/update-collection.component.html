@@ -26,13 +26,15 @@
 
           <div>
             <div class="ratio ratio-21x9">
-              <app-assets (mediaClicked)="handleCollectionCover($event)" [previewDetails]="previews.coverPreview"></app-assets>
+              <app-assets (mediaClicked)="handleCollectionCover($event)"
+                [previewDetails]="previews.coverPreview"></app-assets>
             </div>
 
             <div class="row my-3">
               <div class="col-lg-3">
                 <div class="ratio ratio-1x1">
-                  <app-assets (mediaClicked)="handleCollectionThumbnail($event)" [previewDetails]="previews.thumbnailPreview"></app-assets>
+                  <app-assets (mediaClicked)="handleCollectionThumbnail($event)"
+                    [previewDetails]="previews.thumbnailPreview"></app-assets>
                 </div>
               </div>
               <div class="col-lg-9">
@@ -76,6 +78,7 @@
                           <tr class="fs-6">
                             <th>&nbsp;</th>
                             <th>Name</th>
+                            <th>Price</th>
                             <th>Stock</th>
                             <th>SKU</th>
                             <th>&nbsp;</th>
@@ -91,6 +94,9 @@
                               </td>
                               <td>
                                 {{product?.name}}
+                              </td>
+                              <td>
+                                {{product?.price?.mrp}}
                               </td>
                               <td>
                                 {{product?.stock}}
@@ -113,7 +119,7 @@
                     </div>
                   </ng-container>
                   <ng-container *ngIf="productDetails.length > 0">
-                    <div class="fs-7 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
+                    <div class="fs-6 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
                     <div class="addedProductsWrapper">
                       <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
                         (cdkDropListDropped)="drop($event)">
@@ -122,10 +128,13 @@
                             <div class="close" (click)="addProductSku(product)">
                               <img src="../../../../../assets/icons/close.svg" alt="Icon">
                             </div>
-                            <div class="image"><img src="{{base}}/{{product?.thumbnail?.path}}" alt="{{product?.name}}">
+                            <div class="image"><img src="{{base}}/{{product?.thumbnail?.path}}"
+                                onerror="this.src = '../../../../../assets/images/default.png'" alt="{{product?.name}}">
                             </div>
-                            <div class="name fs-6">{{product?.name}}</div>
-                            <div class="sku">SKU: {{product?.sku}}</div>
+                            <div class="p-2">
+                              <div class="name fs-6">{{product?.name}}</div>
+                              <div class="sku">SKU: {{product?.sku}}</div>
+                            </div>
                           </div>
                         </div>
                       </div>

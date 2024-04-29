@@ -19,6 +19,11 @@ export class MenuService {
     return this.http.post(`${url}`, data)
   }
 
+  rearrangeMenu(data: any) {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.rearrange_menu);
+    return this.http.post(`${url}`, data)
+  }
+
   updateMenu(data: any) {
     const url = this.commonService.getFullUrl(this.menuEndpoints.update_menu);
     return this.http.put(`${url}`, data)

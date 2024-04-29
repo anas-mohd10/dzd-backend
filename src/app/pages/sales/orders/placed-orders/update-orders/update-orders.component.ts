@@ -332,14 +332,12 @@ export class UpdateOrdersComponent implements OnInit {
         this.bulkProducts.push(product)
       }
     }
-    console.log(this.bulkProducts);
-
     product ? null : this.bulkProducts.length == this.order?.products.length ? this.bulkProducts = [] : this.bulkProducts = [...this.order?.products]
     this.bulkProducts.length > 0 ? this.toggleBulkStatus() : null
   }
 
   toggleBulkStatus() {
-    this.OrdersService.getStatusList('placed', this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
+    this.OrdersService.getStatusList(this.order?.orderStatus, this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
       next: (res: any) => {
         this.bulkStatus = res?.result
         this.ChangeDetectorRef.markForCheck()
@@ -359,6 +357,7 @@ export class UpdateOrdersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
           this.bulkProducts = []
+          this.bulkStatus = []
           this.getOrderDetails()
         } else {
           this.Toast.error(res?.message)
