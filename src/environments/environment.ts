@@ -17,9 +17,9 @@ export const environment = {
   //Dev
 
   //Local
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  base: 'http://localhost:3000',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  // base: 'http://localhost:3000',
   //Local
 
   //Fresh fruit
@@ -30,10 +30,10 @@ export const environment = {
   //Fresh fruit
 
   //Vperfumes
-  // apiUrl: 'https://https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://https://vperfumes-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://https://vperfumes-api.storedada.net/api/v1/a/',
-  // base: 'https://https://vperfumes-api.storedada.net',
+  apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://vperfumes-api.storedada.net/api/v1/a/',
+  base: 'https://vperfumes-api.storedada.net',
   //Vperfumes
 
   //Storedada
