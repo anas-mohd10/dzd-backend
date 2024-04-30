@@ -61,7 +61,10 @@ export class AddCollectionComponent implements OnInit {
 
   getProducts() {
     if (this.product.value) {
-      this.ProductService.findProducts({ name: this.product.value }).subscribe((res: any) => {
+      this.ProductService.findProducts({
+        name: this.product.value,
+        isActive: true
+      }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.searchProducts = res?.result
           this.ChangeDetectorRef.markForCheck()

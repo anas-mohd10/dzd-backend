@@ -54,6 +54,9 @@ export class NavigationMenuComponent implements OnInit {
   }, {
     key: 'Collection',
     value: 'collection'
+  }, {
+    key: 'Search filters',
+    value: 'searchfilters'
   }]
   isInvalidItem: boolean = false
   savedItems: Array<any> = []

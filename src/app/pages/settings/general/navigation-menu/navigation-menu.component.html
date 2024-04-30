@@ -455,6 +455,9 @@
                     <input type="text" placeholder="Search collection..." class="form-control"
                         *ngIf="itemForm.get('menuType')?.value == 'collection'" [formControl]="keyword"
                         (ngModelChange)="searchItems()">
+                    <input type="text" placeholder="Enter search filters" class="form-control"
+                        *ngIf="itemForm.get('menuType')?.value == 'search-filters'" [formControl]="keyword"
+                        (ngModelChange)="searchItems()">
                 </div>
             </div>
 
@@ -480,7 +483,7 @@
                     <label class="required fs-6 mb-3">Redirection</label>
                     <input type="text" class="form-control fs-6" formControlName="redirection"
                         placeholder="Eg. Fruits and Vegetables" [ngClass]="{'is-invalid': (itemControls.redirection.touched || isInvalidItem) &&
-                        itemControls.redirection.errors?.required}" readonly="true" />
+                        itemControls.redirection.errors?.required}" />
                 </div>
             </div>
 

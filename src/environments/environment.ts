@@ -23,17 +23,17 @@ export const environment = {
   //Local
 
   //Fresh fruit
-  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
-  // base: 'https://freshfruitmart-api.storedada.net',
+  apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
+  base: 'https://freshfruitmart-api.storedada.net',
   //Fresh fruit
 
   //Vperfumes
-  apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://vperfumes-api.storedada.net/api/v1/a/',
-  base: 'https://vperfumes-api.storedada.net',
+  // apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://vperfumes-api.storedada.net/api/v1/a/',
+  // base: 'https://vperfumes-api.storedada.net',
   //Vperfumes
 
   //Storedada
