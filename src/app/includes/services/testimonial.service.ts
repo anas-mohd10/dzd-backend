@@ -7,32 +7,40 @@ import { testimonialEndpoints } from '../../config/endpoints';
   providedIn: 'root'
 })
 export class TestimonialService {
-  testimonialEndpoints = testimonialEndpoints
+  endpoints = testimonialEndpoints
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private HttpClient: HttpClient,
+    private CommonService: CommonService
+  ) { }
 
   addTestimonial(data: any) {
-    const url = this.commonService.getFullUrl(this.testimonialEndpoints.create_testimonial);
-    return this.http.post(`${url}`, data);
+    const url = this.CommonService.getFullUrl(this.endpoints.create);
+    return this.HttpClient.post(`${url}`, data);
   }
 
-  getTestimonials() {
-    const url = this.commonService.getFullUrl(this.testimonialEndpoints.get_testimonials);
-    return this.http.get(`${url}`);
+  getTestimonials(data: any) {
+    const url = this.CommonService.getFullUrl(this.endpoints.testimonials);
+    return this.HttpClient.post(`${url}`, data);
+  }
+
+  searchTestimonials(data: any, page: number, limit: number) {
+    const url = this.CommonService.getFullUrl(this.endpoints.searchTestimonials + `?page=${page}&limit=${limit}`);
+    return this.HttpClient.post(`${url}`, data);
   }
 
   getActiveTestimonials() {
-    const url = this.commonService.getFullUrl(this.testimonialEndpoints.get_active_testimonials);
-    return this.http.get(`${url}`);
+    const url = this.CommonService.getFullUrl(this.endpoints.get_active_testimonials);
+    return this.HttpClient.get(`${url}`);
   }
 
-  getTestimonial(slug: any) {
-    const url = this.commonService.getFullUrl(this.testimonialEndpoints.get_testimonial + "?slug=" + slug);
-    return this.http.get(`${url}`);
+  getTestimonial(id: string) {
+    const url = this.CommonService.getFullUrl(this.endpoints.getDetails + "?id=" + id);
+    return this.HttpClient.get(`${url}`);
   }
 
-  updateTestimonial(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.testimonialEndpoints.update_testimonial + "?slug=" + slug);
-    return this.http.put(`${url}`, data);
+  updateTestimonial(data: any) {
+    const url = this.CommonService.getFullUrl(this.endpoints.update);
+    return this.HttpClient.put(`${url}`, data);
   }
 }

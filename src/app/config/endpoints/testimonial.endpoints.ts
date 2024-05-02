@@ -1,7 +1,8 @@
 export const testimonialEndpoints = {
-   create_testimonial: '/testimonial/create',
-   get_testimonials: '/testimonial/get-all',
+   create: '/create-testimonial',
+   testimonials: '/testimonials',
+   searchTestimonials: '/search-testimonials',
    get_active_testimonials: '/testimonial/get-active',
-   get_testimonial: '/testimonial',
-   update_testimonial: '/testimonial/update'
+   getDetails: '/testimonial',
+   update: '/update-testimonial'
 }

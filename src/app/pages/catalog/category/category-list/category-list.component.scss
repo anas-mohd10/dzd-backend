@@ -12,7 +12,8 @@ $error: #F1416C;
 
 label,
 input[type=button],
-.btn-secondary {
+.btn-secondary,
+.btn-primary {
   font-weight: normal !important;
 }
 
@@ -29,7 +30,6 @@ button {
   .categoryCard {
     padding: 10px;
     background: #ffffff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
     display: flex;
     align-items: flex-start;

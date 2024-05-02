@@ -18,15 +18,21 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export class CategoryComponent implements OnInit {
   appRoute = appRoutes;
   base: any = ''
-  categoryform: FormGroup
+  form: FormGroup
   attributeForm: FormGroup
 
   categories: Array<any> = [];
-  form: FormGroup;
+  page: number = 1;
+  limit: number = 40;
+  totalResults: number = 0;
+  totalPages: number = 1;
+  isLastPage: Boolean = false;
+
+
   settings: any = {}
-  page: number = 1
-  limit: FormControl = new FormControl('40')
-  lastPage: Boolean = false;
+
+
+
   totalCount: number = 0
 
   showAttributes: Boolean = false
@@ -99,33 +105,34 @@ export class CategoryComponent implements OnInit {
     this.getCategories()
   }
 
-  getNextPage() {
-    this.page += 1
-    this.getCategories()
-  }
-
-  getPreviousPage() {
-    this.page -= 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getCategories()
   }
 
   getCategories() {
-    this.CategoryService.searchCategory({ ...this.categoryform.value, page: this.page, limit: this.limit.value }).subscribe((res: any) => {
+    this.CategoryService.searchCategory({
+      ...this.form.value,
+      page: this.page,
+      limit: this.limit
+    }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.categories = res?.result?.data
         this.page = res?.result?.page
-        this.totalCount = res?.result?.total_item
-        this.lastPage = res?.result?.lastPage
+        this.totalPages = res?.result?.totalPages
+        this.totalResults = res?.result?.totalResults
+        this.isLastPage = res?.result?.isLastPage
         this.ChangeDetectorRef.markForCheck()
       }
     })
   }
 
   initForm() {
-    this.categoryform = this.formBuilder.group({
-      keyword: [''],
-      isActive: [''],
-      isFeatured: [''],
+    this.form = new FormGroup({
+      keyword: new FormControl(''),
+      isActive: new FormControl(''),
+      isFeatured: new FormControl(''),
     });
 
     this.attributeForm = this.formBuilder.group({

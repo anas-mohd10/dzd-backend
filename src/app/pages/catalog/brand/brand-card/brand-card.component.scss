@@ -9,10 +9,11 @@ $activeBackground: #00bdab20;
 $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
-
+  
 label,
 input[type=button],
-.btn-secondary {
+.btn-secondary,
+.btn-primary {
   font-weight: normal !important;
 }
 

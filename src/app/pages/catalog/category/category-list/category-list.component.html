@@ -1,65 +1,61 @@
-<div class="category-page-container">
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Categories</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
-          </li>
-        </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.category.ADD_CATEGORY }}">
-          Add Category
-        </button>
+<div>
+  <div class="page-header d-flex flex-row align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bolder">Categories</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex flex-row align-items-start justify-content-between gap-2">
+      <button class="btn btn-primary" routerLink="{{ appRoute.category.ADD_CATEGORY }}">
+        Add Category
+      </button>
+      <button class="btn btn-secondary" routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}">
+        Archived Categories
+      </button>
     </div>
   </div>
 
-  <form [formGroup]="categoryform">
-    <div class="col-12 row align-items-end justify-content-end">
-      <div class="search-input col-sm-4" style="padding: 0;">
-        <input type="text" placeholder="Search for category here..." class="form-control fs-6" formControlName="keyword"
-          (ngModelChange)="getCategories()">
-      </div>
-      <div class="search-status col-sm-2">
-        <label for="isActive" class="fs-6 mb-1">Status</label>
-        <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-          (change)="getCategories()">
-          <option value="" disabled>-- Select an option --</option>
-          <option value=true>Active</option>
-          <option value=false>Inactive</option>
-        </select>
-      </div>
-      <div class="search-featured col-sm-2">
-        <label for="isFeatured" class="fs-6 mb-1">Featured</label>
-        <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured"
-          (change)="getCategories()">
-          <option value="" disabled>-- Select an option --</option>
-          <option value=true>Featured</option>
-          <option value=false>Non featured</option>
-        </select>
-      </div>
-      <div class="search-submit col-sm-2">
-        <label class="fs-6 mb-1">&nbsp;</label>
-        <input type="button" class="form-control btn-secondary fs-6 text-dark" value="Clear filters"
-          (click)="clearFilters()" />
-      </div>
-    </div>
-  </form>
-
-  <div class="col-12 d-flex justify-content-between">
-    <div class="total-count-container col-sm-3 bg-dark">
-      <h4 class="text-white fs-6">Total {{totalCount}} categories</h4>
-    </div>
-    <div>
-      <button class="btn btn-secondary cursor-pointer fs-6 fw-bolder" color="primary"
-        routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}">Archived Categories</button>
+  <div class="card my-3">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row align-items-end">
+          <div class="col-lg-6">
+            <input type="text" placeholder="Search for category here..." class="form-control fs-6"
+              formControlName="keyword" (ngModelChange)="getCategories()">
+          </div>
+          <div class="col-lg-2">
+            <label for="isActive" class="fs-6 mb-1">Status</label>
+            <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
+              (change)="getCategories()">
+              <option value="" disabled>-- Select an option --</option>
+              <option value=true>Active</option>
+              <option value=false>Inactive</option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <label for="isFeatured" class="fs-6 mb-1">Featured</label>
+            <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured"
+              (change)="getCategories()">
+              <option value="" disabled>-- Select an option --</option>
+              <option value=true>Featured</option>
+              <option value=false>Non featured</option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <label class="fs-6 mb-1">&nbsp;</label>
+            <input type="button" class="form-control btn w-100 btn-secondary" value="Clear filters"
+              (click)="clearFilters()" />
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -81,11 +77,8 @@
             <div class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
               {{category?.isActive ? 'Active' : 'Inactive'}}
             </div>
-            <div class="fs-6 ms-1 p-1 alert alert-info" *ngIf="category?.isFeatured">
-              {{category?.isFeatured ? 'Featured' : null}}
-            </div>
           </div>
-          <div class="fs-6 attributesBtn mt-3" (click)="openAttributeModal(attributeModal, category)">
+          <div class="fs-6 attributesBtn mt-1" (click)="openAttributeModal(attributeModal, category)">
             View attributes
           </div>
         </div>
@@ -93,28 +86,19 @@
     </ng-container>
   </div>
 
-  <div class="filteringWrapper d-flex align-items-center justify-content-between col-12">
-    <div class="filtering">
-      <span class="fs-6 text-dark">Show</span>
-      <select [formControl]="limit" (change)="getCategories()">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="40">40</option>
-      </select>
-      <span class="fs-6 text-dark">entries</span>
+  <ng-container *ngIf="categories.length == 0">
+    <div class="emptyNote">
+      <div class="fs-3 fw-bolder">No result found</div>
+      <div class="fs-6 note">We couldn't find any item based on your search</div>
     </div>
-    <div class="pagination">
-      <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-        <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-      </div>
-      <div class="paginationPage">{{page}}</div>
-      <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-        <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
-      </div>
-    </div>
+  </ng-container>
+
+  <div class="my-4">
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
+      [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
   </div>
+
+
 </div>
 
 <ng-template #attributeModal>

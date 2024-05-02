@@ -1,12 +1,11 @@
-import { environment } from './../../../../../../environments/environment';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { PageTasks } from 'src/app/config/constants/page-tasks';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { UploadService } from 'src/app/includes/services/upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-update-testimonial',
@@ -14,147 +13,113 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   styleUrls: ['./update-testimonial.component.scss']
 })
 export class UpdateTestimonialComponent implements OnInit {
-  task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes
-  testimonialForm: FormGroup
+  form: FormGroup = new FormGroup({})
   isSubmitted = false;
-  filedata: File;
-  slug: any
-  uploadedimg: any
-  data: any;
-  filename: any;
-  croppedImage: any;
-  imageChangedEvent: any;
-  loadImage: boolean;
-  base: string;
-  testdata: any;
+  thumbnail: any;
+  details: any;
+  base: string = `${environment.base}/`
+  id: string;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private toastr: ToastrService,
-    private testimonialService: TestimonialService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private HotToastService: HotToastService,
+    private TestimonialService: TestimonialService,
+    private Router: Router,
+    private UploadService: UploadService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ActivatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.base = environment.base
-    this.initForm()
-    this.managePage()
-    this.slug = this.route.snapshot.queryParams.slug || ''
+    this.form = new FormGroup({
+      name: new FormControl('', Validators.required),
+      profession: new FormControl(''),
+      business: new FormControl(''),
+      file: new FormControl(''),
+      place: new FormControl('', Validators.required),
+      message: new FormControl('', Validators.required),
+      isActive: new FormControl(true),
+    });
+
+    this.id = this.ActivatedRoute.snapshot.queryParams.id || ''
     this.getTestimonial()
   }
 
-  initForm() {
-    this.testimonialForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      profession: [''],
-      business: [''],
-      file: [''],
-      place: ['', Validators.required],
-      message: ['', Validators.required],
-      isActive: ['true', Validators.required],
-    });
-  }
-
-  get tf() {
-    return this.testimonialForm.controls;
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
+  get formControls() {
+    return this.form.controls;
   }
 
   getTestimonial() {
-    this.testimonialService.getTestimonial(this.slug).subscribe((res: any) => {
-      this.testdata = res?.result[0]
-      this.cdr.markForCheck()
-      this.uploadedimg = this.base + "/" + res?.result[0].file
-      this.testimonialForm.get("name")?.setValue(res?.result[0].name)
-      this.testimonialForm.get("profession")?.setValue(res?.result[0].profession)
-      this.testimonialForm.get("business")?.setValue(res?.result[0].business)
-      this.testimonialForm.get("place")?.setValue(res?.result[0].place)
-      this.testimonialForm.get("message")?.setValue(res?.result[0].message)
-      this.testimonialForm.get("isActive")?.setValue(res?.result[0].isActive)
+    this.TestimonialService.getTestimonial(this.id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.details = res?.result
+          res?.result?.file ? this.thumbnail = `${environment.base}${res?.result?.file}` : null
+          this.form.patchValue(res?.result)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
     })
   }
 
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
+  uploadThumbnail(event: any) {
+    let formdata = new FormData()
+    formdata.append("file", event.target.files[0])
+    this.UploadService.uploadThumbnail(formdata).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.thumbnail = res?.result?.path
+          this.form.get('file')?.setValue(res?.result?.location)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
   }
 
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
+  removeThumbnail() {
+    this.UploadService.removeThumbnail({ location: this.form.get('file')?.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.thumbnail = null
+          this.form.get('file')?.setValue('')
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
   }
 
-  imageLoaded() {
-    // show cropper
-  }
-
-  cropperReady() {
-    // cropper ready
-  }
-
-  loadImageFailed() {
-    // show message
-  }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
-  }
 
   onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateTestimonial();
-    } else {
-      this.addTestimonial();
-    }
-  }
-
-  addTestimonial() {
-  }
-
-  updateTestimonial() {
-    if (!this.testimonialForm.valid) {
-      this.toastr.error('Something wrong occured');
+    if (!this.form.valid) {
+      this.isSubmitted = true
       return;
     }
-    const data = {
-      name: this.testimonialForm.get('name')?.value,
-      profession: this.testimonialForm.get('profession')?.value,
-      business: this.testimonialForm.get('business')?.value,
-      place: this.testimonialForm.get('place')?.value,
-      message: this.testimonialForm.get('message')?.value,
-      isActive: this.testimonialForm.get('isActive')?.value,
-      filestring: this.croppedImage,
-      filename: this.filename,
-      file: ''
-    }
-    if (this.uploadedimg) {
-      data.file = this.testdata?.file
-    }
-    this.testimonialService.updateTestimonial(this.slug, data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.toastr.success('Testimonial updated successfully');
-        this.router.navigate([this.appRoute.testimonial.TESTIMONIAL_LIST]);
+
+    this.TestimonialService.updateTestimonial({ ...this.form.value, _id: this.details._id }).subscribe({
+      next: (res: any) => {
+        if (res.errorCode != 0) {
+          this.HotToastService.error(res?.message);
+        } else if (res.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.testimonial.TESTIMONIAL_LIST]);
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
       }
     })
   }
