@@ -17,16 +17,16 @@ export const environment = {
   //Dev
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // base: 'http://localhost:3000',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  base: 'http://localhost:3000',
   //Local
 
   //Mattressland
-  apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
-  base: 'https://mattressland-api.storedada.net',
+  // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
+  // base: 'https://mattressland-api.storedada.net',
   //Mattressland
 
   //Fresh fruit

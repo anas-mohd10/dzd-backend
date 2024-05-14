@@ -38,4 +38,37 @@ export class MenuService {
     const url = this.commonService.getFullUrl(this.menuEndpoints.get_menu_details + `/${params}`);
     return this.http.get(`${url}`)
   }
+
+
+  // Advanced menu for mattressland
+  createCsTitle(data: any) {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.createCsTitles);
+    return this.http.post(`${url}`, data)
+  }
+
+  updateCsTitle(data: any) {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.updateCsTitles);
+    return this.http.put(`${url}`, data)
+  }
+
+  deleteCsTitle(id: any) {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.deleteCsTitles + `/${id}`);
+    return this.http.delete(`${url}`)
+  }
+
+  getCsTitleDetails(params: any) {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.getCsDetails + `/${params}`);
+    return this.http.get(`${url}`)
+  }
+
+  getCsTitles() {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.getCsTitles);
+    return this.http.get(`${url}`)
+  }
+
+  rearrangeCsTitles(data: any) {
+    const url = this.commonService.getFullUrl(this.menuEndpoints.rearrangeCsTitles);
+    return this.http.put(`${url}`, data)
+  }
+  // Advanced menu for mattressland=
 }

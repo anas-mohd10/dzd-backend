@@ -39,6 +39,9 @@ export class NavigationMenuComponent implements OnInit {
     key: 'Mega Menu',
     value: '1'
   }, {
+    key: 'Advanced Mega Menu',
+    value: '3'
+  }, {
     key: 'Side Menu',
     value: '2'
   }]
@@ -70,6 +73,17 @@ export class NavigationMenuComponent implements OnInit {
   footerCategories: Array<any> = []
   headerText: FormControl = new FormControl('')
 
+  //Advanced Menu
+  advacnedMenuForm: FormGroup = new FormGroup({})
+  advancedTitleRef: BsModalRef;
+  advancedMenuTitles: Array<any> = []
+  advancedMenuIcon: any;
+  advancedAvertisementThumbnail: any;
+  isEditTitleRef: boolean = false;
+  titleRefDetails: any;
+  //Advanced Menu
+
+
   get itemControls() {
     return this.itemForm.controls
   }
@@ -88,10 +102,8 @@ export class NavigationMenuComponent implements OnInit {
   //Rearrange menu items
   drop(event: any) {
     let items = [...this.savedItems]
-    console.log(this.savedItems, " :: Before rearrange")
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.savedItems = [...items]
-    console.log(this.savedItems, " :: After rearrange")
     this.rearrangeMenuItems()
   }
 
@@ -132,6 +144,20 @@ export class NavigationMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCategories()
+
+    //Advanced menu configurations
+    this.advacnedMenuForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      icon: new FormControl(null),
+      advertisementThumbnail: new FormControl(null),
+      advertisementTitle: new FormControl(''),
+      advertisementButton: new FormControl(''),
+      advertisementDescription: new FormControl(''),
+      advertisementRedirection: new FormControl('')
+    })
+
+    this.getCsTitles()
+    //Advanced menu configurations
 
     this.CategoryService.getCategories({}, 'mega').subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -206,6 +232,7 @@ export class NavigationMenuComponent implements OnInit {
   handleTitleThumbnail(event: any) {
     this.itemForm.get('icon')?.setValue(event?._id)
   }
+
 
   removeTitleThumbnail() {
     this.itemForm.get('icon')?.setValue(null)
@@ -296,6 +323,10 @@ export class NavigationMenuComponent implements OnInit {
   selectItemType(type: string) {
     this.itemForm.get('menuType')?.setValue(type)
     this.itemForm.get('redirection')?.setValue('')
+  }
+
+  setSearchFilters() {
+    this.itemForm.get('redirection')?.setValue(this.keyword.value)
   }
 
   selectItemCard(item: any) {
@@ -498,4 +529,140 @@ export class NavigationMenuComponent implements OnInit {
       }
     })
   }
+
+  //Advanced menu items
+  handleAdvertisementThumbnail(event: any) {
+    this.advacnedMenuForm.get('advertisementThumbnail')?.setValue(event?._id)
+  }
+
+  handleTitleRefThumbnail(event: any) {
+    this.advacnedMenuForm.get('icon')?.setValue(event?._id)
+  }
+
+  openTitleRef(template: TemplateRef<any>, type?: string, id?: string) {
+    this.advancedTitleRef = this.modalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+    if (type == 'update') {
+      this.isEditTitleRef = true
+      this.MenuService.getCsTitleDetails(id).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.advacnedMenuForm.patchValue(res?.result)
+            if (res?.result?.icon) this.advancedMenuIcon = res?.result?.icon?.path
+            if (res?.result?.advertisementThumbnail) this.advancedAvertisementThumbnail = res?.result?.advertisementThumbnail?.path
+            this.ChangeDetectorRef.markForCheck()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    }
+  }
+
+  closeTitleRef() {
+    this.advancedTitleRef?.hide()
+    this.advacnedMenuForm.reset()
+    this.isEditTitleRef = false
+    this.titleRefDetails = null
+  }
+
+  removeTitleMedia(type: string) {
+    if (type == 'icon') {
+      this.advacnedMenuForm.get('icon')?.reset()
+      this.advancedMenuIcon = ''
+    } else if (type == 'thumbnail') {
+      this.advacnedMenuForm.get('advertisementThumbnail')?.reset()
+      this.advancedAvertisementThumbnail = ''
+    }
+  }
+
+  onSubmitTitleRef() {
+    if (this.isEditTitleRef) {
+      this.MenuService.updateCsTitle({ _id: this.titleRefDetails?._id, ...this.advacnedMenuForm.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.message)
+            this.getCsTitles()
+            this.closeTitleRef()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    } else {
+      this.MenuService.createCsTitle(this.advacnedMenuForm.value).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.message)
+            this.getCsTitles()
+            this.closeTitleRef()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    }
+  }
+
+  onDeleteTitleRef(id: string) {
+    this.MenuService.deleteCsTitle(id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getCsTitles()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  getCsTitles() {
+    this.MenuService.getCsTitles().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.advancedMenuTitles = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  dropTitles(event: any) {
+    let items = [...this.advancedMenuTitles]
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.advancedMenuTitles = [...items]
+    this.rearrangeMenuTitles()
+  }
+
+  rearrangeMenuTitles() {
+    let items = this.advancedMenuTitles.map((item: any, index: number) => {
+      return { index: index, _id: item._id }
+    })
+
+    this.MenuService.rearrangeCsTitles({ items: items }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getCsTitles()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+  //Advanced menu items
 }

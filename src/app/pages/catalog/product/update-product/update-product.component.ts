@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { AppSettings, PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms';
+import { PageTasks } from '../../../../config/constants';
+import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -9,7 +9,6 @@ import { TaxClassesService } from 'src/app/includes/services/tax-classes.service
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { HotToastService } from '@ngneat/hot-toast';

@@ -38,7 +38,8 @@ $black: #000000;
 
 
 label,
-.btn-secondary {
+.btn-secondary,
+.btn-primary {
     font-weight: normal !important;
 }
 
@@ -46,7 +47,7 @@ label,
 
     .layoutWrapper {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 10px;
 
         .layoutCard {
@@ -114,7 +115,7 @@ label,
 
 .itemTypes {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
 
     .itemType {
