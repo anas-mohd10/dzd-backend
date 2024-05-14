@@ -4,8 +4,9 @@
     overflow-y: auto;
 }
 
-.form-label {
-    font-weight: 400;
+.form-label,
+.btn-primary {
+    font-weight: 400 !important;
 }
 
 .remove-thumbnail {

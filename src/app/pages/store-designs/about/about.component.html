@@ -5,7 +5,19 @@
     <h4 class="fs-2 fw-bold">About Us</h4>
     <div>
         <form [formGroup]="form">
-            <div class="row mb-3">
+            <div class="form-group mb-3">
+                <label class="form-label required">Html</label>
+                <textarea type="text" rows="5" formControlName="html" class="form-control"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Styles</label>
+                <textarea type="text" rows="5" formControlName="styles" class="form-control"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label class="form-label">Scripts</label>
+                <textarea type="text" rows="5" formControlName="scripts" class="form-control"></textarea>
+            </div>
+            <!-- <div class="row mb-3">
                 <div class="col-lg-3">
                     <div class="ratio ratio-1x1">
                         <app-assets (mediaClicked)="onMediaSelected('thumbnail', $event)"
@@ -25,8 +37,8 @@
                             formControlName="description" class="form-control"></textarea>
                     </div>
                 </div>
-            </div>
-            <div class="row mb-3">
+            </div> -->
+            <!-- <div class="row mb-3">
                 <div class="col-lg-7">
                     <div class="form-group mb-3">
                         <label class="form-label required">Short Title</label>
@@ -114,9 +126,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="my-3">
-                <div class="form-group mb-3">
+                <!-- <div class="form-group mb-3">
                     <label for="storyTitle" class="form-label">Story Title</label>
                     <input id="storyTitle" type="text" formControlName="storyTitle" placeholder="Brands"
                         class="form-control">
@@ -125,7 +137,7 @@
                     <label for="storyDescription" class="form-label">Story Description</label>
                     <textarea id="storyDescription" formControlName="storyDescription" rows="5" class="form-control"
                         placeholder="We are the source of fresh fruits and vegetables from across carrying the finest brands"></textarea>
-                </div>
+                </div> -->
                 <div>
                     <label for="storyThumbnails" class="form-label">Story Thumbnails</label>
                     <div class="row" id="storyThumbnails">
@@ -142,7 +154,9 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <img src="{{base}}{{storyThumbnail?.path}}" onerror="this.src = '../../../../../assets/images/default.png'" alt="{{storyThumbnail?.title}}">
+                                    <img src="{{base}}{{storyThumbnail?.path}}"
+                                        onerror="this.src = '../../../../../assets/images/default.png'"
+                                        alt="{{storyThumbnail?.title}}">
                                 </div>
                             </div>
                         </ng-container>

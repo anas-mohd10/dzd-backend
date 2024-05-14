@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
     { title: 'Unity Nexus', type: 'unity-nexus', icon: '../../../../assets/widgets/unity-nexus.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Picture Palette', type: 'picture-palette', icon: '../../../../assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Store Chronicles', type: 'store-chronicles', icon: '../../../../assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Quad Squares', type: 'quad-square', icon: '../../../../assets/widgets/quad-sqaure.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
   ]
 
   widgetItems: Array<any> = []
@@ -76,7 +77,7 @@ export class HomeComponent implements OnInit {
   tileProductsInput: FormControl = new FormControl("", Validators.required); // Smart tiles widgets
   tileProducts: Array<any> = [] // Smart tiles widgets
   widgetProductTypes: Array<any> = ["smart-tiles", "products"]
-  widgetImageTypes: Array<any> = ["image-slider", "prime-plates", "elite-elements", "noble-nodes", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas", "twin-towers", "stellar-selections", "slider-spotlight", "trending-teasers"]
+  widgetImageTypes: Array<any> = ["image-slider", "quad-square", "prime-plates", "elite-elements", "noble-nodes", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas", "twin-towers", "stellar-selections", "slider-spotlight", "trending-teasers"]
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },

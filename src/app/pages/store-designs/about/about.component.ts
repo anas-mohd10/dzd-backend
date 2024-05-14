@@ -68,24 +68,9 @@ export class AboutComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      title: new FormControl("", [Validators.required]),
-      description: new FormControl("", [Validators.required]),
-      thumbnail: new FormControl("", [Validators.required]),
-      shortTitle: new FormControl("", [Validators.required]),
-      shortDescription: new FormControl("", [Validators.required]),
-      storyTitle: new FormControl(""),
-      storyDescription: new FormControl(""),
-    })
-
-    this.legacyForm = new FormGroup({
-      title: new FormControl("", [Validators.required]),
-      placeholder: new FormControl("", [Validators.required]),
-    })
-
-    this.featureForm = new FormGroup({
-      title: new FormControl("", [Validators.required]),
-      description: new FormControl("", [Validators.required]),
-      thumbnail: new FormControl("", [Validators.required]),
+      html: new FormControl("", [Validators.required]),
+      styles: new FormControl(""),
+      scripts: new FormControl(""),
     })
 
     this.getAboutDetails()
@@ -182,12 +167,7 @@ export class AboutComponent implements OnInit {
       storyThumbnails.push(...this.storyThumbnails.map(story => story._id))
     }
 
-    this.AboutService.manageAbout({
-      ...this.form.value,
-      legacyItems: this.legacyItems,
-      features: features,
-      storyThumbnails: storyThumbnails
-    }).subscribe({
+    this.AboutService.manageAbout(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getAboutDetails()

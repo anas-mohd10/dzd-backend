@@ -5,7 +5,7 @@
     <h4 class="fs-2 fw-bold">Contact Us</h4>
     <div class="row">
         <div class="col-lg-4 form-group">
-            <label for="thumbnail" class="form-label required">Thumbnail</label>
+            <label for="thumbnail" class="form-label required">Background</label>
             <div class="ratio ratio-1x1">
                 <app-assets (mediaClicked)="getThumbnail($event)" [previewDetails]="thumbnailPreview"></app-assets>
             </div>
@@ -25,28 +25,27 @@
                         placeholder="Our features timeless furniture, with natural fabrics, curved lines, plenty of mirrors and classic design, which can be incorporated into any decor project."
                         class="form-control" formControlName="description"></textarea>
                 </div>
-                <div class="form-group mb-3">
-                    <label for="address" class="form-label required">Address</label>
+                <!-- <div class="form-group mb-3">
+                    <label for="address" class="form-label">Address</label>
                     <textarea id="description"
                         [ngClass]="{'is-invalid': (formControls.address.touched || isSubmitted) && formControls.address.errors?.required}"
                         placeholder="Input your store contact address here" class="form-control"
                         formControlName="address"></textarea>
                 </div>
                 <div class="form-group mb-3">
-                    <label for="mobile" class="form-label required">Mobile</label>
+                    <label for="mobile" class="form-label">Mobile</label>
                     <input id="mobile"
                         [ngClass]="{'is-invalid': (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required || formControls.mobile.errors?.pattern}"
                         placeholder="+971-XXXXX" class="form-control" formControlName="mobile">
                 </div>
                 <div class="form-group mb-3">
-                    <label for="email" class="form-label required">Email</label>
+                    <label for="email" class="form-label">Email</label>
                     <input id="email"
                         [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required || formControls.email.errors?.pattern}"
                         placeholder="info@StoreDada.com" class="form-control" formControlName="email">
-                </div>
+                </div> -->
 
                 <div class="d-flex align-items-center justify-content-end gap-3">
-                    <button class="btn btn-secondary" (click)="cancelChanges()">Cancel</button>
                     <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
                 </div>
             </form>
