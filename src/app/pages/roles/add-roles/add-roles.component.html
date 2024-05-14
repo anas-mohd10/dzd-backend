@@ -1,36 +1,30 @@
-<div class="content container-fluid">
-
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update Role" : "Add Role"}}</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.roles.ROLES_LIST }}">Roles</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.roles.ADD_ROLES }}">
-              {{ editMode ? "Update Role" : "Add Role"}}
-            </a>
-          </li>
-        </ul>
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bolder">Add Role</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.roles.ROLES_LIST }}">Roles</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.roles.ADD_ROLES }}">
+            Add Role
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="col-12">
+  <div class="my-4">
       <div class="card">
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" [formGroup]="form">
             <div class="row">
-
-              <h2 class="fw-bolder">Role Details</h2>
 
               <div class="col-lg-6 mb-3">
                 <div class="form-group">
@@ -54,50 +48,40 @@
                 <div class="form-group">
                   <label class="fs-6 mb-3">Status</label>
                   <select class="form-select fs-6" formControlName="isActive">
-                    <option value="false">Inactive</option>
                     <option value="true">Active</option>
+                    <option value="false">Inactive</option>
                   </select>
                 </div>
               </div>
 
-              <div class="col-lg-12">
-                <label class="fs-6 mb-3 required">Select Permissions</label>
-                <div class="permissionBtns d-flex align-items-center justify-content-between mb-8"
-                  *ngIf="permissions.length > 0">
-                  <div class="btn btn-secondary p-2 fs-6 rounded" (click)=selectPermissions()
-                    [ngClass]="{'disabled': isSelected}">Select all</div>
-                  <div class="btn btn-secondary p-2 fs-6 rounded" (click)="removePermissions()"
-                    [ngClass]="{'disabled': !isSelected}">Remove all</div>
-                </div>
-
-                <div class="permissionsWrapper" *ngIf="permissions.length > 0">
+              <div class="mb-3">
+                <label class="fs-6 mb-3">Select Permissions</label>
+                <div>
                   <ng-container *ngFor="let permission of permissions">
-                    <div class="permissionCard d-flex align-items-center justify-content-start p-3 fs-6 rounded"
-                      (click)="managePermission(permission?.refid)"
-                      [ngClass]="{'selected': checkedPermissions.includes(permission?.refid)}">
-                      <div class="checkbox" [ngClass]="{'checked': checkedPermissions.includes(permission?.refid)}">
+                  <div class="row my-3">
+                    <div class="col-lg-3 fs-5 mb-2">{{permission.tag}}</div>
+                    <div class="col-lg-9 d-flex flex-wrap align-items-center justify-content-start gap-4">
+                      <div *ngFor="let permissionItem of permission?.permissions" class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                        <div class="checkbox rounded" (click)="toggleRolePermissions(permissionItem?._id)">
+                          <div [ngClass]="{'checked': roleExists(permissionItem?._id)}"></div>
+                        </div>
+                        <div class="fs-6">{{permissionItem?.name}}</div>
                       </div>
-                      {{permission?.name}}
                     </div>
+                  </div>
                   </ng-container>
                 </div>
-
-                <ng-container *ngIf="permissions.length == 0">
-                  <div class="fs-6 text-muted mt-1">No permissions found</div>
-                </ng-container>
               </div>
 
-              <div class="col-12 d-flex align-items-center justify-content-end">
-                <button routerLink="{{ appRoute.roles.ROLES_LIST }}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                  style="width: 200px; margin-right: 20px;">
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button routerLink="{{ appRoute.roles.ROLES_LIST }}" class="btn btn-secondary">
                   Cancel
                 </button>
-                <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"> Add </button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
               </div>
             </div>
           </form>
         </div>
       </div>
     </div>
-  </div>
 </div>

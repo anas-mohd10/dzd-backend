@@ -1,71 +1,28 @@
-$border: #f7f7f7;
-$white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.05);
-$primary: #00bdab;
-$primaryBackground: #00bdab20;
-$background: #e5e5e5;
-$error: #F1416C;
-
-label,
-input[type=button],
-.btn-secondary {
-  font-weight: normal !important;
-  width: 100%;
+.btn-primary,
+.btn-secondary,
+label {
+  font-weight: 400 !important;
 }
 
-.permissionsWrapper {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
+.checkbox{
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e7e7e7;
+  cursor: pointer;
 
-  .permissionCard {
-    background: $white;
-    box-shadow: 0 10px 25px $boxShadow;
-    border-radius: 10px;
-    cursor: pointer;
-    border: 1px solid $border;
-
-    // &.selected {
-    //   color: $primary;
-    //   border: 1px solid $primary;
-    // }
-
-    .checkbox {
-      position: relative;
-      height: 16px;
-      width: 16px;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
-      margin: 0 5px 0 0;
-
-      &::after {
-        position: absolute;
-        content: '';
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 2px;
-        height: 10px;
-        width: 10px;
-      }
-
-      &.checked {
-
-        &::after {
-          background: $primary;
-        }
-      }
-    }
-  }
-}
-
-.permissionBtns {
-  .btn {
-    width: 120px;
-
-    &.disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
+  .checked{
+    position: relative;
+    height: 14px;
+    width: 14px;
+    background-color: #00bdab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
   }
 }

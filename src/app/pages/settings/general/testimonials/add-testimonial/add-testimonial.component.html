@@ -35,7 +35,7 @@
                         </div>
                         <div *ngIf="thumbnail"
                            class="position-absolute bg-light border border-secondary top-0 pe-none d-flex align-items-center justify-content-center h-100 w-100 rounded">
-                           <img class="h-100 w-100 object-fit-cover rounded" src="{{thumbnail}}" alt="Storedada">
+                           <img class="h-100 w-100 object-fit-cover rounded" src="{{thumbnail}}" alt="StoreDada">
                         </div>
                      </div>
                      <div class="my-2" *ngIf="thumbnail">
@@ -77,6 +77,13 @@
                            <textarea class=" form-control fs-6" formControlName="message" style="resize: none"
                               id="message" rows="3"
                               [ngClass]="{'is-invalid':(formControls.message.touched || isSubmitted) && formControls.message.errors?.required}"></textarea>
+                        </div>
+
+                        <div class="col-lg-6 form-group mb-3">
+                           <label class="fs-6 required mb-3" for="place">Rating</label>
+                           <input type="text" id="place" placeholder="Eg. 4" class="form-control fs-6"
+                              formControlName="rating"
+                              [ngClass]="{'is-invalid':(formControls.rating.touched || isSubmitted) && formControls.rating.errors?.required || formControls.rating.errors?.pattern}" />
                         </div>
 
                         <div class="col-lg-6 form-group mb-3">

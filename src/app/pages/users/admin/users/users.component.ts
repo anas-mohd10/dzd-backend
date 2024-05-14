@@ -14,14 +14,16 @@ import { ToastrService } from 'ngx-toastr';
 export class UsersComponent implements OnInit {
   appRoute = appRoutes
   page: number = 1
-  limit: FormControl = new FormControl('20')
-  lastPage: boolean = false
+  limit: number = 30
+  totalResults: number = 0
+  totalPages: number = 1
+
   users: Array<any> = []
-  totalResults: string = ''
   modalRef?: BsModalRef
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
   adminDetails: any = {}
+
   constructor(
     private AdminUsersService: AdminUsersService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -33,13 +35,9 @@ export class UsersComponent implements OnInit {
     this.getAdminUsers()
   }
 
-  getPreviousPage() {
-    this.page -= 1
-    this.getAdminUsers()
-  }
-
-  getNextPage() {
-    this.page += 1
+  onPageTriggered(event: { pageSize: number, pageIndex: number }) {
+    this.limit = event.pageSize
+    this.page = event.pageIndex
     this.getAdminUsers()
   }
 
@@ -49,21 +47,30 @@ export class UsersComponent implements OnInit {
     this.getAdminUsers()
   }
 
+  onSearch() {
+    setTimeout(() => {
+      this.getAdminUsers()
+    }, 800)
+  }
+
   getAdminUsers() {
-    let payload = {
+    this.AdminUsersService.searchAdmins({
       keyword: this.keyword.value,
       isActive: this.isActive.value,
       page: this.page,
-      limit: this.limit.value
-    }
+      limit: this.limit
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.users = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.page = res?.result?.page
+          this.ChangeDetectorRef.detectChanges()
+        } else {
 
-    this.AdminUsersService.searchAdmins(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.users = res?.result?.data
-        this.totalResults = res?.result?.totalResults
-        this.lastPage = res?.result?.lastPage
-        this.page = res?.result?.page
-        this.ChangeDetectorRef.detectChanges()
+        }
+      }, error: (err: any) => {
+
       }
     })
   }

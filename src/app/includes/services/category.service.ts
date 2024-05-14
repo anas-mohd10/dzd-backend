@@ -26,23 +26,13 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  getCategoryByPage(page: any, limit: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_page + "?page=" + page + "&limit=" + limit);
-    return this.http.get(`${url}`);
-  }
-
   searchCategory(query: any) {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.search_category);
     return this.http.post(`${url}`, query);
   }
 
-  getCategoryCount() {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_count);
-    return this.http.get(`${url}`);
-  }
-
-  getCategoryBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_category_by_slug + '?slug=' + slug);
+  getCategoryDetails(slug: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.getCategoryDetails + '?slug=' + slug);
     return this.http.get(`${url}`);
   }
 
@@ -56,33 +46,18 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  getSubCategoriesbyId(data: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_sub_categories_by_id);
-    return this.http.post(`${url}`, data);
-  }
-
-  getAllSubcategories(data: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.all_sub_categories);
+  getSubCategoriesDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_subcategories_details);
     return this.http.post(`${url}`, data);
   }
 
   archivedCategories(data: any, page: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.archive_category + "?page=" + page);
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.archived_categories + "?page=" + page);
     return this.http.post(`${url}`, data);
   }
 
   childCategories(data: any) {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.childCategories);
-    return this.http.post(`${url}`, data);
-  }
-
-  restoreCategory(data: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.restore_category);
-    return this.http.post(`${url}`, data);
-  }
-
-  categoryImages(data: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.category_images);
     return this.http.post(`${url}`, data);
   }
 
@@ -114,16 +89,6 @@ export class CategoryService {
   getSubCategories(data: any) {
     const url = this.commonService.getFullUrl(this.categoryEndpoints.get_sub_categories);
     return this.http.post(`${url}`, data);
-  }
-
-  updateCategoryMedias(data: any, type: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.updateCategoryMedias + `/${type}`);
-    return this.http.put(`${url}`, data);
-  }
-
-  removeCategoryCover(category: any) {
-    const url = this.commonService.getFullUrl(this.categoryEndpoints.removeCategoryMedia + `/${category}`);
-    return this.http.get(`${url}`);
   }
 
   dropdownCategories(keyword: string, page: number = 1, type: string = 'active') {

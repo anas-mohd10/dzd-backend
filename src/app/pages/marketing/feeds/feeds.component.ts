@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { feedEndpoints } from 'src/app/config/endpoints';
 import { appRoutes } from 'src/app/config/routes';
 import { FeedService } from 'src/app/includes/services/feed.service';
 import { environment } from 'src/environments/environment.prod';
 import { ClipboardService } from 'ngx-clipboard';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-feeds',
@@ -25,7 +25,7 @@ export class FeedsComponent implements OnInit {
   constructor(
     private FeedService: FeedService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private ClipboardService: ClipboardService
   ) { }
 
@@ -59,16 +59,16 @@ export class FeedsComponent implements OnInit {
         this.ClipboardService.copyFromContent(this.exportFacebookXmlFeed);
         break
     }
-    this.ToastrService.success("Copied to clipboard")
+    this.HotToastService.success("Copied to clipboard")
   }
 
   manageFeedDetails() {
     this.FeedService.manageFeed(this.form.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ngOnInit()
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
       } else {
-        this.ToastrService.error(res?.message)
+        this.HotToastService.error(res?.message)
       }
     })
   }

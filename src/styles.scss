@@ -3,8 +3,6 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
-
-
 //Store designs
 .storedesign-container{
   margin: 80px 0 0 70px;
@@ -16,7 +14,6 @@
 .hot-toast-message {
   font-size: 16px !important;
 }
-
 // Toast styles ends here
 
 .bs-datepicker {
@@ -28,7 +25,6 @@
 }
 
 //Media upload styles ---------------
-
 .preview-section {
   .uploaded {
     .close-icon {
@@ -108,7 +104,6 @@
     }
   }
 }
-
 //Media upload styles ---------------
 
 .view-lines.monaco-mouse-cursor-text {
@@ -140,18 +135,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
-}
-
-ngx-star-rating.ng-untouched.ng-pristine.ng-valid {
-  float: left;
-}
-
-.star {
-  float: right;
-  padding: 0 10px 0 0 !important;
-  font-size: 25px !important;
-  color: #DBDBDB !important;
-  transition: all .2s;
 }
 
 .emptyNote {

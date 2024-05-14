@@ -1,0 +1,5 @@
+<div class="star-rating">
+    <span *ngFor="let _ of getFullStars(); let i = index" class="star full-star">&#9733;</span>
+    <span *ngIf="hasHalfStar()" class="star half-star">&#9733; &#189;</span>
+    <span *ngFor="let _ of getEmptyStars(); let i = index" class="star empty-star">&#9734;</span>
+</div>

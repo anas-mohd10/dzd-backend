@@ -39,23 +39,19 @@ export class AllProductsComponent implements OnInit {
   totalPages: any;
   productCategory: FormControl = new FormControl('');
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
   stockFilters: Array<any> = [
     { key: 'In Stock', value: '1', label: 'stock' },
     { key: 'Out of Stock', value: '0', label: 'stock' },
     { key: 'Limited Stock', value: '2', label: 'stock' }
   ]
-
   statusFilters: Array<any> = [
     { key: 'Active', value: 'true', label: 'status' },
     { key: 'Inactive', value: 'false', label: 'status' }
   ]
-
   sortFilters: Array<any> = [
     { key: 'Price : High to Low', value: '0', label: 'sort' },
     { key: 'Price : Low to High', value: '1', label: 'sort' }
   ]
-
   visibleFilters: Array<any> = [
     { key: 'Visible products', value: '0', label: 'visibility' },
     { key: 'Invisible products', value: '1', label: 'visibility' }

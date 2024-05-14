@@ -1,123 +1,124 @@
-<div class="seoDetailsContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bolder">Search Engine Optimization</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.seo.SEO_DETAILS}}">SEO</a>
-                    </li>
-                </ul>
-
-                <div class="buttonContainer">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seoModal">
-                        Add SEO Details
-                    </button>
-                </div>
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bolder">SEO Details</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.seo.SEO_DETAILS}}">SEO Details</a>
+                </li>
+            </ul>
         </div>
+        <button type="button" class="btn btn-primary" (click)="open(template)">
+            Add details
+        </button>
     </div>
 
-    <div class="seoCards mt-4">
+    <div>
         <ng-container *ngFor="let seoItem of seoDetails; let i = index">
-            <div class="seoCard p-3 mb-3">
-                <div class="seoEdit" (click)="getSeoDetails(seoItem?.refid)" data-bs-toggle="modal"
-                    data-bs-target="#seoModal">
-                    <svg height="24px" width="24px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M15.7279 9.57629L14.3137 8.16207L5 17.4758V18.89H6.41421L15.7279 9.57629ZM17.1421 8.16207L18.5563 6.74786L17.1421 5.33365L15.7279 6.74786L17.1421 8.16207ZM7.24264 20.89H3V16.6474L16.435 3.21233C16.8256 2.8218 17.4587 2.8218 17.8492 3.21233L20.6777 6.04075C21.0682 6.43128 21.0682 7.06444 20.6777 7.45497L7.24264 20.89Z">
+            <div class="p-3 my-4 d-flex align-items-center justify-content-between rounded seo-details">
+                <div>
+                    <div class="bg-secondary fs-6 rounded p-2">{{seoItem?.page}}</div>
+                    <div class="fs-5">{{seoItem?.title}}</div>
+                </div>
+                <div class="p-2 border border-secondary rounded" (click)="open(template, seoItem?._id)">
+                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
                         </path>
                     </svg>
                 </div>
-                <div class="page">{{seoItem?.page}}</div>
-                <div class="metaurl mt-2 mb-2"><code>{{seoItem?.url}}</code></div>
-                <div class="metaTitle">{{seoItem?.title}}</div>
-                <div class="metaDescription mt-1 fs-6">{{seoItem?.description}}</div>
-                <div class="metaDKeywords mt-4">Keywords : <code>{{seoItem?.keywords}}</code></div>
             </div>
         </ng-container>
     </div>
 </div>
 
-<div class="modal fade" id="seoModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="seoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="seoModalLabel">SEO Details</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="form">
-                    <div class="mb-3 row">
-                        <label for="url" class="col-sm-2 col-form-label required">Page</label>
-                        <div class="col-sm-10">
-                            <select class="form-select" aria-label="Default select example" formControlName="page"
-                                [ngClass]="{
-                                'is-invalid':
-                                (fc.page.touched || !isValid) &&
-                                fc.page.errors?.required
-                              }">
-                                <option selected disabled>-- Select a page --</option>
-                                <option value="HOME">Home</option>
-                                <option value="ABOUT">About</option>
-                                <option value="CONTACT">Contact</option>
-                                <option value="TERMS">Terms</option>
-                                <option value="PRIVACY">Privacy</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="url" class="col-sm-2 col-form-label required">Meta URL</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="url" class="form-control" formControlName="url" [ngClass]="{
-                                'is-invalid':
-                                (fc.url.touched || !isValid) &&
-                                fc.url.errors?.required
-                              }">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="title" class="col-sm-2 col-form-label required">Meta Title</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="title" class="form-control" formControlName="title" [ngClass]="{
-                                'is-invalid':
-                                (fc.title.touched || !isValid) &&
-                                fc.title.errors?.required
-                              }">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="keywords" class="col-sm-2 col-form-label required">Meta Keywords</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="keywords" class="form-control" formControlName="keywords" [ngClass]="{
-                                'is-invalid':
-                                (fc.keywords.touched || !isValid) &&
-                                fc.keywords.errors?.required
-                              }">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="description" class="col-sm-2 col-form-label required">Meta Description</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                                formControlName="description" [ngClass]="{
-                                    'is-invalid':
-                                    (fc.description.touched || !isValid) &&
-                                    fc.description.errors?.required
-                                  }"></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" (click)="manageDetails()">Save changes</button>
-            </div>
-        </div>
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Cover details</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
     </div>
-</div>
+    <div class="modal-body">
+
+        <div class="my-4">
+            <form [formGroup]="form">
+                <div class="mb-3 row">
+                    <label for="url" class="col-lg-2 required">Page</label>
+                    <div class="col-lg-10">
+                        <select class="form-select" aria-label="Default select example" formControlName="page"
+                            [ngClass]="{
+                            'is-invalid':
+                            (formControls.page.touched || isSubmitted) &&
+                            formControls.page.errors?.required
+                          }">
+                            <option selected disabled>-- Select a page --</option>
+                            <option value="Home">Home</option>
+                            <option value="About">About</option>
+                            <option value="Contact">Contact</option>
+                            <option value="Terms-And-Conditions">Terms And Conditions</option>
+                            <option value="Privacy-And-Policy">Privacy And Policy</option>
+                            <option value="Stores">Stores</option>
+                            <option value="FAQs">FAQs</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="url" class="col-lg-2 required">Meta URL</label>
+                    <div class="col-lg-10">
+                        <input type="text" id="url" class="form-control" formControlName="url" [ngClass]="{
+                            'is-invalid':
+                            (formControls.url.touched || isSubmitted) &&
+                            formControls.url.errors?.required
+                          }">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="title" class="col-lg-2 required">Meta Title</label>
+                    <div class="col-lg-10">
+                        <input type="text" id="title" class="form-control" formControlName="title" [ngClass]="{
+                            'is-invalid':
+                            (formControls.title.touched || isSubmitted) &&
+                            formControls.title.errors?.required
+                          }">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="keywords" class="col-lg-2 required">Meta Keywords</label>
+                    <div class="col-lg-10">
+                        <input type="text" id="keywords" class="form-control" formControlName="keywords" [ngClass]="{
+                            'is-invalid':
+                            (formControls.keywords.touched || isSubmitted) &&
+                            formControls.keywords.errors?.required
+                          }">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="description" class="col-lg-2 required">Meta Description</label>
+                    <div class="col-lg-10">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                            formControlName="description" [ngClass]="{
+                                'is-invalid':
+                                (formControls.description.touched || isSubmitted) &&
+                                formControls.description.errors?.required
+                              }"></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="manageDetails()">Save changes</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</ng-template>

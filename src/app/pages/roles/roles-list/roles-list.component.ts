@@ -11,12 +11,13 @@ import { FormControl } from '@angular/forms';
 export class RolesListComponent implements OnInit {
   appRoute = appRoutes
   page: number = 1
-  limit: FormControl = new FormControl('20')
+  limit: number = 30
+  totalResults: number = 0
+  totalPages: number = 1
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
   isLastPage: boolean = false
   roles: Array<any> = [];
-  totalResults: string = ''
 
   constructor(
     private RolesService: RolesService,
@@ -27,13 +28,9 @@ export class RolesListComponent implements OnInit {
     this.getRoles()
   }
 
-  getPreviousPage() {
-    this.page -= 1
-    this.getRoles()
-  }
-
-  getNextPage() {
-    this.page += 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getRoles()
   }
 
@@ -44,20 +41,24 @@ export class RolesListComponent implements OnInit {
   }
 
   getRoles() {
-    let payload = {
+    this.RolesService.searchRoles({
       keyword: this.keyword.value,
       isActive: this.isActive.value,
       page: this.page,
-      limit: this.limit.value,
-    }
+      limit: this.limit,
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.roles = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.isLastPage = res?.result?.isLastPage
+          this.ChangeDetectorRef.markForCheck()
+        }else{
+          
+        }
+      }, error: (err: any) => {
 
-    this.RolesService.searchRoles(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.roles = res?.result?.data
-        this.totalResults = res?.result?.totalResults
-        this.isLastPage = res?.result?.isLastPage
-        this.page = res?.result?.page
-        this.ChangeDetectorRef.markForCheck()
       }
     })
   }

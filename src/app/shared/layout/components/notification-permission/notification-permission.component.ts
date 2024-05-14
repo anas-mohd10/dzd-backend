@@ -35,24 +35,32 @@ export class NotificationPermissionComponent implements OnInit {
   }
 
   allowPrompt() {
-    this.nextStep = true
-    let messaging = getMessaging(this.fbApp);
-    getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
-      this.disposePrompt()
-      if (currentToken) {
-        this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
-          next: (res: any) => { }, error: (err: any) => { }
-        })
-      }
-    }).catch((err) => {
-      this.disposePrompt()
-      console.log('An error occurred while retrieving token. ', err);
-      if (Notification.permission === 'denied') {
-        this.isNotificationsBlocked = true
-        this.ChangeDetectorRef.markForCheck()
-      }
-    });
-
+    try {
+      this.nextStep = true
+      let messaging = getMessaging(this.fbApp);
+      console.log(messaging)
+      getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
+        this.disposePrompt()
+        if (currentToken) {
+          this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
+            next: (res: any) => { 
+              this.disposePrompt()
+            }, error: (err: any) => { 
+              this.disposePrompt()
+            }
+          })
+        }
+      }).catch((err) => {
+        this.disposePrompt()
+        console.log('An error occurred while retrieving token. ', err);
+        if (Notification.permission === 'denied') {
+          this.isNotificationsBlocked = true
+          this.ChangeDetectorRef.markForCheck()
+        }
+      });
+    } catch (error) {
+      this.nextStep = false
+    }
   }
 
   disposePrompt() {

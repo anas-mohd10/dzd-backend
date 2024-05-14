@@ -15,23 +15,18 @@ export class SeoService {
     private commonService: CommonService
   ) { }
 
-  addSeoDetails(data: any) {
-    const url = this.commonService.getFullUrl(this.seoEndpoints.create);
+  manageSeoDetails(data: any) {
+    const url = this.commonService.getFullUrl(this.seoEndpoints.manage);
     return this.http.post(`${url}`, data)
   }
 
   getSeoDetails() {
-    const url = this.commonService.getFullUrl(this.seoEndpoints.findAll);
+    const url = this.commonService.getFullUrl(this.seoEndpoints.list);
     return this.http.get(`${url}`)
   }
 
   getSeoDetailsById(data: any) {
-    const url = this.commonService.getFullUrl(this.seoEndpoints.find + `/${data}`);
+    const url = this.commonService.getFullUrl(this.seoEndpoints.details + `/${data}`);
     return this.http.get(`${url}`)
-  }
-
-  updateSeoDetails(data: any) {
-    const url = this.commonService.getFullUrl(this.seoEndpoints.update);
-    return this.http.put(`${url}`, data)
   }
 }

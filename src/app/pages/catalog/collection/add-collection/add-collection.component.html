@@ -1,9 +1,9 @@
 <div>
   <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Add Collection</h1>
-    </div>
     <div>
+      <div class="page-title">
+        <h1 class="fw-bolder">Add Collection</h1>
+      </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
           <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -73,7 +73,6 @@
                       <table class="table">
                         <thead>
                           <tr class="fs-6">
-                            <th>&nbsp;</th>
                             <th>Name</th>
                             <th>Stock</th>
                             <th>SKU</th>
@@ -83,11 +82,6 @@
                         <tbody>
                           <ng-container *ngFor="let product of searchProducts; let i = index;">
                             <tr>
-                              <td>
-                                <div class="productImage">
-                                  <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product">
-                                </div>
-                              </td>
                               <td>
                                 {{product?.name}}
                               </td>
@@ -111,6 +105,8 @@
                       </table>
                     </div>
                   </ng-container>
+
+
                   <ng-container *ngIf="productDetails.length > 0">
                     <div class="fs-7 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
                     <div class="addedProductsWrapper">

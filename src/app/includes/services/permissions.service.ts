@@ -15,7 +15,7 @@ export class PermissionsService {
   ) { }
 
   getPermissions() {
-    const url = this.commonService.getFullUrl(this.permissionsEndpoint.get_permissions);
+    const url = this.commonService.getFullUrl(this.permissionsEndpoint.getPermissions);
     return this.http.get(`${url}`);
   }
 }

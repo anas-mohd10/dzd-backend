@@ -21,12 +21,12 @@ import { HotToastService } from '@ngneat/hot-toast';
 })
 export class ProductCardComponent implements OnInit {
   appRoute = appRoutes;
-
-  limit: FormControl = new FormControl('40')
+  limit: number = 30
   page: number = 1
-  isLastPage: boolean = false
-  products: Array<any> = []
-  productResults: string = ''
+  isLastPage: boolean = false;
+  totalResults: number = 0
+  totalPages: number = 1;
+  products: Array<any> = [];
 
   childProducts: Array<any> = []
   childResults: string = ''
@@ -56,6 +56,9 @@ export class ProductCardComponent implements OnInit {
   brandDetails: any;
   headDetails: any;
   defaultCategory: any;
+
+  parentCategories: Array<any> = []
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   constructor(
     private ProductService: ProductService,
@@ -107,8 +110,8 @@ export class ProductCardComponent implements OnInit {
       sku: new FormControl('', Validators.required),
       hsn: new FormControl(''),
       parentCategory: new FormControl('', Validators.required),
-      defaultCategory: new FormControl('', Validators.required),
-      brand: new FormControl(''),
+      defaultCategory: new FormControl(''),
+      brand: new FormControl(null),
     });
 
     this.getProductHeads()
@@ -147,25 +150,34 @@ export class ProductCardComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     });
+
+    this.BrandService.getActiveBrands().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.brands = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
   }
 
   get formControls() {
     return this.editForm.controls
   }
 
-  getNextPage() {
-    this.page += 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getProductHeads()
   }
 
-  getPreviousPage() {
-    this.page -= 1
-    this.getProductHeads()
+  formdateDate(date: any) {
+    return `${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
   }
 
   getProductHeads() {
     let payload = {
-      limit: this.limit.value,
+      limit: this.limit,
       page: this.page,
       ...this.form.value
     }
@@ -174,7 +186,8 @@ export class ProductCardComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.products = res?.result?.data
-          this.productResults = res?.result?.totalItems
+          this.totalResults = res?.result?.totalItems
+          this.totalPages = res?.result?.totalPages
           this.isLastPage = res?.result?.lastPage
           this.ChangeDetectorRef.markForCheck()
         }
@@ -186,19 +199,24 @@ export class ProductCardComponent implements OnInit {
 
   clearFilters() {
     this.productForm.reset()
-    this.limit.setValue('40')
+    this.limit = 30
     this.page = 1
     this.getProductHeads()
   }
 
-  getChildNextPage() {
-    this.productPage += 1
-    this.getProducts()
-  }
-
-  getChildPreviousPage() {
-    this.productPage -= 1
-    this.getProducts()
+  addCategory() {
+    let isExists = this.parentCategories.some((category: any) => category._id == this.editForm.get('parentCategory')?.value)
+    if (isExists) {
+      this.parentCategories = this.parentCategories.filter((category: any) => category._id != this.editForm.get('parentCategory')?.value)
+      this.HotToastService.error('Category removed from list')
+    } else {
+      let categoryDetails = this.categories.filter((category: any) => category._id == this.editForm.get('parentCategory')?.value)
+      this.parentCategories.push(categoryDetails[0])
+      let categories = this.parentCategories.map((category: any) => category._id)
+      this.getChildCategory(categories)
+      this.HotToastService.success('Category added to list')
+    }
+    this.editForm.get('parentCategory')?.setValue('')
   }
 
   getProducts() {
@@ -243,31 +261,24 @@ export class ProductCardComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.headDetails = res?.result
-          for (let _key of Object.keys(res?.result)) {
-            this.editForm.get(_key)?.setValue(res?.result[_key])
-          }
+          this.editForm.get('name')?.setValue(res?.result?.name)
+          this.editForm.get('sku')?.setValue(res?.result?.sku)
+          this.editForm.get('hsn')?.setValue(res?.result?.hsn)
           if (res?.result?.brand) {
             this.brandDetails = res?.result?.brand
             this.editForm.get('brand')?.setValue(res?.result?.brand?._id)
           }
           this.editForm.get('tax')?.setValue(res?.result?.tax?._id)
-          this.editForm.get('returnable')?.setValue(String(res?.result?.return?.isPresent))
-          this.editForm.get('cod')?.setValue(String(res?.result?.cod?.isPresent))
-          this.editForm.get('shipping')?.setValue(String(res?.result?.shipping?.isPresent))
-          if (res?.result?.shipping?.isPresent == true) {
-            this.editForm.get('shippingCost')?.setValue(res?.result?.shipping?.value)
-          }
-          if (res?.result?.return?.isPresent == true) {
-            this.editForm.get('returnDays')?.setValue(res?.result?.return?.value)
-          }
-          if (res?.result?.cod?.isPresent == true) {
-            this.editForm.get('codCharge')?.setValue(res?.result?.cod?.value)
-          }
+          this.editForm.get('returnable')?.setValue(res?.result?.return?.isPresent)
+          this.editForm.get('cod')?.setValue(res?.result?.cod?.isPresent)
+          this.editForm.get('shipping')?.setValue(res?.result?.shipping?.isPresent)
+          this.editForm.get('shippingCost')?.setValue(res?.result?.shipping?.value)
+          this.editForm.get('returnDays')?.setValue(res?.result?.return?.value)
+          this.editForm.get('codCharge')?.setValue(res?.result?.cod?.value)
           let categories = res?.result?.parentCategory?.id?.map((category: any) => { return category._id })
-          this.productCategory = res?.result?.parentCategory?.id
+          this.parentCategories = res?.result?.parentCategory?.id
           this.getChildCategory(categories)
           this.editForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id)
-
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res?.message)
@@ -276,11 +287,7 @@ export class ProductCardComponent implements OnInit {
         this.ToastrService.error(err?.error?.message)
       }
     })
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
-  }
-
-  selectDefaultCategory() {
-    this.defaultCategory = this.defaultCategories.map((defaultCategory) => defaultCategory._id == this.editForm.get('defaultCategory')?.value)
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
   }
 
   close() {
@@ -298,25 +305,6 @@ export class ProductCardComponent implements OnInit {
   closeProducts() {
     this.productRef?.hide()
     this.productDetails = {}
-  }
-
-  getBrands() {
-    if (this.brand.value) {
-      this.BrandService.searchBrand({ page: 1, limit: '50', keyword: this.brand.value }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.brands = res?.result?.data
-            this.ChangeDetectorRef.markForCheck();
-          } else {
-            this.ToastrService.error(res?.message)
-          }
-        }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
-        }
-      })
-    } else {
-      this.brands = []
-    }
   }
 
   getCategories() {
@@ -338,44 +326,6 @@ export class ProductCardComponent implements OnInit {
     }
   }
 
-  toggleBrand(brand: any) {
-    if (this.brandDetails) {
-      if (this.brandDetails._id == brand?._id) {
-        this.brandDetails = null
-        this.editForm.get('brand')?.setValue('')
-      } else {
-        this.brandDetails = brand
-        this.editForm.get('brand')?.setValue(brand?._id)
-      }
-    } else {
-      this.brandDetails = brand
-      this.editForm.get('brand')?.setValue(brand?._id)
-    }
-    this.brand.setValue('')
-    this.brands = []
-  }
-
-  toggleCategoy(category: any, event?: any) {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    if (this.isElementAlreadyPresent(this.productCategory, category)) {
-      this.productCategory = this.productCategory.filter((item: any) => item.catid !== category.catid)
-      this.categories.push(category)
-    } else {
-      this.productCategory.push(category)
-      this.categories = this.categories.filter((item: any) => item.catid != category.catid)
-    }
-
-    let categories = []
-    for (let category of this.productCategory) categories.push(category?._id)
-
-    if (categories.length > 0) this.editForm.get('parentCategory')?.setValue(categories)
-    this.getChildCategory(categories)
-  }
-
   getChildCategory(categories: Array<any>) {
     this.CategoryService.childCategories({ categories: categories }).subscribe({
       next: (res: any) => {
@@ -391,19 +341,22 @@ export class ProductCardComponent implements OnInit {
     })
   }
 
-  isElementAlreadyPresent(array: any = [], element: any) {
-    return array.some((item: any) => item.catid === element.catid);
-  }
-
-  toggleDropdown() {
-    this.isCategoryDropdown = !this.isCategoryDropdown
-  }
-
   updateProduct() {
-    let parentCategory = this.productCategory.map((category) => { return category._id })
-    let parentRefid = this.productCategory.map((category) => { return category.catid })
-    if (parentCategory.length > 0) this.editForm.get('parentCategory')?.setValue(parentCategory)
-    if (this.editForm.value) this.editForm.get('brand')?.setValue(null)
+    let parentCategory = {
+      id: this.parentCategories.map((category: any) => { return category._id }),
+      refid: this.parentCategories.map((category: any) => { return category.catid })
+    }
+
+    if (this.editForm.get('defaultCategory')?.value) {
+      let defaultCategory = {
+        id: this.editForm.get('defaultCategory')?.value,
+        refid: this.defaultCategories.filter((category: any) => category._id == this.editForm.get('defaultCategory')?.value)[0]?.catid
+      }
+      this.editForm.get('defaultCategory')?.setValue(defaultCategory)
+    }
+
+    this.editForm.get('parentCategory')?.setValue(parentCategory)
+
     if (!this.editForm.valid) {
       this.isSubmitted = true
       return
@@ -411,10 +364,6 @@ export class ProductCardComponent implements OnInit {
 
     let payload = {
       ...this.editForm.value,
-      parentCategory: {
-        id: parentCategory,
-        refid: parentRefid
-      },
       shipping: {
         value: this.editForm.value.shippingCost,
         isPresent: this.editForm.value.shipping
@@ -425,24 +374,13 @@ export class ProductCardComponent implements OnInit {
       },
       replace: {
         value: this.editForm.value.replaceDays,
-        isPresent: this.editForm.value.replaceable
+        isPresent: this.editForm.value.replace
       },
       prodid: this.headDetails?.prodid,
       return: {
         value: this.editForm.value.returnDays,
         isPresent: this.editForm.value.returnable
       },
-      defaultCategory: {
-        id: this.defaultCategory[0]['_id'],
-        refid: this.defaultCategory[0]['catid']
-      }
-    }
-
-    for (let category of this.defaultCategories) {
-      if (this.editForm.value.defaultCategory == category?._id) {
-        payload.defaultCategory.refid = category?.catid
-        break
-      }
     }
 
     this.ProductHeadService.updateProductHead(payload).subscribe({

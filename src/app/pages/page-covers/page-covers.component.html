@@ -1,0 +1,106 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div class="page-title">
+            <h1 class="fw-bold">Page Covers</h1>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.pageCovers }}">Page Covers</a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-primary d-flex align-items-center" (click)="open(template)">
+            <div class="me-2">
+                <svg height="18" width=18 data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                </svg>
+            </div>
+            <div>Create cover</div>
+        </button>
+    </div>
+
+    <div class="card my-4" *ngIf="pageCovers.length == 0">
+        <div class="card-body">
+            <div class="my-8 d-flex flex-column align-items-center justify-content-center">
+                <div class="fs-4 fw-bold">No page covers found</div>
+                <p class="text-muted">We couldn't find any item based on your search</p>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="my-4 p-4 rounded bg-white d-flex align-items-center justify-content-between"
+            *ngFor="let pageCover of pageCovers; let i = index">
+            <div class="gap-2 d-flex align-items-center justify-content-start">
+                <div>{{i+1}}.</div>
+                <div class="fs-5">{{pageCover.title}}</div>
+            </div>
+            <div class="gap-2 d-flex align-items-center justify-content-end">
+                <div class="p-2 cursor-pointer" (click)="open(template, pageCover)">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
+                        </path>
+                    </svg>
+                </div>
+                <app-switch [switchId]="pageCover?._id" (switchToggled)="onToggled($event)"
+                    [isToggledProps]="pageCover?.isActive"></app-switch>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Cover details</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+
+            <div class="form-group mb-3">
+                <label for="title" class="fs-6 mb-3">Title</label>
+                <select formControlName="title" id="title" class="form-select" [ngClass]="{
+                    'is-invalid': (formControls.title.touched || isSubmitted) &&  formControls.title.errors?.required
+                  }" (change)="setPath()">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let page of pages" value="{{page.title}}">{{page.title}}</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="desktop" class="fs-6 mb-3">Cover image for desktop screens</label>
+                <div id="desktop" class="h-auto ratio ratio-21x9">
+                    <app-assets (mediaClicked)="onMediaTriggered('desktop', $event)"
+                        [previewDetails]="desktop"></app-assets>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="mobile" class="fs-6 mb-3">Cover image for mobile screens</label>
+                <div id="mobile" class="h-auto ratio ratio-21x9">
+                    <app-assets (mediaClicked)="onMediaTriggered('mobile', $event)"
+                        [previewDetails]="mobile"></app-assets>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center"
+                [ngClass]="{'justify-content-end': !isEditMode, 'justify-content-between': isEditMode}">
+                <button class="btn btn-danger" (click)="delete()" *ngIf="isEditMode">Delete</button>
+                <div class="d-flex align-items-center gap-2 justify-content-end">
+                    <button class="btn btn-secondary" (click)="close()">Discard</button>
+                    <button class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

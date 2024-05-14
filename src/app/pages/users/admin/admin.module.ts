@@ -4,9 +4,8 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { UsersComponent } from './users/users.component';
 import { AddUsersComponent } from './add-users/add-users.component';
 import { UpdateUsersComponent } from './update-users/update-users.component';
-import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,15 +16,9 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     CommonModule,
     AdminRoutingModule,
-    DataTablesModule,
     FormsModule,
+    SharedModule,
     ReactiveFormsModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      progressAnimation: 'decreasing',
-      preventDuplicates: true,
-      progressBar: true,
-    }),
   ]
 })
 export class AdminModule { }

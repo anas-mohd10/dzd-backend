@@ -1,6 +1,5 @@
 export const seoEndpoints = {
-    create: '/seo-details/create',
-    findAll: '/seo-details',
-    find: '/seo-detail',
-    update: '/seo-details/update'
+    manage: '/manage-seodetails',
+    list: '/seo-details',
+    details: '/seo-detail',
 }

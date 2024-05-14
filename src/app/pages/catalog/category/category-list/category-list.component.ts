@@ -4,11 +4,9 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { environment } from 'src/environments/environment.prod';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { AppSettings } from 'src/app/config/constants';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-category',
@@ -77,21 +75,19 @@ export class CategoryComponent implements OnInit {
   @ViewChild('attributeModal') attributeModal: any;
   manageModalRef?: BsModalRef;
   @ViewChild('manageModal') manageModal: any;
-  //Modal config ends
+  // Modal config ends
 
   get attributeFormControls() {
     return this.attributeForm.controls
   }
 
-  constructor(private CategoryService: CategoryService,
+  constructor(
+    private CategoryService: CategoryService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private AttributeService: AttributeService,
-    private ToastrService: ToastrService,
-    private FormBuilder: FormBuilder,
-    private ActivatedRoute: ActivatedRoute,
-    private Router: Router,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -150,11 +146,11 @@ export class CategoryComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.attributeDetails = res?.result
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
@@ -191,13 +187,13 @@ export class CategoryComponent implements OnInit {
 
     this.AttributeService.updateAttribute(data).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
         setTimeout(() => {
           document.location.reload()
         }, 1000)
         this.ChangeDetectorRef.markForCheck()
       } else {
-        this.ToastrService.error(res?.message)
+        this.HotToastService.error(res?.message)
       }
     })
   }
@@ -209,20 +205,20 @@ export class CategoryComponent implements OnInit {
         if (res.errorCode == 0) {
           this.attributes = res?.result
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
-    this.attributeModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.attributeModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
   }
 
   openManageAttributeModal(template: TemplateRef<any>, attribute: any) {
     this.attributeModalRef?.hide()
     this.attributeDetails = attribute
-    this.manageModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.manageModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
     for (let _key of Object.keys(attribute)) this.attributeForm.get(_key)?.setValue(attribute[_key])
     attribute.type == 'text' ? this.isText = true : attribute.type == 'color' ? this.isColor = true : attribute.type == 'file' ? this.isFile = true : null
     for (let item of attribute.values) {
@@ -283,7 +279,7 @@ export class CategoryComponent implements OnInit {
         this.values = [...this.colors] : this.values = []
 
     if (!this.attributeForm.valid || this.values.length == 0) {
-      this.ToastrService.error('Invalid form submission, kindly check all the fields and submit again.')
+      this.HotToastService.error('Invalid form submission, kindly check all the fields and submit again.')
       return
     }
 
@@ -291,24 +287,24 @@ export class CategoryComponent implements OnInit {
       this.AttributeService.updateAttribute({ ...this.attributeForm.value, values: this.values, category: this.categoryDetails?.catid, attribute: this.attributeDetails?.refid }).subscribe({
         next: (res: any) => {
           this.BsModalService.hide()
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.getCategories()
           this.resetDetails()
           this.ChangeDetectorRef.markForCheck()
         }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
+          this.HotToastService.error(err?.message)
         }
       })
     } else {
       this.AttributeService.createAttribute({ ...this.attributeForm.value, values: this.values, category: this.categoryDetails?.catid }).subscribe({
         next: (res: any) => {
           this.BsModalService.hide()
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.getCategories()
           this.resetDetails()
           this.ChangeDetectorRef.markForCheck()
         }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
+          this.HotToastService.error(err?.message)
         }
       })
     }

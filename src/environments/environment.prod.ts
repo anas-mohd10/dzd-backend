@@ -16,25 +16,25 @@ export const environment = {
   //Local
 
   //Fresh fruit
-  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
-  // base: 'https://freshfruitmart-api.storedada.net',
+  // apiUrl: 'https://freshfruitmart-api.StoreDada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://freshfruitmart-api.StoreDada.net/api/v1/w/',
+  // appBaserl: 'https://freshfruitmart-api.StoreDada.net/api/v1/a/',
+  // base: 'https://freshfruitmart-api.StoreDada.net',
   //Fresh fruit
 
   //Vperfumes
-  // apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://vperfumes-api.storedada.net/api/v1/a/',
-  // base: 'https://vperfumes-api.storedada.net',
+  // apiUrl: 'https://vperfumes-api.StoreDada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://vperfumes-api.StoreDada.net/api/v1/w/',
+  // appBaserl: 'https://vperfumes-api.StoreDada.net/api/v1/a/',
+  // base: 'https://vperfumes-api.StoreDada.net',
   //Vperfumes
 
-  //Storedada
-  // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
-  // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
-  // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
-  // base: 'https://api.demo.storedada.com',
-  //Storedada
+  //StoreDada
+  // apiUrl: 'https://api.demo.StoreDada.com/api/v1/w/admin/auth',
+  // baseUrl: 'https://api.demo.StoreDada.com/api/v1/w/',
+  // appBaserl: 'https://api.demo.StoreDada.com/api/v1/a/',
+  // base: 'https://api.demo.StoreDada.com',
+  //StoreDada
 
   loginUrl: 'api',
   firebaseConfig: {

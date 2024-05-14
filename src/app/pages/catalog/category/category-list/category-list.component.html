@@ -107,13 +107,14 @@
       <h2 class="fw-bolder">{{categoryDetails.name}} Attributes</h2>
       <button class="btn btn-primary" (click)="openManageAttributeModal(manageModal, null)">Add Attribute</button>
     </div>
+
     <ng-container *ngIf="attributes.length == 0">
-      <h4 class="text-gray-400">
-        No attributes found. Add <span class="more text-primary"
-          (click)="openManageAttributeModal(manageModal, null)">more</span> to
-        see
-      </h4>
+      <div class="d-flex flex-column my-8 align-items-center justify-content-center">
+        <div class="fs-3 fw-bold">No result found</div>
+        <div class="fs-6 text-muted">We couldn't find any item based on your search</div>
+      </div>
     </ng-container>
+
     <div class="attributesWrapper">
       <ng-container *ngFor="let attribute of attributes; let i = index">
         <div class="attributeCard">
@@ -142,44 +143,22 @@
     <h2 class="fw-bolder">{{attributeDetails ? 'Update' : 'Add'}} Attributes</h2>
     <form [formGroup]="attributeForm" (keydown.Enter)="$event.preventDefault()">
       <div class="row">
-        <div class="col-lg-6 mb-3">
-          <div class="form-group">
-            <label class="fs-6 mb-3 required">Name</label>
-            <input type="text" placeholder="Enter attribute name" class="form-control fs-6" formControlName="name"
-              [ngClass]="{'is-invalid': (attributeFormControls.name.touched || isSubmitted) && attributeFormControls.name.errors?.required}" />
-          </div>
+
+        <div class="col-lg-6 form-group mb-3">
+          <label class="fs-6 mb-3 required">Name</label>
+          <input type="text" placeholder="Enter attribute name" class="form-control fs-6" formControlName="name"
+            [ngClass]="{'is-invalid': (attributeFormControls.name.touched || isSubmitted) && attributeFormControls.name.errors?.required}" />
         </div>
-        <div class="row">
-          <div class="col-lg-6 mb-3">
-            <div class="form-group">
-              <label class="fs-6 mb-3">Status</label>
-              <select class="form-select  mb-3 fs-6" formControlName="isActive">
-                <option value="false" selected>Inactive</option>
-                <option value="true">Active</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-6 mb-3">
-            <div class="form-group">
-              <label class="fs-6 mb-3">Filtered</label>
-              <select class="form-select  mb-3 fs-6" formControlName="isFiltered">
-                <option value="false" selected>Unfiltered</option>
-                <option value="true">Filtered</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 mb-3">
-          <div class="form-group mb-3">
-            <label class="fs-6 mb-3 required">Attribute Type</label>
-            <select class="form-select mb-3 fs-6" formControlName="type" (change)="getAttributeType($event)"
-              [ngClass]="{'is-invalid': (attributeFormControls.type.touched || isSubmitted) && attributeFormControls.type.errors?.required}">
-              <option value="" selected>-- Select an option --</option>
-              <option value="color">Color</option>
-              <option value="text">Text</option>
-              <option value="file">File</option>
-            </select>
-          </div>
+
+        <div class="col-lg-6 form-group mb-3">
+          <label class="fs-6 mb-3 required">Attribute Type</label>
+          <select class="form-select fs-6" formControlName="type" (change)="getAttributeType($event)"
+            [ngClass]="{'is-invalid': (attributeFormControls.type.touched || isSubmitted) && attributeFormControls.type.errors?.required}">
+            <option value="" selected>-- Select an option --</option>
+            <option value="color">Color</option>
+            <option value="text">Text</option>
+            <option value="file">File</option>
+          </select>
         </div>
 
         <div *ngIf="isText">
@@ -188,16 +167,14 @@
             <input type="text" placeholder="Eg. Large" [formControl]="text" class="form-control fs-6"
               (keydown.Enter)="getAttributeValue('text', $event)" />
           </div>
-          <div class="textWrapper" *ngIf="texts.length > 0">
+          <div class="textWrapper mb-3" *ngIf="texts.length > 0">
             <ng-container *ngFor="let text of texts">
-              <div class="textCard pe-3 ps-3 pt-2 pb-2 rounded d-flex align-items-center justify-content-between">
+              <div class="p-3 rounded bg-secondary d-flex align-items-center justify-content-between">
                 <div class="fs-6">{{text}}</div>
-                <div class="attributeRemoveIcon" (click)="removeAttributeValue('text', text)">
-                  <svg height="20px" width="20px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24">
-                    <path
-                      d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z">
-                    </path>
+                <div (click)="removeAttributeValue('text', text)">
+                  <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                   </svg>
                 </div>
               </div>
@@ -228,11 +205,29 @@
             </ng-container>
           </div>
         </div>
-
-        <div class="mt-3 d-flex align-items-center justify-content-end">
-          <button type="button" class="me-2 btn btn-secondary" (click)="closeSubmit()">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="onSubmit()">Save Changes</button>
+        <div class="col-lg-6 mb-3">
+          <div class="form-group">
+            <label class="fs-6 mb-3">Status</label>
+            <select class="form-select fs-6" formControlName="isActive">
+              <option value="false" selected>Inactive</option>
+              <option value="true">Active</option>
+            </select>
+          </div>
         </div>
+        <div class="col-lg-6 mb-3">
+          <div class="form-group">
+            <label class="fs-6 mb-3">Filtered</label>
+            <select class="form-select fs-6" formControlName="isFiltered">
+              <option value="false" selected>Unfiltered</option>
+              <option value="true">Filtered</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3 d-flex align-items-center justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary" (click)="closeSubmit()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save Changes</button>
       </div>
     </form>
   </div>

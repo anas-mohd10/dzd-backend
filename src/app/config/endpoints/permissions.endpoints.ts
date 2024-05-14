@@ -1,3 +1,3 @@
 export const permissionsEndpoints = {
-     get_permissions: '/permissions'
+     getPermissions: '/get-permissions'
 }

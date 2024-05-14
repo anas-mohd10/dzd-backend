@@ -1,159 +1,139 @@
-<div class="content container-fluid">
+<div>
   <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update Admin Users" : "Add Admin Users"}}</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.admin.ADMIN_USERS }}">Admin Users</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.admin.ADD_ADMIN_USERS }}">
-              {{ editMode ? "Update Admin Users" : "Add Admin Users"}}
-            </a>
-          </li>
-        </ul>
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Add Admin Users</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.admin.ADMIN_USERS }}">Admin Users</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.admin.ADD_ADMIN_USERS }}">
+            Add Admin Users
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="card">
-      <div class="card-body">
-        <form [formGroup]="form">
-          <div class="row">
+  <div class="card my-4">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row">
 
-            <h2 class="fw-bolder">Admin user details</h2>
-
-            <div class="usernameWrapper">
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Username</label>
-                  <input type="text" class="form-control fs-6" formControlName="username"
-                    [ngClass]="{
-                        'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }" />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required"> First name</label>
-                <input type="text" class="form-control fs-6" formControlName="firstname"
-                  [ngClass]="{
-                      'is-invalid': (formControls.firstname.touched || isSubmitted) && formControls.firstname.errors?.required }" />
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3"> Last name</label>
-                <input type="text" class="form-control fs-6" formControlName="lastname" />
-              </div>
-            </div>
-
-            <div class="emailWrapper">
-              <div class="col-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Email</label>
-                  <input type="text" class="form-control fs-6" formControlName="email"
-                    [ngClass]="{
-                        'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required }" (change)="verifyEmailAddress()" />
-                </div>
-
-                <div class="alert alert-danger p-1 mt-1" role="alert" *ngIf="formControls.email.errors?.pattern">
-                  Please, enter valid email address
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required">Country Code</label>
-                <select class="form-select mb-3" formControlName="countryCode"
-                  [ngClass]="{
-                  'is-invalid': (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required }">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="+91">+91</option>
-                  <option value="+971">+971</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required"> Mobile No.</label>
-                <input type="text" class="form-control fs-6" formControlName="mobile"
-                  [ngClass]="{
-                      'is-invalid': (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required }" />
-              </div>
-
-              <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="formControls.mobile.errors?.pattern">
-                Please, enter valid mobile number
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required">Role</label>
-                <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role" [ngClass]="{
-                    'is-invalid': (formControls.role.touched || isSubmitted) && formControls.role.errors?.required }">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option *ngFor="let role of rolesData" value="{{ role?._id }}">
-                    {{ role?.name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <div class="passwordWrapper mb-3">
-              <div class="col-lg-8 row">
-                <div class="col-lg-9">
-                  <div class="form-group">
-                    <label for="password" class="form-label required">Password</label>
-                    <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Password"
-                      formControlName="password" class="form-control"
-                      [ngClass]="{
-                        'is-invalid': (formControls.password.touched || isSubmitted) && formControls.password.errors?.required }">
-                  </div>
-                </div>
-                <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="showPassword" class="form-label">&nbsp;</label>
-                    <input type="button" value="{{!showPassword ? 'Show' : 'Hide'}}" id="showPassword"
-                      (click)="togglePassword()" class="form-control btn btn-secondary">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3">Status</label>
-                <select class="form-select fs-6 mb-3" formControlName="isActive">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="false">Inactive</option>
-                  <option value="true">Active</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-12 d-flex align-items-center justify-content-end">
-              <a routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary btn-sm fs-6 text-dark"
-                style="width: 200px; margin-right: 20px;">
-                Cancel
-              </a>
-              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="addAdmin()">
-                Add
-              </button>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required"> Username</label>
+              <input type="text" class="form-control fs-6" formControlName="username"
+                [ngClass]="{
+                    'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }" />
             </div>
           </div>
-        </form>
-      </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required">First name</label>
+              <input type="text" class="form-control fs-6" formControlName="firstname"
+                [ngClass]="{
+                    'is-invalid': (formControls.firstname.touched || isSubmitted) && formControls.firstname.errors?.required }" />
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3">Last name</label>
+              <input type="text" class="form-control fs-6" formControlName="lastname" />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required"> Email</label>
+              <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                    'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required || formControls.email.errors?.pattern }"
+                (change)="verifyEmailAddress()" />
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required">Country Code</label>
+              <select class="form-select mb-3" formControlName="countryCode" (change)="handleMobilePattern()"
+                [ngClass]="{
+                'is-invalid': (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required }">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="+91">+91</option>
+                <option value="+971">+971</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required"> Mobile Number</label>
+              <input type="text" class="form-control fs-6" formControlName="mobile"
+                [ngClass]="{
+                    'is-invalid': (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required || formControls.mobile.errors?.pattern }" />
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required">Role</label>
+              <select class="form-select fs-6 mb-3" formControlName="role" [ngClass]="{
+                  'is-invalid': (formControls.role.touched || isSubmitted) && formControls.role.errors?.required }">
+                <option value="" disabled>-- Select an option --</option>
+                <option *ngFor="let role of rolesData" value="{{ role?._id }}">
+                  {{ role?.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <div class="col-lg-9">
+              <div class="form-group">
+                <label for="password" class="fs-6 mb-3 required">Password</label>
+                <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Password" formControlName="password"
+                  class="form-control"
+                  [ngClass]="{
+                      'is-invalid': (formControls.password.touched || isSubmitted) && formControls.password.errors?.required }">
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="showPassword" class="fs-6 mb-3">&nbsp;</label>
+                <input type="button" value="{{!showPassword ? 'Show' : 'Hide'}}" id="showPassword"
+                  (click)="togglePassword()" class="btn w-100 btn-secondary">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3">Status</label>
+              <select class="form-select fs-6 mb-3" formControlName="isActive">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">Inactive</option>
+                <option value="true">Active</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end gap-2">
+          <button routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+            Save changes
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

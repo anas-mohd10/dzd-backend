@@ -83,6 +83,7 @@ import { ShippingChargeComponent } from './pages/settings/general/shipping-charg
 import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
 import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packing-slips.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PageCoversComponent } from './pages/page-covers/page-covers.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -139,6 +140,7 @@ const DragConfig = {
     ShippingChargeComponent,
     BulkInvoicesComponent,
     BulkPackingSlipsComponent,
+    PageCoversComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

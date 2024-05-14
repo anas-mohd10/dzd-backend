@@ -118,7 +118,7 @@ export class UpdateHeadComponent implements OnInit {
         this.productheadform.get('returnDays')?.setValue(this.basicdetails?.return?.value)
         this.productheadform.get('isActive')?.setValue(this.basicdetails?.isActive)
         this.productheadform.get('isArchive')?.setValue(this.basicdetails?.isArchive)
-        this.CategoryService.getSubCategoriesbyId(this.basicdetails?.parentCategory?.id).subscribe((res: any) => {
+        this.CategoryService.getSubCategoriesDetails(this.basicdetails?.parentCategory?.id).subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.defaultcategories = [...res?.result]
             this.appendMainCategory()
@@ -179,7 +179,7 @@ export class UpdateHeadComponent implements OnInit {
   }
 
   mainCategory() {
-    this.CategoryService.getSubCategoriesbyId(this.selectedMainCategory).subscribe((res: any) => {
+    this.CategoryService.getSubCategoriesDetails(this.selectedMainCategory).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.defaultcategories = [...res?.result]
         this.appendMainCategory()

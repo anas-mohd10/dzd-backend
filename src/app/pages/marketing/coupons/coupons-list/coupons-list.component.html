@@ -20,32 +20,34 @@
   </div>
 
   <div class="card my-3">
-    <form [formGroup]="form">
-      <div class="row">
-        <div class="search-featured col-lg-3">
-          <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getCoupons()" />
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="search-featured col-lg-3">
+            <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getCoupons()" />
+          </div>
+          <div class="search-featured col-lg-3">
+            <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getCoupons()" />
+          </div>
+          <div class="search-status col-lg-2">
+            <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
+              (change)="getCoupons()">
+              <option value="" disabled>Status</option>
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+          <div class="search-input col-lg-2">
+            <input type="button" class="form-control fs-6" style="color: #00bcaa; border: #00bcaa 1px solid"
+              value="Clear filters" (click)="clearFilters()" />
+          </div>
+          <div class="search-input col-lg-2">
+            <input type="text" placeholder="Search coupons here" class="form-control fs-6" formControlName="title"
+              (ngModelChange)="getCoupons()" />
+          </div>
         </div>
-        <div class="search-featured col-lg-3">
-          <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getCoupons()" />
-        </div>
-        <div class="search-status col-lg-2">
-          <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-            (change)="getCoupons()">
-            <option value="" disabled>Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-        </div>
-        <div class="search-input col-lg-2">
-          <input type="button" class="form-control fs-6" style="color: #00bcaa; border: #00bcaa 1px solid"
-            value="Clear filters" (click)="clearFilters()" />
-        </div>
-        <div class="search-input col-lg-2">
-          <input type="text" placeholder="Search coupons here" class="form-control fs-6" formControlName="title"
-            (ngModelChange)="getCoupons()" />
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 
   <div class="offer-cards my-3">

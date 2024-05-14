@@ -303,6 +303,7 @@ export const appRoutes = {
   bulk: {
     import: `${app}/bulk-import`,
   },
+  pageCovers: `${app}/page-covers`,
   replaceRequests:`${app}/replace-requests`,
   guestCustomers: `${app}/guests`,
   shippingCharges: `${app}/shipping-charges`

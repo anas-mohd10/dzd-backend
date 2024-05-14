@@ -1,28 +1,20 @@
-<div class="seoDetailsContainer">
+<div>
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Feeds</h1>
+            <h1 class="fw-bold">Feeds</h1>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.feeds.LIST}}">Feeds</a>
+                </li>
+            </ul>
         </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.feeds.LIST}}">Feeds</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="alert alert-primary mt-4 fs-6 mb-4">
-        Manage your google and faceook feed here.
     </div>
 
     <form [formGroup]="form">
-        <div class="feedWrapper mt-4 mb-4 p-5">
+        <div class="feedWrapper my-4 p-5">
             <div class="feedHeader mb-4">
                 <svg height="30px" width="30px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24">
@@ -45,7 +37,17 @@
                 </div>
                 <div class="col-lg-9 p-0 d-flex flex-column align-items-end justify-content-end">
                     <div class="feedButton">
-                        <a class="btn btn-primary" href="{{exportGoogleFeed}}" target="_blank">Get feed now</a>
+                        <a class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                            href="{{exportGoogleFeed}}" target="_blank">
+                            Get feed now
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+                                </path>
+                            </svg>
+                        </a>
                     </div>
                     <div class="feedUrl mt-3" (click)="copyToClipboard('google')">
                         <code>{{form.get('googleFeedUrl')?.value}}</code>
@@ -77,7 +79,17 @@
                 </div>
                 <div class="col-lg-9 p-0 d-flex flex-column align-items-end justify-content-end">
                     <div class="feedButton">
-                        <a class="btn btn-primary" href="{{exportFacebookXmlFeed}}" target="_blank">Get feed now</a>
+                        <a class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                            href="{{exportFacebookXmlFeed}}" target="_blank">
+                            Get feed now
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+                                </path>
+                            </svg>
+                        </a>
                     </div>
                     <div class="feedUrl mt-3" (click)="copyToClipboard('facebook-xml')">
                         XML :<code>{{form.get('facebookXmlFeedUrl')?.value}}</code>

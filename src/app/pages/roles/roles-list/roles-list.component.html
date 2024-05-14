@@ -1,124 +1,83 @@
-<div class="brand-page-container">
-     <div class="page-header">
-          <div class="page-title">
-               <h1 class="fw-bolder">Roles</h1>
+<div>
+     <div class="page-header d-flex align-items-start justify-content-between">
+          <div>
+               <div class="page-title">
+                    <h1 class="fw-bolder">Roles</h1>
+               </div>
+               <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active fs-6"><a routerLink="{{ appRoute.roles.ROLES_LIST}}">Roles</a>
+                    </li>
+               </ul>
           </div>
-          <div class="row align-items-center">
-               <div class="col d-flex align-items-start justify-content-between">
-                    <ul class="breadcrumb">
-                         <li class="breadcrumb-item fs-6"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
-                         <li class="breadcrumb-item active fs-6"><a
-                                   routerLink="{{ appRoute.roles.ROLES_LIST}}">Roles</a></li>
-                    </ul>
-                    <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-                         routerLink="{{ appRoute.roles.ADD_ROLES }}" style="width: 200px;">
-                         Add Roles
-                    </button>
+          <button class="btn btn-primary" routerLink="{{ appRoute.roles.ADD_ROLES }}">
+               Add Roles
+          </button>
+     </div>
+
+     <div class="card my-4">
+          <div class="card-body">
+               <div class="row d-flex justify-content-end align-items-end">
+                    <div class="col-lg-6">
+                         <label class="fs-6 mb-1">&nbsp;</label>
+                         <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
+                              (ngModelChange)="getRoles()">
+                    </div>
+                    <div class="col-lg-3">
+                         <label class="fs-6 mb-1">Status</label>
+                         <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="getRoles()">
+                              <option value="" disabled>-- Select an option --</option>
+                              <option value=false>Inactive</option>
+                              <option value=true>Active</option>
+                         </select>
+                    </div>
+                    <div class="col-lg-3">
+                         <label class="fs-6 mb-1">&nbsp;</label>
+                         <input type="button" class="btn w-100 btn-secondary" value="Clear filters"
+                              (click)="clearFilters()">
+                    </div>
                </div>
           </div>
      </div>
 
-     <div class="row mt-4">
-          <div class="col-sm-12">
-               <div class="card card-table">
-                    <div class="card-body">
-
-                         <div class="table-responsive">
-                              <div class="pb-5">
-                                   <div class="row d-flex justify-content-end align-items-end">
-                                        <div class="col-lg-4">
-                                             <label class="form-label">&nbsp;</label>
-                                             <input type="text" class="form-control" placeholder="Search items here"
-                                                  [formControl]="keyword" (ngModelChange)="getRoles()">
-                                        </div>
-                                        <div class="col-lg-2">
-                                             <label class="fs-6 mb-1">Status</label>
-                                             <select class="form-select fs-6 text-dark" [formControl]="isActive"
-                                                  (change)="getRoles()">
-                                                  <option value="" disabled>-- Select an option --</option>
-                                                  <option value=false>Inactive</option>
-                                                  <option value=true>Active</option>
-                                             </select>
-                                        </div>
-                                        <div class="col-lg-2">
-                                             <label class="fs-6 mb-1">&nbsp;</label>
-                                             <input type="button" class="btn btn-secondary" value="Clear filters"
-                                                  (click)="clearFilters()">
-                                        </div>
-                                   </div>
-                              </div>
-
-                              <table
-                                   class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-                                   *ngIf="roles.length > 0">
-                                   <thead class="common_thead">
-                                        <tr class="text-left fs-6 text-gray-400">
-                                             <th style="min-width: 120px">&nbsp;</th>
-                                             <th style="min-width: 120px">Name</th>
-                                             <th style="min-width: 120px">Status</th>
-                                             <th style="min-width: 100px">Action</th>
-                                        </tr>
-                                   </thead>
-                                   <tbody class="fs-6">
-                                        <ng-container *ngFor="let role of roles; let i =index">
-                                             <tr>
-                                                  <td>{{i + 1}}</td>
-                                                  <td>{{role?.name}}</td>
-                                                  <td>
-                                                       <span class="alert alert-success p-1"
-                                                            [ngClass]="{'alert-danger': !role?.isActive}">
-                                                            {{role?.isActive ? 'Active' : 'Inactive'}}
-                                                       </span>
-                                                  </td>
-                                                  <td routerLink="{{appRoute.roles.UPDATE_ROLES}}"
-                                                       [queryParams]="{'role': role?.refid}">
-                                                       <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
-                                                  </td>
-                                             </tr>
-                                        </ng-container>
-                                   </tbody>
-                              </table>
-
-                              <div *ngIf="roles.length == 0">
-                                   <div class="emptyNote">
-                                        <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
-                                        <div class="fs-3 fw-bolder">No result found</div>
-                                        <div class="fs-6 note">We couldn't find any item based on your search.</div>
-                                   </div>
-                              </div>
-
-                              <div class="filteringWrapper d-flex align-items-center justify-content-between">
-                                   <div class="filtering">
-                                        <span class="fs-6 text-dark">Show</span>
-                                        <select [formControl]="limit" (change)="getRoles()">
-                                             <option value="5">5</option>
-                                             <option value="10">10</option>
-                                             <option value="15">15</option>
-                                             <option value="20">20</option>
-                                             <option value="25">25</option>
-                                        </select>
-                                        <span class="fs-6 text-dark">entries</span>
-                                   </div>
-                                   <div class="filteringResultCount fs-6">
-                                        Showing <span class="me-1 ms-1">{{roles.length}}</span> of <span
-                                             class="ms-1">{{totalResults}}</span>
-                                   </div>
-                                   <div class="pagination">
-                                        <div class="paginationBefore" [ngClass]="{'disabled': page == 1}"
-                                             (click)="getPreviousPage()">
-                                             <img src="../../../../../../assets/icons/navigateBefore.svg" alt="Icon">
-                                        </div>
-                                        <div class="paginationPage">{{page}}</div>
-                                        <div class="paginationNext" [ngClass]="{'disabled': isLastPage}"
-                                             (click)="getNextPage()">
-                                             <img src="../../../../../../assets/icons/navigateNext.svg" alt="Icon">
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-
-                    </div>
-               </div>
+     <div class="card">
+          <div class="card-body">
+               <table class="table"
+                    *ngIf="roles.length > 0">
+                    <thead>
+                         <tr class="text-left fs-6">
+                              <th>Name</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                         </tr>
+                    </thead>
+                    <tbody class="fs-6">
+                         <ng-container *ngFor="let role of roles; let i =index">
+                              <tr>
+                                   <td>{{role?.name}}</td>
+                                   <td>
+                                        <span class="alert alert-success p-1"
+                                             [ngClass]="{'alert-danger': !role?.isActive}">
+                                             {{role?.isActive ? 'Active' : 'Inactive'}}
+                                        </span>
+                                   </td>
+                                   <td routerLink="{{appRoute.roles.UPDATE_ROLES}}" [queryParams]="{'id': role?._id}">
+                                        <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                                             stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                             <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                                             </path>
+                                             <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                        </svg>
+                                   </td>
+                              </tr>
+                         </ng-container>
+                    </tbody>
+               </table>
+               <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page"
+                    [pageSize]="limit" (pageTrigger)="onPageTriggered($event)"></app-pagination>
           </div>
      </div>
 </div>

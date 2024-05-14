@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
 import { SeoService } from 'src/app/includes/services/seo.service';
 
@@ -13,15 +14,17 @@ export class SeoDetailsComponent implements OnInit {
   appRoute = appRoutes
   seoDetails: any = []
   form: FormGroup
-  isValid: boolean = true;
+  isSubmitted: boolean = false;
+  modalRef?: BsModalRef;
 
   constructor(
     private SeoService: SeoService,
-    private ToastrService: ToastrService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private HotToastService: HotToastService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private BsModalService: BsModalService
   ) { }
 
-  get fc() {
+  get formControls() {
     return this.form.controls
   }
 
@@ -34,40 +37,64 @@ export class SeoDetailsComponent implements OnInit {
       description: new FormControl('', Validators.required),
     })
 
-    this.SeoService.getSeoDetails().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.seoDetails = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    this.fetchSeoDetails()
+  }
+
+  fetchSeoDetails() {
+    this.SeoService.getSeoDetails().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.seoDetails = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
       }
     })
   }
 
   getSeoDetails(seo: any) {
-    this.SeoService.getSeoDetailsById(seo).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
-        this.ChangeDetectorRef.markForCheck()
+    this.SeoService.getSeoDetailsById(seo).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.form.patchValue(res?.result)
+          this.ChangeDetectorRef.markForCheck()
+        }
       }
     })
   }
 
-  closeModal() {
+  close() {
     this.form.reset()
-    this.isValid = true
+    this.form.get('page')?.setValue('')
+    this.modalRef?.hide()
+    this.isSubmitted = false
+  }
+
+  open(template: TemplateRef<any>, seoId?: string) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
+    seoId ? this.getSeoDetails(seoId) : null
   }
 
   manageDetails() {
     if (!this.form.valid) {
-      this.isValid = false
+      this.isSubmitted = true
       return
     }
 
-    this.SeoService.addSeoDetails(this.form.value).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
-        document.location.reload()
-      } else {
-        this.ToastrService.error(res?.message)
+    this.SeoService.manageSeoDetails(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.close()
+          this.fetchSeoDetails()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
       }
     }
     )

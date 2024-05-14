@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
@@ -19,7 +19,7 @@ export class AddUsersComponent implements OnInit {
   form: FormGroup;
   isSubmitted = false;
   rolesData: any;
-  isDuplicate: boolean = false;
+  isAdminExists: boolean = false;
   showPassword: boolean = false
 
   constructor(
@@ -27,7 +27,7 @@ export class AddUsersComponent implements OnInit {
     private RolesService: RolesService,
     private FormBuilder: FormBuilder,
     private Router: Router,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
@@ -36,18 +36,22 @@ export class AddUsersComponent implements OnInit {
       firstname: ['', Validators.required],
       lastname: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      countryCode: ['', Validators.required],
-      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      countryCode: ['+971', Validators.required],
+      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{9}$")]],
       username: ['', Validators.required],
       role: ['', Validators.required],
       password: ['', Validators.required],
-      isActive: ['true', Validators.required],
+      isActive: ['true',],
     });
 
-    this.RolesService.getActiveRoles().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.rolesData = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    this.RolesService.getActiveRoles().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.rolesData = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }, error: (err: any) => {
+
       }
     })
   }
@@ -61,15 +65,34 @@ export class AddUsersComponent implements OnInit {
       this.AdminUsersService.getDuplicateEmail({ email: this.form.get('email')?.value }).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
-            this.isDuplicate = false
+            this.isAdminExists = false
           } else {
-            this.isDuplicate = true
-            this.ToastrService.error(res?.message)
+            this.isAdminExists = true
+            this.HotToastService.error(res?.message)
           }
         }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
+          this.HotToastService.error(err?.message)
         }
       })
+    }
+  }
+
+  updateMobilePattern(newPattern: string) {
+    const validators = this.form.get('mobile')?.validator;
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{10}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{9}$`);
+        break;
     }
   }
 
@@ -77,27 +100,27 @@ export class AddUsersComponent implements OnInit {
     this.showPassword = !this.showPassword
   }
 
-  addAdmin() {
+  onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true;
       return;
     }
 
-    if (!this.isDuplicate) {
+    if (this.isAdminExists) {
+      this.HotToastService.error('This email cannot be used at this time');
+    } else {
       this.AdminUsersService.addAdminUsers(this.form.value).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
-            this.ToastrService.success(res?.message);
+            this.HotToastService.success(res?.message);
             this.Router.navigate([this.appRoute.admin.ADMIN_USERS]);
           } else {
-            this.ToastrService.error(res?.message);
+            this.HotToastService.error(res?.message);
           }
         }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
+          this.HotToastService.error(err?.message)
         }
       })
-    } else {
-      this.ToastrService.error('This email cannot be used at this time');
     }
   }
 }

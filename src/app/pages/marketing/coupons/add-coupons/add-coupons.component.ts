@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AppSettings, PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
@@ -19,22 +17,9 @@ import { ProductService } from 'src/app/includes/services/product.service';
 })
 export class AddCouponsComponent implements OnInit {
   form: FormGroup;
-  task = PageTasks.ADD;
   editMode = false;
-  filedata: File;
   isSubmitted: boolean;
   appRoute = appRoutes;
-  categoriesId: any = [];
-  productsId: any = [];
-  collectionsId: any = [];
-  categoryNames: any = []
-  productNames: any = []
-  collectionNames: any = []
-  croppedImage: string | null | undefined;
-  loadImage: boolean;
-  imageChangedEvent: Event | undefined;
-  filename: any;
-  errors: any
   categories: any = []; //Array of category ids
   categoriesData: any = []; //Data fetched from database
   category: any = []; //Array of categorty name and id
@@ -47,8 +32,8 @@ export class AddCouponsComponent implements OnInit {
   brandsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
   error_message: string;
-  from_date: string;
-  to_date: string
+  fromDate: string;
+  toDate: string
   isValidValue: boolean = true
   settings: any = {}
   startDate: string = new Date().toISOString().split('T')[0];
@@ -59,8 +44,6 @@ export class AddCouponsComponent implements OnInit {
     private categoryService: CategoryService,
     private collectionService: CollectionService,
     private couponsService: CouponsService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
     private AppSettingsService: AppSettingsService,
@@ -76,73 +59,45 @@ export class AddCouponsComponent implements OnInit {
       }
     })
 
-    const getDate = new Date().getDate()
-    const date = new Date()
-    this.from_date = new Date(date.setDate(getDate + 1)).toISOString().split('T')[0]
-    this.to_date = new Date(date.setDate(getDate + 3)).toISOString().split('T')[0]
+    this.fromDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]
+    this.toDate = new Date(new Date().setDate(new Date().getDate() + 3)).toISOString().split('T')[0]
 
-    this.initForm();
-    this.managePage();
+    this.form = new FormGroup({
+      title: new FormControl('', Validators.required),
+      code: new FormControl('', Validators.required),
+      type: new FormControl('', Validators.required),
+      value: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      fromDate: new FormControl('', Validators.required),
+      lastDate: new FormControl('', Validators.required),
+      file: new FormControl(''),
+      minPurchase: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      categories: new FormControl([]),
+      products: new FormControl([]),
+      collections: new FormControl([]),
+      background: new FormControl(''),
+      border: new FormControl(''),
+      radius: new FormControl(''),
+      color: new FormControl(''),
+      fontSize: new FormControl(''),
+      criteriaType: new FormControl('partial'),
+      fontWeight: new FormControl(''),
+      couponType: new FormControl('limited', Validators.required),
+      couponValue: new FormControl(10, Validators.required),
+      isActive: new FormControl('true'),
+      minimumType: new FormControl('cart'),
+      isDelete: new FormControl('false'),
+      isVisibility: new FormControl('true'),
+      countPerUser: new FormControl('1', Validators.pattern("^[0-9]*$")),
+    });
+
     this.getProducts()
     this.getCategories()
     this.getCollections()
     this.getBrands()
   }
 
-  initForm() {
-    this.form = this.formBuilder.group({
-      title: ['', Validators.required],
-      code: ['', Validators.required],
-      type: ['', Validators.required],
-      value: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      fromDate: ['', Validators.required],
-      lastDate: ['', Validators.required],
-      file: [''],
-      minPurchase: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      categories: [],
-      products: [],
-      collections: [],
-      background: [''],
-      border: [''],
-      radius: [''],
-      color: [''],
-      fontSize: [''],
-      criteriaType: ['partial'],
-      fontWeight: [''],
-      couponType: ['limited', Validators.required],
-      couponValue: [10, Validators.required],
-      isActive: ['true'],
-      minimumType: ['cart'],
-      isDelete: ['false'],
-      isVisibility: ['true'],
-      countPerUser: ['1', Validators.pattern("^[0-9]*$")],
-    });
-
-    this.form.get('fromDate')?.setValue(this.from_date)
-    this.form.get('lastDate')?.setValue(this.to_date)
-    this.form.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.form.get('border')?.setValue(AppSettings.BORDER)
-    this.form.get('color')?.setValue(AppSettings.COLOR)
-    this.form.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.form.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.form.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
-  }
-
-  get cf() {
+  get formControls() {
     return this.form.controls;
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
   }
 
   getProducts() {
@@ -167,28 +122,6 @@ export class AddCouponsComponent implements OnInit {
     this.BrandService.getActiveBrands().subscribe((res: any) => {
       this.brandsData = res?.result
     })
-  }
-
-  handleInputChange(event: any) {
-    this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
-    this.imageChangedEvent = event;
-    this.loadImage = true
-  }
-
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
-
-  imageLoaded() { }
-
-  cropperReady() { }
-
-  loadImageFailed() { }
-
-  removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
   }
 
   applyCoupon(type: string) {
@@ -235,17 +168,6 @@ export class AddCouponsComponent implements OnInit {
   }
 
   onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateCoupon();
-    } else {
-      this.addCoupon();
-    }
-  }
-
-  updateCoupon() { }
-
-  addCoupon() {
     if (!this.form.valid) {
       this.isSubmitted = true
       return;
@@ -284,8 +206,6 @@ export class AddCouponsComponent implements OnInit {
           value: this.form.get('couponValue')?.value,
         },
         couponType: this.form.get('criteriaType')?.value,
-        filestring: this.croppedImage,
-        filename: this.filename,
         countPerUser: this.form.get('countPerUser')?.value,
         isActive: this.form.get('isActive')?.value,
         isVisibility: this.form.get('isVisibility')?.value,

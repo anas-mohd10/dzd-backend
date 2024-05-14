@@ -4,11 +4,8 @@ import { FormBuilder, FormControl, FormGroup, Validators, } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
-import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
-import { ToastrService } from 'ngx-toastr'
-import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -16,7 +13,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { HotToastService } from '@ngneat/hot-toast';
-
 
 @Component({
   selector: 'app-update-product',

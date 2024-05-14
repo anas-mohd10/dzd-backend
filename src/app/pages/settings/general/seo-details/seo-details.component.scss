@@ -1,44 +1,16 @@
-$hover: #e3e3e3;
-$grey: #888888;
 $white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.05);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
 
-
-code:not([class*=language-]) {
-    background-color: none !important;
-    box-shadow: none !important;
-    margin: 0 !important;
+.btn-primary,
+.btn-secondary,
+.btn,
+label {
+    font-weight: 400 !important;
 }
 
-.seoCards {
+.seo-details {
+    background: $white;
 
-    .seoCard {
-        position: relative;
-        box-shadow: 0 10px 25px $boxShadow;
-        background: $white;
-        border-radius: 10px;
-
-        .metaTitle {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .seoEdit {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            height: 30px;
-            width: 30px;
-            cursor: pointer;
-            color: $grey;
-        }
-
+    .fs-6 {
+        width: max-content;
     }
 }

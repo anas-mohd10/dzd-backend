@@ -10,6 +10,8 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
+import { TestimonialService } from 'src/app/includes/services/testimonial.service';
+
 
 interface WidgetProps {
   title: string;
@@ -45,7 +47,14 @@ export class HomeComponent implements OnInit {
     { title: 'Trending Teasers', type: 'trending-teasers', icon: '../../../../assets/widgets/trending-teasers.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Smart Tiles', type: 'smart-tiles', icon: '../../../../assets/widgets/smart-tiles.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Stellar Selections', type: 'stellar-selections', icon: '../../../../assets/widgets/stellar-selections.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Testimonials', type: 'testimonial-cards', icon: '../../../../assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Regal Rolls', type: 'regal-rolls', icon: '../../../../assets/widgets/regal-rolls.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Radiant Rectangles', type: 'radiant-rectangles', icon: '../../../../assets/widgets/radiant-rectangles.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
+    { title: 'Unity Nexus', type: 'unity-nexus', icon: '../../../../assets/widgets/unity-nexus.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Picture Palette', type: 'picture-palette', icon: '../../../../assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Store Chronicles', type: 'store-chronicles', icon: '../../../../assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
   ]
+
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
   widgetsRef?: BsModalRef;
@@ -115,6 +124,9 @@ export class HomeComponent implements OnInit {
   spotlightSliders: Array<any> = []
   settings: any = {}
   categories: Array<any> = []
+  testimonialKeyword: FormControl = new FormControl("", Validators.required);
+  testimonials: Array<any> = []
+  widgetTestimonials: Array<any> = []
 
   constructor(
     private BsModalService: BsModalService,
@@ -125,8 +137,40 @@ export class HomeComponent implements OnInit {
     private ProductService: ProductService,
     private CollectionService: CollectionService,
     private AppSettingsService: AppSettingsService,
-    private CategoryService: CategoryService
+    private CategoryService: CategoryService,
+    private TestimonialService: TestimonialService
   ) { }
+
+  //Testimonial widget operations
+  getTestimonials() {
+    if (!this.testimonialKeyword.valid) {
+      this.testimonials = []
+      return
+    }
+
+    this.TestimonialService.searchTestimonials({ keyword: this.testimonialKeyword.value, isActive: true }, 1, 20).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.testimonials = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res.message)
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  toggleTestimonials(testimonial: any) {
+    let isExists = this.widgetTestimonials.some((item: any) => item._id == testimonial._id)
+    if (isExists) {
+      this.widgetTestimonials = this.widgetTestimonials.filter(item => item._id != testimonial._id)
+    } else {
+      this.widgetTestimonials.push(testimonial)
+    }
+  }
+  //Testimonial widget operations
 
   //Smart tiles widgets
   getTileProducts() {
@@ -255,6 +299,9 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.widgetType == 'blog') {
             this.widgetBlogs = this.widgetDetails?.blogs
             this.getBlogs('')
+          }
+          if (this.widgetDetails?.widgetType == 'testimonial-cards') {
+            this.widgetTestimonials = this.widgetDetails?.testimonials
           }
           this.widgetDetails?.widgetType == 'smart-tiles' || this.widgetDetails?.widgetType == 'products' ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
@@ -426,6 +473,9 @@ export class HomeComponent implements OnInit {
       widgetPayload['widgetImages'] = widgetImages
     } else if (this.widgetDetails?.widgetType == 'blogs') {
       let widgetBlogs = []
+    } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
+      let widgetTestimonials = this.widgetTestimonials.map((testimonial: any) => testimonial._id)
+      widgetPayload['testimonials'] = widgetTestimonials
     } else if (this.widgetDetails?.widgetType == 'sale-timer') {
       widgetPayload = {
         visibility: this.form.get("visibility")?.value,
@@ -462,6 +512,8 @@ export class HomeComponent implements OnInit {
           this.widgetImagePreviewIndex = null
           this.widgetImagePreview = null
           this.form.reset()
+          this.testimonialKeyword.setValue("")
+          this.widgetTestimonials = []
           this.designForm.patchValue({
             backgroundColor: '#ffffff', backgroundImage: '', marginLeft: 0,
             marginTop: 0, marginRight: 0, marginBottom: 0,
@@ -551,6 +603,18 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.widgets = this.widgets.sort((a: any, b: any) => {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+
     this.focusedWidget = this.widgets[0]
     // this.getHomeDraftWidgets()
     this.getHomeWidgets()
@@ -560,6 +624,7 @@ export class HomeComponent implements OnInit {
       description: new FormControl(""),
       html: new FormControl(""),
       htmlStyles: new FormControl(""),
+      htmlScripts: new FormControl(""),
       video: new FormControl(""),
       view: new FormControl("grid"),
       gridsPerCount: new FormControl("4"),

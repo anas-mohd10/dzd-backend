@@ -1,13 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { RolesService } from 'src/app/includes/services/roles.service';
-
 @Component({
   selector: 'app-update-users',
   templateUrl: './update-users.component.html',
@@ -20,7 +19,7 @@ export class UpdateUsersComponent implements OnInit {
   form: FormGroup;
   isSubmitted = false;
   rolesData: any;
-  admin: any;
+  adminId: any;
   uniqueEmail: boolean = false;
   isMobileEditable: boolean = false
   isEmailEditable: boolean = false
@@ -38,7 +37,7 @@ export class UpdateUsersComponent implements OnInit {
     private FormBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService
   ) { }
@@ -55,12 +54,18 @@ export class UpdateUsersComponent implements OnInit {
       isActive: ['true', Validators.required],
     });
 
-    this.admin = this.route.snapshot.queryParams.admin || ''
+    this.adminId = this.route.snapshot.queryParams.id || ''
 
-    this.RolesService.getActiveRoles().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.ChangeDetectorRef.markForCheck()
-        this.rolesData = res?.result
+    this.RolesService.getActiveRoles().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ChangeDetectorRef.markForCheck()
+          this.rolesData = res?.result
+        }else{
+
+        }
+      }, error: (err: any) => {
+
       }
     })
 
@@ -68,10 +73,10 @@ export class UpdateUsersComponent implements OnInit {
   }
 
   getAdminDetails() {
-    this.AdminUsersService.getAdminUser(this.admin).subscribe((res: any) => {
+    this.AdminUsersService.getAdminUser(this.adminId).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.adminDetails = res?.result
-        for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+        this.form.patchValue(res?.result)
         this.ChangeDetectorRef.markForCheck()
       }
     })
@@ -112,13 +117,13 @@ export class UpdateUsersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.isMobileEditable = false
               this.getAdminDetails()
-              this.ToastrService.success(res?.message)
+              this.HotToastService.success(res?.message)
               this.ChangeDetectorRef.markForCheck()
             } else {
-              this.ToastrService.error(res?.message)
+              this.HotToastService.error(res?.message)
             }
           }, error: (err: any) => {
-            this.ToastrService.error(err?.message)
+            this.HotToastService.error(err?.message)
           }
         })
         break
@@ -133,13 +138,13 @@ export class UpdateUsersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.isEmailEditable = false
               this.getAdminDetails()
-              this.ToastrService.success(res?.message)
+              this.HotToastService.success(res?.message)
               this.ChangeDetectorRef.markForCheck()
             } else {
-              this.ToastrService.error(res?.message)
+              this.HotToastService.error(res?.message)
             }
           }, error: (err: any) => {
-            this.ToastrService.error(err?.message)
+            this.HotToastService.error(err?.message)
           }
         })
         break
@@ -159,15 +164,15 @@ export class UpdateUsersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.isPasswordEditable = false
           this.getAdminDetails()
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.ChangeDetectorRef.markForCheck()
           this.modalRef?.hide()
           this.password?.setValue('')
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
@@ -192,9 +197,9 @@ export class UpdateUsersComponent implements OnInit {
       role: this.form.get('role')?.value
     }).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.ToastrService.error(res?.message);
+        this.HotToastService.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.ToastrService.success('Admin user added successfully');
+        this.HotToastService.success('adminId user added successfully');
         this.router.navigate([this.appRoute.admin.ADMIN_USERS]);
       }
     })

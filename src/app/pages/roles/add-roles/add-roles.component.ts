@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { PermissionsService } from 'src/app/includes/services/permissions.service';
@@ -19,8 +19,7 @@ export class AddRolesComponent implements OnInit {
   editMode = false;
   isSubmitted = false;
   permissions: any = []
-  checkedPermissions: Array<any> = []
-  isSelected: boolean = false
+  rolePermissions: Array<any> = []
 
   constructor(
     private RolesService: RolesService,
@@ -28,22 +27,23 @@ export class AddRolesComponent implements OnInit {
     private FormBuilder: FormBuilder,
     private Router: Router,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
-    this.form = this.FormBuilder.group({
-      name: ['', Validators.required],
-      description: [''],
-      isActive: ['true']
+    this.form = new FormGroup({
+      name: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      isActive: new FormControl('true'),
+      permissions: new FormControl([], Validators.required)
     });
 
-    this.managePage()
-
-    this.PermissionsService.getPermissions().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.permissions = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    this.PermissionsService.getPermissions().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.permissions = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
       }
     })
   }
@@ -52,62 +52,38 @@ export class AddRolesComponent implements OnInit {
     return this.form.controls;
   }
 
-  managePermission(permission: any) {
-    if (!this.checkedPermissions.includes(permission)) {
-      this.checkedPermissions.push(permission)
+  toggleRolePermissions(permission: string) {
+    let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission)
+    if (isExists) {
+      this.rolePermissions = this.rolePermissions.filter((rolePermission: any) => rolePermission != permission)
     } else {
-      this.checkedPermissions = this.checkedPermissions.filter((item: any) => item != permission)
+      this.rolePermissions.push(permission)
     }
-
-    if (this.checkedPermissions.length == this.permissions.length) this.isSelected = true
   }
 
-  selectPermissions() {
-    for (let permission of this.permissions) this.checkedPermissions.push(permission?.refid)
-    this.isSelected = true
-  }
-
-  removePermissions() {
-    this.checkedPermissions = []
-    this.isSelected = false
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
+  roleExists(permission: string) {
+    return this.rolePermissions.some((rolePermission: any) => rolePermission == permission)
   }
 
   onSubmit() {
-    this.isSubmitted = true;
-    this.editMode ? this.updateRole() : this.addRole();
-  }
+    this.form.get('permissions')?.setValue(this.rolePermissions)
 
-  addRole() {
     if (!this.form.valid) {
       this.isSubmitted = true
       return
     }
 
-    let payload = { ...this.form.value, permissions: this.checkedPermissions }
-    if (this.checkedPermissions.length > 0) {
-      this.RolesService.addRoles(payload).subscribe((res: any) => {
+    this.RolesService.addRoles(this.form.value).subscribe({
+      next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.Router.navigate([this.appRoute.roles.ROLES_LIST])
+        } else {
+          this.HotToastService.error(res?.message)
         }
-      })
-    } else {
-      this.ToastrService.error('Select atleast one permission to continue')
-    }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
   }
-
-  updateRole() { }
 }

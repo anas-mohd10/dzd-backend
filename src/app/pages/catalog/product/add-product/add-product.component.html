@@ -1,155 +1,165 @@
 <div>
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder">Add products</h1>
+      <h1 class="fw-bold">Add products</h1>
     </div>
-    <div class="row align-items-center">
-      <div class="d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.product.ADD_PRODUCT }}">Add products</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <ul class="breadcrumb">
+      <li class="breadcrumb-item fs-6">
+        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item fs-6">
+        <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
+      </li>
+      <li class="breadcrumb-item active fs-6">
+        <a routerLink="{{ appRoute.product.ADD_PRODUCT }}">Add products</a>
+      </li>
+    </ul>
   </div>
 
-  <div class="row mt-4">
+  <div class="row my-4">
     <div class="card">
       <div class="card-body">
 
-        <tabset type="pills" [justified]="true" #staticTabs>
+        <tabset type="tabs" [justified]="true" #staticTabs>
           <tab heading="Basic details">
             <form [formGroup]="parentForm">
               <div class="row my-6">
-                <div class="col-lg-6 mb-3 form-group">
-                  <label class="fs-6 mb-3 required">Name</label>
-                  <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
-                    formControlName="name" />
-                </div>
-                <div class="col-lg-6 mb-3 form-group">
-                  <label class="fs-6 mb-3">HSN</label>
-                  <input type="text" class="form-control fs-6" formControlName="hsn" />
-                </div>
-                <div class="col-lg-6 mb-3 form-group">
-                  <label class="fs-6 mb-3 required">SKU</label>
-                  <input type="text" class="form-control fs-6" formControlName="sku" />
-                </div>
-                <div class="col-lg-6 mb-3 form-group">
-                  <label class="fs-6 mb-3 required">Tax</label>
-                  <select formControlName="tax" id="tax" class="form-select">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-lg-6 form-group mb-3">
-                  <label class="fs-6 mb-3">Brand</label>
-                  <app-brand-dropdown [isMultiple]="isBrandMultiple" [brandDetails]="brandDetails"
-                    (brandTriggered)="onBrandTriggered($event)"></app-brand-dropdown>
-                </div>
-                <div class="col-lg-6 form-group mb-3">
-                  <label class="fs-6 mb-3 required">Category</label>
-                  <app-category-dropdown [isMultiple]="isCategoryMultiple"
-                    (categoryTriggered)="onCategoryTriggered($event)"></app-category-dropdown>
-                  <ng-container *ngIf="productCategories.length > 0">
-                    <div class="mt-2 d-flex flex-wrap gap-3 align-items-center justify-content-start">
-                      <ng-container *ngFor="let category of productCategories; let i = index">
-                        <div class="bg-secondary p-2 rounded">
-                          {{category.name}}
-                        </div>
-                      </ng-container>
-                    </div>
-                  </ng-container>
-                </div>
-                <div class="col-lg-6 mb-3 form-group">
-                  <label class="fs-6 mb-3">Default category</label>
-                  <select formControlName="category" id="defaultCategory" class="form-select">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let category of defaultCategories" value="{{category._id}}">
-                      {{category.name}}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-lg-6 mb-3 form-group">
-                  <label class="fs-6 mb-3 required" for="isActive">Status</label>
-                  <select formControlName="isActive" id="isActive" class="form-select">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                      {{status == 'true' ? 'True' : 'False'}}
-                    </option>
-                  </select>
-                </div>
-                <div class="row px-0 mx-0" formGroupName="cod">
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="isPresent">COD available</label>
-                    <select formControlName="isPresent" id="isPresent" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                        {{status == 'true' ? 'True' : 'False'}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="value">Charge</label>
-                    <input type="number" class="form-control fs-6" formControlName="value" />
-                  </div>
-                </div>
-                <div class="row px-0 mx-0" formGroupName="return">
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="isPresent">Return available</label>
-                    <select formControlName="isPresent" id="isPresent" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                        {{status == 'true' ? 'True' : 'False'}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="value">Days</label>
-                    <input type="number" class="form-control fs-6" formControlName="value" />
-                  </div>
-                </div>
-                <div class="row px-0 mx-0" formGroupName="replace">
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="isPresent">Replace option available</label>
-                    <select formControlName="isPresent" id="isPresent" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                        {{status == 'true' ? 'True' : 'False'}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="value">Days</label>
-                    <input type="number" class="form-control fs-6" formControlName="value" />
-                  </div>
-                </div>
-                <div class="row px-0 mx-0" formGroupName="shipping">
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="isPresent">Free shipping available</label>
-                    <select formControlName="isPresent" id="isPresent" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                        {{status == 'true' ? 'True' : 'False'}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 mb-3 from-group">
-                    <label class="fs-6 mb-3" for="value">Charge</label>
-                    <input type="number" class="form-control fs-6" formControlName="value" />
-                  </div>
-                </div>
-                <div class="col-lg-3 mb-3 form-group">
+                <div class="col-lg-3 form-group">
                   <label class="fs-6 mb-3">Thumbnail</label>
                   <div class="ratio ratio-1x1 h-auto w-100 rounded">
                     <app-assets (mediaClicked)="handleThumbnail($event)" [previewDetails]="previewDetails"></app-assets>
+                  </div>
+                </div>
+                <div class="col-lg-9">
+                  <div class="row">
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Name</label>
+                      <input type="text" class="form-control fs-6" placeholder="Eg. iPhone 14 Pro Max"
+                        formControlName="name" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3">HSN</label>
+                      <input type="text" class="form-control fs-6" formControlName="hsn" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">SKU</label>
+                      <input type="text" class="form-control fs-6" formControlName="sku" />
+                    </div>
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Tax</label>
+                      <select formControlName="tax" id="tax" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-6 form-group mb-3">
+                      <label class="fs-6 mb-3" for="brand">Brand</label>
+                      <select id="brand" formControlName="brand" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let brand of brands" value="{{brand?._id}}">
+                          {{brand?.name}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-6 form-group mb-3">
+                      <label class="fs-6 mb-3 required" for="tax">Category</label>
+                      <select id="parentCategory" formControlName="parentCategory" class="form-select"
+                        (change)="addCategory()">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let category of mainCategories" value="{{category?._id}}">{{category?.name}}
+                        </option>
+                      </select>
+
+                      <div class="mt-3 d-flex flex-wrap gap-2 align-items-center jusitfy-content-start"
+                        *ngIf="parentCategories.length > 0">
+                        <ng-container *ngFor="let category of parentCategories; let i = index">
+                          <div class="bg-secondary p-2 rounded">{{category?.name}}</div>
+                        </ng-container>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3">Default category</label>
+                      <select formControlName="defaultCategory" id="defaultCategory" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let category of defaultCategories" value="{{category._id}}">
+                          {{category.name}}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-lg-6 mb-3 form-group">
+                      <label class="fs-6 mb-3 required" for="isActive">Status</label>
+                      <select formControlName="isActive" id="isActive" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                          {{status == 'true' ? 'True' : 'False'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="row px-0 mx-0" formGroupName="cod">
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="isPresent">COD available</label>
+                        <select formControlName="isPresent" id="isPresent" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                            {{status == 'true' ? 'True' : 'False'}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="value">Charge</label>
+                        <input type="number" class="form-control fs-6" formControlName="value" />
+                      </div>
+                    </div>
+                    <div class="row px-0 mx-0" formGroupName="return">
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="isPresent">Return available</label>
+                        <select formControlName="isPresent" id="isPresent" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                            {{status == 'true' ? 'True' : 'False'}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="value">Days</label>
+                        <input type="number" class="form-control fs-6" formControlName="value" />
+                      </div>
+                    </div>
+                    <div class="row px-0 mx-0" formGroupName="replace">
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="isPresent">Replace option available</label>
+                        <select formControlName="isPresent" id="isPresent" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                            {{status == 'true' ? 'True' : 'False'}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="value">Days</label>
+                        <input type="number" class="form-control fs-6" formControlName="value" />
+                      </div>
+                    </div>
+                    <div class="row px-0 mx-0" formGroupName="shipping">
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="isPresent">Free shipping available</label>
+                        <select formControlName="isPresent" id="isPresent" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                            {{status == 'true' ? 'True' : 'False'}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-lg-6 mb-3 from-group">
+                        <label class="fs-6 mb-3" for="value">Charge</label>
+                        <input type="number" class="form-control fs-6" formControlName="value" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

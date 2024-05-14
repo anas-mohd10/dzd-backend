@@ -33,6 +33,7 @@ import { CustomMailersComponent } from './settings/general/custom-mailers/custom
 import { MailerDetailsComponent } from './settings/general/mailer-details/mailer-details.component';
 import { GuestsComponent } from './users/guests/guests.component';
 import { ShippingChargeComponent } from './settings/general/shipping-charge/shipping-charge.component';
+import { PageCoversComponent } from './page-covers/page-covers.component';
 
 export const Routing: Routes = [
   {
@@ -437,6 +438,10 @@ export const Routing: Routes = [
       }, {
         path: 'analytics',
         component: AnalyticsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'page-covers',
+        component: PageCoversComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'loyalty',

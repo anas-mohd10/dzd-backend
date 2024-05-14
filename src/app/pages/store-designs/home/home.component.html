@@ -203,7 +203,7 @@
                                             <label for="buttonLink" class="form-label">Button redirection</label>
                                             <input type="text" placeholder="View more" id="buttonLink"
                                                 formControlName="buttonLink"
-                                                placeholder="https://freshfruitmart.storedada.net/products/vegetables"
+                                                placeholder="https://freshfruitmart.StoreDada.net/products/vegetables"
                                                 class="form-control">
                                         </div>
                                     </div>
@@ -309,8 +309,9 @@
                                                 class="form-control" [formControl]="redirectionQuery"
                                                 (ngModelChange)="redirectionQueryChange()">
                                             <input *ngIf="widgetForm.get('redirectionType')?.value == 'all-products'"
-                                                type="text" id="redirectionSearch" placeholder="Product redirection to all products"
-                                                class="form-control" [formControl]="redirectionQuery" [disabled]="true" >
+                                                type="text" id="redirectionSearch"
+                                                placeholder="Product redirection to all products" class="form-control"
+                                                [formControl]="redirectionQuery" [disabled]="true">
                                             <select *ngIf="widgetForm.get('redirectionType')?.value == 'static-pages'"
                                                 [formControl]="redirectionQuery" id="redirectionSearch"
                                                 class="form-select">
@@ -348,17 +349,24 @@
                 <div *ngIf="widgetDetails?.widgetType == 'html'">
                     <p class="text-muted">You can paste/write your widget code and images in this section.</p>
                     <div class="row">
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <label for="html" class="form-label">Paste Html</label>
+                                <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="htmlStyles" class="form-label">Paste Styles</label>
+                                <label for="htmlStyles" class="form-label">Paste Styles ( CSS / SCSS )</label>
                                 <textarea formControlName="htmlStyles" id="htmlStyles" rows="10"
                                     class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="html" class="form-label">Paste Html</label>
-                                <textarea formControlName="html" id="html" rows="10" class="form-control"></textarea>
+                                <label for="htmlScripts" class="form-label">Paste Scripts ( Accepts JS )</label>
+                                <textarea formControlName="htmlScripts" id="htmlScripts" rows="10"
+                                    class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -366,6 +374,48 @@
 
                 <div *ngIf="widgetDetails?.widgetType == 'blogs'">
 
+                </div>
+
+                <div *ngIf="widgetDetails?.widgetType == 'testimonial-cards'">
+                    <div *ngIf="widgetTestimonials.length > 0">
+                        <div class="my-2 fs-4 fw-bold">Widget testimonials</div>
+                        <div *ngFor="let widgetTestimonial of widgetTestimonials; let i = index"
+                            class="p-2 rounded border border-secondary my-2">
+                            <div class="fs-5">
+                                {{widgetTestimonial?.name}}
+                                <span class="text-muted fs-6">{{widgetTestimonial?.place}}</span>
+                            </div>
+                            <div class="text-ellipsis mt-1">{{widgetTestimonial?.message}}</div>
+                            <div class="mt-2">
+                                <app-start-rating [rating]="widgetTestimonial?.rating"></app-start-rating>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input type="text" id="testimonial" placeholder="Search testimonials" class="form-control"
+                            [formControl]="testimonialKeyword" (ngModelChange)="getTestimonials()">
+                    </div>
+
+                    <div *ngIf="testimonialKeyword.value">
+                        <div class="my-2 fs-5 text-muted">Showing results for
+                            <span class="text-primary">{{testimonialKeyword.value}}</span>
+                        </div>
+                        <div class="testimonials">
+                            <div *ngFor="let testimonial of testimonials; let i  = index"
+                                class="mb-2 py-2 border-bottom border-secondary testimonial"
+                                (click)="toggleTestimonials(testimonial)">
+                                <div class="fs-5">
+                                    {{testimonial?.name}}
+                                    <span class="text-muted fs-6">{{testimonial?.place}}</span>
+                                </div>
+                                <div class="text-ellipsis mt-1">{{testimonial?.message}}</div>
+                                <div class="mt-2">
+                                    <app-start-rating [rating]="testimonial?.rating"></app-start-rating>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div *ngIf="widgetDetails?.widgetType == 'sale-timer'">
@@ -423,7 +473,7 @@
                                 <div class="form-group mb-3">
                                     <label for="saleButtonLink" class="form-label">Button redirection</label>
                                     <input type="text" id="saleButtonLink"
-                                        placeholder="https://freshfruitmart.storedada.net/products/fruits"
+                                        placeholder="https://freshfruitmart.StoreDada.net/products/fruits"
                                         formControlName="saleButtonLink" class="form-control">
                                 </div>
                             </div>

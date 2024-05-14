@@ -54,7 +54,7 @@ export class WebDashboardComponent implements OnInit {
   ) { }
 
   @ViewChild('previewFrame', { static: true }) myIframe: ElementRef;
-  iframeSrc: SafeResourceUrl = this.DomSanitizer.bypassSecurityTrustResourceUrl('https://demo.storedada.com/');
+  iframeSrc: SafeResourceUrl = this.DomSanitizer.bypassSecurityTrustResourceUrl('https://demo.StoreDada.com/');
 
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
