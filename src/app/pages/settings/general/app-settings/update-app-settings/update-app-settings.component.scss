@@ -6,6 +6,26 @@
     margin: 0 !important;
 }
 
+.payment-cards{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    .payment-card{
+        border: 1px solid #ededed;
+
+        &.selected{
+            border: 1px solid #00bdab;
+        }
+    }
+
+    img{
+        width: 120px;
+        height: 120px;
+    }
+
+}
+
 .currencyInputs {
     width: 100%;
     display: grid;

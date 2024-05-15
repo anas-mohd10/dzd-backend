@@ -59,6 +59,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       { class: 'sen', name: 'Sen' },
     ]
   };
+  paymentGateways: Array<string> = []
   fontFamily: Array<any> = ['Manrope', 'Figtree', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
   logo?: string
   favicon?: string
@@ -88,6 +89,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.data = res?.result
         this.logo = res?.result?.logo?.path
+        this.paymentGateways = res?.result?.paymentGateway
         this.favicon = res?.result?.favicon?.path
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
@@ -100,6 +102,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('toastError')?.setValue("#" + res?.result?.toast?.error.split('FF')[1])
         this.form.get('toastInfo')?.setValue("#" + res?.result?.toast?.info.split('FF')[1])
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
+        this.form.get('paymentGateway')?.setValue(res?.result?.paymentGateway)
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('name')?.setValue(res?.result?.name)
@@ -142,7 +145,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
       logo: ['', Validators.required],
-      favicon: ['', Validators.required]
+      favicon: ['', Validators.required],
+      paymentGateway: ['', Validators.required],
     })
   }
 
@@ -154,13 +158,21 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.form.get('favicon')?.setValue(event._id)
   }
 
+  setPaymentGateways(paymentGateway: string) {
+    this.paymentGateways.includes(paymentGateway)
+      ? this.paymentGateways = this.paymentGateways.filter((item: string) => item != paymentGateway)
+      : this.paymentGateways.push(paymentGateway)
+  }
+
   onSubmit() {
+    this.form.get('paymentGateway')?.setValue(this.paymentGateways)
+
     if (!this.form.valid) {
       this.isSubmitted = true
       return
     }
 
-    const data = {
+    this.AppSettingsService.updateGeneralSettings({
       colors: {
         primary: this.form.get('primary')?.value,
         secondary: this.form.get('secondary')?.value,
@@ -184,6 +196,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       description: this.form.get('description')?.value,
       shippingCost: this.form.get('shippingCost')?.value,
       logo: this.form.get('logo')?.value,
+      paymentGateway: this.form.get('paymentGateway')?.value,
       favicon: this.form.get('favicon')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
@@ -191,9 +204,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         stock: this.form.get('stockButton')?.value,
         notify: this.form.get('notifyButton')?.value
       }
-    }
-
-    this.AppSettingsService.updateGeneralSettings(data).subscribe({
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message)
