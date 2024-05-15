@@ -10,5 +10,12 @@ export const menuEndpoints = {
     getCsTitles: '/get-cstitles',
     rearrangeCsTitles: '/rerrange-cstitles',
     getCsDetails: '/cstitle',
-    deleteCsTitles: '/delete-cstitle'    
+    deleteCsTitles: '/delete-cstitle',
+
+    createCsTitleItems: '/create-cstitleitem',
+    updateCsTitleItems: '/update-cstitleitem',
+    getCsTitleItems: '/get-cstitleitems',
+    rearrangeCsTitleItems: '/rerrange-cstitleitems',
+    getCsItemDetails: '/cstitleitem',
+    deleteCsTitleItems: '/delete-cstitleitem'
 };
