@@ -43,72 +43,69 @@ label,
     font-weight: normal !important;
 }
 
-.megaMenuWrapper {
 
-    .layoutWrapper {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 10px;
+.layoutWrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
 
-        .layoutCard {
-            cursor: pointer;
-            box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
-            background: $white;
-            border: 1px solid $background;
-
-            &.selected {
-                background: #00bdab20;
-                color: $activeState;
-                border: 1px solid $activeState;
-            }
-        }
-    }
-
-    .categoryCard {
+    .layoutCard {
         cursor: pointer;
-        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.01);
         background: $white;
-        margin: 0 0 15px 0;
+        border: 1px solid $background;
+
+        &.selected {
+            background: #00bdab20;
+            color: $activeState;
+            border: 1px solid $activeState;
+        }
+    }
+}
+
+.categoryCard {
+    cursor: pointer;
+    box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.01);
+    background: $white;
+    margin: 0 0 15px 0;
+    border: 1px solid $border;
+
+    .categoryCardHeader {
+
+        .removeCategory {
+            color: $grey;
+        }
+    }
+}
+
+.subcategoryWrapper {
+    display: none;
+
+    &.show {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .subcategory {
+        &.selected {
+            background: #00bdab20;
+            border: 1px solid $activeState;
+        }
+    }
+}
+
+.categoryWrapper {
+    height: 300px;
+    max-height: 300px;
+    overflow-y: scroll;
+
+    .category {
+        cursor: pointer;
         border: 1px solid $border;
+        background: $background;
 
-        .categoryCardHeader {
-
-            .removeCategory {
-                color: $grey;
-            }
-        }
-    }
-
-    .subcategoryWrapper {
-        display: none;
-
-        &.show {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .subcategory {
-            &.selected {
-                background: #00bdab20;
-                border: 1px solid $activeState;
-            }
-        }
-    }
-
-    .categoryWrapper {
-        height: 300px;
-        max-height: 300px;
-        overflow-y: scroll;
-
-        .category {
-            cursor: pointer;
-            border: 1px solid $border;
-            background: $background;
-
-            svg {
-                color: $grey;
-            }
+        svg {
+            color: $grey;
         }
     }
 }

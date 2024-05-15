@@ -546,6 +546,7 @@ export class NavigationMenuComponent implements OnInit {
       this.MenuService.getCsTitleDetails(id).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
+            this.titleRefDetails = res?.result
             this.advacnedMenuForm.patchValue(res?.result)
             if (res?.result?.icon) this.advancedMenuIcon = res?.result?.icon?.path
             if (res?.result?.advertisementThumbnail) this.advancedAvertisementThumbnail = res?.result?.advertisementThumbnail?.path
