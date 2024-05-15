@@ -81,6 +81,8 @@ export class NavigationMenuComponent implements OnInit {
   advancedAvertisementThumbnail: any;
   isEditTitleRef: boolean = false;
   titleRefDetails: any;
+  advancedTitleRefItems: BsModalRef;
+  advancedMenuTitleItems: Array<any> = []
   //Advanced Menu
 
 
@@ -610,8 +612,55 @@ export class NavigationMenuComponent implements OnInit {
     }
   }
 
+  onSubmitTitleItemRef() {
+    if (this.isEditTitleRef) {
+      this.MenuService.updateCsTitleItems({ _id: this.titleRefDetails?._id, ...this.advacnedMenuForm.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.message)
+            this.getCsTitles()
+            this.closeTitleRef()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    } else {
+      this.MenuService.createCsTitleItems(this.advacnedMenuForm.value).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.message)
+            this.getCsTitles()
+            this.closeTitleRef()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    }
+  }
+
   onDeleteTitleRef(id: string) {
     this.MenuService.deleteCsTitle(id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getCsTitles()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  onDeleteTitleItemRef(id: string) {
+    this.MenuService.deleteCsTitleItems(id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
@@ -645,6 +694,32 @@ export class NavigationMenuComponent implements OnInit {
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.advancedMenuTitles = [...items]
     this.rearrangeMenuTitles()
+  }
+
+  dropTitleItems(event: any) {
+    let items = [...this.advancedMenuTitleItems]
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.advancedMenuTitleItems = [...items]
+    this.rearrangeMenuTitleItems()
+  }
+
+  rearrangeMenuTitleItems() {
+    let items = this.advancedMenuTitles.map((item: any, index: number) => {
+      return { index: index, _id: item._id }
+    })
+
+    this.MenuService.rearrangeCsTitleItems({ items: items }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getCsTitles()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
   }
 
   rearrangeMenuTitles() {
