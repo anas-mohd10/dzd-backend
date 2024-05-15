@@ -296,6 +296,10 @@ export class HomeComponent implements OnInit {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({ url: widgetImage?.media, title: widgetImage?.title, redirection: widgetImage?.redirection })
             }
+            this.widgetImagePreview = this.widgetImages[0]
+            this.widgetImagePreviewIndex = 0
+            this.previewDetails = this.widgetImagePreview.url ? this.widgetImagePreview.url?.path : ""
+            this.widgetForm.patchValue(this.widgetImagePreview)
           }
           if (this.widgetDetails?.widgetType == 'blog') {
             this.widgetBlogs = this.widgetDetails?.blogs
@@ -463,6 +467,12 @@ export class HomeComponent implements OnInit {
     this.saleForm.get('saleButtonVisibility')?.setValue(true)
   }
 
+  dropWidgetImages(event: any) {
+    let items = [...this.widgetImages]
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.widgetImages = [...items]
+  }
+
   updateWidget(type?: string) {
     let widgetPayload = { ...this.form.value, refid: this.widgetDetails?.refid }
 
@@ -513,6 +523,14 @@ export class HomeComponent implements OnInit {
           this.widgetImagePreviewIndex = null
           this.widgetImagePreview = null
           this.form.reset()
+          this.widgetForm.patchValue({
+            "title": "",
+            "redirection": "",
+            "redirectionType": "",
+            "buttonText": "",
+            "buttonRedirection": "",
+            "redirectionQuery": ""
+          })
           this.testimonialKeyword.setValue("")
           this.widgetTestimonials = []
           this.designForm.patchValue({

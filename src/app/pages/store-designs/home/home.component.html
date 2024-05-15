@@ -77,9 +77,6 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-7">
-                <div class="mb-2">
-                    <input type="text" place>
-                </div>
                 <div class="modal-widgets">
                     <ng-container *ngFor="let widget of widgets; let i = index">
                         <div class="modal-widget p-4 rounded border w-100" (click)="focusWidget(widget)"
@@ -248,18 +245,15 @@
                         </div>
                     </div>
                     <div class="mb-2 p-4 rounded border border-secondary">
-                        <div class="modal-images">
-                            <ng-container *ngFor="let image of widgetImages; let i = index">
-                                <div class="modal-image w-100 rounded border border-secondary ratio ratio-1x1"
-                                    (click)="getWidgetImagePreview(i)">
-                                    <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}"
-                                        alt="{{image?.url?.title}}">
-                                    <div class="position-absolute delete-modal-image bg-dark"
-                                        (click)="deleteWidgetImage(i, $event)">
-                                        <img src="../../../../assets/widgets/assets/close-light.svg" alt="Close">
-                                    </div>
-                                </div>
-                            </ng-container>
+                        <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
+                            (cdkDropListDropped)="dropWidgetImages($event)">
+
+                            <div class="modal-image rounded border border-secondary ratio ratio-1x1"
+                                *ngFor="let image of widgetImages; let i = index" cdkDrag
+                                (click)="getWidgetImagePreview(i)">
+                                <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}" alt="{{image?.url?.title}}">
+                            </div>
+
                             <div class="modal-image w-100 ratio ratio-1x1 h-auto">
                                 <app-assets (mediaClicked)="addMediaTriggered($event)"
                                     [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
@@ -268,33 +262,39 @@
                     </div>
                     <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
                         <div class="row mx-0">
-                            <div class="col-lg-3 px-0">
+                            <div class="col-lg-5 px-0">
                                 <div class="w-100 ratio ratio-1x1 h-auto">
                                     <app-assets (mediaClicked)="mediaTriggered($event)"
                                         [previewDetails]="previewDetails"></app-assets>
                                 </div>
                             </div>
-                            <div class="col-lg-9">
+                            <div class="col-lg-7">
                                 <form [formGroup]="widgetForm">
-                                    <div class="my-4" *ngIf="widgetImagePreview.redirection">
-                                        <a target="_blank"
-                                            href="{{settings?.domain}}{{widgetImagePreview.redirection}}">
-                                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                                                stroke="currentColor" viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
-                                                </path>
-                                            </svg> {{settings?.domain}}{{widgetImagePreview.redirection}}
-                                        </a>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <a target="_blank"
+                                                href="{{settings?.domain}}{{widgetImagePreview.redirection}}">
+                                                <svg height="18" width="18" data-slot="icon" fill="none"
+                                                    stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
+                                                    </path>
+                                                </svg> {{settings?.domain}}{{widgetImagePreview.redirection}}
+                                            </a>
+                                        </div>
+                                        <button class="btn btn-danger"
+                                            (click)="deleteWidgetImage(widgetImagePreviewIndex, $event)">
+                                            Remove
+                                        </button>
                                     </div>
                                     <div class="row">
-                                        <div class="col-lg-6 form-group mb-3">
+                                        <div class="form-group mb-3">
                                             <label for="title" class="form-label">Title</label>
                                             <input type="text" placeholder="Latest brands" formControlName="title"
                                                 class="form-control" (change)="addWidgetDetails()">
                                         </div>
-                                        <div class="col-lg-6 form-group mb-3">
+                                        <div class="form-group mb-3">
                                             <label for="redirectionType" class="form-label">Call to action</label>
                                             <select id="redirectionType" formControlName="redirectionType"
                                                 class="form-select" (change)="onRedirectionSelected()">
