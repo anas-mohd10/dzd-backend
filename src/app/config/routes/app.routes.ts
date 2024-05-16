@@ -304,7 +304,12 @@ export const appRoutes = {
     import: `${app}/bulk-import`,
   },
   pageCovers: `${app}/page-covers`,
-  replaceRequests:`${app}/replace-requests`,
+  replaceRequests: `${app}/replace-requests`,
   guestCustomers: `${app}/guests`,
-  shippingCharges: `${app}/shipping-charges`
+  shippingCharges: `${app}/shipping-charges`,
+  staticPages: {
+    list: `${app}/static-pages`,
+    create: `${app}/static-pages/add`,
+    update: `${app}/static-pages/update`
+  },
 }

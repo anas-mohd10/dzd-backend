@@ -306,8 +306,11 @@ export const Routing: Routes = [
         path: 'notifications',
         loadChildren: () => import('./marketing/notifications/notifications.module').then((m) => m.NotificationsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
+        path: 'static-pages',
+        loadChildren: () => import('./static-pages/static-pages.module').then((m) => m.StaticPagesModule),
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'catalogs',
         loadChildren: () => import('./marketing/catalogs/catalogs.module').then((m) => m.CatalogsModule),
         canActivate: [AuthenticationGuard]

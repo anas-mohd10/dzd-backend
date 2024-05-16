@@ -1,0 +1,69 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Static Pages</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
+                <li class="breadcrumb-item active fs-6"><a routerLink="{{ appRoute.staticPages.list}}">Static Pages</a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" routerLink="{{ appRoute.staticPages.create }}">
+            Add static page
+        </button>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
+                (ngModelChange)="setKeyword()">
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table" *ngIf="staticPages.length > 0">
+                <thead>
+                    <tr class="text-left fs-6">
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="fs-6">
+                    <ng-container *ngFor="let staticPage of staticPages; let i =index">
+                        <tr>
+                            <td>{{staticPage?.title}}</td>
+                            <td>
+                                <div>
+                                    <app-switch [isToggledProps]="staticPage?.isActive" [switchId]="staticPage?._id"
+                                        (switchToggled)="onSwitchToggled($event)"></app-switch>
+                                </div>
+                            </td>
+                            <td>{{formatDate(staticPage?.createdAt)}}</td>
+                            <td>
+                                <div class="cursor-pointer" routerLink="{{appRoute.staticPages.update}}"
+                                    [queryParams]="{'id': staticPage?._id}">
+                                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                                        </path>
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                    </svg>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+            <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page"
+                [pageSize]="limit" (pageTrigger)="onPageTriggered($event)"></app-pagination>
+        </div>
+    </div>
+</div>

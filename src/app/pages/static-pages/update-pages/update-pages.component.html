@@ -1,0 +1,20 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Static Pages</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.staticPages.list}}">Static Pages</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.staticPages.update}}" [queryParams]="{'id': staticPageId}">
+                        Update Static Pages
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
