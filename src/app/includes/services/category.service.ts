@@ -76,6 +76,16 @@ export class CategoryService {
     return this.http.post(`${url}`, data);
   }
 
+  deleteCategory(categoryId: string) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.deleteCategory);
+    return this.http.delete(`${url}/${categoryId}`);
+  }
+
+  restoreCategory(categoryId: string) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.restoreCategory);
+    return this.http.put(`${url}/${categoryId}`, {});
+  }
+
   getMenuCategories() {
     const url = this.commonService.getWebUrl('mega-categories');
     return this.http.get(`${url}`);

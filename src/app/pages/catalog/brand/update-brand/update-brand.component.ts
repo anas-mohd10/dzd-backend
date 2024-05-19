@@ -70,7 +70,7 @@ export class UpdateBrandComponent implements OnInit {
     this.brandService.getBrandBySlug(this.slug).subscribe((res: any) => {
       switch (res?.errorCode) {
         case 0:
-          this.brandDetails = res?.result[0];
+          this.brandDetails = res?.result;
           this.brandForm.get('name')?.setValue(this.brandDetails.name);
           this.brandForm.get('isActive')?.setValue(this.brandDetails.isActive);
           this.thumbnail = this.brandDetails.thumbnail?.path
@@ -136,18 +136,25 @@ export class UpdateBrandComponent implements OnInit {
     return data
   }
 
-  // restoreBrand() {
-  //   if (this.restore.value == "true") {
-  //     this.brandService.restoreBrand({ brandid: this.brand?.brandid }).subscribe((res: any) => {
-  //       if (res?.errorCode == 0) {
-  //         this.toastr.success(res?.message);
-  //         this.Router.navigate([this.appRoute.brand.ARCHIVED_BRAND]);
-  //       } else {
-  //         this.toastr.error(res?.message);
-  //       }
-  //     })
-  //   } else {
-  //     this.Router.navigate([this.appRoute.brand.ARCHIVED_BRAND]);
-  //   }
-  // }
+  onRestore() {
+    this.brandService.restoreBrand(this.brandDetails._id).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.HotToastService.success(res?.message);
+        this.Router.navigate([this.appRoute.brand.ARCHIVED_BRAND]);
+      } else {
+        this.HotToastService.error(res?.message);
+      }
+    })
+  }
+
+  onDelete() {
+    this.brandService.deleteBrand(this.brandDetails._id).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.HotToastService.success(res?.message);
+        this.Router.navigate([this.appRoute.brand.BRAND_LIST]);
+      } else {
+        this.HotToastService.error(res?.message);
+      }
+    })
+  }
 }

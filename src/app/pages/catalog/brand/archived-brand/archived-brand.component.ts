@@ -13,16 +13,14 @@ export class ArchivedBrandComponent implements OnInit {
   appRoute = appRoutes;
   brands: Array<any> = [];
   form: FormGroup;
-  base: any
-  settings: any = {}
-  page: number = 1
-  limit: FormControl = new FormControl('40')
-  lastPage: Boolean = false;
-  totalCount: number = 0
+  base: string = `${environment.base}/`
+  page: number = 1;
+  limit: number = 40;
+  totalPages: number = 1
+  totalResults: number = 0
 
   constructor(
     private BrandService: BrandService,
-    private FormBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
   ) { }
 
@@ -33,10 +31,10 @@ export class ArchivedBrandComponent implements OnInit {
   }
 
   initForm() {
-    this.form = this.FormBuilder.group({
-      keyword: [''],
-      isActive: [''],
-      isFeatured: [''],
+    this.form = new FormGroup({
+      keyword: new FormControl(''),
+      isActive: new FormControl(''),
+      isFeatured: new FormControl(''),
     });
   }
 
@@ -45,36 +43,29 @@ export class ArchivedBrandComponent implements OnInit {
     this.getBrands()
   }
 
-  getNextPage() {
-    this.page += 1
-    this.getBrands()
-  }
-
-  getPreviousPage() {
-    this.page -= 1
-    this.getBrands()
-  }
-
-  onReload() {
-    this.initForm()
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getBrands()
   }
 
   getBrands() {
-    this.BrandService.searchBrand({
-      ...this.form.value,
-      page: this.page,
-      isArchive: true,
-      limit: this.limit.value
-    }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.brands = res?.result?.data
-        this.page = res?.result?.page
-        this.totalCount = res?.result?.total_item
-        this.lastPage = res?.result?.lastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    setTimeout(() => {
+      this.BrandService.searchBrands({
+        ...this.form.value,
+        page: this.page,
+        isArchive: true,
+        limit: this.limit
+      }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.brands = res?.result?.data
+          this.page = res?.result?.page
+          this.totalPages = res?.result?.totalPages
+          this.totalResults = res?.result?.totalResults
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }, 800)
   }
 
 }

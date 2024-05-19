@@ -7,7 +7,7 @@ import { AddPagesComponent } from './add-pages/add-pages.component';
 import { UpdatePagesComponent } from './update-pages/update-pages.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
+    AngularEditorModule,
     StaticPagesRoutingModule
   ]
 })

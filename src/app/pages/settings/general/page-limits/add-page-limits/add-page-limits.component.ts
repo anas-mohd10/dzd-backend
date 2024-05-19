@@ -68,7 +68,7 @@ export class AddPageLimitsComponent implements OnInit {
     this.pagelimitform.get('collectionlimit')?.setValue(AppSettings.ITEMS_PER_PAGE)
     this.pagelimitform.get('productlimit')?.setValue(AppSettings.ITEMS_PER_PAGE)
 
-    this.BrandService.searchBrand({ isActive: true }).subscribe((res: any) => {
+    this.BrandService.searchBrands({ isActive: true }).subscribe((res: any) => {
       this.brands = res?.result?.data
       this.brandscount = res?.result?.total
       this.cdr.markForCheck();

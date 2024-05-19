@@ -42,7 +42,7 @@ export class BrandService {
   }
 
   getBrandBySlug(slug: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_by_slug + "?slug=" + slug);
+    const url = this.commonService.getFullUrl(this.brandEndpoints.brandDetails + "?slug=" + slug);
     return this.http.get(`${url}`);
   }
 
@@ -51,29 +51,19 @@ export class BrandService {
     return this.http.put(`${url}`, data);
   }
 
-  searchBrand(query: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.search_brand);
+  deleteBrand(brandId: string) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.deleteBrand);
+    return this.http.delete(`${url}/${brandId}`);
+  }
+
+  searchBrands(query: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.searchBrands);
     return this.http.post(`${url}`, query);
   }
 
-  getBrandCount() {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.get_brand_count);
-    return this.http.get(`${url}`);
-  }
-
-  getArchivedBrands(query: any, page: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.archive_brand + "?page=" + page);
-    return this.http.post(`${url}`, query);
-  }
-
-  restoreBrand(query: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.restore_brand);
-    return this.http.post(`${url}`, query);
-  }
-
-  getBrandImages(data: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.brand_images);
-    return this.http.post(`${url}`, data);
+  restoreBrand(brandId: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.restoreBrand + '/' + brandId);
+    return this.http.put(`${url}`, {});
   }
 
   bulkFileUpload(data: any) {

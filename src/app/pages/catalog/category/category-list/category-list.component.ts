@@ -108,27 +108,29 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategories() {
-    this.CategoryService.searchCategory({
-      ...this.form.value,
-      page: this.page,
-      limit: this.limit
-    }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.categories = res?.result?.data
-        this.page = res?.result?.page
-        this.totalPages = res?.result?.totalPages
-        this.totalResults = res?.result?.totalResults
-        this.isLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    setTimeout(() => {
+      this.CategoryService.searchCategory({
+        ...this.form.value,
+        isArchive: false,
+        page: this.page,
+        limit: this.limit
+      }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.categories = res?.result?.data
+          this.page = res?.result?.page
+          this.totalPages = res?.result?.totalPages
+          this.totalResults = res?.result?.totalResults
+          this.isLastPage = res?.result?.isLastPage
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }, 800)
   }
 
   initForm() {
     this.form = new FormGroup({
       keyword: new FormControl(''),
       isActive: new FormControl(''),
-      isFeatured: new FormControl(''),
     });
 
     this.attributeForm = this.formBuilder.group({
@@ -141,14 +143,17 @@ export class CategoryComponent implements OnInit {
   }
 
   getAttributeDetails(attribute: any) {
-    this.AttributeService.getAttributeDetails(this.categoryDetails?.catid, attribute).subscribe({
+    this.AttributeService.getAttributeDetails(
+      this.categoryDetails?._id,
+      attribute
+    ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.attributeDetails = res?.result
+          this.ChangeDetectorRef.markForCheck()
         } else {
           this.HotToastService.error(res?.message)
         }
-        this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
         this.HotToastService.error(err?.message)
       }

@@ -45,7 +45,7 @@ export const Routing: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: 'brand',
+        path: 'brands',
         children: [
           {
             path: '',

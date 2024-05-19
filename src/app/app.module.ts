@@ -3,18 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ClipboardModule } from 'ngx-clipboard';
-import { TranslateModule } from '@ngx-translate/core';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthenticationGuard } from './core/auth/authentication.guard';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { HttpInterceptor } from './includes/interceptor/http.interceptor';
 import { RouterModule } from '@angular/router';
-import { NgHttpLoaderModule } from 'ng-http-loader';
-import { DataTablesModule } from 'angular-datatables';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { LayoutModule } from './shared/layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -145,19 +141,19 @@ const DragConfig = {
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideMessaging(() => getMessaging()),
-    DataTablesModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     ClipboardModule,
-    TranslateModule.forRoot(),
     MonacoEditorModule.forRoot(),
-    NgMultiSelectDropDownModule.forRoot(),
     InlineSVGModule.forRoot(),
-    NgHttpLoaderModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
-    ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-bottom-center',
+      preventDuplicates: true
+    }),
     HotToastModule.forRoot({
       position: 'bottom-center'
     }),
@@ -180,7 +176,6 @@ const DragConfig = {
   ],
   exports: [
     RouterModule,
-    NgHttpLoaderModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptor, multi: true },

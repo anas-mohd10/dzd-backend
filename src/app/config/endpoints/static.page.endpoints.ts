@@ -3,5 +3,6 @@ export const staticPageEndpoints = {
     delete: '/delete-staticpage',
     update: '/update-staticpage',
     search: '/search-staticpages',
-    details: '/staticpage-details'
+    details: '/staticpage-details',
+    active: '/staticpages'
 }

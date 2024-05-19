@@ -3,7 +3,7 @@ import { environment } from "src/environments/environment.prod";
 const app = '/app';
 const dashboardRoute = '/dashboard';
 const catalogRoute = '/catalog';
-const brandRoute = '/brand';
+const brandRoute = '/brands';
 const productRoute = '/product';
 const variantProductRoute = '/variant-product'
 const categoryRoute = '/category';
@@ -54,15 +54,14 @@ export const appRoutes = {
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,
-    ACTIVE_BRAND_LIST: `${catalogRoute} /active-brand`,
     UPDATE_BRAND: `${app}${brandRoute}/update`,
-    ARCHIVED_BRAND: `${app}${brandRoute}/archive`
+    ARCHIVED_BRAND: `${app}${brandRoute}/archived`
   },
   category: {
     ADD_CATEGORY: `${app}${categoryRoute}/add`,
     CATEGORY_LIST: `${app}${categoryRoute}`,
     UPDATE_CATEGORY: `${app}${categoryRoute}/update`,
-    ARCHIVED_CATEGORY: `${app}${categoryRoute}/archive`
+    ARCHIVED_CATEGORY: `${app}${categoryRoute}/archived`
   },
   attribute: {
     ADD_ATTRIBUTE: `${app}${attributeRoute}/add`,

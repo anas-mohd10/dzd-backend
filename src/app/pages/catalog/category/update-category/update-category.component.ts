@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { AppSettings, PageTasks } from '../../../../config/constants';
+import { AppSettings } from '../../../../config/constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
@@ -195,5 +195,35 @@ export class UpdateCategoryComponent implements OnInit {
         this.HotToastService.error(err?.error?.message);
       }
     });
+  }
+
+  onRestore() {
+    this.CategoryService.restoreCategory(this.details?._id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.Router.navigate([appRoutes.category.CATEGORY_LIST])
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  onDelete() {
+    this.CategoryService.deleteCategory(this.details?._id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate([appRoutes.category.CATEGORY_LIST])
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
   }
 }

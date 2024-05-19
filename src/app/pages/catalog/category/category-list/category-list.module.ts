@@ -15,7 +15,7 @@ import { SharedModule } from 'src/app/pages/shared/shared.module';
     ReactiveFormsModule,
     RouterModule.forChild([
       { path: '', component: CategoryComponent },
-      { path: 'archive', component: ArchivedCategoryComponent },
+      { path: 'archived', component: ArchivedCategoryComponent },
     ]),
   ],
 })

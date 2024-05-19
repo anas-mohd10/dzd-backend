@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { StoreDesignsRoutingModule } from './store-designs-routing.module';
 import { HomeComponent } from './home/home.component';
 import { DesignSharedModule } from './shared/design.shared.module';
@@ -31,6 +32,7 @@ import { AboutComponent } from './about/about.component';
     FormsModule,
     SharedModule,
     BsDatepickerModule,
+    AngularEditorModule,
     ReactiveFormsModule,
     TooltipModule,
     DesignSharedModule,

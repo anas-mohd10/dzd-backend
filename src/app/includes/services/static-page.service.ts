@@ -33,6 +33,11 @@ export class StaticPageService {
     return this.HttpClient.get(`${url}/${pageId}`)
   }
 
+  active() {
+    const url = this.CommonService.getFullUrl(staticPageEndpoints.active);
+    return this.HttpClient.get(`${url}`)
+  }
+
   search(keyword: string, page: number, limit: number) {
     const url = this.CommonService.getFullUrl(staticPageEndpoints.search);
     return this.HttpClient.get(`${url}?keyword=${keyword}&page=${page}&limit=${limit}`)

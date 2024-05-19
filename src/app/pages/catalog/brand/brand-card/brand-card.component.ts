@@ -13,16 +13,15 @@ export class BrandCardComponent implements OnInit {
   appRoute = appRoutes;
   brands: Array<any> = [];
   form: FormGroup;
-  base: any
+  base: string = `${environment.base}/`
   page: number = 1
-  limit: number = 20
+  limit: number = 40
   isLastPage: Boolean = false;
   totalResults: number = 0
   totalPages: number = 1
 
   constructor(
     private BrandService: BrandService,
-    private FormBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
   ) { }
 
@@ -57,19 +56,22 @@ export class BrandCardComponent implements OnInit {
   }
 
   getBrands() {
-    this.BrandService.searchBrand({
-      ...this.form.value,
-      page: this.page,
-      limit: this.limit
-    }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.brands = res?.result?.data
-        this.page = res?.result?.page
-        this.totalResults = res?.result?.totalResults
-        this.isLastPage = res?.result?.isLastPage
-        this.totalPages = res?.result?.totalPages
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    setTimeout(() => {
+      this.BrandService.searchBrands({
+        ...this.form.value,
+        isArchive: false,
+        page: this.page,
+        limit: this.limit
+      }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.brands = res?.result?.data
+          this.page = res?.result?.page
+          this.totalResults = res?.result?.totalResults
+          this.isLastPage = res?.result?.isLastPage
+          this.totalPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }, 800)
   }
 }

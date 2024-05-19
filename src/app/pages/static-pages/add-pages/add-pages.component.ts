@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-add-pages',
@@ -14,6 +15,28 @@ export class AddPagesComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup = new FormGroup({});
   isSubmitted: boolean = false;
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'manrope', name: 'Manrope' },
+      { class: 'sen', name: 'Sen' },
+      { class: 'poppins', name: 'Poppins' },
+      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
+      { class: 'roboto', name: 'Roboto' },
+      { class: 'sora', name: 'Sora' }
+    ]
+  };
 
   constructor(
     private Router: Router,
@@ -24,9 +47,8 @@ export class AddPagesComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
-      html: new FormControl('', Validators.required),
-      styles: new FormControl(''),
-      scripts: new FormControl(''),
+      description: new FormControl('', Validators.required),
+      slug: new FormControl(''),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl('')

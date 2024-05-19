@@ -48,6 +48,13 @@ input[type=button],
       }
     }
 
+    img{
+      height: 60px;
+      width: 60px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+
     .categoryDetails {
 
       .category-name {

@@ -2,17 +2,63 @@
     <div class="page-header d-flex align-items-start justify-content-between">
         <div>
             <div class="page-title">
-                <h1 class="fw-bold">Static Pages</h1>
+                <h1 class="fw-bold">Static pages</h1>
             </div>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item fs-6"><a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a></li>
                 <li class="breadcrumb-item fs-6">
-                    <a routerLink="{{ appRoute.staticPages.list}}">Static Pages</a>
+                    <a routerLink="{{ appRoute.staticPages.list}}">Static pages</a>
                 </li>
                 <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.staticPages.create}}">Add Static Pages</a>
+                    <a routerLink="{{ appRoute.staticPages.create}}">Add static pages</a>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <div class="my-4 card">
+        <div class="card-body">
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-group mb-3">
+                    <label for="title" class="mb-3 fs-6 required">Title</label>
+                    <input type="text" id="title" placeholder="About Us" formControlName="title" class="form-control">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="slug" class="mb-3 fs-6">Slug</label>
+                    <input type="text" id="slug" placeholder="about-us" formControlName="slug" class="form-control">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="description" class="fs-6 mb-3">Description</label>
+                    <div class="description" id="description">
+                        <angular-editor class="form-control fs-6" formControlName="description" [config]="editorConfig">
+                        </angular-editor>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="metaTitle" class="mb-3 fs-6">Meta Title</label>
+                    <input type="text" id="metaTitle" formControlName="metaTitle" class="form-control">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="metaDescription" class="mb-3 fs-6">Meta Description</label>
+                    <input type="text" id="metaDescription" formControlName="metaDescription" class="form-control">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="metaKeywords" class="mb-3 fs-6">Meta Keywords</label>
+                    <input type="text" id="metaKeywords" formControlName="metaKeywords" class="form-control">
+                </div>
+
+                <div class="d-flex align-items-center gap-2 justify-content-end">
+                    <button class="btn btn-secondary" routerLink="{{appRoute.staticPages.list}}">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>

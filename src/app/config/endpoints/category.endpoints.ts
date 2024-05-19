@@ -4,6 +4,8 @@ export const categoryEndpoints = {
   get_active_categories: '/active-categories',
   getCategoryDetails: '/category',
   update_category: '/update-category',
+  deleteCategory: '/delete-category',
+  restoreCategory: '/restore-category',
   search_category: '/search-categories',
   get_main_categories: '/main-categories',
   get_sub_categories: '/sub-categories',

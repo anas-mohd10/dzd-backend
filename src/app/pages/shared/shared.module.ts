@@ -10,6 +10,7 @@ import { CategoryDropdownComponent } from './category-dropdown/category-dropdown
 import { ProductDropdownComponent } from './product-dropdown/product-dropdown.component';
 import { SwitchComponent } from './switch/switch.component';
 import { StartRatingComponent } from './start-rating/start-rating.component';
+import { NoResultsComponent } from './no-results/no-results.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { StartRatingComponent } from './start-rating/start-rating.component';
     CategoryDropdownComponent,
     ProductDropdownComponent,
     SwitchComponent,
-    StartRatingComponent
+    StartRatingComponent,
+    NoResultsComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import { StartRatingComponent } from './start-rating/start-rating.component';
     CategoryDropdownComponent,
     ProductDropdownComponent,
     SwitchComponent,
-    StartRatingComponent
+    StartRatingComponent,
+    NoResultsComponent
   ]
 })
 export class SharedModule { }

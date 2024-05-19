@@ -31,7 +31,7 @@
             <input type="text" placeholder="Search for category here..." class="form-control fs-6"
               formControlName="keyword" (ngModelChange)="getCategories()">
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-4">
             <label for="isActive" class="fs-6 mb-1">Status</label>
             <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
               (change)="getCategories()">
@@ -41,18 +41,8 @@
             </select>
           </div>
           <div class="col-lg-2">
-            <label for="isFeatured" class="fs-6 mb-1">Featured</label>
-            <select name="isFeatured" id="isFeatured" class="form-select fs-6" formControlName="isFeatured"
-              (change)="getCategories()">
-              <option value="" disabled>-- Select an option --</option>
-              <option value=true>Featured</option>
-              <option value=false>Non featured</option>
-            </select>
-          </div>
-          <div class="col-lg-2">
             <label class="fs-6 mb-1">&nbsp;</label>
-            <input type="button" class="form-control btn w-100 btn-secondary" value="Clear filters"
-              (click)="clearFilters()" />
+            <input type="button" class="btn w-100 btn-secondary" value="Clear filters" (click)="clearFilters()" />
           </div>
         </div>
       </form>
@@ -64,7 +54,12 @@
       <div class="categoryCard">
         <div class="editButton">
           <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
-            <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+            <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
           </div>
         </div>
 
@@ -87,18 +82,13 @@
   </div>
 
   <ng-container *ngIf="categories.length == 0">
-    <div class="emptyNote">
-      <div class="fs-3 fw-bolder">No result found</div>
-      <div class="fs-6 note">We couldn't find any item based on your search</div>
-    </div>
+    <app-no-results></app-no-results>
   </ng-container>
 
   <div class="my-4">
     <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
       [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
   </div>
-
-
 </div>
 
 <ng-template #attributeModal>

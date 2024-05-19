@@ -1,27 +1,34 @@
 <div>
 
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Update brands</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{'brand': slug}">Update brands</a>
-          </li>
-        </ul>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bolder">Update brands</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{'brand': slug}">Update brands</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-flex align-items-start justify-content-end gap-2">
+      <button type="button" (click)="onRestore()" class="btn btn-secondary" *ngIf="brandDetails?.isArchive == true">
+        Restore brand
+      </button>
+      <button type="button" (click)="onDelete()" class="btn btn-danger">
+        Delete brand
+      </button>
     </div>
   </div>
 
-  <div class="my-4">
+  <div class="my-4" [ngClass]="{'pe-none opacity-50': brandDetails?.isArchive == true}">
 
     <div class="card">
       <div class="card-body">

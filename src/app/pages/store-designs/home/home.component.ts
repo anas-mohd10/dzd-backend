@@ -11,7 +11,8 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
-
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { StaticPageService } from 'src/app/includes/services/static-page.service';
 
 interface WidgetProps {
   title: string;
@@ -82,20 +83,22 @@ export class HomeComponent implements OnInit {
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },
     { key: "Open all products", value: "all-products" },
-    { key: "Open brand products", value: "brands" },
+    { key: "Open brand products", value: "brand" },
     { key: "Open collection products", value: "collection" },
     { key: "Open product details", value: "products" },
     { key: "Open catalog page", value: "catalog" },
     { key: "Open blogs", value: "blogs" },
     { key: "Open weblink", value: "web-links" },
     { key: "Open static page", value: "static-pages" },
+    { key: "Open CMS page", value: "cms-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
-  staticPages: Array<any> = [
-    { title: 'Contact', url: '/contact' },
-    { title: 'About', url: '/about-us' },
-    { title: 'FAQ', url: '/faq' },
-    { title: 'Blogs', url: '/blogs' },
+  staticPages: Array<any> = []
+  cmsPages: Array<any> = [
+    { title: 'FAQs', value: '/faqs' },
+    { title: 'Stores', value: '/stores' },
+    { title: 'Reviews', value: '/reviews' },
+    { title: 'Contact Us', value: '/contact-us' },
   ]
   searchRedirections: Array<string> = ["category", "brands", "collection", "products", "catalog", "blogs"]
   blogs: Array<any> = []
@@ -125,9 +128,55 @@ export class HomeComponent implements OnInit {
   spotlightSliders: Array<any> = []
   settings: any = {}
   categories: Array<any> = []
+  brands: Array<any> = []
   testimonialKeyword: FormControl = new FormControl("", Validators.required);
   testimonials: Array<any> = []
   widgetTestimonials: Array<any> = []
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
+
 
   constructor(
     private BsModalService: BsModalService,
@@ -139,7 +188,8 @@ export class HomeComponent implements OnInit {
     private CollectionService: CollectionService,
     private AppSettingsService: AppSettingsService,
     private CategoryService: CategoryService,
-    private TestimonialService: TestimonialService
+    private TestimonialService: TestimonialService,
+    private StaticPageService: StaticPageService
   ) { }
 
   //Testimonial widget operations
@@ -220,8 +270,17 @@ export class HomeComponent implements OnInit {
       case 'category':
         this.getCategories()
         break
+      case 'brand':
+        this.getBrands()
+        break
       case 'collection':
         this.getCollections()
+        break
+      case 'static-pages':
+        this.getStaticPages()
+        break
+      case 'cms-pages':
+        this.continueRedirectionQuery()
         break
       case 'all-products':
         this.widgetForm.get('redirection')?.setValue("/products")
@@ -241,6 +300,8 @@ export class HomeComponent implements OnInit {
   toggleRedirectionDetails(redirectionDetails: any) {
     this.redirectionDetails = redirectionDetails
     this.blogs = []
+    this.brands = []
+    this.categories = []
     this.redirectionQuery.setValue("")
   }
 
@@ -250,6 +311,9 @@ export class HomeComponent implements OnInit {
         this.widgetForm.get('redirection')?.setValue("/blogs/" + this.redirectionDetails.slug)
         break
       case 'static-pages':
+        this.widgetForm.get('redirection')?.setValue('/pages/' + this.redirectionQuery.value)
+        break
+      case 'cms-pages':
         this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value)
         break
       case 'search-filters':
@@ -257,6 +321,9 @@ export class HomeComponent implements OnInit {
         break
       case 'category':
         this.widgetForm.get('redirection')?.setValue("/products?category=" + this.redirectionQuery.value)
+        break
+      case 'brand':
+        this.widgetForm.get('redirection')?.setValue("/products?brand=" + this.redirectionQuery.value)
         break
       case 'collection':
         this.widgetForm.get('redirection')?.setValue("/products?collection=" + this.redirectionQuery.value)
@@ -642,8 +709,6 @@ export class HomeComponent implements OnInit {
       title: new FormControl(""),
       description: new FormControl(""),
       html: new FormControl(""),
-      htmlStyles: new FormControl(""),
-      htmlScripts: new FormControl(""),
       video: new FormControl(""),
       view: new FormControl("grid"),
       gridsPerCount: new FormControl("4"),
@@ -675,6 +740,8 @@ export class HomeComponent implements OnInit {
 
     this.widgetForm = new FormGroup({
       title: new FormControl(""),
+      description: new FormControl(''),
+      button: new FormControl(''),
       redirection: new FormControl(""),
       redirectionType: new FormControl(""),
       buttonText: new FormControl(""),
@@ -775,6 +842,28 @@ export class HomeComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.categories = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  getBrands() {
+    this.CategoryService.getActiveCategory().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.brands = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  getStaticPages() {
+    this.StaticPageService.active().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.staticPages = res?.result
           this.ChangeDetectorRef.markForCheck()
         }
       }

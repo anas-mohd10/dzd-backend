@@ -4,6 +4,14 @@
     overflow-y: scroll;
 }
 
+.w-18{
+    width: 18%;
+}
+
+.w-82{
+    width: 82%;
+}
+
 .text-ellipsis {
     overflow: hidden;
     -o-text-overflow: ellipsis;
@@ -165,6 +173,9 @@ label {
     height: calc(100vh - 70px);
     margin: 70px 0 0 70px;
     overflow-y: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
 .tile-products {
