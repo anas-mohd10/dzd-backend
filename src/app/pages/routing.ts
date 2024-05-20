@@ -34,6 +34,7 @@ import { MailerDetailsComponent } from './settings/general/mailer-details/mailer
 import { GuestsComponent } from './users/guests/guests.component';
 import { ShippingChargeComponent } from './settings/general/shipping-charge/shipping-charge.component';
 import { PageCoversComponent } from './page-covers/page-covers.component';
+import { PaymentSettingsComponent } from './settings/general/payment-settings/payment-settings.component';
 
 export const Routing: Routes = [
   {
@@ -365,6 +366,10 @@ export const Routing: Routes = [
       }, {
         path: 'mailer-subscriptions',
         component: MailerComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
+        path: 'payment-settings',
+        component: PaymentSettingsComponent,
         canActivate: [AuthenticationGuard]
       }, {
         path: 'seo-details',

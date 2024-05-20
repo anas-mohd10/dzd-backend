@@ -149,6 +149,7 @@ export class UpdateProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.defaultCategories = [...this.defaultCategories, ...res?.result]
+          this.ChangeDetectorRef.markForCheck()
         } else {
 
         }

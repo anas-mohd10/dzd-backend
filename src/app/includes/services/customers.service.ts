@@ -12,7 +12,7 @@ export class CustomersService {
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
   addCustomer(data: any) {
-    const url = this.commonService.getFullUrl(this.customerEndpoints.add_customer);
+    const url = this.commonService.getFullUrl(this.customerEndpoints.addCustomer);
     return this.http.post(`${url}`, data)
   }
 

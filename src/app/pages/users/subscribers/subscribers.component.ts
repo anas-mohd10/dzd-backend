@@ -17,12 +17,12 @@ import { catchError } from 'rxjs/operators';
 export class SubscribersComponent implements OnInit {
   appRoute = appRoutes
   page: number = 1
-  limit: FormControl = new FormControl('20')
-  lastPage: boolean = false
+  limit: number = 40
+  totalPages: number = 1
+  totalResults: number= 0
   keyword: FormControl = new FormControl('')
   subscribers: Array<any> = []
   subscriber: string = ''
-  totalResults: string = ''
   modalRef?: BsModalRef;
 
   constructor(
@@ -38,32 +38,30 @@ export class SubscribersComponent implements OnInit {
   }
 
   getSubscribers() {
-    this.CustomersService.searchSubscribers({
-      keyword: this.keyword?.value,
-      page: this.page,
-      limit: this.limit?.value
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.subscribers = res?.result?.data
-          this.totalResults = res?.result?.totalResults
-          this.lastPage = res?.result?.lastPage
-          this.ChangeDetectorRef.markForCheck()
+    setTimeout(() => {
+      this.CustomersService.searchSubscribers({
+        keyword: this.keyword?.value,
+        page: this.page,
+        limit: this.limit
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.subscribers = res?.result?.data
+            this.totalResults = res?.result?.totalResults
+            this.totalPages = res?.result?.totalPages
+            this.ChangeDetectorRef.markForCheck()
+          }
+        },
+        error: (err: any) => {
+          this.ToastrService.error(err?.message)
         }
-      },
-      error: (err: any) => {
-        this.ToastrService.error(err?.message)
-      }
-    })
+      })
+    }, 800)
   }
 
-  getPreviousPage() {
-    this.page -= 1
-    this.getSubscribers()
-  }
-
-  getNextPage() {
-    this.page += 1
+  onPageTriggered(event: {pageIndex: number, pageSize: number}){
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getSubscribers()
   }
 
@@ -95,6 +93,5 @@ export class SubscribersComponent implements OnInit {
 
   exportSubscribers() {
     window.open(this.ReportsService.downloadSubscribers(), '_blank')
-
   }
 }

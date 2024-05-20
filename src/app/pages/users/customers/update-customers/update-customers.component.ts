@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
+import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -20,12 +21,12 @@ export class UpdateCustomersComponent implements OnInit {
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes
-  customersForm: FormGroup
+  form: FormGroup
   isSubmitted = false;
-  uniqueEmail: boolean = true;
+  isEmailExists: boolean = false
+  isPhoneExists: boolean = false
   customerData: any;
   slug: any;
-  uniqueNum: boolean;
   addresses: Array<any> = []
   address: any
   validBtn: boolean = false
@@ -81,8 +82,44 @@ export class UpdateCustomersComponent implements OnInit {
     })
   }
 
+  updateMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
+  }
+
+  updateAddressMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.addressForm.get('mobile')?.setValidators(newValidators);
+    this.addressForm.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleAddressMobilePattern() {
+    switch (this.addressForm.get("countryCode")?.value) {
+      case "+91":
+        this.updateAddressMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateAddressMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
+  }
+
   initForm() {
-    this.customersForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       countryCode: ['', Validators.required],
@@ -93,7 +130,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.addressForm = new FormGroup({
       name: new FormControl(''),
       countryCode: new FormControl(''),
-      mobile: new FormControl('', [Validators.maxLength(10), Validators.minLength(10), Validators.pattern("^[0-9]{10}$")]),
+      mobile: new FormControl('', Validators.pattern("^[0-9]{10}$")),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       city: new FormControl('', Validators.required),
@@ -107,8 +144,8 @@ export class UpdateCustomersComponent implements OnInit {
     })
   }
 
-  get cf() {
-    return this.customersForm.controls;
+  get formControls() {
+    return this.form.controls;
   }
 
   get addressControls() {
@@ -225,34 +262,43 @@ export class UpdateCustomersComponent implements OnInit {
     }
   }
 
-  checkEmail(e: any) {
-    const data = { email: '' }
-    if (e.value) {
-      data.email = e.value
-    }
-    this.customerService.getCustomerByMail(data).subscribe((res: any) => {
-      if (res?.result.length != 0) {
-        this.uniqueEmail = false
-        this.Toast.error("Email already exists")
+  //Function to check whether the email address exists
+  emailExists(emailString: any) {
+    this.customerService.customerDetails({ _id: { '$eq': this.customerData?._id }, email: emailString.value }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        if (res?.result) {
+          this.isEmailExists = true
+          this.Toast.error('Email address already exists')
+        } else {
+          this.isEmailExists = false
+        }
       } else {
-        this.uniqueEmail = true
+        this.Toast.error(res?.message)
       }
     })
   }
+  //Function to check whether the email address exists
 
-  validateNumber(e: any) {
-    const data = { mobile: '' }
-    if (e.value) data.mobile = e.value
-
-    this.customerService.getCustomerByNum(data).subscribe((res: any) => {
-      if (res?.result.length != 0) {
-        this.uniqueNum = false
-        this.Toast.error("Mobile number already exists")
+  //Function to check whether the phone exists
+  phoneExists(phoneString: any) {
+    this.customerService.customerDetails({
+      _id: { '$eq': this.customerData?._id },
+      countryCode: this.form.get('countryCode')?.value,
+      mobile: phoneString.value
+    }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        if (res?.result) {
+          this.isPhoneExists = true
+          this.Toast.error('Email address already exists')
+        } else {
+          this.isPhoneExists = false
+        }
       } else {
-        this.uniqueNum = true
+        this.Toast.error(res?.message)
       }
     })
   }
+  //Function to check whether the phone exists
 
   addAddress() {
     if (!this.addressForm.valid) {
@@ -358,48 +404,29 @@ export class UpdateCustomersComponent implements OnInit {
       this.customerData = res?.result
       this.referralCode.setValue(res?.result?.referralCode)
       this.referralCode.disable()
-      this.customersForm.get("name")?.setValue(this.customerData.name)
-      this.customersForm.get("mobile")?.setValue(this.customerData.mobile)
-      this.customersForm.get("email")?.setValue(this.customerData.email)
-      this.customersForm.get("countryCode")?.setValue(this.customerData.countryCode)
-      this.customersForm.get("isActive")?.setValue(this.customerData.isActive)
-      this.customersForm.get("walletBalance")?.setValue(this.customerData.walletBalance)
+      this.form.patchValue(res?.result)
+      this.handleMobilePattern()
       this.ChangeDetectorRef.markForCheck()
     })
   }
 
   onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateCustomer();
-    } else {
-      this.addCustomer();
-    }
-  }
-
-  updateCustomer() {
-    if (!this.customersForm.valid) {
-      this.toastr.error('Something wrong occured');
+    if (!this.form.valid) {
+      this.isSubmitted = true
       return;
     }
 
-    let data = {
-      name: this.customersForm.get("name")?.value,
-      email: this.customersForm.get("email")?.value,
-      countryCode: this.customersForm.get("countryCode")?.value,
-      mobile: this.customersForm.get("mobile")?.value,
-      walletBalance: this.customersForm.get("walletBalance")?.value,
-      isActive: this.customersForm.get("isActive")?.value,
-    }
-    this.customerService.updateCustomer(this.slug, data).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.Toast.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.Toast.success(res?.message);
-        this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+    this.customerService.updateCustomer(this.slug, this.form.value).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.Toast.success(res?.message);
+          this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+        } else if (res.errorCode == 0) {
+          this.Toast.error(res?.message);
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.message);
       }
     })
   }
-
-  addCustomer() { }
 }

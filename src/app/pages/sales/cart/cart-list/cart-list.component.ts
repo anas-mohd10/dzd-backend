@@ -23,8 +23,10 @@ export class CartListComponent implements OnInit {
   fromDate: FormControl = new FormControl('')
   toDate: FormControl = new FormControl('')
   page: number = 1
-  limit: FormControl = new FormControl(20)
-  lastPage: Boolean = false
+  limit: number = 40
+  totalResults: number = 0
+  totalPages: number = 1
+
   carts: Array<any> = []
   isSubmitted: Boolean = false
   cart: any = {}
@@ -33,7 +35,6 @@ export class CartListComponent implements OnInit {
   couponForm!: FormGroup
   isInvalid: boolean = false
   @ViewChild('notification') notificationModal: TemplateRef<any>
-  totalResults: string = ''
   productsModalRef?: BsModalRef
   cartDetails: any = {}
   base: string = environment.base
@@ -61,7 +62,7 @@ export class CartListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.seachCart()
+    this.getCarts()
     this.initForm()
     this.cartQuery = this.ActivatedRoute.snapshot.queryParams.query || ''
 
@@ -92,18 +93,24 @@ export class CartListComponent implements OnInit {
     this.fromDate.setValue('')
     this.toDate.setValue('')
     this.page = 1
-    this.limit.setValue(20)
-    this.seachCart()
+    this.limit = 40
+    this.getCarts()
   }
 
   getPreviousPage() {
     this.page -= 1
-    this.seachCart()
+    this.getCarts()
   }
 
   getNextPage() {
     this.page += 1
-    this.seachCart()
+    this.getCarts()
+  }
+
+  onPageTriggered(event: {pageIndex: number, pageSize: number}){
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getCarts()
   }
 
   //Notification handler starts here
@@ -113,25 +120,25 @@ export class CartListComponent implements OnInit {
   }
   //Notiication handler ends here
 
-  seachCart() {
-    let payload = {
-      page: this.page,
-      limit: this.limit.value,
-      keyword: this.keyword.value,
-      type: this.type.value,
-      fromDate: this.fromDate.value,
-      toDate: this.toDate.value,
-    }
-
-    this.cartService.getCarts(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.carts = res?.result?.data
-        this.totalResults = res?.result?.totalItems
-        this.lastPage = res?.result?.lastPage
-        this.page = res?.result?.page
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+  getCarts() {
+    setTimeout(() => {
+      this.cartService.getCarts({
+        page: this.page,
+        limit: this.limit,
+        keyword: this.keyword.value,
+        type: this.type.value,
+        fromDate: this.fromDate.value,
+        toDate: this.toDate.value,
+      }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.carts = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.page = res?.result?.page
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }, 800)
   }
 
   initForm() {

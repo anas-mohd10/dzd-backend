@@ -47,10 +47,7 @@
    </div>
 
    <ng-container *ngIf="testimonials.length == 0">
-      <div class="emptyNote my-4">
-         <div class="fs-3 fw-bolder">No result found</div>
-         <div class="fs-6 note">We couldn't find any item based on your search</div>
-      </div>
+      <app-no-results></app-no-results>
    </ng-container>
 
    <div>

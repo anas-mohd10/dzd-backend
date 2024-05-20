@@ -12,15 +12,17 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 
 export class TaxRulesComponent implements OnInit {
-  limit: FormControl = new FormControl(40);
-  page: number = 1
   rules: Array<any> = []
   keyword: FormControl = new FormControl('')
   isLastPage: boolean = true
   appRoute = appRoutes
   modalRef?: BsModalRef
   ruleDetails: any = {}
-  totalResults: string = ''
+
+  page: number = 1
+  limit: number = 20
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private TaxRulesService: TaxRulesService,
@@ -36,6 +38,12 @@ export class TaxRulesComponent implements OnInit {
   open(template: TemplateRef<any>, rule: any) {
     this.ruleDetails = rule
     this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' })
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getRules()
   }
 
   confirm() {
@@ -55,28 +63,26 @@ export class TaxRulesComponent implements OnInit {
     })
   }
 
-  navBack() {
-    this.page -= 1
-  }
-
-  navNext() {
-    this.page += 1
-  }
-
   getRules() {
-    this.TaxRulesService.searchRules({ page: this.page, limit: this.limit.value, keyword: this.keyword.value }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.rules = res?.result?.data;
-          this.totalResults = res?.result?.totalResults;
-          this.isLastPage = res?.result?.isLastPage;
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.ToastrService.error(res.message);
+    setTimeout(() => {
+      this.TaxRulesService.searchRules({
+        page: this.page,
+        limit: this.limit,
+        keyword: this.keyword.value
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.rules = res?.result?.data;
+            this.totalResults = res?.result?.totalResults;
+            this.isLastPage = res?.result?.isLastPage;
+            this.ChangeDetectorRef.markForCheck()
+          } else {
+            this.ToastrService.error(res.message);
+          }
+        }, error: (err: any) => {
+          this.ToastrService.error(err.message);
         }
-      }, error: (err: any) => {
-        this.ToastrService.error(err.message);
-      }
-    })
+      })
+    }, 800)
   }
 }

@@ -30,12 +30,6 @@ import { NewsletterSubscribersComponent } from './newsletter-subscribers/newslet
     ReactiveFormsModule,
     SharedModule,
     AlertModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      progressAnimation: 'decreasing',
-      preventDuplicates: true,
-      progressBar: true,
-    }),
     WidgetsModule,
   ]
 })

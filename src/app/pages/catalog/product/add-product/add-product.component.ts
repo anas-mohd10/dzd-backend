@@ -181,6 +181,10 @@ export class AddProductComponent implements OnInit {
     this.productCategory.setValue('')
   }
 
+  removeProductCategory(categoryId: string){
+    this.categories = this.categories.filter((item: any) => item?._id != categoryId)
+  }
+
   addCategory() {
     let isExists = this.parentCategories.some((category: any) => category._id == this.parentForm.get('parentCategory')?.value)
     if (isExists) {
@@ -207,7 +211,7 @@ export class AddProductComponent implements OnInit {
           this.parentCategories = res?.result?.parentCategory.id
           let categories = this.parentCategories.map((item: any) => item?._id)
           this.getChildCategory(categories)
-          res?.result?.defaultCategory?.id ? this.getAttributes(res?.result?.defaultCategory?.id?.catid) : null
+          res?.result?.defaultCategory ? this.getAttributes(res?.result?.defaultCategory?.id?._id) : null
           res?.result?.brand ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id) : null
           this.parentForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id?._id)
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
@@ -244,11 +248,14 @@ export class AddProductComponent implements OnInit {
     }
 
     let files = this.images.map((item: any) => item._id)
+    let productIcons = this.icons.map((icon: any) => icon._id)
     this.form.value.relatedProducts ? null : this.form.get('relatedProducts')?.setValue([])
 
     let payload = {
       ...this.form.value,
       files: files,
+      icons: productIcons,
+      productTags: this.tagsForm.value,
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.productAttributes,
       category: {
@@ -259,18 +266,18 @@ export class AddProductComponent implements OnInit {
 
     console.log(payload)
 
-    // this.ProductService.addProduct(payload).subscribe({
-    //   next: (res: any) => {
-    //     if (res?.errorCode == 0) {
-    //       this.Router.navigate(['/app/product'])
-    //       this.HotToastService.success(res?.message)
-    //     } else {
-    //       this.HotToastService.error(res?.message)
-    //     }
-    //   }, error: (err: any) => {
-    //     this.HotToastService.error(err.error.message)
-    //   }
-    // })
+    this.ProductService.addProduct(payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate(['/app/product'])
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    })
   }
 
   toggleTab(index: number) {
@@ -336,14 +343,14 @@ export class AddProductComponent implements OnInit {
       this.productAttributes[index].value = valueDetails._id
     } else {
       this.productAttributes.push({
-        type: attributeDetails.id,
+        type: attributeDetails._id,
         value: valueDetails._id
       })
     }
   }
 
   attributeExists(attributeDetails: any, valueDetails: any) {
-    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id && attribute.value == valueDetails._id);
+    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails._id && attribute.value == valueDetails._id);
     return isIdPresent ? 'active' : null
   }
 
@@ -355,10 +362,10 @@ export class AddProductComponent implements OnInit {
     this.base = environment.base
 
     this.tagsForm = new FormGroup({
-      topRightTag: new FormControl(""),
-      topLeftTag: new FormControl(""),
-      bottomRightTag: new FormControl(""),
-      bottomLeftTag: new FormControl("")
+      topRightTag: new FormControl(null),
+      topLeftTag: new FormControl(null),
+      bottomRightTag: new FormControl(null),
+      bottomLeftTag: new FormControl(null)
     })
 
     this.slug = this.ActivatedRoute.snapshot.queryParams.product || ''

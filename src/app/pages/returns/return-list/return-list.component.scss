@@ -24,47 +24,40 @@ $error: #f1416c;
   -webkit-box-orient: vertical;
 }
 
-.emptyNote {
-  margin: 0 0 20px 0;
-  display: grid;
-  place-items: center;
-
-  .note {
-    font-weight: normal;
-  }
+label,
+.btn-secondary,
+.btn-primary {
+  font-weight: 400 !important;
 }
 
-.table-responsive {
-  border-radius: 15px;
-  border: 1px solid #e8e8e8;
-
-  .common_thead {
-    background: #e4e7f4;
-
-    th {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 15px;
-      text-transform: capitalize;
-      color: #212121;
-    }
-  }
-
-  tr {
-    border-bottom: 1px solid #e8e8e8;
-  }
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
 
   tbody {
-    background: white;
+
     tr {
+
       td {
-        img {
-          cursor: pointer;
-        }
+        vertical-align: middle;
       }
     }
   }
+
+  thead {
+
+    tr {
+
+      th {
+        font-weight: 400 !important;
+      }
+    }
+
+    background: #E4E7F4;
+  }
 }
+//Table designs
 
 .export {
   display: flex;
@@ -90,6 +83,5 @@ $error: #f1416c;
 
 .pending {
   color: white;
-
   background: red;
 }

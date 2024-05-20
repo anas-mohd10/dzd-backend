@@ -10,7 +10,7 @@ import { CustomersService } from 'src/app/includes/services/customers.service';
 })
 export class WishlistListComponent implements OnInit {
   appRoute = appRoutes
-  limit: number = 20
+  limit: number = 40
   page: number = 1
   isLastPage: boolean = false
   customers: Array<any> = []
@@ -40,6 +40,7 @@ export class WishlistListComponent implements OnInit {
     this.keyword.setValue('')
     this.sort.setValue('')
     this.page = 1
+    this.limit = 40
     this.searchCustomers()
   }
 
@@ -49,30 +50,21 @@ export class WishlistListComponent implements OnInit {
     this.searchCustomers()
   }
 
-  getNextPage() {
-    this.page += 1
-    this.searchCustomers()
-  }
-
-  getPreviousPage() {
-    this.page -= 1
-    this.searchCustomers()
-  }
-
   searchCustomers() {
-    this.CustomersService.getWishlist({
-      keyword: this.keyword.value,
-      page: this.page,
-      limit: this.limit,
-      sort: this.sort.value
-    }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.customers = res?.result?.data
-        this.totalResults = res?.result?.totalResults
-        this.totalPages = res?.result?.totalPages
-        this.isLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    setTimeout(() => {
+      this.CustomersService.getWishlist({
+        keyword: this.keyword.value,
+        page: this.page,
+        limit: this.limit,
+        sort: this.sort.value
+      }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.customers = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }, 800)
   }
 }

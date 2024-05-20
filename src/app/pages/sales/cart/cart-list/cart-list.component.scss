@@ -1,112 +1,38 @@
-$hover: #e3e3e3;
-$grey: #888888;
-$white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
-
 label,
-input[type=button] {
-   font-weight: normal !important;
-   width: 100%;
+.btn-secondary,
+.btn-primary {
+    font-weight: 400 !important;
 }
 
-.filteringWrapper {
-   .filtering {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      gap: 8px;
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
 
-      span {
-         color: #8B909A;
-         line-height: 18px;
-      }
+    tbody {
 
-      select {
-         border: 1px solid #E8E8E8;
-         border-radius: 6px;
-         padding: 5px;
+        tr {
 
-         &:focus {
-            outline: none;
-         }
-      }
-   }
-
-   .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .paginationBefore,
-      .paginationNext {
-         height: 30px;
-         width: 30px;
-         border-radius: 15px;
-         display: grid;
-         place-items: center;
-         background: $background;
-         cursor: pointer;
-
-         &.disabled {
-            opacity: 0.5;
-            pointer-events: none;
-         }
-      }
-
-      .paginationPage {
-         margin: 0 10px;
-      }
-   }
-
-}
-
-.emptyNote {
-   margin: 0 0 20px 0;
-   display: grid;
-   place-items: center;
-
-   .note {
-      font-weight: normal;
-   }
-}
-
-.table-responsive {
-   border-radius: 10px;
-
-   .common_thead {
-      background: #E4E7F4;
-
-      th {
-         font-weight: 600;
-         font-size: 14px;
-         line-height: 15px;
-         text-transform: capitalize;
-         color: #000;
-      }
-   }
-
-   tr {
-      border-bottom: 1px solid #E8E8E8;
-   }
-
-   tbody {
-      background: #ffff;
-      tr {
-         td {
-            svg {
-               cursor: pointer;
+            td {
+                vertical-align: middle;
             }
-         }
-      }
-   }
+        }
+    }
+
+    thead {
+
+        tr {
+
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
 }
+
+//Table designs
 
 .btns-sx{
    position: relative;
@@ -114,7 +40,6 @@ input[type=button] {
 
 .toolTip {
    position: absolute;
-   
    top: 0;
    left: -100%;
    font-size: 13px;

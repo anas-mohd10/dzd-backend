@@ -1,122 +1,84 @@
-<div class="taxRules-page-container">
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Tax Rules</h1>
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Tax Rules</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST }}">Tax Rules</a>
+        </li>
+      </ul>
     </div>
-    <div class="row align-items-center">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST }}">Tax Rules</a>
-          </li>
-        </ul>
-        <button class="btn btn-primary cursor-pointer fs-6" color="primary"
-          routerLink="{{ appRoute.taxRules.ADD_TAX_RULES }}">
-          Add Tax Rules
-        </button>
+    <button class="btn btn-primary" routerLink="{{ appRoute.taxRules.ADD_TAX_RULES }}">
+      Add tax rules
+    </button>
+  </div>
+
+  <div class="my-4">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
+            (ngModelChange)="getRules()">
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="card card-table">
-      <div class="card-body">
-        <div class="table-responsive">
-          <div class="d-flex align-items-center justify-content-end row">
-            <div class="col-lg-4">
-              <label class="form-label">&nbsp;</label>
-              <input type="text" class="form-control" placeholder="Search rules here" [formControl]="keyword"
-                (ngModelChange)="getRules()">
-            </div>
-          </div>
-
-          <table class="mt-4 table table-head-custom table-vertical-center table-head-bg table-borderless"
-            *ngIf="rules.length > 0">
-            <thead class="common_thead">
-              <tr class="text-left fs-6 text-gray-400">
-                <th style="min-width: 120px">&nbsp;</th>
-                <th style="min-width: 120px">Name</th>
-                <th style="min-width: 100px">Percentage</th>
-                <th style="min-width: 100px">Status</th>
-                <th style="min-width: 100px">&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody class="fs-6">
-              <ng-container *ngFor="let rule of rules; let i =index">
-                <tr>
-                  <td>{{i + 1}}</td>
-                  <td>{{rule?.name }}</td>
-                  <td>{{rule?.rate}}</td>
-                  <td>
-                    <span class="alert alert-success p-1" [ngClass]="{'alert-danger': !rule?.isActive}">
-                      {{rule?.isActive ? 'Active' : 'Inactive'}}
-                    </span>
-                  </td>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <div class="update me-2" routerLink="{{appRoute.taxRules.UPDATE_TAX_RULES}}"
-                        [queryParams]="{'tax': rule?.slug}">
-                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                        </svg>
-
-                      </div>
-                      <div class="delete" (click)="open(delete, rule)">
-                        <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                        </svg>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
-
-          <div *ngIf="rules.length == 0">
-            <div class="emptyNote">
-              <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
-              <div class="fs-3 fw-bolder">No result found</div>
-              <div class="fs-5 note">We couldn't find any item based on your search.</div>
-            </div>
-          </div>
-
-          <div class="filteringWrapper d-flex align-items-center justify-content-between">
-            <div class="filtering">
-              <span class="fs-6 text-dark">Show</span>
-              <select [formControl]="limit" (change)="getRules()">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="40">40</option>
-              </select>
-              <span class="fs-6 text-dark">entries</span>
-            </div>
-            <div class="filteringResultCount fs-6">
-              Showing <span class="me-1 ms-1">{{rules.length}}</span> of <span class="ms-1">{{totalResults}}</span>
-            </div>
-            <div class="pagination">
-              <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="navBack()">
-                <img src="../../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+  <div>
+    <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Name</th>
+          <th>Percentage</th>
+          <th>Status</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let rule of rules; let i =index">
+          <tr>
+            <td>{{i + 1}}</td>
+            <td>{{rule?.name }}</td>
+            <td>{{rule?.rate}}</td>
+            <td>
+              <span class="alert alert-success p-1" [ngClass]="{'alert-danger': !rule?.isActive}">
+                {{rule?.isActive ? 'Active' : 'Inactive'}}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <div class="update cursor-pointer" routerLink="{{appRoute.taxRules.UPDATE_TAX_RULES}}"
+                  [queryParams]="{'tax': rule?.slug}">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                  </svg>
+                </div>
+                <div class="delete cursor-pointer" (click)="open(delete, rule)">
+                  <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                  </svg>
+                </div>
               </div>
-              <div class="paginationPage">{{page}}</div>
-              <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="navNext()">
-                <img src="../../../../../../assets/icons/navigateNext.svg" alt="Icon">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="my-4">
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
+      [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
   </div>
 </div>
 

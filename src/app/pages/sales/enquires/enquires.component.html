@@ -1,18 +1,24 @@
-<div class="enquiresContainer">
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Enquires</h1>
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Enquires</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.enquires.ENQUIRY_LIST }}">Enquires</a>
+        </li>
+      </ul>
     </div>
-    <div class="row">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.enquires.ENQUIRY_LIST }}">Enquires</a>
-          </li>
-        </ul>
+  </div>
+
+  <div class="my-4 card">
+    <div class="card-body">
+      <div class="form-group">
+        <input type="search" placeholder="Search enquiries here" [formControl]="keyword" class="form-control" (ngModelChange)="getEnquiries()">
       </div>
     </div>
   </div>
@@ -40,16 +46,11 @@
     </ng-container>
 
     <div *ngIf="enquires.length == 0">
-      <div class="emptyNote">
-        <div class="fs-3 fw-bolder">No result found</div>
-        <div class="fs-6 note">
-          We couldn't find any item based on your search
-        </div>
-      </div>
+      <app-no-results></app-no-results>
     </div>
   </div>
 
-  <div class="card mt-3 px-3">
+  <div>
     <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
       [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
   </div>
@@ -66,8 +67,7 @@
     <div class="row">
       <div class="col-lg-6 mb-3 form-group">
         <label class="form-label">Name</label>
-        <input class="form-control"
-          value="{{enquiry.firstname + ' ' + (enquiry.lastname ? enquiry.lastname : '')}}" />
+        <input class="form-control" value="{{enquiry.firstname + ' ' + (enquiry.lastname ? enquiry.lastname : '')}}" />
       </div>
       <div class="col-lg-6 mb-3 form-group">
         <label class="form-label">Phone</label>

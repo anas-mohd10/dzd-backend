@@ -1,177 +1,173 @@
-<div class="content container-fluid">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bold"> {{ editMode ? "Update Customers" : "Add Customers"}}</h1>
-      </div>
-      <div class="row align-items-center">
-         <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}" [queryParams]="{'customer': slug}">
-                     {{ editMode ? "Update Customers" : "Add Customers"}}
-                  </a>
-               </li>
-            </ul>
+<div>
+   <div class="page-header d-flex align-items-start justify-content-between">
+      <div>
+         <div class="page-title">
+            <h1 class="fw-bold">Update Customers</h1>
          </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}" [queryParams]="{'customer': slug}">
+                  Update Customers
+               </a>
+            </li>
+         </ul>
       </div>
    </div>
 
-   <div class="row mt-4">
-      <div class="col-12 fs-6">
-         <div class="card">
-            <div class="card-body">
-               <form [formGroup]="customersForm">
-                  <div class="row">
+   <div class="row my-4">
+      <div class="card">
+         <div class="card-body">
+            <form [formGroup]="form">
+               <div class="row">
 
-                     <div class="my-5" *ngIf="customerData?.referralSource">
-                        <div class="border p-6 bg-white border-secondary rounded shadow">
-                           {{customerData.name}} signed up for the account, using
-                           <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customerData?.referralSource?.user?.userid}}"
-                              target="_blank">{{customerData?.referralSource?.user?.name}}'s</a>
-                           referral code.
-                        </div>
+                  <div class="my-5" *ngIf="customerData?.referralSource">
+                     <div class="border p-6 bg-white border-secondary rounded shadow">
+                        {{customerData.name}} signed up for the account, using
+                        <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customerData?.referralSource?.user?.userid}}"
+                           target="_blank">{{customerData?.referralSource?.user?.name}}'s</a>
+                        referral code.
+                     </div>
+                  </div>
+
+                  <div class="d-flex justify-content-end">
+                     <button class="btn btn-secondary ms-1"
+                        routerLink="{{appRoute.customers.referralHistory + '/' + customerData?.userid}}">
+                        Referral history
+                     </button>
+                     <button class="btn btn-secondary ms-1" (click)="openLoyalty(loyaltyTemplate)">
+                        Loyalty points
+                     </button>
+                     <button class="btn btn-secondary ms-1" (click)="openWallet(walletTemplate)">
+                        Wallet transactions
+                     </button>
+                  </div>
+
+                  <div class="addressWrapper">
+                     <div class="d-flex align-items-end justify-content-between">
+                        <div class="fw-bold fs-4">Address details</div>
+                        <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
                      </div>
 
-                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-secondary ms-1"
-                           routerLink="{{appRoute.customers.referralHistory + '/' + customerData?.userid}}">
-                           Referral history
-                        </button>
-                        <button class="btn btn-secondary ms-1" (click)="openLoyalty(loyaltyTemplate)">
-                           Loyalty points
-                        </button>
-                        <button class="btn btn-secondary ms-1" (click)="openWallet(walletTemplate)">
-                           Wallet transactions
-                        </button>
-                     </div>
-
-                     <div class="addressWrapper">
-                        <div class="d-flex align-items-end justify-content-between">
-                           <div class="fw-bold fs-4">Address details</div>
-                           <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
-                        </div>
-
-                        <div class="addressCards mt-3">
-                           <ng-container *ngFor="let address of addresses">
-                              <div class="addressCard p-3 rounded"
-                                 [ngClass]="{'defaultAddressCard': address?.isDefault}">
-                                 <div (click)="setDefaultAddress(address?.refid)">
-                                    <div class="contactDetails fs-6">
-                                       {{address?.name}}, {{address?.countryCode}}{{address?.mobile}}
-                                    </div>
-                                    <div class="address">
-                                       <div class="type fs-6 mb-1">{{address?.type}}</div>
-                                       <div class="fs-6 addressLane"> {{address?.firstlane}}, {{address?.secondlane}}
-                                       </div>
-                                       <div class="fs-6"> {{address?.landmark}} {{address?.pincode}}</div>
-                                       <div class="fs-6"> {{address?.state}}</div>
-                                    </div>
+                     <div class="addressCards mt-3">
+                        <ng-container *ngFor="let address of addresses">
+                           <div class="addressCard p-3 rounded" [ngClass]="{'defaultAddressCard': address?.isDefault}">
+                              <div (click)="setDefaultAddress(address?.refid)">
+                                 <div class="contactDetails fs-6">
+                                    {{address?.name}}, {{address?.countryCode}}{{address?.mobile}}
                                  </div>
-
-                                 <div class="mt-2 d-flex align-items-center justify-content-start">
-                                    <div class="btn w-50 btn-secondary me-2"
-                                       (click)="open(addressTemplate, address?.refid)">
-                                       Edit</div>
-                                    <div class="btn w-50 btn-danger" (click)="openModal(delete, address?.refid)">Delete
+                                 <div class="address">
+                                    <div class="type fs-6 mb-1">{{address?.type}}</div>
+                                    <div class="fs-6 addressLane"> {{address?.firstlane}}, {{address?.secondlane}}
                                     </div>
+                                    <div class="fs-6"> {{address?.landmark}} {{address?.pincode}}</div>
+                                    <div class="fs-6"> {{address?.state}}</div>
                                  </div>
                               </div>
-                           </ng-container>
-                        </div>
 
-                        <ng-container *ngIf="addresses.length == 0">
-                           <div class="my-3 d-flex flex-column align-items-start justify-content-start">
-                              <div class="fs-4 fw-bold">No address found</div>
-                              <p class="text-muted">We couldn't find any item based on your search</p>
+                              <div class="mt-2 d-flex align-items-center justify-content-start">
+                                 <div class="btn w-50 btn-secondary me-2"
+                                    (click)="open(addressTemplate, address?.refid)">
+                                    Edit</div>
+                                 <div class="btn w-50 btn-danger" (click)="openModal(delete, address?.refid)">Delete
+                                 </div>
+                              </div>
                            </div>
                         </ng-container>
                      </div>
 
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required">Name</label>
-                           <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                     <ng-container *ngIf="addresses.length == 0">
+                        <div class="my-3 d-flex flex-column align-items-start justify-content-start">
+                           <div class="fs-4 fw-bold">No address found</div>
+                           <p class="text-muted">We couldn't find any item based on your search</p>
+                        </div>
+                     </ng-container>
+                  </div>
+
+                  <div class="col-lg-6">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required">Name</label>
+                        <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
                               'is-invalid':
-                              (cf.name.touched || isSubmitted) &&
-                              cf.name.errors?.required
+                              (formControls.name.touched || isSubmitted) &&
+                              formControls.name.errors?.required
                             }" />
-                        </div>
-                     </div>
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required"> Email</label>
-                           <input type="email" class="form-control fs-6" formControlName="email" [ngClass]="{
-                              'is-invalid':
-                              (cf.email.touched || isSubmitted) &&
-                              cf.email.errors?.required
-                            }" (change)="checkEmail($event.target)" />
-                        </div>
-                        <div class="mt-2 p-2 alert alert-danger" *ngIf="cf.email.errors?.pattern">Enter a valid email</div>
-                     </div>
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required">Country Code</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="countryCode">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="+91">+91</option>
-                              <option value="+971">+971</option>
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required"> Mobile No.</label>
-                           <input type="number" class="form-control fs-6" formControlName="mobile"
-                              (change)="validateNumber($event.target)" [ngClass]="{
-                              'is-invalid':
-                              (cf.mobile.touched || isSubmitted) &&
-                              cf.mobile.errors?.required
-                            }" />
-                        </div>
-                        <div class="mt-2 p-2 alert alert-danger" *ngIf="cf.mobile.errors?.pattern">
-                           Enter a valid mobile number
-                        </div>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3">Status</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="isActive">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Active</option>
-                              <option value="false">Inactive</option>
-                           </select>
-                        </div>
-                     </div>
-
-                     <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3">Referral code</label>
-                           <input type="text" class="form-control fs-6" [formControl]="referralCode" />
-                        </div>
-                     </div>
-
-                     <div class="col-12 d-flex align-items-center justify-content-end">
-                        <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
-                           class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
-                           Cancel
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
-                           [ngClass]="{'disabled-button': !validBtn}" (click)="onSubmit()">
-                           Update
-                        </button>
                      </div>
                   </div>
-               </form>
-            </div>
+                  <div class="col-lg-6">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required"> Email</label>
+                        <input type="email" class="form-control fs-6" formControlName="email" [ngClass]="{
+                              'is-invalid':
+                              (formControls.email.touched || isSubmitted) &&
+                              formControls.email.errors?.required
+                            }" (change)="emailExists($event.target)" />
+                     </div>
+                     <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.email.errors?.pattern">
+                        Enter valid email address
+                     </div>
+                  </div>
+                  <div class="col-lg-6">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required">Country Code</label>
+                        <select class="form-select mb-3" (change)="handleMobilePattern()" formControlName="countryCode">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="+91">+91</option>
+                           <option value="+971">+971</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="col-lg-6">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3 required">Phone No.</label>
+                        <input type="number" class="form-control fs-6" formControlName="mobile"
+                           (change)="phoneExists($event.target)" [ngClass]="{
+                              'is-invalid':
+                              (formControls.mobile.touched || isSubmitted) &&
+                              formControls.mobile.errors?.required
+                            }" />
+                     </div>
+                     <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.mobile.errors?.pattern">
+                        Enter valid phone number
+                     </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Status</label>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
+                           formControlName="isActive">
+                           <option value="" disabled>-- Select an option --</option>
+                           <option value="true">Active</option>
+                           <option value="false">Inactive</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                     <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Referral code</label>
+                        <input type="text" class="form-control fs-6" [formControl]="referralCode" />
+                     </div>
+                  </div>
+
+                  <div class="col-12 d-flex align-items-center justify-content-end">
+                     <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
+                        class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
+                        Cancel
+                     </a>
+                     <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
+                        [ngClass]="{'disabled-button': !validBtn}" (click)="onSubmit()">
+                        Update
+                     </button>
+                  </div>
+               </div>
+            </form>
          </div>
       </div>
    </div>
@@ -195,7 +191,7 @@
    <div class="modal-body">
       <form [formGroup]="addressForm">
          <div class="row">
-            <div class="col-6">
+            <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3 required">Address Type</label>
                   <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
@@ -212,17 +208,17 @@
                </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Name</label>
                   <input type="text" class="form-control fs-6" formControlName="name" />
                </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Country Code</label>
-                  <select class="form-select mb-3" formControlName="countryCode">
+                  <select class="form-select mb-3" formControlName="countryCode" (change)="handleAddressMobilePattern()">
                      <option value="" disabled>-- Select an option --</option>
                      <option value="+91">+91</option>
                      <option value="+971">+971</option>
@@ -230,7 +226,7 @@
                </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Mobile Number</label>
                   <input type="text" class="form-control fs-6" [ngClass]="{
@@ -242,9 +238,9 @@
                </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-lg-6">
                <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Firstlane</label>
+                  <label class="fs-6 mb-3 required">Apartment</label>
                   <input type="text" class="form-control fs-6" formControlName="firstlane" [ngClass]="{
                      'is-invalid':
                      (addressControls.firstlane.touched || isAddressSubmitted) &&
@@ -252,21 +248,10 @@
                    }" />
                </div>
             </div>
-            <div class="col-6">
+
+            <div class="col-lg-6">
                <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Secondlane</label>
-                  <input type="text" class="form-control fs-6" formControlName="secondlane" />
-               </div>
-            </div>
-            <div class="col-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3"> Area</label>
-                  <input type="text" class="form-control fs-6" formControlName="area" />
-               </div>
-            </div>
-            <div class="col-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required"> City</label>
+                  <label class="fs-6 mb-3 required">City</label>
                   <input type="text" class="form-control fs-6" formControlName="city" [ngClass]="{
                      'is-invalid':
                      (addressControls.city.touched || isAddressSubmitted) &&
@@ -274,9 +259,10 @@
                    }" />
                </div>
             </div>
-            <div class="col-6">
+
+            <div class="col-lg-6">
                <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required"> Landmark</label>
+                  <label class="fs-6 mb-3 required">Landmark</label>
                   <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
                      'is-invalid':
                      (addressControls.landmark.touched || isAddressSubmitted) &&
@@ -284,48 +270,22 @@
                    }" />
                </div>
             </div>
-            <div class="col-6">
+
+            <div class="col-lg-6">
                <div class="form-group mb-3">
-                  <label class="fs-6 mb-3"> Pincode</label>
-                  <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.pincode.touched || isAddressSubmitted) &&
-                     addressControls.pincode.errors?.required
-                   }" />
-               </div>
-               <div class="text-danger" *ngIf="addressControls.pincode.errors?.pattern">Please, Enter
-                  Valid Pincode
+                  <label class="fs-6 mb-3">Pincode</label>
+                  <input type="number" class="form-control fs-6" formControlName="pincode" />
                </div>
             </div>
-            <div class="col-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3"> Latitude</label>
-                  <input type="number" class="form-control fs-6" formControlName="lat" />
-               </div>
-            </div>
-            <div class="col-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3"> Longitude</label>
-                  <input type="number" class="form-control fs-6" formControlName="lng" />
-               </div>
-            </div>
-            <div class="col-6">
+
+            <div class="col-lg-6">
                <div class="form-group mb-3 mb-3">
-                  <label class="fs-6 mb-3 required">State</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                     formControlName="state" [ngClass]="{
-                        'is-invalid':
-                        (addressControls.state.touched || isAddressSubmitted) &&
-                        addressControls.state.errors?.required
-                      }">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option value="Kerala">Kerala</option>
-                     <option value="Karnataka">Karnataka</option>
-                     <option value="Tamilnadu">Tamilnadu</option>
-                     <option value="Goa">Goa</option>
-                     <option value="Maharastra">Maharastra</option>
-                     <option value="Gujarat">Gujarat</option>
-                  </select>
+                  <label class="fs-6 mb-3 required">State / Emirates</label>
+                  <input type="text" class="form-control fs-6" formControlName="state" [ngClass]="{
+                     'is-invalid':
+                     (addressControls.state.touched || isAddressSubmitted) &&
+                     addressControls.state.errors?.required
+                   }" />
                </div>
             </div>
          </div>

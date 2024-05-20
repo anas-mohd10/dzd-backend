@@ -53,7 +53,7 @@
   <div class="brandsWrapper">
     <ng-container *ngFor="let brand of brands">
 
-      <div class="brandCard">
+      <div class="brandCard gap-2">
 
         <div class="editButton">
           <div routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{ brand: brand?.slug }">

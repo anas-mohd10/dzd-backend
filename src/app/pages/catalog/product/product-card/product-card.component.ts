@@ -219,6 +219,11 @@ export class ProductCardComponent implements OnInit {
     this.editForm.get('parentCategory')?.setValue('')
   }
 
+  removeCategory(categoryId: string) {
+    this.parentCategories = this.parentCategories.filter((category: any) => category._id != categoryId)
+    this.HotToastService.error('Category removed from list')
+  }
+
   getProducts() {
     let payload = {
       ...this.productForm.value,
@@ -269,16 +274,18 @@ export class ProductCardComponent implements OnInit {
             this.editForm.get('brand')?.setValue(res?.result?.brand?._id)
           }
           this.editForm.get('tax')?.setValue(res?.result?.tax?._id)
-          this.editForm.get('returnable')?.setValue(res?.result?.return?.isPresent)
-          this.editForm.get('cod')?.setValue(res?.result?.cod?.isPresent)
           this.editForm.get('shipping')?.setValue(res?.result?.shipping?.isPresent)
           this.editForm.get('shippingCost')?.setValue(res?.result?.shipping?.value)
+          this.editForm.get('returnable')?.setValue(res?.result?.return?.isPresent)
           this.editForm.get('returnDays')?.setValue(res?.result?.return?.value)
+          this.editForm.get('replace')?.setValue(res?.result?.return?.isPresent)
+          this.editForm.get('replaceDays')?.setValue(res?.result?.return?.value)
+          this.editForm.get('cod')?.setValue(res?.result?.cod?.isPresent)
           this.editForm.get('codCharge')?.setValue(res?.result?.cod?.value)
           let categories = res?.result?.parentCategory?.id?.map((category: any) => { return category._id })
           this.parentCategories = res?.result?.parentCategory?.id
           this.getChildCategory(categories)
-          this.editForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id)
+          this.editForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id?._id)
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res?.message)

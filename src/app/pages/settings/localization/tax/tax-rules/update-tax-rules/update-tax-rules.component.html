@@ -1,10 +1,10 @@
-<div class="content container-fluid">
-  <!-- Page Header -->
-  <div class="page-header">
+<div>
+
+  <div class="page-header d-flex align-items-start justify-content-start">
     <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update tax rule" : "Add tax rule" }}</h1>
+      <h1 class="fw-bold"> Update tax rule</h1>
     </div>
-    <div class="row align-items-center">
+    <div class="row ">
       <div class="col">
         <ul class="breadcrumb">
           <li class="breadcrumb-item fs-6">
@@ -14,61 +14,58 @@
             <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}">Tax Rules</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.taxRules.UPDATE_TAX_RULES}}" [queryParams]="{tax: rule}">{{
-              editMode ? "Update tax rule" : "Add tax rule"
-              }}</a>
+            <a routerLink="{{ appRoute.taxRules.UPDATE_TAX_RULES}}" [queryParams]="{tax: rule}">
+              Update tax rule
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="card">
-      <div class="card-body">
-        <form [formGroup]="form">
-          <div class="row">
-            <h2 class="fw-bolder">Rule Details</h2>
+  <div class="my-4 card">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row">
+          <h2 class="fw-bolder">Rule Details</h2>
 
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required"> Name</label>
-                <input type="text" class="form-control fs-6" formControlName="name"
-                  [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required"> Rate</label>
-                <input type="text" class="form-control fs-6" formControlName="rate"
-                  [ngClass]="{'is-invalid': (formControls.rate.touched || isSubmitted) && formControls.rate.errors?.required }" />
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3">Status</label>
-                <select class="form-select mb-3 fs-6" formControlName="isActive">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="true">Enabled</option>
-                  <option value="false">Disabled</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="d-flex align-items-center justify-content-end">
-              <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                style="width: 200px; margin-right: 20px;">
-                Cancel
-              </a>
-              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px" (click)="update()">
-                Update
-              </button>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required"> Name</label>
+              <input type="text" class="form-control fs-6" formControlName="name"
+                [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
             </div>
           </div>
-        </form>
-      </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required"> Rate</label>
+              <input type="text" class="form-control fs-6" formControlName="rate"
+                [ngClass]="{'is-invalid': (formControls.rate.touched || isSubmitted) && formControls.rate.errors?.required }" />
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3">Status</label>
+              <select class="form-select mb-3 fs-6" formControlName="isActive">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-end gap-2">
+            <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}" class=" btn btn-secondary">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary" (click)="update()">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

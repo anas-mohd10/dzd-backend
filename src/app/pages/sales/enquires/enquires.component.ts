@@ -22,7 +22,6 @@ export class EnquiresComponent implements OnInit {
   query: any = {}
   form: FormGroup
   enquiry: any = {}
-  lastPage: Boolean = false;
   modalRef: BsModalRef
 
   constructor(
@@ -41,26 +40,25 @@ export class EnquiresComponent implements OnInit {
   }
 
   getEnquiries() {
-    this.query = {
-      keyword: this.keyword.value,
-      isActive: this.isActive.value,
-      page: this.page,
-      limit: this.limit
-    }
-    this.EnquiryService.searchEnquiry(this.query).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.enquires = res?.result?.data
-        this.lastPage = res?.result?.lastPage
-        this.totalResults = res?.result?.totalResults
-        this.totalPages = res?.result?.totalPages
-        this.page = res?.result?.page
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    setTimeout(() => {
+      this.EnquiryService.searchEnquiry({
+        keyword: this.keyword.value,
+        isActive: this.isActive.value,
+        page: this.page,
+        limit: this.limit
+      }).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.enquires = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck()
+        }
+      })
+    }, 800)
   }
 
-  open(template: TemplateRef<any>, data: any){
-    this.modalRef = this.BsModalService.show(template, {class: 'modal-lg modal-dialog-centered'})
+  open(template: TemplateRef<any>, data: any) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
     this.enquiry = data
   }
 

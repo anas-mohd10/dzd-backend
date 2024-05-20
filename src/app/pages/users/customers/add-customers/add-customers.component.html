@@ -1,113 +1,96 @@
-<div class="content container-fluid">
+<div>
    <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder"> {{ editMode ? "Update Customers" : "Add Customers"}}</h1>
-      </div>
-      <div class="row align-items-center">
-         <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
-                     {{ editMode ? "Update Customers" : "Add Customers"}}
-                  </a>
-               </li>
-            </ul>
+      <div>
+         <div class="page-title">
+            <h1 class="fw-bolder">Add Customers</h1>
          </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST }}">Customers</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
+                  Add Customers
+               </a>
+            </li>
+         </ul>
       </div>
    </div>
 
-   <div class="row mt-4">
-      <div class="col-12 fs-5">
-         <div class="card">
-            <div class="card-body">
-               <form [formGroup]="customersForm">
-                  <div class="row">
+   <div class="my-4 card">
+      <div class="card-body">
+         <form [formGroup]="form">
+            <div class="row">
 
-                     <div class="mb-4">
-                        <h2 class="form-title">Customers Details</h2>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required">Name</label>
-                           <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
-                              'is-invalid':
-                              (cf.name.touched || isSubmitted) &&
-                              cf.name.errors?.required
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3 required">Name</label>
+                     <input type="text" class="form-control fs-5" formControlName="name" [ngClass]="{
+                              'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required
                             }" />
-                        </div>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required"> Email</label>
-                           <input type="email" class="form-control fs-5" formControlName="email" [ngClass]="{
-                              'is-invalid':
-                              (cf.email.touched || isSubmitted) &&
-                              cf.email.errors?.required
-                            }" (change)="checkEmail($event.target)" />
-                        </div>
-                        <div class="error-message text-danger" *ngIf="cf.email.errors?.pattern">Kindly enter an valid
-                           email address</div>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required">Country Code</label>
-                           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg"
-                              formControlName="countryCode">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="+91">+91</option>
-                              <option value="+971">+971</option>
-                           </select>
-                        </div>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3 required"> Mobile No.</label>
-                           <input type="number" class="form-control fs-5" formControlName="mobile"
-                              (change)="validateNumber($event.target)" [ngClass]="{
-                              'is-invalid':  (cf.mobile.touched || isSubmitted) && cf.mobile.errors?.required }" />
-                        </div>
-                        <div class="error-message text-danger" *ngIf="cf.mobile.errors?.pattern">
-                           Enter an valid 10 digit mobile number
-                        </div>
-                     </div>
-
-                     <div class="col-6">
-                        <div class="form-group mb-3">
-                           <label class="fs-6 mb-3">Active Customer?</label>
-                           <select class="form-select form-select-lg" aria-label=".form-select-lg"
-                              formControlName="isActive">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Yes</option>
-                              <option value="false">No</option>
-                           </select>
-                        </div>
-                     </div>
-
-                     <div class="col-12 d-flex align-items-center justify-content-end">
-                        <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
-                           class="btn btn-secondary btn-sm fs-5 text-dark" style="width: 200px; margin-right: 20px;">
-                           Cancel
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-5" style="width: 200px"
-                           [ngClass]="{'disabled-button': !validBtn}" (click)="onSubmit()">
-                           Add
-                        </button>
-                     </div>
-
                   </div>
-               </form>
+               </div>
+
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3 required"> Email</label>
+                     <input type="email" class="form-control fs-5" formControlName="email"
+                        [ngClass]="{
+                              'is-invalid': (formControls.email.touched || isSubmitted) &&  formControls.email.errors?.required }" (change)="emailExists($event.target)" />
+                  </div>
+                  <div class="alert p-2 mt-1 fw-normal alert-danger" *ngIf="formControls.email.errors?.pattern">
+                     Enter valid email address
+                  </div>
+               </div>
+
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3 required">Country Code</label>
+                     <select class="form-select mb-3" formControlName="countryCode" (change)="handleMobilePattern()">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="+91">+91</option>
+                        <option value="+971">+971</option>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3 required"> Phone No.</label>
+                     <input type="number" class="form-control fs-5" formControlName="mobile"
+                        (change)="phoneExists($event.target)"
+                        [ngClass]="{'is-invalid': (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required }" />
+                  </div>
+                  <div class="alert p-2 mt-1 fw-normal alert-danger" *ngIf="formControls.mobile.errors?.pattern">
+                     Enter valid phone number
+                  </div>
+               </div>
+
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3">Active Customer?</label>
+                     <select class="form-select" formControlName="isActive">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="d-flex align-items-center justify-content-end gap-2">
+                  <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}" class="btn btn-secondary">
+                     Cancel
+                  </a>
+                  <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+                     Save changes
+                  </button>
+               </div>
+
             </div>
-         </div>
+         </form>
       </div>
    </div>
 </div>

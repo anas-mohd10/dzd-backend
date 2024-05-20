@@ -1,71 +1,61 @@
 <div>
-    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center">
-        <div class="">
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
             <div class="page-title">
-                <h1 class="fw-bolder">Guests</h1>
+                <h1 class="fw-bold">Guests</h1>
             </div>
-            <div class="row">
-                <div class="col d-flex align-items-start justify-content-between">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item fs-6">
-                            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active fs-6">
-                            <a routerLink="{{ appRoute.guestCustomers }}">Guests</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.guestCustomers }}">Guests</a>
+                </li>
+            </ul>
         </div>
     </div>
 
     <div class="card my-4">
         <div class="card-body">
-            <div class="row justify-content-end">
-                <div class="col-lg-4 form-group">
-                    <input type="text" placeholder="Search guests" (ngModelChange)="searchGuests()"
-                        [formControl]="keyword" id="keyword" class="form-control">
-                </div>
+            <div class="form-group">
+                <input type="search" placeholder="Search guests" (ngModelChange)="searchGuests()"
+                    [formControl]="keyword" id="keyword" class="form-control">
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive bg-white">
-                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-                    *ngIf="guests.length > 0">
-                    <thead class="common_thead">
-                        <tr class="text-left fs-6 text-gray-400">
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Status</th>
-                            <th>Created On</th>
-                        </tr>
-                    </thead>
-                    <tbody class="fs-6">
-                        <ng-container *ngFor="let guest of guests; let i = index">
-                            <tr>
-                                <td>{{guest.name}}</td>
-                                <td>{{guest.email}}</td>
-                                <td>{{guest.countryCode}} {{guest.mobile}}</td>
-                                <td>{{guest.status}}</td>
-                                <td>{{guest.createdAt}}</td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
+    <div>
+        <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Created On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let guest of guests; let i = index">
+                    <tr>
+                        <td>{{guest.name}}</td>
+                        <td>{{guest.email}}</td>
+                        <td>{{guest.countryCode}} {{guest.mobile}}</td>
+                        <td>{{guest.status}}</td>
+                        <td>{{guest.createdAt}}</td>
+                    </tr>
+                </ng-container>
+                <tr *ngIf="guests.length == 0">
+                    <td colspan="5">
+                        <app-no-results></app-no-results>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-                <div class="my-8 d-flex flex-column align-items-center justify-content-center"
-                    *ngIf="guests.length == 0">
-                    <div class="fs-4 fw-bold">No requests found</div>
-                    <p class="text-muted">We couldn't find any item based on your search</p>
-                </div>
-
-                <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
-                    [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
-            </div>
-        </div>
+    <div class="my-4">
+        <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
+            [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
     </div>
 </div>

@@ -39,8 +39,6 @@ export class TestimonialListComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.testimonials = res?.result?.data
-          this.page = res?.result?.page
-          this.limit = res?.result?.limit
           this.totalResults = res?.result?.totalResults
           this.totalPages = res?.result?.totalPages
           this.ChangeDetectorRef.markForCheck()

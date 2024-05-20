@@ -205,7 +205,7 @@ export class CategoryComponent implements OnInit {
 
   openAttributeModal(template: TemplateRef<any>, category: any) {
     this.categoryDetails = category
-    this.AttributeService.getAttributes(category.catid).subscribe({
+    this.AttributeService.getAttributes(category._id).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.attributes = res?.result
@@ -217,6 +217,7 @@ export class CategoryComponent implements OnInit {
         this.HotToastService.error(err?.message)
       }
     })
+
     this.attributeModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
   }
 
@@ -289,7 +290,12 @@ export class CategoryComponent implements OnInit {
     }
 
     if (this.attributeDetails) {
-      this.AttributeService.updateAttribute({ ...this.attributeForm.value, values: this.values, category: this.categoryDetails?.catid, attribute: this.attributeDetails?.refid }).subscribe({
+      this.AttributeService.updateAttribute({
+        ...this.attributeForm.value,
+        values: this.values,
+        category: this.categoryDetails?._id,
+        attribute: this.attributeDetails?._id
+      }).subscribe({
         next: (res: any) => {
           this.BsModalService.hide()
           this.HotToastService.success(res?.message)
@@ -301,7 +307,11 @@ export class CategoryComponent implements OnInit {
         }
       })
     } else {
-      this.AttributeService.createAttribute({ ...this.attributeForm.value, values: this.values, category: this.categoryDetails?.catid }).subscribe({
+      this.AttributeService.createAttribute({
+        ...this.attributeForm.value,
+        values: this.values,
+        category: this.categoryDetails?._id
+      }).subscribe({
         next: (res: any) => {
           this.BsModalService.hide()
           this.HotToastService.success(res?.message)

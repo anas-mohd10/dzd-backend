@@ -1,36 +1,38 @@
-.table-responsive {
-  border-radius: 15px;
-  border: 1px solid #e8e8e8;
-
-  .common_thead {
-    background: #e4e7f4;
-
-    th {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 15px;
-      text-transform: capitalize;
-      color: #212121;
-    }
-  }
-
-  tr {
-    border-bottom: 1px solid #e8e8e8;
-  }
-
-  tbody {
-    background: white;
-
-    tr {
-      td {
-        img {
-          cursor: pointer;
-        }
-      }
-    }
-  }
+label,
+.btn-secondary,
+.btn-primary {
+    font-weight: 400 !important;
 }
 
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
+
+    tbody {
+
+        tr {
+
+            td {
+                vertical-align: middle;
+            }
+        }
+    }
+
+    thead {
+
+        tr {
+
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
+}
+
+//Table designs
 .product {
   max-width: 300px;
   overflow: hidden;

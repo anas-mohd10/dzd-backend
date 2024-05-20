@@ -1,8 +1,8 @@
 <div>
-    <div class="page-header" style="display: flex; justify-content: space-between; align-items: center">
-        <div class="">
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
             <div class="page-title">
-                <h1 class="fw-bolder">Replace Requests</h1>
+                <h1 class="fw-bold">Replace Requests</h1>
             </div>
             <div class="row">
                 <div class="col d-flex align-items-start justify-content-between">
@@ -18,10 +18,11 @@
             </div>
         </div>
     </div>
+
     <div class="card my-4">
         <div class="card-body">
             <div class="row justify-content-end">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="startDate">&nbsp;</label>
                     <input id="startDate" name="date" type="text" placeholder="Select start date" class="form-control"
                         bsDatepicker [bsConfig]="{
@@ -30,7 +31,7 @@
                         containerClass: 'theme-dark-blue'
                       }" [(ngModel)]="startDate" (ngModelChange)="getReplaceRequests()" />
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="endDate">&nbsp;</label>
                     <input id="endDate" name="date" type="text" placeholder="Select end date" class="form-control"
                         bsDatepicker [bsConfig]="{
@@ -50,64 +51,63 @@
                 </div>
                 <div class="col-lg-2">
                     <label for="status">&nbsp;</label>
-                    <input type="button" (click)="clearFilters()" class="form-control border border-primary text-primary"
-                        value="Clear filters">
+                    <input type="button" (click)="clearFilters()" class="btn btn-secondary w-100" value="Clear filters">
                 </div>
             </div>
         </div>
     </div>
+
     <div>
-        <div class="table-responsive bg-white">
-            <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-                *ngIf="replaceRequests.length > 0">
-                <thead class="common_thead">
-                    <tr class="text-left fs-6 text-gray-400">
-                        <th>Order</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Customer</th>
-                        <th>Status</th>
-                        <th>Action</th>
+        <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="fs-6">
+                <ng-container *ngFor="let replace of replaceRequests; let i = index">
+                    <tr>
+                        <td>{{replace.order}}</td>
+                        <td>
+                            <div class="product">{{replace.product}}</div>
+                        </td>
+                        <td>{{replace.quantity}}</td>
+                        <td>{{replace.customer}}</td>
+                        <td>
+                            <div class="{{replace.status}} p-2 rounded status">{{replace.status}}</div>
+                        </td>
+                        <td>
+                            <div class="cursor-pointer"
+                                routerLink="{{appRoute.replaceRequests + '/' + replace.reference}}">
+                                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                                </svg>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="fs-6">
-                    <ng-container *ngFor="let replace of replaceRequests; let i = index">
-                        <tr>
-                            <td>{{replace.order}}</td>
-                            <td>
-                                <div class="product">{{replace.product}}</div>
-                            </td>
-                            <td>{{replace.quantity}}</td>
-                            <td>{{replace.customer}}</td>
-                            <td>
-                                <div class="{{replace.status}} p-2 rounded status">{{replace.status}}</div>
-                            </td>
-                            <td>
-                                <div class="cursor-pointer"
-                                    routerLink="{{appRoute.replaceRequests + '/' + replace.reference}}">
-                                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                                        </path>
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-                                    </svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-container>
-                </tbody>
-            </table>
+                </ng-container>
+                <tr *ngIf="replaceRequests.length == 0">
+                    <td colspan="6">
+                        <app-no-results></app-no-results>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="replaceRequests.length == 0">
-                <div class="fs-4 fw-bold">No requests found</div>
-                <p class="text-muted">We couldn't find any item based on your search</p>
-            </div>
-
-            <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
-                [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
-        </div>
+    <div class="my-4">
+        <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
+            [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
     </div>
 </div>
