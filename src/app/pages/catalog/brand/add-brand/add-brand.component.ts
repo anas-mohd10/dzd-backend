@@ -17,6 +17,8 @@ export class AddBrandComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
+  cover: string = ''
+  thumbnail: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,10 +37,25 @@ export class AddBrandComponent implements OnInit {
 
   onThumbnailTriggered(event: any) {
     this.brandForm.get('thumbnail')?.setValue(event._id)
+    this.thumbnail = event?.path
   }
 
   onCoverTriggered(event: any) {
     this.brandForm.get('cover')?.setValue(event._id)
+    this.cover = event?.path
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.brandForm.get('cover')?.setValue(null)
+        this.cover = ''
+        break
+      case 'thumbnail':
+        this.brandForm.get('thumbnail')?.setValue(null)
+        this.thumbnail = ''
+        break
+    }
   }
 
   initForm() {

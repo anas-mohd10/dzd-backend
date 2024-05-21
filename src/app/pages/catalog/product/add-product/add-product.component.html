@@ -25,9 +25,12 @@
             <form [formGroup]="parentForm">
               <div class="row my-6">
                 <div class="col-lg-3 form-group">
-                  <label class="fs-6 mb-3">Thumbnail</label>
+                  <label class="fs-6 mb-3 required">Thumbnail</label>
                   <div class="ratio ratio-1x1 h-auto w-100 rounded">
                     <app-assets (mediaClicked)="handleThumbnail($event)" [previewDetails]="previewDetails"></app-assets>
+                  </div>
+                  <div *ngIf="previewDetails">
+                    <button class="btn mt-2 btn-danger w-100" (click)="removeThumbnail()">Remove</button>
                   </div>
                 </div>
                 <div class="col-lg-9">
@@ -76,7 +79,16 @@
                       <div class="mt-3 d-flex flex-wrap gap-2 align-items-center jusitfy-content-start"
                         *ngIf="parentCategories.length > 0">
                         <ng-container *ngFor="let category of parentCategories; let i = index">
-                          <div class="bg-secondary p-2 rounded">{{category?.name}}</div>
+                          <div class="bg-secondary p-2 rounded d-flex align-items-center justify-content-center gap-2"
+                            (click)="removeCategory(category?._id)">
+                            <div>{{category?.name}}</div>
+                            <div>
+                              <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                              </svg>
+                            </div>
+                          </div>
                         </ng-container>
                       </div>
                     </div>
@@ -228,15 +240,16 @@
                     <ng-container *ngIf="categories.length > 0">
                       <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
                         <ng-container *ngFor="let category of categories">
-                          <div class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
+                          <div
+                            class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
                             (click)="toggleProductCategory(category?._id, 'remove')">
                             <div>{{category.name}}</div>
                             <div>
-                              <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-6 h-6">
-                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                              <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                               </svg>
-                           </div>
+                            </div>
                           </div>
                         </ng-container>
                       </div>

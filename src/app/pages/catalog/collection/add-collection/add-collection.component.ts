@@ -27,6 +27,8 @@ export class AddCollectionComponent implements OnInit {
   productIds: Array<any> = [];
   productDetails: Array<any> = []
   base: string = environment.base
+  cover: string = ''
+  thumbnail: string = ''
 
   constructor(
     private CollectionService: CollectionService,
@@ -49,6 +51,7 @@ export class AddCollectionComponent implements OnInit {
 
   handleCollectionCover(event: any) {
     this.form.get('cover')?.setValue(event._id)
+    this.cover = event.path
   }
 
   get formControls() {
@@ -57,6 +60,20 @@ export class AddCollectionComponent implements OnInit {
 
   handleCollectionThumbnail(event: any) {
     this.form.get('thumbnail')?.setValue(event._id)
+    this.thumbnail = event.path
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.form.get('cover')?.setValue(null)
+        this.cover = ''
+        break
+      case 'thumbnail':
+        this.form.get('thumbnail')?.setValue(null)
+        this.thumbnail = ''
+        break
+    }
   }
 
   getProducts() {

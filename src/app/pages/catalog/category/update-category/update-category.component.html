@@ -13,7 +13,8 @@
           <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
         </li>
         <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{'category': categorySlug}">Update Category</a>
+          <a routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{'category': categorySlug}">Update
+            Category</a>
         </li>
       </ul>
     </div>
@@ -34,14 +35,27 @@
         <form [formGroup]="form">
 
           <div>
-            <div class="ratio ratio-21x9">
-              <app-assets (mediaClicked)="onCoverTriggered($event)"></app-assets>
+
+            <div>
+              <label for="cover" class="fs-6 mb-3">Cover</label>
+              <div id="cover" class="ratio ratio-21x9 position-relative">
+                <app-assets [previewDetails]="cover" (mediaClicked)="onCoverTriggered($event)"></app-assets>
+                 <div *ngIf="cover">
+                  <div class="position-absolute bottom-0 end-0 m-4">
+                    <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="row my-2">
               <div class="col-lg-3">
+                <label for="thumbnail" class="fs-6 mb-3">Thumbnail</label>
                 <div class="ratio ratio-1x1">
-                  <app-assets (mediaClicked)="onThumbnailTriggered($event)"></app-assets>
+                  <app-assets [previewDetails]="thumbnail" (mediaClicked)="onThumbnailTriggered($event)"></app-assets>
+                </div>
+                <div *ngIf="thumbnail">
+                  <button class="btn mt-2 btn-danger w-100" (click)="onRemove('thumbnail')">Remove</button>
                 </div>
               </div>
 
@@ -62,7 +76,8 @@
                     </select>
                   </div>
 
-                  <div class="col-lg-6 form-group mb-3" *ngIf="form.get('isRoot')?.value == 'false' || form.get('isRoot')?.value == false">
+                  <div class="col-lg-6 form-group mb-3"
+                    *ngIf="form.get('isRoot')?.value == 'false' || form.get('isRoot')?.value == false">
                     <label class="fs-6 mb-3 required">Parent Category</label>
                     <select class="form-select" formControlName="parent"
                       [ngClass]="{'is-invalid':(formControls.parent.touched || isSubmitted) && formControls.parent.errors?.required}"

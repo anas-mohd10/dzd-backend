@@ -198,7 +198,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   clearFilters() {
-    this.productForm.reset()
+    this.form.patchValue({ name: "", isActive: "", category: "" })
     this.limit = 30
     this.page = 1
     this.getProductHeads()
@@ -226,7 +226,6 @@ export class ProductCardComponent implements OnInit {
 
   getProducts() {
     let payload = {
-      ...this.productForm.value,
       page: this.productPage,
       limit: this.productLimit?.value,
       parent: this.productDetails?.prodid
@@ -246,18 +245,6 @@ export class ProductCardComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     })
-  }
-
-  clearChildFilters() {
-    this.productForm = new FormGroup({
-      name: new FormControl(''),
-      isActive: new FormControl(''),
-      isFeatured: new FormControl(''),
-    });
-
-    this.productPage = 1
-    this.productLimit?.setValue('20')
-    this.getProducts()
   }
 
   open(template: TemplateRef<any>, productDetails: any) {

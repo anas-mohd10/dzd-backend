@@ -30,24 +30,24 @@ export const environment = {
   //Mattressland
 
   //Fresh fruit
-  // apiUrl: 'https://freshfruitmart-api.StoreDada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart-api.StoreDada.net/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart-api.StoreDada.net/api/v1/a/',
-  // base: 'https://freshfruitmart-api.StoreDada.net',
+  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
+  // base: 'https://freshfruitmart-api.storedada.net',
   //Fresh fruit
 
   //Vperfumes
-  // apiUrl: 'https://vperfumes-api.StoreDada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://vperfumes-api.StoreDada.net/api/v1/w/',
-  // appBaserl: 'https://vperfumes-api.StoreDada.net/api/v1/a/',
-  // base: 'https://vperfumes-api.StoreDada.net',
+  // apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://vperfumes-api.storedada.net/api/v1/a/',
+  // base: 'https://vperfumes-api.storedada.net',
   //Vperfumes
 
   //StoreDada
-  // apiUrl: 'https://api.demo.StoreDada.com/api/v1/w/admin/auth',
-  // baseUrl: 'https://api.demo.StoreDada.com/api/v1/w/',
-  // appBaserl: 'https://api.demo.StoreDada.com/api/v1/a/',
-  // base: 'https://api.demo.StoreDada.com',
+  // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
+  // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
+  // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
+  // base: 'https://api.demo.storedada.com',
   //StoreDada
   loginUrl: 'api',
   firebaseConfig: {

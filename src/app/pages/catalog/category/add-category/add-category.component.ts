@@ -28,6 +28,8 @@ export class AddCategoryComponent implements OnInit {
     refid: '',
     catid: ''
   }
+  cover: string = ''
+  thumbnail: string = ''
 
   constructor(
     private Router: Router,
@@ -42,10 +44,25 @@ export class AddCategoryComponent implements OnInit {
 
   onThumbnailTriggered(event: any) {
     this.form.get('thumbnail')?.setValue(event._id)
+    this.thumbnail = event?.path
   }
 
   onCoverTriggered(event: any) {
     this.form.get('cover')?.setValue(event._id)
+    this.cover = event?.path
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.form.get('cover')?.setValue(null)
+        this.cover = ''
+        break
+      case 'thumbnail':
+        this.form.get('thumbnail')?.setValue(null)
+        this.thumbnail = ''
+        break
+    }
   }
 
   ngOnInit(): void {
@@ -138,31 +155,12 @@ export class AddCategoryComponent implements OnInit {
       return;
     }
 
-    console.log({
-      name: this.form.get('name')?.value,
-      isRoot: this.form.get('isRoot')?.value,
-      root: this.root ? this.root : null,
-      parent: this.parentDetails?.refid ? this.parentDetails : null,
-      isActive: this.form.get('isActive')?.value,
-      isFeatured: this.form.get('isFeatured')?.value,
-      isArchive: this.form.get('isArchive')?.value,
-      path: this.path,
-      style: {
-        background: this.form.get('background')?.value,
-        border: this.form.get('border')?.value,
-        radius: this.form.get('radius')?.value,
-        text: {
-          color: this.form.get('color')?.value,
-          fontSize: this.form.get('fontSize')?.value,
-          fontWeight: this.form.get('fontWeight')?.value,
-        }
-      }
-    })
-
     this.CategoryService.addCategory({
       name: this.form.get('name')?.value,
       isRoot: this.form.get('isRoot')?.value,
       root: this.root ? this.root : null,
+      thumbnail: this.form.get('thumbnail')?.value,
+      cover: this.form.get('cover')?.value,
       parent: this.parentDetails?.refid ? this.parentDetails : null,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,

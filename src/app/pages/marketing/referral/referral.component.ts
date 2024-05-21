@@ -92,7 +92,8 @@ export class ReferralComponent implements OnInit {
 
   getInvitedCustomers() {
     this.ReferralService.getInvitedCustomers({
-      page: this.page, limit: this.limit, keyword: this.keyword.value
+      page: this.page,
+       limit: this.limit, keyword: this.keyword.value
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

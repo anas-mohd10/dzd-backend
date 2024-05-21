@@ -31,7 +31,7 @@ export class ArchivedCategoryComponent implements OnInit {
 
   initForm() {
     this.form = new FormGroup({
-      name: new FormControl(''),
+      keyword: new FormControl(''),
       isActive: new FormControl('')
     });
   }

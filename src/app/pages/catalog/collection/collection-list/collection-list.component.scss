@@ -1,17 +1,7 @@
 $hover: #e3e3e3;
-$grey: #888888;
 $white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
 
 label,
-input[type=button],
 .btn-secondary,
 .btn-primary {
   font-weight: normal !important;
@@ -19,26 +9,16 @@ input[type=button],
 
 .collection-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 
   .collection-card {
-    padding: 10px;
-    background: #ffffff;
-    border-radius: 10px;
+    background: $white;
     position: relative;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
 
-    .collection-image {
-      height: 100px;
-      width: 100px;
-
-      img {
-        height: 100%;
-        width: 100%;
-      }
+    img {
+      height: 60px;
+      width: 60px;
     }
 
     .editButton {
@@ -59,7 +39,7 @@ input[type=button],
 
     .collectionDetails {
       margin: 0 0 0 10px;
-      width: calc(100% - 110px);
+      width: calc(100% - 70px);
 
       .alert {
         width: max-content;

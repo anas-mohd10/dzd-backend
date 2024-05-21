@@ -35,13 +35,25 @@
         <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
 
           <div>
-            <div class="ratio ratio-21x9">
-              <app-assets [previewDetails]="cover" (mediaClicked)="onCoverTriggered($event)"></app-assets>
+            <div>
+              <label for="cover" class="fs-6 mb-3">Cover</label>
+              <div id="cover" class="ratio ratio-21x9 position-relative">
+                <app-assets [previewDetails]="cover" (mediaClicked)="onCoverTriggered($event)"></app-assets>
+                <div *ngIf="cover">
+                  <div class="position-absolute bottom-0 end-0 m-4">
+                    <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="row my-2">
               <div class="col-lg-3">
-                <div class="ratio ratio-1x1">
+                <label for="thumbnail" class="fs-6 mb-3">Thumbnail</label>
+                <div id="thumbnail" class="ratio ratio-1x1">
                   <app-assets [previewDetails]="thumbnail" (mediaClicked)="onThumbnailTriggered($event)"></app-assets>
+                </div>
+                <div *ngIf="thumbnail">
+                  <button class="btn mt-2 btn-danger w-100" (click)="onRemove('thumbnail')">Remove</button>
                 </div>
               </div>
               <div class="col-lg-9">

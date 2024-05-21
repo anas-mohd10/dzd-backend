@@ -153,6 +153,12 @@ export class AddProductComponent implements OnInit {
 
   handleThumbnail(event: any) {
     this.parentForm.get('thumbnail')?.setValue(event._id)
+    this.previewDetails = event.path
+  }
+
+  removeThumbnail() {
+    this.previewDetails = null
+    this.parentForm.get('thumbnail')?.setValue(null)
   }
 
   productMediaClicked(event: any) {
@@ -181,7 +187,7 @@ export class AddProductComponent implements OnInit {
     this.productCategory.setValue('')
   }
 
-  removeProductCategory(categoryId: string){
+  removeProductCategory(categoryId: string) {
     this.categories = this.categories.filter((item: any) => item?._id != categoryId)
   }
 
@@ -198,6 +204,13 @@ export class AddProductComponent implements OnInit {
       this.HotToastService.success('Category added to list')
     }
     this.parentForm.get('parentCategory')?.setValue('')
+  }
+
+  removeCategory(categoryId: string) {
+    this.parentCategories = this.parentCategories.filter((category: any) => category._id != categoryId)
+    let categories = this.parentCategories.map((category: any) => category._id)
+    this.HotToastService.error('Category removed from list')
+    this.getChildCategory(categories)
   }
 
   getParentDetails(productSlug: string) {

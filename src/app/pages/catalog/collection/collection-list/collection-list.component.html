@@ -2,7 +2,7 @@
   <div class="page-header d-flex align-items-start justify-content-between">
     <div>
       <div class="page-title">
-        <h1 class="fw-bolder">Collections</h1>
+        <h1 class="fw-bold">Collections</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -19,21 +19,23 @@
   </div>
 
   <div class="card p-4 my-4">
-    <div class="row">
+    <div class="row align-items-end">
       <div class="col-lg-6">
         <input type="text" id="keyword" placeholder="Search collections here..." class="form-control"
           [formControl]="keyword" (ngModelChange)="getCollections()">
       </div>
       <div class="col-lg-4">
-        <select name="isActive" id="isActive" class="form-select" [formControl]="isActive" (change)="getCollections()">
+        <label for="isActive" class="fs-6 mb-3">Status</label>
+        <select id="isActive" class="form-select" [formControl]="isActive" (change)="getCollections()">
           <option value="" disabled>--Select an option--</option>
           <option value=true>Active</option>
           <option value=false>Inactive</option>
         </select>
       </div>
       <div class="col-lg-2">
-        <button type="button" id="clear" class="w-100 btn bg-secondary" (click)="clearFilters()">Clear
-          filters</button>
+        <button type="button" id="clear" class="w-100 btn btn-secondary" (click)="clearFilters()">
+          Clear filters
+        </button>
       </div>
     </div>
   </div>
@@ -41,18 +43,21 @@
   <div>
     <div class="collection-cards">
       <ng-container *ngFor="let collection of collections">
-        <div class="collection-card">
+        <div class="collection-card p-2 rounded d-flex align-items-start justify-content-between">
           <div class="editButton">
             <div routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
               [queryParams]="{ collection: collection?.slug }">
-              <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+              <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
             </div>
           </div>
 
-          <div class="collection-image">
-            <img src='{{base}}/{{collection?.thumbnail?.path}}' alt="{{collection?.name}}"
-              onerror="this.src = '../../../../../assets/images/default.png'" />
-          </div>
+          <img src='{{base}}/{{collection?.thumbnail?.path}}' alt="{{collection?.name}}"
+          onerror="this.src = '../../../../../assets/images/default.png'" height="60" width="60"/>
 
           <div class="collectionDetails">
             <div class="fw-bolder fs-4">{{collection?.name}}</div>
@@ -67,10 +72,7 @@
     </div>
 
     <ng-container *ngIf="collections.length == 0">
-      <div class="emptyNote">
-        <div class="fs-3 fw-bolder">No result found</div>
-        <div class="fs-6 note">We couldn't find any item based on your search</div>
-      </div>
+      <app-no-results></app-no-results>
     </ng-container>
   </div>
 

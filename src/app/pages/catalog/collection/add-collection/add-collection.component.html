@@ -2,7 +2,7 @@
   <div class="page-header">
     <div>
       <div class="page-title">
-        <h1 class="fw-bolder">Add Collection</h1>
+        <h1 class="fw-bold">Add Collection</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -24,14 +24,26 @@
         <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
 
           <div>
-            <div class="ratio ratio-21x9">
-              <app-assets (mediaClicked)="handleCollectionCover($event)"></app-assets>
+            <div>
+              <label class="fs-6 mb-3">Cover</label>
+              <div class="ratio ratio-21x9 position-relative">
+                <app-assets [previewDetails]="cover" (mediaClicked)="handleCollectionCover($event)"></app-assets>
+                <div *ngIf="cover">
+                  <div class="position-absolute bottom-0 end-0 m-4">
+                    <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="row my-3">
               <div class="col-lg-3">
+                <label class="fs-6 mb-3">Thumbnail</label>
                 <div class="ratio ratio-1x1">
-                  <app-assets (mediaClicked)="handleCollectionThumbnail($event)"></app-assets>
+                  <app-assets [previewDetails]="thumbnail" (mediaClicked)="handleCollectionThumbnail($event)"></app-assets>
+                </div>
+                <div *ngIf="thumbnail">
+                  <button class="btn mt-2 btn-danger w-100" (click)="onRemove('thumbnail')">Remove</button>
                 </div>
               </div>
               <div class="col-lg-9">
@@ -116,8 +128,6 @@
                           <div class="addedProductCard">
                             <div class="close" (click)="addProductSku(product)">
                               <img src="../../../../../assets/icons/close.svg" alt="Icon">
-                            </div>
-                            <div class="image"><img src="{{base}}/{{product?.thumbnail?.path}}" alt="{{product?.name}}">
                             </div>
                             <div class="name fs-6">{{product?.name}}</div>
                             <div class="sku">SKU: {{product?.sku}}</div>

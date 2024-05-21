@@ -44,8 +44,8 @@
               </svg>
             </div>
             <span class="">
-              <h4 style="font-weight: bold" class="fs-5">Step 1</h4>
-              <p class="fs-7">Invite your friends to StoreDada</p>
+              <div class="fw-bold fs-4">Step 1</div>
+              <p class="fs-6">Invite your friends to StoreDada</p>
             </span>
           </div>
         </div>
@@ -71,8 +71,8 @@
               </svg>
             </div>
             <span>
-              <h4 style="font-weight: bold" class="fs-5">Step 2</h4>
-              <p class="fs-7">
+              <div class="fw-bold fs-4">Step 2</div>
+              <p class="fs-6">
                 Your friend gets {{ settings?.currency }}
                 {{ referralProgram?.welcomeBonus }} as welcome bonus after their
                 first purchase.
@@ -102,8 +102,8 @@
               </svg>
             </div>
             <span>
-              <h4 style="font-weight: bold" class="fs-5">Step 3</h4>
-              <p class="fs-7">
+              <div class="fw-bold fs-4">Step 3</div>
+              <p class="fs-6">
                 You get a referral bonus of {{ settings?.currency }}
                 {{ referralProgram?.referralBonus }} for every friend that makes
                 a {{ settings?.currency }}
@@ -275,11 +275,11 @@
           }"
         />
       </div>
-      <div class="d-flex justify-content-end align-items-center">
-        <button class="btn btn-secondary me-1" (click)="modalRef?.hide()">
+      <div class="d-flex justify-content-end gap-2 align-items-center">
+        <button type="button" class="btn btn-secondary" (click)="modalRef?.hide()">
           Cancel
         </button>
-        <button type="submit" class="btn btn-primary ms-1">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
     </form>
   </div>

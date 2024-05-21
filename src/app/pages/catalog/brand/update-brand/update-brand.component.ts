@@ -49,6 +49,19 @@ export class UpdateBrandComponent implements OnInit {
     this.brandForm.get('cover')?.setValue(event._id)
   }
 
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.brandForm.get('cover')?.setValue(null)
+        this.cover = ''
+        break
+      case 'thumbnail':
+        this.brandForm.get('thumbnail')?.setValue(null)
+        this.thumbnail = ''
+        break
+    }
+  }
+
   initForm() {
     this.brandForm = this.FormBuilder.group({
       name: ['', Validators.required],

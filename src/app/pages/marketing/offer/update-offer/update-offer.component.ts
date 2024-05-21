@@ -68,7 +68,6 @@ export class UpdateOfferComponent implements OnInit {
     this.base = environment.base
     this.offer = this.route.snapshot.queryParams.offer || '';
     this.initForm();
-    this.managePage();
     this.getOffer();
 
     this.productService.getActiveProduct().subscribe((res: any) => {
@@ -113,20 +112,6 @@ export class UpdateOfferComponent implements OnInit {
     return this.offerForm.controls;
   }
 
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
   validateValue() {
     let type = this.offerForm.get('type')?.value
     let value = this.offerForm.get('value')?.value
@@ -162,15 +147,6 @@ export class UpdateOfferComponent implements OnInit {
     return item._id === selected;
   }
 
-  onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateOffer();
-    } else {
-      this.addOffer();
-    }
-  }
-
   getOffer() {
     this.offerService.getOfferDetails(this.offer).subscribe((res: any) => {
       if (res.errorCode == 0) {
@@ -194,34 +170,28 @@ export class UpdateOfferComponent implements OnInit {
     });
   }
 
-  addOffer() { }
-
-  updateOffer() {
+  onSubmit() {
     if (!this.offerForm.valid) {
+      this.isSubmitted = true
       return;
     }
 
-    this.categories.length > 0 || this.products.length > 0 || this.collections.length > 0 || this.brands.length > 0 ? this.isProceedable = true : this.isProceedable = false
-    if (this.isValidValue) {
-      if (this.isProceedable) {
-        this.offerService.updateOffer(this.offer, {
-          ...this.offerForm.value,
-          categories: this.categories.length > 0 ? this.categories : null,
-          products: this.products.length > 0 ? this.products : null,
-          collections: this.collections.length > 0 ? this.collections : null,
-          brands: this.brands.length > 0 ? this.brands : null,
-          filestring: this.croppedImage,
-          filename: this.filename,
-          refid: this.offer
-        }).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
-          } else if (res.errorCode == 0) {
-            this.toastr.success(res?.message);
-            this.router.navigate([this.appRoute.offer.OFFER_LIST]);
-          }
-        });
+    this.offerService.updateOffer(this.offer, {
+      ...this.offerForm.value,
+      categories: this.categories.length > 0 ? this.categories : null,
+      products: this.products.length > 0 ? this.products : null,
+      collections: this.collections.length > 0 ? this.collections : null,
+      brands: this.brands.length > 0 ? this.brands : null,
+      filestring: this.croppedImage,
+      filename: this.filename,
+      refid: this.offer
+    }).subscribe((res: any) => {
+      if (res.errorCode != 0) {
+        this.toastr.error(res?.message);
+      } else if (res.errorCode == 0) {
+        this.toastr.success(res?.message);
+        this.router.navigate([this.appRoute.offer.OFFER_LIST]);
       }
-    }
+    });
   }
 }

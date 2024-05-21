@@ -1,86 +1,85 @@
 <div>
-   <div class="page-header d-flex flex-row align-items-start justify-content-between">
-      <div>
-         <div class="page-title">
-            <h1 class="fw-bold">Archived Categories</h1>
-         </div>
-         <ul class="breadcrumb">
-            <li class="breadcrumb-item fs-6">
-               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item fs-6">
-               <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
-            </li>
-            <li class="breadcrumb-item active fs-6">
-               <a routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}">Archived Categories</a>
-            </li>
-         </ul>
+  <div class="page-header d-flex flex-row align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Archived Categories</h1>
       </div>
-   </div>
-
-   <div class="card my-3">
-      <div class="card-body">
-        <form [formGroup]="form">
-          <div class="row align-items-end">
-            <div class="col-lg-6">
-              <input type="text" placeholder="Search for category here..." class="form-control fs-6"
-                formControlName="keyword" (ngModelChange)="getCategories()">
-            </div>
-            <div class="col-lg-4">
-              <label for="isActive" class="fs-6 mb-1">Status</label>
-              <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-                (change)="getCategories()">
-                <option value="" disabled>-- Select an option --</option>
-                <option value=true>Active</option>
-                <option value=false>Inactive</option>
-              </select>
-            </div>
-            <div class="col-lg-2">
-              <label class="fs-6 mb-1">&nbsp;</label>
-              <input type="button" class="btn w-100 btn-secondary" value="Clear filters"
-                (click)="clearFilters()" />
-            </div>
-          </div>
-        </form>
-      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.category.CATEGORY_LIST }}">Categories</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.category.ARCHIVED_CATEGORY }}">Archived Categories</a>
+        </li>
+      </ul>
     </div>
-  
-    <div class="categoryWrapper">
-      <ng-container *ngFor="let category of categories">
-        <div class="categoryCard">
-          <div class="editButton">
-            <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
-              <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+  </div>
+
+  <div class="card my-3">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row align-items-end">
+          <div class="col-lg-6">
+            <input type="text" placeholder="Search for category here..." class="form-control fs-6"
+              formControlName="keyword" (ngModelChange)="getCategories()">
+          </div>
+          <div class="col-lg-4">
+            <label for="isActive" class="fs-6 mb-1">Status</label>
+            <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
+              (change)="getCategories()">
+              <option value="" disabled>-- Select an option --</option>
+              <option value=true>Active</option>
+              <option value=false>Inactive</option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <label class="fs-6 mb-1">&nbsp;</label>
+            <input type="button" class="btn w-100 btn-secondary" value="Clear filters" (click)="clearFilters()" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="categoryWrapper">
+    <ng-container *ngFor="let category of categories">
+      <div class="categoryCard">
+        <div class="editButton">
+          <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
+            <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
               stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
-            </div>
           </div>
-  
-          <img height="60" width="60" class="rounded" src='{{base}}{{category?.file}}' alt="{{category?.name}}"
-            onerror="this.src = '../../../../../assets/images/default.png'" />
-  
-          <div class="categoryDetails h-100 d-flex flex-column justify-content-between">
-            <div class="fs-5 category-name fw-bolder">{{category?.name}}</div>
-            <div class="d-flex mt-2">
-              <div class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
-                {{category?.isActive ? 'Active' : 'Inactive'}}
-              </div>
+        </div>
+
+        <img height="60" width="60" class="rounded me-3" src='{{base}}/{{category?.thumbnail?.path}}'
+          alt="{{category?.name}}" onerror="this.src = '../../../../../assets/images/default.png'" />
+
+        <div class="categoryDetails h-100 d-flex flex-column justify-content-between">
+          <div class="fs-5 category-name fw-bolder">{{category?.name}}</div>
+          <div class="d-flex mt-2">
+            <div class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
+              {{category?.isActive ? 'Active' : 'Inactive'}}
             </div>
           </div>
         </div>
-      </ng-container>
-    </div>
-  
-    <ng-container *ngIf="categories.length == 0">
-      <app-no-results></app-no-results>
+      </div>
     </ng-container>
-  
-    <div class="my-4">
-      <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
-        [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
-    </div>
+  </div>
+
+  <ng-container *ngIf="categories.length == 0">
+    <app-no-results></app-no-results>
+  </ng-container>
+
+  <div class="my-4">
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
+      [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
+  </div>
 
 </div>

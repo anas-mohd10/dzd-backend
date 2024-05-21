@@ -30,6 +30,8 @@ export class UpdateCategoryComponent implements OnInit {
     catid: ''
   }
   categorySlug: string = ''
+  cover: string = ''
+  thumbnail: string = ''
 
   constructor(
     private Router: Router,
@@ -45,10 +47,25 @@ export class UpdateCategoryComponent implements OnInit {
 
   onThumbnailTriggered(event: any) {
     this.form.get('thumbnail')?.setValue(event._id)
+    this.thumbnail = event.path
   }
 
   onCoverTriggered(event: any) {
     this.form.get('cover')?.setValue(event._id)
+    this.cover = event.path
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.form.get('cover')?.setValue(null)
+        this.cover = ''
+        break
+      case 'thumbnail':
+        this.form.get('thumbnail')?.setValue(null)
+        this.thumbnail = ''
+        break
+    }
   }
 
   ngOnInit(): void {
@@ -59,12 +76,15 @@ export class UpdateCategoryComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.details = res?.result
+          this.cover = res?.result?.cover?.path
+          this.thumbnail = res?.result?.thumbnail?.path
           this.parentDetails = {
             refid: res?.result?.parent?.refid?._id,
             catid: res?.result?.parent?.catid
           }
           this.path = res?.result?.path
-          this.form.get('parent')?.setValue(this.path)
+          console.log(this.path)
+          // this.form.get('parent')?.setValue(this.path)
           res?.result?.root ? this.root = res?.result?.root?._id : null
           this.form.patchValue(res?.result)
           this.ChangeDetectorRef.markForCheck()
@@ -107,7 +127,6 @@ export class UpdateCategoryComponent implements OnInit {
     this.CategoryService.getCategory().subscribe({
       next: (res: any) => {
         this.categoryDetails = res?.result
-        this.ChangeDetectorRef.markForCheck()
         for (let i = 0; i < res?.result.length; i++) {
           if (res?.result[i]?.isActive == true && res?.result[i]?.isArchive == false) {
             if (res?.result[i]?.parent && !res?.result[i]?.root) {
@@ -128,6 +147,8 @@ export class UpdateCategoryComponent implements OnInit {
             }
           }
         }
+      
+        this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => { }
     });
   }
@@ -168,6 +189,8 @@ export class UpdateCategoryComponent implements OnInit {
       parent: this.parentDetails?.refid ? this.parentDetails : null,
       _id: this.details._id,
       slug: this.details.slug,
+      thumbnail: this.form.get('thumbnail')?.value,
+      cover: this.form.get('cover')?.value,
       catid: this.details.catid,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
