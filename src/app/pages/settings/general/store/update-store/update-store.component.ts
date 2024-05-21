@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { TimeslotsService } from 'src/app/includes/services/timeslots.service';
@@ -30,6 +31,24 @@ export class UpdateStoreComponent implements OnInit {
 
   get fc() {
     return this.form.controls
+  }
+
+  updateMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
   }
 
   ngOnInit(): void {
@@ -65,6 +84,8 @@ export class UpdateStoreComponent implements OnInit {
         }
       })
     }
+  
+    this.handleMobilePattern()
   }
 
   initForm() {
@@ -73,13 +94,13 @@ export class UpdateStoreComponent implements OnInit {
       tel: new FormControl('', [Validators.pattern("^[+0-9]{6,15}$")]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
-      firstlane: new FormControl(''),
+      firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       area: new FormControl(''),
       landmark: new FormControl(''),
-      city: new FormControl(''),
+      city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
-      countryCode: new FormControl('', Validators.required),
+      countryCode: new FormControl('+971', Validators.required),
       isActive: new FormControl(true),
       isDelete: new FormControl(false),
       isClickPoint: new FormControl(false),

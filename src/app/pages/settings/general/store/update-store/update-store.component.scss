@@ -5,7 +5,9 @@ $activeState: #00bdab;
 $activeBackground: #00bdab20;
 $border: #cccccc;
 
-label {
+label,
+.btn-primary,
+.btn-secondary {
     font-weight: normal !important;
 }
 

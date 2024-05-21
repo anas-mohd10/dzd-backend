@@ -6,7 +6,9 @@ $activeBackground: #00bdab20;
 $border: #cccccc;
 $error: #F1416C;
 
-label {
+label,
+.btn-primary,
+.btn-secondary {
     font-weight: normal !important;
 }
 

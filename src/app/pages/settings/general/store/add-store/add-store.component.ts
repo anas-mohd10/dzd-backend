@@ -47,21 +47,21 @@ export class AddStoreComponent implements OnInit {
       tel: new FormControl('', [Validators.pattern("^[0-9]{6,15}$")]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
-      firstlane: new FormControl(''),
+      firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       area: new FormControl(''),
       landmark: new FormControl(''),
-      city: new FormControl(''),
+      city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isClickPoint: new FormControl(false),
-      countryCode: new FormControl('', Validators.required),
+      countryCode: new FormControl('+971', Validators.required),
       isFeatured: new FormControl(false)
     })
+    this.handleMobilePattern()
   }
 
   updateMobilePattern(newPattern: string) {
-    const validators = this.form.get('mobile')?.validator;
     const newValidators = [Validators.required];
     if (newPattern) newValidators.push(Validators.pattern(newPattern));
     this.form.get('mobile')?.setValidators(newValidators);
@@ -93,19 +93,7 @@ export class AddStoreComponent implements OnInit {
       return
     }
 
-    const payload = this.createPayload()
-      this.StoresService.add(payload).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.Toast.success(res?.message)
-          this.Router.navigate([appRoutes.stores.STORE_LIST])
-        } else {
-          this.Toast.error(res?.message)
-        }
-      })
-  }
-
-  createPayload() {
-    let data = {
+    this.StoresService.add({
       name: this.form.get('name')?.value,
       contact: {
         email: this.form.get('email')?.value,
@@ -124,8 +112,13 @@ export class AddStoreComponent implements OnInit {
       isActive: this.form.get('isActive')?.value,
       isClickPoint: this.form.get('isClickPoint')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
-    }
-
-    return data
+    }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.Toast.success(res?.message)
+        this.Router.navigate([appRoutes.stores.STORE_LIST])
+      } else {
+        this.Toast.error(res?.message)
+      }
+    })
   }
 }

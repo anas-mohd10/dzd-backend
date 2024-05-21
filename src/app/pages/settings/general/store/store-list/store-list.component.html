@@ -63,13 +63,6 @@
     </div>
 
     <div *ngIf="data.length == 0">
-        <div class="card my-4">
-            <div class="card-body">
-                <div class="emptyNote m-0">
-                    <div class="fs-3 fw-bold">No stores found</div>
-                    <div class="fs-5 note text-muted my-2">We couldn't find any item based on your search.</div>
-                </div>
-            </div>
-        </div>
+       <app-no-results></app-no-results>
     </div>
 </div>

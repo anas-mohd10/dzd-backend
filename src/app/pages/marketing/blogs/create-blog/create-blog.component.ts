@@ -42,6 +42,8 @@ export class CreateBlogComponent implements OnInit {
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ]
   };
+  cover: string = ''
+  thumbnail: string = ''
 
   constructor(
     private BlogService: BlogService,
@@ -70,11 +72,26 @@ export class CreateBlogComponent implements OnInit {
   }
 
   handleCover(event: any) {
+    this.cover = event.path
     this.form.get('cover')?.setValue(event._id)
   }
 
   handleThumbnail(event: any) {
+    this.thumbnail = event.path
     this.form.get('thumbnail')?.setValue(event._id)
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.form.get('cover')?.setValue(null)
+        this.cover = ''
+        break
+      case 'thumbnail':
+        this.form.get('thumbnail')?.setValue(null)
+        this.thumbnail = ''
+        break
+    }
   }
 
   onSubmit() {

@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { ContentService } from 'src/app/includes/services/content.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-payment-policy',
@@ -15,6 +15,7 @@ export class PaymentPolicyComponent implements OnInit {
   contentDetails: string = ''
   paymentPolicy: FormControl = new FormControl('', Validators.required)
   isSubmitted: boolean = false
+  isHidden: boolean = false
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -38,10 +39,11 @@ export class PaymentPolicyComponent implements OnInit {
       { class: 'manrope', name: 'Manrope' },
     ]
   };
+
   constructor(
     private ContentService: ContentService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -50,14 +52,21 @@ export class PaymentPolicyComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.paymentPolicy.setValue(res?.result?.paymentPolicy)
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
+
+  cancel() {
+    this.isSubmitted = false
+    this.isHidden = true
+    this.ngOnInit()
+  }
+
 
   manage() {
     if (!this.paymentPolicy.valid) {
@@ -65,17 +74,19 @@ export class PaymentPolicyComponent implements OnInit {
       return
     }
 
-    this.ContentService.manageContent({ paymentPolicy: this.paymentPolicy.value }).subscribe({
+    this.ContentService.manageContent({
+      paymentPolicy: this.paymentPolicy.value
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.ngOnInit()
-          this.ToastrService.success(res.message)
+          this.HotToastService.success(res.message)
         } else {
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.HotToastService.error(err.message)
       }
     })
   }

@@ -106,11 +106,26 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   handleCover(event: any) {
+    this.previews.cover = event.path
     this.form.get('cover')?.setValue(event._id)
   }
 
   handleThumbnail(event: any) {
+    this.previews.thumbnail = event.path
     this.form.get('thumbnail')?.setValue(event._id)
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.form.get('cover')?.setValue(null)
+        this.previews.cover = ''
+        break
+      case 'thumbnail':
+        this.form.get('thumbnail')?.setValue(null)
+        this.previews.thumbnail = ''
+        break
+    }
   }
 
   open(template: TemplateRef<any>) {

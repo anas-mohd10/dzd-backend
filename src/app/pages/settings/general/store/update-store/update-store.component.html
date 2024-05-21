@@ -44,6 +44,7 @@
                             <div class="mb-3 col-lg-6">
                                 <label class="mb-1 fs-6 required">Country Code</label>
                                 <select class="form-select form-select-lg mb-3 fs-6" formControlName="countryCode"
+                                    (change)="handleMobilePattern()"
                                     [ngClass]="{'is-invalid':  (fc.countryCode.touched || !isValid) && fc.countryCode.errors?.required }">
                                     <option value='' disabled>-- Select an option --</option>
                                     <option value='+91'>+91</option>
@@ -78,7 +79,7 @@
                                     [ngClass]="{ 'is-invalid':  (fc.map.touched || !isValid) && fc.map.errors?.required }" />
                             </div>
                             <div class="mb-3 col-lg-6">
-                                <label class="mb-1 fs-6 ">Firstlane</label>
+                                <label class="mb-1 fs-6 required">Firstlane</label>
                                 <input type="text" class="form-control" formControlName="firstlane"
                                     [ngClass]="{ 'is-invalid':  (fc.firstlane.touched || !isValid) && fc.firstlane.errors?.required }" />
                             </div>
@@ -88,13 +89,11 @@
                             </div>
                             <div class="mb-3 col-lg-6">
                                 <label class="mb-1 fs-6 ">Area</label>
-                                <input type="text" class="form-control" formControlName="area"
-                                    [ngClass]="{ 'is-invalid':  (fc.area.touched || !isValid) && fc.area.errors?.required }" />
+                                <input type="text" class="form-control" formControlName="area" />
                             </div>
                             <div class="mb-3 col-lg-6">
                                 <label class="mb-1 fs-6">Landmark</label>
-                                <input type="text" class="form-control" formControlName="landmark"
-                                    [ngClass]="{ 'is-invalid':  (fc.landmark.touched || !isValid) && fc.landmark.errors?.required }" />
+                                <input type="text" class="form-control" formControlName="landmark" />
                             </div>
                             <div class="mb-3 col-lg-6">
                                 <label class="mb-1 fs-6 required">City</label>

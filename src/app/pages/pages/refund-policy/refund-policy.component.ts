@@ -15,6 +15,7 @@ export class RefundPolicyComponent implements OnInit {
   contentDetails: string = ''
   refundPolicy: FormControl = new FormControl('', Validators.required)
   isSubmitted: boolean = false
+  isHidden: boolean = false
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -59,6 +60,13 @@ export class RefundPolicyComponent implements OnInit {
       }
     })
   }
+
+  cancel() {
+    this.isSubmitted = false
+    this.isHidden = true
+    this.ngOnInit()
+  }
+
 
   manage() {
     if (!this.refundPolicy.valid) {
