@@ -1,20 +1,20 @@
-<div class="coupon-page-container">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bolder">Shipping Policy</h1>
-        </div>
-        <div class="row align-items-center">
-            <div class="col d-flex flex-row justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoutes.shippingPolicy }}">Shipping Policy</a>
-                    </li>
-                </ul>
+<div>
+    <div class="page-header d-flex flex-row justify-content-between">
+        
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Shipping Policy</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoutes.shippingPolicy }}">Shipping Policy</a>
+                </li>
+            </ul>
         </div>
+
     </div>
     <div class="mt-4">
         <div class="card">
@@ -23,9 +23,12 @@
                     <angular-editor class="form-control fs-6" [formControl]="shippingPolicy" [config]="editorConfig">
                     </angular-editor>
                 </div>
-                <div class="col-12 d-flex justify-content-end align-items-center">
-                    <button (click)="manage()" class="btn btn-primary fs-6" style="width: 200px">
-                        Update
+                <div class="gap-2 d-flex my-3 justify-content-end align-items-center">
+                    <button (click)="cancel()" class="btn btn-secondary fs-6">
+                        Cancel
+                    </button>
+                    <button (click)="manage()" class="btn btn-primary fs-6">
+                        Save changes
                     </button>
                 </div>
             </div>

@@ -67,7 +67,6 @@ export class PaymentPolicyComponent implements OnInit {
     this.ngOnInit()
   }
 
-
   manage() {
     if (!this.paymentPolicy.valid) {
       this.isSubmitted = true

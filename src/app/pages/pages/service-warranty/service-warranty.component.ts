@@ -14,7 +14,8 @@ export class ServiceWarrantyComponent implements OnInit {
   appRoutes = appRoutes
   contentDetails: string = ''
   serviceWarranty: FormControl = new FormControl('', Validators.required)
-  isSubmitted: boolean = false
+  isSubmitted: boolean = false;
+  isHidden: boolean = false;
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -58,6 +59,12 @@ export class ServiceWarrantyComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     })
+  }
+
+  cancel() {
+    this.isSubmitted = false
+    this.isHidden = true
+    this.ngOnInit()
   }
 
   manage() {
