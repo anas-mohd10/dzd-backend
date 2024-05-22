@@ -79,6 +79,14 @@
                                     [ngClass]="{ 'is-invalid':  (fc.map.touched || !isValid) && fc.map.errors?.required }" />
                             </div>
                             <div class="mb-3 col-lg-6">
+                                <label class="mb-1 fs-6">Latitude</label>
+                                <input type="text" class="form-control" formControlName="lat" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                                <label class="mb-1 fs-6">Longitude</label>
+                                <input type="text" class="form-control" formControlName="lng" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
                                 <label class="mb-1 fs-6 required">Firstlane</label>
                                 <input type="text" class="form-control" formControlName="firstlane"
                                     [ngClass]="{ 'is-invalid':  (fc.firstlane.touched || !isValid) && fc.firstlane.errors?.required }" />
@@ -99,6 +107,20 @@
                                 <label class="mb-1 fs-6 required">City</label>
                                 <input type="text" class="form-control" formControlName="city"
                                     [ngClass]="{ 'is-invalid':  (fc.city.touched || !isValid) && fc.city.errors?.required }" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="fs-3 mb-3 fw-bold">Operation Details</div>
+                        <div class="row">
+                            <div class="mb-3 col-lg-6">
+                                <label class="mb-1 fs-6">Start Time</label>
+                                <input type="text" class="form-control" formControlName="startTime" />
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                                <label class="mb-1 fs-6">End Time</label>
+                                <input type="text" class="form-control" formControlName="endTime" />
                             </div>
                         </div>
                     </div>

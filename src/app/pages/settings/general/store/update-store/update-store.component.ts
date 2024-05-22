@@ -75,6 +75,12 @@ export class UpdateStoreComponent implements OnInit {
           this.form.get('city')?.patchValue(res?.result?.address?.city)
           this.form.get('landmark')?.patchValue(res?.result?.address?.landmark)
           this.form.get('isActive')?.patchValue(res?.result?.isActive)
+
+          this.form.get('lat')?.patchValue(res?.result?.lat)
+          this.form.get('lng')?.patchValue(res?.result?.lng)
+          this.form.get('startTime')?.patchValue(res?.result?.openingHours?.startTime)
+          this.form.get('endTime')?.patchValue(res?.result?.openingHours?.endTime)
+
           this.form.get('isFeatured')?.patchValue(res?.result?.isFeatured)
           this.form.get('isClickPoint')?.patchValue(res?.result?.isClickPoint)
           this.form.get('isDelete')?.patchValue(res?.result?.isDelete)
@@ -98,6 +104,10 @@ export class UpdateStoreComponent implements OnInit {
       secondlane: new FormControl(''),
       area: new FormControl(''),
       landmark: new FormControl(''),
+      lat: new FormControl(''),
+      lng: new FormControl(''),
+      startTime: new FormControl(''),
+      endTime: new FormControl(''),
       city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
       countryCode: new FormControl('+971', Validators.required),
@@ -149,6 +159,12 @@ export class UpdateStoreComponent implements OnInit {
         area: this.form.get('area')?.value,
         landmark: this.form.get('landmark')?.value,
       },
+      openingHours: {
+        startTime: this.form.get('startTime')?.value,
+        endTime: this.form.get('endTime')?.value,
+      },
+      lat: this.form.get('lat')?.value,
+      lng: this.form.get('lng')?.value,
       map: this.form.get('map')?.value,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
