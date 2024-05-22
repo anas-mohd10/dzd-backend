@@ -153,4 +153,11 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
   //Product details for dashboard
+
+  //Get products from query
+  getProducts(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.getProducts);
+    return this.http.post(`${url}`, query);
+  }
+  //Get products from query
 }

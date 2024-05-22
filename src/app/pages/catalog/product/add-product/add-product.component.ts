@@ -90,6 +90,7 @@ export class AddProductComponent implements OnInit {
   addOnItems: Array<any> = [];
   parentCategories: Array<any> = []
   mainCategories: Array<any> = []
+  existingProducts: Array<any> = []
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -218,6 +219,7 @@ export class AddProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.parentDetails = res?.result
+          this.getProducts()
           this.parentForm.patchValue(res.result)
           this.brandDetails = res?.result?.brand
           this.previewDetails = res?.result?.thumbnail?.path
@@ -382,7 +384,9 @@ export class AddProductComponent implements OnInit {
     })
 
     this.slug = this.ActivatedRoute.snapshot.queryParams.product || ''
-    this.slug ? this.getParentDetails(this.slug) : null
+    if (this.slug) {
+      this.getParentDetails(this.slug)
+    }
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -434,8 +438,8 @@ export class AddProductComponent implements OnInit {
       stockWarning: new FormControl(10),
       searchKeywords: new FormControl(""),
       relatedProducts: new FormControl(""),
-      isActive: new FormControl("true"),
-      isVisible: new FormControl("true"),
+      isActive: new FormControl(true),
+      isVisible: new FormControl(true),
     })
 
     this.CategoryService.getMainCategories().subscribe({
@@ -474,4 +478,26 @@ export class AddProductComponent implements OnInit {
     });
     //Tax class details
   }
+
+  //Get child products for corresponding parentId
+  getProducts() {
+    this.ProductService.getProducts({ parentId: this.parentDetails?._id }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.existingProducts = res?.result
+          if (this.existingProducts.length > 0) {
+            this.form.get('isVisible')?.setValue(false)
+          }
+          let latestProducts = this.existingProducts.pop()
+          this.form.get('name')?.setValue(latestProducts[0]?.name)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+  //Get child products for corresponding parentId
 }
