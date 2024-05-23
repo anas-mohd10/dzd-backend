@@ -68,9 +68,10 @@ export class AboutComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      html: new FormControl("", [Validators.required]),
+      html: new FormControl("", Validators.required),
       styles: new FormControl(""),
       scripts: new FormControl(""),
+      storyThumbnails: new FormControl("")
     })
 
     this.getAboutDetails()
@@ -89,6 +90,8 @@ export class AboutComponent implements OnInit {
   }
 
   onStoryThumbnailSelected(event: any) {
+    console.log(event);
+    console.log(this.storyThumbnails);
     this.storyThumbnails.push(event)
   }
 
@@ -132,10 +135,10 @@ export class AboutComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.aboutDetails = res?.result
           this.form.patchValue(res?.result)
-          this.legacyItems = res?.result?.legacyItems
-          this.features = res?.result?.features
-          this.storyThumbnails = res?.result?.storyThumbnails
-          this.thumbnailPreview = res?.result?.thumbnail?.path
+          // this.legacyItems = res?.result?.legacyItems
+          // this.features = res?.result?.features
+          this.storyThumbnails = res?.result?.storyThumbnails ? res?.result?.storyThumbnails : []
+          // this.thumbnailPreview = res?.result?.thumbnail?.path
           this.ChangeDetectorRef.markForCheck()
         } else {
 
@@ -152,15 +155,15 @@ export class AboutComponent implements OnInit {
       return
     }
 
-    let features: Feature[] = []
-    if (this.features.length > 0) {
-      features = this.features.map(feature => {
-        return {
-          ...feature,
-          thumbnail: feature.thumbnail._id
-        }
-      })
-    }
+    // let features: Feature[] = []
+    // if (this.features?.length > 0) {
+    //   features = this.features.map(feature => {
+    //     return {
+    //       ...feature,
+    //       thumbnail: feature.thumbnail._id
+    //     }
+    //   })
+    // }
 
     let storyThumbnails = []
     if (this.storyThumbnails.length > 0) {
