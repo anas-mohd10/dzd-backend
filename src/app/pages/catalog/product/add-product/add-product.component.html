@@ -396,6 +396,26 @@
                     </ng-container>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Status</label>
+                    <select id="isActive" formControlName="isActive" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option value="true">Active</option>
+                      <option value="false">Inactive</option>
+                    </select>
+                  </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Visibility</label>
+                    <select id="isVisible" formControlName="isVisible" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option value="true">Visible</option>
+                      <option value="false">Hidden</option>
+                    </select>
+                  </div>
+                  </div>
+
               </form>
             </div>
             <div class="d-flex align-items-center justify-content-end gap-2">

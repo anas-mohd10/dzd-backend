@@ -488,8 +488,8 @@ export class AddProductComponent implements OnInit {
           if (this.existingProducts.length > 0) {
             this.form.get('isVisible')?.setValue(false)
           }
-          let latestProducts = this.existingProducts.pop()
-          this.form.get('name')?.setValue(latestProducts[0]?.name)
+          let latestProducts = this.existingProducts.pop()          
+          this.form.get('name')?.setValue(latestProducts?.name)
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.HotToastService.error(res?.message)
