@@ -28,12 +28,13 @@
       </div>
     </div>
     <div class="position-relative btns-sx">
-      <button class="btn border d-flex align-items-center justify-content-center bg-white text-primary border-primary" (click)="acceptOrderPayment()"
-        *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
+      <button class="btn border d-flex align-items-center justify-content-center bg-white text-primary border-primary"
+        (click)="acceptOrderPayment()" *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
         Accept payment
-        <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-        </svg>        
+        </svg>
       </button>
     </div>
     <div class="position-relative btns-sx" *ngIf="isPackingSlipAvailable">
@@ -61,7 +62,8 @@
 
   <div class="position-relative mt-4">
 
-    <div class="alert alert-warning fs-6" *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
+    <div class="alert alert-warning fs-6"
+      *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
       Please proceed with the payment to facilitate the processing of the order request
     </div>
 
@@ -69,7 +71,7 @@
       <div class="alert mb-4 alert-danger">
         <div class="fs-3 fw-bold">Order has been cancelled</div>
         <div class="my-3">
-          <div class="fs-6">Reason for cancellation :</div> 
+          <div class="fs-6">Reason for cancellation :</div>
           <div class="fs-5">{{order?.cancel?.reason ? order?.cancel?.reason : 'Not available'}}</div>
         </div>
         <div class="fs-6">Cancelled on {{order?.cancel?.date}}</div>
@@ -286,7 +288,7 @@
               </div>
               <div class="my-2">
                 <div class="form-group">
-                  <textarea [formControl]="orderNote" (change)="isNoteDetected = true" rows="4" class="form-control"
+                  <textarea [formControl]="orderNote" (click)="isNoteDetected = true" rows="4" class="form-control"
                     draggable="true"></textarea>
                 </div>
                 <div class="my-2 d-flex align-items-center justify-content-end">
@@ -388,7 +390,8 @@
                             <select class="form-select w-50 p-2" (click)="getStatusList(product.currentStatus.status)"
                               (change)="updateOrderStatus($event, product?.productId?._id)">
                               <option disabled>-- Select a option --</option>
-                              <option value="{{product.currentStatus.status}}" selected disabled>{{product.currentStatus.status}}</option>
+                              <option value="{{product.currentStatus.status}}" selected disabled>
+                                {{product.currentStatus.status}}</option>
                               <option *ngFor="let status of statusList" value="{{status.value}}">{{status.key}}</option>
                             </select>
                           </div>
