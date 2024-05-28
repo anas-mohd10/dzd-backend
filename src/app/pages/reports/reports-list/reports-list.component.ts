@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { reportsEndpoints } from 'src/app/config/endpoints';
 import { appRoutes } from 'src/app/config/routes';
 import { ReportsService } from 'src/app/includes/services/reports.service';
 import { environment } from 'src/environments/environment.prod';
-
 
 @Component({
   selector: 'app-reports-list',
@@ -13,17 +13,29 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./reports-list.component.scss']
 })
 export class ReportsListComponent implements OnInit {
-  appRoute = appRoutes
+  appRoute = appRoutes;
+  salesRef: BsModalRef
   exportUrl: string = environment.apiUrl
 
   constructor(
     private ReportsService: ReportsService,
     private ToastrService: ToastrService,
-    private Router: Router
+    private Router: Router,
+    private BsModalService: BsModalService
   ) { }
 
   ngOnInit(): void {
   }
+
+  //Open sales modal
+  openSales(template: TemplateRef<any>) {
+    this.salesRef = this.BsModalService.show(template)
+  }
+
+  closeSales() {
+    this.salesRef?.hide()
+  }
+  //Open sales modal
 
   exportReport(type: string) {
     switch (type) {

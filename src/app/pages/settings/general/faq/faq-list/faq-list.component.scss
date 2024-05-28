@@ -14,7 +14,7 @@ code:not([class*=language-]) {
   margin: 0 !important;
 }
 
-.btn-primary{
+.btn-primary {
   font-weight: 400 !important;
 }
 
@@ -36,22 +36,11 @@ code:not([class*=language-]) {
         }
       }
 
-      .faqButtons {
-        .faqButton {
-          height: 30px;
-          width: 30px;
-          display: grid;
-          place-items: center;
-          background: $border;
-          border-radius: 6px;
-          cursor: pointer;
-          color: $secondaryText;
-
-          &.active {
-            transform: rotate(180deg);
-            color: #000000;
-          }
-        }
+      .icon {
+        height: 30px;
+        width: 30px;
+        background: $border;
+        cursor: pointer;
       }
     }
 

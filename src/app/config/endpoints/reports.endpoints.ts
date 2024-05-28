@@ -6,4 +6,5 @@ export const reportsEndpoints = {
     productReport: '/product-report',
     orderReport: '/order-report',
     productOrderReport: '/product-order-report',
+    salesReport: '/sales-report'
 }

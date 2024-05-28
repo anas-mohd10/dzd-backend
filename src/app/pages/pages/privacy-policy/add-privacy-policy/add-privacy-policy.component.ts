@@ -1,24 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { PrivacyPolicyService } from 'src/app/includes/services/privacy-policy.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-add-privacy-policy',
   templateUrl: './add-privacy-policy.component.html',
   styleUrls: ['./add-privacy-policy.component.scss']
 })
-export class AddPrivacyPolicyComponent implements OnInit, OnDestroy {
+export class AddPrivacyPolicyComponent implements OnInit {
   appRoute = appRoutes
-  aboutData: any;
-  displayTable: boolean;
-  privacypolicyForm: FormGroup
-  task = PageTasks.ADD;
-  editMode = false;
+  form: FormGroup
   isSubmitted: boolean;
   isData: Boolean = false
   isHidden: Boolean = true
@@ -50,48 +46,33 @@ export class AddPrivacyPolicyComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private privacypolicyService: PrivacyPolicyService,
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private toastr: ToastrService
+    private PrivacyPolicyService: PrivacyPolicyService,
+    private FormBuilder: FormBuilder,
+    private HotToastService: HotToastService,
   ) { }
 
   ngOnInit(): void {
     this.initForm()
-    this.managePage()
-    this.getAbout()
+    this.fetchPrivacyPolicy()
   }
 
   initForm() {
-    this.privacypolicyForm = this.formBuilder.group({
+    this.form = this.FormBuilder.group({
       description: ['', Validators.required]
     });
   }
 
-  get pf() {
-    return this.privacypolicyForm.controls;
+  get formControls() {
+    return this.form.controls;
   }
 
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
-  getAbout() {
-    this.privacypolicyService.getPrivacyPolicy().subscribe((res: any) => {
+  fetchPrivacyPolicy() {
+    this.PrivacyPolicyService.getPrivacyPolicy().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.isData = res?.result.length > 0 ? true : false
         let data = res?.result[0]
         this.slug = data?.slug
-        this.privacypolicyForm.get("description")?.setValue(data?.description)
+        this.form.get("description")?.setValue(data?.description)
       }
     })
   }
@@ -107,17 +88,17 @@ export class AddPrivacyPolicyComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (!this.privacypolicyForm.valid) {
+    if (!this.form.valid) {
       this.isSubmitted = true
       return;
     }
 
     if (!this.isData) {
-      this.privacypolicyService.createPrivacyPolicy(this.privacypolicyForm.value).subscribe((res: any) => {
+      this.PrivacyPolicyService.createPrivacyPolicy(this.form.value).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     } else {
-      this.privacypolicyService.updatePrivacyPolicy(this.slug, this.privacypolicyForm.value).subscribe((res: any) => {
+      this.PrivacyPolicyService.updatePrivacyPolicy(this.slug, this.form.value).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     }
@@ -125,14 +106,11 @@ export class AddPrivacyPolicyComponent implements OnInit, OnDestroy {
 
   afterResult(errorcode: any, message: any) {
     if (errorcode != 0) {
-      this.toastr.error(message);
+      this.HotToastService.error(message);
     } else if (errorcode == 0) {
-      this.toastr.success(message);
+      this.HotToastService.success(message);
       this.isHidden = true
       this.ngOnInit()
     }
-  }
-
-  ngOnDestroy(): void {
   }
 }

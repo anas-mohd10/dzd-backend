@@ -1,99 +1,105 @@
-<div class="content container-fluid">
-   <div class="page-header">
-      <div class="page-header">
+<div>
+   <div class="page-header d-flex align-items-start justify-content-between">
+      <div>
          <div class="page-title">
-            <h1 class="fw-bolder"> {{ editMode ? "Update Social Links" : "Add Social Links" }}</h1>
+            <h1 class="fw-bold">Add Social Links</h1>
          </div>
-         <div class="row align-items-center">
-            <div class="col d-flex align-items-start justify-content-between">
-               <ul class="breadcrumb">
-                  <li class="breadcrumb-item fs-6">
-                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item fs-6">
-                     <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social Links</a>
-                  </li>
-                  <li class="breadcrumb-item active fs-6">
-                     <a routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST}}">
-                        {{ editMode ? "Update Social Links" : "Add Social Links"}}
-                     </a>
-                  </li>
-               </ul>
-            </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social Links</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST}}">
+                  Add Social Links
+               </a>
+            </li>
+         </ul>
+      </div>
+      <div class="row align-items-center">
+         <div class="col ">
+
          </div>
       </div>
    </div>
-   <div class="col-12 fs-6 mt-10">
-      <div class="card">
-         <div class="card-body">
-            <form (ngSubmit)="onSubmit()" [formGroup]="socialMediaForm">
-               <div class="row">
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">Facebook</label>
-                        <input type="text" class="form-control fs-6" formControlName="facebook" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">Instagram</label>
-                        <input type="text" class="form-control fs-6" formControlName="instagram" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">LinkedIn</label>
-                        <input type="text" class="form-control fs-6" formControlName="linkedin" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">Twitter</label>
-                        <input type="text" class="form-control fs-6" formControlName="twitter" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">Whatsapp</label>
-                        <input type="text" class="form-control fs-6" formControlName="whatsapp" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">YouTube</label>
-                        <input type="text" class="form-control fs-6" formControlName="youtube" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">Behance</label>
-                        <input type="text" class="form-control fs-6" formControlName="behance" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">App Store</label>
-                        <input type="text" class="form-control fs-6" formControlName="appStore" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 ">Play Store</label>
-                        <input type="text" class="form-control fs-6" formControlName="googlePlay" />
-                     </div>
-                  </div>
-                  <div class="col-12 d-flex align-items-center justify-content-end">
-                     <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}"
-                        class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
-                        Cancel
-                     </a>
-                     <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                        Add
-                     </button>
+
+   <div class="card my-4">
+      <div class="card-body">
+         <form (ngSubmit)="onSubmit()" [formGroup]="form">
+            <div class="row">
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Facebook</label>
+                     <input type="text" class="form-control fs-6" formControlName="facebook" />
                   </div>
                </div>
-            </form>
-         </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Instagram</label>
+                     <input type="text" class="form-control fs-6" formControlName="instagram" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">LinkedIn</label>
+                     <input type="text" class="form-control fs-6" formControlName="linkedin" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Twitter</label>
+                     <input type="text" class="form-control fs-6" formControlName="twitter" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Tiktok</label>
+                     <input type="text" class="form-control fs-6" formControlName="tiktok" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Whatsapp</label>
+                     <input type="text" class="form-control fs-6" formControlName="whatsapp" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">YouTube</label>
+                     <input type="text" class="form-control fs-6" formControlName="youtube" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Behance</label>
+                     <input type="text" class="form-control fs-6" formControlName="behance" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">App Store</label>
+                     <input type="text" class="form-control fs-6" formControlName="appStore" />
+                  </div>
+               </div>
+               <div class="col-lg-6 mb-3">
+                  <div class="form-group">
+                     <label class="fs-6 mb-3 ">Play Store</label>
+                     <input type="text" class="form-control fs-6" formControlName="googlePlay" />
+                  </div>
+               </div>
+               <div class="gap-2 d-flex align-items-center justify-content-end">
+                  <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}" class="btn btn-secondary">
+                     Cancel
+                  </a>
+                  <button type="submit" class="btn btn-primary">
+                     Save changes
+                  </button>
+               </div>
+            </div>
+         </form>
       </div>
    </div>
+
 </div>

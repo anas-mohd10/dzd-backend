@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { PageTasks } from 'src/app/config/constants/page-tasks';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { SocialMediaService } from 'src/app/includes/services/social.media.service';
 
@@ -12,72 +11,40 @@ import { SocialMediaService } from 'src/app/includes/services/social.media.servi
   styleUrls: ['./add-social-nedia.component.scss']
 })
 export class AddSocialNediaComponent implements OnInit {
-  task = PageTasks.ADD;
-  editMode: boolean;
   isSubmitted: boolean;
   appRoute = appRoutes
-  socialMediaForm: FormGroup
+  form: FormGroup
 
   constructor(
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private socialMediaService: SocialMediaService,
-    private toastr: ToastrService
+    private Router: Router,
+    private SocialMediaService: SocialMediaService,
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
-    this.managePage()
-    this.initForm()
-    this.task = this.route.snapshot.params.task || PageTasks.ADD;
-  }
-
-  initForm() {
-    this.socialMediaForm = this.formBuilder.group({
-      facebook: [''],
-      whatsapp: [''],
-      instagram: [''],
-      linkedin: [''],
-      youtube: [''],
-      twitter: [''],
-      behance: [''],
-      appStore: [''],
-      googlePlay: [''],
+    this.form = new FormGroup({
+      facebook: new FormControl(''),
+      whatsapp: new FormControl(''),
+      instagram: new FormControl(''),
+      linkedin: new FormControl(''),
+      youtube: new FormControl(''),
+      twitter: new FormControl(''),
+      behance: new FormControl(''),
+      tiktok: new FormControl(''),
+      appStore: new FormControl(''),
+      googlePlay: new FormControl('')
     });
   }
 
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
-  }
-
   onSubmit() {
-    this.isSubmitted = true;
-    if (this.editMode) {
-      this.updateSocialMediaLinks();
-    } else {
-      this.addSocialMediaLinks();
-    }
-  }
-
-  updateSocialMediaLinks() {
-  }
-
-  addSocialMediaLinks() {
-    this.socialMediaService.addSocialMediaLinks(this.socialMediaForm.value).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
-        this.router.navigate([this.appRoute.socialMedia.SOCIAL_MEDIA_LIST]);
+    this.SocialMediaService.addSocialMediaLinks(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.socialMedia.SOCIAL_MEDIA_LIST]);
+        } else {
+          this.HotToastService.error(res?.message);
+        }
       }
     })
   }

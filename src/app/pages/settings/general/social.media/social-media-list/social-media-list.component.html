@@ -1,28 +1,29 @@
-<div class="coupon-page-container">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder">Social Media</h1>
-      </div>
-      <div class="row align-items-center">
-         <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
-               </li>
-            </ul>
-            <button *ngIf="!isData" class="btn btn-primary btn-sm cursor-pointer fs-6" color="primary"
-               routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
-               Add
-            </button>
-            <button class="btn btn-primary btn-sm cursor-pointer fs-6" *ngIf="isData" color="primary"
-               routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}">Edit</button>
+<div>
+   <div class="page-header d-flex align-items-start justify-content-between">
+      <div>
+         <div class="page-title">
+            <h1 class="fw-bold">Social Media</h1>
          </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.socialMedia.SOCIAL_MEDIA_LIST}}">Social media links</a>
+            </li>
+         </ul>
+      </div>
+      <div class="gap-2 d-flex align-items-start justify-content-end">
+         <button *ngIf="!isData" class="btn btn-primary" routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
+            Add links
+         </button>
+         <button class="btn btn-primary" routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}">
+            Edit links
+         </button>
       </div>
    </div>
-   <div class="row mt-10">
+
+   <div class="row my-4">
       <div class="social-card">
          <div class="social-card-title fs-6">Facebook</div>
          <div class="social-card-link">
@@ -45,6 +46,12 @@
          <div class="social-card-title fs-6">Whatsapp</div>
          <div class="social-card-link">
             <a href="{{data?.whatsapp}}" target="_blank" class="fs-6 card-link">{{data?.whatsapp}}</a>
+         </div>
+      </div>
+      <div class="social-card">
+         <div class="social-card-title fs-6">Tiktok</div>
+         <div class="social-card-link">
+            <a href="{{data?.tiktok}}" target="_blank" class="fs-6 card-link">{{data?.tiktok}}</a>
          </div>
       </div>
       <div class="social-card">

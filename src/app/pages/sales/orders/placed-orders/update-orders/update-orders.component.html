@@ -146,63 +146,63 @@
             <div class="my-2 p-3 border border-secondary rounded">
               <div class="itemDetails">
                 <div class="itemTitle">Price excluding tax</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.priceBeforeTax ? order?.priceBeforeTax :
+                <div class="itemResponse">{{settings.currency}} {{order?.priceBeforeTax ? order?.priceBeforeTax :
                   '0.00'}}</div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Tax</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.tax ? order?.tax : '0.00'}}</div>
+                <div class="itemResponse">{{settings.currency}} {{order?.tax ? order?.tax : '0.00'}}</div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Price including tax</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.priceAfterTax ? order?.priceAfterTax: '0.00'}}
                 </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Shipping charge</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.shippingCost ? order?.shippingCost : '0.00'}}
                 </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Cash on delivery charge</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.codCharge ? order?.codCharge : '0.00'}}</div>
+                <div class="itemResponse">{{settings.currency}} {{order?.codCharge ? order?.codCharge : '0.00'}}</div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Additional charge</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.additionalCharge ? order?.additionalCharge : '0.00'}}
                 </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Gift charge</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.giftCharge ? order?.giftCharge : '0.00'}}
                 </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Discount</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.discount ? order?.discount : '0.00'}}
                 </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Credit used</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.credit?.amount ? order?.credit?.amount : '0.00'}}
                 </div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Grand total</div>
                 <div class="itemResponse">
-                  {{settings?.currency}}
+                  {{settings.currency}}
                   {{order?.total ? order?.total : '0.00'}}
                 </div>
               </div>
@@ -377,11 +377,11 @@
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Price:</div>
-                          <div class="fw-bold">{{settings?.currency}}{{product?.pricePerUnit}}</div>
+                          <div class="fw-bold">{{settings.currency}}{{product?.pricePerUnit}}</div>
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Total:</div>
-                          <div class="fw-bold">{{settings?.currency}}{{product?.total}}</div>
+                          <div class="fw-bold">{{settings.currency}}{{product?.total}}</div>
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Status:</div>

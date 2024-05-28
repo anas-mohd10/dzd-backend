@@ -15,7 +15,7 @@ export class PaymentPolicyComponent implements OnInit {
   contentDetails: string = ''
   paymentPolicy: FormControl = new FormControl('', Validators.required)
   isSubmitted: boolean = false
-  isHidden: boolean = false
+  isHidden: boolean = true
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,

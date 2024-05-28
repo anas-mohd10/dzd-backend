@@ -1,81 +1,73 @@
-<div class="content container-fluid">
+<div>
   <div class="page-header">
-    <div class="row align-items-center">
-      <div class="col">
-        <h3 class="page-title fs-2 fw-bolder">
-          {{ editMode ? "Update FAQ" : "Add FAQ" }}
-        </h3>
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.faq.FAQ_LIST }}">FAQ</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.faq.ADD_FAQ }}">{{editMode ? "Update FAQ" : "Add FAQ"}}</a>
-          </li>
-        </ul>
-      </div>
+    <div class="page-title">
+      <h1 class="fw-bold">
+        Update FAQs
+      </h1>
     </div>
+    <ul class="breadcrumb">
+      <li class="breadcrumb-item fs-6">
+        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item fs-6">
+        <a routerLink="{{ appRoute.faq.FAQ_LIST }}">FAQ</a>
+      </li>
+      <li class="breadcrumb-item active fs-6">
+        <a routerLink="{{ appRoute.faq.ADD_FAQ }}">Update FAQ</a>
+      </li>
+    </ul>
   </div>
-  <div class="col-sm-12 fs-5 mt-10">
-    <div class="card">
-      <div class="card-body">
-        <form (ngSubmit)="onSubmit()" [formGroup]="faqForm">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required">Subject</label>
-                <select class="form-select fs-6" formControlName="subject"
-                  [ngClass]="{'is-invalid':(ff.subject.touched || isSubmitted) && ff.subject.errors?.required}">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="GENERAL">General</option>
-                  <option value="PAYMENT">Payment</option>
-                  <option value="CART">Cart</option>
-                  <option value="SHIPPING">Shipping</option>
-                  <option value="REFERRAL">Referral</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required"> Question</label>
-                <input type="question" class="form-control fs-6" formControlName="question"
-                  [ngClass]="{'is-invalid':(ff.question.touched || isSubmitted) && ff.question.errors?.required}" />
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required required">Answer</label>
-                <textarea class=" form-control fs-6" formControlName="answer" style="resize: none"
-                  id="featureddescription" rows="3"
-                  [ngClass]="{'is-invalid':(ff.answer.touched || isSubmitted) && ff.answer.errors?.required}"></textarea>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="fs-6 mb-3">Status</label>
-                <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
-                  formControlName="isActive">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="true">Active</option>
-                  <option value="false">Inactive</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-12 d-flex align-items-center justify-content-end">
-              <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                style="width: 200px; margin-right: 20px;">
-                Cancel
-              </a>
-              <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                Update
-              </button>
-            </div>
+
+  <div class="card my-4">
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <div class="row">
+
+          <div class="form-group col-lg-6 mb-3">
+            <label class="fs-6 mb-3 required">Subject</label>
+            <select class="form-select fs-6" formControlName="subject">
+              <option value="" disabled>-- Select an option --</option>
+              <option value="GENERAL">General</option>
+              <option value="PAYMENT">Payment</option>
+              <option value="CART">Cart</option>
+              <option value="SHIPPING">Shipping</option>
+              <option value="REFERRAL">Referral</option>
+            </select>
           </div>
-        </form>
-      </div>
+
+          <div class="form-group col-lg-6">
+            <label class="fs-6 mb-3">Status</label>
+            <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
+              formControlName="isActive">
+              <option value="" disabled>-- Select an option --</option>
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3 required"> Question</label>
+            <input type="question" class="form-control fs-6" formControlName="question"
+              [ngClass]="{'is-invalid':(formControls.question.touched || isSubmitted) && formControls.question.errors?.required}" />
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3 required required">Answer</label>
+            <textarea class=" form-control fs-6" formControlName="answer" style="resize: none" id="featureddescription"
+              rows="3"
+              [ngClass]="{'is-invalid':(formControls.answer.touched || isSubmitted) && formControls.answer.errors?.required}"></textarea>
+          </div>
+
+          <div class="gap-2 d-flex align-items-center justify-content-end">
+            <a routerLink="{{ appRoute.faq.FAQ_LIST}}" class=" btn btn-secondary">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

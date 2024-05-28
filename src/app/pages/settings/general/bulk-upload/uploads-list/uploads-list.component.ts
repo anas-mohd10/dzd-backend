@@ -18,7 +18,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
 export class UploadsListComponent implements OnInit {
   appRoute = appRoutes
   fileImports: Array<any> = []
-  form: FormGroup
+  status: FormControl = new FormControl('')
   isLastPage: boolean = false
   totalPages: number = 0
   totalResults: number = 0
@@ -72,11 +72,7 @@ export class UploadsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      status: new FormControl("")
-    })
-
-    this.getFileImports()
+    this.fetchFileImports()
   }
 
   handleFileUpload(event: any) {
@@ -181,27 +177,28 @@ export class UploadsListComponent implements OnInit {
   onSuccess(message: string) {
     this.HotToastService.success(message)
     this.close()
-    this.getFileImports()
+    this.fetchFileImports()
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
     this.page = event.pageIndex
     this.limit = event.pageSize
-    this.getFileImports()
+    this.fetchFileImports()
   }
 
   clearFilters() {
     this.createdAt = ''
     this.page = 1
     this.limit = 20
-    this.getFileImports()
-    this.form.get('status')?.setValue('')
+    this.fetchFileImports()
+    this.status?.setValue('')
+    this.ChangeDetectorRef.markForCheck()
   }
 
-  getFileImports() {
+  fetchFileImports() {
     this.CsvService.getFileImports({
       page: this.page, limit: this.limit,
-      ...this.form.value, date: this.createdAt
+      status: this.status.value, date: this.createdAt
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

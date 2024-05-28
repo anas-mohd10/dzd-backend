@@ -16,10 +16,9 @@ import { HotToastService } from '@ngneat/hot-toast';
 })
 export class AddTermsConditionsComponent implements OnInit {
   appRoute = appRoutes
-  aboutData: any;
-  displayTable: boolean;
-  termsconditionsForm: FormGroup
-  task = PageTasks.ADD;
+
+  form: FormGroup
+
   editMode = false;
   isSubmitted: boolean;
   isData: Boolean = false
@@ -51,51 +50,33 @@ export class AddTermsConditionsComponent implements OnInit {
     ]
   };
 
-
   constructor(
-    private termsconditionsService: TermsConditionsService,
-    private formBuilder: FormBuilder,
-    private router: Router,
+    private TermsConditionsService: TermsConditionsService,
+    private FormBuilder: FormBuilder,
     private HotToastService: HotToastService,
-    private toastr: ToastrService) {
-      
-    }
+    ) { }
 
   ngOnInit(): void {
     this.initForm()
-    this.managePage()
     this.getAbout()
   }
 
   initForm() {
-    this.termsconditionsForm = this.formBuilder.group({
+    this.form = this.FormBuilder.group({
       description: ['', Validators.required]
     });
   }
 
-  get tf() {
-    return this.termsconditionsForm.controls;
-  }
-
-  managePage() {
-    switch (this.task) {
-      case PageTasks.ADD:
-        this.editMode = false;
-        break;
-      case PageTasks.UPDATE:
-        this.editMode = true;
-        break;
-      default:
-        break;
-    }
+  get formControls() {
+    return this.form.controls;
   }
 
   getAbout() {
-    this.termsconditionsService.getTermsConditions().subscribe((res: any) => {
+    this.TermsConditionsService.getTermsConditions().subscribe((res: any) => {
       this.isData = res?.result.length > 0 ? true : false
       let data = res?.result[0]
       this.slug = data?.slug
-      this.termsconditionsForm.get("description")?.setValue(data?.description)
+      this.form.get("description")?.setValue(data?.description)
     })
   }
 
@@ -105,22 +86,19 @@ export class AddTermsConditionsComponent implements OnInit {
     this.ngOnInit()
   }
 
-  showButton() {
-    this.isHidden = false
-  }
 
   onSubmit() {
-    if (!this.termsconditionsForm.valid) {
+    if (!this.form.valid) {
       this.isSubmitted = true
       return;
     }
 
     if (!this.isData) {
-      this.termsconditionsService.createTermsConditions(this.termsconditionsForm.value).subscribe((res: any) => {
+      this.TermsConditionsService.createTermsConditions(this.form.value).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     } else {
-      this.termsconditionsService.updateTermsConditions(this.slug, this.termsconditionsForm.value).subscribe((res: any) => {
+      this.TermsConditionsService.updateTermsConditions(this.slug, this.form.value).subscribe((res: any) => {
         this.afterResult(res?.errorCode, res?.message)
       })
     }

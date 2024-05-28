@@ -9,30 +9,38 @@ import { faqEndpoints } from '../../config/endpoints';
 export class FaqService {
   faqEndpoints = faqEndpoints;
 
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
-  addFAQ(data: any) {
-    const url = this.commonService.getFullUrl(this.faqEndpoints.create_faq);
+  addFaq(data: any) {
+    const url = this.commonService.getFullUrl(this.faqEndpoints.createFaq);
     return this.http.post(`${url}`, data)
   }
 
   getFaqs() {
-    const url = this.commonService.getFullUrl(this.faqEndpoints.get_faqs);
+    const url = this.commonService.getFullUrl(this.faqEndpoints.faqs);
     return this.http.get(`${url}`)
   }
 
   getActiveFaq() {
-    const url = this.commonService.getFullUrl(this.faqEndpoints.get_active_faq);
+    const url = this.commonService.getFullUrl(this.faqEndpoints.activeFaqs);
     return this.http.get(`${url}`)
   }
 
-  getFaq(slug: any) {
-    const url = this.commonService.getFullUrl(this.faqEndpoints.get_faq_slug + "?slug=" + slug);
+  getFaq(faqId: string) {
+    const url = this.commonService.getFullUrl(this.faqEndpoints.faqDetails + `/${faqId}`);
     return this.http.get(`${url}`)
   }
 
-  updateFaq(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.faqEndpoints.update_faq + "?slug=" + slug);
+  updateFaq(data: any) {
+    const url = this.commonService.getFullUrl(this.faqEndpoints.updateFaq);
     return this.http.put(`${url}`, data)
+  }
+
+  deleteFaq(faqId: string) {
+    const url = this.commonService.getFullUrl(this.faqEndpoints.deleteFaq + `/${faqId}`);
+    return this.http.delete(`${url}`)
   }
 }

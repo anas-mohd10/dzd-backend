@@ -1,69 +1,42 @@
 <div class="coupon-page-container">
    <div class="page-header">
       <div class="page-title">
-         <h1 class="fw-bolder">Invoice settings</h1>
+         <h1 class="fw-bold">Invoice settings</h1>
       </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.invoiceSettings.INVOICE_SETTINGS_LIST }}">Invoice settings</a>
-               </li>
-            </ul>
-         </div>
-      </div>
+      <ul class="breadcrumb">
+         <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+         </li>
+         <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.invoiceSettings.INVOICE_SETTINGS_LIST }}">Invoice settings</a>
+         </li>
+      </ul>
    </div>
-   <div class="row mt-4">
-      <div class="col-12 fs-6">
-         <div class="card">
-            <div class="card-body">
-               <form (ngSubmit)="onSubmit()" [formGroup]="invoiceSettingsForm">
-                  <div class="row">
-                     
-                     <h2 class="fw-bolder">Invoice Details</h2>
 
-                     <div class="row">
-                        <div class="col-lg-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3 required"> Code</label>
-                              <input type="text" class="form-control fs-6" formControlName="code"
-                                 [ngClass]="{'is-invalid':(isf.code.touched || isSubmitted) &&isf.code.errors?.required}" />
-                              <span class="text-danger error-msg fs-7"
-                                 *ngIf="(isf.code.touched || isSubmitted) && isf.code.errors?.required">
-                                 Code is required
-                              </span>
-                           </div>
-                        </div>
+   <div class="card my-4">
+      <div class="card-body">
+         <form (ngSubmit)="onSubmit()" [formGroup]="form">
 
-                        <div class="col-lg-6">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3 required"> Starting range</label>
-                              <input type="text" class="form-control fs-6" formControlName="startingRange"
-                                 [ngClass]="{'is-invalid':(isf.startingRange.touched || isSubmitted) &&isf.startingRange.errors?.required}" />
-                              <span class="text-danger error-msg fs-7"
-                                 *ngIf="(isf.startingRange.touched || isSubmitted) && isf.startingRange.errors?.required">
-                                 Starting required is required
-                              </span>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-12 d-flex align-items-center justify-content-end">
-                        <button type="reset" class="btn btn-secondary btn-sm fs-6"
-                           style="width: 200px;margin-right: 20px" (change)="resetAll()">
-                           Reset
-                        </button>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                           Submit
-                        </button>
-                     </div>
-                  </div>
-               </form>
+            <div class="form-group mb-3">
+               <label class="fs-6 mb-3 required"> Code</label>
+               <input type="text" class="form-control fs-6" formControlName="code"
+                  [ngClass]="{'is-invalid':(isf.code.touched || isSubmitted) &&isf.code.errors?.required}" />
             </div>
-         </div>
+
+            <div class="form-group mb-3">
+               <label class="fs-6 mb-3 required"> Starting range</label>
+               <input type="text" class="form-control fs-6" formControlName="startingRange"
+                  [ngClass]="{'is-invalid':(isf.startingRange.touched || isSubmitted) &&isf.startingRange.errors?.required}" />
+            </div>
+
+            <div class="gap-2 d-flex align-items-center justify-content-end">
+               <button type="submit" class="btn btn-primary">
+                  Save changes
+               </button>
+            </div>
+
+         </form>
       </div>
+
    </div>
 </div>

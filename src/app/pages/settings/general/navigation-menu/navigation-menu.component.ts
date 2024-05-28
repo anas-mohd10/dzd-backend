@@ -60,7 +60,19 @@ export class NavigationMenuComponent implements OnInit {
   }, {
     key: 'Search filters',
     value: 'searchfilters'
+  }, {
+    key: 'Static Pages',
+    value: 'staticpages'
   }]
+  cmsPages: Array<any> = [
+    { title: 'FAQs', value: '/faqs' },
+    { title: 'Stores', value: '/stores' },
+    { title: 'Reviews', value: '/reviews' },
+    { title: 'Brands', value: '/brands' },
+    { title: 'Contact Us', value: '/contact-us' },
+    { title: 'About Us', value: '/about-us' },
+    { title: 'Home', value: '/' },
+  ]
   isInvalidItem: boolean = false
   savedItems: Array<any> = []
   archivedItems: Array<any> = []
@@ -212,8 +224,6 @@ export class NavigationMenuComponent implements OnInit {
     })
   }
 
-
-
   closeModal() {
     this.modalService.hide();
     this.itemForm.reset()
@@ -234,7 +244,6 @@ export class NavigationMenuComponent implements OnInit {
   handleTitleThumbnail(event: any) {
     this.itemForm.get('icon')?.setValue(event?._id)
   }
-
 
   removeTitleThumbnail() {
     this.itemForm.get('icon')?.setValue(null)
@@ -378,6 +387,10 @@ export class NavigationMenuComponent implements OnInit {
               this.ChangeDetectorRef.markForCheck()
             }
           })
+          break
+        case 'staticpages':
+          this.itemForm.get('keyword')?.setValue('')
+          this.itemForm.get('redirection')?.setValue(this.keyword.value)
           break
       }
     }

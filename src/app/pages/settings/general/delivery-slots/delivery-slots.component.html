@@ -100,17 +100,7 @@
     </form>
 
     <ng-container *ngIf="slotItems.length == 0">
-      <div class="d-flex flex-column text-muted my-4 align-items-center justify-content-center">
-        <div>
-          <svg height="40" width="40" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z">
-            </path>
-          </svg>
-        </div>
-        <div class="fs-5">No timeslots found</div>
-      </div>
+      <app-no-results></app-no-results>
     </ng-container>
 
     <div class="d-flex my-3 align-items-center justify-content-between gap-2">
@@ -162,15 +152,21 @@
       </div>
       <div class="form-group mb-3">
         <label for="from" class="form-label">From</label>
-        <input type="text" id="from" placeholder="11:00" formControlName="from" class="form-control">
+        <input type="text"
+          [ngClass]="{'is-invalid': (formControls.from.touched || isSubmitted) && (formControls.from.errors?.required || formControls.from.errors?.pattern)}"
+          id="from" placeholder="11:00" formControlName="from" class="form-control">
       </div>
       <div class="form-group mb-3">
         <label for="to" class="form-label">To</label>
-        <input type="text" id="to" placeholder="13:00" formControlName="to" class="form-control">
+        <input type="text"
+          [ngClass]="{'is-invalid': (formControls.to.touched || isSubmitted) && (formControls.to.errors?.required || formControls.to.errors?.pattern)}"
+          id="to" placeholder="13:00" formControlName="to" class="form-control">
       </div>
       <div class="form-group">
         <label for="ordersPerSlot" class="form-label">Order Per Slot</label>
-        <input type="text" id="ordersPerSlot" placeholder="10" formControlName="ordersPerSlot" class="form-control">
+        <input type="text" id="ordersPerSlot" placeholder="10"
+          [ngClass]="{'is-invalid': (formControls.ordersPerSlot.touched || isSubmitted) && (formControls.ordersPerSlot.errors?.required || formControls.ordersPerSlot.errors?.pattern)}"
+          formControlName="ordersPerSlot" class="form-control">
       </div>
     </form>
 

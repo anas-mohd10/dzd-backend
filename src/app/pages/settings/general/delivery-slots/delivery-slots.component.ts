@@ -35,7 +35,7 @@ export class DeliverySlotsComponent implements OnInit {
   slotItems: Array<DeliverySlotInputs> = [];
   addModalRef?: BsModalRef
   @ViewChild('template') template: any;
-  selectedDays: Array<any> = []
+  selectedDays: Array<any> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
   constructor(
     private DeliveryService: DeliverySlotsService,
@@ -172,8 +172,9 @@ export class DeliverySlotsComponent implements OnInit {
 
   closeAdd() {
     this.addModalRef?.hide()
+    this.isSubmitted = false
     this.form.reset()
-    this.selectedDays = []
+    this.selectedDays = this.days
   }
 
   saveDeliverySlot() {
@@ -189,7 +190,7 @@ export class DeliverySlotsComponent implements OnInit {
           this.form.reset()
           this.Toast.success(res?.message)
           this.addModalRef?.hide()
-          this.selectedDays = []
+          this.selectedDays = this.days
         } else {
           this.Toast.error(res?.message)
         }

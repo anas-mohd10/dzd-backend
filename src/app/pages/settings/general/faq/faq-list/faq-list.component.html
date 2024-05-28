@@ -1,7 +1,7 @@
 <div>
   <div class="page-header d-flex align-items-start justify-content-between">
     <div class="page-title">
-      <h1 class="fw-bolder">FAQs</h1>
+      <h1 class="fw-bold">FAQs</h1>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
           <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -16,24 +16,28 @@
     </button>
   </div>
 
-  <div class="faqWrapper mt-5">
+  <div class="faqWrapper my-4">
     <ng-container *ngFor="let faq of faqs; let i = index">
       <div class="rounded bg-white faqCard mb-3">
         <div class="faqHeader p-3 d-flex align-items-center justify-content-between">
           <div class="faqTitle">{{faq?.question}} </div>
           <div class="d-flex gap-2 align-items-center justify-content-start">
-            <div (click)="toggleContent(i+1)" [ngClass]="{'active': i+1 == activeFaq}">
+            <div class="icon rounded d-flex align-items-center justify-content-center" (click)="toggleContent(i+1)"
+              [ngClass]="{'active': i+1 == activeFaq}">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-chevron-down" viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                   d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
               </svg>
             </div>
-            <div routerLink="{{ appRoute.faq.UPDATE_FAQ }}" [queryParams]="{slug: faq?.slug}">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                <path
-                  d="M15.7279 9.57629L14.3137 8.16207L5 17.4758V18.89H6.41421L15.7279 9.57629ZM17.1421 8.16207L18.5563 6.74786L17.1421 5.33365L15.7279 6.74786L17.1421 8.16207ZM7.24264 20.89H3V16.6474L16.435 3.21233C16.8256 2.8218 17.4587 2.8218 17.8492 3.21233L20.6777 6.04075C21.0682 6.43128 21.0682 7.06444 20.6777 7.45497L7.24264 20.89Z">
+            <div class="icon rounded d-flex align-items-center justify-content-center"
+              routerLink="{{ appRoute.faq.UPDATE_FAQ }}" [queryParams]="{slug: faq?.slug}">
+              <svg heiht="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
                 </path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
               </svg>
             </div>
           </div>
@@ -42,5 +46,9 @@
       </div>
     </ng-container>
   </div>
+
+  <ng-container *ngIf="faqs.length === 0">
+    <app-no-results></app-no-results>
+  </ng-container>
 
 </div>

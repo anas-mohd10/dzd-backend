@@ -1,47 +1,37 @@
-.btn {
+label,
+.btn-secondary,
+.btn-primary {
     font-weight: 400 !important;
 }
 
-.emptyNote {
-    margin: 0 0 20px 0;
-    display: grid;
-    place-items: center;
-
-    .note {
-        font-weight: normal;
-    }
-}
-
-
-.table-responsive {
-
-    .common_thead {
-        background: #20BDAB;
-
-        th {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 15px;
-            text-transform: capitalize;
-            color: #FFFFFF;
-        }
-    }
-
-    tr {
-        border-bottom: 1px solid #E8E8E8;
-    }
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
 
     tbody {
+
         tr {
+
             td {
-                img {
-                    cursor: pointer;
-                }
+                vertical-align: middle;
             }
         }
     }
-}
 
+    thead {
+
+        tr {
+
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
+}
+//Table designs
 
 .file {
 

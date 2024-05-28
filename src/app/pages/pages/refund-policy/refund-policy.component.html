@@ -14,22 +14,23 @@
             </ul>
         </div>
     </div>
-    <div class="my-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                    <angular-editor (click)="isHidden = true" class="form-control fs-6" [formControl]="refundPolicy" [config]="editorConfig">
-                    </angular-editor>
-                </div>
-                <div class="d-flex my-3 justify-content-end align-items-center gap-2">
-                    <button *ngIf="isHidden" class="btn btn-secondary" (click)="cancel()">
-                        Cancel
-                    </button>
-                    <button (click)="manage()" class="btn btn-primary">
-                        Save changes
-                    </button>
-                </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="form-group">
+                <angular-editor (click)="isHidden = false" class="form-control fs-6" [formControl]="refundPolicy"
+                    [config]="editorConfig">
+                </angular-editor>
+            </div>
+            <div *ngIf="!isHidden" class="d-flex my-2 justify-content-end align-items-center gap-2">
+                <button class="btn btn-secondary" (click)="cancel()">
+                    Cancel
+                </button>
+                <button (click)="manage()" class="btn btn-primary">
+                    Save changes
+                </button>
             </div>
         </div>
+
     </div>
 </div>

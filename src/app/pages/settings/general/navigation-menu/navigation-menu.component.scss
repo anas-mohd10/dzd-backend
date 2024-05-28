@@ -112,12 +112,11 @@ label,
 
 .itemTypes {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 
     .itemType {
         cursor: pointer;
-        box-shadow: 0px 0px 30px 5px rgba(0, 0, 0, 0.04);
         background: $white;
         border: 1px solid $background;
 

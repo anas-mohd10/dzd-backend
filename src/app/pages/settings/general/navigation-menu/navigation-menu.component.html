@@ -178,7 +178,8 @@
                                         </div>
                                         <div class="fs-6">{{item?.title}}</div>
                                     </div>
-                                    <div class="gap-2 d-flex align-items-center text-muted cursor-pointer justify-content-end">
+                                    <div
+                                        class="gap-2 d-flex align-items-center text-muted cursor-pointer justify-content-end">
                                         <div (click)="openTitleRef(createTitleRef, 'update', item?._id)">
                                             <svg height="24" width="24" data-slot="icon" fill="none" stroke-width="1.5"
                                                 stroke="currentColor" viewBox="0 0 24 24"
@@ -374,77 +375,84 @@
     <div class="modal-body">
         <form [formGroup]="itemForm">
 
-            <div class="col-lg-3 mb-3">
-                <label for="icon" class="fs-6 mb-3">Icon</label>
-                <div class="ratio ratio-1x1" id="icon">
-                    <app-assets (mediaClicked)="handleTitleThumbnail($event)"></app-assets>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="icon" class="fs-6 mb-3">Icon</label>
+                    <div class="ratio ratio-1x1" id="icon">
+                        <app-assets (mediaClicked)="handleTitleThumbnail($event)"></app-assets>
+                    </div>
+                    <div *ngIf="itemForm.get('icon')?.value" (click)="removeTitleThumbnail()"
+                        class="text-decoration-underline mt-2 cursor-pointer fs-5 text-muted">Remove icon</div>
                 </div>
-                <div *ngIf="itemForm.get('icon')?.value" (click)="removeTitleThumbnail()"
-                    class="text-decoration-underline mt-2 cursor-pointer fs-5 text-muted">Remove icon</div>
-            </div>
+                <div class="col-lg-9">
+                    <div class="form-group mb-3">
+                        <label class="required fs-6 mb-3">Title</label>
+                        <input type="text" maxlength="20" class="form-control fs-6" formControlName="title"
+                            placeholder="Eg. Fresh Foods" [ngClass]="{'is-invalid': (itemControls.title.errors?.maxLength || itemControls.title.touched || isInvalidItem) &&
+                            itemControls.title.errors?.required}" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="required fs-6 mb-3">Type</label>
+                        <div class="itemTypes">
+                            <ng-container *ngFor="let type of itemTypes">
+                                <div class="itemType fs-6 p-4 rounded" (click)="selectItemType(type?.value)" [ngClass]="{'selected': type?.value == itemForm.get('menuType')?.value, 
+                                'is-invalid': (itemControls.menuType.touched || isInvalidItem) &&
+                                    itemControls.menuType.errors?.required}">
+                                    {{type?.key}}
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
 
-            <div class="col-lg-6">
-                <div class="form-group mb-3">
-                    <label class="required fs-6 mb-3">Title</label>
-                    <input type="text" maxlength="20" class="form-control fs-6" formControlName="title"
-                        placeholder="Eg. Fresh Foods" [ngClass]="{'is-invalid': (itemControls.title.errors?.maxLength || itemControls.title.touched || isInvalidItem) &&
-                        itemControls.title.errors?.required}" />
-                </div>
-            </div>
+                    <div class="mt-3 mb-3">
+                        <div class="searchWrapper">
+                            <input type="text" placeholder="Search category..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'category'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Search brand..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'brand'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Search product..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'product'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Search collection..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'collection'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <select class="form-select" [formControl]="keyword"
+                                *ngIf="itemForm.get('menuType')?.value == 'staticpages'" (change)="searchItems()">
+                                <option value="">-- Select an option --</option>
+                                <option *ngFor="let cmsPage of cmsPages" value="{{cmsPage.value}}">
+                                    {{cmsPage?.title}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
 
-            <div class="mb-3">
-                <label class="required fs-6 mb-3">Type</label>
-                <div class="itemTypes">
-                    <ng-container *ngFor="let type of itemTypes">
-                        <div class="itemType fs-6 p-4 rounded" (click)="selectItemType(type?.value)" [ngClass]="{'selected': type?.value == itemForm.get('menuType')?.value, 
-                        'is-invalid': (itemControls.menuType.touched || isInvalidItem) &&
-                            itemControls.menuType.errors?.required}">
-                            {{type?.key}}
+                    <ng-container *ngIf="items.length > 0">
+                        <div class="itemsWrapper">
+                            <ng-container *ngFor="let item of items">
+                                <div class="itemCard d-flex align-items-center justify-content-between fs-6 p-4 rounded"
+                                    (click)="selectItemCard(item)">
+                                    {{item?.name}}
+                                    <svg height="20px" width="20px" fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </ng-container>
                         </div>
                     </ng-container>
-                </div>
-            </div>
 
-            <div class="mt-3 mb-3">
-                <div class="searchWrapper">
-                    <input type="text" placeholder="Search category..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'category'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Search brand..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'brand'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Search product..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'product'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Search collection..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'collection'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                </div>
-            </div>
-
-            <ng-container *ngIf="items.length > 0">
-                <div class="itemsWrapper">
-                    <ng-container *ngFor="let item of items">
-                        <div class="itemCard d-flex align-items-center justify-content-between fs-6 p-4 rounded"
-                            (click)="selectItemCard(item)">
-                            {{item?.name}}
-                            <svg height="20px" width="20px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z">
-                                </path>
-                            </svg>
+                    <div class="mb-3">
+                        <div class="form-group mb-3">
+                            <label class="required fs-6 mb-3">Redirection</label>
+                            <input type="text" class="form-control fs-6" formControlName="redirection"
+                                placeholder="Eg. Fruits and Vegetables" [ngClass]="{'is-invalid': (itemControls.redirection.touched || isInvalidItem) &&
+                                itemControls.redirection.errors?.required}" />
                         </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-
-            <div class="mb-3">
-                <div class="form-group mb-3">
-                    <label class="required fs-6 mb-3">Redirection</label>
-                    <input type="text" class="form-control fs-6" formControlName="redirection"
-                        placeholder="Eg. Fruits and Vegetables" [ngClass]="{'is-invalid': (itemControls.redirection.touched || isInvalidItem) &&
-                        itemControls.redirection.errors?.required}" />
+                    </div>
                 </div>
             </div>
 
@@ -475,81 +483,90 @@
 
         <form [formGroup]="itemForm">
 
-            <div class="col-lg-3 mb-3">
-                <label for="icon" class="fs-6 mb-3">Icon</label>
-                <div class="ratio ratio-1x1" id="icon">
-                    <app-assets (mediaClicked)="handleTitleThumbnail($event)"
-                        [previewDetails]="itemDetails?.icon?.path"></app-assets>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="icon" class="fs-6 mb-3">Icon</label>
+                    <div class="ratio ratio-1x1" id="icon">
+                        <app-assets (mediaClicked)="handleTitleThumbnail($event)"
+                            [previewDetails]="itemDetails?.icon?.path"></app-assets>
+                    </div>
+                    <div *ngIf="itemForm.get('icon')?.value" (click)="removeTitleThumbnail()"
+                        class="text-decoration-underline mt-2 cursor-pointer fs-5 text-muted">
+                        Remove icon
+                    </div>
                 </div>
-                <div *ngIf="itemForm.get('icon')?.value" (click)="removeTitleThumbnail()"
-                    class="text-decoration-underline mt-2 cursor-pointer fs-5 text-muted">Remove icon</div>
-            </div>
+                <div class="col-lg-9">
+                    <div class="form-group mb-3">
+                        <label class="required fs-6 mb-3">Title</label>
+                        <input type="text" maxlength="20" class="form-control fs-6" formControlName="title"
+                            placeholder="Eg. Fresh Foods" [ngClass]="{'is-invalid': (itemControls.title.errors?.maxLength || itemControls.title.touched || isInvalidItem) &&
+                            itemControls.title.errors?.required}" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="required fs-6 mb-3">Type</label>
+                        <div class="itemTypes">
+                            <ng-container *ngFor="let type of itemTypes">
+                                <div class="itemType fs-6 p-4 rounded" (click)="selectItemType(type?.value)" [ngClass]="{'selected': type?.value == itemForm.get('menuType')?.value, 
+                                'is-invalid': (itemControls.menuType.touched || isInvalidItem) &&
+                                    itemControls.menuType.errors?.required}">
+                                    {{type?.key}}
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
 
-            <div class="col-lg-6">
-                <div class="form-group mb-3">
-                    <label class="required fs-6 mb-3">Title</label>
-                    <input type="text" maxlength="20" class="form-control fs-6" formControlName="title"
-                        placeholder="Eg. Fresh Foods" [ngClass]="{'is-invalid': (itemControls.title.errors?.maxLength || itemControls.title.touched || isInvalidItem) &&
-                        itemControls.title.errors?.required}" />
-                </div>
-            </div>
+                    <div class="mt-3 mb-3">
+                        <div class="searchWrapper">
+                            <input type="text" placeholder="Search category..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'category'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Search brand..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'brand'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Search product..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'product'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Search collection..." class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'collection'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <input type="text" placeholder="Enter search filters" class="form-control"
+                                *ngIf="itemForm.get('menuType')?.value == 'search-filters'" [formControl]="keyword"
+                                (ngModelChange)="searchItems()">
+                            <select class="form-select" [formControl]="keyword"
+                                *ngIf="itemForm.get('menuType')?.value == 'staticpages'" (change)="searchItems()">
+                                <option value="">-- Select an option --</option>
+                                <option *ngFor="let cmsPage of cmsPages" value="{{cmsPage.value}}">
+                                    {{cmsPage?.title}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
 
-            <div class="mb-3">
-                <label class="required fs-6 mb-3">Type</label>
-                <div class="itemTypes">
-                    <ng-container *ngFor="let type of itemTypes">
-                        <div class="itemType fs-6 p-4 rounded" (click)="selectItemType(type?.value)" [ngClass]="{'selected': type?.value == itemForm.get('menuType')?.value, 
-                        'is-invalid': (itemControls.menuType.touched || isInvalidItem) &&
-                            itemControls.menuType.errors?.required}">
-                            {{type?.key}}
+                    <ng-container *ngIf="items.length > 0">
+                        <div class="itemsWrapper">
+                            <ng-container *ngFor="let item of items">
+                                <div class="itemCard d-flex align-items-center justify-content-between fs-6 p-4 rounded"
+                                    (click)="selectItemCard(item)">
+                                    {{item?.name}}
+                                    <svg height="20px" width="20px" fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </ng-container>
                         </div>
                     </ng-container>
-                </div>
-            </div>
 
-            <div class="mt-3 mb-3">
-                <div class="searchWrapper">
-                    <input type="text" placeholder="Search category..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'category'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Search brand..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'brand'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Search product..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'product'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Search collection..." class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'collection'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                    <input type="text" placeholder="Enter search filters" class="form-control"
-                        *ngIf="itemForm.get('menuType')?.value == 'search-filters'" [formControl]="keyword"
-                        (ngModelChange)="searchItems()">
-                </div>
-            </div>
-
-            <ng-container *ngIf="items.length > 0">
-                <div class="itemsWrapper">
-                    <ng-container *ngFor="let item of items">
-                        <div class="itemCard d-flex align-items-center justify-content-between fs-6 p-4 rounded"
-                            (click)="selectItemCard(item)">
-                            {{item?.name}}
-                            <svg height="20px" width="20px" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24">
-                                <path
-                                    d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z">
-                                </path>
-                            </svg>
+                    <div class="mb-3">
+                        <div class="form-group mb-3">
+                            <label class="required fs-6 mb-3">Redirection</label>
+                            <input type="text" class="form-control fs-6" formControlName="redirection"
+                                placeholder="Eg. Fruits and Vegetables" [ngClass]="{'is-invalid': (itemControls.redirection.touched || isInvalidItem) &&
+                                itemControls.redirection.errors?.required}" />
                         </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-
-            <div class="mb-3">
-                <div class="form-group mb-3">
-                    <label class="required fs-6 mb-3">Redirection</label>
-                    <input type="text" class="form-control fs-6" formControlName="redirection"
-                        placeholder="Eg. Fruits and Vegetables" [ngClass]="{'is-invalid': (itemControls.redirection.touched || isInvalidItem) &&
-                        itemControls.redirection.errors?.required}" />
+                    </div>
                 </div>
             </div>
 

@@ -26,4 +26,8 @@ export class ReportsService {
     return this.commonService.getFullUrl(this.reportsEndpoints.customerOrderReport);
   }
 
+  salesReport() {
+    const url = this.commonService.getFullUrl(reportsEndpoints.salesReport);
+    return this.http.get(`${url}`);
+  }
 }

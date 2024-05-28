@@ -1,7 +1,8 @@
 export const faqEndpoints = {
-   create_faq: "/faq/create",
-   get_faqs: "/faq/get-faqs",
-   get_active_faq: "/faq/get-active",
-   get_faq_slug: "/faq/get-faq",
-   update_faq: "/faq/update"
+   createFaq: "/create-faq",
+   faqs: "/get-faqs",
+   activeFaqs: "/active-faqs",
+   faqDetails: "/faq-details",
+   updateFaq: "/update-faq",
+   deleteFaq: "/delete-faq"
 }
