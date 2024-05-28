@@ -18,23 +18,22 @@
 
 <div class="my-4">
   <div class="items">
-    <a class="item rounded d-flex align-items-center gap-2" (click)="openSales(template)" [href]="exportUrl"
-    target="_blank">
-    <div class="icon p-2 rounded">
-      <svg width="60" height="60" viewBox="0 0 48 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect y="0.5" width="48" height="48" rx="24" fill="#E1EFFF" />
-        <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M24 12.8867L34.4516 18.6932V30.3061L24 36.1125L13.5483 30.3061V18.6932L24 12.8867Z" stroke="#4880FF"
-          stroke-width="1.5" stroke-linejoin="round" />
-        <path d="M13.5483 18.6934L24 24.4998L34.4516 18.6934" stroke="#4880FF" stroke-width="1.5" />
-        <path d="M24.0002 24.5V36.1129" stroke="#4880FF" stroke-width="1.5" />
-        <circle cx="31.9355" cy="19.4482" r="5.25" fill="#E1EFFF" stroke="#4880FF" stroke-width="1.5" />
-        <path d="M29.5854 19.5449L31.0854 21.0449L34.5854 17.5449" stroke="#4880FF" stroke-width="1.5"
-          stroke-linecap="round" />
-      </svg>
-    </div>
-    <div class="fs-4 mt-2">Sales Report</div>
-  </a>
+    <a class="item rounded d-flex align-items-center gap-2" (click)="openSales(template)">
+      <div class="icon p-2 rounded">
+        <svg width="60" height="60" viewBox="0 0 48 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect y="0.5" width="48" height="48" rx="24" fill="#E1EFFF" />
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M24 12.8867L34.4516 18.6932V30.3061L24 36.1125L13.5483 30.3061V18.6932L24 12.8867Z" stroke="#4880FF"
+            stroke-width="1.5" stroke-linejoin="round" />
+          <path d="M13.5483 18.6934L24 24.4998L34.4516 18.6934" stroke="#4880FF" stroke-width="1.5" />
+          <path d="M24.0002 24.5V36.1129" stroke="#4880FF" stroke-width="1.5" />
+          <circle cx="31.9355" cy="19.4482" r="5.25" fill="#E1EFFF" stroke="#4880FF" stroke-width="1.5" />
+          <path d="M29.5854 19.5449L31.0854 21.0449L34.5854 17.5449" stroke="#4880FF" stroke-width="1.5"
+            stroke-linecap="round" />
+        </svg>
+      </div>
+      <div class="fs-4 mt-2">Sales Report</div>
+    </a>
     <a class="item rounded d-flex align-items-center gap-2" (click)="exportReport('order')" [href]="exportUrl"
       target="_blank">
       <div class="icon p-2 rounded">
@@ -144,7 +143,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <div>
+    <div class="d-flex flex-column">
       <h4 class="modal-title pull-left">Date Range</h4>
       <p>Select date range for sales report</p>
     </div>
@@ -153,5 +152,28 @@
     </button>
   </div>
   <div class="modal-body">
+
+    <div *ngFor="let dateRangeItem of dateRanges" class="mb-2 border cursor-pointer border-secondary rounded p-2 shadow"
+      (click)="toggleSalesReport(dateRangeItem?.dateRange)"
+      [ngClass]="{'border-primary': dateRange == dateRangeItem?.dateRange, 'border-secondary':dateRange != dateRangeItem?.dateRange }">
+      <div class="fs-4">{{dateRangeItem?.title}}</div>
+      <div class="text-muted">{{dateRangeItem?.description}}</div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-end gap-2">
+      <button (click)="salesReport()" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+        <div>
+          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+            </path>
+          </svg>
+        </div>
+        <div>
+          Download Report
+        </div>
+      </button>
+    </div>
   </div>
 </ng-template>

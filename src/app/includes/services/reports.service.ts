@@ -26,8 +26,8 @@ export class ReportsService {
     return this.commonService.getFullUrl(this.reportsEndpoints.customerOrderReport);
   }
 
-  salesReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.salesReport);
+  salesReport(dateRange: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.salesReport + `?dateRange=${dateRange}`);
     return this.http.get(`${url}`);
   }
 }
