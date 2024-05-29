@@ -8,7 +8,7 @@
         </div>
         <div class="ms-2">
           <div class="search-bar position-relative">
-            <input class="form-control" type="text" placeholder="Search items" [(ngModel)]="keyword"
+            <input class="form-control" type="text" placeholder="Search" [(ngModel)]="keyword"
               (ngModelChange)="searchLinks(keyword)" />
             <div class="position-absolute shadow bg-white p-4 rounded search-results" *ngIf="searchResults.length > 0">
               <ng-container *ngFor="let searchResult of searchResults; let i = index">
