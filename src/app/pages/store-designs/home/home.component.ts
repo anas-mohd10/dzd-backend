@@ -371,7 +371,7 @@ export class HomeComponent implements OnInit {
             }
             this.widgetImagePreview = this.widgetImages[0]
             this.widgetImagePreviewIndex = 0
-            this.previewDetails = this.widgetImagePreview.url ? this.widgetImagePreview.url?.path : ""
+            this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : ""
             this.widgetForm.patchValue(this.widgetImagePreview)
           }
           if (this.widgetDetails?.widgetType == 'blog') {

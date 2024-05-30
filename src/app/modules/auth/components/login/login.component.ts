@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { appRoutes, authRoute } from '../../../../config/routes';
 import { AuthService } from '../../../../includes/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastService } from '../../../../includes/services/toast.service';
 import { localstorageVariables } from 'src/app/config/localStorageVariable';
-import { ToastrService } from 'ngx-toastr';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +15,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  loginForm: FormGroup;
+  form: FormGroup = new FormGroup({});
   hasError: boolean;
   returnUrl: string;
   isSubmitted: boolean = false
@@ -31,16 +30,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   redirectUrl: any;
   modalRef?: BsModalRef
   email: FormControl = new FormControl('', [Validators.required, Validators.email]);
-  isValidated: boolean = false
+  isValidated: boolean = false;
+  isPassword: boolean = false
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
-    private ToastrService: ToastrService,
     private AdminUsersService: AdminUsersService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -49,32 +49,34 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   initForm() {
-    this.loginForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
-  get af() {
-    return this.loginForm.controls;
+  get formControls() {
+    return this.form.controls;
   }
 
   submit() {
-    this.isSubmitted = true;
-
-    this.userData = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password
+    if (!this.form.valid) {
+      this.isSubmitted = true
+      return
     }
 
-    this.authService.login(this.userData).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.ToastrService.error(res?.message || 'Invalid username or password');
-      } else {
-        this.authService.saveUserData(res?.result)
-        localStorage.setItem(localstorageVariables.access_token, res?.result?.token);
-        localStorage.setItem(localstorageVariables.is_logged_in, 'true');
-        this.Router.navigate([this.redirectUrl]);
+    this.authService.login(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.authService.saveUserData(res?.result)
+          localStorage.setItem(localstorageVariables.access_token, res?.result?.token);
+          localStorage.setItem(localstorageVariables.is_logged_in, 'true');
+          this.Router.navigate([this.redirectUrl]);
+        } else {
+          this.HotToastService.error(res?.message || 'Invalid username or password');
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message);
       }
     })
   }
@@ -83,8 +85,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
   }
 
+  togglePassword() {
+    this.isPassword = !this.isPassword;
+  }
+
   confirm() {
-    if(!this.email.valid){
+    if (!this.email.valid) {
       this.isValidated = true
       return
     }
@@ -92,14 +98,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.AdminUsersService.forgotPassword({ email: this.email.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.email.reset()
           this.modalRef?.hide()
         } else {
-          this.ToastrService.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message);
+        this.HotToastService.error(err?.message);
       },
     })
   }
