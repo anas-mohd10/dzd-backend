@@ -49,14 +49,20 @@
                                             d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     </svg>
                                 </button>
-                                <button class="btn bg-white p-1 border-secondary border d-flex align-items-center justify-content-center" (click)="openDuplication(duplicateTemplate, widgetItem)" placement="bottom" tooltip="Duplicate this widget">
+                                <button
+                                    class="btn bg-white p-1 border-secondary border d-flex align-items-center justify-content-center"
+                                    (click)="openDuplication(duplicateTemplate, widgetItem)" placement="bottom"
+                                    tooltip="Duplicate this widget">
                                     <svg height="20" width="20" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="#00bdab" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
                                     </svg>
                                 </button>
-                                <button class="btn bg-white p-1 border-secondary border d-flex align-items-center justify-content-center" (click)="openConfirmation(deleteTemplate, widgetItem)" placement="bottom" tooltip="Delete this widget">
+                                <button
+                                    class="btn bg-white p-1 border-secondary border d-flex align-items-center justify-content-center"
+                                    (click)="openConfirmation(deleteTemplate, widgetItem)" placement="bottom"
+                                    tooltip="Delete this widget">
                                     <svg height="20" width="20" xmlns="http://www.w3.org/2000/svg" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="#D11A2A" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -211,9 +217,7 @@
                                         <div class="form-group">
                                             <label for="buttonLink" class="form-label">Button redirection</label>
                                             <input type="text" placeholder="View more" id="buttonLink"
-                                                formControlName="buttonLink"
-                                                placeholder=""
-                                                class="form-control">
+                                                formControlName="buttonLink" placeholder="" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -228,30 +232,66 @@
                         computer or can use from variety of images from web.
                     </p>
                     <div class="mb-2" *ngIf="widgetDetails?.widgetType == 'image-slider'">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="widgetView" class="form-label">View</label>
-                                    <select formControlName="view" id="widgetView" class="form-select">
-                                        <option value="" disabled>-- Select an option --</option>
-                                        <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}
-                                        </option>
-                                    </select>
+                        <div class="form-group mb-3">
+                            <label for="widgetView" class="form-label">View</label>
+                            <select formControlName="view" id="widgetView" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-5" *ngIf="form.get('view')?.value == 'slider'">
+                            <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
+                            <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                    <input type="text" class="form-control" formControlName="web" placeholder="3">
                                 </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group" *ngIf="form.get('view')?.value == 'slider'">
-                                    <label for="slidesPerCount" class="form-label">Slides Per Count</label>
-                                    <input type="text" id="slidesPerCount" formControlName="slidesPerCount"
-                                        class="form-control">
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                    <input type="text" class="form-control" formControlName="tablet" placeholder="3">
                                 </div>
-                                <div class="form-group" *ngIf="form.get('view')?.value == 'grid'">
-                                    <label for="gridsPerView" class="form-label">Grids Per Count</label>
-                                    <input type="text" id="gridsPerView" formControlName="gridsPerCount"
-                                        class="form-control">
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                    <input type="text" class="form-control" formControlName="mobile" placeholder="3">
                                 </div>
                             </div>
                         </div>
+
+                        <div class="mb-5" *ngIf="form.get('view')?.value == 'grid'">
+                            <label for="gridsPerView" class="fs-5 mb-2">Grid Per View</label>
+                            <div id="gridsPerView" class="row" formGroupName="gridsPerCount">
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                    <input type="text" class="form-control" formControlName="web" placeholder="3">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                    <input type="text" class="form-control" formControlName="tablet" placeholder="3">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                    <input type="text" class="form-control" formControlName="mobile" placeholder="3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="form.get('view')?.value == 'slider'"
+                            class="form-group mb-5 d-flex align-items-center justify-content-between">
+                            <label for="pagination" class="fs-5">Pagination</label>
+                            <app-switch id="pagination" [switchId]="'pagination'"
+                                (switchToggled)="switchToggled($event)"
+                                [isToggledProps]="form.get('pagination')?.value"></app-switch>
+                        </div>
+                        <div *ngIf="form.get('view')?.value == 'slider'"
+                            class="form-group mb-5 d-flex align-items-center justify-content-between">
+                            <label for="continue" class="fs-5">Slider Buttons</label>
+                            <app-switch id="continue" [switchId]="'sliderButtons'"
+                                (switchToggled)="switchToggled($event)"
+                                [isToggledProps]="form.get('sliderButtons')?.value"></app-switch>
+                        </div>
+
                     </div>
                     <div class="mb-2 p-4 rounded border border-secondary">
                         <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
@@ -363,12 +403,28 @@
                                                     {{brand.name}}
                                                 </option>
                                             </select>
+                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'collection'"
+                                                [formControl]="redirectionQuery" id="redirectionSearch"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let collection of collections"
+                                                    value="{{collection.slug}}">
+                                                    {{collection.name}}
+                                                </option>
+                                            </select>
                                             <select *ngIf="widgetForm.get('redirectionType')?.value == 'blogs'"
                                                 [formControl]="redirectionQuery" id="redirectionSearch"
                                                 class="form-select">
                                                 <option value="" disabled>-- Select an option --</option>
                                                 <option *ngFor="let blog of blogs" value="{{blog.slug}}">
                                                     {{blog.title}}</option>
+                                            </select>
+                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'products'"
+                                                [formControl]="redirectionQuery" id="redirectionSearch"
+                                                class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let product of products" value="{{product.slug}}">
+                                                    {{product.name}}</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-4 form-group mb-3">
@@ -489,8 +545,7 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="saleButtonLink" class="form-label">Button redirection</label>
-                                    <input type="text" id="saleButtonLink"
-                                        placeholder=""
+                                    <input type="text" id="saleButtonLink" placeholder=""
                                         formControlName="saleButtonLink" class="form-control">
                                 </div>
                             </div>

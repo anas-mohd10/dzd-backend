@@ -53,11 +53,9 @@ export class CustomersListComponent implements OnInit {
         isActive: this.isActive.value
       }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          console.log(res?.result);
-          
           this.customers = res?.result?.data
           this.totalPages = res?.result?.totalPages
-          this.totalResults = res?.result?.totalCustomers
+          this.totalResults = res?.result?.totalResults
           this.ChangeDetectorRef.markForCheck()
         }
       })

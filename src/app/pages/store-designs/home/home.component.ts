@@ -134,26 +134,26 @@ export class HomeComponent implements OnInit {
   widgetTestimonials: Array<any> = []
   editorConfig: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
-      customClasses: [
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Enter text here...',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
+    customClasses: [
       {
         name: 'quote',
         class: 'quote',
@@ -175,7 +175,7 @@ export class HomeComponent implements OnInit {
       ['bold', 'italic'],
       ['fontSize']
     ]
-};
+  };
 
 
   constructor(
@@ -273,6 +273,9 @@ export class HomeComponent implements OnInit {
       case 'brand':
         this.getBrands()
         break
+      case 'products':
+        this.getProducts()
+        break
       case 'collection':
         this.getCollections()
         break
@@ -324,6 +327,9 @@ export class HomeComponent implements OnInit {
         break
       case 'brand':
         this.widgetForm.get('redirection')?.setValue("/products?brand=" + this.redirectionQuery.value)
+        break
+      case 'products':
+        this.widgetForm.get('redirection')?.setValue("/product-detail/" + this.redirectionQuery.value)
         break
       case 'collection':
         this.widgetForm.get('redirection')?.setValue("/products?collection=" + this.redirectionQuery.value)
@@ -711,11 +717,21 @@ export class HomeComponent implements OnInit {
       html: new FormControl(""),
       video: new FormControl(""),
       view: new FormControl("grid"),
-      gridsPerCount: new FormControl("4"),
+      gridsPerCount: new FormGroup({
+        mobile: new FormControl(2, [Validators.required, Validators.pattern("^[0-9]*$")]),
+        tablet: new FormControl(3, [Validators.required, Validators.pattern("^[0-9]*$")]),
+        desktop: new FormControl(4, [Validators.required, Validators.pattern("^[0-9]*$")])
+      }),
+      pagination: new FormControl(true),
+      sliderButtons: new FormControl(true),
       buttonVisibility: new FormControl(false),
       buttonText: new FormControl(""),
       buttonLink: new FormControl(""),
-      slidesPerCount: new FormControl("3")
+      slidesPerCount: new FormGroup({
+        mobile: new FormControl(2, [Validators.required, Validators.pattern("^[0-9]*$")]),
+        tablet: new FormControl(3, [Validators.required, Validators.pattern("^[0-9]*$")]),
+        desktop: new FormControl(4, [Validators.required, Validators.pattern("^[0-9]*$")])
+      })
     })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
@@ -781,18 +797,10 @@ export class HomeComponent implements OnInit {
   }
 
   getProducts() {
-    if (!this.productKeyword.valid) {
-      return
-    }
-
-    this.ProductService.searchProducts({
-      name: this.productKeyword.value,
-      page: 1, limit: 100,
-      isActive: true, isVisible: 0
-    }).subscribe({
+    this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.products = res?.result?.data
+          this.products = res?.result
           this.ChangeDetectorRef.markForCheck()
         }
       }
@@ -833,6 +841,8 @@ export class HomeComponent implements OnInit {
           this.collections = res?.result
           this.ChangeDetectorRef.markForCheck()
         }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
       }
     })
   }
@@ -868,5 +878,9 @@ export class HomeComponent implements OnInit {
         }
       }
     })
+  }
+
+  switchToggled(event: { switchId: string, toggleStatus: boolean }) {
+    this.form.get(event.switchId)?.setValue(event.toggleStatus)
   }
 }

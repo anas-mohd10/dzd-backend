@@ -567,6 +567,8 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm.get('products')?.setValue(this.cartItems)
 
     if (!this.orderForm.valid) {
+      console.log(this.orderForm.value);
+      
       this.isSubmitted = true
       return;
     }
