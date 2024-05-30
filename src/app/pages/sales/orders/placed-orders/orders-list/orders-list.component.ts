@@ -110,7 +110,7 @@ export class OrdersListComponent implements OnInit {
   toggledOrders: Array<any> = [];
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  checkStatusList: Array<any> = ['PENDING', 'PLACED', 'FAILED']
+  checkStatusList: Array<any> = ['PENDING', 'PLACED', 'FAILED', 'CANCELLED']
 
   successOrders: Array<string> = ['PLACED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
   acceptedOrders: Array<string> = ['ACCEPTED']
@@ -239,7 +239,7 @@ export class OrdersListComponent implements OnInit {
   toggleOrders(order?: { order: string, status: string }) {
     if (order) {
       if (this.checkStatusList.includes(order?.status)) {
-        this.Toast.error('Please accept this order to confirm your selection')
+        this.Toast.error('This order is not accepted yet or has been cancelled. Please accept the order to confirm your selection.')
       } else {
         this.toggledOrders.includes(order.order.split('#')[1]) ?
           this.toggledOrders = this.toggledOrders.filter(o => o != order.order.split('#')[1]) :

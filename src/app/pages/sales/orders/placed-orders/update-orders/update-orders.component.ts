@@ -2,7 +2,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Toast } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
@@ -91,7 +91,6 @@ export class UpdateOrdersComponent implements OnInit {
     private OrdersService: OrdersService,
     private route: ActivatedRoute,
     private router: Router,
-    private ToastrService: ToastrService,
     private formBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
     private invoiceService: InvoiceSettingsService,
@@ -261,12 +260,12 @@ export class UpdateOrdersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.getOrderDetails()
               this.expectedModalRef?.hide()
-              this.ToastrService.success(res.message)
+              this.Toast.success(res.message)
             } else {
-              this.ToastrService.error(res.message)
+              this.Toast.error(res.message)
             }
           }, error: (err: any) => {
-            this.ToastrService.error(err.message)
+            this.Toast.error(err.message)
           }
         })
         break
@@ -279,12 +278,12 @@ export class UpdateOrdersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.getOrderDetails()
               this.deliveryModalRef?.hide()
-              this.ToastrService.success(res.message)
+              this.Toast.success(res.message)
             } else {
-              this.ToastrService.error(res.message)
+              this.Toast.error(res.message)
             }
           }, error: (err: any) => {
-            this.ToastrService.error(err.message)
+            this.Toast.error(err.message)
           }
         })
         break
@@ -296,12 +295,12 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
-          this.ToastrService.success(res.message)
+          this.Toast.success(res.message)
         } else {
-          this.ToastrService.error(res.message)
+          this.Toast.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.Toast.error(err.message)
       }
     })
   }
@@ -342,7 +341,7 @@ export class UpdateOrdersComponent implements OnInit {
         this.bulkStatus = res?.result
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error("Couldn't fetch order status list")
+        this.Toast.error("Couldn't fetch order status list")
       }
     })
   }
@@ -383,9 +382,9 @@ export class UpdateOrdersComponent implements OnInit {
   updateOrder() {
     this.OrdersService.updateOrder({ ...this.form.value, order: this.orderNumber }).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.ToastrService.error(res?.message);
+        this.Toast.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.ToastrService.success(res?.message);
+        this.Toast.success(res?.message);
         this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
       }
     })
@@ -400,14 +399,14 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
-          this.ToastrService.success(res?.message)
+          this.Toast.success(res?.message)
           this.ChangeDetectorRef.markForCheck()
           this.modalRef?.hide()
         } else {
-          this.ToastrService.error(res?.message)
+          this.Toast.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.Toast.error(err?.message)
       }
     })
   }

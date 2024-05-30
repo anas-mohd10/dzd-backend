@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 export class NewsletterSubscribersComponent implements OnInit {
   appRoute = appRoutes
   page: number = 1
-  limit: number = 100
+  limit: number = 40
   totalPages: number = 1
   totalResults: number = 0
   keyword: FormControl = new FormControl('')
@@ -32,7 +32,7 @@ export class NewsletterSubscribersComponent implements OnInit {
   }
 
   clear() {
-    this.keyword.reset()
+    this.keyword.setValue('')
     this.getSubscribers()
   }
 

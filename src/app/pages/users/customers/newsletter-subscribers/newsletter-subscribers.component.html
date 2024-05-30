@@ -57,7 +57,7 @@
                         <td>{{email?.createdAt}}</td>
                     </tr>
                 </ng-container>
-                <tr>
+                <tr *ngIf="emails.length == 0">
                     <td colspan="4">
                         <app-no-results></app-no-results>
                     </td>

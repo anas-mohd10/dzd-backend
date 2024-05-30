@@ -52,7 +52,6 @@ export class RolesListComponent implements OnInit {
           this.roles = res?.result?.data
           this.totalResults = res?.result?.totalResults
           this.totalPages = res?.result?.totalPages
-          this.isLastPage = res?.result?.isLastPage
           this.ChangeDetectorRef.markForCheck()
         }else{
           
