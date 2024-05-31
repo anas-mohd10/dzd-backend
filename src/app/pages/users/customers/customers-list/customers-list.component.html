@@ -52,6 +52,7 @@
          <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Id</th>
             <th>Mobile</th>
             <th>Status</th>
             <th>Action</th>
@@ -62,6 +63,7 @@
             <tr>
                <td>{{customer?.name}}</td>
                <td>{{customer?.email}}</td>
+               <td>{{customer?.userid}}</td>
                <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
                <td>
                   <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
@@ -74,7 +76,7 @@
             </tr>
          </ng-container>
          <tr *ngIf="customers.length == 0">
-            <td colspan="5">
+            <td colspan="6">
                <app-no-results></app-no-results>
             </td>
          </tr>
@@ -82,7 +84,8 @@
    </table>
 
    <div class="my-4">
-      <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
+      <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
+         [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
    </div>
 
 </div>

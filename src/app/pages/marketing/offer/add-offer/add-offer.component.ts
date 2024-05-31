@@ -90,7 +90,7 @@ export class AddOfferComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       type: ['percentage'],
-      offerType: ['partial'],
+      offerType: ['complete'],
       value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       isActive: ['true'],
     });
@@ -164,6 +164,7 @@ export class AddOfferComponent implements OnInit {
 
     this.offerService.addOffer({
       ...this.offerForm.value,
+      offerType: this.offerForm.get('offerType')?.value == 'complete' ? 'complete' : 'partial',
       categories: this.categories.length > 0 ? this.categories : null,
       products: this.products.length > 0 ? this.products : null,
       collections: this.collections.length > 0 ? this.collections : null,

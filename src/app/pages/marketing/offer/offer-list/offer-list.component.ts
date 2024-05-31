@@ -59,7 +59,7 @@ export class OfferListComponent implements OnInit {
 
   switchToggled(event: { switchId: string, toggleState: boolean }) {
     console.log(event);
-    this.OfferService.updateOffer(event.switchId, { refid: event.switchId, isActive: event.toggleState }).subscribe({
+    this.OfferService.updateOffer({ slug: event.switchId, isActive: event.toggleState }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOffers()
@@ -74,7 +74,7 @@ export class OfferListComponent implements OnInit {
   }
 
   deleteOffer(offerId: string) {
-    this.OfferService.updateOffer(offerId, { refid: offerId, isDelete: true }).subscribe({
+    this.OfferService.updateOffer({ slug: offerId, isDelete: true }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOffers()

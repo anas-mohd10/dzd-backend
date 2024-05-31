@@ -18,44 +18,46 @@
     </button>
   </div>
 
-  <div class="card p-4 my-3">
-    <form [formGroup]="form">
-      <div class="row">
-        <div class="col-lg-2">
-          <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getOffers()" />
+  <div class="card my-3">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-lg-2">
+            <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getOffers()" />
+          </div>
+          <div class="col-lg-2">
+            <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getOffers()" />
+          </div>
+          <div class="col-lg-2">
+            <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
+              (change)="getOffers()">
+              <option value="" disabled>Status</option>
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <input type="button" class="form-control fs-6" style="color: #00bcaa; border: #00bcaa 1px solid"
+              value="Clear filters" (click)="clearFilters()" />
+          </div>
+          <div class="col-lg-4">
+            <input type="text" placeholder="Search offers" class="form-control fs-6" formControlName="name"
+              (ngModelChange)="getOffers()" />
+          </div>
         </div>
-        <div class="col-lg-2">
-          <input type="date" class="form-control fs-6" formControlName="lastDate" (change)="getOffers()" />
-        </div>
-        <div class="col-lg-2">
-          <select name="isActive" id="isActive" class="form-select fs-6" formControlName="isActive"
-            (change)="getOffers()">
-            <option value="" disabled>Status</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-        </div>
-        <div class="col-lg-2">
-          <input type="button" class="form-control fs-6" style="color: #00bcaa; border: #00bcaa 1px solid"
-            value="Clear filters" (click)="clearFilters()" />
-        </div>
-        <div class="col-lg-4">
-          <input type="text" placeholder="Search offers" class="form-control fs-6" formControlName="name"
-            (ngModelChange)="getOffers()" />
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 
   <div class="offer-cards my-3">
     <ng-container *ngFor="let offer of offers">
       <div class="p-2 rounded bg-white cursor-pointer d-flex align-items-start justify-content-between">
-        <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.refid }" class="w-80">
+        <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.slug }" class="w-80">
           <img src="" onerror="this.src = '../../../../../assets/images/default.png'" class="w-100 rounded h-100"
             alt="{{offer.title}}">
         </div>
         <div class="w-calc d-flex align-items-start justify-content-between">
-          <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.refid }" class="w-calc37">
+          <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.slug }" class="w-calc37">
             <div class="fs-6">{{ offer?.title }}</div>
             <div class="text-muted">
               {{ offer?.type == "Flat" ? "Flat" : null }} {{ offer?.value }}
@@ -69,9 +71,9 @@
           </div>
 
           <div class="w-37">
-            <app-switch (switchToggled)="switchToggled($event)" [switchId]="offer.refid"
+            <app-switch (switchToggled)="switchToggled($event)" [switchId]="offer.slug"
               [isToggledProps]="offer.isActive"></app-switch>
-            <div class="cursor-pointer" (click)="deleteOffer(offer.refid)">
+            <div class="cursor-pointer" (click)="deleteOffer(offer.slug)">
               <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -86,12 +88,7 @@
   </div>
 
   <ng-container *ngIf="offers.length == 0">
-    <div class="emptyNote my-3">
-      <div class="fs-3 fw-bolder">No result found</div>
-      <div class="fs-6 note">
-        We couldn't find any item based on your search
-      </div>
-    </div>
+    <app-no-results></app-no-results>
   </ng-container>
 
   <div class="card my-3">

@@ -60,12 +60,14 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Value</label>
               <input type="text" placeholder="Eg. 10" class="form-control fs-6" formControlName="value"
-                (change)="validateValue()" [ngClass]="{
+                (change)="validateValue()"
+                [ngClass]="{
                     'is-invalid': (formControls.value.touched || isSubmitted) && formControls.value.errors?.required}" />
               <div class="alert alert-danger p-2 mt-2" role="alert" *ngIf="!isValidValue">
                 Maximum value : 100
               </div>
-              <div class="alert alert-danger p-3 mt-2" *ngIf="formControls.value.errors?.pattern">This field accepts only numbers
+              <div class="alert alert-danger p-3 mt-2" *ngIf="formControls.value.errors?.pattern">This field accepts
+                only numbers
               </div>
             </div>
           </div>
@@ -93,14 +95,17 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Offer type</label>
               <select class="form-select fs-6" formControlName="offerType">
-                <option value="" disabled>-- Select an option --</option>
-                <option value="partial">Module</option>
+                <option value="" disabled>-- Select an option --</option>s
+                <option value="products">Products</option>
+                <option value="brands">Brands</option>
+                <option value="categories">Categories</option>
+                <option value="collections">Collections</option>
                 <option value="complete">Store</option>
               </select>
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="offerForm.get('offerType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
               <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
@@ -110,7 +115,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="offerForm.get('offerType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
               <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
@@ -120,7 +125,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="offerForm.get('offerType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
               <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
@@ -130,7 +135,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="offerForm.get('offerType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
               <ng-select [items]="brandsdata" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
@@ -155,7 +160,7 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class="btn btn-secondary fs-6">
               Cancel
             </a>
-            <button type="submit" class="btn btn-primary fs-6"S>
+            <button type="submit" class="btn btn-primary fs-6" S>
               Save changes
             </button>
           </div>

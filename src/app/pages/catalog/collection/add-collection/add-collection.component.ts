@@ -81,6 +81,8 @@ export class AddCollectionComponent implements OnInit {
       if (this.product.value) {
         this.ProductService.findProducts({
           name: this.product.value,
+          isVisible: true,
+          isDelete: false,
           isActive: true
         }).subscribe((res: any) => {
           if (res?.errorCode == 0) {

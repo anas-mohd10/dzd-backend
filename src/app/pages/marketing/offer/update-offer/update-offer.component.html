@@ -14,7 +14,7 @@
             <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{'offer' : this.offer}">Update offers</a>
+            <a routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{'offer' : this.offerId}">Update offers</a>
           </li>
         </ul>
       </div>
@@ -23,7 +23,7 @@
 
   <div class="card mt-4">
     <div class="card-body">
-      <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
+      <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <div class="row">
 
           <div class="col-lg-6">
@@ -96,14 +96,17 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Offer type</label>
               <select class="form-select fs-6" formControlName="offerType">
-                <option value="" disabled>-- Select an option --</option>
-                <option value="partial">Module</option>
+                <option value="" disabled>-- Select an option --</option>s
+                <option value="products">Products</option>
+                <option value="brands">Brands</option>
+                <option value="categories">Categories</option>
+                <option value="collections">Collections</option>
                 <option value="complete">Store</option>
               </select>
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="form.get('offerType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
               <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
@@ -113,7 +116,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="form.get('offerType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
               <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
@@ -123,7 +126,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="form.get('offerType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
               <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
@@ -133,7 +136,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="offerForm.get('offerType')?.value == 'partial'">
+          <div *ngIf="form.get('offerType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
               <ng-select [items]="brandsdata" bindLabel="name" bindValue="_id" [(ngModel)]="brands"

@@ -2,15 +2,14 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { environment } from 'src/environments/environment.prod';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-update-offer',
@@ -18,7 +17,7 @@ import { BrandService } from 'src/app/includes/services/brand.service';
   styleUrls: ['./update-offer.component.scss'],
 })
 export class UpdateOfferComponent implements OnInit {
-  offerForm: FormGroup;
+  form: FormGroup;
   appRoute = appRoutes;
   editMode = false;
   task = PageTasks.UPDATE;
@@ -43,14 +42,14 @@ export class UpdateOfferComponent implements OnInit {
   isValidValue: boolean = true;
   isProceedable: boolean = true;
   base: string = environment.base;
-  offer: string = ''
+  offerId: string = ''
   offerDetails: any = {}
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
+    private HotToastService: HotToastService,
     private offerService: OfferService,
     private cdr: ChangeDetectorRef,
     private productService: ProductService,
@@ -66,7 +65,7 @@ export class UpdateOfferComponent implements OnInit {
     this.toDate = new Date(date.setDate(getDate + 10)).toISOString().split('T')[0]
 
     this.base = environment.base
-    this.offer = this.route.snapshot.queryParams.offer || '';
+    this.offerId = this.route.snapshot.queryParams.offer || '';
     this.initForm();
     this.getOffer();
 
@@ -92,29 +91,29 @@ export class UpdateOfferComponent implements OnInit {
   }
 
   initForm() {
-    this.offerForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       title: ['', Validators.required],
       description: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       type: ['percentage'],
-      offerType: ['partial'],
+      offerType: ['complete'],
       value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       isActive: ['true'],
       isDelete: ['false']
     });
 
-    this.offerForm.get('startDate')?.setValue(this.fromDate)
-    this.offerForm.get('endDate')?.setValue(this.toDate)
+    this.form.get('startDate')?.setValue(this.fromDate)
+    this.form.get('endDate')?.setValue(this.toDate)
   }
 
   get formControls() {
-    return this.offerForm.controls;
+    return this.form.controls;
   }
 
   validateValue() {
-    let type = this.offerForm.get('type')?.value
-    let value = this.offerForm.get('value')?.value
+    let type = this.form.get('type')?.value
+    let value = this.form.get('value')?.value
     type == 'percentage' ? value > 100 ? this.isValidValue = false : this.isValidValue = true : this.isValidValue = true
   }
 
@@ -147,23 +146,33 @@ export class UpdateOfferComponent implements OnInit {
     return item._id === selected;
   }
 
+  setOfferTypeIfNotEmpty(array: any[], type: string = 'complete') {
+    if (array.length > 0) {
+      this.form.get('offerType')?.setValue(type);
+    }
+  }
+
   getOffer() {
-    this.offerService.getOfferDetails(this.offer).subscribe((res: any) => {
+    this.offerService.getOfferDetails(this.offerId).subscribe((res: any) => {
       if (res.errorCode == 0) {
         this.offerDetails = res?.result;
-        this.offerForm.get('title')?.setValue(this.offerDetails.title);
-        this.offerForm.get('description')?.setValue(this.offerDetails.description);
-        this.offerForm.get('isActive')?.setValue(this.offerDetails.isActive);
-        this.offerForm.get('type')?.setValue(this.offerDetails.type);
-        this.offerForm.get('value')?.setValue(this.offerDetails.value);
-        this.offerForm.get('offerType')?.setValue(this.offerDetails.offerType);
-        this.offerForm.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
-        this.offerForm.get('startDate')?.setValue(new Date(this.offerDetails.startDate).toISOString().split('T')[0]);
-        this.offerForm.get('endDate')?.setValue(new Date(this.offerDetails.endDate).toISOString().split('T')[0]);
+        this.form.get('title')?.setValue(this.offerDetails.title);
+        this.form.get('description')?.setValue(this.offerDetails.description);
+        this.form.get('isActive')?.setValue(this.offerDetails.isActive);
+        this.form.get('type')?.setValue(this.offerDetails.type);
+        this.form.get('value')?.setValue(this.offerDetails.value);
+        this.form.get('offerType')?.setValue(this.offerDetails.offerType);
+        this.form.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
+        this.form.get('startDate')?.setValue(new Date(this.offerDetails.startDate).toISOString().split('T')[0]);
+        this.form.get('endDate')?.setValue(new Date(this.offerDetails.endDate).toISOString().split('T')[0]);
         this.products = this.offerDetails.products ? this.offerDetails.products : []
         this.categories = this.offerDetails.categories ? this.offerDetails.categories : []
         this.collections = this.offerDetails.collections ? this.offerDetails.collections : []
         this.brands = this.offerDetails.brands ? this.offerDetails.brands : []
+        this.setOfferTypeIfNotEmpty(this.products, 'products');
+        this.setOfferTypeIfNotEmpty(this.categories, 'categories');
+        this.setOfferTypeIfNotEmpty(this.collections, 'collections');
+        this.setOfferTypeIfNotEmpty(this.brands, 'brands');
         this.offerDetails.type == 'percentage' ? this.offerDetails.value > 100 ? this.isValidValue = false : this.isValidValue = true : this.isValidValue = true
         this.cdr.markForCheck()
       }
@@ -171,25 +180,25 @@ export class UpdateOfferComponent implements OnInit {
   }
 
   onSubmit() {
-    if (!this.offerForm.valid) {
+    if (!this.form.valid) {
       this.isSubmitted = true
       return;
     }
 
-    this.offerService.updateOffer(this.offer, {
-      ...this.offerForm.value,
+    this.offerService.updateOffer({
+      ...this.form.value,
       categories: this.categories.length > 0 ? this.categories : null,
       products: this.products.length > 0 ? this.products : null,
       collections: this.collections.length > 0 ? this.collections : null,
       brands: this.brands.length > 0 ? this.brands : null,
       filestring: this.croppedImage,
       filename: this.filename,
-      refid: this.offer
+      slug: this.offerId
     }).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.toastr.error(res?.message);
+        this.HotToastService.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.toastr.success(res?.message);
+        this.HotToastService.success(res?.message);
         this.router.navigate([this.appRoute.offer.OFFER_LIST]);
       }
     });
