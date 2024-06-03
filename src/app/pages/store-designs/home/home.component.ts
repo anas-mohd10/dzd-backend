@@ -567,7 +567,12 @@ export class HomeComponent implements OnInit {
         widgetType: this.widgetDetails?.widgetType,
         ...this.saleForm.value,
         ...this.form.value,
-        startDate: this.saleForm.get("startDate")?.value ? this.saleForm.get('startDate')?.value : new Date(new Date().setHours(0, 0, 0, 0)).toUTCString(),
+        startDate: this.saleForm.get("startDate")?.value ?
+          this.saleForm.get('startDate')?.value :
+          new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+        endDate: this.saleForm.get("endDate")?.value ?
+          this.saleForm.get("endDate")?.value :
+          new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
       }
     } else if (this.widgetProductTypes.includes(this.widgetDetails.widgetType)) {
       widgetPayload = {
@@ -581,6 +586,7 @@ export class HomeComponent implements OnInit {
     }
 
     type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
+
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
       next: (res: any) => {
