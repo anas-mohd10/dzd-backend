@@ -311,4 +311,5 @@ export const appRoutes = {
     create: `${app}/static-pages/add`,
     update: `${app}/static-pages/update`
   },
+  paymentSettings: `${app}/payment-settings`,
 }
