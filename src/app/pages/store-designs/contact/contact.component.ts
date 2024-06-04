@@ -41,12 +41,12 @@ export class ContactComponent implements OnInit {
   ngOnInit(): void {
     this.getCmsDetails()
     this.form = new FormGroup({
-      address: new FormControl('', [Validators.required]),
-      mobile: new FormControl('', [Validators.required, Validators.pattern("^[+0-9]{6,15}$")]),
-      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      address: new FormControl(''),
+      mobile: new FormControl('', [Validators.pattern("^[+0-9]{6,15}$")]),
+      email: new FormControl('', [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
       title: new FormControl('', Validators.required),
       description: new FormControl(''),
-      thumbnail: new FormControl('')
+      thumbnail: new FormControl(null)
     })
   }
 

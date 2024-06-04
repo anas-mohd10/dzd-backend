@@ -22,4 +22,9 @@ export class PaymentDetailsService {
     const url = this.commonService.getFullUrl(paymentDetailsEndpoints.get + `/${pgId}`);
     return this.http.get(`${url}`);
   }
+
+  getPaymentGateways() {
+    const url = this.commonService.getFullUrl(paymentDetailsEndpoints.fetch);
+    return this.http.get(`${url}`);
+  }
 }

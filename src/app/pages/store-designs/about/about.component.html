@@ -5,7 +5,7 @@
     <h4 class="fs-2 fw-bold">About Us</h4>
     <div>
         <form [formGroup]="form">
-            <!-- <div class="form-group mb-3">
+            <div class="form-group mb-3">
                 <label class="form-label required">Html</label>
                 <textarea type="text" rows="5" formControlName="html" class="form-control"></textarea>
             </div>
@@ -16,8 +16,10 @@
             <div class="form-group mb-3">
                 <label class="form-label">Scripts</label>
                 <textarea type="text" rows="5" formControlName="scripts" class="form-control"></textarea>
-            </div> -->
-            <div class="row mb-3">
+            </div>
+
+
+            <!-- <div class="row mb-3">
                 <div class="col-lg-3">
                     <div class="ratio ratio-1x1">
                         <app-assets (mediaClicked)="onMediaSelected('thumbnail', $event)"
@@ -37,8 +39,10 @@
                             formControlName="description" class="form-control"></textarea>
                     </div>
                 </div>
-            </div>
-            <div class="row mb-3">
+            </div> -->
+
+
+            <!-- <div class="row mb-3">
                 <div class="col-lg-7">
                     <div class="form-group mb-3">
                         <label class="form-label required">Short Title</label>
@@ -85,9 +89,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <label class="form-label">Features</label>
+            </div> -->
+
+
+            <!--  <div>
+              <label class="form-label">Features</label>
                 <div class="row">
                     <ng-container *ngFor="let feature of features; let i = index">
                         <div class="col-lg-6 mb-3">
@@ -126,9 +132,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
+
             <div class="my-3">
-                <div class="form-group mb-3">
+                <!-- <div class="form-group mb-3">
                     <label for="storyTitle" class="form-label">Story Title</label>
                     <input id="storyTitle" type="text" formControlName="storyTitle" placeholder="Brands"
                         class="form-control">
@@ -137,12 +144,12 @@
                     <label for="storyDescription" class="form-label">Story Description</label>
                     <textarea id="storyDescription" formControlName="storyDescription" rows="5" class="form-control"
                         placeholder="We are the source of fresh fruits and vegetables from across carrying the finest brands"></textarea>
-                </div>
+                </div> -->
                 <div>
                     <label for="storyThumbnails" class="form-label">Story Thumbnails</label>
                     <div class="row" id="storyThumbnails">
                         <ng-container *ngFor="let storyThumbnail of storyThumbnails;let i = index">
-                            <div class="col-lg-2 mb-3">
+                            <div class="col-lg-1 story-thumbnail mb-3">
                                 <div class="w-full ratio ratio-1x1 position-relative">
                                     <div (click)="removeItems('storyThumbnails', i)"
                                         class="position-absolute rounded bg-secondary remove-thumbnail">
@@ -160,7 +167,7 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <div class="col-lg-2">
+                        <div class="col-lg-1">
                             <div class="ratio ratio-1x1">
                                 <app-assets (mediaClicked)="onStoryThumbnailSelected($event)"
                                     [previewEnabled]="false"></app-assets>

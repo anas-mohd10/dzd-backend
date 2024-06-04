@@ -31,3 +31,11 @@
     place-items: center;
     cursor: pointer;
 }
+
+.story-thumbnail{
+    background: #ffffff;
+
+    img{
+        object-fit: contain;
+    }
+}

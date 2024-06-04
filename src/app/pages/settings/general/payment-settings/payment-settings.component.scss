@@ -1,0 +1,30 @@
+.pg-cards {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+
+    .pg-card {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        background: #ffffff;
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .enabled-pg {
+            top: 10px;
+            right: 10px;
+            padding: 4px;
+        }
+    }
+}
+
+
+label,
+.btn {
+    font-weight: 400 !important;
+}

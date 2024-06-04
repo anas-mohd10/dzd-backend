@@ -71,7 +71,7 @@ export class AboutComponent implements OnInit {
       html: new FormControl("", Validators.required),
       styles: new FormControl(""),
       scripts: new FormControl(""),
-      storyThumbnails: new FormControl("")
+      storyThumbnails: new FormControl([])
     })
 
     this.getAboutDetails()
@@ -169,6 +169,8 @@ export class AboutComponent implements OnInit {
     if (this.storyThumbnails.length > 0) {
       storyThumbnails.push(...this.storyThumbnails.map(story => story._id))
     }
+
+    this.form.get('storyThumbnails')?.setValue(storyThumbnails)
 
     this.AboutService.manageAbout(this.form.value).subscribe({
       next: (res: any) => {
