@@ -32,6 +32,15 @@ export class PermissionGuard implements CanActivate {
       case 'collection':
         module[1] == 'add' ? path = 'add-collection' : module[1] == 'update' ? path = 'update-collection' : path = 'collection'
         break
+      case 'static-pages':
+        module[1] == 'add' ? path = 'add-staticpages' : module[1] == 'update' ? path = 'update-staticpages' : path = 'static-pages'
+        break
+      case 'admin-users':
+        module[1] == 'add' ? path = 'add-adminusers' : module[1] == 'update' ? path = 'update-adminusers' : path = 'admin-users'
+        break
+      case 'testimonials':
+        module[1] == 'add' ? path = 'add-testimonials' : module[1] == 'update' ? path = 'update-testimonials' : path = 'testimonials'
+        break
     }
 
     return this.authService.authorizeUser(path).pipe(

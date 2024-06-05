@@ -29,7 +29,7 @@
 
     <div class="card my-4">
         <div class="card-body">
-            <div class="row mb-5 justify-content-end">
+            <div class="row justify-content-end">
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label for="keyword" class="form-label">&nbsp;</label>
@@ -45,59 +45,54 @@
                     </div>
                 </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-head-custom table-vertical-center table-head-bg table-borderless"
-                    *ngIf="customers.length > 0">
-                    <thead class="common_thead">
-                        <tr class="text-left fs-6 text-gray-400">
-                            <th style="min-width: 120px">&nbsp;</th>
-                            <th style="min-width: 120px">Name</th>
-                            <th style="min-width: 100px">Email</th>
-                            <th style="min-width: 100px">Mobile</th>
-                            <th style="min-width: 100px">Status</th>
-                            <th style="min-width: 100px">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="fs-6">
-                        <ng-container *ngFor="let customer of customers; let i =index">
-                            <tr>
-                                <td>{{i + 1}}</td>
-                                <td>{{customer?.name}}</td>
-                                <td>{{customer?.email}}</td>
-                                <td>{{customer?.mobile}}</td>
-                                <td>
-                                    <span class="alert alert-success p-1 fs-6"
-                                        [ngClass]="{'alert-danger': !customer?.isActive}">
-                                        {{customer?.isActive ? 'Active' : 'Inactive'}}
-                                    </span>
-                                </td>
-                                <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
-                                    <svg height="18px" width="18px" data-slot="icon" fill="none" stroke-width="1.5"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                                        </path>
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-                                    </svg>
-                                </td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table>
-
-                <div *ngIf="customers.length == 0">
-                    <div class="emptyNote">
-                        <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
-                        <div class="fs-3 fw-bolder">No result found</div>
-                        <div class="fs-5 note">We couldn't find any item based on your search.</div>
-                    </div>
-                </div>
-
-                <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
-                    [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
-            </div>
         </div>
     </div>
+
+    <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="fs-6">
+            <ng-container *ngFor="let customer of customers; let i =index">
+                <tr>
+                    <td>{{i + 1}}</td>
+                    <td>{{customer?.name}}</td>
+                    <td>{{customer?.email}}</td>
+                    <td>{{customer?.mobile}}</td>
+                    <td>
+                        <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
+                            {{customer?.isActive ? 'Active' : 'Inactive'}}
+                        </span>
+                    </td>
+                    <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
+                        <svg height="18px" width="18px" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                        </svg>
+                    </td>
+                </tr>
+            </ng-container>
+
+            <tr *ngIf="customers.length == 0">
+                <td colspan="6">
+                    <app-no-results></app-no-results>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
+        [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
 </div>

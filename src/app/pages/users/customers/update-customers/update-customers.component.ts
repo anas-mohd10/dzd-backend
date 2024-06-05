@@ -43,7 +43,7 @@ export class UpdateCustomersComponent implements OnInit {
   deleteModalRef?: BsModalRef
   walletRef?: BsModalRef
   transactions: Array<any> = []
-  amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)])
+  amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)])
   description: FormControl = new FormControl('')
   isWalletSubmitted: boolean = false
   settings: any = {}
@@ -153,7 +153,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   openWallet(template: TemplateRef<any>) {
-    this.walletRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+    this.walletRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
     this.getTransactions()
   }
 
@@ -165,7 +165,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   openLoyalty(template: TemplateRef<any>) {
-    this.loyaltyRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
+    this.loyaltyRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true })
     this.getHistory()
   }
 

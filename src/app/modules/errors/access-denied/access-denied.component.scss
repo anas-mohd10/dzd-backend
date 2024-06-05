@@ -3,4 +3,12 @@
     width: 100%;
     display: grid;
     place-items: center;
+
+    .btn {
+        font-weight: 400 !important;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
 }

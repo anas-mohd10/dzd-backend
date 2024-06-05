@@ -52,6 +52,27 @@ export class AddRolesComponent implements OnInit {
     return this.form.controls;
   }
 
+  toggleBulkPermissions(permissions: Array<any>) {
+    for (let permission of permissions) {
+      let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission?._id)
+      if (isExists) {
+        this.rolePermissions = this.rolePermissions.filter((rolePermission: any) => rolePermission != permission?._id)
+      } else {
+        this.rolePermissions.push(permission?._id)
+      }
+    }
+  }
+
+  rolesExists(permissions: Array<any>) {
+    let count = 0
+    for (let permission of permissions) {
+      let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission?._id)
+      isExists ? count++ : null
+    }
+
+    return count > 0 && count == permissions.length ? true : false
+  }
+
   toggleRolePermissions(permission: string) {
     let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission)
     if (isExists) {

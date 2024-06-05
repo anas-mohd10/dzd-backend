@@ -126,11 +126,11 @@
     <div class="cartProducts">
       <ng-container *ngFor="let item of cartDetails?.products; let i = index">
         <div class="productCard mb-1 d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center justify-content-start">
+          <div class="d-flex align-items-center gap-2 justify-content-start">
             <div class="index">{{ i + 1 }}</div>
-            <div class="productImage me-1">
-              <img height="60px" width="60px" src="{{ base }}/{{item?.product?.thumbnail?.path}}"
-                alt="{{ item?.product?.name }}" />
+            <div class="productImage">
+              <img height="60" width="60" src="{{base}}/{{item?.product?.thumbnail?.path}}"
+                alt="{{item?.product?.name}}" />
             </div>
             <div class="productName">{{ item?.product?.name }}</div>
           </div>

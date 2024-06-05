@@ -22,6 +22,8 @@ export class UpdateRolesComponent implements OnInit {
   rolePermissions: Array<any> = []
   roleId: string = '';
   roleDetails: any;
+  items: any = [];
+  permissionQuery: string = ''
 
   constructor(
     private RolesService: RolesService,
@@ -61,6 +63,7 @@ export class UpdateRolesComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.permissions = res?.result
+          this.items = res?.result
           this.ChangeDetectorRef.markForCheck()
         }
       }
@@ -78,6 +81,27 @@ export class UpdateRolesComponent implements OnInit {
     } else {
       this.rolePermissions.push(permission)
     }
+  }
+
+  toggleBulkPermissions(permissions: Array<any>) {
+    for (let permission of permissions) {
+      let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission?._id)
+      if (isExists) {
+        this.rolePermissions = this.rolePermissions.filter((rolePermission: any) => rolePermission != permission?._id)
+      } else {
+        this.rolePermissions.push(permission?._id)
+      }
+    }
+  }
+
+  rolesExists(permissions: Array<any>) {
+    let count = 0
+    for (let permission of permissions) {
+      let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission?._id)
+      isExists ? count++ : null
+    }
+
+    return count > 0 && count == permissions.length ? true : false
   }
 
   roleExists(permission: string) {

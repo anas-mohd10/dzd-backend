@@ -5,7 +5,7 @@
     <div class="order-details">
         <div class="printWrapper">
             <div class="a4--frame">
-                <div class="card">
+                <div class="card py-4">
                     <div class="card-body">
                         <div class="fs-5"> {{date}} </div>
 
@@ -13,7 +13,8 @@
                             <div class="shippmentAddress">
                                 <div class="text-muted fs-5 fw-bolder">Ship to:</div>
                                 <div class="fs-5">
-                                    <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}</div>
+                                    <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
+                                    </div>
                                     <div>{{orderDetails?.address?.city}}</div>
                                     <div>{{orderDetails?.address?.landmark}}</div>
                                     <div>{{orderDetails?.address?.pincode}} {{orderDetails?.address?.state}}</div>
@@ -27,11 +28,11 @@
                                         {{orderDetails?.paymentMethod}}</span></p>
                             </div>
                         </div>
-        
+
                         <div class="orderDetails">
                             <h4 class="orderId">Order ID: <span>#{{order}}</span></h4>
                             <div class="my-2">Thank you for buying from {{settings?.name}}</div>
-        
+
                             <table class="table fs-5 table-bordered twocolumn-table">
                                 <thead>
                                     <tr>
@@ -134,7 +135,7 @@
                                     </tr>
                                 </tfoot>
                             </table>
-        
+
                             <div class="my-2 orderDetails-Captions" [innerHTML]="settings?.notes?.packingSlip">
                             </div>
                         </div>

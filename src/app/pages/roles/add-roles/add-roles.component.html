@@ -21,47 +21,53 @@
   </div>
 
   <div class="my-4">
-      <div class="card">
-        <div class="card-body">
-          <form (ngSubmit)="onSubmit()" [formGroup]="form">
-            <div class="row">
+    <div class="card">
+      <div class="card-body">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form">
+          <div class="row">
 
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3 required"> Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required"> Name</label>
+                <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
                       'is-invalid':
                       (roleForm.name.touched || isSubmitted) &&
                       roleForm.name.errors?.required
                     }" />
-                </div>
               </div>
+            </div>
 
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3"> Description</label>
-                  <input type="text" class="form-control fs-6" formControlName="description" />
-                </div>
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3"> Description</label>
+                <input type="text" class="form-control fs-6" formControlName="description" />
               </div>
+            </div>
 
-              <div class="col-lg-6 mb-3">
-                <div class="form-group">
-                  <label class="fs-6 mb-3">Status</label>
-                  <select class="form-select fs-6" formControlName="isActive">
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
-                  </select>
-                </div>
+            <div class="col-lg-6 mb-3">
+              <div class="form-group">
+                <label class="fs-6 mb-3">Status</label>
+                <select class="form-select fs-6" formControlName="isActive">
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
               </div>
+            </div>
 
-              <div class="mb-3">
-                <label class="fs-6 mb-3">Select Permissions</label>
-                <div>
-                  <ng-container *ngFor="let permission of permissions">
+            <div class="mb-3">
+              <label class="fs-6 mb-3">Select Permissions</label>
+              <div>
+                <ng-container *ngFor="let permission of permissions">
                   <div class="row my-3">
-                    <div class="col-lg-3 fs-5 mb-2">{{permission.tag}}</div>
+                    <div class="col-lg-3 fs-5 mb-2 d-flex align-items-center gap-2 justify-content-start">
+                      <div class="checkbox" (click)="toggleBulkPermissions(permission?.permissions)">
+                        <div [ngClass]="{'checked': rolesExists(permission?.permissions)}"></div>
+                      </div>
+                      {{permission.tag}}
+                    </div>
                     <div class="col-lg-9 d-flex flex-wrap align-items-center justify-content-start gap-4">
-                      <div *ngFor="let permissionItem of permission?.permissions" class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                      <div *ngFor="let permissionItem of permission?.permissions"
+                        class="d-flex flex-wrap align-items-center justify-content-start gap-2">
                         <div class="checkbox rounded" (click)="toggleRolePermissions(permissionItem?._id)">
                           <div [ngClass]="{'checked': roleExists(permissionItem?._id)}"></div>
                         </div>
@@ -69,19 +75,19 @@
                       </div>
                     </div>
                   </div>
-                  </ng-container>
-                </div>
-              </div>
-
-              <div class="d-flex align-items-center justify-content-end gap-2">
-                <button routerLink="{{ appRoute.roles.ROLES_LIST }}" class="btn btn-secondary">
-                  Cancel
-                </button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                </ng-container>
               </div>
             </div>
-          </form>
-        </div>
+
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button routerLink="{{ appRoute.roles.ROLES_LIST }}" class="btn btn-secondary">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 </div>

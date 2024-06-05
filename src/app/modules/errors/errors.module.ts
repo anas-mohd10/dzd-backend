@@ -5,6 +5,7 @@ import { ErrorsComponent } from '../errors/errors.component';
 import { Error404Component } from './error404/error404.component';
 import { Error500Component } from './error500/error500.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
   ],
   imports: [
     CommonModule,
+    RouterModule,
     ErrorsRoutingModule
   ]
 })
