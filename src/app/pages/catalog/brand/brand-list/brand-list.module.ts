@@ -12,7 +12,7 @@ import { PermissionGuard } from 'src/app/core/auth/permission.guard';
     CommonModule,
     RouterModule.forChild([
       { path: '', component: BrandCardComponent },
-      { path: 'archived', component: ArchivedBrandComponent, canActivate: [PermissionGuard] }
+      { path: 'archived', component: ArchivedBrandComponent }
     ]),
   ],
 })

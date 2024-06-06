@@ -15,43 +15,42 @@ input[type="button"] {
   font-weight: normal !important;
 }
 
-.enquiresContainer {
-  .resultsContainer {
-    margin: 20px 0 0 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+.resultsContainer {
+  margin: 20px 0 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 
-    .enquiryCard {
-      background: $white;
-      border-radius: 10px;
-      padding: 10px;
-      position: relative;
+  .enquiryCard {
+    background: $white;
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
 
-      .editButton {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        height: 40px;
-        width: 40px;
-        display: grid;
-        place-items: center;
-        
-        border-radius: 20px;
-      }
+    .editButton {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      height: 40px;
+      width: 40px;
+      display: grid;
+      place-items: center;
 
-      .editButton {
-        img {
-            border: 1px solid #dcdcdc; 
-            padding: 3px; 
-            border-radius: 5px;
-            cursor: pointer;
-            &:hover {
-                background-color: $hover;
-            }
+      border-radius: 20px;
+    }
+
+    .editButton {
+      img {
+        border: 1px solid #dcdcdc;
+        padding: 3px;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $hover;
         }
-        
       }
+
     }
   }
 }

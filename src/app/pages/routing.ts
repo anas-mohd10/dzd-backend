@@ -51,17 +51,17 @@ export const Routing: Routes = [
           {
             path: '',
             loadChildren: () => import('./catalog/brand/brand-list/brand-list.module').then((m) => m.BrandModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
           {
             path: 'add',
             loadChildren: () => import('./catalog/brand/add-brand/add-brand.module').then((m) => m.AddBrandModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
           {
             path: 'update',
             loadChildren: () => import('./catalog/brand/update-brand/update-brand.module').then((m) => m.UpdateBrandModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]
@@ -72,17 +72,17 @@ export const Routing: Routes = [
           {
             path: '',
             loadChildren: () => import('./catalog/category/category-list/category-list.module').then((m) => m.CategoryModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
           {
             path: 'add',
             loadChildren: () => import('./catalog/category/add-category/add-category.module').then((m) => m.AddCategoryModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
           {
             path: 'update',
             loadChildren: () => import('./catalog/category/update-category/update-category.module').then((m) => m.UpdateCategoryModule),
-            canActivate: [PermissionGuard]
+            // canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]

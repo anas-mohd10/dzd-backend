@@ -18,7 +18,8 @@
   <div class="my-4 card">
     <div class="card-body">
       <div class="form-group">
-        <input type="search" placeholder="Search enquiries here" [formControl]="keyword" class="form-control" (ngModelChange)="getEnquiries()">
+        <input type="search" placeholder="Search enquiries here" [formControl]="keyword" class="form-control"
+          (ngModelChange)="getEnquiries()">
       </div>
     </div>
   </div>
@@ -44,10 +45,10 @@
         </div>
       </div>
     </ng-container>
+  </div>
 
-    <div *ngIf="enquires.length == 0">
-      <app-no-results></app-no-results>
-    </div>
+  <div *ngIf="enquires.length == 0">
+    <app-no-results></app-no-results>
   </div>
 
   <div>

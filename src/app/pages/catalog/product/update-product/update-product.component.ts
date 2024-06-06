@@ -184,6 +184,10 @@ export class UpdateProductComponent implements OnInit {
       let categoryDetails = this.defaultCategories.filter((item: any) => item._id == event.target.value)
       this.categories.includes(categoryDetails[0]) ? this.HotToastService.info('Category already added') : this.categories.push(categoryDetails[0])
     } else {
+      console.log(this.categories);
+      console.log(event)
+      console.log(type);
+
       this.categories = this.categories.filter((item: any) => item?._id != event)
     }
     this.productCategory.setValue('')
@@ -359,6 +363,19 @@ export class UpdateProductComponent implements OnInit {
       relatedProducts: new FormControl(""),
       isActive: new FormControl("true"),
       isVisible: new FormControl("true"),
+    })
+
+    this.categoryService.getActiveCategory().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
     })
 
     //Tax class details

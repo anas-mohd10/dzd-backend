@@ -62,7 +62,7 @@ export class CustomersService {
   }
 
   updateCustomer(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.customerEndpoints.update_customer + "?slug=" + slug);
+    const url = this.commonService.getFullUrl(this.customerEndpoints.update_customer + "?customerId=" + slug);
     return this.http.put(`${url}`, data)
   }
 

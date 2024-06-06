@@ -26,8 +26,8 @@
 
                     <div class="row">
                         <div class="col-lg-3">
-
-                            <div class="form-group position-relative rounded ratio ratio-1x1">
+                            <label for="thumbnail" class="fs-6 mb-3">Thumbnail</label>
+                            <div class="form-group position-relative rounded ratio ratio-1x1" id="thumbnail">
                                 <input type="file" class="form-control rounded h-100 w-100 fs-6" name="image"
                                     accept="image/*" (change)="uploadThumbnail($event)">
                                 <div *ngIf="!thumbnail"

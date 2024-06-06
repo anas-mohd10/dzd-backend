@@ -501,18 +501,20 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  openManage(template: TemplateRef<any>) {
+  openManage(template: TemplateRef<any>, type?: string) {
     this.manageAddressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
     this.addressModalRef?.hide()
     this.address ? this.addressMode = 'update' : this.addressMode = 'add'
-    if (this.address) {
-      this.handleAddressMobilePattern()
-      for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key])
+    if (type == 'address') {
+      if (this.address) {
+        this.handleAddressMobilePattern()
+        for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key])
+      }
     }
   }
 
   manageAddress() {
-    if(!this.addressForm.valid) {
+    if (!this.addressForm.valid) {
       this.isAddressSubmitted = true
       return
     }
@@ -527,20 +529,8 @@ export class AddOrdersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.address = res?.result
               this.ToastrService.success(res?.message)
-              this.manageAddressModalRef?.hide()
+              this.ChangeDetectorRef.markForCheck()
               this.BsModalService.show(this.addressModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
-              this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
-                next: (res: any) => {
-                  if (res?.errorCode == 0) {
-                    this.addressDetails = res?.result
-                    this.ChangeDetectorRef.markForCheck()
-                  } else {
-                    this.ToastrService.error(res.message)
-                  }
-                }, error: (err: any) => {
-                  this.ToastrService.error(err.message)
-                }
-              })
             } else {
               this.ToastrService.error(res.message)
             }
@@ -558,7 +548,6 @@ export class AddOrdersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.address = res?.result
               this.ChangeDetectorRef.markForCheck()
-              this.manageAddressModalRef?.hide()
               this.ToastrService.success(res?.message)
             } else {
               this.ToastrService.error(res.message)
@@ -569,6 +558,22 @@ export class AddOrdersComponent implements OnInit {
         })
         break
     }
+
+    this.manageAddressModalRef?.hide()
+    this.addressForm.reset()
+    this.addressForm.patchValue({ type: "Home", countryCode: "+971" })
+    this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addressDetails = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
   }
   //Customer and address management
 

@@ -1,4 +1,4 @@
-        <div>
+<div>
   <div class="page-header">
     <div class="page-title">
       <h1 class="fw-bolder">Update product</h1>
@@ -83,9 +83,18 @@
                     <ng-container *ngIf="categories.length > 0">
                       <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
                         <ng-container *ngFor="let category of categories">
-                          <div class="bg-secondary cursor-pointer p-2 rounded"
-                            (change)="toggleProductCategory(category._id, 'remove')">
-                            {{category.name}}
+                          <div
+                            class="bg-secondary cursor-pointer p-2 rounded d-flex align-items-center justify-content-center gap-2"
+                            (click)="toggleProductCategory(category._id, 'remove')">
+                            <div>
+                              {{category.name}}
+                            </div>
+                            <div>
+                              <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                              </svg>
+                            </div>
                           </div>
                         </ng-container>
                       </div>
@@ -238,14 +247,16 @@
                     <label class="fs-6 mb-3" for="status">Active status</label>
                     <select formControlName="isActive" id="status" class="form-select">
                       <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}</option>
+                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                      </option>
                     </select>
                   </div>
                   <div class="col-lg-6 mb-3 form-group">
                     <label class="fs-6 mb-3" for="visibility">Visibility</label>
                     <select formControlName="isVisible" id="visibility" class="form-select">
                       <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' : 'Hidden'}}</option>
+                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' :
+                        'Hidden'}}</option>
                     </select>
                   </div>
                 </div>
@@ -292,7 +303,8 @@
                 <div class="row" id="thumbnail">
                   <div class="col-lg-2">
                     <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                      <app-assets [image]="'cover'" [previewDetails]="thumbnailPreview" (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                      <app-assets [image]="'cover'" [previewDetails]="thumbnailPreview"
+                        (mediaClicked)="productThumbnailClicked($event)"></app-assets>
                     </div>
                   </div>
                 </div>

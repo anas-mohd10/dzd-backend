@@ -106,7 +106,7 @@
                               'is-invalid':
                               (formControls.email.touched || isSubmitted) &&
                               formControls.email.errors?.required
-                            }" (change)="emailExists($event.target)" />
+                            }" />
                      </div>
                      <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.email.errors?.pattern">
                         Enter valid email address
@@ -125,8 +125,7 @@
                   <div class="col-lg-6">
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required">Phone No.</label>
-                        <input type="number" class="form-control fs-6" formControlName="mobile"
-                           (change)="phoneExists($event.target)" [ngClass]="{
+                        <input type="number" class="form-control fs-6" formControlName="mobile" [ngClass]="{
                               'is-invalid':
                               (formControls.mobile.touched || isSubmitted) &&
                               formControls.mobile.errors?.required
@@ -287,6 +286,17 @@
                      (addressControls.state.touched || isAddressSubmitted) &&
                      addressControls.state.errors?.required
                    }" />
+               </div>
+            </div>
+
+            <div class="col-lg-6">
+               <div class="form-group mb-3 mb-3">
+                  <label class="fs-6 mb-3">Default Address</label>
+                  <select class="form-select mb-3" formControlName="isDefault">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="true">Yes</option>
+                     <option value="false">No</option>
+                  </select>
                </div>
             </div>
          </div>

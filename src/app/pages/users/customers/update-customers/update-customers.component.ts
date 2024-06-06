@@ -141,6 +141,7 @@ export class UpdateCustomersComponent implements OnInit {
       state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
+      isDefault: new FormControl(false)
     })
   }
 
@@ -308,10 +309,6 @@ export class UpdateCustomersComponent implements OnInit {
 
     let payload = {
       ...this.addressForm?.value,
-      coordinates: {
-        lat: this.addressForm?.get('lat')?.value,
-        lng: this.addressForm?.get('lng')?.value,
-      },
       customer: this.customerData?._id
     }
 
@@ -320,7 +317,10 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getAddress()
           this.addressForm.reset()
+          this.addressForm.patchValue({ countryCode: '+971', type: 'Home' })
           this.Toast.success(res?.message)
+          this.isAddressSubmitted = false
+          this.isEditAddress = false
           this.modalRef?.hide()
         } else {
           this.Toast.error(res?.message)
@@ -332,8 +332,12 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getAddress()
           this.addressForm.reset()
+          this.addressForm.patchValue({ countryCode: '+971', type: 'Home' })
+
           this.Toast.success(res?.message)
           this.modalRef?.hide()
+          this.isEditAddress = false
+          this.isAddressSubmitted = false
         } else {
           this.Toast.error(res?.message)
         }
@@ -425,7 +429,7 @@ export class UpdateCustomersComponent implements OnInit {
           this.Toast.error(res?.message);
         }
       }, error: (err: any) => {
-        this.Toast.error(err?.message);
+        this.Toast.error(err?.error?.message);
       }
     })
   }
