@@ -64,14 +64,6 @@ label {
 .cartWrapper {
 
   .cartItemswrapper {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 20px;
-    margin: 2rem 0;
-
-    .cartItemWrapper {
-      width: calc(100% - 300px);
-    }
 
     .summaryWrapper {
       border-radius: 15px;

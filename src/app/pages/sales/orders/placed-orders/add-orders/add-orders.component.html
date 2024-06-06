@@ -1,4 +1,4 @@
-<div class="content container-fluid">
+<div>
 
     <div class="page-header">
         <div class="page-title">
@@ -21,213 +21,222 @@
         </div>
     </div>
 
-    <div class="mt-4">
-        <div class="card">
-            <div class="card-body">
-                <form [formGroup]="orderForm">
-                    <div class="row">
 
-                        <div class="form-group col-lg-6">
-                            <label class="fs-6 mb-3 required">Customers</label>
-                            <input type="text" placeholder="Search customers here" class="form-control"
-                                [formControl]="customer" (ngModelChange)="getCustomers()"
-                                [ngClass]="{ 'is-invalid': (of.customerId.touched || isSubmitted) && of.customerId.errors?.required}">
+    <div class="card my-4">
+        <div class="card-body">
+            <form [formGroup]="orderForm">
+                <div class="row">
 
-                            <ng-container *ngIf="customers.length > 0">
-                                <div class="customers mt-3">
-                                    <ng-container *ngFor="let customer of customers; let i = index">
-                                        <div class="customerCard p-2 d-flex align-items-center justify-content-between"
-                                            (click)="getAddress(addressRef, customer)"
-                                            [ngClass]="{'active': customerDetails?._id == customer?._id}">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="index me-3">{{i + 1}}</div>
-                                                <div class="name">{{customer?.name}}</div>
-                                                <div class="mobile ms-3">{{customer?.countryCode}} {{customer?.mobile}}
-                                                </div>
+                    <div class="form-group col-lg-6">
+                        <label class="fs-6 mb-3 required">Customers</label>
+                        <input type="text" placeholder="Search customers here" class="form-control"
+                            [formControl]="customer" (ngModelChange)="getCustomers()"
+                            [ngClass]="{ 'is-invalid': (of.customerId.touched || isSubmitted) && of.customerId.errors?.required}">
+
+                        <ng-container *ngIf="customers.length > 0">
+                            <div class="customers mt-3">
+                                <ng-container *ngFor="let customer of customers; let i = index">
+                                    <div class="customerCard p-2 d-flex align-items-center justify-content-between"
+                                        (click)="getAddress(addressRef, customer)"
+                                        [ngClass]="{'active': customerDetails?._id == customer?._id}">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="index me-3">{{i + 1}}</div>
+                                            <div class="name">{{customer?.name}}</div>
+                                            <div class="mobile ms-3">{{customer?.countryCode}} {{customer?.mobile}}
                                             </div>
-                                            <div class="name">{{customer?.email}}</div>
                                         </div>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                        </div>
+                                        <div class="name">{{customer?.email}}</div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
 
-                        <div class="col-lg-6" *ngIf="address">
-                            <div class="fs-5 fw-bolder mb-3">Selected Address</div>
-                            <div class="addressCard mb-3">
-                                <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
-                                    <div class="type pe-2 ps-2">{{address?.type}}</div>
-                                    <div class="manageAddress p-1" (click)="openManage(manageRef)">
-                                        <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                            class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div class="p-3">
-                                    <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
-                                    <div class="lane">
-                                        {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
-                                    </div>
-                                    <div class="area">{{address?.area}} {{address?.landmark}}</div>
-                                    <div class="city">{{address?.city}} {{address?.state}} {{address?.pincode}}</div>
+                    <div class="col-lg-6" *ngIf="address">
+                        <div class="fs-5 fw-bolder mb-3">Selected Address</div>
+                        <div class="addressCard mb-3">
+                            <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
+                                <div class="type pe-2 ps-2">{{address?.type}}</div>
+                                <div class="manageAddress p-1" (click)="openManage(manageRef)">
+                                    <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                    </svg>
                                 </div>
                             </div>
+                            <div class="p-3">
+                                <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
+                                <div class="lane">
+                                    {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
+                                </div>
+                                <div class="area">{{address?.area}} {{address?.landmark}}</div>
+                                <div class="city">{{address?.city}} {{address?.state}} {{address?.pincode}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cartWrapper mt-3">
+                        <div class="d-flex align-items-center justify-content-end" *ngIf="cartItems.length > 0">
+                            <button type="button" class="btn btn-primary" (click)="openProducts(productsRef)">
+                                Add Products
+                            </button>
                         </div>
 
-                        <div class="cartWrapper mt-3">
-                            <div class="d-flex align-items-center justify-content-end" *ngIf="cartItems.length > 0">
-                                <button type="button" class="btn btn-primary" (click)="openProducts(productsRef)">
+                        <ng-container *ngIf="cartItems.length == 0">
+                            <div class="emptyCart-container">
+                                <img src="../../../../../../assets/icons/emptyCart.gif" style="height: 150px;"
+                                    alt="Icon">
+                                <button type="button" class="mt-5 btn btn-primary" (click)="openProducts(productsRef)">
                                     Add Products
                                 </button>
                             </div>
+                        </ng-container>
 
-                            <ng-container *ngIf="cartItems.length == 0">
-                                <div class="emptyCart-container">
-                                    <img src="../../../../../../assets/icons/emptyCart.gif" style="height: 150px;"
-                                        alt="Icon">
-                                    <button type="button" class="mt-5 btn btn-primary"
-                                        (click)="openProducts(productsRef)">
-                                        Add Products
-                                    </button>
-                                </div>
-                            </ng-container>
-
-                            <div class="row cartItemswrapper" *ngIf="cartItems.length > 0">
-                                <div class="cartItemWrapper p-4">
-                                    <div class="cartTitle fs-5 fw-bolder mb-4">Cart</div>
-                                    <ng-container *ngFor="let cart of cartItems; let  i = index">
-                                        <div class="cartItem d-flex align-items-center justify-content-between">
-                                            <div class="productDetails d-flex align-items-center justify-content-start">
-                                                <div class="index me-2">{{i + 1}}</div>
-                                                <img class="rounded" onerror="this.src = '../../../../../assets/images/default.png'" src="{{base}}/{{cart?.thumbnail?.path}}" alt="{{cart?.name}}" height="45"
-                                                    width="45">
-                                                <div class="name fs-5 ms-4 fw-bolder">{{cart?.name}}</div>
+                        <div class="cartItemswrapper" *ngIf="cartItems.length > 0">
+                            <div class="cartItemWrapper p-4">
+                                <div class="cartTitle fs-5 fw-bolder mb-4">Cart</div>
+                                <ng-container *ngFor="let cart of cartItems; let  i = index">
+                                    <div class="cartItem d-flex align-items-center justify-content-between">
+                                        <div class="productDetails d-flex align-items-center justify-content-start">
+                                            <div class="index me-2">{{i + 1}}</div>
+                                            <img class="rounded"
+                                                onerror="this.src = '../../../../../assets/images/default.png'"
+                                                src="{{base}}/{{cart?.thumbnail?.path}}" alt="{{cart?.name}}"
+                                                height="45" width="45">
+                                            <div class="name fs-5 ms-4 fw-bolder">{{cart?.name}}</div>
+                                        </div>
+                                        <div class="productPrice">
+                                            <div class="productSelling fw-bolder fs-5">{{settings?.currency}}
+                                                {{cart?.price?.selling}}
                                             </div>
-                                            <div class="productPrice">
-                                                <div class="productSelling fw-bolder fs-5">{{settings?.currency}}
-                                                    {{cart?.price?.selling}}
-                                                </div>
-                                                <div class="productPrice text-muted">
-                                                    <s>{{settings?.currency}} {{cart?.price?.mrp}}</s>
-                                                </div>
+                                            <div class="productPrice text-muted">
+                                                <s>{{settings?.currency}} {{cart?.price?.mrp}}</s>
                                             </div>
+                                        </div>
 
+                                        <div
+                                            class="manageProduct d-flex align-items-center justify-content-end flex-column">
                                             <div
-                                                class="manageProduct d-flex align-items-center justify-content-end flex-column">
-                                                <div
-                                                    class="updateProduct mb-4 d-flex align-items-center justify-content-between">
-                                                    <div class="decrementQuantity me-2"
-                                                        (click)="updateQuantity('decrement', cart)">
-                                                        <svg height="16px" width="16px"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                            class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M18 12H6" />
-                                                        </svg>
-                                                    </div>
-                                                    <div class="productQuantity">{{cart?.quantity}}</div>
-                                                    <div class="incrementQuantity ms-2"
-                                                        (click)="updateQuantity('increment', cart)">
-                                                        <svg height="16px" width="16px"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                            class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="deleteProduct" (click)="deleteProduct(cart)">
-                                                    <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"
+                                                class="updateProduct mb-4 d-flex align-items-center justify-content-between">
+                                                <div class="decrementQuantity me-2"
+                                                    (click)="updateQuantity('decrement', cart)">
+                                                    <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg"
                                                         fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                         stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                            d="M18 12H6" />
+                                                    </svg>
+                                                </div>
+                                                <div class="productQuantity">{{cart?.quantity}}</div>
+                                                <div class="incrementQuantity ms-2"
+                                                    (click)="updateQuantity('increment', cart)">
+                                                    <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                        stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M12 4.5v15m7.5-7.5h-15" />
                                                     </svg>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label class="fs-6 mb-3">Choose a location</label>
-                            <select class="form-select fs-6" formControlName="clickPoint" [ngClass]="{ 'is-invalid': (of.clickPoint.touched || isSubmitted) && of.clickPoint.errors?.required}">
-                                <option value="" disabled>-- Select an option --</option>
-                                <ng-container *ngFor="let store of stores; let i = index">
-                                    <option value="{{store?.refid}}">{{store?.address?.city}}
-                                    </option>
-                                </ng-container>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="fs-6 mb-3">Select a delivery dates</label>
-                            <div class="dates">
-                                <ng-container *ngFor="let date of dates">
-                                    <div class="date" (click)="selectDeliveryDate(date)"
-                                        [ngClass]="{'active': deliveryDate == date}">
-                                        <div class="text-center">
-                                            <div class="fs-5">{{formatDate(date, 'month')}}</div>
-                                            <div class="fs-2 my-2 fw-bold">{{formatDate(date, 'dateNumber')}}</div>
-                                            <div class="fs-5 text-primary">{{formatDate(date, 'day')}}</div>
+                                            <div class="deleteProduct" (click)="deleteProduct(cart)">
+                                                <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor" class="w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </ng-container>
                             </div>
-                        </div>
-
-                        <div class="col-12">
-                            <label class="fs-6 mb-3">Available timeslots</label>
-                            <div class="timeslots">
-                                <ng-container *ngFor="let time of timeslots">
-                                    <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
-                                        [ngClass]="{'active': deliveryTime == time?.refid}">
-                                        <div> {{time?.from}} - {{time?.to}}</div>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-3 form-group">
-                            <label class="fs-6 mb-3 required">Payment Method</label>
-                            <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
-                                [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option value="COD">Cash On Delivery</option>
-                                <option value="ONLINE">Online</option>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-6 mb-3 form-group">
-                            <label class="fs-6 mb-3">Additional Charge</label>
-                            <input type="text" formControlName="additionalCharge" class="form-control fs-6">
-                        </div>
-
-                        <div class="col-lg-6 mb-3 form-group" *ngIf="orderForm.get('paymentMethod')?.value == 'ONLINE'">
-                            <label class="fs-6 mb-3 required">Transaction ID</label>
-                            <input type="text" formControlName="transactionId" class="form-control fs-6">
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-end gap-3">
-                            <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary">
-                                Cancel
-                            </button>
-                            <button class="btn btn-primary" (click)="createOrder()">
-                                Place Order
-                            </button>
                         </div>
                     </div>
-                </form>
-            </div>
+
+                    <div class="form-group mb-3">
+                        <label class="fs-6 mb-3">Choose a location</label>
+                        <select class="form-select fs-6" formControlName="clickPoint"
+                            [ngClass]="{ 'is-invalid': (of.clickPoint.touched || isSubmitted) && of.clickPoint.errors?.required}">
+                            <option value="" disabled>-- Select an option --</option>
+                            <ng-container *ngFor="let store of stores; let i = index">
+                                <option value="{{store?._id}}">{{store?.address?.city}}
+                                </option>
+                            </ng-container>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="fs-6 mb-3">Select a delivery dates</label>
+                        <div class="dates">
+                            <ng-container *ngFor="let date of dates">
+                                <div class="date" (click)="selectDeliveryDate(date)"
+                                    [ngClass]="{'active': deliveryDate == date}">
+                                    <div class="text-center">
+                                        <div class="fs-5">{{formatDate(date, 'month')}}</div>
+                                        <div class="fs-2 my-2 fw-bold">{{formatDate(date, 'dateNumber')}}</div>
+                                        <div class="fs-5 text-primary">{{formatDate(date, 'day')}}</div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="fs-6 mb-3">Available timeslots</label>
+                        <div class="timeslots">
+                            <ng-container *ngFor="let time of timeslots">
+                                <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
+                                    [ngClass]="{'active': deliveryTime == time?.refid}">
+                                    <div> {{time?.from}} - {{time?.to}}</div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Payment Method</label>
+                        <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
+                            [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option value="COD">Cash On Delivery</option>
+                            <option value="ONLINE">Online</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3">Additional Charge</label>
+                        <input type="text" formControlName="additionalCharge" class="form-control fs-6">
+                    </div>
+
+                    <div class="col-lg-6 mb-3 form-group" *ngIf="orderForm.get('paymentMethod')?.value == 'ONLINE'">
+                        <label class="fs-6 mb-3 required">Transaction ID</label>
+                        <input type="text" formControlName="transactionId" class="form-control fs-6">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="orderNote" class="fs-6 mb-3">Order Note</label>
+                        <input type="text" id="orderNote" formControlName="orderNote" class="form-control fs-6">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="shippingNote" class="fs-6 mb-3">Shipping Note</label>
+                        <input type="text" id="shippingNote" formControlName="shippingNote" class="form-control fs-6">
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary">
+                            Cancel
+                        </button>
+                        <button class="btn btn-primary" (click)="createOrder()">
+                            Place Order
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+
 </div>
 
 <ng-template #addressRef>
@@ -322,90 +331,75 @@
     <div class="modal-body">
         <form [formGroup]="addressForm">
             <div class="row">
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3 required">Type</label>
-                        <select class="form-select form-select-lg mb-3 fs-6" formControlName="type"
-                            [ngClass]="{'is-invalid': (addressControls.type.touched || isSubmitted) && addressControls.type.errors?.required }">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option value="Home">Home</option>
-                            <option value="Work">Work</option>
-                            <option value="Other">Other</option>
-                        </select>
+                <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Address Type</label>
+                    <select class="form-select fs-6" formControlName="type"
+                        [ngClass]="{'is-invalid': (addressControls.type.touched || isAddressSubmitted) && addressControls.type.errors?.required }">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="Home">Home</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3">Name</label>
+                    <input type="text" class="form-control fs-6" formControlName="name" />
+                </div>
+
+                <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3">Country Code</label>
+                    <select class="form-select" formControlName="countryCode" (change)="handleAddressMobilePattern()">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="+91">+91</option>
+                        <option value="+971">+971</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3">Mobile Number</label>
+                    <input type="text" class="form-control fs-6" [ngClass]="{
+                          'is-invalid': addressControls.mobile.errors?.pattern
+                        }" formControlName="mobile" />
+                    <div class="mt-2 p-2 alert alert-danger" *ngIf="addressControls.mobile.errors?.pattern">
+                        Enter a valid mobile number
                     </div>
                 </div>
 
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3 required">Firstlane</label>
-                        <input type="text" class="form-control fs-6" formControlName="firstlane"
-                            [ngClass]="{'is-invalid': (addressControls.firstlane.touched || isSubmitted) && addressControls.firstlane.errors?.required }" />
-                    </div>
+                <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3 required">Apartment</label>
+                    <input type="text" class="form-control fs-6" formControlName="firstlane"
+                        [ngClass]="{'is-invalid': (addressControls.firstlane.touched || isAddressSubmitted) && addressControls.firstlane.errors?.required }" />
                 </div>
 
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3">Secondlane</label>
-                        <input type="text" class="form-control fs-6" formControlName="secondlane" />
-                    </div>
+                <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3 required">City</label>
+                    <input type="text" class="form-control fs-6" formControlName="city"
+                        [ngClass]="{'is-invalid': (addressControls.city.touched || isAddressSubmitted) &&  addressControls.city.errors?.required}" />
                 </div>
 
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3"> Area</label>
-                        <input type="text" class="form-control fs-6" formControlName="area" />
-                    </div>
+                <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3 required">Landmark</label>
+                    <input type="text" class="form-control fs-6" formControlName="landmark"
+                        [ngClass]="{'is-invalid': (addressControls.landmark.touched || isAddressSubmitted) && addressControls.landmark.errors?.required   }" />
                 </div>
 
-                <div class="col-6 mb-3">
+                <div class="col-lg-6 mb-3">
                     <div class="form-group">
-                        <label class="fs-6 mb-3 required"> City</label>
-                        <input type="text" class="form-control fs-6" formControlName="city"
-                            [ngClass]="{'is-invalid': (addressControls.city.touched || isSubmitted) &&  addressControls.city.errors?.required}" />
-                    </div>
-                </div>
-
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3 required"> Landmark</label>
-                        <input type="text" class="form-control fs-6" formControlName="landmark"
-                            [ngClass]="{'is-invalid': (addressControls.landmark.touched || isSubmitted) && addressControls.landmark.errors?.required   }" />
-                    </div>
-                </div>
-
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3"> Pincode</label>
+                        <label class="fs-6 mb-3">Pincode</label>
                         <input type="number" class="form-control fs-6" formControlName="pincode" />
                     </div>
                 </div>
 
-                <div class="col-6 mb-3">
+                <div class="col-lg-6 mb-3">
                     <div class="form-group">
-                        <label class="fs-6 mb-3"> Latitude</label>
-                        <input type="number" class="form-control fs-6" formControlName="latitude" />
+                        <label class="fs-6 mb-3 required">State / Emirate</label>
+                        <input type="text" class="form-control fs-6" formControlName="state"
+                            [ngClass]="{'is-invalid': (addressControls.state.touched || isAddressSubmitted) && addressControls.state.errors?.required}" />
                     </div>
                 </div>
 
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3"> Longitude</label>
-                        <input type="number" class="form-control fs-6" formControlName="longitude" />
-                    </div>
-                </div>
-
-                <div class="col-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3 required">State</label>
-                        <select class="form-select mb-3 fs-6" formControlName="state">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option *ngFor="let emirate of emirates" value="{{emirate.title}}">{{emirate.title}}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-between">
-                    <button class="btn btn-secondary" (click)="manageAddressModalRef?.hide()">Cancel</button>
+                <div class="d-flex align-items-center justify-content-end">
                     <button class="btn btn-primary" (click)=manageAddress()>Save changes</button>
                 </div>
             </div>

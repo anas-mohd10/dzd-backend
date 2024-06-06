@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageTasks } from 'src/app/config/constants';
+import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
@@ -73,15 +74,7 @@ export class AddOrdersComponent implements OnInit {
   settings: any = {}
   deliverySlots: Array<any> = []
   deliverySlot: any;
-  emirates: Array<any> = [
-    { title: "Dubai" },
-    { title: "Abu Dhabi" },
-    { title: "Sharjah" },
-    { title: "Ajman" },
-    { title: "Fujairah" },
-    { title: "Ras Al Khaimah" },
-    { title: "Umm Al Quwain" },
-  ]
+  isAddressSubmitted: boolean = false
 
   constructor(
     private OrderService: OrdersService,
@@ -129,6 +122,9 @@ export class AddOrdersComponent implements OnInit {
       area: new FormControl(''),
       city: new FormControl('', Validators.required),
       pincode: new FormControl(''),
+      name: new FormControl(''),
+      countryCode: new FormControl(''),
+      mobile: new FormControl('', Validators.pattern("^[0-9]{10}$")),
       state: new FormControl('', Validators.required),
       landmark: new FormControl('', Validators.required),
       latitude: new FormControl(''),
@@ -140,6 +136,24 @@ export class AddOrdersComponent implements OnInit {
 
   get addressControls() {
     return this.addressForm.controls
+  }
+
+  updateAddressMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.addressForm.get('mobile')?.setValidators(newValidators);
+    this.addressForm.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleAddressMobilePattern() {
+    switch (this.addressForm.get("countryCode")?.value) {
+      case "+91":
+        this.updateAddressMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateAddressMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
   }
 
   getNextSevenDays() {
@@ -222,16 +236,16 @@ export class AddOrdersComponent implements OnInit {
   initForm() {
     this.orderForm = this.formBuilder.group({
       paymentMethod: ['', Validators.required],
-      gst: [''],
       customerId: ['', Validators.required],
       transactionId: [''],
-      additionalCharge: [''],
+      additionalCharge: [0, Validators.pattern(/^[0-9]+$/)],
       products: [[], Validators.required],
       clickPoint: ['', Validators.required],
-      deliveryTime: [''],
       deliveryDate: ['', Validators.required],
       deliveryType: ['0'],
-      deliverySlot: ['', Validators.required]
+      deliverySlot: ['', Validators.required],
+      orderNote: [''],
+      shippingNote: ['']
     });
   }
 
@@ -484,8 +498,6 @@ export class AddOrdersComponent implements OnInit {
     this.addressModalRef?.hide()
     for (let _key of Object.keys(address)) {
       this.addressForm.get(_key)?.setValue(address[_key])
-      this.orderForm.get('latitude')?.setValue(address?.coordinates?.latitude)
-      this.orderForm.get('longitude')?.setValue(address?.coordinates?.longitude)
     }
   }
 
@@ -494,20 +506,22 @@ export class AddOrdersComponent implements OnInit {
     this.addressModalRef?.hide()
     this.address ? this.addressMode = 'update' : this.addressMode = 'add'
     if (this.address) {
+      this.handleAddressMobilePattern()
       for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key])
     }
   }
 
   manageAddress() {
+    if(!this.addressForm.valid) {
+      this.isAddressSubmitted = true
+      return
+    }
+
     switch (this.addressMode) {
       case 'add':
         this.customerService.addAddress({
           ...this.addressForm.value,
           customer: this.customerDetails?._id,
-          coordinates: {
-            latitude: this.addressForm.get('latitude')?.value,
-            longitude: this.addressForm.get('longitude')?.value
-          }
         }).subscribe({
           next: (res: any) => {
             if (res?.errorCode == 0) {
@@ -539,10 +553,6 @@ export class AddOrdersComponent implements OnInit {
         this.customerService.updateCustomerAddress({
           refid: this.address?.refid,
           ...this.addressForm.value,
-          coordinates: {
-            latitude: this.addressForm.get('latitude')?.value,
-            longitude: this.addressForm.get('longitude')?.value
-          }
         }).subscribe({
           next: (res: any) => {
             if (res?.errorCode == 0) {
@@ -566,21 +576,14 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id)
     this.orderForm.get('products')?.setValue(this.cartItems)
 
-    if (!this.orderForm.valid) {
-      console.log(this.orderForm.value);
-      
-      this.isSubmitted = true
-      return;
-    }
+    // if (!this.orderForm.valid) {      
+    //   this.isSubmitted = true
+    //   return;
+    // }
 
     let payload = {
       address: this.addressForm.value,
       ...this.orderForm.value
-    }
-
-    payload.address['coords'] = {
-      latitude: this.addressForm.get('latitude')?.value,
-      longitude: this.addressForm.get('longitude')?.value
     }
 
     this.OrderService.addOrder(payload).subscribe({

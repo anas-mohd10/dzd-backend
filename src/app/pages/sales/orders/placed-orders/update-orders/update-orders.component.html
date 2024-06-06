@@ -169,7 +169,7 @@
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Cash on delivery charge</div>
-                <div class="itemResponse">{{settings.currency}} {{order?.codCharge ? order?.codCharge : '0.00'}}</div>
+                <div class="itemResponse">{{settings.currency}} {{order?.codCost ? order?.codCost : '0.00'}}</div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Additional charge</div>
@@ -382,11 +382,11 @@
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Price:</div>
-                          <div class="fw-bold">{{settings.currency}}{{product?.pricePerUnit}}</div>
+                          <div class="fw-bold">{{settings.currency}} {{product?.pricePerUnit}}</div>
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Total:</div>
-                          <div class="fw-bold">{{settings.currency}}{{product?.total}}</div>
+                          <div class="fw-bold">{{settings.currency}} {{product?.total}}</div>
                         </div>
                         <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                           <div class="w-25">Status:</div>

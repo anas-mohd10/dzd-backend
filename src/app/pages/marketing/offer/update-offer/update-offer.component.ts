@@ -185,14 +185,20 @@ export class UpdateOfferComponent implements OnInit {
       return;
     }
 
+    if(this.form.get('offerType')?.value == 'complete') {
+      this.products = []
+      this.categories = []
+      this.collections = []
+      this.brands = []
+    }
+
     this.offerService.updateOffer({
       ...this.form.value,
+      offerType: this.form.get('offerType')?.value == 'complete' ? 'complete' : 'partial',
       categories: this.categories.length > 0 ? this.categories : null,
       products: this.products.length > 0 ? this.products : null,
       collections: this.collections.length > 0 ? this.collections : null,
       brands: this.brands.length > 0 ? this.brands : null,
-      filestring: this.croppedImage,
-      filename: this.filename,
       slug: this.offerId
     }).subscribe((res: any) => {
       if (res.errorCode != 0) {
