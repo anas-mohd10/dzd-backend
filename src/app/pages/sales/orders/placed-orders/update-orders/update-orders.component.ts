@@ -69,7 +69,8 @@ export class UpdateOrdersComponent implements OnInit {
   isPackingSlipAvailable: boolean = false
   modalRef?: BsModalRef;
   isCancelled: boolean = false
-
+  bulkOrderStatus: FormControl = new FormControl('')
+  productOrderStatus: FormControl = new FormControl('')
   deliveryPerson: FormControl = new FormControl('', Validators.required)
   dateExpected: FormControl = new FormControl('', Validators.required)
   trackingURL: FormControl = new FormControl('')
@@ -233,6 +234,7 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails()
+          this.productOrderStatus.setValue('')
           this.Toast.success(res.message)
         } else {
           this.Toast.error(res.message)
@@ -357,6 +359,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.Toast.success(res?.message)
           this.bulkProducts = []
           this.bulkStatus = []
+          this.bulkOrderStatus.setValue('')
           this.getOrderDetails()
         } else {
           this.Toast.error(res?.message)
@@ -391,7 +394,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true });
   }
 
   confirm() {
@@ -412,6 +415,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   decline() {
+    this.reason.setValue('')
     this.modalRef?.hide()
   }
 }

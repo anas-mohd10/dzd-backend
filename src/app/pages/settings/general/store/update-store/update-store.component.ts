@@ -41,6 +41,8 @@ export class UpdateStoreComponent implements OnInit {
   }
 
   handleMobilePattern() {
+    console.log(this.form.get("countryCode")?.value);
+    
     switch (this.form.get("countryCode")?.value) {
       case "+91":
         this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
@@ -64,34 +66,34 @@ export class UpdateStoreComponent implements OnInit {
     if (this.refid) {
       this.StoresService.getStoreDetails({ refid: this.refid }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
-          this.form.get('name')?.patchValue(res?.result?.name)
-          this.form.get('email')?.patchValue(res?.result?.contact?.email)
-          this.form.get('tel')?.patchValue(res?.result?.contact?.tel)
-          this.form.get('mobile')?.patchValue(res?.result?.contact?.mobile)
-          this.form.get('map')?.patchValue(res?.result?.map)
-          this.form.get('firstlane')?.patchValue(res?.result?.address?.firstlane)
-          this.form.get('secondlane')?.patchValue(res?.result?.address?.secondlane)
-          this.form.get('area')?.patchValue(res?.result?.address?.area)
-          this.form.get('city')?.patchValue(res?.result?.address?.city)
-          this.form.get('landmark')?.patchValue(res?.result?.address?.landmark)
-          this.form.get('isActive')?.patchValue(res?.result?.isActive)
+          this.form.get('name')?.setValue(res?.result?.name)
+          this.form.get('email')?.setValue(res?.result?.contact?.email)
+          this.form.get('tel')?.setValue(res?.result?.contact?.tel)
+          this.form.get('mobile')?.setValue(res?.result?.contact?.mobile)
+          this.form.get('countryCode')?.setValue(res?.result?.contact?.countryCode)
 
-          this.form.get('lat')?.patchValue(res?.result?.lat)
-          this.form.get('lng')?.patchValue(res?.result?.lng)
-          this.form.get('startTime')?.patchValue(res?.result?.openingHours?.startTime)
-          this.form.get('endTime')?.patchValue(res?.result?.openingHours?.endTime)
+          this.form.get('map')?.setValue(res?.result?.map)
+          this.form.get('firstlane')?.setValue(res?.result?.address?.firstlane)
+          this.form.get('secondlane')?.setValue(res?.result?.address?.secondlane)
+          this.form.get('area')?.setValue(res?.result?.address?.area)
+          this.form.get('city')?.setValue(res?.result?.address?.city)
+          this.form.get('landmark')?.setValue(res?.result?.address?.landmark)
+          this.form.get('isActive')?.setValue(res?.result?.isActive)
 
-          this.form.get('isFeatured')?.patchValue(res?.result?.isFeatured)
-          this.form.get('isClickPoint')?.patchValue(res?.result?.isClickPoint)
-          this.form.get('isDelete')?.patchValue(res?.result?.isDelete)
-          this.form.get('countryCode')?.patchValue(res?.result?.contact?.countryCode)
+          this.form.get('lat')?.setValue(res?.result?.lat)
+          this.form.get('lng')?.setValue(res?.result?.lng)
+          this.form.get('startTime')?.setValue(res?.result?.openingHours?.startTime)
+          this.form.get('endTime')?.setValue(res?.result?.openingHours?.endTime)
+
+          this.form.get('isFeatured')?.setValue(res?.result?.isFeatured)
+          this.form.get('isClickPoint')?.setValue(res?.result?.isClickPoint)
+          this.form.get('isDelete')?.setValue(res?.result?.isDelete)
           this.slots = res?.result?.slots
+
           this.ChangeDetectorRef.markForCheck()
         }
       })
     }
-  
-    this.handleMobilePattern()
   }
 
   initForm() {

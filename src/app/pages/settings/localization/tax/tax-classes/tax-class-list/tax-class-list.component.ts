@@ -13,13 +13,14 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export class TaxClassComponent implements OnInit {
   classDetails: Array<any> = []
   keyword: FormControl = new FormControl('')
-  limit: FormControl = new FormControl(10)
+  limit: number = 10
   isLastPage: boolean = true
   page: number = 1
   appRoute = appRoutes
   modalRef?: BsModalRef
   class: any = {}
-  totalResults: string = ''
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private TaxClassesService: TaxClassesService,
@@ -54,20 +55,23 @@ export class TaxClassComponent implements OnInit {
     })
   }
 
-  navBack() {
-    this.page -= 1
-  }
-
-  navNext() {
-    this.page += 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getClass()
   }
 
   getClass() {
-    this.TaxClassesService.searchClass({ keyword: this.keyword.value, limit: this.limit.value, page: this.page }).subscribe({
+    this.TaxClassesService.searchClass({
+      keyword: this.keyword.value,
+      limit: this.limit,
+      page: this.page
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.classDetails = res?.result?.data;
           this.totalResults = res?.result?.totalResults;
+          this.totalPages = res?.result?.totalPages;
           this.isLastPage = res?.result?.isLastPage;
           this.ChangeDetectorRef.markForCheck()
         } else {

@@ -1,33 +1,24 @@
-<div class="seoDetailsContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bolder">Dynamic Scripts</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.DYNAMIC_SCRIPTS.LIST}}">Dynamic Scripts</a>
-                    </li>
-                </ul>
-
-                <div class="buttonContainer">
-                    <button type="button" class="btn btn-primary" (click)="manageScriptDetails()">
-                        Save Changes
-                    </button>
-                </div>
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Dynamic Scripts</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.DYNAMIC_SCRIPTS.LIST}}">Dynamic Scripts</a>
+                </li>
+            </ul>
         </div>
+        <button type="button" class="btn btn-primary" (click)="manageScriptDetails()">
+            Save Changes
+        </button>
     </div>
 
-    <div class="alert alert-primary fs-6 mt-4 mb-4">
-        You can add additional javascript for your webstore here.
-    </div>
-
-    <div class="col-12">
+    <div class="my-4">
         <ngx-monaco-editor [options]="editorOptions" style="height: 370px;" [(ngModel)]="code">
         </ngx-monaco-editor>
     </div>

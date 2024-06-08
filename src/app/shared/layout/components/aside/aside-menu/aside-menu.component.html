@@ -126,7 +126,7 @@
   </a>
 </div>
 
-<div class="menu-item">
+<!-- <div class="menu-item">
   <a class="menu-link without-sub" routerLink="{{ appRoute.replaceRequests }}" routerLinkActive="active">
     <span class="menu-icon">
       <svg width="16" height="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
@@ -137,7 +137,7 @@
     </span>
     <span class="menu-title fw-bold">Replace Requests</span>
   </a>
-</div>
+</div> -->
 
 <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
   <span class="menu-link">
@@ -211,19 +211,6 @@
           </svg>
         </span>
         <span class="menu-title">Offers</span>
-      </a>
-    </div>
-    <div class="menu-item">
-      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.moreOffers.list }}">
-        <span class="menu-bullet">
-          <svg height="16px" width="16px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185zM9.75 9h.008v.008H9.75V9zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 4.5h.008v.008h-.008V13.5zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z">
-            </path>
-          </svg>
-        </span>
-        <span class="menu-title">More Offers</span>
       </a>
     </div>
     <div class="menu-item">
@@ -305,7 +292,8 @@
         <span class="menu-title">Blogs</span>
       </a>
     </div>
-    <div class="menu-item">
+
+    <!-- <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.catalogs.list }}">
         <span class="menu-bullet">
           <svg height="16px" width="16px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
@@ -317,7 +305,8 @@
         </span>
         <span class="menu-title">Catalogs</span>
       </a>
-    </div>
+    </div> -->
+
     <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.vouchers.list }}">
         <span class="menu-bullet">
@@ -332,6 +321,7 @@
         <span class="menu-title">Vouchers</span>
       </a>
     </div>
+
     <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active"
         routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">
@@ -346,6 +336,7 @@
         <span class="menu-title">Notifications</span>
       </a>
     </div>
+
     <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.storePopup }}">
         <span class="menu-bullet">
@@ -359,6 +350,7 @@
         <span class="menu-title">Store popup</span>
       </a>
     </div>
+
     <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.pageCovers }}">
         <span class="menu-bullet">
@@ -372,6 +364,7 @@
         <span class="menu-title">Page Covers</span>
       </a>
     </div>
+    
     <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.feeds.LIST }}">
         <span class="menu-bullet">
@@ -665,8 +658,8 @@
         <div class="menu-item">
           <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.paymentSettings }}">
             <span class="menu-bullet">
-              <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z">
                 </path>
@@ -759,6 +752,19 @@
           </a>
         </div>
 
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.stores.STORE_LIST }}">
+            <span class="menu-bullet">
+              <svg height="16px" width="16px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z">
+                </path>
+              </svg>
+            </span>
+            <span class="menu-title">Stores</span>
+          </a>
+        </div>
       </div>
 
       <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
@@ -795,7 +801,7 @@
     </div>
   </div>
 
-  <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
+  <!-- <div class="menu-sub menu-sub-accordion" routerLinkActive="menu-active-bg">
     <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
       <span class="menu-link">
         <span class="menu-bullet">
@@ -832,7 +838,8 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
+
 </div>
 
 <div class="menu-item">

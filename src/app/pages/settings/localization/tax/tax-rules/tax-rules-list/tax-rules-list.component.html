@@ -22,7 +22,7 @@
     <div class="card">
       <div class="card-body">
         <div>
-          <input type="text" class="form-control" placeholder="Search items here" [formControl]="keyword"
+          <input type="search" class="form-control" placeholder="Search items here" [formControl]="keyword"
             (ngModelChange)="getRules()">
         </div>
       </div>
@@ -33,7 +33,6 @@
     <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
       <thead>
         <tr>
-          <th>&nbsp;</th>
           <th>Name</th>
           <th>Percentage</th>
           <th>Status</th>
@@ -43,7 +42,6 @@
       <tbody>
         <ng-container *ngFor="let rule of rules; let i =index">
           <tr>
-            <td>{{i + 1}}</td>
             <td>{{rule?.name }}</td>
             <td>{{rule?.rate}}</td>
             <td>
@@ -72,6 +70,12 @@
             </td>
           </tr>
         </ng-container>
+
+        <tr *ngIf="rules.length == 0">
+          <td colspan="4">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

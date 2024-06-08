@@ -1,11 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PageTasks } from 'src/app/config/constants';
+import { Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
-import { ToastrService } from 'ngx-toastr';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-add-tax-class',
@@ -17,7 +16,6 @@ export class AddTaxClassComponent implements OnInit {
   appRoute = appRoutes;
   isSubmitted = false;
   form: FormGroup;
-  task = PageTasks.ADD;
   rules: Array<any> = []
   ruleDetails: Array<any> = []
 
@@ -25,7 +23,7 @@ export class AddTaxClassComponent implements OnInit {
     private FormBuilder: FormBuilder,
     private Router: Router,
     private TaxClassesService: TaxClassesService,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private TaxRulesService: TaxRulesService
   ) { }
@@ -38,7 +36,8 @@ export class AddTaxClassComponent implements OnInit {
     this.form = this.FormBuilder.group({
       name: ['', Validators.required],
       description: [''],
-      rules: [[], Validators.required],
+      rule: [''],
+      rules: ['', Validators.required],
       isActive: ['true'],
     });
 
@@ -47,23 +46,32 @@ export class AddTaxClassComponent implements OnInit {
         this.ruleDetails = res?.result
         this.ChangeDetectorRef.markForCheck()
       } else {
-        this.ToastrService.error(res?.message)
+        this.HotToastService.error(res?.message)
       }
     });
   }
 
   selectRule(event: any) {
-    let rule = this.ruleDetails.filter((rule: any) => { if (rule._id == event.target.value) return rule })
-    !this.rules.includes(rule[0]) ? this.rules.push(rule[0]) : this.ToastrService.info('Rule already present')
-    this.form.get('rules')?.setValue(this.rules)
+    let rule = this.ruleDetails.filter((rule: any) => {
+      if (rule._id == event.target.value) {
+        return rule
+      }
+    })
+
+    this.rules.includes(rule[0]) ?
+      this.HotToastService.info('Rule already present') :
+      this.rules.push(rule[0])
+
+    this.form.get('rule')?.setValue('')
   }
 
   removeRule(index: any) {
     this.rules.splice(index, 1)
-    this.form.get('rules')?.setValue(this.rules)
   }
 
   add() {
+    this.form.get('rules')?.setValue(this.rules)
+
     if (!this.form.valid) {
       this.isSubmitted = true
       return;
@@ -72,13 +80,13 @@ export class AddTaxClassComponent implements OnInit {
     this.TaxClassesService.addClass(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.Router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST])
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }

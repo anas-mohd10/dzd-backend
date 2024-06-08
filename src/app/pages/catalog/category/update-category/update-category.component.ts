@@ -82,11 +82,16 @@ export class UpdateCategoryComponent implements OnInit {
             refid: res?.result?.parent?.refid?._id,
             catid: res?.result?.parent?.catid
           }
-          this.path = res?.result?.path
-          console.log(this.path)
-          // this.form.get('parent')?.setValue(this.path)
           res?.result?.root ? this.root = res?.result?.root?._id : null
           this.form.patchValue(res?.result)
+          this.path = res?.result?.path
+          this.form.get('parent')?.setValue(this.path)
+          this.form.get('background')?.setValue(res?.result?.style.background);
+          this.form.get('border')?.setValue(res?.result?.style.border);
+          this.form.get('radius')?.setValue(res?.result?.style.radius);
+          this.form.get('color')?.setValue(res?.result?.style.text.color);
+          this.form.get('fontSize')?.setValue(res?.result?.style.text.fontSize);
+          this.form.get('fontWeight')?.setValue(res?.result?.style.text.fontWeight);
           this.ChangeDetectorRef.markForCheck()
         } else {
 

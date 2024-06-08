@@ -22,7 +22,8 @@
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <div class="form-group mb-3">
                     <label for="title" class="mb-3 fs-6 required">Title</label>
-                    <input type="text" id="title" placeholder="About Us" formControlName="title" class="form-control">
+                    <input type="text" id="title" placeholder="About Us" formControlName="title" class="form-control"  [ngClass]="{
+                        'is-invalid':  (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
                 </div>
 
                 <div class="form-group mb-3">
@@ -32,8 +33,9 @@
 
                 <div class="form-group mb-3">
                     <label for="description" class="fs-6 mb-3 required">Description</label>
-                    <div class="description" id="description">
-                        <angular-editor class="form-control fs-6" formControlName="description" [config]="editorConfig">
+                    <div class="form-control fs-6" id="description" [ngClass]="{
+                        'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}">
+                        <angular-editor formControlName="description" [config]="editorConfig">
                         </angular-editor>
                     </div>
                 </div>

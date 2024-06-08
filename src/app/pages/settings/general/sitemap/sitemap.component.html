@@ -1,26 +1,21 @@
 <div>
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bold">Sitemap</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.sitemap}}">Sitemap</a>
-                    </li>
-                </ul>
-
-                <div class="buttonContainer">
-                    <button type="button" class="btn btn-primary" (click)="open(template)">
-                        Save changes
-                    </button>
-                </div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Sitemap</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.sitemap}}">Sitemap</a>
+                </li>
+            </ul>
         </div>
+        <button type="button" class="btn btn-primary" (click)="open(template)">
+            Save changes
+        </button>
     </div>
 
     <div class="card my-4">
@@ -38,12 +33,8 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label for="isEnabled" class="form-label">Enable custom sitemap</label>
-                            <select formControlName="isEnabled" id="isEnabled" class="form-select">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let type of ['true', 'false']" value="{{type}}">
-                                    {{type == 'true' ? 'Yes' : 'No'}}
-                                </option>
-                            </select>
+                            <app-switch id="isEnabled" [switchId]="''" (switchToggled)="onSwitchTriggered($event)"
+                                [isToggledProps]="form.get('isEnabled')?.value"></app-switch>
                         </div>
                     </div>
                 </div>
@@ -56,6 +47,7 @@
     <div class="modal-body text-center">
         <p>Do you want to confirm?</p>
         <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
-        <button type="button" class="btn btn-primary" (click)="modalRef?.hide()">No</button>
+        <button type="button" class="btn btn-primary"
+            (click)="modalRef?.hide(); form.reset(); form.patchValue({isEnabled: false})">No</button>
     </div>
 </ng-template>

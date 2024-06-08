@@ -106,6 +106,9 @@ export class AddCollectionComponent implements OnInit {
       this.productDetails = this.productDetails.filter(item => item?._id !== product?._id)
       this.productIds = this.productIds.filter(item => item !== product?._id)
     }
+
+    this.product.setValue('')
+    this.searchProducts = []
   }
 
   onSubmit() {

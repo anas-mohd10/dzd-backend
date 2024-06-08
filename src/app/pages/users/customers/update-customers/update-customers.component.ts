@@ -317,7 +317,7 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getAddress()
           this.addressForm.reset()
-          this.addressForm.patchValue({ countryCode: '+971', type: 'Home' })
+          this.addressForm.patchValue({ countryCode: '+971', isDefault: false, type: 'Home' })
           this.Toast.success(res?.message)
           this.isAddressSubmitted = false
           this.isEditAddress = false
@@ -332,8 +332,7 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getAddress()
           this.addressForm.reset()
-          this.addressForm.patchValue({ countryCode: '+971', type: 'Home' })
-
+          this.addressForm.patchValue({ countryCode: '+971', isDefault: false, type: 'Home' })
           this.Toast.success(res?.message)
           this.modalRef?.hide()
           this.isEditAddress = false

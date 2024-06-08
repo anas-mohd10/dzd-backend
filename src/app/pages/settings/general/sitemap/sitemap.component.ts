@@ -22,7 +22,7 @@ export class SitemapComponent implements OnInit {
     private BsModalService: BsModalService,
     private SitemapService: SitemapService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private Toast: HotToastService
+    private HotToastService: HotToastService
   ) { }
 
   get formControls() {
@@ -37,8 +37,12 @@ export class SitemapComponent implements OnInit {
     this.getDetails()
     this.form = new FormGroup({
       sitemap: new FormControl('', Validators.required),
-      isEnabled: new FormControl('false')
+      isEnabled: new FormControl(false)
     })
+  }
+
+  onSwitchTriggered(event: { switcId: string, toggleState: boolean }) {
+    this.form.patchValue({ isEnabled: event.toggleState })
   }
 
   getDetails() {
@@ -64,12 +68,12 @@ export class SitemapComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getDetails()
           this.modalRef?.hide()
-          this.Toast.success(res?.message)
+          this.HotToastService.success(res?.message)
         } else {
-          this.Toast.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err) => {
-        this.Toast.error(err.error?.message)
+        this.HotToastService.error(err.error?.message)
       }
     })
   }

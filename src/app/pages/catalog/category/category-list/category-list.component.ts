@@ -111,7 +111,7 @@ export class CategoryComponent implements OnInit {
     setTimeout(() => {
       this.CategoryService.searchCategory({
         ...this.form.value,
-        isArchive: false,
+        isArchive: 'false',
         page: this.page,
         limit: this.limit
       }).subscribe((res: any) => {

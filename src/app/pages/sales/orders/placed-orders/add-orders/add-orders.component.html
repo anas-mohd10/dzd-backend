@@ -29,7 +29,7 @@
 
                     <div class="form-group col-lg-6">
                         <label class="fs-6 mb-3 required">Customers</label>
-                        <input type="text" placeholder="Search customers here" class="form-control"
+                        <input type="search" placeholder="Search customers here" class="form-control"
                             [formControl]="customer" (ngModelChange)="getCustomers()"
                             [ngClass]="{ 'is-invalid': (of.customerId.touched || isSubmitted) && of.customerId.errors?.required}">
 
@@ -166,12 +166,12 @@
                         </select>
                     </div>
 
-                    <div>
+                    <div class="mb-3" *ngIf="orderForm.get('clickPoint')?.value">
                         <label class="fs-6 mb-3">Select a delivery dates</label>
                         <div class="dates">
                             <ng-container *ngFor="let date of dates">
                                 <div class="date" (click)="selectDeliveryDate(date)"
-                                    [ngClass]="{'active': deliveryDate == date}">
+                                    [ngClass]="{'active': deliveryDate == date, 'border border-danger': (of.deliveryDate.touched || isSubmitted) && of.deliveryDate.errors?.required}">
                                     <div class="text-center">
                                         <div class="fs-5">{{formatDate(date, 'month')}}</div>
                                         <div class="fs-2 my-2 fw-bold">{{formatDate(date, 'dateNumber')}}</div>
@@ -182,12 +182,12 @@
                         </div>
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-12" *ngIf="orderForm.get('deliveryDate')?.value">
                         <label class="fs-6 mb-3">Available timeslots</label>
                         <div class="timeslots">
                             <ng-container *ngFor="let time of timeslots">
                                 <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
-                                    [ngClass]="{'active': deliveryTime == time?.refid}">
+                                    [ngClass]="{'active': deliveryTime == time?.refid, 'border border-danger': (of.deliverySlot.touched || isSubmitted) && of.deliverySlot.errors?.required}">
                                     <div> {{time?.from}} - {{time?.to}}</div>
                                 </div>
                             </ng-container>

@@ -1,98 +1,91 @@
-<div class="content container-fluid">
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder"> {{ editMode ? "Update tax class" : "Add tax class" }}</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="col">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">
-              {{editMode ? "Update tax class" : "Add tax class"}}
-            </a>
-          </li>
-        </ul>
+<div>
+  <div class="page-header d-flex align-items-center justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold"> {{ editMode ? "Update tax class" : "Add tax class" }}</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST }}">Tax Class</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.taxClass.ADD_TAX_CLASS }}">
+            {{editMode ? "Update tax class" : "Add tax class"}}
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="card">
-      <div class="card-body">
+  <div class="card my-4">
+    <div class="card-body">
 
-        <form [formGroup]="form">
-          <div class="row">
-            <h2 class="fw-bolder">Class Details</h2>
+      <form [formGroup]="form">
+        <div class="row">
 
-            <div class="col-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required">Name</label>
-                <input type="text" class="form-control fs-6" formControlName="name"
-                  [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}" />
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3">Description</label>
-                <input type="text" class="form-control fs-6" formControlName="description" />
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3">Status</label>
-                <select class="form-select mb-3 fs-6" formControlName="isActive">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="true">Enabled</option>
-                  <option value="false">Disabled</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group">
-                <label class="fs-6 mb-3 required">Rules</label>
-                <select class="form-select mb-3 fs-6" formControlName="rules" (change)="selectRule($event)"
-                  [ngClass]="{'is-invalid': (formControls.rules.touched || isSubmitted) && formControls.rules.errors?.required}">
-                  <option value="" disabled> -- Select an option -- </option>
-                  <option *ngFor="let rule of ruleDetails" value={{rule?._id}}> {{ rule?.name }} </option>
-                </select>
-              </div>
-
-              <div class="rules" *ngIf="rules.length > 0">
-                <ng-container *ngFor="let rule of rules; let i = index">
-                  <div class="rule pt-1 pb-1 ps-3 pe-3 d-flex align-items-center justify-content-between">
-                    <div class="name">{{rule?.name}}</div>
-                    <div class="remove  d-flex align-items-center justify-content-center" (click)="removeRule(i)">
-                      <svg height="16px" width="16px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-            </div>
-
-            <div class="col-12 d-flex justify-content-end">
-              <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST}}" class=" btn btn-secondary btn-sm fs-6 text-dark"
-                style="width: 200px; margin-right: 20px;">
-                Cancel
-              </a>
-              <button type="submit" class="btn btn-primary btn-sm fs-6" (click)="add()" style="width: 200px">
-                Add
-              </button>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required">Name</label>
+              <input type="text" class="form-control fs-6" formControlName="name"
+                [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}" />
             </div>
           </div>
-        </form>
-      </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3">Description</label>
+              <input type="text" class="form-control fs-6" formControlName="description" />
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3">Status</label>
+              <select class="form-select mb-3 fs-6" formControlName="isActive">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="true">Enabled</option>
+                <option value="false">Disabled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6 mb-3">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required">Rules</label>
+              <select class="form-select mb-3 fs-6" formControlName="rule" (change)="selectRule($event)"
+                [ngClass]="{'is-invalid': (formControls.rules.touched || isSubmitted) && formControls.rules.errors?.required}">
+                <option value="" disabled> -- Select an option -- </option>
+                <option *ngFor="let rule of ruleDetails" value={{rule?._id}}> {{ rule?.name }} </option>
+              </select>
+            </div>
+
+            <div class="d-flex flex-wrap align-items-center justify-content-start gap-2" *ngIf="rules.length > 0">
+              <ng-container *ngFor="let rule of rules; let i = index">
+                <div class="bg-secondary p-2 rounded d-flex align-items-center justify-content-between"
+                  (click)="removeRule(i)">
+                  <div class="fs-5">{{rule?.name}}</div>
+                  <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 align-items-center">
+            <a routerLink="{{ appRoute.taxClass.TAX_CLASS_LIST}}" class=" btn btn-secondary">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary" (click)="add()">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

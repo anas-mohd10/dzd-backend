@@ -38,7 +38,7 @@
           <input type="button" class="btn w-100 btn-secondary" value="Clear filters" (click)="clear()" />
         </div>
         <div class="col-lg-4">
-          <input type="text" class="form-control" placeholder="Search orders" [formControl]="keyword"
+          <input type="search" class="form-control" placeholder="Search orders" [formControl]="keyword"
             (ngModelChange)="getReturns()" />
         </div>
       </div>

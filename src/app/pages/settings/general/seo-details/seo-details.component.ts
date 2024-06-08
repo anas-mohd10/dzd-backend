@@ -90,6 +90,8 @@ export class SeoDetailsComponent implements OnInit {
           this.HotToastService.success(res?.message)
           this.close()
           this.fetchSeoDetails()
+          this.form.reset()
+          this.form.patchValue({ page: "" })
         } else {
           this.HotToastService.error(res?.message)
         }

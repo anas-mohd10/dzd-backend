@@ -1,119 +1,67 @@
-$hover: #e3e3e3;
-$grey: #888888;
-$white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
-
 .update,
 .delete {
     cursor: pointer;
 }
 
 label,
-input[type=button],
-.btn-secondary {
-    font-weight: normal !important;
-    width: 100%;
+.btn-secondary,
+.btn-primary {
+    font-weight: 400 !important;
 }
 
-.filteringWrapper {
-    .filtering {
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        gap: 8px;
-
-        span {
-            color: #8B909A;
-            line-height: 18px;
-        }
-
-        select {
-            border: 1px solid #E8E8E8;
-            border-radius: 6px;
-            padding: 5px;
-
-            &:focus {
-                outline: none;
-            }
-        }
-    }
-
-    .pagination {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        .paginationBefore,
-        .paginationNext {
-            height: 30px;
-            width: 30px;
-            border-radius: 15px;
-            display: grid;
-            place-items: center;
-            background: $background;
-            cursor: pointer;
-
-            &.disabled {
-                opacity: 0.5;
-                pointer-events: none;
-            }
-        }
-
-        .paginationPage {
-            margin: 0 10px;
-        }
-    }
-
-}
-
-.emptyNote {
-    margin: 0 0 20px 0;
-    display: grid;
-    place-items: center;
-
-    .note {
-        font-weight: normal;
-    }
-}
-
-.table-responsive {
-
-    .common_thead {
-        background: #20BDAB;
-
-        th {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 15px;
-            text-transform: capitalize;
-            color: #FFFFFF;
-        }
-    }
-
-    tr {
-        border-bottom: 1px solid #E8E8E8;
-    }
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
 
     tbody {
+
         tr {
+
             td {
-                img {
-                    cursor: pointer;
-                }
+                vertical-align: middle;
             }
+        }
+    }
+
+    thead {
+
+        tr {
+
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
+
+    .checkbox {
+        height: 20px;
+        width: 20px;
+        border: 2px solid #cacaca;
+        border-radius: 4px;
+        position: relative;
+        background: #ffffff;
+        cursor: pointer;
+
+        &.checked {
+
+            &::after {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                content: '';
+                height: 10px;
+                width: 10px;
+                background: #00bdab;
+                border-radius: 2px;
+            }
+
+            border: 2px solid #00bdab;
         }
     }
 }
 
-.modal-body {
-    .btn {
-        width: 120px;
-    }
-}
+//Table designs

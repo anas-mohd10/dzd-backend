@@ -51,6 +51,11 @@ export class UpdatePagesComponent implements OnInit {
     private BsModalService: BsModalService
   ) { }
 
+  get formControls(){
+    return this.form.controls
+  }
+
+
   ngOnInit(): void {
     this.staticPageId = this.ActivatedRoute.snapshot.queryParams.id || '';
 

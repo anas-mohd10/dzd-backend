@@ -44,6 +44,10 @@ export class AddPagesComponent implements OnInit {
     private HotToastService: HotToastService
   ) { }
 
+  get formControls(){
+    return this.form.controls
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),

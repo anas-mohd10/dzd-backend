@@ -112,8 +112,8 @@ export class AddOrdersComponent implements OnInit {
     })
 
     this.dates = this.getNextSevenDays();
-    this.deliveryDate = this.dates[0]
-    this.orderForm.get('deliveryDate')?.setValue(this.deliveryDate)
+    // this.deliveryDate = this.dates[0]
+    // this.orderForm.get('deliveryDate')?.setValue(this.deliveryDate)
 
     this.addressForm = new FormGroup({
       type: new FormControl('Home'),
@@ -253,11 +253,6 @@ export class AddOrdersComponent implements OnInit {
     return this.orderForm.controls;
   }
 
-  toggleSlot(slot: any) {
-    this.deliverySlot == slot?._id ? this.deliverySlot = null : this.deliverySlot = slot?._id
-    this.orderForm.get('deliverySlot')?.setValue(this.deliverySlot)
-  }
-
   getActiveCustomers() {
     this.customerService.getActiveCustomers().subscribe((res: any) => {
       this.activeCustomersData = res?.result
@@ -309,8 +304,10 @@ export class AddOrdersComponent implements OnInit {
   }
 
   selectDeliveryTime(time: any) {
+    console.log(time)
     this.deliveryTime = time
-    this.orderForm.get('deliverySlot')?.setValue(time?.refid)
+    this.orderForm.get('deliverySlot')?.setValue(time)
+    console.log(this.orderForm.get('deliverySlot')?.value)
   }
 
   selectDeliveryDate(date: any) {
@@ -344,8 +341,8 @@ export class AddOrdersComponent implements OnInit {
             return timeA.localeCompare(timeB);
           });
 
-          this.deliveryTime = this.timeslots[0]['refid']
-          this.orderForm.get('deliverySlot')?.setValue(this.timeslots[0]['refid'])
+          // this.deliveryTime = this.timeslots[0]['refid']
+          // this.orderForm.get('deliverySlot')?.setValue(this.timeslots[0]['refid'])
           this.ChangeDetectorRef.markForCheck()
         } else {
 
@@ -402,6 +399,8 @@ export class AddOrdersComponent implements OnInit {
     if (isExists) {
       this.ToastrService.error('Product already exists in the cart')
     } else {
+      this.products = []
+      this.keyword.setValue('')
       this.cartItems.push({ ...product, quantity: product?.moq })
       this.cartSubtotal = this.cartSubtotal + product?.price?.selling * product?.moq
       this.cartTotal = this.cartSubtotal - this.cartDiscount
@@ -476,6 +475,9 @@ export class AddOrdersComponent implements OnInit {
 
   getAddress(template: TemplateRef<any>, customer: any) {
     this.customerDetails = customer
+    this.address = null
+    this.addressForm.reset()
+    this.addressForm.patchValue({ countryCode: "", type: "" })
     this.customer.setValue(customer?.name)
     this.addressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
     this.customerService.getAddress({ userid: customer?.userid }).subscribe({
@@ -499,17 +501,16 @@ export class AddOrdersComponent implements OnInit {
     for (let _key of Object.keys(address)) {
       this.addressForm.get(_key)?.setValue(address[_key])
     }
+    this.customers = []
   }
 
   openManage(template: TemplateRef<any>, type?: string) {
-    this.manageAddressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
     this.addressModalRef?.hide()
+    this.manageAddressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
     this.address ? this.addressMode = 'update' : this.addressMode = 'add'
-    if (type == 'address') {
-      if (this.address) {
-        this.handleAddressMobilePattern()
-        for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key])
-      }
+    if (this.address) {
+      this.handleAddressMobilePattern()
+      for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key])
     }
   }
 
@@ -530,7 +531,7 @@ export class AddOrdersComponent implements OnInit {
               this.address = res?.result
               this.ToastrService.success(res?.message)
               this.ChangeDetectorRef.markForCheck()
-              this.BsModalService.show(this.addressModal, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+              this.customers = []
             } else {
               this.ToastrService.error(res.message)
             }
@@ -547,6 +548,7 @@ export class AddOrdersComponent implements OnInit {
           next: (res: any) => {
             if (res?.errorCode == 0) {
               this.address = res?.result
+              this.customers = []
               this.ChangeDetectorRef.markForCheck()
               this.ToastrService.success(res?.message)
             } else {
@@ -561,6 +563,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.manageAddressModalRef?.hide()
     this.addressForm.reset()
+    this.addressModalRef?.hide()
     this.addressForm.patchValue({ type: "Home", countryCode: "+971" })
     this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
       next: (res: any) => {
@@ -581,10 +584,12 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id)
     this.orderForm.get('products')?.setValue(this.cartItems)
 
-    // if (!this.orderForm.valid) {      
-    //   this.isSubmitted = true
-    //   return;
-    // }
+    console.log(this.orderForm.value)
+
+    if (!this.orderForm.valid) {      
+      this.isSubmitted = true
+      return;
+    }
 
     let payload = {
       address: this.addressForm.value,

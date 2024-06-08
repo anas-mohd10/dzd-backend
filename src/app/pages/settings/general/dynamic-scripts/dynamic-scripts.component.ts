@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { DynamicScriptsService } from 'src/app/includes/services/dynamic-scripts.service';
 
@@ -19,7 +18,7 @@ export class DynamicScriptsComponent implements OnInit {
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
     private DynamicScriptsService: DynamicScriptsService,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -35,9 +34,9 @@ export class DynamicScriptsComponent implements OnInit {
     this.DynamicScriptsService.manageScript({ script: this.code }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ngOnInit()
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
       } else {
-        this.ToastrService.error(res?.message)
+        this.HotToastService.error(res?.message)
       }
     })
   }

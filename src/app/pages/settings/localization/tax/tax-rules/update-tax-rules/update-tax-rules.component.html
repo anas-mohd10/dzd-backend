@@ -1,25 +1,23 @@
 <div>
 
   <div class="page-header d-flex align-items-start justify-content-start">
-    <div class="page-title">
-      <h1 class="fw-bold"> Update tax rule</h1>
-    </div>
-    <div class="row ">
-      <div class="col">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}">Tax Rules</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.taxRules.UPDATE_TAX_RULES}}" [queryParams]="{tax: rule}">
-              Update tax rule
-            </a>
-          </li>
-        </ul>
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold"> Update tax rule</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.taxRules.TAX_RULES_LIST}}">Tax Rules</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.taxRules.UPDATE_TAX_RULES}}" [queryParams]="{tax: rule}">
+            Update tax rule
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -27,7 +25,6 @@
     <div class="card-body">
       <form [formGroup]="form">
         <div class="row">
-          <h2 class="fw-bolder">Rule Details</h2>
 
           <div class="col-lg-6 mb-3">
             <div class="form-group">
@@ -41,7 +38,7 @@
             <div class="form-group">
               <label class="fs-6 mb-3 required"> Rate</label>
               <input type="text" class="form-control fs-6" formControlName="rate"
-                [ngClass]="{'is-invalid': (formControls.rate.touched || isSubmitted) && formControls.rate.errors?.required }" />
+                [ngClass]="{'is-invalid': (formControls.rate.touched || isSubmitted) && (formControls.rate.errors?.required || formControls.rate.errors?.pattern) }" />
             </div>
           </div>
 

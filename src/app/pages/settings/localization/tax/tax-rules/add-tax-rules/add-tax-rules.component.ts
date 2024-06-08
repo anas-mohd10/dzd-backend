@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PageTasks } from 'src/app/config/constants';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
 
 @Component({
@@ -13,16 +12,14 @@ import { TaxRulesService } from 'src/app/includes/services/tax-rules.service';
 })
 export class AddTaxRulesComponent implements OnInit {
   form: FormGroup;
-  task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted: boolean = false;
 
   constructor(
-    private FormBuilder: FormBuilder,
     private Router: Router,
     private TaxRulesService: TaxRulesService,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   get formControls() {
@@ -30,10 +27,10 @@ export class AddTaxRulesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = this.FormBuilder.group({
-      name: ['', Validators.required],
-      rate: ['', Validators.required],
-      isActive: ['true'],
+    this.form = new FormGroup({
+      name: new FormControl('', Validators.required),
+      rate: new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]),
+      isActive: new FormControl('true')
     });
   }
 
@@ -46,13 +43,13 @@ export class AddTaxRulesComponent implements OnInit {
     this.TaxRulesService.addRule({ ...this.form.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res.message);
+          this.HotToastService.success(res.message);
           this.Router.navigate([this.appRoute.taxRules.TAX_RULES_LIST]);
         } else {
-          this.ToastrService.error(res.message);
+          this.HotToastService.error(res.message);
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message);
+        this.HotToastService.error(err.message);
       }
     });
   }
