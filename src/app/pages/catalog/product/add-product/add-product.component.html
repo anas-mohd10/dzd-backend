@@ -26,7 +26,11 @@
               <div class="row my-6">
                 <div class="col-lg-3 form-group">
                   <label class="fs-6 mb-3 required">Thumbnail</label>
-                  <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                  <div class="ratio ratio-1x1 h-auto w-100 rounded" [ngClass]="{
+                    'border border-danger':
+                    (parentControls.thumbnail.touched || isParentSubmitted) &&
+                    parentControls.thumbnail.errors?.required
+                  }">
                     <app-assets (mediaClicked)="handleThumbnail($event)" [previewDetails]="previewDetails"></app-assets>
                   </div>
                   <div *ngIf="previewDetails">
@@ -37,7 +41,11 @@
                   <div class="row">
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">Name</label>
-                      <input type="text" class="form-control fs-6" formControlName="name" />
+                      <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                        'is-invalid':
+                        (parentControls.name.touched || isParentSubmitted) &&
+                        parentControls.name.errors?.required
+                      }" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3">HSN</label>
@@ -45,10 +53,14 @@
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">SKU</label>
-                      <input type="text" class="form-control fs-6" formControlName="sku" />
+                      <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
+                        'is-invalid':
+                        (parentControls.sku.touched || isParentSubmitted) &&
+                        parentControls.sku.errors?.required
+                      }" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Tax</label>
+                      <label class="fs-6 mb-3">Tax</label>
                       <select formControlName="tax" id="tax" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
                         <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
@@ -68,8 +80,12 @@
 
                     <div class="col-lg-6 form-group mb-3">
                       <label class="fs-6 mb-3 required" for="tax">Category</label>
-                      <select id="parentCategory" formControlName="parentCategory" class="form-select"
-                        (change)="addCategory()">
+                      <select id="parentCategory" formControlName="category" class="form-select"
+                        (change)="addCategory()" [ngClass]="{
+                          'is-invalid':
+                          (parentControls.parentCategory.touched || isParentSubmitted) &&
+                          parentControls.parentCategory.errors?.required
+                        }">
                         <option value="" disabled>-- Select an option --</option>
                         <option *ngFor="let category of mainCategories" value="{{category?._id}}">{{category?.name}}
                         </option>
@@ -103,7 +119,7 @@
                     </div>
 
                     <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required" for="isActive">Status</label>
+                      <label class="fs-6 mb-3" for="isActive">Status</label>
                       <select formControlName="isActive" id="isActive" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
                         <option *ngFor="let status of ['true', 'false']" value="{{status}}">
@@ -336,16 +352,6 @@
                   <div class="fs-3 fw-bold">Additional details</div>
                   <p class="text-muted">Update the additional details of the product</p>
                   <div class="row" formGroupName="details">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label for="additionalButton" class="fs-6 mb-3">Additional button</label>
-                      <input type="text" id="additionalButton" class="form-control fs-6"
-                        formControlName="additionalButton" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label fpr="buttonRedirectUrl" class="fs-6 mb-3">Button redirection</label>
-                      <input type="text" id="buttonRedirectUrl" class="form-control fs-6"
-                        formControlName="buttonRedirectUrl" />
-                    </div>
                     <div class="mb-3 form-group">
                       <label class="fs-6 mb-3">Description</label>
                       <angular-editor class="form-control fs-6 about-textarea" formControlName="description"

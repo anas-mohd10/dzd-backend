@@ -91,6 +91,7 @@ export class AddProductComponent implements OnInit {
   parentCategories: Array<any> = []
   mainCategories: Array<any> = []
   existingProducts: Array<any> = []
+  isParentSubmitted: boolean = false
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -106,8 +107,8 @@ export class AddProductComponent implements OnInit {
     private AppSettingsService: AppSettingsService
   ) { }
 
-  onBrandTriggered(event: any) {
-    this.parentForm.get('brand')?.setValue(event._id)
+  get parentControls() {
+    return this.parentForm.controls
   }
 
   onProductsTriggered(event: any) {
@@ -193,18 +194,25 @@ export class AddProductComponent implements OnInit {
   }
 
   addCategory() {
-    let isExists = this.parentCategories.some((category: any) => category._id == this.parentForm.get('parentCategory')?.value)
+    let isExists = this.parentCategories.some((category: any) => category._id == this.parentForm.get('category')?.value)
     if (isExists) {
-      this.parentCategories = this.parentCategories.filter((category: any) => category._id != this.parentForm.get('parentCategory')?.value)
+      this.parentCategories = this.parentCategories.filter((category: any) => category._id != this.parentForm.get('category')?.value)
       this.HotToastService.error('Category removed from list')
     } else {
-      let categoryDetails = this.mainCategories.filter((category: any) => category._id == this.parentForm.get('parentCategory')?.value)
+      let categoryDetails = this.mainCategories.filter((category: any) => category._id == this.parentForm.get('category')?.value)
       this.parentCategories.push(categoryDetails[0])
       let categories = this.parentCategories.map((category: any) => category._id)
       this.getChildCategory(categories)
       this.HotToastService.success('Category added to list')
     }
-    this.parentForm.get('parentCategory')?.setValue('')
+    this.parentForm.get('category')?.setValue('')
+    if (this.parentCategories.length > 0) {
+      let parentCategory = {
+        id: this.parentCategories.map((category: any) => { return category._id }),
+        refid: this.parentCategories.map((category: any) => { return category.catid })
+      }
+      this.parentForm.get('parentCategory')?.setValue(parentCategory)
+    }
   }
 
   removeCategory(categoryId: string) {
@@ -212,6 +220,15 @@ export class AddProductComponent implements OnInit {
     let categories = this.parentCategories.map((category: any) => category._id)
     this.HotToastService.error('Category removed from list')
     this.getChildCategory(categories)
+    if (this.parentCategories.length > 0) {
+      let parentCategory = {
+        id: this.parentCategories.map((category: any) => { return category._id }),
+        refid: this.parentCategories.map((category: any) => { return category.catid })
+      }
+      this.parentForm.get('parentCategory')?.setValue(parentCategory)
+    } else {
+      this.parentForm.get('parentCategory')?.setValue("")
+    }
   }
 
   getParentDetails(productSlug: string) {
@@ -302,9 +319,12 @@ export class AddProductComponent implements OnInit {
   }
 
   createParent() {
-    let parentCategory = {
-      id: this.parentCategories.map((category: any) => { return category._id }),
-      refid: this.parentCategories.map((category: any) => { return category.catid })
+    if (this.parentCategories.length > 0) {
+      let parentCategory = {
+        id: this.parentCategories.map((category: any) => { return category._id }),
+        refid: this.parentCategories.map((category: any) => { return category.catid })
+      }
+      this.parentForm.get('parentCategory')?.setValue(parentCategory)
     }
 
     if (this.parentForm.get('defaultCategory')?.value) {
@@ -315,11 +335,14 @@ export class AddProductComponent implements OnInit {
       this.parentForm.get('defaultCategory')?.setValue(defaultCategory)
     }
 
-    this.parentForm.get('parentCategory')?.setValue(parentCategory)
 
     if (!this.parentForm.valid) {
+      this.isParentSubmitted = true
       return
     }
+
+    this.parentForm.get('brand')?.value ? null : this.parentForm.get('brand')?.setValue(null)
+    this.parentForm.get('defaultCategory')?.value ? null : this.parentForm.get('defaultCategory')?.setValue(null)
 
     this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
       next: (res: any) => {
@@ -397,18 +420,19 @@ export class AddProductComponent implements OnInit {
 
     this.parentForm = new FormGroup({
       name: new FormControl("", Validators.required),
-      brand: new FormControl(null),
-      defaultCategory: new FormControl(null), // Default category
+      brand: new FormControl(""),
+      defaultCategory: new FormControl(""), // Default category
       parentCategory: new FormControl("", Validators.required), //Main category
-      thumbnail: new FormControl(null),
-      isActive: new FormControl("true"),
+      category: new FormControl(""),
+      thumbnail: new FormControl(null, Validators.required),
+      isActive: new FormControl(true),
       sku: new FormControl("", Validators.required),
       tax: new FormControl(""),
       hsn: new FormControl(""),
-      cod: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      replace: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      cod: new FormGroup({ isPresent: new FormControl(true), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
+      shipping: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
+      return: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
+      replace: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
     })
 
     this.form = new FormGroup({
@@ -469,6 +493,7 @@ export class AddProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.taxClassDetails = res?.result;
+          this.parentForm.get('tax')?.setValue(this.taxClassDetails[0]?._id)
         } else {
 
         }
@@ -488,7 +513,7 @@ export class AddProductComponent implements OnInit {
           if (this.existingProducts.length > 0) {
             this.form.get('isVisible')?.setValue(false)
           }
-          let latestProducts = this.existingProducts.pop()          
+          let latestProducts = this.existingProducts.pop()
           this.form.get('name')?.setValue(latestProducts?.name)
           this.ChangeDetectorRef.markForCheck()
         } else {

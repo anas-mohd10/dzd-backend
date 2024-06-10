@@ -304,7 +304,7 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails = res?.result
           this.images = res?.result?.files
           this.categories = res?.result?.category?.id
-          this.searchKeyowrds = res?.result?.searchKeywords
+          this.searchKeywords = res?.result?.searchKeywords
           this.thumbnailPreview = res?.result?.thumbnail?.path
           this.ChangeDetectorRef.markForCheck()
         }
