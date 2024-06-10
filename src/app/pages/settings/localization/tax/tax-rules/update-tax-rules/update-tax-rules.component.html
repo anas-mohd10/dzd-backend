@@ -40,6 +40,9 @@
               <input type="text" class="form-control fs-6" formControlName="rate"
                 [ngClass]="{'is-invalid': (formControls.rate.touched || isSubmitted) && (formControls.rate.errors?.required || formControls.rate.errors?.pattern) }" />
             </div>
+            <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.rate.errors?.pattern">
+              Enter a valid tax rate
+            </div>
           </div>
 
           <div class="col-lg-6 mb-3">

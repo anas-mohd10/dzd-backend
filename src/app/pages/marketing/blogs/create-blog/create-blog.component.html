@@ -38,7 +38,9 @@
                     <div class="col-lg-3">
                         <div>
                             <label for="thumbnail" class="form-label required">Thumbnail</label>
-                            <div id="thumbnail" class="ratio ratio-1x1 h-auto w-100 rounded mb-3">
+                            <div id="thumbnail" class="ratio ratio-1x1 h-auto w-100 rounded mb-3"
+                                [ngClass]="{
+                                'border border-danger':  (formControls.thumbnail.touched || isSubmitted) && formControls.thumbnail.errors?.required}">
                                 <app-assets [previewDetails]="thumbnail"
                                     (mediaClicked)="handleThumbnail($event)"></app-assets>
                             </div>

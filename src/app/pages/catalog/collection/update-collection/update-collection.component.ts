@@ -30,6 +30,8 @@ export class UpdateCollectionComponent implements OnInit {
   collectionSlug: string = '';
   previews: any = { thumbnailPreview: '', coverPreview: '' }
   collectionDetails: any;
+  cover: string = ''
+  thumbnail: string = ''
 
   constructor(
     private CollectionService: CollectionService,
@@ -74,6 +76,7 @@ export class UpdateCollectionComponent implements OnInit {
 
   handleCollectionCover(event: any) {
     this.form.get('cover')?.setValue(event._id)
+    this.previews.coverPreview = event.path
   }
 
   get formControls() {
@@ -82,6 +85,20 @@ export class UpdateCollectionComponent implements OnInit {
 
   handleCollectionThumbnail(event: any) {
     this.form.get('thumbnail')?.setValue(event._id)
+    this.previews.thumbnailPreview = event.path
+  }
+
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'cover':
+        this.form.get('cover')?.setValue(null)
+        this.previews.coverPreview = ''
+        break
+      case 'thumbnail':
+        this.form.get('thumbnail')?.setValue(null)
+        this.previews.thumbnailPreview = ''
+        break
+    }
   }
 
   getProducts() {

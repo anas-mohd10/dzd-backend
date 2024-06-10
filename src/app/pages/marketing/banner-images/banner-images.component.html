@@ -77,7 +77,8 @@
         <form [formGroup]="form">
             <div class="form-group mb-3">
                 <label for="type" class="form-label required">Type</label>
-                <select formControlName="type" id="type" class="form-select">
+                <select formControlName="type" id="type" class="form-select" [ngClass]="{
+                    'is-invalid':  (formControls.type.touched || isSubmitted) && formControls.type.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>
                     <option *ngFor="let item of items" value="{{item.value}}">{{item.key}}</option>
                 </select>
@@ -85,7 +86,9 @@
 
             <div class="mb-3">
                 <label for="media" class="form-label mb-3 required">Media</label>
-                <div id="media" class="w-100 h-auto" style="aspect-ratio: 6/1;">
+                <div id="media" class="w-100 h-auto" style="aspect-ratio: 6/1;"
+                    [ngClass]="{
+                    'border border-danger':  (formControls.media.touched || isSubmitted) && formControls.media.errors?.required}">
                     <app-assets (mediaClicked)="onMediaTriggered($event)" [image]="'cover'" [aspectRatio]="'6:1'"
                         [previewDetails]="previewDetails"></app-assets>
                 </div>

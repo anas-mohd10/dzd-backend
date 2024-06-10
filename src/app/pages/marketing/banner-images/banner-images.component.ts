@@ -97,6 +97,10 @@ export class BannerImagesComponent implements OnInit {
     })
   }
 
+  get formControls() {
+    return this.form.controls
+  }
+
   decline() {
     this.deleteRef?.hide();
     this.focusedBannerImage = null;

@@ -18,7 +18,7 @@ export class SitemapService {
     return this.HttpClient.post(`${url}`, data)
   }
 
-  shippingDetails() {
+  sitemapDetails() {
     const url = this.CommonService.getFullUrl(sitemapEndpoints.getSitemaps);
     return this.HttpClient.get(`${url}`)
   }

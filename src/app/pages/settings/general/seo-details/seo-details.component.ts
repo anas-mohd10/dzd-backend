@@ -16,6 +16,7 @@ export class SeoDetailsComponent implements OnInit {
   form: FormGroup
   isSubmitted: boolean = false;
   modalRef?: BsModalRef;
+  isEditMode: boolean = false
 
   constructor(
     private SeoService: SeoService,
@@ -32,6 +33,7 @@ export class SeoDetailsComponent implements OnInit {
     this.form = new FormGroup({
       page: new FormControl('', Validators.required),
       url: new FormControl('', Validators.required),
+      type: new FormControl('create'),
       title: new FormControl('', Validators.required),
       keywords: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -70,12 +72,35 @@ export class SeoDetailsComponent implements OnInit {
     this.form.reset()
     this.form.get('page')?.setValue('')
     this.modalRef?.hide()
+    this.isEditMode = false
     this.isSubmitted = false
   }
 
   open(template: TemplateRef<any>, seoId?: string) {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
     seoId ? this.getSeoDetails(seoId) : null
+    if (seoId) {
+      this.isEditMode = true
+      this.form.patchValue({ type: 'update' })
+    }
+  }
+
+  delete() {
+    this.SeoService.manageSeoDetails({ ...this.form.value, isDelete: true }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.close()
+          this.fetchSeoDetails()
+          this.form.reset()
+          this.form.patchValue({ page: "" })
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
   }
 
   manageDetails() {

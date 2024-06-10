@@ -103,11 +103,23 @@ export class PageCoversComponent implements OnInit {
     }
   }
 
-  onMediaTriggered(type: string, event: any) {
-    if (type == 'desktop') {
-      this.form.get('desktopCover')?.setValue(event._id)
+  onMediaTriggered(type: string, event: any, method: string) {
+    if (method == 'add') {
+      if (type == 'desktop') {
+        this.form.get('desktopCover')?.setValue(event._id)
+        this.desktop = event.path
+      } else {
+        this.form.get('mobileCover')?.setValue(event._id)
+        this.mobile = event.path
+      }
     } else {
-      this.form.get('mobileCover')?.setValue(event._id)
+      if (type == 'desktop') {
+        this.form.get('desktopCover')?.setValue(null)
+        this.desktop = ''
+      } else {
+        this.form.get('mobileCover')?.setValue(null)
+        this.mobile = ''
+      }
     }
   }
 
@@ -166,8 +178,8 @@ export class PageCoversComponent implements OnInit {
     this.mobile = '';
     this.details = null;
     this.isEditMode = false;
-    this.form.get('isActive')?.setValue(true)
-    this.form.get('title')?.setValue("")
+    this.isSubmitted = false;
+    this.form.patchValue({ desktopCover: null, mobileCover: null, isActive: true, title: "" })
   }
 
   onToggled(event: { switchId: string, toggleState: boolean }) {

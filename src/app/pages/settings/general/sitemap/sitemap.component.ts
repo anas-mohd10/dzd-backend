@@ -46,7 +46,7 @@ export class SitemapComponent implements OnInit {
   }
 
   getDetails() {
-    this.SitemapService.shippingDetails().subscribe({
+    this.SitemapService.sitemapDetails().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.sitemapDetails = res?.result

@@ -1,5 +1,5 @@
 <div class="form-group">
-    <input type="text" placeholder="Search for products" class="form-control" [formControl]="searchKeyword"
+    <input type="search" placeholder="Search for products" class="form-control" [formControl]="searchKeyword"
         (ngModelChange)="getProducts()">
     <div class="position-relative" *ngIf="products.length > 0">
         <div class="position-absolute bg-white p-2 shadow-sm products-wrapper">

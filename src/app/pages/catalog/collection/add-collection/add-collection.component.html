@@ -77,7 +77,7 @@
                     </div>
                     <input type="text" class="form-control fs-6" [formControl]="productSku"
                       placeholder="Enter SKU1,SKU2,SKU3 etc" *ngIf="!isAutoCompleteEnabled" class="form-control fs-6" />
-                    <input type="text" class="form-control fs-6" [formControl]="product" (ngModelChange)="getProducts()"
+                    <input type="search" class="form-control fs-6" [formControl]="product" (ngModelChange)="getProducts()"
                       placeholder="Search product" *ngIf="isAutoCompleteEnabled" class="form-control fs-6" />
                   </div>
                   <ng-container *ngIf="searchProducts.length > 0">
