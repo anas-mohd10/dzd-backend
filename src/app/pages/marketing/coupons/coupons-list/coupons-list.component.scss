@@ -52,12 +52,12 @@ input[type=button],
   align-self: stretch;
 }
 
-.message{
+.message {
   color: #505050;
 }
 
 
-.offerCoupon{
+.offerCoupon {
   position: relative;
   -webkit-mask-image: url('../../../../../assets/images/coupon.png');
   mask-image: url('../../../../../assets/images/coupon.png');
@@ -65,7 +65,7 @@ input[type=button],
   mask-position: top right;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-size: 375px 125px;
-  mask-size: 375px 125px;
+  -webkit-mask-size: 424px 125px;
+  mask-size: 424px 125px;
 
 }

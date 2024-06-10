@@ -67,7 +67,7 @@ export class CreateBlogComponent implements OnInit {
       seoKeywords: new FormControl(''),
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl('', Validators.required),
-      cover: new FormControl(''),
+      cover: new FormControl(null),
     })
   }
 
@@ -100,11 +100,7 @@ export class CreateBlogComponent implements OnInit {
       return
     }
 
-    let formdata = new FormData()
-    for (let key of Object.keys(this.form.value)) formdata.append(key, this.form.value[key])
-    this.files.thumbnail && formdata.append('thumbnail', this.files.thumbnail)
-    this.files.cover && formdata.append('cover', this.files.cover)
-    this.BlogService.createBlog(formdata).subscribe({
+    this.BlogService.createBlog(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list])

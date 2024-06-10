@@ -121,14 +121,20 @@ export class UpdateProductComponent implements OnInit {
     this.parentForm.get('parentCategories')?.setValue(this.productCategories)
   }
 
-  onProductsTriggered() {
-    let productDetails = this.activeRelatedProducts.filter((item: any) => item._id == this.relatedProduct.value)
-    const isIdPresent: boolean = this.relatedProducts.some(product => product._id == productDetails[0]._id);
+  onProductsTriggered(productId?: any) {
+    let productDetails: any = null
+    if (productId) {
+      productDetails = productId
+    } else {
+      let productRef = this.activeRelatedProducts.filter((item: any) => item._id == this.relatedProduct.value)
+      productDetails = productRef[0]
+    }
+    const isIdPresent: boolean = this.relatedProducts.some(product => product._id == productDetails?._id);
     if (isIdPresent) {
       this.HotToastService.error('Product removed from list')
-      this.relatedProducts = this.relatedProducts.filter((item: any) => item._id != productDetails[0]._id)
+      this.relatedProducts = this.relatedProducts.filter((item: any) => item._id != productDetails?._id)
     } else {
-      this.relatedProducts.push(productDetails[0])
+      this.relatedProducts.push(productDetails)
       this.HotToastService.success('Product added to list')
     }
     this.relatedProduct.setValue('')
@@ -251,14 +257,13 @@ export class UpdateProductComponent implements OnInit {
       return
     }
 
-    this.form.value.relatedProducts ? null : this.form.get('relatedProducts')?.setValue([])
 
     let payload = {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.productDetails.slug,
       files: this.images.map((item: any) => item._id),
-      relatedProducts: this.form.value.relatedProducts.map((product: any) => product._id),
+      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.productAttributes,
       productIcons: this.icons.map((icon: any) => icon._id),
@@ -353,6 +358,7 @@ export class UpdateProductComponent implements OnInit {
               bottomLeftTag: res?.result?.productTags?.bottomLeftTag?.path,
             }
           }
+          this.relatedProducts = res?.result?.relatedProducts
           this.searchKeywords = res?.result?.searchKeywords
           this.icons = res?.result?.productIcons ? res?.result?.productIcons : []
           this.thumbnailPreview = res?.result?.thumbnail?.path

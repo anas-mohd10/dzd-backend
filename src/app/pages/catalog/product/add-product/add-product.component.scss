@@ -3,6 +3,19 @@ label,
   font-weight: normal !important;
 }
 
+.close-icon {
+  z-index: 9;
+  top: 10px;
+  right: 10px;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: unset;
+}
+
 .attribute {
 
   &.text {
@@ -22,8 +35,8 @@ label,
     height: 40px;
     width: 40px;
   }
-  
-  &.active{
+
+  &.active {
     border: 1px solid #00bdab;
   }
 }

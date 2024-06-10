@@ -92,6 +92,8 @@ export class AddProductComponent implements OnInit {
   mainCategories: Array<any> = []
   existingProducts: Array<any> = []
   isParentSubmitted: boolean = false
+  activeRelatedProducts: Array<any> = []
+  relatedProduct: FormControl = new FormControl('')
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -111,29 +113,63 @@ export class AddProductComponent implements OnInit {
     return this.parentForm.controls
   }
 
-  onProductsTriggered(event: any) {
-    const isIdPresent = this.relatedProducts.some(product => product._id == event._id);
-    if (isIdPresent) {
-      this.HotToastService.info('Products already added')
+  onProductsTriggered(productId?: any) {
+    let productDetails: any = null
+    if (productId) {
+      productDetails = productId
     } else {
-      this.relatedProducts.push(event)
+      let productRef = this.activeRelatedProducts.filter((item: any) => item._id == this.relatedProduct.value)
+      productDetails = productRef[0]
     }
+    const isIdPresent: boolean = this.relatedProducts.some(product => product._id == productDetails?._id);
+    if (isIdPresent) {
+      this.HotToastService.error('Product removed from list')
+      this.relatedProducts = this.relatedProducts.filter((item: any) => item._id != productDetails?._id)
+    } else {
+      this.relatedProducts.push(productDetails)
+      this.HotToastService.success('Product added to list')
+    }
+    this.relatedProduct.setValue('')
     this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts)
   }
 
-  onTagsTriggered(event: any, type: string) {
+  onTagsTriggered(event: any, type: string, method: string) {
     switch (type) {
       case 'topright':
-        this.tagsForm.get('topRightTag')?.setValue(event._id)
+        if (method == 'add') {
+          this.tagsForm.get('topRightTag')?.setValue(event._id)
+          this.productTags.topRightTag = event.path
+        } else {
+          this.tagsForm.get('topRightTag')?.setValue(null)
+          this.productTags.topRightTag = ''
+        }
         break
       case 'topleft':
-        this.tagsForm.get('topLeftTag')?.setValue(event._id)
+        if (method == 'add') {
+          this.tagsForm.get('topLeftTag')?.setValue(event._id)
+          this.productTags.topLeftTag = event.path
+        } else {
+          this.tagsForm.get('topLeftTag')?.setValue(null)
+          this.productTags.topLeftTag = ''
+        }
         break
       case 'bottomright':
-        this.tagsForm.get('bottomRightTag')?.setValue(event._id)
+        if (method == 'add') {
+          this.tagsForm.get('bottomRightTag')?.setValue(event._id)
+          this.productTags.bottomRightTag = event.path
+        } else {
+          this.tagsForm.get('bottomRightTag')?.setValue(null)
+          this.productTags.bottomRightTag = ''
+        }
         break
       case 'bottomleft':
-        this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
+        if (method == 'add') {
+          this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
+          this.productTags.bottomLeftTag = event.path
+        } else {
+          this.tagsForm.get('bottomLeftTag')?.setValue(null)
+          this.productTags.bottomLeftTag = ''
+        }
         break
     }
   }
@@ -164,11 +200,21 @@ export class AddProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
-    this.images.push(event)
+    let isExists: boolean = this.images.some((item: any) => item._id == event._id)
+    if (isExists) {
+      this.images = this.images.filter((item: any) => item._id != event._id)
+    } else {
+      this.images.push(event)
+    }
   }
 
   productIconClicked(event: any) {
-    this.icons.push(event)
+    let isExists: boolean = this.icons.some((item: any) => item._id == event._id)
+    if (isExists) {
+      this.icons = this.icons.filter((item: any) => item._id != event._id)
+    } else {
+      this.icons.push(event)
+    }
   }
 
   removeProductMedia(image: any) {
@@ -279,24 +325,20 @@ export class AddProductComponent implements OnInit {
       return
     }
 
-    let files = this.images.map((item: any) => item._id)
-    let productIcons = this.icons.map((icon: any) => icon._id)
-    this.form.value.relatedProducts ? null : this.form.get('relatedProducts')?.setValue([])
-
     let payload = {
       ...this.form.value,
-      files: files,
-      icons: productIcons,
+      files: this.images.map((item: any) => item._id),
+      icons: this.icons.map((icon: any) => icon._id),
       productTags: this.tagsForm.value,
+      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.productAttributes,
+      productIcons: this.icons.map((icon: any) => icon._id),
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       }
     }
-
-    console.log(payload)
 
     this.ProductService.addProduct(payload).subscribe({
       next: (res: any) => {
@@ -487,6 +529,21 @@ export class AddProductComponent implements OnInit {
       }
     })
     //Get brands
+
+    //Get active products
+    this.ProductService.getActiveProduct().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.activeRelatedProducts = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+    //Get active products
 
     //Tax class details
     this.taxClassService.getTaxClasses().subscribe({
