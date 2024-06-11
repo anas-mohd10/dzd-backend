@@ -1,5 +1,5 @@
 <div>
-   <div class="page-header">
+   <div class="page-header d-flex align-items-start justify-content-between">
       <div>
          <div class="page-title">
             <h1 class="fw-bold">Help Center</h1>
@@ -13,12 +13,12 @@
             </li>
          </ul>
       </div>
+      <button *ngIf="isDetected" (click)="onSubmit()" class="btn btn-primary fs-6">Save changes</button>
    </div>
 
    <div class="card my-4">
       <div class="card-body">
          <form [formGroup]="form">
-
             <div class="form-group mb-3">
                <label class="fs-6 mb-3 required">Description</label>
                <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
@@ -46,7 +46,8 @@
                <div class="col-lg-6">
                   <div class="form-group mb-3">
                      <label class="fs-6 mb-3 required">Phone</label>
-                     <input type="text" class="form-control fs-6" formControlName="phone" [ngClass]="{'is-invalid': 
+                     <input type="text" class="form-control fs-6" formControlName="phone"
+                        [ngClass]="{'is-invalid': 
                                  (formControls.phone.touched || isSubmitted) && (formControls.phone.errors?.required || formControls.phone.errors?.pattern)}"
                         (click)="isDetected = true" />
                   </div>
@@ -92,7 +93,7 @@
                            [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required}"
                            (click)="isDetected = true" />
                      </div>
-                     <div class="alert alert-danger p-2" *ngIf="formControls.email.errors?.pattern">
+                     <div class="alert alert-danger p-2 mt-1" *ngIf="formControls.email.errors?.pattern">
                         Invalid email address
                      </div>
                   </div>
@@ -101,15 +102,6 @@
                   </div>
                </div>
             </div>
-            <ng-container *ngIf="isDetected">
-               <div class="col-12 d-flex justify-content-end">
-                  <a (click)="cancel()" class=" btn btn-secondary fs-6 text-dark"
-                     style="width: 200px; margin-right: 20px;">
-                     Cancel
-                  </a>
-                  <button (click)="onSubmit()" class="btn btn-primary fs-6" style="width: 200px">Update</button>
-               </div>
-            </ng-container>
          </form>
       </div>
    </div>

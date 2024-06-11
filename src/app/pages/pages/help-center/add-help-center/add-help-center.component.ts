@@ -1,12 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { validators } from 'src/app/config/constants/mobile-validators';
+import { HotToastService } from '@ngneat/hot-toast';
 @Component({
   selector: 'app-add-help-center',
   templateUrl: './add-help-center.component.html',
@@ -46,7 +44,7 @@ export class AddHelpCenterComponent implements OnInit {
     private Service: HelpCenterService,
     private formBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -70,10 +68,10 @@ export class AddHelpCenterComponent implements OnInit {
           this.handleMobilePattern()
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
@@ -121,10 +119,10 @@ export class AddHelpCenterComponent implements OnInit {
           this.isSubmitted = false
           this.isDetected = false
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
@@ -133,12 +131,12 @@ export class AddHelpCenterComponent implements OnInit {
     this.Service.shareVerification().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
