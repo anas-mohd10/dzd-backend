@@ -29,15 +29,15 @@ export class LoyaltyComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      earningAmount: new FormControl('', Validators.required),
-      earningPoints: new FormControl('', Validators.required),
-      conversionPoints: new FormControl('', Validators.required),
-      isEnabled: new FormControl(false),
-      welcomePoints: new FormControl('1'),
-      minimumPurchase: new FormControl('', Validators.required),
-      percentageOff: new FormControl('', Validators.required),
-      maximumPoints: new FormControl('', Validators.required),
-      conversionWorth: new FormControl('', Validators.required)
+      earningAmount: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      earningPoints: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      conversionPoints: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      isEnabled: new FormControl('false'),
+      welcomePoints: new FormControl('1', Validators.pattern("^[0-9]*$")),
+      minimumPurchase: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      percentageOff: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      maximumPoints: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      conversionWorth: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")])
     })
     this.getLoyaltyDetails()
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
@@ -79,7 +79,9 @@ export class LoyaltyComponent implements OnInit {
   close() {
     this.modalRef?.hide()
     this.form.reset()
+    this.form.patchValue({ isEnabled: 'false' })
     this.isSubmitted = false;
+    this.getLoyaltyDetails()
   }
 
   confirm() {
@@ -95,7 +97,7 @@ export class LoyaltyComponent implements OnInit {
       }, conversion: {
         worth: this.form.get('conversionWorth')?.value,
         points: this.form.get('conversionPoints')?.value
-      }, 
+      },
       isEnabled: this.form.get('isEnabled')?.value,
       welcomePoints: this.form.get('welcomePoints')?.value,
       minimumPurchase: this.form.get('minimumPurchase')?.value,

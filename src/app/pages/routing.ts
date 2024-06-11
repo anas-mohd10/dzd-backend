@@ -312,32 +312,16 @@ export const Routing: Routes = [
         loadChildren: () => import('./static-pages/static-pages.module').then((m) => m.StaticPagesModule),
         canActivate: [AuthenticationGuard]
       }, {
-        path: 'catalogs',
-        loadChildren: () => import('./marketing/catalogs/catalogs.module').then((m) => m.CatalogsModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
-        path: 'about',
-        loadChildren: () => import('./pages/about/about.module').then((m) => m.AboutModule),
-        canActivate: [AuthenticationGuard]
-      },
-      {
         path: 'help-center',
         loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCenterModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      },{
         path: 'privacy-policy',
         loadChildren: () => import('./pages/privacy-policy/privacy-policy.module').then((m) => m.PrivacyPolicyModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      },{
         path: 'terms-conditions',
         loadChildren: () => import('./pages/terms-conditions/terms-conditions.module').then((m) => m.TermsConditionsModule),
-        canActivate: [AuthenticationGuard]
-      }, {
-        path: 'page-limits',
-        loadChildren: () => import('./settings/general/page-limits/page-limits.module').then((m) => m.PageLimitsModule),
         canActivate: [AuthenticationGuard]
       }, {
         path: 'store-settings',

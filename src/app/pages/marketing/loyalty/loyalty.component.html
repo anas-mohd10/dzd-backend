@@ -1,25 +1,24 @@
 <div>
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bold">Loyalty</h1>
-        </div>
-        <div class="row align-items-center">
-            <div class="d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.loyalty }}">Loyalty</a>
-                    </li>
-                </ul>
-                <button class="btn btn-primary fs-6" (click)="open(template)">Update loyalty</button>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Loyalty</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.loyalty }}">Loyalty</a>
+                </li>
+            </ul>
         </div>
+        <button class="btn btn-primary fs-6" (click)="open(template)">Update loyalty</button>
     </div>
-    <div class="card">
+
+    <div class="card my-4">
         <div class="card-body gap-6" style="display: flex; align-items: center;">
-            <div  style="flex: 1; max-width: 469px; max-height: 469px;">
+            <div style="flex: 1; max-width: 469px; max-height: 469px;">
                 <img src="../../../../assets/icons/loyalty-poster.png" alt="">
             </div>
             <div class="row" class="gap-3" style="display: flex; flex-direction: column; flex: 1;">
@@ -37,7 +36,7 @@
                         </div>
                     </div>
                 </div>
-                <div >
+                <div>
                     <div class="p-4 rounded" rounded style="background: #F5F6FA; border: 1px solid #E8E8E8;">
                         <div class="fs-3 fw-bolder mb-2">Point conversion</div>
                         <div class="fs-6">
@@ -69,55 +68,101 @@
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="earningAmount" class="form-label required mb-1">Amount</label>
-                            <input type="text" id="earningAmount" formControlName="earningAmount" class="form-control">
+                            <input type="text" id="earningAmount" formControlName="earningAmount" class="form-control"
+                                [ngClass]="{'is-invalid': (formControls.earningAmount.touched || isSubmitted) 
+                                && (formControls.earningAmount.errors?.required || formControls.earningAmount.errors?.pattern) }">
+                            <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.earningAmount.errors?.pattern">
+                                Enter a valid earning amount
+                            </div>
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="earningPoints" class="form-label required mb-1">Points</label>
-                            <input type="text" id="earningPoints" formControlName="earningPoints" class="form-control">
+                            <input type="text" id="earningPoints" formControlName="earningPoints" class="form-control"
+                                [ngClass]="{'is-invalid': (formControls.earningPoints.touched || isSubmitted) 
+                            && (formControls.earningPoints.errors?.required || formControls.earningPoints.errors?.pattern) }">
+                            <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.earningPoints.errors?.pattern">
+                                Enter a valid earning points
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="mb-5 p-4 shadow-sm rounded border border-secondary">
+
+                <div class="mb-5">
                     <div class="modal-title mb-2">Conversion</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="conversionPoints" class="form-label required mb-1">Points</label>
                             <input type="text" id="conversionPoints" formControlName="conversionPoints"
-                                class="form-control">
+                                [ngClass]="{'is-invalid': (formControls.conversionPoints.touched || isSubmitted) 
+                            && (formControls.conversionPoints.errors?.required || formControls.conversionPoints.errors?.pattern) }" class="form-control">
+                            <div class="mt-2 p-2 alert alert-danger"
+                                *ngIf="formControls.conversionPoints.errors?.pattern">
+                                Enter a valid conversion points
+                            </div>
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="conversionWorth" class="form-label required mb-1">Amount</label>
-                            <input type="text" id="conversionWorth" formControlName="conversionWorth"
-                                class="form-control">
+                            <input type="text"
+                                [ngClass]="{'is-invalid': (formControls.conversionWorth.touched || isSubmitted) 
+                            && (formControls.conversionWorth.errors?.required || formControls.conversionWorth.errors?.pattern) }"
+                                id="conversionWorth" formControlName="conversionWorth" class="form-control">
+                            <div class="mt-2 p-2 alert alert-danger"
+                                *ngIf="formControls.conversionWorth.errors?.pattern">
+                                Enter a valid conversion amount
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-5">
                     <div class="modal-title mb-2">Welcome points</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="welcomePoints" class="form-label required mb-1">Points</label>
-                            <input type="text" id="welcomePoints" formControlName="welcomePoints" class="form-control">
+                            <input type="text" id="welcomePoints" formControlName="welcomePoints"
+                                [ngClass]="{'is-invalid': (formControls.welcomePoints.touched || isSubmitted) 
+                            && (formControls.welcomePoints.errors?.required || formControls.welcomePoints.errors?.pattern) }" class="form-control">
+                            <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.welcomePoints.errors?.pattern">
+                                Enter a valid welcome points
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="mb-5 p-4 rounded shadow-sm border border-secondary">
+
+                <div class="mb-5">
                     <div class="modal-title mb-2">Cart settings</div>
                     <div class="row">
                         <div class="col-lg-4 form-group">
                             <label for="minimumPurchase" class="form-label required mb-1">Minimum purchase</label>
-                            <input type="text" id="minimumPurchase" formControlName="minimumPurchase" class="form-control">
+                            <input type="text" id="minimumPurchase" formControlName="minimumPurchase"
+                                [ngClass]="{'is-invalid': (formControls.minimumPurchase.touched || isSubmitted) 
+                            && (formControls.minimumPurchase.errors?.required || formControls.minimumPurchase.errors?.pattern) }" class="form-control">
+                            <div class="mt-2 p-2 alert alert-danger"
+                                *ngIf="formControls.minimumPurchase.errors?.pattern">
+                                Enter a valid welcome points
+                            </div>
                         </div>
                         <div class="col-lg-4 form-group">
                             <label for="percentageOff" class="form-label required mb-1">Percentage</label>
-                            <input type="text" id="percentageOff" formControlName="percentageOff" class="form-control">
+                            <input type="text" id="percentageOff" formControlName="percentageOff" class="form-control"
+                                [ngClass]="{'is-invalid': (formControls.percentageOff.touched || isSubmitted) 
+                            && (formControls.percentageOff.errors?.required || formControls.percentageOff.errors?.pattern) }">
+                            <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.percentageOff.errors?.pattern">
+                                Enter a valid welcome points
+                            </div>
                         </div>
                         <div class="col-lg-4 form-group">
                             <label for="maximumPoints" class="form-label required mb-1">Maximum points</label>
-                            <input type="text" id="maximumPoints" formControlName="maximumPoints" class="form-control">
+                            <input type="text" id="maximumPoints" formControlName="maximumPoints" class="form-control"
+                                [ngClass]="{'is-invalid': (formControls.maximumPoints.touched || isSubmitted) 
+                            && (formControls.maximumPoints.errors?.required || formControls.maximumPoints.errors?.pattern) }">
+                            <div class="mt-2 p-2 alert alert-danger" *ngIf="formControls.maximumPoints.errors?.pattern">
+                                Enter a valid welcome points
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="mb-5">
                     <div class="modal-title mb-2">Loyalty settings</div>
                     <div class="row">
@@ -125,13 +170,15 @@
                             <label for="isEnabled" class="form-label mb-1">Enable loyalty points?</label>
                             <select formControlName="isEnabled" id="isEnabled" class="form-select">
                                 <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let type of [true, false]" value="{{type}}">{{type == true ? 'Yes' :
-                                    'No'}}</option>
+                                <option *ngFor="let type of ['true', 'false']" value="{{type}}">
+                                    {{type == 'true' ? 'Yes' :'No'}}
+                                </option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <div class="d-flex justify-content-end align-items-center">
                 <button class="btn btn-secondary me-1" (click)="close()">Cancel</button>
                 <button class="btn btn-primary me-1" (click)="confirm()">Save changes</button>

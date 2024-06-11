@@ -10,7 +10,11 @@ label {
 .seo-details {
     background: $white;
 
-    .fs-6 {
+    .description {
+        width: 40rem;
+    }
+
+    .tag{
         width: max-content;
     }
 }

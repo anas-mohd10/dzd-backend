@@ -1,124 +1,116 @@
-<div class="coupon-page-container">
+<div>
    <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder">Help Center</h1>
-      </div>
-      <div class="row align-items-center">
-         <div class="col d-flex flex-row justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.helpcenter.HELPCENTER }}">Help Center</a>
-               </li>
-            </ul>
+      <div>
+         <div class="page-title">
+            <h1 class="fw-bold">Help Center</h1>
          </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.helpcenter.HELPCENTER }}">Help Center</a>
+            </li>
+         </ul>
       </div>
    </div>
-   <div class="mt-4">
-      <div class="card">
-         <div class="card-body">
-            <div class="about-form-container">
-               <div class="col-12">
-                  <form [formGroup]="form">
 
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3 required">Description</label>
-                        <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
-                           [config]="editorConfig" (click)="detectChanges()"></angular-editor>
-                        <div class="alert alert-danger mt-2 p-2" *ngIf="(formControls.description.touched || isSubmitted) 
+   <div class="card my-4">
+      <div class="card-body">
+         <form [formGroup]="form">
+
+            <div class="form-group mb-3">
+               <label class="fs-6 mb-3 required">Description</label>
+               <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
+                  [config]="editorConfig" (click)="isDetected = true"></angular-editor>
+               <div class="alert alert-danger mt-2 p-2" *ngIf="(formControls.description.touched || isSubmitted) 
                            && formControls.description.errors?.required">
-                           Help center description is required
-                        </div>
-                     </div>
-
-                     <div class="row">
-                        <div class="col-lg-6">
-                           <div class="form-group mb-3">
-                              <label class="fs-6 mb-3 required">Country Code</label>
-                              <select class="form-select mb-3" formControlName="countryCode"
-                                 [ngClass]="{'is-invalid': 
-                              (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
-                                 <option value="" disabled>-- Select an option --</option>
-                                 <option value="+91">+91</option>
-                                 <option value="+971">+971</option>
-                              </select>
-                           </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                           <div class="form-group mb-3">
-                              <label class="fs-6 mb-3 required">Phone</label>
-                              <input type="text" class="form-control fs-6" formControlName="phone" [ngClass]="{'is-invalid': 
-                                 (formControls.phone.touched || isSubmitted) && formControls.phone.errors?.required}"
-                                 (click)="detectChanges()" />
-                           </div>
-                           <div class="alert alert-danger p-2" *ngIf="formControls.phone.errors?.pattern">
-                              Invalid phone number
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-lg-8">
-                        <div class="row align-items-end">
-                           <div class="col-lg-9">
-                              <div class="form-group">
-                                 <label class="fs-6 mb-1 required">Email address </label>
-                                 <ng-container *ngIf="details && details?.isEmailVerified">
-                                    <div class="mb-3 emailVerified">
-                                       <span class="me-1">
-                                          <svg height="24px" width="24px" fill="currentColor" viewBox="0 0 20 20"
-                                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                             <path clip-rule="evenodd" fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z">
-                                             </path>
-                                          </svg>
-                                       </span>
-                                       <p>Verified email address</p>
-                                    </div>
-                                 </ng-container>
-      
-                                 <ng-container *ngIf="details && !details?.isEmailVerified">
-                                    <div class="mb-3 emailUnverified">
-                                       <span class="me-1">
-                                          <svg height="24px" width="24px" fill="currentColor" viewBox="0 0 20 20"
-                                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                             <path clip-rule="evenodd" fill-rule="evenodd"
-                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z">
-                                             </path>
-                                          </svg>
-                                       </span>
-                                       <p>Email address is not verified</p>
-                                    </div>
-                                 </ng-container>
-                                 <input type="text" class="form-control fs-6" formControlName="email"
-                                    [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required}"
-                                    (click)="detectChanges()" />
-                              </div>
-                              <div class="alert alert-danger p-2" *ngIf="formControls.email.errors?.pattern">
-                                 Invalid email address
-                              </div>
-                           </div>
-                           <div class="col-lg-3" *ngIf="details && !details?.isEmailVerified">
-                              <button class="w-100 btn btn-primary" (click)="sendVerification()">Verify</button>
-                           </div>
-                        </div>
-                     </div>
-                     <ng-container *ngIf="isDetected">
-                        <div class="col-12 d-flex justify-content-end">
-                           <a (click)="cancel()" class=" btn btn-secondary fs-6 text-dark"
-                              style="width: 200px; margin-right: 20px;">
-                              Cancel
-                           </a>
-                           <button (click)="onSubmit()" class="btn btn-primary fs-6"
-                              style="width: 200px">Update</button>
-                        </div>
-                     </ng-container>
-                  </form>
+                  Help center description is required
                </div>
             </div>
-         </div>
+
+            <div class="row">
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3 required">Country Code</label>
+                     <select class="form-select mb-3" formControlName="countryCode" (change)="handleMobilePattern()"
+                        [ngClass]="{'is-invalid': 
+                              (formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="+91">+91</option>
+                        <option value="+971">+971</option>
+                     </select>
+                  </div>
+               </div>
+
+               <div class="col-lg-6">
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3 required">Phone</label>
+                     <input type="text" class="form-control fs-6" formControlName="phone" [ngClass]="{'is-invalid': 
+                                 (formControls.phone.touched || isSubmitted) && (formControls.phone.errors?.required || formControls.phone.errors?.pattern)}"
+                        (click)="isDetected = true" />
+                  </div>
+                  <div class="alert alert-danger p-1 mt-1" *ngIf="formControls.phone.errors?.pattern">
+                     Please enter a valid mobile number
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-lg-8">
+               <div class="row align-items-end">
+                  <div class="col-lg-9">
+                     <div class="form-group">
+                        <label class="fs-6 mb-1 required">Email address </label>
+                        <ng-container *ngIf="details && details?.isEmailVerified">
+                           <div class="mb-3 emailVerified">
+                              <span class="me-1">
+                                 <svg height="24px" width="24px" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd"
+                                       d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z">
+                                    </path>
+                                 </svg>
+                              </span>
+                              <p>Verified email address</p>
+                           </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="details && !details?.isEmailVerified">
+                           <div class="mb-3 emailUnverified">
+                              <span class="me-1">
+                                 <svg height="24px" width="24px" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path clip-rule="evenodd" fill-rule="evenodd"
+                                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z">
+                                    </path>
+                                 </svg>
+                              </span>
+                              <p>Email address is not verified</p>
+                           </div>
+                        </ng-container>
+                        <input type="text" class="form-control fs-6" formControlName="email"
+                           [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required}"
+                           (click)="isDetected = true" />
+                     </div>
+                     <div class="alert alert-danger p-2" *ngIf="formControls.email.errors?.pattern">
+                        Invalid email address
+                     </div>
+                  </div>
+                  <div class="col-lg-3" *ngIf="details && !details?.isEmailVerified">
+                     <button class="w-100 btn btn-primary" (click)="sendVerification()">Verify</button>
+                  </div>
+               </div>
+            </div>
+            <ng-container *ngIf="isDetected">
+               <div class="col-12 d-flex justify-content-end">
+                  <a (click)="cancel()" class=" btn btn-secondary fs-6 text-dark"
+                     style="width: 200px; margin-right: 20px;">
+                     Cancel
+                  </a>
+                  <button (click)="onSubmit()" class="btn btn-primary fs-6" style="width: 200px">Update</button>
+               </div>
+            </ng-container>
+         </form>
       </div>
    </div>
 </div>

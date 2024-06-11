@@ -60,8 +60,8 @@
           <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.slug }" class="w-calc37">
             <div class="fs-6">{{ offer?.title }}</div>
             <div class="text-muted">
-              {{ offer?.type == "Flat" ? "Flat" : null }} {{ offer?.value }}
-              {{ offer?.type == "Percentage" ? null : "%" }}
+              {{ offer?.type == "fixed" ? "Flat" : null }} {{ offer?.value }}
+              {{ offer?.type == "percentage" ? "%" : null }}
             </div>
             <div class="text-muted">
               Valid from

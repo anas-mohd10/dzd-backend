@@ -22,8 +22,9 @@
         <ng-container *ngFor="let seoItem of seoDetails; let i = index">
             <div class="p-3 my-4 d-flex align-items-center justify-content-between rounded seo-details">
                 <div>
-                    <div class="bg-secondary fs-6 rounded p-2">{{seoItem?.page}}</div>
-                    <div class="fs-5">{{seoItem?.title}}</div>
+                    <div class="bg-secondary tag rounded-pill px-2">{{seoItem?.page}}</div>
+                    <div class="fs-5 my-2">{{seoItem?.title}}</div>
+                    <div class="fs-6 text-muted description">{{seoItem?.description}}</div>
                 </div>
                 <div class="p-2 border border-secondary rounded" (click)="open(template, seoItem?._id)">
                     <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
@@ -119,7 +120,7 @@
 
                 <div class="row">
                     <div class="col-lg-2"></div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-10">
                         <div class="d-flex align-items-center justify-content-between"
                             [ngClass]="{'justify-content-between': isEditMode,   'justify-content-end': !isEditMode}">
                             <button class="btn btn-danger" (click)="delete()" *ngIf="isEditMode">Delete</button>

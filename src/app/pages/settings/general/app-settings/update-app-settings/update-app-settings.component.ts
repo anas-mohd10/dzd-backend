@@ -146,7 +146,6 @@ export class UpdateAppSettingsComponent implements OnInit {
       notifyButton: ['Notify Me', Validators.required],
       logo: ['', Validators.required],
       favicon: ['', Validators.required],
-      paymentGateway: ['', Validators.required],
     })
   }
 

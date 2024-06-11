@@ -6,6 +6,7 @@ import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { validators } from 'src/app/config/constants/mobile-validators';
 @Component({
   selector: 'app-add-help-center',
   templateUrl: './add-help-center.component.html',
@@ -44,7 +45,6 @@ export class AddHelpCenterComponent implements OnInit {
   constructor(
     private Service: HelpCenterService,
     private formBuilder: FormBuilder,
-    private router: Router,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService
   ) { }
@@ -52,16 +52,22 @@ export class AddHelpCenterComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       description: ['', Validators.required],
-      countryCode: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern("^[0-9]{9}$")]],
+      countryCode: ['+971', Validators.required],
+      phone: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
     });
 
+    this.handleMobilePattern()
+    this.getDetails()
+  }
+
+  getDetails() {
     this.Service.getDetails().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.details = res?.result
-          for (let _key of Object.keys(res?.result)) this.form.get(_key)?.setValue(res?.result[_key])
+          this.form.patchValue(res?.result)
+          this.handleMobilePattern()
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res?.message)
@@ -76,14 +82,29 @@ export class AddHelpCenterComponent implements OnInit {
     return this.form.controls;
   }
 
+  updateMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('phone')?.setValidators(newValidators);
+    this.form.get('phone')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
+  }
+
   cancel() {
     this.isSubmitted = false
     this.isDetected = false
     this.ngOnInit()
-  }
-
-  detectChanges() {
-    this.isDetected = true
+    this.getDetails()
   }
 
   onSubmit() {

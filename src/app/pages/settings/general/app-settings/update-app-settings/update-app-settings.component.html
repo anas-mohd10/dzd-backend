@@ -5,13 +5,13 @@
             <h1 class="fw-bold">Store settings</h1>
          </div>
          <ul class="breadcrumb">
-                  <li class="breadcrumb-item fs-6">
-                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                  </li>
-                  <li class="breadcrumb-item active fs-6">
-                     <a routerLink="/app/store-settings">Store settings</a>
-                  </li>
-               </ul>
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="/app/store-settings">Store settings</a>
+            </li>
+         </ul>
       </div>
    </div>
 
@@ -144,39 +144,6 @@
                         formControls.notifyButton.errors?.required}">
                            <div class="button notifyButton" [ngStyle]="{'border-color': primary, 'color': primary}">
                               <input type="text" formControlName="notifyButton" [ngStyle]="{'color': primary}">
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div>
-                     <div class="mb-3">
-                        <div class="fs-3 fw-bold">Payment Gateway</div>
-                        <p class="text-muted">Choose your payment gateways as per your business need.</p>
-                     </div>
-                     <div class="payment-cards">
-                        <div class="text-center p-2 payment-card rounded" (click)="setPaymentGateways('paytabs')" [ngClass]="{'selected': paymentGateways.includes('paytabs')}">
-                           <div class="w-100 h-full cursor-pointer">
-                              <img class="ratio ratio-1x1" src="../../../../../../assets/payment-icons/paytabs.jpg" alt="Paytabs">
-                              <div class="fs-5 mt-2">Paytabs</div>
-                           </div>
-                        </div>
-                        <div class="text-center p-2 payment-card rounded" (click)="setPaymentGateways('tap')" [ngClass]="{'selected': paymentGateways.includes('tap')}">
-                           <div class="w-100 h-full cursor-pointer">
-                              <img class="ratio ratio-1x1" src="../../../../../../assets/payment-icons/tap-payments.jpg" alt="Tap Payments">
-                              <div class="fs-5 mt-2">Tap Payments</div>
-                           </div>
-                        </div>
-                        <div class="text-center p-2 payment-card rounded" (click)="setPaymentGateways('postpay')" [ngClass]="{'selected': paymentGateways.includes('postpay')}">
-                           <div class="w-100 h-full cursor-pointer">
-                              <img class="ratio ratio-1x1" src="../../../../../../assets/payment-icons/postpay.jpg" alt="Postpay">
-                              <div class="fs-5 mt-2">Postpay</div>
-                           </div>
-                        </div>
-                        <div class="text-center p-2 payment-card rounded" (click)="setPaymentGateways('tabby')" [ngClass]="{'selected': paymentGateways.includes('tabby')}">
-                           <div class="w-100 h-full cursor-pointer">
-                              <img class="ratio ratio-1x1" src="../../../../../../assets/payment-icons/tabby.jpg" alt="Tabby">
-                              <div class="fs-5 mt-2">Tabby</div>
                            </div>
                         </div>
                      </div>

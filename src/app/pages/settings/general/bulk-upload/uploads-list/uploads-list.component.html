@@ -43,7 +43,7 @@
                         <label for="date" class="fs-6 fw-normal">Date</label>
                         <input id="date" name="date" type="text" placeholder="Select date" class="form-control"
                             bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY',
-                                containerClass: 'theme-dark-blue' }" [(ngModel)]="createdAt"
+                                containerClass: 'theme-green' }" [(ngModel)]="createdAt"
                             (ngModelChange)="fetchFileImports()" />
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th colspan="1">Name</th>
+                        <th>Name</th>
                         <th>Created by</th>
                         <th>Status</th>
                         <th>Type</th>
@@ -74,7 +74,7 @@
                 <tbody class="fs-6">
                     <ng-container *ngFor="let import of fileImports">
                         <tr>
-                            <td colspan="1">{{import?.title}}</td>
+                            <td>{{import?.title}}</td>
                             <td> {{import?.createdBy}}</td>
                             <td>
                                 <svg *ngIf="import?.status == 'progress'" xmlns="http://www.w3.org/2000/svg" width="16"
@@ -112,12 +112,12 @@
                             <td>{{import?.executionTime}} sec</td>
                             <td>{{import?.createdAt}}</td>
                         </tr>
-                        <tr *ngIf="fileImports.length == 0">
-                            <td colspan="6">
-                                <app-no-results></app-no-results>
-                            </td>
-                        </tr>
                     </ng-container>
+                    <tr *ngIf="fileImports.length == 0">
+                        <td colspan="6">
+                            <app-no-results></app-no-results>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
