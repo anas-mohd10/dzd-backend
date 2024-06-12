@@ -13,6 +13,8 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
+
 
 interface WidgetProps {
   title: string;
@@ -189,7 +191,8 @@ export class HomeComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private CategoryService: CategoryService,
     private TestimonialService: TestimonialService,
-    private StaticPageService: StaticPageService
+    private StaticPageService: StaticPageService,
+    private BrandService: BrandService
   ) { }
 
   //Testimonial widget operations
@@ -339,6 +342,8 @@ export class HomeComponent implements OnInit {
     this.redirectionQuery.setValue("")
     this.widgetImagePreviewIndex = null
     this.widgetImagePreview = null
+    this.widgetForm.reset()
+    this.widgetForm.patchValue({ redirectionType: '' })
   }
   //Redirections
 
@@ -505,6 +510,7 @@ export class HomeComponent implements OnInit {
 
   addWidgetDetails() {
     this.widgetImages[this.widgetImagePreviewIndex] = { ...this.widgetImages[this.widgetImagePreviewIndex], ...this.widgetForm.value }
+    console.log(this.widgetImages[this.widgetImagePreviewIndex]);
   }
 
   deleteWidgetImage(index: number, event: Event): void {
@@ -552,6 +558,7 @@ export class HomeComponent implements OnInit {
     if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
       let widgetImages = []
       for (let widgetImage of this.widgetImages) {
+        console.log(widgetImage);
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id })
       }
       widgetPayload['widgetImages'] = widgetImages
@@ -728,6 +735,11 @@ export class HomeComponent implements OnInit {
         tablet: new FormControl(3, [Validators.required, Validators.pattern("^[0-9]*$")]),
         desktop: new FormControl(4, [Validators.required, Validators.pattern("^[0-9]*$")])
       }),
+      spacing: new FormGroup({
+        mobile: new FormControl(2, [Validators.required, Validators.pattern("^[0-9]*$")]),
+        tablet: new FormControl(3, [Validators.required, Validators.pattern("^[0-9]*$")]),
+        desktop: new FormControl(4, [Validators.required, Validators.pattern("^[0-9]*$")])
+      }),
       pagination: new FormControl(true),
       sliderButtons: new FormControl(true),
       buttonVisibility: new FormControl(false),
@@ -865,7 +877,7 @@ export class HomeComponent implements OnInit {
   }
 
   getBrands() {
-    this.CategoryService.getActiveCategory().subscribe({
+    this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.brands = res?.result
@@ -886,7 +898,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  switchToggled(event: { switchId: string, toggleStatus: boolean }) {
-    this.form.get(event.switchId)?.setValue(event.toggleStatus)
+  switchToggled(event: { switchId: string, toggleState: boolean }) {
+    this.form.get(event.switchId)?.setValue(event.toggleState)
   }
 }

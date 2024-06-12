@@ -259,6 +259,24 @@
                             </div>
                         </div>
 
+                        <div class="mb-5" *ngIf="form.get('view')?.value == 'slider'">
+                            <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
+                            <div id="slidesPerView" class="row" formGroupName="spacing">
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                    <input type="text" class="form-control" formControlName="desktop" placeholder="3">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                    <input type="text" class="form-control" formControlName="tablet" placeholder="3">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                    <input type="text" class="form-control" formControlName="mobile" placeholder="3">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="mb-5" *ngIf="form.get('view')?.value == 'grid'">
                             <label for="gridsPerView" class="fs-5 mb-2">Grid Per View</label>
                             <div id="gridsPerView" class="row" formGroupName="gridsPerCount">
@@ -332,26 +350,29 @@
                                                 </svg> {{settings?.domain}}{{widgetImagePreview.redirection}}
                                             </a>
                                         </div>
-                                        <button class="btn btn-danger"
-                                            (click)="deleteWidgetImage(widgetImagePreviewIndex, $event)">
-                                            Remove
-                                        </button>
+                                        <div class="d-flex align-items-center justify-content-end gap-2">
+                                            <button class="btn btn-primary"
+                                                (click)="continueRedirectionQuery()">
+                                                Save changes
+                                            </button>
+                                            <button class="btn btn-danger"
+                                                (click)="deleteWidgetImage(widgetImagePreviewIndex, $event)">
+                                                Remove
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group mb-3">
                                             <label for="title" class="form-label">Title</label>
-                                            <input type="text" formControlName="title" class="form-control"
-                                                (change)="addWidgetDetails()">
+                                            <input type="text" formControlName="title" class="form-control">
                                         </div>
                                         <div class="form-group mb-3" *ngIf="widgetDetails?.widgetType == 'quad-square'">
                                             <label for="title" class="form-label">Description</label>
-                                            <input type="text" formControlName="description" class="form-control"
-                                                (change)="addWidgetDetails()">
+                                            <input type="text" formControlName="description" class="form-control">
                                         </div>
                                         <div class="form-group mb-3" *ngIf="widgetDetails?.widgetType == 'quad-square'">
                                             <label for="title" class="form-label">Button</label>
-                                            <input type="text" formControlName="button" class="form-control"
-                                                (change)="addWidgetDetails()">
+                                            <input type="text" formControlName="button" class="form-control">
                                         </div>
                                         <div class="form-group mb-3">
                                             <label for="redirectionType" class="form-label">Call to action</label>
@@ -364,7 +385,7 @@
                                         </div>
                                     </div>
                                     <div class="row" *ngIf="widgetForm.get('redirectionType')?.value">
-                                        <div class="col-lg-8 form-group mb-3">
+                                        <div class="form-group mb-3">
                                             <label for="redirectionSearch" class="form-label">Redirection</label>
                                             <input *ngIf="widgetForm.get('redirectionType')?.value == 'search-filters'"
                                                 type="text" id="redirectionSearch" placeholder="Search redirections"
@@ -427,11 +448,11 @@
                                                     {{product.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-4 form-group mb-3">
+                                        <!-- <div class="col-lg-4 form-group mb-3">
                                             <label for="continue" class="form-label">&nbsp;</label>
                                             <input type="button" class="w-100 btn btn-primary" value="Continue"
                                                 (click)="continueRedirectionQuery()" id="continue">
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </form>
                             </div>

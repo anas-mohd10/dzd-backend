@@ -87,7 +87,12 @@ export class NavigationMenuComponent implements OnInit {
 
   //Advanced Menu
   advacnedMenuForm: FormGroup = new FormGroup({})
+  advancedMenuItemForm: FormGroup = new FormGroup({})
+  menuItemForm: FormGroup = new FormGroup({})
+  advancedMenuItems: Array<any> = [] //Advanced menu items
+  advanedMenuTitleItems: Array<any> = [] //Existing menu items
   advancedTitleRef: BsModalRef;
+  advancedTitleItemRef: BsModalRef;
   advancedMenuTitles: Array<any> = []
   advancedMenuIcon: any;
   advancedAvertisementThumbnail: any;
@@ -168,6 +173,17 @@ export class NavigationMenuComponent implements OnInit {
       advertisementButton: new FormControl(''),
       advertisementDescription: new FormControl(''),
       advertisementRedirection: new FormControl('')
+    })
+
+    this.advancedMenuItemForm = new FormGroup({
+      codeSpace: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
+      menuItems: new FormControl([], Validators.required)
+    })
+
+    this.menuItemForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      redirection: new FormControl('', Validators.required),
     })
 
     this.getCsTitles()
@@ -591,6 +607,39 @@ export class NavigationMenuComponent implements OnInit {
       this.advacnedMenuForm.get('advertisementThumbnail')?.reset()
       this.advancedAvertisementThumbnail = ''
     }
+  }
+
+  openTitleItemsRef(template: TemplateRef<any>,) {
+    this.closeTitleRef()
+    this.advancedMenuItemForm.patchValue({ codeSpace: this.titleRefDetails?._id })
+    this.advancedTitleItemRef = this.modalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true })
+  }
+
+  closeTitleItemsRef() {
+    this.advancedTitleItemRef?.hide()
+  }
+
+  saveTitleItemsRef() {
+    this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
+    this.MenuService.createCsTitleItems({ ...this.advancedMenuItemForm.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getCsTitles()
+          this.advancedMenuItemForm.reset()
+          this.closeTitleItemsRef()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  onSubmitMenuItem() {
+    this.advancedMenuItems = [...this.advancedMenuItems, this.menuItemForm.value]
+    this.menuItemForm.reset()
   }
 
   onSubmitTitleRef() {

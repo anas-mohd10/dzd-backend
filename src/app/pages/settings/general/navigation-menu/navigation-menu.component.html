@@ -652,7 +652,7 @@
                             placeholder="Eg. Mattress" />
                     </div>
                     <div>
-                        <button class="btn btn-secondary w-100">View Menu Items</button>
+                        <button class="btn btn-secondary w-100" (click)="openTitleItemsRef(createMenuItemsRef)">View Menu Items</button>
                     </div>
                 </div>
 
@@ -777,5 +777,55 @@
                 </button>
             </div>
         </form>
+    </div>
+</ng-template>
+
+<ng-template #createMenuItemsRef>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">&nbsp;</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeTitleItemsRef()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+        <div>
+            <form [formGroup]="advancedMenuItemForm">
+                <div class="form-group">
+                    <label for="title" class="fs-6 mb-3">Title</label>
+                    <input type="text" class="form-control fs-6" formControlName="title" />
+                </div>
+            </form>
+        </div>
+
+        <div>
+            <div>
+
+            </div>
+            
+            <form [formGroup]="menuItemForm">
+                <div class="row">
+                    <div class="col-lg-4 form-group">
+                        <label for="title" class="fs-6 mb-3">Title</label>
+                        <input type="text" id="title" class="form-control fs-6" formControlName="title" />
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <label for="redirection" class="fs-6 mb-3">Redirection</label>
+                        <input type="text" id="redirection" class="form-control fs-6" formControlName="redirection" />
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        <label for="button" class="fs-6 mb-3">&nbsp;</label>
+                        <input type="button" id="button" class="btn btn-primary" value="Save" (click)="onSubmitMenuItem()"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-4 modalButtons d-flex align-items-center justify-content-end">
+            <button class="btn btn-secondary me-2" (click)="closeTitleItemsRef()">Discard Changes</button>
+            <button class="btn btn-primary" (click)="saveTitleItemsRef()">
+                Save Changes
+            </button>
+        </div>
     </div>
 </ng-template>
