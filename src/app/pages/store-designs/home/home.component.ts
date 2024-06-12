@@ -372,7 +372,13 @@ export class HomeComponent implements OnInit {
           this.widgetDetails = res?.result;
           if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
-              this.widgetImages.push({ url: widgetImage?.media, title: widgetImage?.title, redirection: widgetImage?.redirection })
+              this.widgetImages.push({
+                url: widgetImage?.media,
+                title: widgetImage?.title,
+                description: widgetImage?.description,
+                button: widgetImage?.button,
+                redirection: widgetImage?.redirection
+              })
             }
             this.widgetImagePreview = this.widgetImages[0]
             this.widgetImagePreviewIndex = 0

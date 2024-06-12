@@ -36,6 +36,13 @@ export const environment = {
   // base: 'https://freshfruitmart-api.storedada.net',
   //Fresh fruit
 
+  //Sico foods
+  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  // base: 'https://sidcofoods-api.storedada.net',
+  //Sico foods
+
   //Vperfumes
   // apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
   // baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',

@@ -29,8 +29,8 @@ export class ContactComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.contactCmsDetails = res?.result
-          this.contactCmsDetails['thumbnail'] = res?.result?.thumbnail?._id
           this.form.patchValue(this.contactCmsDetails)
+          this.form.get('thumbnail')?.setValue(res?.result?.thumbnail?._id)
           this.thumbnailPreview = res?.result?.thumbnail?.path
           this.ChangeDetectorRef.markForCheck()
         }

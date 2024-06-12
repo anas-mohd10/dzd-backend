@@ -37,6 +37,7 @@ export class PaymentPolicyComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
+      { class: 'poppins', name: 'Poppins' }
     ]
   };
 

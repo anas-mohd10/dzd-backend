@@ -115,17 +115,20 @@ export class MediaListingComponent implements OnInit {
   }
 
   onMediaChange(event: any) {
-    let file = event.target.files[0]
-    let reader = new FileReader()
-    reader.onload = (e) => {
-      this.previews.push({
-        url: e.target?.result,
-        title: file.name
-      })
-      this.files.push(file)
+    let files = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        this.previews.push({
+          url: e.target?.result,
+          title: file.name
+        });
+        this.files.push(file);
+      };
+      reader.readAsDataURL(file);
     }
-    reader.readAsDataURL(file)
-    this.ChangeDetectorRef.markForCheck()
+    this.ChangeDetectorRef.markForCheck();
   }
 
   cancelMedias() {

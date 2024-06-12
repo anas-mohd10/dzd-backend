@@ -70,7 +70,7 @@ export class NavigationMenuComponent implements OnInit {
     { title: 'Reviews', value: '/reviews' },
     { title: 'Brands', value: '/brands' },
     { title: 'Contact Us', value: '/contact-us' },
-    { title: 'About Us', value: '/about-us' },
+    { title: 'About Us', value: '/about' },
     { title: 'Home', value: '/' },
   ]
   isInvalidItem: boolean = false

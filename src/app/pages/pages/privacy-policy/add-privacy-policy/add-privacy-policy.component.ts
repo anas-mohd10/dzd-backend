@@ -42,6 +42,7 @@ export class AddPrivacyPolicyComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
+      { class: 'poppins', name: 'Poppins' }
     ]
   };
 

@@ -36,6 +36,13 @@ export const environment = {
   // base: 'https://mattressland-api.storedada.net',
   //Mattressland
 
+  //Sico foods
+  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  // base: 'https://sidcofoods-api.storedada.net',
+  //Sico foods
+
   //Storedada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
   // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',

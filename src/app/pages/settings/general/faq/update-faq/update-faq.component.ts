@@ -16,6 +16,7 @@ export class UpdateFaqComponent implements OnInit {
   form: FormGroup
   isSubmitted = false;
   faqId: string = '';
+  faqDetails: any;
 
   constructor(
     private HotToastService: HotToastService,
@@ -26,19 +27,22 @@ export class UpdateFaqComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
     this.form = new FormGroup({
       subject: new FormControl('GENERAL', Validators.required),
       question: new FormControl('', Validators.required),
       answer: new FormControl('', Validators.required),
       isActive: new FormControl('true', Validators.required),
     });
-    this.faqId = this.ActivatedRoute.snapshot.queryParams.slug || ''
+
+    this.faqId = this.ActivatedRoute.snapshot.queryParams.faq || ''
     this.FaqService.getFaq(this.faqId).subscribe({
       next: (res: any) => {
-        if(res?.errorCode == 0){
+        if (res?.errorCode == 0) {
+          this.faqDetails = res?.result
           this.form.patchValue(res?.result)
           this.ChangeDetectorRef.markForCheck()
-        }        
+        }
       }
     })
   }
@@ -53,16 +57,18 @@ export class UpdateFaqComponent implements OnInit {
       return;
     }
 
-    this.FaqService.updateFaq({...this.form.value, slug: this.faqId}).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.HotToastService.error('Something went wrong');
-      } else if (res.errorCode == 0) {
-        this.HotToastService.success('FAQ updated successfully');
-        this.Router.navigate([this.appRoute.faq.FAQ_LIST]);
+    this.FaqService.updateFaq({ ...this.form.value, _id: this.faqId }).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.faq.FAQ_LIST]);
+        } else if (res.errorCode == 0) {
+          this.HotToastService.error(res?.message);
+        }
+      }, error: (err) => {
+        this.HotToastService.error(err?.error?.message);
       }
     })
   }
-
-  addFaq() { }
 
 }

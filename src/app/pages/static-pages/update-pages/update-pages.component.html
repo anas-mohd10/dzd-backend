@@ -21,10 +21,11 @@
     <div class="my-4 card">
         <div class="card-body">
 
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <form [formGroup]="form">
                 <div class="form-group mb-3">
                     <label for="title" class="mb-3 fs-6 required">Title</label>
-                    <input type="text" id="title" placeholder="About Us" formControlName="title" class="form-control" [ngClass]="{
+                    <input type="text" id="title" placeholder="About Us" formControlName="title" class="form-control"
+                        [ngClass]="{
                         'is-invalid':  (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
                 </div>
 
@@ -35,7 +36,8 @@
 
                 <div class="form-group mb-3">
                     <label for="description" class="fs-6 mb-3 required">Description</label>
-                    <div class="form-control fs-6" id="description" [ngClass]="{
+                    <div class="form-control fs-6" id="description"
+                        [ngClass]="{
                         'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}">
                         <angular-editor formControlName="description" [config]="editorConfig">
                         </angular-editor>
@@ -62,7 +64,7 @@
 
                     <div class="d-flex align-items-center gap-2 justify-content-end">
                         <button class="btn btn-secondary" routerLink="{{appRoute.staticPages.list}}">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" (click)="onSubmit()" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </form>

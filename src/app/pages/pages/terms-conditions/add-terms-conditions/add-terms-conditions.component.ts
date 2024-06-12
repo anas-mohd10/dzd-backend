@@ -47,6 +47,7 @@ export class AddTermsConditionsComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
       { class: 'figtree', name: 'Figtree' },
+      { class: 'poppins', name: 'Poppins' }
     ]
   };
 

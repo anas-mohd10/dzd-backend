@@ -259,7 +259,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-5" *ngIf="form.get('view')?.value == 'slider'">
+                        <div class="mb-5" *ngIf="['slider', 'grid'].includes(form.get('view')?.value)">
                             <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
                             <div id="slidesPerView" class="row" formGroupName="spacing">
                                 <div class="col-lg-4 form-group">
@@ -351,8 +351,7 @@
                                             </a>
                                         </div>
                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                            <button class="btn btn-primary"
-                                                (click)="continueRedirectionQuery()">
+                                            <button class="btn btn-primary" (click)="continueRedirectionQuery()">
                                                 Save changes
                                             </button>
                                             <button class="btn btn-danger"
@@ -448,11 +447,6 @@
                                                     {{product.name}}</option>
                                             </select>
                                         </div>
-                                        <!-- <div class="col-lg-4 form-group mb-3">
-                                            <label for="continue" class="form-label">&nbsp;</label>
-                                            <input type="button" class="w-100 btn btn-primary" value="Continue"
-                                                (click)="continueRedirectionQuery()" id="continue">
-                                        </div> -->
                                     </div>
                                 </form>
                             </div>

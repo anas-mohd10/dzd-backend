@@ -80,7 +80,7 @@ export class UploadsListComponent implements OnInit {
     if (extensionCheck) {
       this.fileData = event.files[0];
       this.fileName = this.fileData.name;
-      this.fileSize = this.fileData.size / 1024
+      this.fileSize = this.fileData.size / 1024 / 1024
       this.fileSize > 100 ? this.HotToastService.error("File size should be less than 100MB") : this.isFile = true;
     } else {
       this.HotToastService.error("Please upload a CSV file")
