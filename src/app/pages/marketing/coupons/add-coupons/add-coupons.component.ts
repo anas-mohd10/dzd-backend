@@ -20,6 +20,7 @@ export class AddCouponsComponent implements OnInit {
   editMode = false;
   isSubmitted: boolean;
   appRoute = appRoutes;
+
   categories: any = []; //Array of category ids
   categoriesData: any = []; //Data fetched from database
   category: any = []; //Array of categorty name and id
@@ -31,6 +32,7 @@ export class AddCouponsComponent implements OnInit {
   brands: any = []; //Array of collection ids
   brandsData: any = []; //Data fetched from database
   collection: any = []; //Array of collection name and id
+
   error_message: string;
   fromDate: string;
   toDate: string
@@ -59,13 +61,13 @@ export class AddCouponsComponent implements OnInit {
       }
     })
 
-    this.fromDate = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]
+    this.fromDate = new Date(new Date().setDate(new Date().getDate())).toISOString().split('T')[0]
     this.toDate = new Date(new Date().setDate(new Date().getDate() + 3)).toISOString().split('T')[0]
 
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       code: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
+      type: new FormControl('percent', Validators.required),
       value: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
       fromDate: new FormControl('', Validators.required),
       lastDate: new FormControl('', Validators.required),
@@ -79,7 +81,7 @@ export class AddCouponsComponent implements OnInit {
       radius: new FormControl(''),
       color: new FormControl(''),
       fontSize: new FormControl(''),
-      criteriaType: new FormControl('partial'),
+      criteriaType: new FormControl('complete'),
       fontWeight: new FormControl(''),
       couponType: new FormControl('limited', Validators.required),
       couponValue: new FormControl(10, Validators.required),
@@ -94,6 +96,9 @@ export class AddCouponsComponent implements OnInit {
     this.getCategories()
     this.getCollections()
     this.getBrands()
+
+    this.form.get('fromDate')?.setValue(this.fromDate)
+    this.form.get('lastDate')?.setValue(this.toDate)
   }
 
   get formControls() {
@@ -205,7 +210,7 @@ export class AddCouponsComponent implements OnInit {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,
         },
-        couponType: this.form.get('criteriaType')?.value,
+        couponType: this.form.get('criteriaType')?.value == 'complete' ? 'complete' : 'partial',
         countPerUser: this.form.get('countPerUser')?.value,
         isActive: this.form.get('isActive')?.value,
         isVisibility: this.form.get('isVisibility')?.value,

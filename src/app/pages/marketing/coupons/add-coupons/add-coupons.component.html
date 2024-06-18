@@ -28,7 +28,8 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Title</label>
-              <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
+              <input type="text" class="form-control fs-6" formControlName="title"
+                [ngClass]="{
                             'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}" />
             </div>
           </div>
@@ -36,18 +37,19 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Coupon Code</label>
-              <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
+              <input type="text" class="form-control fs-6" formControlName="code"
+                [ngClass]="{
                             'is-invalid': (formControls.code.touched || isSubmitted) && formControls.code.errors?.required}" />
             </div>
           </div>
 
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3 required">Type</label>
+              <label class="fs-6 mb-3">Type</label>
               <select class="form-select" formControlName="type"
                 [ngClass]="{ 'is-invalid': (formControls.type.touched || isSubmitted) && formControls.type.errors?.required}">
                 <option value="" disabled>-- Select an option --</option>
-                <option value="percent">%</option>
+                <option value="percent">Percentage</option>
                 <option value="amount">Flat</option>
               </select>
             </div>
@@ -61,7 +63,7 @@
                 [ngClass]="{
                             'is-invalid': (formControls.value.touched || isSubmitted) && formControls.value.errors?.required || formControls.value.errors?.pattern}" />
               <div class="mt-1 alert alert-danger" role="alert" *ngIf="formControls.value.errors?.pattern">
-                Only numbers are allowed
+                Enter an valid coupon value
               </div>
               <div class="mt-1 alert alert-danger" role="alert" *ngIf="!isValidValue">
                 Value must be lesser than or equal to 100 when coupon type is percentage
@@ -80,7 +82,7 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Last Date</label>
-              <input type="date" [min]="toDate" class="form-control fs-6" formControlName="lastDate"
+              <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
                 [ngClass]="{ 'is-invalid': (formControls.lastDate.touched || isSubmitted) && formControls.lastDate.errors?.required }" />
             </div>
           </div>
@@ -101,13 +103,16 @@
               <label class="fs-6 mb-3">Applicaiton Criteria</label>
               <select class="form-select mb-3" formControlName="criteriaType">
                 <option value="" disabled>-- Select an option --</option>
-                <option value="complete">Complete</option>
-                <option value="partial">Partial</option>
+                <option value="products">Products</option>
+                <option value="collections">Collections</option>
+                <option value="brands">Brands</option>
+                <option value="categories">Categories</option>
+                <option value="complete">Store</option>
               </select>
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div *ngIf="form.get('criteriaType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
               <ng-select class="fs-6" [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
@@ -117,7 +122,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div *ngIf="form.get('criteriaType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collection</label>
               <ng-select class="fs-6" [items]="collectionsData" bindLabel="name" bindValue="_id"
@@ -127,7 +132,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div *ngIf="form.get('criteriaType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Category</label>
               <ng-select class="fs-6" [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
@@ -137,7 +142,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div *ngIf="form.get('criteriaType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
               <ng-select class="fs-6" [items]="brandsData" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
@@ -181,9 +186,9 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="isLimited">
+          <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3">No. of Coupons</label>
+              <label class="fs-6 mb-3">Number of Coupons</label>
               <div class="input-group mb-3">
                 <input type="number" class="form-control" formControlName="couponValue" />
               </div>
@@ -194,7 +199,7 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Coupon Per User</label>
               <input type="number" class="form-control" formControlName="countPerUser"
-                [ngClass]="{ 'is-invalid': formControls.countPerUser.errors?.pattern}" placeholder="Eg. 1" />
+                [ngClass]="{ 'is-invalid': formControls.countPerUser.errors?.pattern}"/>
               <div class="alert alert-danger mt-1" role="alert" *ngIf="formControls.couponValue.errors?.pattern">
                 Only numbers are allowed
               </div>
@@ -247,10 +252,10 @@
           </div>
 
           <div class="gap-2 d-flex align-items-center justify-content-end">
-            <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary">
+            <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class="btn btn-secondary">
               Cancel
             </a>
-            <button type="submit" class="btn btn-primary" (click)="onSubmit()">Add</button>
+            <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
           </div>
         </div>
       </form>
