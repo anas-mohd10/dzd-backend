@@ -12,7 +12,8 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'http://localhost:3000/api/v1/w/',
   appBaserl: 'http://localhost:3000/api/v1/a/',
-  base: 'http://localhost:3000',
+  // base: 'http://localhost:3000',
+  base: 'https://storedadabucket.s3.ap-south-1.amazonaws.com',
   //Local
 
   //Fresh fruit

@@ -13,6 +13,11 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { HotToastService } from '@ngneat/hot-toast';
 
+interface StoreField {
+  title: string,
+  description: string,
+}
+
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
@@ -94,6 +99,10 @@ export class UpdateProductComponent implements OnInit {
   activeRelatedProducts: Array<any> = []
   relatedProduct: FormControl = new FormControl('')
 
+  storeFields: Array<StoreField> = []
+  storeFieldForm: FormGroup = new FormGroup({})
+  isStoreSubmitted: boolean = false
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
@@ -108,6 +117,10 @@ export class UpdateProductComponent implements OnInit {
 
   onBrandTriggered(event: any) {
     this.parentForm.get('brand')?.setValue(event._id)
+  }
+
+  get storeFieldControls() {
+    return this.storeFieldForm.controls
   }
 
   onCategoryTriggered(event: any) {
@@ -266,6 +279,7 @@ export class UpdateProductComponent implements OnInit {
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.productAttributes,
+      storeFrontFields: this.storeFields,
       productIcons: this.icons.map((icon: any) => icon._id),
       category: {
         id: this.categories.map((category: any) => category?._id),
@@ -340,6 +354,11 @@ export class UpdateProductComponent implements OnInit {
       bottomLeftTag: new FormControl(null)
     })
 
+    this.storeFieldForm = new FormGroup({
+      title: new FormControl('  ', Validators.required),
+      description: new FormControl('  ', Validators.required)
+    })
+
     this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || ''
 
     this.ProductService.getProductDetails(this.productSlug).subscribe({
@@ -348,6 +367,7 @@ export class UpdateProductComponent implements OnInit {
           this.form.patchValue(res?.result)
           this.productDetails = res?.result
           this.images = res?.result?.files
+          this.storeFields = res?.result?.storeFrontFields
           this.categories = res?.result?.category?.id
           if (res?.result?.productTags) {
             this.tagsForm.patchValue(res?.result?.productTags)
@@ -414,6 +434,9 @@ export class UpdateProductComponent implements OnInit {
         features: new FormControl(""),
         longDescription: new FormControl("")
       }),
+      metaTitle: new FormControl(""),
+      metaDescription: new FormControl(""),
+      metaKeywords: new FormControl(""),
       stockWarning: new FormControl(10),
       searchKeywords: new FormControl(""),
       relatedProducts: new FormControl(""),
@@ -464,4 +487,21 @@ export class UpdateProductComponent implements OnInit {
     //Tax class details
   }
 
+
+  //Store fields
+  onSaveStoreField() {
+    if (!this.storeFieldForm.valid) {
+      this.isStoreSubmitted = true
+      return
+    }
+
+    this.storeFields.push(this.storeFieldForm.value)
+    this.storeFieldForm.reset()
+    this.isStoreSubmitted = false
+  }
+
+  removeStoreField(storeFieldIndex: number) {
+    this.storeFields.splice(storeFieldIndex, 1)
+  }
+  //Store fields
 }

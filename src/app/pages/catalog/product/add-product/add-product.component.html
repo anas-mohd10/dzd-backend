@@ -383,8 +383,9 @@
                             class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
                             (click)="toggleSearchKeywords(keyword, 'remove')">
                             {{keyword}}
-                            <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5" stroke="currentColor"
-                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
@@ -419,6 +420,61 @@
                       </div>
                     </ng-container>
                   </div>
+                </div>
+
+                <div>
+                  <div class="fs-3 fw-bold">SEO Details</div>
+                  <p class="text-muted mb-3">Update the seo details of the product</p>
+                  <div class="form-group mb-3">
+                    <label for="metaTitle" class="fs-6 mb-3">Meta title</label>
+                    <input type="text" formControlName="metaTitle" class="form-control">
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="metaDescription" class="fs-6 mb-3">Meta description</label>
+                    <input type="text" formControlName="metaDescription" class="form-control">
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="metaKeywords" class="fs-6 mb-3">Meta keywords</label>
+                    <input type="text" formControlName="metaKeywords" class="form-control">
+                  </div>
+                </div>
+
+                <div>
+                  <div class="fs-3 fw-bold">Store fields</div>
+                  <p class="text-muted mb-3">Add dynamic fields to your product which will be shown in PDP pages</p>
+
+                  <div class="mb-3">
+                    <div class="row mb-3" *ngFor="let storeField of storeFields; let i = index">
+                      <div class="col-lg-4 form-group">
+                        <input type="text" class="form-control" value="{{storeField.title}}" disabled>
+                      </div>
+                      <div class="col-lg-6 form-group">
+                        <input type="text" class="form-control" value="{{storeField.description}}" disabled>
+                      </div>
+                      <div class="col-lg-2 form-group">
+                        <button class="btn btn-danger w-100" value="Remove fields" (click)="removeStoreField(i)">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <form [formGroup]="storeFieldForm" class="row mb-3">
+                    <div class="form-group col-lg-4">
+                      <label for="storeTitle" class="fs-6 mb-3">Title</label>
+                      <input type="text" id="storeTitle" formControlName="title" class="form-control"
+                        [ngClass]="{
+                        'is-invalid': (storeFieldControls.title.touched || isStoreSubmitted) && storeFieldControls.title.errors?.required }">
+                    </div>
+                    <div class="form-group col-lg-6">
+                      <label for="storeDescription" class="fs-6 mb-3">Description</label>
+                      <input type="text" id="storeDescription" formControlName="description" class="form-control"
+                        [ngClass]="{
+                        'is-invalid': (storeFieldControls.description.touched || isStoreSubmitted) && storeFieldControls.description.errors?.required }">
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label for="storeSave" class="fs-6 mb-3">&nbsp;</label>
+                      <input type="button" class="btn btn-secondary w-100" (click)="onSaveStoreField()" value="Save fields">
+                    </div>
+                  </form>
                 </div>
 
                 <div class="row">

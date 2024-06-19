@@ -15,6 +15,11 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 
+interface StoreField {
+  title: string,
+  description: string,
+}
+
 @Component({
   selector: 'app-add-product',
   templateUrl: './add-product.component.html',
@@ -95,6 +100,10 @@ export class AddProductComponent implements OnInit {
   activeRelatedProducts: Array<any> = []
   relatedProduct: FormControl = new FormControl('')
 
+  storeFields: Array<StoreField> = []
+  storeFieldForm: FormGroup = new FormGroup({})
+  isStoreSubmitted: boolean = false
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
@@ -111,6 +120,10 @@ export class AddProductComponent implements OnInit {
 
   get parentControls() {
     return this.parentForm.controls
+  }
+
+  get storeFieldControls() {
+    return this.storeFieldForm.controls
   }
 
   onProductsTriggered(productId?: any) {
@@ -334,6 +347,7 @@ export class AddProductComponent implements OnInit {
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.productAttributes,
       productIcons: this.icons.map((icon: any) => icon._id),
+      storeFrontFields: this.storeFields,
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
@@ -441,6 +455,11 @@ export class AddProductComponent implements OnInit {
   ngOnInit(): void {
     this.base = environment.base
 
+    this.storeFieldForm = new FormGroup({
+      title: new FormControl('  ', Validators.required),
+      description: new FormControl('  ', Validators.required)
+    })
+
     this.tagsForm = new FormGroup({
       topRightTag: new FormControl(null),
       topLeftTag: new FormControl(null),
@@ -501,6 +520,9 @@ export class AddProductComponent implements OnInit {
         features: new FormControl(""),
         longDescription: new FormControl("")
       }),
+      metaTitle: new FormControl(""),
+      metaDescription: new FormControl(""),
+      metaKeywords: new FormControl(""),
       stockWarning: new FormControl(10),
       searchKeywords: new FormControl(""),
       relatedProducts: new FormControl(""),
@@ -582,4 +604,21 @@ export class AddProductComponent implements OnInit {
     })
   }
   //Get child products for corresponding parentId
+
+  //Store fields
+  onSaveStoreField() {
+    if (!this.storeFieldForm.valid) {
+      this.isStoreSubmitted = true
+      return
+    }
+
+    this.storeFields.push(this.storeFieldForm.value)
+    this.storeFieldForm.reset()
+    this.isStoreSubmitted = false
+  }
+
+  removeStoreField(storeFieldIndex: number) {
+    this.storeFields.splice(storeFieldIndex, 1)
+  }
+  //Store fields
 }
