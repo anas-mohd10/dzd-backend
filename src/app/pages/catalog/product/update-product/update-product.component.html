@@ -34,8 +34,8 @@
                 <div class="row">
                   <div class="col-lg-8 mb-3 form-group">
                     <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. Australian Avocado"
-                      formControlName="name" />
+                    <input type="text" class="form-control fs-6" formControlName="name"
+                      [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
                   </div>
                 </div>
 
@@ -148,7 +148,8 @@
                   <div class="row">
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">Stock</label>
-                      <input type="text" class="form-control fs-6" formControlName="stock" />
+                      <input type="text" class="form-control fs-6" formControlName="stock"
+                        [ngClass]="{ 'is-invalid': (formControls.stock.touched || isSubmitted) && (formControls.stock.errors?.required || formControls.stock.errors?.pattern)}" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">SKU</label>
@@ -156,11 +157,13 @@
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">Minimum order quantity</label>
-                      <input type="text" class="form-control fs-6" formControlName="moq" />
+                      <input type="text" class="form-control fs-6" formControlName="moq"
+                        [ngClass]="{ 'is-invalid': (formControls.moq.touched || isSubmitted) && (formControls.moq.errors?.required || formControls.moq.errors?.pattern)}" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">Maximum order quantity</label>
-                      <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
+                      <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity"
+                        [ngClass]="{ 'is-invalid': (formControls.maxOrderQuantity.touched || isSubmitted) && (formControls.maxOrderQuantity.errors?.required || formControls.maxOrderQuantity.errors?.pattern)}" />
                     </div>
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3">Stock warning</label>

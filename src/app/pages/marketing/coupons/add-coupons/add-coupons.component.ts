@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
@@ -47,7 +47,7 @@ export class AddCouponsComponent implements OnInit {
     private collectionService: CollectionService,
     private couponsService: CouponsService,
     private router: Router,
-    private toastr: ToastrService,
+    private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private BrandService: BrandService
@@ -84,12 +84,12 @@ export class AddCouponsComponent implements OnInit {
       criteriaType: new FormControl('complete'),
       fontWeight: new FormControl(''),
       couponType: new FormControl('limited', Validators.required),
-      couponValue: new FormControl(10, Validators.required),
+      couponValue: new FormControl(10, [Validators.required, Validators.pattern("^[0-9]*$")]),
       isActive: new FormControl('true'),
       minimumType: new FormControl('cart'),
       isDelete: new FormControl('false'),
       isVisibility: new FormControl('true'),
-      countPerUser: new FormControl('1', Validators.pattern("^[0-9]*$")),
+      countPerUser: new FormControl('1', [Validators.required, Validators.pattern("^[0-9]*$")]),
     });
 
     this.getProducts()
@@ -182,9 +182,9 @@ export class AddCouponsComponent implements OnInit {
     if (payload) {
       this.couponsService.addCoupon(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
-          this.toastr.error(res?.message);
+          this.HotToastService.error(res?.message);
         } else if (res.errorCode == 0) {
-          this.toastr.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
         }
       })

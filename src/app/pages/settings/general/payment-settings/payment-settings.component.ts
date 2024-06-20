@@ -23,7 +23,8 @@ export class PaymentSettingsComponent implements OnInit {
   pgs: Array<any> = [
     { title: "Paytabs", id: "paytabs", icon: `${environment.base}/uploads/medias/paytabs.png` },
     { title: "Tabby", id: "tabby", icon: `${environment.base}/uploads/medias/tabby.png` },
-    { title: "Tap Payments", id: "tap", icon: `${environment.base}/uploads/medias/tap.jpg` }
+    { title: "Tap Payments", id: "tap", icon: `${environment.base}/uploads/medias/tap.jpg` },
+    { title: "Rak Bank", id: "rakbank", icon: `${environment.base}/uploads/medias/rakbank.png` },
   ]
   displayIcon: string = ''
   modalRef?: BsModalRef
@@ -31,7 +32,8 @@ export class PaymentSettingsComponent implements OnInit {
   paymentGatewayConfig: any = {
     'paytabs': ['profileId', 'serverKey', 'region'],
     'tabby': ['merchantCode', 'secretKey', 'publicKey'],
-    'tap': ['secretKey', 'publicKey']
+    'tap': ['secretKey', 'publicKey'],
+    'rakbank': ['publicKey', 'privateKey'],
   };
 
   get formControls() {
@@ -56,6 +58,7 @@ export class PaymentSettingsComponent implements OnInit {
       displayName: new FormControl(''),
       displayIcon: new FormControl(null),
       publicKey: new FormControl(''),
+      privateKey: new FormControl(''),
       region: new FormControl(''),
       serverKey: new FormControl(''),
       isEnabled: new FormControl(false),

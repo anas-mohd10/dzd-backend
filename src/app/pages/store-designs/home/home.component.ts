@@ -80,7 +80,16 @@ export class HomeComponent implements OnInit {
   tileProductsInput: FormControl = new FormControl("", Validators.required); // Smart tiles widgets
   tileProducts: Array<any> = [] // Smart tiles widgets
   widgetProductTypes: Array<any> = ["smart-tiles", "products"]
-  widgetImageTypes: Array<any> = ["image-slider", "quad-square", "prime-plates", "elite-elements", "noble-nodes", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas", "twin-towers", "stellar-selections", "slider-spotlight", "trending-teasers"]
+  widgetImageTypes: Array<any> = [
+    "image-slider", "radiant-rectangles",
+    "quad-square", "prime-plates",
+    "elite-elements", "noble-nodes",
+    "classic-banners", "magestic-mosaic",
+    "glamour-glaze", "dazzle-design",
+    "grandeur-gallery", "celestial-canvas",
+    "twin-towers", "stellar-selections",
+    "slider-spotlight", "trending-teasers"
+  ]
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },
@@ -134,6 +143,7 @@ export class HomeComponent implements OnInit {
   testimonialKeyword: FormControl = new FormControl("", Validators.required);
   testimonials: Array<any> = []
   widgetTestimonials: Array<any> = []
+  titleThumbnailDetails: string = ''
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -285,9 +295,6 @@ export class HomeComponent implements OnInit {
       case 'static-pages':
         this.getStaticPages()
         break
-      case 'cms-pages':
-        this.continueRedirectionQuery()
-        break
       case 'all-products':
         this.widgetForm.get('redirection')?.setValue("/products")
         this.redirectionQuery.setValue("/products")
@@ -312,6 +319,9 @@ export class HomeComponent implements OnInit {
   }
 
   continueRedirectionQuery() {
+    console.log(this.widgetForm.value.redirectionType);
+    console.log(this.redirectionQuery.value);
+    
     switch (this.widgetForm.value.redirectionType) {
       case 'blogs':
         this.widgetForm.get('redirection')?.setValue("/blogs/" + this.redirectionDetails.slug)
@@ -528,7 +538,6 @@ export class HomeComponent implements OnInit {
     this.widgetImagePreviewIndex = index
     this.widgetImagePreview = this.widgetImages[index]
     this.previewDetails = this.widgetImagePreview.url ? this.widgetImagePreview.url?.path : ""
-    this.widgetForm.patchValue(this.widgetImagePreview)
     this.ChangeDetectorRef.markForCheck()
   }
 
@@ -599,7 +608,6 @@ export class HomeComponent implements OnInit {
     }
 
     type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
-
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
       next: (res: any) => {
@@ -713,6 +721,18 @@ export class HomeComponent implements OnInit {
     this.count++
   }
 
+  //Title image
+  onTitleImageTriggered(event: any) {
+    this.titleThumbnailDetails = event.path
+    this.form.get("titleImage")?.setValue(event._id)
+  }
+
+  removeTitleImage() {
+    this.titleThumbnailDetails = ''
+    this.form.get("titleImage")?.setValue(null)
+  }
+  //Title image
+
   ngOnInit(): void {
     this.widgets = this.widgets.sort((a: any, b: any) => {
       if (a.title < b.title) {
@@ -732,6 +752,7 @@ export class HomeComponent implements OnInit {
     this.form = new FormGroup({
       visibility: new FormControl("all"),
       title: new FormControl(""),
+      titleImage: new FormControl(null),
       description: new FormControl(""),
       html: new FormControl(""),
       video: new FormControl(""),

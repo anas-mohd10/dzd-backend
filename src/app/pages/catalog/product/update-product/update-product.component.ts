@@ -28,7 +28,7 @@ export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
-  isSubmitted = false;
+  isSubmitted: boolean = false;
   searchKeyowrds: any = [];
   tumbnail: any
   attributes: any = []
@@ -98,10 +98,9 @@ export class UpdateProductComponent implements OnInit {
   thumbnailPreview: string = ''
   activeRelatedProducts: Array<any> = []
   relatedProduct: FormControl = new FormControl('')
-
   storeFields: Array<StoreField> = []
   storeFieldForm: FormGroup = new FormGroup({})
-  isStoreSubmitted: boolean = false
+  isStoreSubmitted: boolean = false;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -267,6 +266,7 @@ export class UpdateProductComponent implements OnInit {
 
   saveChanges() {
     if (!this.form.valid) {
+      this.isSubmitted = true
       return
     }
 
@@ -344,6 +344,10 @@ export class UpdateProductComponent implements OnInit {
 
   }
 
+  get formControls() {
+    return this.form.controls
+  }
+
   ngOnInit(): void {
     this.base = environment.base
 
@@ -413,14 +417,14 @@ export class UpdateProductComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
       price: new FormGroup({
-        mrp: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+        mrp: new FormControl("", [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
         offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
         selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
       }),
-      stock: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-      moq: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      stock: new FormControl("", [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
+      moq: new FormControl(1, [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
       sku: new FormControl("", Validators.required),
-      maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
       thumbnail: new FormControl(""),
       files: new FormControl(""),
       video: new FormControl(""),
@@ -486,7 +490,6 @@ export class UpdateProductComponent implements OnInit {
     });
     //Tax class details
   }
-
 
   //Store fields
   onSaveStoreField() {

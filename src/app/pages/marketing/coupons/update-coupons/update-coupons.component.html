@@ -25,239 +25,246 @@
       <div class="card-body">
          <form [formGroup]="form">
             <div class="row">
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3 required">Title</label>
-                     <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
-                                 'is-invalid': (cf.title.touched || isSubmitted) && cf.title.errors?.required}" />
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Title</label>
+                  <input type="text" class="form-control fs-6" formControlName="title"
+                    [ngClass]="{
+                                'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Coupon Code</label>
+                  <input type="text" class="form-control fs-6" formControlName="code"
+                    [ngClass]="{
+                                'is-invalid': (formControls.code.touched || isSubmitted) && formControls.code.errors?.required}" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Type</label>
+                  <select class="form-select" formControlName="type"
+                    [ngClass]="{ 'is-invalid': (formControls.type.touched || isSubmitted) && formControls.type.errors?.required}">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="percent">Percentage</option>
+                    <option value="amount">Flat</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Value</label>
+                  <input type="text" class="form-control fs-6" formControlName="value"
+                    (change)="validateValue($event.target)"
+                    [ngClass]="{
+                                'is-invalid': (formControls.value.touched || isSubmitted) && formControls.value.errors?.required || formControls.value.errors?.pattern}" />
+                  <div class="mt-1 alert alert-danger" role="alert" *ngIf="formControls.value.errors?.pattern">
+                    Enter an valid coupon value
                   </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3 required">Coupon Code</label>
-                     <input type="text" class="form-control fs-6" formControlName="code" [ngClass]="{
-                                 'is-invalid': (cf.code.touched || isSubmitted) && cf.code.errors?.required}" />
+                  <div class="mt-1 alert alert-danger" role="alert" *ngIf="!isValidValue">
+                    Value must be lesser than or equal to 100 when coupon type is percentage
                   </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3 required">Type</label>
-                     <select class="form-select" formControlName="type"
-                        [ngClass]="{ 'is-invalid': (cf.type.touched || isSubmitted) && cf.type.errors?.required}">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="percent">Percentage</option>
-                        <option value="amount">Flat</option>
-                     </select>
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">From Date</label>
+                  <input type="date" class="form-control fs-6" [min]="fromDate" formControlName="fromDate"
+                    [ngClass]="{'is-invalid': (formControls.fromDate.touched || isSubmitted) &&  formControls.fromDate.errors?.required}" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Last Date</label>
+                  <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
+                    [ngClass]="{ 'is-invalid': (formControls.lastDate.touched || isSubmitted) && formControls.lastDate.errors?.required }" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Minimum Purchase</label>
+                  <input type="text" class="form-control" formControlName="minPurchase"
+                    [ngClass]="{ 'is-invalid': (formControls.minPurchase.touched || isSubmitted) && formControls.minPurchase.errors?.required || formControls.minPurchase.errors?.pattern}" />
+                  <div class="alert alert-danger mt-1" role="alert" *ngIf="formControls.minPurchase.errors?.pattern">
+                    Only numbers are allowed
                   </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3 required">Value</label>
-                     <input type="text" class="form-control fs-6" formControlName="value"
-                        (change)="validateValue($event.target)"
-                        [ngClass]="{
-                                 'is-invalid': (cf.value.touched || isSubmitted) && cf.value.errors?.required || cf.value.errors?.pattern}" />
-                     <div class="mt-1 alert alert-danger" role="alert" *ngIf="cf.value.errors?.pattern">
-                        Only numbers are allowed
-                     </div>
-                     <div class="mt-1 alert alert-danger" role="alert" *ngIf="!isValidValue">
-                        Value must be lesser than or equal to 100 when coupon type is percentage
-                     </div>
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Applicaiton Criteria</label>
+                  <select class="form-select mb-3" formControlName="criteriaType">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="products">Products</option>
+                    <option value="collections">Collections</option>
+                    <option value="brands">Brands</option>
+                    <option value="categories">Categories</option>
+                    <option value="complete">Store</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div *ngIf="form.get('criteriaType')?.value == 'products'">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Products</label>
+                  <ng-select class="fs-6" [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
+                    placeholder="Select products applicable to coupon" (change)="applyCoupon('product')" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+    
+              <div *ngIf="form.get('criteriaType')?.value == 'collections'">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Collection</label>
+                  <ng-select class="fs-6" [items]="collectionsData" bindLabel="name" bindValue="_id"
+                    [(ngModel)]="collections" placeholder="Select collections applicable to coupon"
+                    (change)="applyCoupon('collection')" [multiple]=true [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+    
+              <div *ngIf="form.get('criteriaType')?.value == 'categories'">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Category</label>
+                  <ng-select class="fs-6" [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
+                    placeholder="Select categories applicable to coupon" (change)="applyCoupon('category')" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+    
+              <div *ngIf="form.get('criteriaType')?.value == 'brands'">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Brands</label>
+                  <ng-select class="fs-6" [items]="brandsData" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
+                    placeholder="Select brands applicable to coupon" (change)="applyCoupon('brand')" [multiple]=true
+                    [ngModelOptions]="{standalone: true}">
+                  </ng-select>
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Active Coupon?</label>
+                  <select class="form-select" formControlName="isActive">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Visible Coupon?</label>
+                  <select class="form-select" formControlName="isVisibility">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Coupon Type</label>
+                  <select class="form-select mb-3" formControlName="couponType"
+                    (change)="form.get('couponType')?.value == 'unlimited' ? form.get('couponValue')?.setValue(10) : null">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="limited">Limited</option>
+                    <option value="unlimited">Unlimited</option>
+                  </select>
+                </div>
+              </div>
+    
+              <div class="col-lg-6" *ngIf="form.get('couponType')?.value == 'limited'">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Number of Coupons</label>
+                  <input type="text" class="form-control" formControlName="couponValue"
+                    [ngClass]="{ 'is-invalid': formControls.couponValue.errors?.pattern}" />
+                  <div class="alert alert-danger mt-1" role="alert" *ngIf="formControls.couponValue.errors?.pattern">
+                    Only numbers are allowed
                   </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">From Date</label>
-                     <input type="date" class="form-control fs-6" [min]="startDate" formControlName="fromDate"
-                        [ngClass]="{'is-invalid': (cf.fromDate.touched || isSubmitted) &&  cf.fromDate.errors?.required}" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Coupon Usage</label>
+                  <input type="text" class="form-control" formControlName="countPerUser"
+                    [ngClass]="{ 'is-invalid': formControls.countPerUser.errors?.pattern}" />
+                  <div class="alert alert-danger mt-1" role="alert" *ngIf="formControls.countPerUser.errors?.pattern">
+                    Only numbers are allowed
                   </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Last Date</label>
-                     <input type="date" [min]="startDate" class="form-control fs-6" formControlName="lastDate"
-                        [ngClass]="{ 'is-invalid': (cf.lastDate.touched || isSubmitted) && cf.lastDate.errors?.required }" />
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3 required">Minimum Purchase</label>
-                     <input type="text" class="form-control" formControlName="minPurchase"
-                        [ngClass]="{ 'is-invalid': (cf.minPurchase.touched || isSubmitted) && cf.minPurchase.errors?.required || cf.minPurchase.errors?.pattern}" />
-                     <div class="alert alert-danger mt-1" role="alert" *ngIf="cf.minPurchase.errors?.pattern">
-                        Only numbers are allowed
-                     </div>
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Applicaiton Criteria</label>
-                     <select class="form-select mb-3" formControlName="criteriaType">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="complete">Complete</option>
-                        <option value="partial">Partial</option>
-                     </select>
-                  </div>
-               </div>
-
-               <div class="row mt-3 mb-3">
-                  <div class="col-lg-12">
-                     <div class="alert alert-info fs-6" role="alert">Coupon gets applied to only one of the below
-                        input
-                     </div>
-                  </div>
-                  <div class="col-lg-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Products</label>
-                        <ng-select [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                           placeholder="Select products applicable to coupon" (change)="applyCoupon('product')"
-                           [multiple]=true [ngModelOptions]="{standalone: true}">
-                        </ng-select>
-                     </div>
-                  </div>
-
-                  <div class="col-lg-6">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Collection</label>
-                        <ng-select [items]="collectionsData" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
-                           placeholder="Select collections applicable to coupon" (change)="applyCoupon('collection')"
-                           [multiple]=true [ngModelOptions]="{standalone: true}">
-                        </ng-select>
-                     </div>
-                  </div>
-
-                  <div class="col-lg-6">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Category</label>
-                        <ng-select [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                           placeholder="Select categories applicable to coupon" (change)="applyCoupon('category')"
-                           [multiple]=true [ngModelOptions]="{standalone: true}">
-                        </ng-select>
-                     </div>
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Active Coupon?</label>
-                     <select class="form-select" formControlName="isActive">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                     </select>
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Visible Coupon?</label>
-                     <select class="form-select" formControlName="isVisibility">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                     </select>
-                  </div>
-                  <div class="alert alert-warning fs-6" role="alert">
-                     Only visible coupons will be reflected in user app, other coupons can be used in admin dashboard
-                  </div>
-               </div>
-
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Coupon Type</label>
-                     <select class="form-select form-select-lg mb-3" formControlName="couponType">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="limited">Limited</option>
-                        <option value="unlimited">Unlimited</option>
-                     </select>
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">No. of Coupons</label>
-                     <div class="input-group mb-3">
-                        <input type="number" class="form-control" formControlName="couponValue" />
-                     </div>
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Coupon Per User</label>
-                     <input type="number" class="form-control" formControlName="countPerUser"
-                        [ngClass]="{ 'is-invalid': cf.countPerUser.errors?.pattern}" placeholder="Eg. 1" />
-                     <div class="alert alert-danger mt-1" role="alert" *ngIf="cf.couponValue.errors?.pattern">
-                        Only numbers are allowed
-                     </div>
-                  </div>
-               </div>
-
-               <div class="mb-4">
-                  <h2 class="form-title">Coupon Styles</h2>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Background</label>
-                     <input type="color" placeholder="Background" class="form-control fs-6" style="height: 50px;"
-                        formControlName="background" />
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Border</label>
-                     <input type="color" placeholder="Border" class="form-control fs-6" formControlName="border"
-                        style="height: 50px;" />
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Border Radius</label>
-                     <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Color</label>
-                     <input type="color" placeholder="Color" class="form-control fs-6" style="height: 50px;"
-                        formControlName="color" />
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Font Weight</label>
-                     <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
-                  </div>
-               </div>
-
-               <div class="col-lg-6">
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Font Size ( in px )</label>
-                     <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
-                  </div>
-               </div>
-
-               <div class="d-flex align-items-center justify-content-end gap-2">
-                  <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class=" btn btn-secondary">
-                     Cancel
-                  </a>
-                  <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
-               </div>
+                </div>
+              </div>
+    
             </div>
-         </form>
+    
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Background</label>
+                  <input type="color" placeholder="Background" class="form-control fs-6" style="height: 50px;"
+                    formControlName="background" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Border</label>
+                  <input type="color" placeholder="Border" class="form-control fs-6" formControlName="border"
+                    style="height: 50px;" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Border Radius</label>
+                  <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Color</label>
+                  <input type="color" placeholder="Color" class="form-control fs-6" style="height: 50px;"
+                    formControlName="color" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Font Weight</label>
+                  <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
+                </div>
+              </div>
+    
+              <div class="col-lg-6">
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Font Size</label>
+                  <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
+                </div>
+              </div>
+            </div>
+    
+            <div class="gap-2 d-flex align-items-center justify-content-end">
+              <a routerLink="{{ appRoute.coupons.COUPONS_LIST }}" class="btn btn-secondary">
+                Cancel
+              </a>
+              <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+            </div>
+          </form>
       </div>
    </div>
 </div>
