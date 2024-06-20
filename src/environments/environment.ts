@@ -17,8 +17,8 @@ export const environment = {
   //Dev
 
   //Local
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
   // base: 'http://localhost:3000',
   base: 'https://storedadabucket.s3.ap-south-1.amazonaws.com',
   //Local
@@ -30,17 +30,17 @@ export const environment = {
   // base: 'https://mattressland-api.storedada.net',
   //Mattressland
 
-  //Fresh fruit
+  //Fresh fruits
   // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
   // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
   // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
   // base: 'https://freshfruitmart-api.storedada.net',
-  //Fresh fruit
+  //Fresh fruits
 
   //Sico foods
-  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
   // base: 'https://sidcofoods-api.storedada.net',
   //Sico foods
 
