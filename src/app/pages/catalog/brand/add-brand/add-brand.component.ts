@@ -66,6 +66,10 @@ export class AddBrandComponent implements OnInit {
       isFeatured: ['false', Validators.required],
       isArchive: ['false', Validators.required],
       background: [''],
+      description: [''],
+      metaTitle: [''],
+      metaDescription: [''],
+      metaKeywords: [''],
       border: [''],
       radius: [''],
       thumbnail: [null],
@@ -106,6 +110,10 @@ export class AddBrandComponent implements OnInit {
   createPayload() {
     const data = {
       name: this.brandForm.get("name")?.value,
+      description: this.brandForm.get("description")?.value,
+      metaTitle: this.brandForm.get("metaTitle")?.value,
+      metaDescription: this.brandForm.get("metaDescription")?.value,
+      metaKeywords: this.brandForm.get("metaKeywords")?.value,
       isActive: this.brandForm.get("isActive")?.value,
       isFeatured: this.brandForm.get("isFeatured")?.value,
       isArchive: this.brandForm.get("isArchive")?.value,

@@ -452,6 +452,10 @@ export class AddProductComponent implements OnInit {
 
   }
 
+  get formControls() {
+    return this.form.controls
+  }
+
   ngOnInit(): void {
     this.base = environment.base
 
@@ -482,7 +486,7 @@ export class AddProductComponent implements OnInit {
     this.parentForm = new FormGroup({
       name: new FormControl("", Validators.required),
       brand: new FormControl(""),
-      defaultCategory: new FormControl(""), // Default category
+      defaultCategory: new FormControl(null), // Default category
       parentCategory: new FormControl("", Validators.required), //Main category
       category: new FormControl(""),
       thumbnail: new FormControl(null, Validators.required),
@@ -507,8 +511,8 @@ export class AddProductComponent implements OnInit {
       moq: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
       sku: new FormControl("", Validators.required),
       maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-      thumbnail: new FormControl(""),
-      files: new FormControl(""),
+      thumbnail: new FormControl("", Validators.required),
+      files: new FormControl("", Validators.required),
       video: new FormControl(""),
       unit: new FormControl(""),
       origin: new FormControl(""),

@@ -1,181 +1,129 @@
-<div class="content container-fluid">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bolder"> {{ editMode ? "Update Notification" : "Add Notification" }}</h1>
-      </div>
-      <div class="row align-items-center">
-         <div class="col d-flex align-items-start justify-content-between">
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.notification.ADD_NOTIFICATION}}">
-                     {{editMode ? "Update Notification" : "Add Notification"}}</a>
-               </li>
-            </ul>
+<div>
+   <div class="page-header d-flex align-items-start justify-content-between">
+      <div>
+         <div class="page-title">
+            <h1 class="fw-bolder">
+               Update Notification
+            </h1>
          </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.notification.ADD_NOTIFICATION}}">
+                  Add Notification
+               </a>
+            </li>
+         </ul>
       </div>
    </div>
 
-   <div class="row mt-4">
-      <div class="col-12">
-         <div class="card">
-            <div class="card-body">
-               <form (ngSubmit)="onSubmit()" [formGroup]="form">
-                  <div class="row">
-                     <h2 class="form-title">Notifications Details</h2>
+   <div class="card my-4">
+      <div class="card-body">
+         <form (ngSubmit)="onSubmit()" [formGroup]="form">
+            <div class="row">
+               <div>
+                  <div class="col-lg-6">
+                     <label class="fs-6 mb-3 required">Customers</label>
+                     <select class="form-select mb-3 fs-6" (change)="notifyCustomers()" formControlName="notifyAll"
+                        [ngClass]="{'is-invalid': (nf.notifyAll.touched || isSubmitted) && nf.notifyAll.errors?.required}">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="true">All users</option>
+                        <option value="false">Select users</option>
+                     </select>
+                  </div>
 
-                     <div class="col-12">
-                        <div class="col-lg-6">
-                           <label class="fs-6 mb-3 required">Customers</label>
-                           <select class="form-select form-select-lg mb-3 fs-6" (change)="notifyCustomers()"
-                              formControlName="notifyAll"
-                              [ngClass]="{'is-invalid': (nf.notifyAll.touched || isSubmitted) && nf.notifyAll.errors?.required}">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="true">All users</option>
-                              <option value="false">Select users</option>
-                           </select>
-                        </div>
+                  <div class="my-3" *ngIf="selectCustomers">
+                     <ng-select [items]="customersData" bindLabel="title" bindValue="_id" [(ngModel)]="customers"
+                        [ngModelOptions]="{standalone: true}" placeholder="Select customers" [multiple]="true"
+                        [closeOnSelect]="false" [hideSelected]="true">
+                     </ng-select>
+                  </div>
+               </div>
 
-                        <div class="col-12 mt-3" *ngIf="selectCustomers">
-                           <ng-select [items]="customersData" bindLabel="title" bindValue="_id" [(ngModel)]="customers"
-                              [ngModelOptions]="{standalone: true}" placeholder="Select customers" [multiple]="true"
-                              [closeOnSelect]="false" [hideSelected]="true">
-                           </ng-select>
-                        </div>
-                     </div>
+               <div class="col-lg-6">
+                  <label class="fs-6 mb-3 required">Notification Channel</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" formControlName="channel" (change)="getChannel()"
+                     [ngClass]="{'is-invalid': (nf.channel.touched || isSubmitted) && nf.channel.errors?.required}">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="sms">SMS</option>
+                     <option value="email">Email</option>
+                     <option value="app">App notification</option>
+                     <option value="push">Push notification</option>
+                  </select>
+               </div>
 
-                     <div class="col-lg-6">
-                        <label class="fs-6 mb-3 required">Notification Channel</label>
-                        <select class="form-select form-select-lg mb-3 fs-6" formControlName="channel"
-                           (change)="getChannel()"
-                           [ngClass]="{'is-invalid': (nf.channel.touched || isSubmitted) && nf.channel.errors?.required}">
-                           <option value="" disabled>-- Select an option --</option>
-                           <option value="sms">SMS</option>
-                           <option value="email">Email</option>
-                           <option value="app">App notification</option>
-                           <option value="push">Push notification</option>
-                        </select>
-                     </div>
+               <div class="col-lg-6" *ngIf="!isTypeDisabled">
+                  <label class="fs-6 mb-3">Notification Type</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" (change)="checkType($event.target)"
+                     formControlName="type">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="instant">Instant</option>
+                     <option value="scheduled">Scheduled</option>
+                  </select>
+               </div>
 
-                     <div class="col-lg-6" *ngIf="!isTypeDisabled">
-                        <label class="fs-6 mb-3">Notification Type</label>
-                        <select class="form-select form-select-lg mb-3 fs-6" (change)="checkType($event.target)"
-                           formControlName="type">
-                           <option value="" disabled>-- Select an option --</option>
-                           <option value="instant">Instant</option>
-                           <option value="scheduled">Scheduled</option>
-                        </select>
-                     </div>
-
-                     <div class="col-12" *ngIf="isScheduled">
-                        <div class="col-lg-6 mb-3">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Schedule Date</label>
-                              <input type="date" [min]="startDate" class="form-control fs-6"
-                                 formControlName="scheduledDate" />
-                           </div>
-                        </div>
-                        <div class="col-lg-6" *ngIf="!invalidDate">
-                           <div class="form-group">
-                              <label class="fs-6 mb-3">Schedule Time</label>
-                              <input type="time" class="form-control fs-6" formControlName="scheduledTime" />
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-lg-6 mb-3">
-                        <div class="form-group ">
-                           <label class="fs-6 mb-3 required">Title</label>
-                           <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
-                            'is-invalid': (nf.title.touched || isSubmitted) && nf.title.errors?.required}" />
-                        </div>
-                     </div>
-
-                     <div class="col-lg-8 mb-3">
-                        <div class="form-group">
-                           <label class="fs-6 mb-3 required">Content</label>
-                           <textarea class=" form-control fs-6" formControlName="content" style="resize: none"
-                              id="content" rows="5"
-                              [ngClass]="{'is-invalid':(nf.content.touched || isSubmitted) && nf.content.errors?.required}"></textarea>
-                        </div>
-                     </div>
-
-                     <div class="col-lg-6 mb-3">
-                        <div class="form-group">
-                           <label class="fs-6 mb-3">Redirection URL</label>
-                           <input type="text" class="form-control fs-6" formControlName="redirection" />
-                        </div>
-                        <div class="mt-1 p-2 alert alert-info" role="alert">
-                           Kindly provide url endpoints <br>
-                           For eg. if the url is <code>commercecastle.com/product-listing</code>, enter <code>/product-listing</code> as the redirection url
-                        </div>
-                     </div>
-
-                     <div class="col-lg-6">
-                        <div class="form-group">
-                           <label class="fs-6 mb-3">Status</label>
-                           <select class="form-select" formControlName="isActive">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option value="true">Active</option>
-                              <option value="false">Inactive</option>
-                           </select>
-                        </div>
-                     </div>
-
-                     <div class="col-12 mt-0">
-                        <div class="col-lg-6">
-                           <h3 class="form-title">Media</h3>
-                           <div class="form-group">
-                              <div class="image-upload">
-                                 <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                                    (change)="handleInputChange($event)" style="height: 100px;" required>
-                                 <div class="image-upload-div">
-                                    <div class="left-img"><img src="../../../../../assets/media/svg/files/upload.svg"
-                                          alt="" srcset=""></div>
-                                    <div class="right-text d-flex flex-column"><span
-                                          class="right-text-title fs-4 fw-bolder">Click to
-                                          upload</span></div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <ng-container *ngIf="loadImage">
-                        <div class="col-12 preview-section">
-                           <div class="crop-image col-sm-6">
-                              <image-cropper class="crop-section" [imageChangedEvent]="imageChangedEvent"
-                                 [maintainAspectRatio]="true" [aspectRatio]="3 / 3" [cropperMaxWidth]="1600"
-                                 [cropperMaxHeight]="1600" format="png" (imageCropped)="imageCropped($event)"
-                                 (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                                 (loadImageFailed)="loadImageFailed()">
-                              </image-cropper>
-                           </div>
-                           <div class="uploads uploaded col-sm-6">
-                              <div class="close-icon">
-                                 <i class="bi bi-x-lg text-white" (click)="removeImage()"></i>
-                              </div>
-                              <img class="preview-img" id="previewImage" [src]="croppedImage">
-                           </div>
-                        </div>
-                     </ng-container>
-                     <div class="col-12 d-flex align-items-center justify-content-end">
-                        <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}"
-                           class=" btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
-                           Cancel
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px">
-                           Create
-                        </button>
+               <div class="col-12" *ngIf="isScheduled">
+                  <div class="col-lg-6 mb-3">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3">Schedule Date</label>
+                        <input type="date" [min]="startDate" class="form-control fs-6"
+                           formControlName="scheduledDate" />
                      </div>
                   </div>
-               </form>
+                  <div class="col-lg-6" *ngIf="!invalidDate">
+                     <div class="form-group">
+                        <label class="fs-6 mb-3">Schedule Time</label>
+                        <input type="time" class="form-control fs-6" formControlName="scheduledTime" />
+                     </div>
+                  </div>
+               </div>
+
+               <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3 required">Title / Subject</label>
+                  <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
+                            'is-invalid': (nf.title.touched || isSubmitted) && nf.title.errors?.required}" />
+               </div>
+
+               <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3 required">Message / Content</label>
+                  <textarea class=" form-control fs-6" formControlName="content" style="resize: none" id="content"
+                     rows="5"
+                     [ngClass]="{'is-invalid':(nf.content.touched || isSubmitted) && nf.content.errors?.required}"></textarea>
+               </div>
+
+               <div class="col-lg-6 form-group mb-3">
+                  <label class="fs-6 mb-3">Redirection URL</label>
+                  <input type="text" class="form-control fs-6 mb-2" formControlName="redirection" />
+                  <div>
+                     Kindly provide URL endpoints without the domain name.
+                     For Eg. if the URL is https://storedada.com/product-listing, Enter /product-listing as the URL
+                  </div>
+               </div>
+
+               <div class="col-lg-6 form-group">
+                  <label class="fs-6 mb-3">Status</label>
+                  <select class="form-select" formControlName="isActive">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="true">Active</option>
+                     <option value="false">Inactive</option>
+                  </select>
+               </div>
+
+               <div class="d-flex align-items-center gap-2 justify-content-end">
+                  <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}" class=" btn btn-secondary fs-6">
+                     Cancel
+                  </a>
+                  <button type="submit" class="btn btn-primary">
+                     Save changes
+                  </button>
+               </div>
             </div>
-         </div>
+         </form>
       </div>
    </div>
 </div>

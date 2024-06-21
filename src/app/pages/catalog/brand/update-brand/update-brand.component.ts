@@ -71,6 +71,10 @@ export class UpdateBrandComponent implements OnInit {
       background: [''],
       border: [''],
       radius: [''],
+      description: [''],
+      metaTitle: [''],
+      metaDescription: [''],
+      metaKeywords: [''],
       color: [''],
       thumbnail: [null],
       cover: [null],
@@ -85,6 +89,10 @@ export class UpdateBrandComponent implements OnInit {
         case 0:
           this.brandDetails = res?.result;
           this.brandForm.get('name')?.setValue(this.brandDetails.name);
+          this.brandForm.get('description')?.setValue(this.brandDetails.description);
+          this.brandForm.get('metaTitle')?.setValue(this.brandDetails.metaTitle);
+          this.brandForm.get('metaDescription')?.setValue(this.brandDetails.metaDescription);
+          this.brandForm.get('metaKeywords')?.setValue(this.brandDetails.metaKeywords);
           this.brandForm.get('isActive')?.setValue(this.brandDetails.isActive);
           this.thumbnail = this.brandDetails.thumbnail?.path
           this.cover = this.brandDetails.cover?.path
@@ -128,6 +136,10 @@ export class UpdateBrandComponent implements OnInit {
   createPayload() {
     const data = {
       name: this.brandForm.get("name")?.value,
+      description: this.brandForm.get("description")?.value,
+      metaTitle: this.brandForm.get("metaTitle")?.value,
+      metaDescription: this.brandForm.get("metaDescription")?.value,
+      metaKeywords: this.brandForm.get("metaKeywords")?.value,
       isActive: this.brandForm.get("isActive")?.value,
       isFeatured: this.brandForm.get("isFeatured")?.value,
       isArchive: this.brandForm.get("isArchive")?.value,
