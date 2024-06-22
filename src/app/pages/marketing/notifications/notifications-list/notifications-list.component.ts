@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { environment } from 'src/environments/environment.prod';
@@ -12,12 +12,12 @@ import { environment } from 'src/environments/environment.prod';
 export class NotificationsListComponent implements OnInit {
   appRoute = appRoutes
   notifications: Array<any> = []
-  base: string = environment.base
+  base: string = `${environment.base}/`
   form: FormGroup;
   page: number = 1
-  limit: FormControl = new FormControl(20)
-  lastPage: boolean = false
-  data: any = {}
+  limit: number = 20
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private NotificationsService: NotificationsService,
@@ -25,11 +25,6 @@ export class NotificationsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initform()
-    this.getNotifications()
-  }
-
-  initform() {
     this.form = new FormGroup({
       keyword: new FormControl(''),
       isActive: new FormControl(''),
@@ -37,44 +32,47 @@ export class NotificationsListComponent implements OnInit {
       type: new FormControl(''),
       status: new FormControl(''),
     });
+    this.getNotifications()
   }
 
   clearFilters() {
-    this.initform()
+    this.form.patchValue({
+      keyword: '',
+      isActive: '',
+      channel: '',
+      type: '',
+      status: '',
+    })
     this.getNotifications()
   }
 
-  getNextPage() {
-    this.page += 1
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getNotifications()
   }
 
-  getPreviousPage() {
-    this.page -= 1
-    this.getNotifications()
+  formatDate(date: string){
+    return new Date(date).toLocaleDateString()
   }
 
   getNotifications() {
-    let payload = {
+    this.NotificationsService.searchNotifications({
       ...this.form.value,
-      limit: this.limit.value,
+      limit: this.limit,
       page: this.page
-    }
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.notifications = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck()
+        } else {
 
-    this.NotificationsService.searchNotifications(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.data = res?.result
-        this.notifications = res?.result?.data
-
-        for (let notification of this.notifications) {
-          notification.channel = notification.channel.charAt(0).toUpperCase() + notification.channel.slice(1)
-          notification.type = notification.type.charAt(0).toUpperCase() + notification.type.slice(1)
-          notification.date = new Date(notification.date).toDateString()
         }
+      }, error: (err: any) => {
 
-        this.page = res?.result?.page
-        this.lastPage = res?.result?.lastPage
-        this.ChangeDetectorRef.markForCheck()
       }
     })
   }

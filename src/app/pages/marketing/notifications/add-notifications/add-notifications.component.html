@@ -2,8 +2,8 @@
    <div class="page-header d-flex align-items-start justify-content-between">
       <div>
          <div class="page-title">
-            <h1 class="fw-bolder">
-               Update Notification
+            <h1 class="fw-bold">
+               Add Notification
             </h1>
          </div>
          <ul class="breadcrumb">
@@ -25,30 +25,30 @@
    <div class="card my-4">
       <div class="card-body">
          <form (ngSubmit)="onSubmit()" [formGroup]="form">
-            <div class="row">
-               <div>
-                  <div class="col-lg-6">
-                     <label class="fs-6 mb-3 required">Customers</label>
-                     <select class="form-select mb-3 fs-6" (change)="notifyCustomers()" formControlName="notifyAll"
-                        [ngClass]="{'is-invalid': (nf.notifyAll.touched || isSubmitted) && nf.notifyAll.errors?.required}">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="true">All users</option>
-                        <option value="false">Select users</option>
-                     </select>
-                  </div>
 
-                  <div class="my-3" *ngIf="selectCustomers">
-                     <ng-select [items]="customersData" bindLabel="title" bindValue="_id" [(ngModel)]="customers"
-                        [ngModelOptions]="{standalone: true}" placeholder="Select customers" [multiple]="true"
-                        [closeOnSelect]="false" [hideSelected]="true">
-                     </ng-select>
-                  </div>
+            <div class="row">
+               <div class="col-lg-6">
+                  <label class="fs-6 mb-3 required">Customers</label>
+                  <select class="form-select mb-3 fs-6" formControlName="isStoreLevel">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="true">Store Users</option>
+                     <option value="false">Dedicated Users</option>
+                  </select>
                </div>
 
+               <div class="my-3" *ngIf="form.get('isStoreLevel')?.value == 'false'">
+                  <ng-select [items]="customersData" bindLabel="title" bindValue="_id" [(ngModel)]="customers"
+                     [ngModelOptions]="{standalone: true}" placeholder="Select customers" [multiple]="true"
+                     [closeOnSelect]="false" [hideSelected]="true">
+                  </ng-select>
+               </div>
+            </div>
+
+            <div class="row">
                <div class="col-lg-6">
                   <label class="fs-6 mb-3 required">Notification Channel</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" formControlName="channel" (change)="getChannel()"
-                     [ngClass]="{'is-invalid': (nf.channel.touched || isSubmitted) && nf.channel.errors?.required}">
+                  <select class="form-select form-select-lg mb-3 fs-6" formControlName="channel"
+                     [ngClass]="{'is-invalid': (formControls.channel.touched || isSubmitted) && formControls.channel.errors?.required}">
                      <option value="" disabled>-- Select an option --</option>
                      <option value="sms">SMS</option>
                      <option value="email">Email</option>
@@ -57,72 +57,71 @@
                   </select>
                </div>
 
-               <div class="col-lg-6" *ngIf="!isTypeDisabled">
+               <div class="col-lg-6 form-group mb-3">
                   <label class="fs-6 mb-3">Notification Type</label>
-                  <select class="form-select form-select-lg mb-3 fs-6" (change)="checkType($event.target)"
-                     formControlName="type">
+                  <select class="form-select fs-6" formControlName="type">
                      <option value="" disabled>-- Select an option --</option>
                      <option value="instant">Instant</option>
                      <option value="scheduled">Scheduled</option>
                   </select>
                </div>
+            </div>
 
-               <div class="col-12" *ngIf="isScheduled">
-                  <div class="col-lg-6 mb-3">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3">Schedule Date</label>
-                        <input type="date" [min]="startDate" class="form-control fs-6"
-                           formControlName="scheduledDate" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6" *ngIf="!invalidDate">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3">Schedule Time</label>
-                        <input type="time" class="form-control fs-6" formControlName="scheduledTime" />
-                     </div>
-                  </div>
-               </div>
-
-               <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3 required">Title / Subject</label>
-                  <input type="text" class="form-control fs-6" formControlName="title" [ngClass]="{
-                            'is-invalid': (nf.title.touched || isSubmitted) && nf.title.errors?.required}" />
-               </div>
-
-               <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3 required">Message / Content</label>
-                  <textarea class=" form-control fs-6" formControlName="content" style="resize: none" id="content"
-                     rows="5"
-                     [ngClass]="{'is-invalid':(nf.content.touched || isSubmitted) && nf.content.errors?.required}"></textarea>
-               </div>
-
+            <div class="row" *ngIf="form.get('type')?.value == 'scheduled'">
                <div class="col-lg-6 form-group mb-3">
-                  <label class="fs-6 mb-3">Redirection URL</label>
-                  <input type="text" class="form-control fs-6 mb-2" formControlName="redirection" />
-                  <div>
-                     Kindly provide URL endpoints without the domain name.
-                     For Eg. if the URL is https://storedada.com/product-listing, Enter /product-listing as the URL
-                  </div>
+                  <label class="fs-6 mb-3">Schedule Date</label>
+                  <input type="date" [min]="startDate" class="form-control fs-6" formControlName="scheduledDate" />
                </div>
-
                <div class="col-lg-6 form-group">
-                  <label class="fs-6 mb-3">Status</label>
-                  <select class="form-select" formControlName="isActive">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option value="true">Active</option>
-                     <option value="false">Inactive</option>
-                  </select>
-               </div>
-
-               <div class="d-flex align-items-center gap-2 justify-content-end">
-                  <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}" class=" btn btn-secondary fs-6">
-                     Cancel
-                  </a>
-                  <button type="submit" class="btn btn-primary">
-                     Save changes
-                  </button>
+                  <label class="fs-6 mb-3">Schedule Time</label>
+                  <input type="time" class="form-control fs-6" formControlName="scheduledTime" />
                </div>
             </div>
+
+
+            <div class="row my-6">
+               <div class="col-lg-3">
+                  <label for="thumbnail" class="fs-6 mb-3">Media ( Applicable for Push Notification )</label>
+                  <div class="ratio ratio-1x1" id="thumbnail">
+                     <app-assets [previewDetails]="thumbnail" (mediaTrigger)="handleThumbnail($event)"></app-assets>
+                  </div>
+               </div>
+
+               <div class="col-lg-9">
+                  <div class="mb-3 form-group">
+                     <label class="fs-6 mb-3 required">Title / Subject</label>
+                     <input type="text" class="form-control fs-6" formControlName="title"
+                        [ngClass]="{
+                                  'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}" />
+                  </div>
+
+                  <div class="mb-3 form-group">
+                     <label class="fs-6 mb-3 required">Message / Content</label>
+                     <textarea class=" form-control fs-6" formControlName="content" style="resize: none" id="content"
+                        rows="5"
+                        [ngClass]="{'is-invalid':(formControls.content.touched || isSubmitted) && formControls.content.errors?.required}"></textarea>
+                  </div>
+
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3">Redirection ( Applicable for Push Notification )</label>
+                     <input type="text" class="form-control fs-6 mb-2" formControlName="redirection" />
+                     <div>
+                        Kindly provide URL endpoints without the domain name.
+                        For Eg. if the URL is https://storedada.com/product-listing, Enter /product-listing as the URL
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 justify-content-end">
+               <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}" class=" btn btn-secondary fs-6">
+                  Cancel
+               </a>
+               <button type="submit" class="btn btn-primary">
+                  Save changes
+               </button>
+            </div>
+
          </form>
       </div>
    </div>

@@ -1,118 +1,103 @@
-$hover: #e3e3e3;
-$grey: #888888;
-$white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
-
-label,
-input[type=button] {
-  font-weight: normal !important;
+.btn,
+label {
+    font-weight: 400 !important;
 }
 
-.countsWrapper {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
 
-  .countWrapper {
-    background: $white;
-    padding: 20px 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
+    tbody {
+        tr {
+            td {
+                vertical-align: middle;
+            }
+        }
+    }
+
+    thead {
+        tr {
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
+}
+
+//Table designs
+
+.sent {
+    width: 90px;
     display: grid;
     place-items: center;
-    border: 1px solid #E4E6EF;
-  }
+    color: #4CAF50;
+    background: #4CAF5010;
 }
 
-.notificationWrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-
-  .notificationCard {
-    padding: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    background: $white;
-    cursor: pointer;
-    position: relative;
-
-    .notificationStatus {
-      position: absolute;
-      content: '';
-      top: 10px;
-      right: 10px;
-      background: $activeBackground;
-      color: $activeState;
-      padding: 5px;
-      border-radius: 5px;
-    }
-
-    .imageWrapper {
-      height: 80px;
-      width: 80px;
-
-      img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-  }
+.pending {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #FFC107;
+    background: #FFC10710;
 }
 
-.filteringWrapper {
-  .filtering {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 8px;
+.failed,
+.rejected {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #F44336;
+    background: #F4433610;
+}
 
-    span {
-      color: #8B909A;
-      line-height: 18px;
-    }
+.sms {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #2196F3;
+    background: #2196F310;
+}
 
-    select {
-      border: 1px solid #E8E8E8;
-      border-radius: 6px;
-      padding: 5px;
+.email {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #FF5722;
+    background: #FF572210;
+}
 
-      &:focus {
-        outline: none;
-      }
-    }
-  }
+.push {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #9C27B0;
+    background: #9C27B010;
+}
 
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.app {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #00BCD4;
+    background: #00BCD410;
+}
 
-    .paginationBefore,
-    .paginationNext {
-      height: 30px;
-      width: 30px;
-      border-radius: 15px;
-      display: grid;
-      place-items: center;
-      background: $background;
-      cursor: pointer;
+.instant {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #FF5722;
+    background: #FF572210;
+}
 
-      &.disabled {
-        opacity: 0.5;
-        pointer-events: none;
-      }
-    }
-
-    .paginationPage {
-      margin: 0 10px;
-    }
-  }
+.scheduled {
+    width: 90px;
+    display: grid;
+    place-items: center;
+    color: #9C27B0;
+    background: #9C27B010;
 }
