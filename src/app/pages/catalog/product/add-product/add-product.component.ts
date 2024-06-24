@@ -334,13 +334,16 @@ export class AddProductComponent implements OnInit {
   }
 
   saveChanges() {
+    let files = this.images.map((item: any) => item._id) || []
+    this.form.get('files')?.setValue(files)
+
     if (!this.form.valid) {
+      this.isSubmitted = true
       return
     }
 
     let payload = {
       ...this.form.value,
-      files: this.images.map((item: any) => item._id),
       icons: this.icons.map((icon: any) => icon._id),
       productTags: this.tagsForm.value,
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
@@ -494,10 +497,10 @@ export class AddProductComponent implements OnInit {
       sku: new FormControl("", Validators.required),
       tax: new FormControl(""),
       hsn: new FormControl(""),
-      cod: new FormGroup({ isPresent: new FormControl(true), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
-      shipping: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
-      return: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
-      replace: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]')) }),
+      cod: new FormGroup({ isPresent: new FormControl(true), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
+      shipping: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
+      return: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
+      replace: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
     })
 
     this.form = new FormGroup({

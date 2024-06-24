@@ -85,8 +85,8 @@ export class UpdateBlogComponent implements OnInit {
       seoDescription: new FormControl(''),
       seoKeywords: new FormControl(''),
       canonicalUrl: new FormControl(''),
-      thumbnail: new FormControl('', Validators.required),
-      cover: new FormControl(null),
+      thumbnail: new FormControl(null, Validators.required),
+      cover: new FormControl(null, Validators.required),
     })
 
     this.blogQuery = this.ActivatedRoute.snapshot.params.blog || ''

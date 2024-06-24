@@ -193,9 +193,11 @@ export class UpdateOrdersComponent implements OnInit {
         this.invoiceStatusList.includes(res.result.orderStatus) ? this.isInvoiceAvailable = false : this.isInvoiceAvailable = true
         this.invoiceStatusList.includes(res.result.orderStatus) ? this.isPackingSlipAvailable = false : this.isPackingSlipAvailable = true
 
-        res.result.orderStatus == 'CANCELLED' ? this.isCancelled = true : this.isCancelled = false
         if (this.order.orderStatus == 'CANCELLED') {
-          if (this.order.cancel.date) this.order.cancel.date = new Date(this.order.cancel.date).toDateString()
+          this.isCancelled = true
+          if (this.order?.cancel?.date) {
+            this.order.cancel.date = new Date(this.order?.cancel?.date).toDateString()
+          }
         }
 
         for (let product of this.order?.products) {
@@ -206,6 +208,8 @@ export class UpdateOrdersComponent implements OnInit {
           let history = [...product?.history]
           if (product?.dateExpected) product.dateExpected = new Date(product?.dateExpected).toDateString()
           product.currentStatus = history.pop()
+          console.log(history.pop());
+
         }
 
         this.ChangeDetectorRef.markForCheck()

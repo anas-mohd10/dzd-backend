@@ -59,6 +59,7 @@ export class UpdateCollectionComponent implements OnInit {
             this.form.get('cover')?.setValue(res?.result[0]?.cover?._id)
           }
           this.productDetails = res?.result[0]?.products
+          this.productIds = res?.result[0]?.products.map((item: any) => item?._id)
           this.ChangeDetectorRef.markForCheck()
         }
       }
