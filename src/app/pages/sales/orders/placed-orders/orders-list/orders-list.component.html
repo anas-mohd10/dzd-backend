@@ -1,37 +1,35 @@
 <div class="brand-page-container">
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bold">Orders</h1>
-    </div>
-    <div class="row">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
-          </li>
-        </ul>
-        <div>
-          <button class="btn bg-white text-primary border border-primary me-1" (click)="exportOrders()">
-            Export orders
-            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
-              </path>
-            </svg>
-          </button>
-          <button class="btn btn-primary ms-1" routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
-            Add Orders
-            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-            </svg>
-          </button>
-        </div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Orders</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-start justify-content-end gap-2">
+      <button class="btn bg-white text-primary border border-primary me-1" (click)="exportOrders()">
+        Export orders
+        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+          </path>
+        </svg>
+      </button>
+      <button class="btn btn-primary ms-1" routerLink="{{ appRoute.orders.ADD_ORDER_LIST }}">
+        Add Orders
+        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+        </svg>
+      </button>
     </div>
   </div>
 

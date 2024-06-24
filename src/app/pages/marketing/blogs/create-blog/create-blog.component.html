@@ -23,7 +23,9 @@
         <div class="card-body">
             <div>
                 <label for="cover" class="form-label">Cover</label>
-                <div id="cover" class="cover w-100 mb-3 position-relative">
+                <div id="cover" class="cover rounded w-100 mb-3 position-relative"
+                    [ngClass]="{
+                    'border border-danger':  (formControls.cover.touched || isSubmitted) && formControls.cover.errors?.required}">
                     <app-assets [previewDetails]="cover" (mediaClicked)="handleCover($event)"
                         [image]="'cover'"></app-assets>
                     <div *ngIf="cover">

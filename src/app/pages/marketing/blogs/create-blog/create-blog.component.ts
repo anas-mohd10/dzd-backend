@@ -66,8 +66,8 @@ export class CreateBlogComponent implements OnInit {
       seoDescription: new FormControl(''),
       seoKeywords: new FormControl(''),
       canonicalUrl: new FormControl(''),
-      thumbnail: new FormControl('', Validators.required),
-      cover: new FormControl(null),
+      thumbnail: new FormControl(null, Validators.required),
+      cover: new FormControl(null, Validators.required),
     })
   }
 

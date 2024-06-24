@@ -67,7 +67,6 @@ export class AssetsComponent implements OnInit, OnChanges {
         this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
         break
     }
-    console.log(this.previewDetails);
     this.ChangeDetectorRef.markForCheck()
   }
 

@@ -1,11 +1,11 @@
 .form-label,
 .btn-primary,
 .btn-secondary {
-    font-weight: 400 !important;
+  font-weight: 400 !important;
 }
 
 .cover {
-    height: 340px;
+  height: 340px;
 }
 
 .page-title {
@@ -27,6 +27,10 @@ label {
   max-height: 400px;
   overflow: scroll;
   margin: 20px 0 0 0;
+
+  button {
+    width: 120px;
+  }
 }
 
 .wraperBox {
@@ -101,35 +105,35 @@ label {
 label,
 .btn-secondary,
 .btn-primary {
-    font-weight: 400 !important;
+  font-weight: 400 !important;
 }
 
 //Table designs
 .table {
-    background: #ffffff;
-    font-size: 15px;
+  background: #ffffff;
+  font-size: 15px;
 
-    tbody {
+  tbody {
 
-        tr {
+    tr {
 
-            td {
-                vertical-align: middle;
-            }
-        }
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  thead {
+
+    tr {
+
+      th {
+        font-weight: 400 !important;
+      }
     }
 
-    thead {
-
-        tr {
-
-            th {
-                font-weight: 400 !important;
-            }
-        }
-
-        background: #E4E7F4;
-    }
+    background: #E4E7F4;
+  }
 }
 
 //Table designs
@@ -150,6 +154,7 @@ label,
     justify-content: flex-start;
     flex-direction: column;
     position: relative;
+    width: 100%;
 
     .close {
       position: absolute;
@@ -163,7 +168,7 @@ label,
       border-radius: 5px;
     }
 
-    .image {
+    .addedProductImage {
       height: 100px;
       width: 100px;
 
@@ -178,7 +183,7 @@ label,
       -o-text-overflow: ellipsis;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       margin: 5px 0;
     }
@@ -188,11 +193,10 @@ label,
 
 //Drag and Drop style
 .example-list {
-  width: 1000px;
   max-width: 100%;
   min-height: 60px;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   background: white;
   border-radius: 4px;
@@ -238,7 +242,7 @@ label,
     border-radius: 5px;
   }
 
-  .image {
+  .addedProductImage {
     height: 100px;
     width: 100px;
 
@@ -281,7 +285,7 @@ label,
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     margin: 5px 0;
     font-weight: 600;

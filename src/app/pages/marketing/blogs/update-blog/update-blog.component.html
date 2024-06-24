@@ -21,12 +21,17 @@
     </div>
     <div class="my-4 card">
         <div class="card-body">
-            <div class="cover w-100 position-relative mb-3">
-                <app-assets (mediaClicked)="handleCover($event)" [image]="'cover'"
-                    [previewDetails]="previews?.cover"></app-assets>
-                <div *ngIf="previews?.cover">
-                    <div class="position-absolute bottom-0 end-0 m-4">
-                        <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+            <div>
+                <label for="cover" class="form-label">Cover</label>
+                <div class="cover w-100 rounded position-relative mb-3"
+                    [ngClass]="{
+                    'border border-danger':  (formControls.cover.touched || isSubmitted) && formControls.cover.errors?.required}">
+                    <app-assets (mediaClicked)="handleCover($event)" [image]="'cover'"
+                        [previewDetails]="previews?.cover"></app-assets>
+                    <div *ngIf="previews?.cover">
+                        <div class="position-absolute bottom-0 end-0 m-4">
+                            <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -34,6 +39,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="mb-3">
+                            <label for="thumbnail" class="form-label required">Thumbnail</label>
                             <div class="ratio ratio-1x1 h-auto w-100 rounded"
                                 [ngClass]="{
                                 'border border-danger':  (formControls.thumbnail.touched || isSubmitted) && formControls.thumbnail.errors?.required}">
