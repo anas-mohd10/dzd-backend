@@ -91,8 +91,8 @@
                   <div class="lastDay_orders mb-4">
                     <div class="order_lose">
                       <span [ngClass]="{'up': orderUp}"> {{orderDifference}} </span>
-                      <img src="../../../assets/icons/salesDown.svg" *ngIf="!orderUp" alt="Icon" />
-                      <img src="../../../assets/icons/salesUp.svg" *ngIf="orderUp" alt="Icon" />
+                      <img src="assets/icons/salesDown.svg" *ngIf="!orderUp" alt="Icon" />
+                      <img src="assets/icons/salesUp.svg" *ngIf="orderUp" alt="Icon" />
                     </div>
                     <h6>Yesterday’s orders</h6>
                     <a routerLink="/app/orders"> View orders </a>
@@ -106,8 +106,8 @@
                   <div class="lastDay_orders mb-4">
                     <div class="order_lose">
                       <span [ngClass]="{'up': saleUp}"> {{saleDifference}} </span>
-                      <img src="../../../assets/icons/salesDown.svg" *ngIf="!saleUp" alt="Icon" />
-                      <img src="../../../assets/icons/salesUp.svg" *ngIf="saleUp" alt="Icon" />
+                      <img src="assets/icons/salesDown.svg" *ngIf="!saleUp" alt="Icon" />
+                      <img src="assets/icons/salesUp.svg" *ngIf="saleUp" alt="Icon" />
                     </div>
                     <h6>Yesterday’s sales</h6>
                   </div>
@@ -188,7 +188,7 @@
       <ng-container *ngFor="let product of products">
         <div class="selling_products">
           <div class="selling_phoneImg">
-            <img src="{{product?.thumbnail}}" onerror="this.src = '../../../assets/images/default.png'" alt="Product" />
+            <img src="{{product?.thumbnail}}" onerror="this.src = 'assets/images/default.png'" alt="Product" />
           </div>
           <div class="product_details">
             <h2>{{product?.name}}</h2>

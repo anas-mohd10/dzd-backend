@@ -109,7 +109,7 @@
                             <div cdkDropList class="catalog-items rounded" (cdkDropListDropped)="drop($event)">
                                 <div class="catalog-item" *ngFor="let item of items; let i = index" cdkDrag>
                                     <div class="d-flex align-items-center justify-content-start">
-                                        <img src="../../../../../assets/icons/widget.svg" alt="Widget">
+                                        <img src="assets/icons/widget.svg" alt="Widget">
                                         <div class="ms-1 text-primary fs-5 fw-medium">#{{i+1}}:</div>
                                     </div>
                                     <div class="remove" (click)="deleteWidget(i)">
@@ -177,7 +177,7 @@
                 <div class="product my-1 py-1 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center justify-content-start">
                         <img class="rounded" src="{{base}}/{{product.thumbnail}}" alt={{product.name}}
-                            onerror="this.src='../../../../../assets/images/default.png'">
+                            onerror="this.src='assets/images/default.png'">
                         <div class="ms-2">{{product.name}}</div>
                     </div>
                     <button class="btn btn-primary p-1">Select</button>

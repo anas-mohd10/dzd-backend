@@ -47,7 +47,7 @@
          <div class="editButton">
            <div routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
              [queryParams]="{ collection: collection?.slug }">
-             <img src="../../../../../assets/icons/editPen.svg" alt="Icon">
+             <img src="assets/icons/editPen.svg" alt="Icon">
            </div>
          </div>
  
@@ -99,11 +99,11 @@
      </div>
      <div class="pagination">
        <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-         <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+         <img src="assets/icons/navigateBefore.svg" alt="Icon">
        </div>
        <div class="paginationPage">{{page}} of {{totalPages}}</div>
        <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
-         <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+         <img src="assets/icons/navigateNext.svg" alt="Icon">
        </div>
      </div>
    </div>

@@ -85,7 +85,7 @@
 
                         <ng-container *ngIf="cartItems.length == 0">
                             <div class="emptyCart-container">
-                                <img src="../../../../../../assets/icons/emptyCart.gif" style="height: 150px;"
+                                <img src="assets/icons/emptyCart.gif" style="height: 150px;"
                                     alt="Icon">
                                 <button type="button" class="mt-5 btn btn-primary" (click)="openProducts(productsRef)">
                                     Add Products
@@ -101,7 +101,7 @@
                                         <div class="productDetails d-flex align-items-center justify-content-start">
                                             <div class="index me-2">{{i + 1}}</div>
                                             <img class="rounded"
-                                                onerror="this.src = '../../../../../assets/images/default.png'"
+                                                onerror="this.src = 'assets/images/default.png'"
                                                 src="{{base}}/{{cart?.thumbnail?.path}}" alt="{{cart?.name}}"
                                                 height="45" width="45">
                                             <div class="name fs-5 ms-4 fw-bolder">{{cart?.name}}</div>
@@ -298,7 +298,7 @@
                             <div class="image me-2">
                                 <img height="30" width="30" src="{{base}}/{{product?.thumbnail?.path}}"
                                     alt={{product?.name}}
-                                    onerror="this.src = '../../../../../assets/images/default.png'">
+                                    onerror="this.src = 'assets/images/default.png'">
                             </div>
                             <div class="details">
                                 <div class="name">{{product?.name}}</div>

@@ -102,7 +102,7 @@
 
                     <div *ngIf="orders.length == 0">
                         <div class="emptyNote">
-                            <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                            <img src="assets/icons/empty.gif" alt="Icon">
                             <div class="fs-3 fw-bolder">No result found</div>
                             <div class="fs-5 note">We couldn't find any item based on your search.</div>
                         </div>
@@ -123,11 +123,11 @@
                         <div class="pagination">
                             <div class="paginationBefore" [ngClass]="{'disabled': page == 1}"
                                 (click)="getPreviousPage()">
-                                <img src="../../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                                <img src="assets/icons/navigateBefore.svg" alt="Icon">
                             </div>
                             <div class="paginationPage">{{page}}</div>
                             <div class="paginationNext" [ngClass]="{'disabled': lastPage}" (click)="getNextPage()">
-                                <img src="../../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                                <img src="assets/icons/navigateNext.svg" alt="Icon">
                             </div>
                         </div>
                     </div>

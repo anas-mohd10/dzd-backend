@@ -28,14 +28,14 @@
             <ng-container *ngFor="let time of data">
                 <div class="timeSlotCard">
                     <div class="time fs-5">
-                        <img src="../../../../../assets/icons/clock.svg" alt="Icon">
+                        <img src="assets/icons/clock.svg" alt="Icon">
                         <div>{{time?.from}} - {{time?.to}}</div>
                     </div>
                     <div class="timeStatus fs-6" [ngClass]="{'activeState': time?.isActive}">{{time?.isActive ? 'Active'
                         : 'Inactive'}}</div>
                     <div class="editButton" (click)="getDetails(time?.refid)" data-bs-toggle="modal"
                         data-bs-target="#slotModal">
-                        <img src="../../../../../assets/icons/edit.svg" alt="Icon">
+                        <img src="assets/icons/edit.svg" alt="Icon">
                     </div>
                 </div>
             </ng-container>

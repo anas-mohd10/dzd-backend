@@ -50,7 +50,7 @@
                     *ngFor="let pg of pgs; let i = index" (click)="open(template, pg?.id)"
                     [ngClass]="{'border-secondary': !paymentGatewayEnabled(pg?.id), 'border-primary': paymentGatewayEnabled(pg?.id)}">
                     <img src="{{pg?.icon}}" alt="{{pg?.title}}"
-                        onerror="this.src = '../../../../assets/images/default.png'">
+                        onerror="this.src = 'assets/images/default.png'">
                     <div class="fs-5 text-center mt-2">{{pg?.title}}</div>
                 </div>
             </div>

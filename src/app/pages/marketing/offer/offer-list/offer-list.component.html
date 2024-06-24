@@ -53,7 +53,7 @@
     <ng-container *ngFor="let offer of offers">
       <div class="p-2 rounded bg-white cursor-pointer d-flex align-items-start justify-content-between">
         <div routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{ offer: offer?.slug }" class="w-80">
-          <img src="" onerror="this.src = '../../../../../assets/images/default.png'" class="w-100 rounded h-100"
+          <img src="" onerror="this.src = 'assets/images/default.png'" class="w-100 rounded h-100"
             alt="{{offer.title}}">
         </div>
         <div class="w-calc d-flex align-items-start justify-content-between">

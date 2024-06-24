@@ -90,10 +90,10 @@
                       <td>
                         <div class="manageButton">
                           <div (click)="updateReview(review?.refid)" *ngIf="review?.isActive">
-                            <img src="../../../../../assets/icons/visibility.svg" alt="Icon">
+                            <img src="assets/icons/visibility.svg" alt="Icon">
                           </div>
                           <div (click)="updateReview(review?.refid)" *ngIf="!review?.isActive">
-                            <img src="../../../../../assets/icons/visibilityOff.svg" alt="Icon">
+                            <img src="assets/icons/visibilityOff.svg" alt="Icon">
                           </div>
                         </div>
                       </td>
@@ -104,7 +104,7 @@
 
               <div *ngIf="reviews.length == 0">
                 <div class="emptyNote">
-                  <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                  <img src="assets/icons/empty.gif" alt="Icon">
                   <div class="fs-3 fw-bolder">No result found</div>
                   <div class="fs-5 note">We couldn't find any item based on your search.</div>
                 </div>
@@ -128,11 +128,11 @@
                 </div>
                 <div class="pagination">
                   <div class="paginationBefore" [ngClass]="{'disabled': page == 1}" (click)="getPreviousPage()">
-                    <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                    <img src="assets/icons/navigateBefore.svg" alt="Icon">
                   </div>
                   <div class="paginationPage">{{page}}</div>
                   <div class="paginationNext" [ngClass]="{'disabled': isLastPage}" (click)="getNextPage()">
-                    <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                    <img src="assets/icons/navigateNext.svg" alt="Icon">
                   </div>
                 </div>
               </div>
@@ -199,7 +199,7 @@
 
               <div *ngIf="products.length == 0">
                 <div class="emptyNote">
-                  <img src="../../../../../../assets/icons/empty.gif" alt="Icon">
+                  <img src="assets/icons/empty.gif" alt="Icon">
                   <div class="fs-3 fw-bolder">No result found</div>
                   <div class="fs-5 note">We couldn't find any item based on your search.</div>
                 </div>
@@ -224,12 +224,12 @@
                 <div class="pagination">
                   <div class="paginationBefore" [ngClass]="{'disabled': productPage == 1}"
                     (click)="getProductsPreviousPage()">
-                    <img src="../../../../../assets/icons/navigateBefore.svg" alt="Icon">
+                    <img src="assets/icons/navigateBefore.svg" alt="Icon">
                   </div>
                   <div class="paginationPage">{{productPage}}</div>
                   <div class="paginationNext" [ngClass]="{'disabled': isProductLastPage}"
                     (click)="getProductsNextPage()">
-                    <img src="../../../../../assets/icons/navigateNext.svg" alt="Icon">
+                    <img src="assets/icons/navigateNext.svg" alt="Icon">
                   </div>
                 </div>
               </div>

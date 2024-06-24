@@ -39,7 +39,7 @@
     <div class="col-lg-4">
       <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
         <div class="stats-icon d-flex align-items-center justify-content-center">
-          <img src="../../../../../../assets/orders/total-orders.png" alt="TotalOrders">
+          <img src="assets/orders/total-orders.png" alt="TotalOrders">
         </div>
         <div>
           <div class="fs-6 mb-2">Total orders</div>
@@ -50,7 +50,7 @@
     <div class="col-lg-4">
       <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
         <div class="stats-icon d-flex align-items-center justify-content-center">
-          <img src="../../../../../../assets/orders/revenue.png" alt="TotalRevenues">
+          <img src="assets/orders/revenue.png" alt="TotalRevenues">
         </div>
         <div>
           <div class="fs-6 mb-2">Total revenue</div>
@@ -61,7 +61,7 @@
     <div class="col-lg-4">
       <div class="bg-white order-stats rounded w-100 h-100 d-flex align-items-center gap-3 justify-content-start">
         <div class="stats-icon d-flex align-items-center justify-content-center">
-          <img src="../../../../../../assets/orders/average-sales.png" alt="AverageSales">
+          <img src="assets/orders/average-sales.png" alt="AverageSales">
         </div>
         <div>
           <div class="fs-6 mb-2">Average sales</div>
@@ -136,7 +136,7 @@
             <div class="search_input">
               <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders" [formControl]="keyword"
                 (ngModelChange)="getOrders()">
-              <img src="../../../../../assets/icons/Search.svg" alt="">
+              <img src="assets/icons/Search.svg" alt="">
             </div>
           </div>
         </div>
@@ -255,12 +255,12 @@
               <div
                 class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
                 routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
-                <img src="../../../../../../assets/icons/eye.svg" alt="View order details">
+                <img src="assets/icons/eye.svg" alt="View order details">
               </div>
               <a *ngIf="!checkStatusList.includes(order?.orderStatus)"
                 href="/generate-invoice?order={{order?.orderNo?.split('#')[1]}}" target="_blank"
                 class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
-                <img src="../../../../../../assets/icons/print.svg" alt="Genarete Invoice">
+                <img src="assets/icons/print.svg" alt="Genarete Invoice">
               </a>
             </div>
           </td>

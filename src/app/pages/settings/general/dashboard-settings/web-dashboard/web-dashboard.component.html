@@ -61,7 +61,7 @@
                                 <button class="editBtn" routerLink="/app/banners/update"
                                     [queryParams]="{banner: item?.refid}"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="fullBannerGrid mb-2">
@@ -75,7 +75,7 @@
                                 <button class="editBtn" routerLink="/app/banners/update"
                                     [queryParams]="{banner: item?.refid}"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="twoBannerGrid mb-2">
@@ -89,7 +89,7 @@
                                 <button class="editBtn" routerLink="/app/banners/update"
                                     [queryParams]="{banner: item?.refid}"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="tertiaryBannerGrid mb-2">
@@ -103,7 +103,7 @@
                                 <button class="editBtn" routerLink="/app/banners/update"
                                     [queryParams]="{banner: item?.refid}"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="quarterBannerGrid mb-2">
@@ -116,7 +116,7 @@
                             <div *ngIf="item?.type == 'category'">
                                 <button class="editBtn" data-bs-toggle="modal" data-bs-target="#categoryModal"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="categoryGrid mb-2">
@@ -131,7 +131,7 @@
                             <div *ngIf="item?.type == 'brand'">
                                 <button class="editBtn" routerLink="/app/brand"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="categoryGrid mb-2">
@@ -147,7 +147,7 @@
                                 <button class="editBtn" (click)=editCollection(item?.button?.params?.slug)
                                     data-bs-toggle="modal" data-bs-target="#collectionModal"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="text-center mb-3 fs-4 fw-bolder">{{item?.title?.text}}</div>
@@ -163,7 +163,7 @@
                             <div *ngIf="item?.type == 'delivery'">
                                 <button class="editBtn" routerLink="/app/stores"
                                     [ngStyle]="{'background': settings?.colors?.secondary.replace('0xFF', '#')}">
-                                    <img src="../../../../../assets/icons/editPen.svg" style="filter: invert(1);"
+                                    <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
                                 <div class="deliverySlot fw-bolder fs-4 text-white mb-2"
@@ -222,25 +222,25 @@
                     <div class="fs-5 fw-bolder">Banner Widgets</div>
                     <div class="buttonsWrapper mt-2">
                         <div class="widgetButton">
-                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
                                 <div class="fs-6 text-muted fw-bolder">Full Banner Layout</div>
                             </div>
                         </div>
                         <div class="widgetButton">
-                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
                                 <div class="fs-6 text-muted fw-bolder">2 Banner Layout</div>
                             </div>
                         </div>
                         <div class="widgetButton">
-                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
                                 <div class="fs-6 text-muted fw-bolder">3 Banner Layout</div>
                             </div>
                         </div>
                         <div class="widgetButton">
-                            <img src="../../../../../../assets/images/bannerPreview.jpg" alt="Preview">
+                            <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
                                 <div class="fs-6 text-muted fw-bolder">4 Banner Layout</div>
                             </div>
@@ -252,7 +252,7 @@
                     <div class="buttonsWrapper mt-2">
                         <div class="widgetButton" data-bs-dismiss="modal" data-bs-toggle="modal"
                             data-bs-target="#collectionModal">
-                            <img src="../../../../../../assets/images/sliderPreview.png" alt="Preview">
+                            <img src="assets/images/sliderPreview.png" alt="Preview">
                             <div class="text">
                                 <div class="fs-6 text-muted fw-bolder">Product Card Layout</div>
                             </div>
@@ -330,7 +330,7 @@
                                                 <div class="example-custom-placeholder" *cdkDragPlaceholder>Drop Here!
                                                 </div>
                                                 <div class="close text-end" (click)="selectProduct(product)">
-                                                    <img src="../../../../../assets/icons/close.svg"
+                                                    <img src="assets/icons/close.svg"
                                                         style="cursor: pointer;" alt="Icon">
                                                 </div>
                                                 <img src="{{base}}/{{product?.thumbnail}}" alt="Product" height="100px">
@@ -387,7 +387,7 @@
                                 <div class="category-placeholder" *cdkDragPlaceholder>Drop Here!
                                 </div>
                                 <div class="close text-end" (click)="selectCategory(category)">
-                                    <img src="../../../../../assets/icons/close.svg" style="cursor: pointer;"
+                                    <img src="assets/icons/close.svg" style="cursor: pointer;"
                                         alt="Icon">
                                 </div>
                                 <img src="{{category?.file}}" alt="Category" height="80px" width="80px"

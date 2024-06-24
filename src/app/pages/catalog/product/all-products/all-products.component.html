@@ -105,7 +105,7 @@
             [queryParams]="{product: product?.slug}">
             <div class="product-image">
               <img src='{{base}}/{{product?.thumbnail}}' alt="product image"
-                onerror="this.src = '../../../../../assets/images/default.png'" />
+                onerror="this.src = 'assets/images/default.png'" />
               <div class="p-2 product-status-{{product?.isActive}} fs-6">
                 {{product?.isActive ? 'Active' : 'Inactive'}}
               </div>
@@ -168,7 +168,7 @@
               <tr>
                 <td>
                   <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product" height="45" width="45" class="rounded"
-                    onerror="this.src = '../../../../../assets/images/default.png'">
+                    onerror="this.src = 'assets/images/default.png'">
                 </td>
                 <td>{{product?.name}}</td>
                 <td>{{product?.sku}}</td>

@@ -28,16 +28,16 @@ interface WidgetProps {
 
 export class CatalogComponent implements OnInit {
   widgets: Array<WidgetProps> = [
-    { title: 'Classic Banners', type: 'classic-banners', icon: '../../../../assets/widgets/banner.png', description: 'This widget is used to showcase banner and carousel with only image.' },
-    { title: 'Magestic Mosaic', type: 'magestic-mosaic', icon: '../../../../assets/widgets/rush-lake.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
-    { title: 'Glamour Glaze', type: 'glamour-glaze', icon: '../../../../assets/widgets/volta-lake.png', description: 'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button.' },
-    { title: 'Dazzle Design', type: 'dazzle-design', icon: '../../../../assets/widgets/1x4.png', description: 'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.' },
-    { title: 'Grandeur Gallery', type: 'grandeur-gallery', icon: '../../../../assets/widgets/grandeur-gallery.png', description: 'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.' },
-    { title: 'Celestial Canvas', type: 'celestial-canvas', icon: '../../../../assets/widgets/celestial-canvas.png', description: 'This widget is used to showcase banner carousel and video' },
-    { title: 'Blogs', type: 'blogs', icon: '../../../../assets/widgets/blogs.png', description: 'The following widget can be used to display the recent blogs, or categories.The widget contains image and white transluscent descriptive box.The description box contain text and button.' },
-    { title: 'Custom HTML', type: 'html', icon: '../../../../assets/widgets/custom-html.png', description: '' },
-    { title: 'Image Slider', type: 'image-slider', icon: '../../../../assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
-    { title: 'Video', type: 'video', icon: '../../../../assets/widgets/video.png', description: 'This widget is used to showcase full width video only' },
+    { title: 'Classic Banners', type: 'classic-banners', icon: 'assets/widgets/banner.png', description: 'This widget is used to showcase banner and carousel with only image.' },
+    { title: 'Magestic Mosaic', type: 'magestic-mosaic', icon: 'assets/widgets/rush-lake.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
+    { title: 'Glamour Glaze', type: 'glamour-glaze', icon: 'assets/widgets/volta-lake.png', description: 'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button.' },
+    { title: 'Dazzle Design', type: 'dazzle-design', icon: 'assets/widgets/1x4.png', description: 'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.' },
+    { title: 'Grandeur Gallery', type: 'grandeur-gallery', icon: 'assets/widgets/grandeur-gallery.png', description: 'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.' },
+    { title: 'Celestial Canvas', type: 'celestial-canvas', icon: 'assets/widgets/celestial-canvas.png', description: 'This widget is used to showcase banner carousel and video' },
+    { title: 'Blogs', type: 'blogs', icon: 'assets/widgets/blogs.png', description: 'The following widget can be used to display the recent blogs, or categories.The widget contains image and white transluscent descriptive box.The description box contain text and button.' },
+    { title: 'Custom HTML', type: 'html', icon: 'assets/widgets/custom-html.png', description: '' },
+    { title: 'Image Slider', type: 'image-slider', icon: 'assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
+    { title: 'Video', type: 'video', icon: 'assets/widgets/video.png', description: 'This widget is used to showcase full width video only' },
   ]
   catalogPage: FormControl = new FormControl("");
   isCopy: FormControl = new FormControl(false);

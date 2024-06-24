@@ -38,7 +38,7 @@
         <ng-container *ngFor="let blog of blogs">
           <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog.slug}}">
             <img src={{blog?.thumbnail}} alt={{blog?.title}} class="rounded"
-              onerror="this.src = '../../../../../assets/images/default.png'">
+              onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
               <div>{{blog?.category}}</div>
               <div class="fs-5 title">{{blog?.title}}</div>
