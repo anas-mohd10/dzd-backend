@@ -9,9 +9,9 @@ export const environment = {
   // base: 'https://ccapi.previewbay.com',
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // appBaserl: 'http://localhost:3000/api/v1/a/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   // base: 'http://localhost:3000',
   base: 'https://storedadabucket.s3.ap-south-1.amazonaws.com',
   //Local
@@ -38,9 +38,9 @@ export const environment = {
   //Mattressland
 
   //Sico foods
-  apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
   // base: 'https://sidcofoods-api.storedada.net',
   //Sico foods
 

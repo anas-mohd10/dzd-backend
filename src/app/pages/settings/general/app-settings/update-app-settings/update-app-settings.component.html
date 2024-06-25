@@ -20,6 +20,33 @@
          <div class="card h-100">
             <div class="card-body">
                <form [formGroup]="form">
+                  <div class="mb-5">
+                     <div *ngIf="data?.isStoreLive">
+                        <div class="d-flex align-items-center justify-content-start gap-2">
+                           <div>
+                              <div class="storestatus storeon"></div>
+                           </div>
+                           <div class="fs-4">Your store is live</div>
+                        </div>
+                     </div>
+                     <div *ngIf="!data?.isStoreLive">
+                        <div class="d-flex align-items-center justify-content-start gap-2">
+                           <div>
+                              <div class="storestatus storeoff"></div>
+                           </div>
+                           <div class="fs-4">Your store is not live</div>
+                        </div>
+                     </div>
+                     <div class="my-4">
+                        <div class="fs-6 text-muted">You can publish or unpublish your project here</div>
+                        <div class="d-flex mt-2  align-items-center justify-content-start gap-2">
+                           <div class="fs-5">Store status</div>
+                           <app-switch [switchId]="''" [isToggledProps]="data?.isStoreLive"
+                              (switchToggled)="toggleStoreStatus($event, template)"></app-switch>
+                        </div>
+                     </div>
+                  </div>
+
                   <h2 class="form-title">Color Settings</h2>
                   <div class="row mt-4">
                      <div class="col-lg-6">
@@ -239,3 +266,11 @@
       </div>
    </div>
 </div>
+
+<ng-template #template>
+   <div class="modal-body text-center">
+      <p>Do you update the store status?</p>
+      <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+   </div>
+</ng-template>

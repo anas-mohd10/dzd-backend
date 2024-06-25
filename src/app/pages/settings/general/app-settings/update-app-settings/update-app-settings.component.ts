@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
@@ -6,6 +6,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HotToastService } from '@ngneat/hot-toast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 interface Media {
   title: string;
@@ -60,18 +61,32 @@ export class UpdateAppSettingsComponent implements OnInit {
     ]
   };
   paymentGateways: Array<string> = []
-  fontFamily: Array<any> = ['Manrope', 'Figtree', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
+  fontFamily: Array<any> = [
+    'Manrope',
+    'Be Vietnam Pro',
+    'Poppins',
+    'Figtree',
+    'GeogrotesqueCyr',
+    'BellMT',
+    'BookAntiqua',
+    'Active',
+    'Hellix'
+  ]
   logo?: string
   favicon?: string
   primary: string = ''
+  modalRef?: BsModalRef
   secondary: string = ''
+  storeStatus: boolean = true
 
   constructor(
     private formBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
     private AppSettingsService: AppSettingsService,
-    private HotToastService: HotToastService
+    private HotToastService: HotToastService,
+    private BsModalService: BsModalService,
+    private BsModalRef: BsModalRef
   ) { }
 
   ngOnInit(): void {
@@ -108,6 +123,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
         this.form.get('paymentGateway')?.setValue(res?.result?.paymentGateway)
         this.form.get('currency')?.setValue(res?.result?.currency)
+        this.form.get('isStoreLive')?.setValue(res?.result?.isStoreLive)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('name')?.setValue(res?.result?.name)
         this.form.get('description')?.setValue(res?.result?.description)
@@ -122,8 +138,25 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('logo')?.setValue(res?.result?.logo?._id)
         this.form.get('favicon')?.setValue(res?.result?.favicon?._id)
         this.ChangeDetectorRef.markForCheck()
+        this.storeStatus = res?.result?.isStoreLive
       }
     })
+  }
+
+  toggleStoreStatus(event: { toggleState: boolean, switchId: string }, template: TemplateRef<any>) {
+    this.form.get('isStoreLive')?.setValue(event.toggleState)
+    this.storeStatus = event.toggleState
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' });
+  }
+
+  decline() {
+    this.storeStatus = this.data?.isStoreLive || false
+    this.modalRef?.hide()
+  }
+
+  confirm() {
+    this.modalRef?.hide()
+    this.form.get('isStoreLive')?.setValue(this.storeStatus)
   }
 
   initform() {
@@ -144,6 +177,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       description: ['', Validators.required],
       packingSlip: ['', Validators.required],
       isOutOfStock: ['false'],
+      isStoreLive: ['true'],
       isNotifyStock: ['false'],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
@@ -201,6 +235,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       logo: this.form.get('logo')?.value,
       paymentGateway: this.form.get('paymentGateway')?.value,
       favicon: this.form.get('favicon')?.value,
+      isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
         cart: this.form.get('cartButton')?.value,

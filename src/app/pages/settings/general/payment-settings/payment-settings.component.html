@@ -148,6 +148,17 @@
                 </div>
 
                 <div class="mb-3 form-group"
+                *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('privateKey')">
+                <label for="privateKey" class="fs-6 mb-3">Private Key</label>
+                <input type="text" id="privateKey" placeholder="Private Key" formControlName="privateKey"
+                    class="form-control" [ngClass]="{
+                        'is-invalid':
+                        (formControls.privateKey.touched || isSubmitted) &&
+                        formControls.privateKey.errors?.required
+                      }">
+            </div>
+
+                <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('serverKey')">
                     <label for="serverKey" class="fs-6 mb-3">Server Key</label>
                     <input type="text" id="serverKey" placeholder="Server Key" formControlName="serverKey"

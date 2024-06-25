@@ -14,6 +14,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   @Input() isDraft?: boolean = false;
   @Output() device = new EventEmitter();
   deviceType: string = 'desktop';
+  domain: string = ''
   hideTopbarDetails: boolean = false
   hiddenPages: Array<string> = ['app-images', 'contact-us', 'about-us']
 
@@ -32,6 +33,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
     this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result;
+        this.domain = this.settings?.domain || ''
         this.ChangeDetectorRef.markForCheck()
       }
     })

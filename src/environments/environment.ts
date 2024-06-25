@@ -17,8 +17,8 @@ export const environment = {
   //Dev
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
   // base: 'http://localhost:3000',
   base: 'https://storedadabucket.s3.ap-south-1.amazonaws.com',
   //Local
@@ -38,9 +38,9 @@ export const environment = {
   //Fresh fruits
 
   //Sico foods
-  apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
   // base: 'https://sidcofoods-api.storedada.net',
   //Sico foods
 

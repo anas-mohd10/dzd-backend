@@ -139,7 +139,8 @@
                       </div>
                       <div class="col-lg-6 mb-3 from-group">
                         <label class="fs-6 mb-3" for="value">Charge</label>
-                        <input type="number" class="form-control fs-6" formControlName="value" />
+                        <input type="text" class="form-control fs-6" formControlName="value"
+                          [ngClass]="{'is-invalid': parentForm.get('cod.value')?.errors?.pattern}" />
                       </div>
                     </div>
                     <div class="row px-0 mx-0" formGroupName="return">
@@ -154,7 +155,8 @@
                       </div>
                       <div class="col-lg-6 mb-3 from-group">
                         <label class="fs-6 mb-3" for="value">Days</label>
-                        <input type="number" class="form-control fs-6" formControlName="value" />
+                        <input type="text" class="form-control fs-6" formControlName="value"
+                          [ngClass]="{'is-invalid': parentForm.get('return.value')?.errors?.pattern}" />
                       </div>
                     </div>
                     <div class="row px-0 mx-0" formGroupName="replace">
@@ -169,7 +171,8 @@
                       </div>
                       <div class="col-lg-6 mb-3 from-group">
                         <label class="fs-6 mb-3" for="value">Days</label>
-                        <input type="number" class="form-control fs-6" formControlName="value" />
+                        <input type="text" class="form-control fs-6" formControlName="value"
+                          [ngClass]="{'is-invalid': parentForm.get('replace.value')?.errors?.pattern}" />
                       </div>
                     </div>
                     <div class="row px-0 mx-0" formGroupName="shipping">
@@ -184,7 +187,8 @@
                       </div>
                       <div class="col-lg-6 mb-3 from-group">
                         <label class="fs-6 mb-3" for="value">Charge</label>
-                        <input type="number" class="form-control fs-6" formControlName="value" />
+                        <input type="text" class="form-control fs-6" formControlName="value"
+                          [ngClass]="{'is-invalid': parentForm.get('shipping.value')?.errors?.pattern}" />
                       </div>
                     </div>
                   </div>

@@ -149,6 +149,10 @@ export class OrdersListComponent implements OnInit {
     this.tagOrder = ''
   }
 
+  getLocalDate(data: any){
+    return new Date(data).toLocaleDateString()
+  }
+
   formatOrderStatus(orderStatus: string){
     return `${orderStatus.charAt(0).toUpperCase()}${orderStatus.slice(1).toLowerCase()}`
   }

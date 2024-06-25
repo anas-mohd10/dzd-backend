@@ -590,6 +590,19 @@
                 <div *ngIf="widgetProductTypes.includes(widgetDetails?.widgetType)">
 
                     <div class="p-3">
+                        <div class="row mb-3" *ngIf="widgetDetails?.widgetType == 'motion-canvas'">
+                            <div class="col-lg-3">
+                                <div class="ratio ratio-1x1">
+                                    <app-assets [previewDetails]="productsAdThumbnail"
+                                        (mediaClicked)="toggleMotionCanvasThumbnail($event)"></app-assets>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 form-group">
+                                <label for="" class="form-label">Redirection</label>
+                                <input type="text" [formControl]="productsAdRedirection" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="row gap-2">
                             <ng-container
                                 *ngFor="let type of [
@@ -619,8 +632,7 @@
                                         <div>
                                             <img class="rounded" height="40" width="40"
                                                 src="{{base}}{{product.thumbnail?.path}}"
-                                                onerror="this.src = 'assets/images/default.png'"
-                                                alt="{{product.name}}">
+                                                onerror="this.src = 'assets/images/default.png'" alt="{{product.name}}">
                                         </div>
                                         <div>
                                             <div class="tile-product">{{product?.name}}</div>
@@ -648,8 +660,7 @@
                                         <div>
                                             <img class="rounded" height="40" width="40"
                                                 src="{{base}}{{product.thumbnail?.path}}"
-                                                onerror="this.src = 'assets/images/default.png'"
-                                                alt="{{product.name}}">
+                                                onerror="this.src = 'assets/images/default.png'" alt="{{product.name}}">
                                         </div>
                                         <div>
                                             <div class="tile-product">{{product?.name}}</div>
@@ -715,8 +726,7 @@
                                     <label for="marginTop" class="form-label">Margin top</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/MarginTopStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/MarginTopStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="marginTop" formControlName="marginTop"
                                             class="form-control">
                                     </div>
@@ -725,8 +735,7 @@
                                     <label for="marginRight" class="form-label">Margin right</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/MarginRightStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/MarginRightStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="marginRight" formControlName="marginRight"
                                             class="form-control">
                                     </div>
@@ -735,8 +744,7 @@
                                     <label for="marginBottom" class="form-label">Margin bottom</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/MarginBottomStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/MarginBottomStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="marginBottom" formControlName="marginBottom"
                                             class="form-control">
                                     </div>
@@ -745,8 +753,7 @@
                                     <label for="marginLeft" class="form-label">Margin left</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/MarginLeftStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/MarginLeftStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="marginLeft" formControlName="marginLeft"
                                             class="form-control">
                                     </div>
@@ -770,8 +777,7 @@
                                     <label for="paddingTop" class="form-label">Padding top</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/PaddingTopStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/PaddingTopStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="paddingTop" formControlName="paddingTop"
                                             class="form-control">
                                     </div>
@@ -780,8 +786,7 @@
                                     <label for="paddingRight" class="form-label">Padding right</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/PaddingRightStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/PaddingRightStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="paddingRight" formControlName="paddingRight"
                                             class="form-control">
                                     </div>
@@ -790,8 +795,7 @@
                                     <label for="paddingBottom" class="form-label">Padding bottom</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/PaddingBottomStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/PaddingBottomStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="paddingBottom" formControlName="paddingBottom"
                                             class="form-control">
                                     </div>
@@ -800,8 +804,7 @@
                                     <label for="paddingLeft" class="form-label">Padding left</label>
                                     <div class="d-flex align-items-center">
                                         <img class="me-1" height="32" width="32"
-                                            src="assets/store-designs/PaddingLeftStyle.png"
-                                            alt="WidgetDesigns">
+                                            src="assets/store-designs/PaddingLeftStyle.png" alt="WidgetDesigns">
                                         <input type="number" id="paddingLeft" formControlName="paddingLeft"
                                             class="form-control">
                                     </div>

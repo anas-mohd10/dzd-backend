@@ -177,6 +177,10 @@ export class UpdateOrdersComponent implements OnInit {
     this.orderNote.value ? this.isNoteDetected = true : this.isNoteDetected = false
   }
 
+  getLocalDate(date: any) {
+    return `${new Date(date).toLocaleString()}`
+  }
+
   getOrderDetails() {
     this.OrdersService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -196,17 +200,16 @@ export class UpdateOrdersComponent implements OnInit {
         if (this.order.orderStatus == 'CANCELLED') {
           this.isCancelled = true
           if (this.order?.cancel?.date) {
-            this.order.cancel.date = new Date(this.order?.cancel?.date).toDateString()
+            this.order.cancel.date = new Date(this.order?.cancel?.date).toLocaleString()
           }
         }
 
         for (let product of this.order?.products) {
           for (let history of product?.history) {
             history.status = history.status.charAt(0).toUpperCase() + history.status.slice(1).toLowerCase();
-            history.date = new Date(history.date).toDateString() + ' ' + new Date(history.date).toLocaleTimeString()
           }
           let history = [...product?.history]
-          if (product?.dateExpected) product.dateExpected = new Date(product?.dateExpected).toDateString()
+          if (product?.dateExpected) product.dateExpected = new Date(product?.dateExpected).toLocaleString()
           product.currentStatus = history.pop()
           console.log(history.pop());
 

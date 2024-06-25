@@ -411,7 +411,7 @@
                               <ng-template swiperSlide>
                                 <div class="order-tracking completed">
                                   <span class="is-complete"></span>
-                                  <p>{{history?.status}}<br><span>{{history?.date}}</span></p>
+                                  <p>{{history?.status}}<br><span>{{getLocalDate(history?.date)}}</span></p>
                                 </div>
                               </ng-template>
                             </ng-container>

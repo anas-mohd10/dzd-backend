@@ -76,8 +76,8 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/admin/",
-              "deployUrl": "/admin/"
+              "baseHref": "/",
+              "deployUrl": "/"
             },
             "development": {
               "buildOptimizer": false,
