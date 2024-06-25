@@ -25,6 +25,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: "Tabby", id: "tabby", icon: `${environment.base}/uploads/medias/tabby.png` },
     { title: "Tap Payments", id: "tap", icon: `${environment.base}/uploads/medias/tap.jpg` },
     { title: "Rak Bank", id: "rakbank", icon: `${environment.base}/uploads/medias/rakbank.png` },
+    { title: "Network", id: "network", icon: `${environment.base}/uploads/medias/network.png` },
   ]
   displayIcon: string = ''
   modalRef?: BsModalRef
