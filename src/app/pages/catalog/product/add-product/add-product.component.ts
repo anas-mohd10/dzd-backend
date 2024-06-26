@@ -420,7 +420,10 @@ export class AddProductComponent implements OnInit {
   }
 
   toggleSearchKeywords(event: any, type: string) {
-    if (type == 'add') {
+    if (event instanceof KeyboardEvent && event.key === 'Enter') {
+      event.preventDefault();
+  }
+    if (type == 'add' && event.target.value) {
       if (this.searchKeywords.includes(event.target.value)) {
         this.HotToastService.info('Keyword already added')
       } else {
