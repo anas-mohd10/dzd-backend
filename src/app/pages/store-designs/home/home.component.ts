@@ -58,8 +58,9 @@ export class HomeComponent implements OnInit {
     { title: 'Picture Palette', type: 'picture-palette', icon: 'assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Store Chronicles', type: 'store-chronicles', icon: 'assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Quad Squares', type: 'quad-square', icon: 'assets/widgets/quad-sqaure.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Insight Hub', type: 'insight-hub', icon: 'assets/widgets/insighthub.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Hyper Link Hero', type: 'hyperlinkhero', icon: 'assets/widgets/hyperlinkhero.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
   ]
-
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
   widgetsRef?: BsModalRef;
@@ -105,6 +106,8 @@ export class HomeComponent implements OnInit {
     { key: "Open CMS page", value: "cms-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
+  hyperlinkheroForm: FormGroup
+  hyperLinkHeroThumbnail: string = ''
   staticPages: Array<any> = []
   cmsPages: Array<any> = [
     { title: 'FAQs', value: '/faqs' },
@@ -125,13 +128,14 @@ export class HomeComponent implements OnInit {
   collectionThumbnailDetails: string = ''
   designRef?: BsModalRef
   designForm: FormGroup
+  insightHubForm: FormGroup;
   backgroundDetails: string
   isDraft: boolean = false
   saleForm: FormGroup
   device: string = 'desktop'
   count: number = 0
   saleThumbnailDetails: string = ''
-  hiddenHeaderItems: Array<string> = ['sale-timer']
+  hiddenHeaderItems: Array<string> = ['sale-timer', 'hyperlinkhero', 'insight-hub']
   selectedProductType: string = 'products';
   collections: Array<any> = []
   widgetCollection: FormControl = new FormControl("")
@@ -192,6 +196,8 @@ export class HomeComponent implements OnInit {
   productsAdThumbnail: string
   productAd: FormControl = new FormControl(null)
   productsAdRedirection: FormControl = new FormControl("")
+  insightHubThumbnailSmall: string = ''
+  insightHubThumbnailLarge: string = ''
 
   constructor(
     private BsModalService: BsModalService,
@@ -288,6 +294,28 @@ export class HomeComponent implements OnInit {
     return this.smartTileProducts.some((item: any) => item._id == productDetails._id) ? true : false
   }
   //Smart tiles widgets
+
+  //Insight hub
+  handleInsightHubThumbnail(event: any, type: string) {
+    if (type == 'small') {
+      this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(event._id)
+      this.insightHubThumbnailSmall = event.path
+    } else {
+      this.insightHubForm.get('insightHubThumbnailLarge')?.setValue(event._id)
+      this.insightHubThumbnailLarge = event.path
+    }
+  }
+
+  removeInsightHubThumbnail(type: string) {
+    if (type == 'small') {
+      this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(null)
+      this.insightHubThumbnailSmall = ''
+    } else {
+      this.insightHubForm.get('insightHubThumbnailLarge')?.setValue(null)
+      this.insightHubThumbnailLarge = ''
+    }
+  }
+  //Insight hub
 
   //Redirections
   onRedirectionSelected() {
@@ -427,6 +455,15 @@ export class HomeComponent implements OnInit {
           this.widgetDetails.collection ? this.widgetCollection.setValue(this.widgetDetails?.collection?._id) : null
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
             this.widgetDetails.products.length > 0 ? this.selectedProductType = 'products' : this.selectedProductType = 'collections'
+          }
+          if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
+            this.hyperlinkheroForm.patchValue(this.widgetDetails)
+            this.hyperLinkHeroThumbnail = this.widgetDetails?.hyperLinkThumbnail?.path
+          }
+          if (this.widgetDetails?.widgetType == 'insight-hub') {
+            this.insightHubForm.patchValue(this.widgetDetails)
+            this.insightHubThumbnailSmall = this.widgetDetails?.insightHubThumbnailSmall?.path
+            this.insightHubThumbnailLarge = this.widgetDetails?.insightHubThumbnailLarge?.path
           }
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
@@ -633,6 +670,14 @@ export class HomeComponent implements OnInit {
       widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value
     }
 
+    if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
+      widgetPayload = { ...widgetPayload, ...this.hyperlinkheroForm.value }
+    }
+
+    if (this.widgetDetails?.widgetType == 'insight-hub') {
+      widgetPayload = { ...widgetPayload, ...this.insightHubForm.value }
+    }
+
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -757,6 +802,18 @@ export class HomeComponent implements OnInit {
   }
   //Title image
 
+  //hyperlink hero
+  onHyperlinkHeroTriggered(event: any) {
+    this.hyperlinkheroForm.get("hyperLinkThumbnail")?.setValue(event._id)
+    this.hyperLinkHeroThumbnail = event.path
+  }
+
+  removeHyperlinkHeroThumbnail() {
+    this.hyperlinkheroForm.get("hyperLinkThumbnail")?.setValue(null)
+    this.hyperLinkHeroThumbnail = ''
+  }
+  //hyperlink hero
+
   ngOnInit(): void {
     this.widgets = this.widgets.sort((a: any, b: any) => {
       if (a.title < b.title) {
@@ -769,9 +826,26 @@ export class HomeComponent implements OnInit {
       return 0;
     });
 
+    this.hyperlinkheroForm = new FormGroup({
+      hyperlinkTitle: new FormControl(''),
+      hyperLinkCaption: new FormControl(''),
+      hyperLinkDescription: new FormControl(''),
+      hyperLinkButton: new FormControl(''),
+      hyperLinkRedirection: new FormControl(''),
+      hyperLinkThumbnail: new FormControl(null),
+      alignment: new FormControl('left')
+    })
+
+    this.insightHubForm = new FormGroup({
+      insightHubTitle: new FormControl(''),
+      insightHubDescription: new FormControl(''),
+      insightHubButton: new FormControl(''),
+      insightHubRedirection: new FormControl(''),
+      insightHubThumbnailSmall: new FormControl(null),
+      insightHubThumbnailLarge: new FormControl(null),
+    })
 
     this.focusedWidget = this.widgets[0]
-    // this.getHomeDraftWidgets()
     this.getHomeWidgets()
     this.form = new FormGroup({
       visibility: new FormControl("all"),

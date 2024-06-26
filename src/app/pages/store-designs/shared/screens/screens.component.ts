@@ -23,7 +23,7 @@ export class ScreensComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settings = res.result;
-          this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain}?type=preview`);
+          // this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain}?type=preview`);
           this.ChangeDetectorRef.markForCheck()
         } else {
 

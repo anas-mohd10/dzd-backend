@@ -101,6 +101,7 @@ export class NavigationMenuComponent implements OnInit {
   advancedTitleRefItems: BsModalRef;
   advancedMenuTitleItems: Array<any> = []
   //Advanced Menu
+  isAdvancedMenuItemSubmitted: boolean = false
 
 
   get itemControls() {
@@ -596,7 +597,6 @@ export class NavigationMenuComponent implements OnInit {
     this.advancedTitleRef?.hide()
     this.advacnedMenuForm.reset()
     this.isEditTitleRef = false
-    this.titleRefDetails = null
   }
 
   removeTitleMedia(type: string) {
@@ -612,7 +612,11 @@ export class NavigationMenuComponent implements OnInit {
   openTitleItemsRef(template: TemplateRef<any>,) {
     this.closeTitleRef()
     this.advancedMenuItemForm.patchValue({ codeSpace: this.titleRefDetails?._id })
-    this.advancedTitleItemRef = this.modalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true })
+    this.advancedTitleItemRef = this.modalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+  }
+
+  get advancedMenuItemFormControls() {
+    return this.advancedMenuItemForm.controls
   }
 
   closeTitleItemsRef() {
@@ -620,6 +624,11 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   saveTitleItemsRef() {
+    if (!this.advancedMenuItemForm.valid) {
+      this.isAdvancedMenuItemSubmitted = true
+      return
+    }
+
     this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
     this.MenuService.createCsTitleItems({ ...this.advancedMenuItemForm.value }).subscribe({
       next: (res: any) => {

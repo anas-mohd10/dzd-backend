@@ -70,8 +70,8 @@
                                             <div class="fs-6">
                                                 <img class="me-2 rounded" src="{{base}}/{{category?.file}}"
                                                     alt="{{category?.name}}"
-                                                    onerror="this.src = 'assets/images/default.png'"
-                                                    height="40" width="40">
+                                                    onerror="this.src = 'assets/images/default.png'" height="40"
+                                                    width="40">
                                                 {{category?.name}}
                                             </div>
                                             <svg height="24px" width="24px" fill="currentColor"
@@ -172,8 +172,7 @@
                                     <div class="d-flex gap-2 align-items-center justify-content-between">
                                         <div>
                                             <img class="object-fit-contain rounded" src="{{base}}/{{item?.icon?.path}}"
-                                                height="40" width="40"
-                                                onerror="this.src = 'assets/images/default.png'"
+                                                height="40" width="40" onerror="this.src = 'assets/images/default.png'"
                                                 alt="{{item?.title}}">
                                         </div>
                                         <div class="fs-6">{{item?.title}}</div>
@@ -652,7 +651,8 @@
                             placeholder="Eg. Mattress" />
                     </div>
                     <div>
-                        <button class="btn btn-secondary w-100" (click)="openTitleItemsRef(createMenuItemsRef)">View Menu Items</button>
+                        <button class="btn btn-secondary w-100" (click)="openTitleItemsRef(createMenuItemsRef)">View
+                            Menu Items</button>
                     </div>
                 </div>
 
@@ -791,7 +791,7 @@
 
         <div>
             <form [formGroup]="advancedMenuItemForm">
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="title" class="fs-6 mb-3">Title</label>
                     <input type="text" class="form-control fs-6" formControlName="title" />
                 </div>
@@ -799,23 +799,36 @@
         </div>
 
         <div>
-            <div>
-
+            <div class="mb-3" *ngFor="let advancedMenuItem of advancedMenuItems">
+                <div>
+                    <a class="fs-5" href="{{advancedMenuItem?.redirection}}"
+                        target="_blank">{{advancedMenuItem?.title}}</a>
+                </div>
             </div>
-            
+
             <form [formGroup]="menuItemForm">
                 <div class="row">
                     <div class="col-lg-4 form-group">
                         <label for="title" class="fs-6 mb-3">Title</label>
-                        <input type="text" id="title" class="form-control fs-6" formControlName="title" />
+                        <input type="text" id="title" class="form-control fs-6" formControlName="title" [ngClass]="{
+                            'is-invalid':
+                            (advancedMenuItemFormControls.title.touched || isAdvancedMenuItemSubmitted) &&
+                            advancedMenuItemFormControls.title.errors?.required
+                          }" />
                     </div>
                     <div class="col-lg-6 form-group">
                         <label for="redirection" class="fs-6 mb-3">Redirection</label>
-                        <input type="text" id="redirection" class="form-control fs-6" formControlName="redirection" />
+                        <input type="text" id="redirection" class="form-control fs-6" formControlName="redirection"
+                            [ngClass]="{
+                            'is-invalid':
+                            (advancedMenuItemFormControls.redirection.touched || isAdvancedMenuItemSubmitted) &&
+                            advancedMenuItemFormControls.redirection.errors?.required
+                          }" />
                     </div>
                     <div class="col-lg-2 form-group">
                         <label for="button" class="fs-6 mb-3">&nbsp;</label>
-                        <input type="button" id="button" class="btn btn-primary" value="Save" (click)="onSubmitMenuItem()"/>
+                        <input type="button" id="button" class="w-100 btn btn-primary" value="Save"
+                            (click)="onSubmitMenuItem()" />
                     </div>
                 </div>
             </form>
