@@ -3,7 +3,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.service';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { ProductService } from 'src/app/includes/services/product.service';
@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
     { title: 'Custom HTML', type: 'html', icon: 'assets/widgets/custom-html.png', description: '' },
     { title: 'Image Slider', type: 'image-slider', icon: 'assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Video', type: 'video', icon: 'assets/widgets/video.png', description: 'This widget is used to showcase full width video only.' },
+    { title: 'Motion Canvas', type: 'motion-canvas', icon: 'assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Products', type: 'products', icon: 'assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Noble Nodes', type: 'noble-nodes', icon: 'assets/widgets/noble-nodes.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Prime Plates', type: 'prime-plates', icon: 'assets/widgets/prime-plates.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
@@ -79,7 +80,7 @@ export class HomeComponent implements OnInit {
   smartTileProducts: Array<any> = [] // Smart tiles widgets
   tileProductsInput: FormControl = new FormControl("", Validators.required); // Smart tiles widgets
   tileProducts: Array<any> = [] // Smart tiles widgets
-  widgetProductTypes: Array<any> = ["smart-tiles", "products"]
+  widgetProductTypes: Array<any> = ["smart-tiles", "products", "motion-canvas"]
   widgetImageTypes: Array<any> = [
     "image-slider", "radiant-rectangles",
     "quad-square", "prime-plates",
@@ -188,7 +189,9 @@ export class HomeComponent implements OnInit {
       ['fontSize']
     ]
   };
-
+  productsAdThumbnail: string
+  productAd: FormControl = new FormControl(null)
+  productsAdRedirection: FormControl = new FormControl("")
 
   constructor(
     private BsModalService: BsModalService,
@@ -204,6 +207,18 @@ export class HomeComponent implements OnInit {
     private StaticPageService: StaticPageService,
     private BrandService: BrandService
   ) { }
+
+  //Motion canvas
+  toggleMotionCanvasThumbnail(event: any) {
+    this.productAd?.setValue(event._id)
+    this.productsAdThumbnail = event.path
+  }
+
+  removeMotionCanvasThumbnail() {
+    this.productAd?.setValue(null)
+    this.productsAdThumbnail = ''
+  }
+  //Motion canvas
 
   //Testimonial widget operations
   getTestimonials() {
@@ -319,9 +334,6 @@ export class HomeComponent implements OnInit {
   }
 
   continueRedirectionQuery() {
-    console.log(this.widgetForm.value.redirectionType);
-    console.log(this.redirectionQuery.value);
-    
     switch (this.widgetForm.value.redirectionType) {
       case 'blogs':
         this.widgetForm.get('redirection')?.setValue("/blogs/" + this.redirectionDetails.slug)
@@ -348,6 +360,7 @@ export class HomeComponent implements OnInit {
         this.widgetForm.get('redirection')?.setValue("/products?collection=" + this.redirectionQuery.value)
         break
     }
+
     this.addWidgetDetails()
     this.redirectionQuery.setValue("")
     this.widgetImagePreviewIndex = null
@@ -403,6 +416,7 @@ export class HomeComponent implements OnInit {
             this.widgetTestimonials = this.widgetDetails?.testimonials
           }
           this.widgetDetails?.widgetType == 'smart-tiles' || this.widgetDetails?.widgetType == 'products' ? this.smartTileProducts = [...this.widgetDetails?.products] : null
+          this.widgetDetails?.widgetType == 'motion-canvas' ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
           this.saleForm.patchValue(this.widgetDetails)
@@ -417,6 +431,11 @@ export class HomeComponent implements OnInit {
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
           this.ChangeDetectorRef.markForCheck()
+          if (this.widgetDetails?.widgetType == 'motion-canvas') {
+            this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail?.path
+            this.productAd?.setValue(this.widgetDetails?.productAd?._id)
+            this.productsAdRedirection?.setValue(this.widgetDetails?.productsAdRedirection)
+          }
         } else {
           this.Toast.error(res?.message)
         }
@@ -608,6 +627,11 @@ export class HomeComponent implements OnInit {
     }
 
     type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
+
+    if (this.widgetDetails?.widgetType == 'motion-canvas') {
+      widgetPayload['productsAdThumbnail'] = this.productAd.value ? this.productAd.value : null
+      widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value
+    }
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
       next: (res: any) => {
@@ -807,6 +831,8 @@ export class HomeComponent implements OnInit {
       redirectionType: new FormControl(""),
       buttonText: new FormControl(""),
       buttonRedirection: new FormControl(""),
+      productsAdThumbnail: new FormControl(null),
+      productsAdRedirection: new FormControl(""),
       redirectionQuery: new FormControl("")
     })
 

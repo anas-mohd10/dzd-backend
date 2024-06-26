@@ -82,6 +82,8 @@ export class SeoDetailsComponent implements OnInit {
     if (seoId) {
       this.isEditMode = true
       this.form.patchValue({ type: 'update' })
+    } else {
+      this.form.patchValue({ type: 'create' })
     }
   }
 

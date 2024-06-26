@@ -5,6 +5,37 @@
         <div class="me-2">
           <div class="fs-4">Welcome</div>
           <div class="fs-3 text-primary fw-bold">{{email}}</div>
+
+          <div class="mt-2">
+            <div *ngIf="settings?.isStoreLive">
+              <div class="d-flex align-items-center justify-content-start gap-2">
+                <div>
+                  <div class="storestatus storeon"></div>
+                </div>
+                <div class="fs-4">Your store is live</div>
+              </div>
+            </div>
+            <div *ngIf="!settings?.isStoreLive" class="d-flex align-items-center justify-content-start gap-5">
+              <div class="d-flex align-items-center justify-content-start gap-2">
+                <div>
+                  <div class="storestatus storeoff"></div>
+                </div>
+                <div class="fs-4">Your store is not live</div>
+              </div>
+              <div>
+                <a routerLink="/app/store-settings" class="fs-5 d-flex align-items-center justify-content-start">
+                  <div>Update store status</div>
+                  <div>
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="2.5" stroke="currentColor" viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25">
+                      </path>
+                    </svg>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div>

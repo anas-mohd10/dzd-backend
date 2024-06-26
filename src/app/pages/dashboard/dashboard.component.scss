@@ -3,6 +3,20 @@ $darkGrey: #333333;
 $mediumGrey: #555555;
 $white: #ffffff;
 
+.storestatus {
+  height: 16px;
+  width: 16px;
+  border-radius: 8px;
+
+  &.storeon {
+    background: #00bd65;
+  }
+
+  &.storeoff {
+    background: #bd0029;
+  }
+}
+
 .store-tip {
   display: flex;
   align-items: center;

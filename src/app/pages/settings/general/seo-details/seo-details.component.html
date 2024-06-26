@@ -63,7 +63,7 @@
                             [ngClass]="{
                             'is-invalid':
                             (formControls.page.touched || isSubmitted) &&
-                            formControls.page.errors?.required
+                            formControls.page.errors?.required, 'pe-none': isEditMode
                           }">
                             <option value="" disabled>-- Select an option --</option>
                             <option value="Home">Home</option>

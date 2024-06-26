@@ -303,8 +303,8 @@ export class AddProductComponent implements OnInit {
           let categories = this.parentCategories.map((item: any) => item?._id)
           this.getChildCategory(categories)
           res?.result?.defaultCategory ? this.getAttributes(res?.result?.defaultCategory?.id?._id) : null
-          res?.result?.brand ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id) : null
-          this.parentForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id?._id)
+          res?.result?.brand ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id) : this.parentForm.get('brand')?.setValue('')
+          res?.result?.defaultCategory ? this.parentForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id?._id) : this.parentForm.get('defaultCategory')?.setValue('')
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -420,7 +420,10 @@ export class AddProductComponent implements OnInit {
   }
 
   toggleSearchKeywords(event: any, type: string) {
-    if (type == 'add') {
+    if (event instanceof KeyboardEvent && event.key === 'Enter') {
+      event.preventDefault();
+  }
+    if (type == 'add' && event.target.value) {
       if (this.searchKeywords.includes(event.target.value)) {
         this.HotToastService.info('Keyword already added')
       } else {
