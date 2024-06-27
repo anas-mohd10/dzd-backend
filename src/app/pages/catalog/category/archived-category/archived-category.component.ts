@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment.prod';
 export class ArchivedCategoryComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup = new FormGroup({})
-  base: string = `${environment.base}/`;
+  base: string = `${environment.base}`;
   page: number = 1
   limit: number = 40;
   totalResults: number = 0;

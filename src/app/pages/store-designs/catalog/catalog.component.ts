@@ -69,7 +69,7 @@ export class CatalogComponent implements OnInit {
   previewDetails: string;
   widgetForm: any;
   blogs: any;
-  base: string = environment.base + '/'
+  base: string = environment.base
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },

@@ -49,7 +49,7 @@ const enquires = '/enquiries'
 const wishlist = '/wishlist'
 
 export const appRoutes = {
-  BASE: environment.base + "/",
+  BASE: environment.base,
   DASHBOARD: `${app}${dashboardRoute}`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,

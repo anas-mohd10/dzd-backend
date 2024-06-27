@@ -302,7 +302,7 @@
                                             (click)="selectProduct(product)"
                                             [ngClass]="{'selected': products.includes(product?._id)}">
                                             <div class="productImage me-2">
-                                                <img src="{{base}}/{{product?.thumbnail}}" alt="Product" height="70px"
+                                                <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="70px"
                                                     width="70px">
                                             </div>
                                             <div class="productDetails">
@@ -333,7 +333,7 @@
                                                     <img src="assets/icons/close.svg"
                                                         style="cursor: pointer;" alt="Icon">
                                                 </div>
-                                                <img src="{{base}}/{{product?.thumbnail}}" alt="Product" height="100px">
+                                                <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="100px">
                                             </div>
                                         </ng-container>
                                     </div>

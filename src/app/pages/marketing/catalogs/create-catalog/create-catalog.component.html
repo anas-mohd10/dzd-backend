@@ -176,7 +176,7 @@
             <ng-container *ngFor="let product of products; let i = index">
                 <div class="product my-1 py-1 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center justify-content-start">
-                        <img class="rounded" src="{{base}}/{{product.thumbnail}}" alt={{product.name}}
+                        <img class="rounded" src="{{base}}{{product.thumbnail}}" alt={{product.name}}
                             onerror="this.src='assets/images/default.png'">
                         <div class="ms-2">{{product.name}}</div>
                     </div>

@@ -68,7 +68,7 @@
                                         <div class="category p-3 d-flex align-items-center justify-content-between rounded mb-2"
                                             (click)="addToMegaCategory(category)">
                                             <div class="fs-6">
-                                                <img class="me-2 rounded" src="{{base}}/{{category?.file}}"
+                                                <img class="me-2 rounded" src="{{base}}{{category?.file}}"
                                                     alt="{{category?.name}}"
                                                     onerror="this.src = 'assets/images/default.png'" height="40"
                                                     width="40">
@@ -125,7 +125,7 @@
                                                         <div class="subcategory p-3 rounded"
                                                             (click)="manageMegaMenuCategory(category, subcategory)"
                                                             [ngClass]="{'selected': subcategory?.isMegaMenu}">
-                                                            <img src="{{base}}/{{subcategory?.file}}" alt="Category"
+                                                            <img src="{{base}}{{subcategory?.file}}" alt="Category"
                                                                 height="40px" width="40px" class="me-2 rounded">
                                                             {{subcategory?.name}}
                                                         </div>
@@ -171,7 +171,7 @@
                                     class="savedItem w-min p-3 border border-secondary gap-2 rounded d-flex align-items-center justify-content-between">
                                     <div class="d-flex gap-2 align-items-center justify-content-between">
                                         <div>
-                                            <img class="object-fit-contain rounded" src="{{base}}/{{item?.icon?.path}}"
+                                            <img class="object-fit-contain rounded" src="{{base}}{{item?.icon?.path}}"
                                                 height="40" width="40" onerror="this.src = 'assets/images/default.png'"
                                                 alt="{{item?.title}}">
                                         </div>
@@ -306,7 +306,7 @@
                                     <div class="category p-3 d-flex align-items-center justify-content-between rounded mb-2"
                                         (click)="addCategoryToFooter(category)">
                                         <div class="fs-6">
-                                            <img class="me-2 rounded" src="{{base}}/{{category?.file}}"
+                                            <img class="me-2 rounded" src="{{base}}{{category?.file}}"
                                                 alt="{{category?.name}}" height="40" width="40"
                                                 onerror="this.src = 'assets/images/default.png'">
                                             {{category?.name}}

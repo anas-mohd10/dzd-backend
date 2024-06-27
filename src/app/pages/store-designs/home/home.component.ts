@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
   form: FormGroup;
   widgetForm: FormGroup
   widgetImages: Array<any> = []
-  base: string = environment.base + '/'
+  base: string = environment.base
   previewDetails: string = ''
   widgetImagePreview: any;
   widgetImagePreviewIndex: any;

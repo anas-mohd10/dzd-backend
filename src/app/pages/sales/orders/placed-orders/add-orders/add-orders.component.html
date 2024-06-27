@@ -102,7 +102,7 @@
                                             <div class="index me-2">{{i + 1}}</div>
                                             <img class="rounded"
                                                 onerror="this.src = 'assets/images/default.png'"
-                                                src="{{base}}/{{cart?.thumbnail?.path}}" alt="{{cart?.name}}"
+                                                src="{{base}}{{cart?.thumbnail?.path}}" alt="{{cart?.name}}"
                                                 height="45" width="45">
                                             <div class="name fs-5 ms-4 fw-bolder">{{cart?.name}}</div>
                                         </div>
@@ -296,7 +296,7 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="index me-2">{{i + 1}}</div>
                             <div class="image me-2">
-                                <img height="30" width="30" src="{{base}}/{{product?.thumbnail?.path}}"
+                                <img height="30" width="30" src="{{base}}{{product?.thumbnail?.path}}"
                                     alt={{product?.name}}
                                     onerror="this.src = 'assets/images/default.png'">
                             </div>

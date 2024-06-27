@@ -23,7 +23,7 @@
         <ng-container *ngFor="let shipping of data">
           <div class="shippingCard">
             <div class="shippingCard-top">
-              <div class="shipping-image"><img src="{{base}}/{{shipping?.file}}" alt="Image"></div>
+              <div class="shipping-image"><img src="{{base}}{{shipping?.file}}" alt="Image"></div>
               <div class="shipping-name cardItem">
                 <span class="cardlabel">Name</span>
                 <span class="cardvalue">{{shipping?.name}}</span>

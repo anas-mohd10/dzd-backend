@@ -47,7 +47,7 @@
       <ng-container *ngFor="let product of products">
          <div class="col-sm-3">
             <div class="product-card card-hover">
-               <div class="product-image"><img src='{{base}}/{{product?.thumbnail}}' alt="product image" srcset="" />
+               <div class="product-image"><img src='{{base}}{{product?.thumbnail}}' alt="product image" srcset="" />
                </div>
                <div class="product-details">
                   <div class="product-status-{{product?.isActive}}">

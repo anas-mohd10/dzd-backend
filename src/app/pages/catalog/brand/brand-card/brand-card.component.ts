@@ -13,7 +13,7 @@ export class BrandCardComponent implements OnInit {
   appRoute = appRoutes;
   brands: Array<any> = [];
   form: FormGroup;
-  base: string = `${environment.base}/`
+  base: string = `${environment.base}`
   page: number = 1
   limit: number = 40
   isLastPage: Boolean = false;
