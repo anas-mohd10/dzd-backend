@@ -100,6 +100,8 @@ export class NavigationMenuComponent implements OnInit {
   titleRefDetails: any;
   advancedTitleRefItems: BsModalRef;
   advancedMenuTitleItems: Array<any> = []
+  menuItemId: boolean = false
+  menuItemDetails: any = {}
   //Advanced Menu
   isAdvancedMenuItemSubmitted: boolean = false
 
@@ -609,44 +611,89 @@ export class NavigationMenuComponent implements OnInit {
     }
   }
 
-  openTitleItemsRef(template: TemplateRef<any>,) {
+  openTitleItemsRef(template: TemplateRef<any>, menuItemId?: string) {
     this.closeTitleRef()
     this.advancedMenuItemForm.patchValue({ codeSpace: this.titleRefDetails?._id })
     this.advancedTitleItemRef = this.modalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+
+    if (menuItemId) {
+      this.menuItemId = true
+      this.MenuService.getCsTitleItemDetails(menuItemId).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.advancedMenuItemForm.patchValue(res?.result)
+            this.advancedMenuItems = res?.result?.menuItems
+            this.menuItemDetails = res?.result
+            this.ChangeDetectorRef.markForCheck()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    }
+
   }
 
   get advancedMenuItemFormControls() {
-    return this.advancedMenuItemForm.controls
+    return this.menuItemForm.controls
+  }
+
+  removeAdvancedMenuItemItem(index: number) {
+    this.advancedMenuItems = this.advancedMenuItems.filter((item, i) => i != index)
   }
 
   closeTitleItemsRef() {
     this.advancedTitleItemRef?.hide()
+    this.menuItemId = false
+    this.advancedMenuItemForm.reset()
+    this.menuItemDetails = {}
+    this.advancedMenuItems = []
+    this.isAdvancedMenuItemSubmitted = false
   }
 
   saveTitleItemsRef() {
-    if (!this.advancedMenuItemForm.valid) {
+    this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
+    if (this.menuItemId) {
+      this.MenuService.updateCsTitleItems({ _id: this.menuItemDetails?._id, ...this.advancedMenuItemForm.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.message)
+            this.getCsTitles()
+            this.advancedMenuItemForm.reset()
+            this.closeTitleItemsRef()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    } else {
+      this.MenuService.createCsTitleItems({ ...this.advancedMenuItemForm.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.message)
+            this.getCsTitles()
+            this.advancedMenuItemForm.reset()
+            this.closeTitleItemsRef()
+          } else {
+
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    }
+  }
+
+  onSubmitMenuItem() {
+    if (!this.menuItemForm.valid) {
       this.isAdvancedMenuItemSubmitted = true
       return
     }
 
-    this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
-    this.MenuService.createCsTitleItems({ ...this.advancedMenuItemForm.value }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.Toast.success(res?.message)
-          this.getCsTitles()
-          this.advancedMenuItemForm.reset()
-          this.closeTitleItemsRef()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
-    })
-  }
-
-  onSubmitMenuItem() {
     this.advancedMenuItems = [...this.advancedMenuItems, this.menuItemForm.value]
     this.menuItemForm.reset()
   }
