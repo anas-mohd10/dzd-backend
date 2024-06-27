@@ -1,4 +1,4 @@
-<router-outlet></router-outlet>
-<app-notification-permission
-  *ngIf="!isNotificationEnabled"
-></app-notification-permission>
+<ng-container *ngIf="isReady">
+  <router-outlet></router-outlet>
+</ng-container>
+<app-notification-permission *ngIf="!isNotificationEnabled"></app-notification-permission>

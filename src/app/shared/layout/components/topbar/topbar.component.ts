@@ -29,10 +29,10 @@ export class TopbarComponent implements OnInit {
 
   constructor(
     private layout: LayoutService,
-     private NotificationsService: NotificationsService,
-      private ChangeDetectorRef: ChangeDetectorRef,
-      private AppSettingsService: AppSettingsService
-      ) {
+    private NotificationsService: NotificationsService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AppSettingsService: AppSettingsService
+  ) {
     document.addEventListener('click', this.offClickHandler.bind(this));
   }
 
@@ -46,8 +46,7 @@ export class TopbarComponent implements OnInit {
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
       environment.base = res.result.baseS3Url;
-
-      if(res?.errorCode == 0){
+      if (res?.errorCode == 0) {
         this.settings = res?.result
         this.ChangeDetectorRef.markForCheck()
       }

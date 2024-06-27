@@ -22,7 +22,7 @@ export const environment = {
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   // baseUrl: 'http://localhost:3000/api/v1/w/',
   // base: 'http://localhost:3000',
-  base: 'https://storedadabucket.s3.ap-south-1.amazonaws.com',
+  base: '',
   //Local
 
   //Mattressland

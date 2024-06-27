@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NotificationsService } from './includes/services/notifications.service';
 import { getMessaging, getToken, onMessage } from '@angular/fire/messaging';
 import { environment } from 'src/environments/environment';
@@ -6,6 +6,7 @@ import { AdminUsersService } from './includes/services/admin.users.service';
 import { FirebaseApp } from '@angular/fire/app';
 import { ToastrService } from 'ngx-toastr';
 import { HotToastService } from '@ngneat/hot-toast';
+import { AppSettingsService } from './includes/services/app.settings.service';
 
 declare const $: any;
 @Component({
@@ -16,16 +17,30 @@ declare const $: any;
 })
 export class AppComponent implements OnInit {
   isNotificationEnabled = false;
+  isReady: boolean = false;
 
   constructor(
     private NotificationsService: NotificationsService,
     private AdminUsersService: AdminUsersService,
     private FirebaseApp: FirebaseApp,
     private toast: ToastrService,
-    private HotToastService: HotToastService
+    private HotToastService: HotToastService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit() {
+
+    //Settings env base 
+    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+      environment.base = res.result.baseS3Url;
+      this.isReady = true
+      this.ChangeDetectorRef.markForCheck()
+      console.log('App is ready ' + this.isReady);
+    })
+
+    
+
     if (Notification.permission === 'granted') {
       this.isNotificationEnabled = true;
       let messaging = getMessaging(this.FirebaseApp);

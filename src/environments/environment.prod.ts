@@ -13,7 +13,7 @@ export const environment = {
   baseUrl: 'http://localhost:3000/api/v1/w/',
   appBaserl: 'http://localhost:3000/api/v1/a/',
   // base: 'http://localhost:3000',
-  base: 'https://storedadabucket.s3.ap-south-1.amazonaws.com',
+  base: '',
   // Local
 
   //Fresh fruit

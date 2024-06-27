@@ -4,7 +4,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 
@@ -18,7 +18,6 @@ export class AllProductsComponent implements OnInit {
   products: Array<any> = []
   filters: any = [];
   categories: any;
-  base: string;
   loaded: boolean = false
   settings: any = {}
   page: number = 1;
@@ -56,6 +55,7 @@ export class AllProductsComponent implements OnInit {
     { key: 'Visible products', value: '0', label: 'visibility' },
     { key: 'Invisible products', value: '1', label: 'visibility' }
   ]
+  base: string = environment.base
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -67,7 +67,6 @@ export class AllProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.base = environment.base
     this.type = this.ActivatedRoute.snapshot.queryParams.type || ''
 
     switch (this.type) {
@@ -143,9 +142,9 @@ export class AllProductsComponent implements OnInit {
     this.productCategory.setValue('')
   }
 
-  onCategoryRemoved(category: any){
+  onCategoryRemoved(category: any) {
     this.categoryItems = this.categoryItems.filter(item => item.catid != category.catid)
-    this.getProducts()  
+    this.getProducts()
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
