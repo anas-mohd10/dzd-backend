@@ -4,9 +4,12 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
+  ChangeDetectorRef
 } from '@angular/core';
 import { LayoutService } from './core/layout.service';
 import { LayoutInitService } from './core/layout-init.service';
+import { environment } from 'src/environments/environment';
+import { AppSettingsService } from '../../includes/services/app.settings.service';
 
 @Component({
   selector: 'app-layout',
@@ -45,12 +48,23 @@ export class LayoutComponent implements OnInit, AfterViewInit {
 
   constructor(
     private initService: LayoutInitService,
-    private layout: LayoutService
+    private layout: LayoutService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AppSettingsService: AppSettingsService
   ) {
     this.initService.init();
   }
+  isReady: boolean = false;
 
   ngOnInit(): void {
+    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+      environment.base = res.result.baseS3Url;
+      this.isReady = true
+      this.ChangeDetectorRef.markForCheck()
+      console.log('App is ready ' + this.isReady);
+    })
+
+    
     // build view by layout config settings
     this.asideDisplay = this.layout.getProp('aside.display') as boolean;
     this.toolbarDisplay = this.layout.getProp('toolbar.display') as boolean;
