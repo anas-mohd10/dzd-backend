@@ -38,9 +38,9 @@ export const environment = {
   //Mattressland
 
   //Sico foods
-  apiUrl: '/api/v1/w/admin/auth',
-  baseUrl: '/api/v1/w/',
-  appBaserl: '/api/v1/a/',
+  // apiUrl: '/api/v1/w/admin/auth',
+  // baseUrl: '/api/v1/w/',
+  // appBaserl: '/api/v1/a/',
   // base: 'https://sidcofoods-api.storedada.net',
   //Sico foods
 
