@@ -104,6 +104,7 @@ export class NavigationMenuComponent implements OnInit {
   menuItemDetails: any = {}
   //Advanced Menu
   isAdvancedMenuItemSubmitted: boolean = false
+  isAdvancedMenuItemItemSubmitted: boolean = false
 
 
   get itemControls() {
@@ -636,8 +637,12 @@ export class NavigationMenuComponent implements OnInit {
 
   }
 
-  get advancedMenuItemFormControls() {
+  get menuItemFormControls() {
     return this.menuItemForm.controls
+  }
+
+  get advancedMenuItemFormControls() {
+    return this.advancedMenuItemForm.controls
   }
 
   removeAdvancedMenuItemItem(index: number) {
@@ -654,6 +659,11 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   saveTitleItemsRef() {
+    if (!this.advancedMenuItemForm.valid) {
+      this.isAdvancedMenuItemSubmitted = true
+      return
+    }
+
     this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
     if (this.menuItemId) {
       this.MenuService.updateCsTitleItems({ _id: this.menuItemDetails?._id, ...this.advancedMenuItemForm.value }).subscribe({
@@ -690,7 +700,7 @@ export class NavigationMenuComponent implements OnInit {
 
   onSubmitMenuItem() {
     if (!this.menuItemForm.valid) {
-      this.isAdvancedMenuItemSubmitted = true
+      this.isAdvancedMenuItemItemSubmitted = true
       return
     }
 
