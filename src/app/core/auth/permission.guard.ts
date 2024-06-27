@@ -41,6 +41,36 @@ export class PermissionGuard implements CanActivate {
       case 'testimonials':
         module[1] == 'add' ? path = 'add-testimonials' : module[1] == 'update' ? path = 'update-testimonials' : path = 'testimonials'
         break
+      case 'payment-settings':
+        module[1] == 'payment-settings' ? path = 'payment-settings' : null
+        break
+      case 'media-library':
+        module[1] == 'media-library' ? path = 'media-library' : null
+        break
+      case 'feeds':
+        module[1] == 'feeds' ? path = 'feeds' : null
+        break
+      case 'blogs':
+        module[1] == 'add' ? path = 'add-blogs' : module[1] == 'update' ? path = 'update-blogs' : path = 'blogs'
+        break
+      case 'coupons':
+        module[1] == 'add' ? path = 'add-coupons' : module[1] == 'update' ? path = 'update-coupons' : path = 'coupons'
+        break
+      case 'offers':
+        module[1] == 'add' ? path = 'add-offers' : module[1] == 'update' ? path = 'update-offers' : path = 'offers'
+        break
+      case 'loyalty':
+        module[1] == 'loyalty' ? path = 'loyalty' : null
+        break
+      case 'referral':
+        module[1] == 'referral' ? path = 'referral' : null
+        break
+      case 'gift-wrap':
+        module[1] == 'gift-wrap' ? path = 'gift-wrap' : null
+        break
+      case 'customers':
+        module[1] == 'add' ? path = 'add-c' : module[1] == 'update' ? path = 'update-customers' : path = 'customers'
+        break
     }
 
     return this.authService.authorizeUser(path).pipe(

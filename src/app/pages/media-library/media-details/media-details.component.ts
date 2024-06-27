@@ -50,7 +50,7 @@ export class MediaDetailsComponent implements OnInit {
           this.mediaDetails = res?.result
           this.mediaDetails.createdAt = new Date(this.mediaDetails.createdAt).toDateString() + ", " + new Date(this.mediaDetails.createdAt).toLocaleTimeString()
           this.mediaPath = this.mediaDetails.path
-          this.mediaDetails.path = this.base + '/' + this.mediaDetails.path
+          this.mediaDetails.path = this.base + this.mediaDetails.path
           this.mediaUrl.setValue(this.mediaDetails.path)
           let match = this.mediaDetails.title.match(/^\d+-/);
           this.timestamp = match ? match[0] : '';

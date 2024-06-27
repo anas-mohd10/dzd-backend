@@ -27,7 +27,7 @@ interface Media {
 export class AssetsComponent implements OnInit, OnChanges {
   modalRef?: BsModalRef
   page: number = 1;
-  limit: number = 10
+  limit: number = 50
   totalPages: number = 1
   totalResults: number = 0
   medias: Array<any> = []

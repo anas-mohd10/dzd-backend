@@ -447,6 +447,9 @@ export class HomeComponent implements OnInit {
           this.widgetDetails?.widgetType == 'motion-canvas' ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
+          if (this.widgetDetails?.titleImage) {
+            this.titleThumbnailDetails = this.widgetDetails?.titleImage?.path
+          }
           this.saleForm.patchValue(this.widgetDetails)
           if (this.widgetDetails?.saleThumbnail) {
             this.saleThumbnailDetails = this.widgetDetails?.saleThumbnail?.path
