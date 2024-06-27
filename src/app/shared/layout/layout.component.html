@@ -1,3 +1,5 @@
+<ng-container *ngIf="isReady">
+
 <div class="d-flex flex-column flex-root">
   <div class="page d-flex flex-row flex-column-fluid">
     <app-aside *ngIf="asideDisplay" id="kt_aside" data-kt-drawer="true" data-kt-drawer-name="aside"
@@ -23,3 +25,6 @@
 <app-main-modal></app-main-modal>
 <app-invite-users-modal></app-invite-users-modal>
 <app-upgrade-plan-modal></app-upgrade-plan-modal>
+
+
+</ng-container>

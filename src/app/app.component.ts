@@ -29,17 +29,7 @@ export class AppComponent implements OnInit {
     private AppSettingsService: AppSettingsService
   ) { }
 
-  ngOnInit() {
-
-    //Settings env base 
-    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
-      environment.base = res.result.baseS3Url;
-      this.isReady = true
-      this.ChangeDetectorRef.markForCheck()
-      console.log('App is ready ' + this.isReady);
-    })
-
-    
+  ngOnInit() {    
 
     if (Notification.permission === 'granted') {
       this.isNotificationEnabled = true;
