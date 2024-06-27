@@ -35,7 +35,7 @@ export class AssetsComponent implements OnInit, OnChanges {
   @Input('aspectRatio') aspectRatio: string;
   @Input('previewEnabled') previewEnabled?: boolean;
   @Input('image') image?: any;
-  base: string = environment.base + '/'
+  base: string = environment.base
   preview: any;
   files: Array<any> = []
   previews: Array<any> = []

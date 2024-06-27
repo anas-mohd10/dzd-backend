@@ -30,7 +30,7 @@ export class AboutComponent implements OnInit {
   isFeatureSubmitted: boolean = false
   features: Array<{ thumbnail: any, title: string, description: string }> = []
   featureRef?: BsModalRef;
-  base: string = `${environment.base}/`
+  base: string = `${environment.base}`
   aboutDetails: any;
 
   get legacyControls() {

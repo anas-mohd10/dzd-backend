@@ -6,6 +6,7 @@ export const environment = {
   apiUrl: '/api/v1/w/admin/auth',
   baseUrl: '/api/v1/w/',
   appBaserl: '/api/v1/a/',
+  base: "",
   loginUrl: 'api',
   firebaseConfig: {
     apiKey: "AIzaSyCzj_q9s6UhfZ-mYSAfRdRWWlI47mOinuE",

@@ -46,7 +46,7 @@
                <div class="layout-images">
                   <ng-container *ngFor="let images of layout?.files">
                      <div class="layout-image">
-                        <img src="{{base}}/{{images?.file}}" alt="" srcset="">
+                        <img src="{{base}}{{images?.file}}" alt="" srcset="">
                      </div>
                   </ng-container>
                </div>

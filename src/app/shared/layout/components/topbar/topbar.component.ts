@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { LayoutService } from '../../core/layout.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-topbar',
@@ -44,6 +45,8 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+      environment.base = res.result.baseS3Url;
+
       if(res?.errorCode == 0){
         this.settings = res?.result
         this.ChangeDetectorRef.markForCheck()

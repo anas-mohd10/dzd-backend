@@ -69,7 +69,7 @@ export class AddBannerListComponent implements OnInit {
   redirectionDetails: FormGroup
   files: Array<any> = []
   activeMediaDetails: any
-  base: string = environment.base + '/'
+  base: string = environment.base
   preview: string = ''
 
   constructor(

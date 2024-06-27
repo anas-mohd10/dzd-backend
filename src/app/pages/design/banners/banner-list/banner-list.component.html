@@ -98,7 +98,7 @@
             <div class="banner-card-right">
                <ng-container *ngFor="let _banner of banner?.files">
                   <div class="bannerImage" [ngClass]="{'grid': banner?.type == 4 }">
-                     <img src="{{base}}/{{_banner?.file}}" alt="banner">
+                     <img src="{{base}}{{_banner?.file}}" alt="banner">
                   </div>
                </ng-container>
             </div>

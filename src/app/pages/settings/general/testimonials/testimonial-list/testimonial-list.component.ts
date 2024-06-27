@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment.prod';
 export class TestimonialListComponent implements OnInit {
   appRoute = appRoutes
   testimonials: Array<any> = []
-  base: string = `${environment.base}/`;
+  base: string = `${environment.base}`;
   page: number = 1;
   limit: number = 20;
   totalResults: number = 0;

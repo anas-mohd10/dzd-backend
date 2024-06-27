@@ -26,7 +26,7 @@ export class AddCollectionComponent implements OnInit {
   isAutoCompleteEnabled: boolean = true
   productIds: Array<any> = [];
   productDetails: Array<any> = []
-  base: string = `${environment.base}/`
+  base: string = `${environment.base}`
   cover: string = ''
   thumbnail: string = ''
 

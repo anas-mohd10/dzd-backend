@@ -129,9 +129,9 @@ export class StorePopupComponent implements OnInit {
           this.webRedirection.setValue(this.details?.websiteRedirect)
           this.mobileRedirection.setValue(this.details?.mobileRedirect)
           this.appRedirection.setValue(this.details?.appRedirect)
-          this.details?.website ? this.webPreview = environment.base + '/' + this.details?.website?.path : null
-          this.details?.mobile ? this.mobilePreview = environment.base + '/' + this.details?.mobile?.path : null
-          this.details?.app ? this.appPreview = environment.base + '/' + this.details?.app?.path : null
+          this.details?.website ? this.webPreview = environment.base + this.details?.website?.path : null
+          this.details?.mobile ? this.mobilePreview = environment.base + this.details?.mobile?.path : null
+          this.details?.app ? this.appPreview = environment.base + this.details?.app?.path : null
 
           this.details?.website ? this.isWeb = true : this.isWeb = false
           this.details?.app ? this.isApp = true : this.isApp = false

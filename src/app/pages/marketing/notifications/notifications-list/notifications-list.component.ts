@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment.prod';
 export class NotificationsListComponent implements OnInit {
   appRoute = appRoutes
   notifications: Array<any> = []
-  base: string = `${environment.base}/`
+  base: string = `${environment.base}`
   form: FormGroup;
   page: number = 1
   limit: number = 20

@@ -73,7 +73,7 @@
                <ng-container *ngFor="let product of products; let i = index">
                   <tr>
                      <td>
-                        <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
+                        <img src="{{base}}{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
                            class="rounded" onerror="this.src = 'assets/images/default.png'">
                      </td>
                      <td>{{product?.name}}</td>
@@ -337,7 +337,7 @@
                <ng-container *ngFor="let product of childProducts; let i = index">
                   <tr>
                      <td>
-                        <img src="{{base}}/{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
+                        <img src="{{base}}{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
                            class="rounded border border-secondary"
                            onerror="this.src = 'assets/images/default.png'">
                      </td>

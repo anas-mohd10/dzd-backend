@@ -99,7 +99,7 @@ export class UpdateHeadComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.basicdetails = res?.result[0]
         this.basicrawfile = this.basicdetails?.file
-        this.basicfile = environment.base + "/" + this.basicdetails?.file
+        this.basicfile = environment.base + this.basicdetails?.file
         this.selectedBrand = this.basicdetails?.brand
         this.selectedTax = this.basicdetails?.tax
         this.selectedMainCategory = this.basicdetails?.parentCategory?.id

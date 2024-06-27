@@ -19,7 +19,7 @@ export class UpdateTestimonialComponent implements OnInit {
   isSubmitted = false;
   thumbnail: any;
   details: any;
-  base: string = `${environment.base}/`
+  base: string = `${environment.base}`
   id: string;
 
   constructor(

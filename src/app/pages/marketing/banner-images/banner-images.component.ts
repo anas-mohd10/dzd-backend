@@ -23,7 +23,7 @@ export class BannerImagesComponent implements OnInit {
   form: FormGroup
   isSubmitted: boolean = false;
   focusedBannerImage: any;
-  base: string = environment.base + '/';
+  base: string = environment.base;
   previewDetails: any;  // for previewing image
   items: Array<any> = [
     { key: 'Cart in Web', value: 'cart-web' },
