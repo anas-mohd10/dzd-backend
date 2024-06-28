@@ -285,6 +285,7 @@ export class NavigationMenuComponent implements OnInit {
     if (!category?.isMegaMenu) {
       this.CategoryService.updateCategory(category?.slug, {
         catid: category?.catid,
+        slug: category?.slug,
         name: category?.name,
         isMegaMenu: true
       }).subscribe((res: any) => {
@@ -310,6 +311,7 @@ export class NavigationMenuComponent implements OnInit {
   removeFromMegaCategory(category: any) {
     this.CategoryService.updateCategory(category?.slug, {
       catid: category?.catid,
+      slug: category?.slug,
       name: category?.name,
       isMegaMenu: false
     }).subscribe((res: any) => {
@@ -326,6 +328,7 @@ export class NavigationMenuComponent implements OnInit {
     category?.isMegaMenu ? isMegaMenu = false : isMegaMenu = true
     this.CategoryService.updateCategory(category?.slug, {
       catid: category?.catid,
+      slug: category?.slug,
       name: category?.name,
       isMegaMenu: isMegaMenu
     }).subscribe((res: any) => {
@@ -523,6 +526,7 @@ export class NavigationMenuComponent implements OnInit {
   addCategoryToFooter(category: any) {
     this.CategoryService.updateCategory(category?.slug, {
       catid: category?.catid,
+      slug: category?.slug,
       name: category?.name,
       isFooter: true
     }).subscribe((res: any) => {
