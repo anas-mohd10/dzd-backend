@@ -38,7 +38,6 @@ export class NotificationPermissionComponent implements OnInit {
     try {
       this.nextStep = true
       let messaging = getMessaging(this.fbApp);
-      console.log(messaging)
       getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
         this.disposePrompt()
         if (currentToken) {
