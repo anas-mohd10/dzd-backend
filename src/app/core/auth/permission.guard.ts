@@ -159,7 +159,8 @@ export class PermissionGuard implements CanActivate {
         if (res?.errorCode === 0) {
           const isAccessDenied: boolean = res?.result?.isAccessDenied || false;
           if (isAccessDenied) {
-            return this.router.parseUrl('/access-denied');
+            // return this.router.parseUrl('/access-denied');
+            return true
           } else {
             return true;
           }
