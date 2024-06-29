@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
@@ -17,6 +17,7 @@ export class StorePopupComponent implements OnInit {
   @ViewChild('template') templateRef: TemplateRef<any>
   modalRef?: BsModalRef
   preview: any
+  form: FormGroup = new FormGroup({})
   popupType: string
 
   mobileFile: any
@@ -35,6 +36,10 @@ export class StorePopupComponent implements OnInit {
   isMobile: boolean = false
   isApp: boolean = false
 
+  website: string = ''
+  mobile: string = ''
+  app: string = ''
+
   constructor(
     private PopupService: PopupService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -44,6 +49,12 @@ export class StorePopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDetails()
+
+    this.form = new FormGroup({
+      website: new FormControl(null),
+      mobile: new FormControl(null),
+      app: new FormControl(null),
+    })
   }
 
   open(template: TemplateRef<any>) {
@@ -145,6 +156,27 @@ export class StorePopupComponent implements OnInit {
         this.ToastrService.error(err?.message)
       }
     })
+  }
+
+  handlePopups(event: any, type: string) {
+    switch (type) {
+      case 'website':
+        this.form.patchValue({ website: event?._id })
+        this.website = event?.path
+        break
+      case 'mobile':
+        this.form.patchValue({ mobile: event?._id })
+        this.mobile = event?.path
+        break
+      case 'app':
+        this.form.patchValue({ app: event?._id })
+        this.app = event?.path
+        break
+    }
+  }
+
+  removePopups(type: string){
+
   }
 
   onSubmit() {

@@ -17,7 +17,7 @@
          <button *ngIf="!isData" class="btn btn-primary" routerLink="{{ appRoute.socialMedia.ADD_SOCIAL_MEDIA_LIST }}">
             Add links
          </button>
-         <button class="btn btn-primary" routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}">
+         <button *ngIf="isData" class="btn btn-primary" routerLink="{{ appRoute.socialMedia.UPDATE_SOCIAL_MEDIA_LIST }}">
             Edit links
          </button>
       </div>

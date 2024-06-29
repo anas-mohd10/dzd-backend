@@ -85,6 +85,7 @@ export class SeoDetailsComponent implements OnInit {
   close() {
     this.form.reset()
     this.form.get('page')?.setValue('')
+    this.thumbnail = ''
     this.modalRef?.hide()
     this.isEditMode = false
     this.isSubmitted = false

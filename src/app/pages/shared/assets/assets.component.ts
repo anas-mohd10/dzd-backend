@@ -71,6 +71,9 @@ export class AssetsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+
+    console.log(this.base)
+
     this.getMedias()
     switch (this.previewEnabled) {
       case true:

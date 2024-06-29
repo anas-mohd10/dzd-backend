@@ -7,7 +7,7 @@ import { ProductService } from '../../../../includes/services/product.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -422,17 +422,18 @@ export class AddProductComponent implements OnInit {
   toggleSearchKeywords(event: any, type: string) {
     if (event instanceof KeyboardEvent && event.key === 'Enter') {
       event.preventDefault();
-  }
+    }
     if (type == 'add' && event.target.value) {
       if (this.searchKeywords.includes(event.target.value)) {
         this.HotToastService.info('Keyword already added')
       } else {
         this.searchKeywords.push(event.target.value)
         this.searchKeyword?.setValue('')
+        this.form.get('searchKeywords')?.setValue(this.searchKeywords)
       }
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
     } else {
       this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
     }
   }
 
@@ -534,7 +535,7 @@ export class AddProductComponent implements OnInit {
       metaDescription: new FormControl(""),
       metaKeywords: new FormControl(""),
       stockWarning: new FormControl(10),
-      searchKeywords: new FormControl(""),
+      searchKeywords: new FormControl([]),
       relatedProducts: new FormControl(""),
       isActive: new FormControl(true),
       isVisible: new FormControl(true),

@@ -6,7 +6,7 @@ import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -319,6 +319,7 @@ export class UpdateProductComponent implements OnInit {
       this.form.get('searchKeywords')?.setValue(this.searchKeywords)
     } else {
       this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
     }
   }
 

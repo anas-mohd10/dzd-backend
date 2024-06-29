@@ -15,7 +15,6 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 
-
 interface WidgetProps {
   title: string;
   type: string;
@@ -73,7 +72,7 @@ export class HomeComponent implements OnInit {
   form: FormGroup;
   widgetForm: FormGroup
   widgetImages: Array<any> = []
-  base: string = environment.base
+  base: string ='';
   previewDetails: string = ''
   widgetImagePreview: any;
   widgetImagePreviewIndex: any;
@@ -106,6 +105,7 @@ export class HomeComponent implements OnInit {
     { key: "Open CMS page", value: "cms-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
+  screenLoad: number = 0
   hyperlinkheroForm: FormGroup
   hyperLinkHeroThumbnail: string = ''
   staticPages: Array<any> = []
@@ -213,6 +213,10 @@ export class HomeComponent implements OnInit {
     private StaticPageService: StaticPageService,
     private BrandService: BrandService
   ) { }
+
+  getDomain(domain: string) {
+    return domain.endsWith('/') ? domain.slice(0, -1) : domain
+  }
 
   //Motion canvas
   toggleMotionCanvasThumbnail(event: any) {
@@ -512,6 +516,7 @@ export class HomeComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
+          this.screenLoad++
           this.count++
           this.isDraft = true
           this.Toast.success(res?.message)
@@ -692,6 +697,7 @@ export class HomeComponent implements OnInit {
           this.tileProducts = []
           this.smartTileProducts = []
           this.widgetImages = []
+          this.screenLoad++
           this.widgetImagePreviewIndex = null
           this.widgetImagePreview = null
           this.form.reset()
@@ -743,6 +749,7 @@ export class HomeComponent implements OnInit {
           this.getHomeWidgets()
           this.closeConfirmation()
           this.count++
+          this.screenLoad++
           this.isDraft = true
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -774,6 +781,7 @@ export class HomeComponent implements OnInit {
           this.getHomeWidgets()
           this.closeDuplication()
           this.count++
+          this.screenLoad++
           this.isDraft = true
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -790,6 +798,7 @@ export class HomeComponent implements OnInit {
     moveItemInArray(this.widgetItems, event.previousIndex, event.currentIndex);
     this.reorderWidgets()
     this.isDraft = true
+    this.screenLoad++
     this.count++
   }
 
@@ -884,6 +893,8 @@ export class HomeComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settings = res?.result
+          environment.base = res.result.baseS3Url;
+          this.base = environment.base
           this.ChangeDetectorRef.markForCheck()
         }
       }

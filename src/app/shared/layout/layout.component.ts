@@ -61,7 +61,6 @@ export class LayoutComponent implements OnInit, AfterViewInit {
       environment.base = res.result.baseS3Url;
       this.isReady = true
       this.ChangeDetectorRef.markForCheck()
-      console.log('App is ready ' + this.isReady);
     })
 
     
