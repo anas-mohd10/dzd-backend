@@ -40,7 +40,7 @@ export class MediaListingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getMedias()
+    this.getMedias()    
   }
 
   open(template: TemplateRef<any>) {
