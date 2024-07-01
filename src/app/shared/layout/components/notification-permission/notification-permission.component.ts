@@ -51,7 +51,6 @@ export class NotificationPermissionComponent implements OnInit {
         }
       }).catch((err) => {
         this.disposePrompt()
-        console.log('An error occurred while retrieving token. ', err);
         if (Notification.permission === 'denied') {
           this.isNotificationsBlocked = true
           this.ChangeDetectorRef.markForCheck()

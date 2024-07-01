@@ -51,7 +51,7 @@ export class CouponsListComponent implements OnInit {
   }
 
   toggleTab(type: string) {
-    console.log(type);
+    
   }
 
   switchToggled(event: { switchId: string, toggleState: boolean }) {

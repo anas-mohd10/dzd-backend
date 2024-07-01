@@ -304,10 +304,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   selectDeliveryTime(time: any) {
-    console.log(time)
     this.deliveryTime = time
     this.orderForm.get('deliverySlot')?.setValue(time)
-    console.log(this.orderForm.get('deliverySlot')?.value)
   }
 
   selectDeliveryDate(date: any) {
@@ -583,8 +581,6 @@ export class AddOrdersComponent implements OnInit {
   createOrder() {
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id)
     this.orderForm.get('products')?.setValue(this.cartItems)
-
-    console.log(this.orderForm.value)
 
     if (!this.orderForm.valid) {      
       this.isSubmitted = true

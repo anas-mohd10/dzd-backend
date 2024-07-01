@@ -227,7 +227,6 @@ export class UpdateLayoutListComponent implements OnInit {
       files: this.dataFiles,
       layid: this.slug
     }
-    console.log(this.dataFiles);
 
     return data
   }

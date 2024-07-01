@@ -173,7 +173,6 @@ export class AddVariantProductComponent implements OnInit {
 
   //Check the shipping method
   checkShippingMethod(event: any) {
-    console.log(event.value);
     this.method = event.value;
     if (this.method === 'Paid') {
       this.isShipping = true;

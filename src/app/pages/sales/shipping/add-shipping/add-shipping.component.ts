@@ -79,7 +79,6 @@ export class AddShippingComponent implements OnInit {
     const toWeight = this.to?.value
     const price = this.price?.value
     const validWeight = this.from?.value < this.to?.value
-    console.log();
     if (this.to?.value > 0 && this.from?.value > 0) {
       if ((fromWeight != null && toWeight != null)) {
         if (price != null) {

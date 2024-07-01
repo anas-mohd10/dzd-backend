@@ -125,8 +125,6 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   }
 
   addCoupon() {
-    console.log(this.couponForm.value);
-
     if (!this.couponForm.valid) {
       this.isInvalid = true
       return

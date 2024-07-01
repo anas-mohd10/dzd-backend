@@ -2,17 +2,15 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Toast } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
-import SwiperCore, { SwiperOptions } from 'swiper';
-
+import { SwiperOptions } from 'swiper';
 
 @Component({
   selector: 'app-update-orders',
@@ -211,8 +209,6 @@ export class UpdateOrdersComponent implements OnInit {
           let history = [...product?.history]
           if (product?.dateExpected) product.dateExpected = new Date(product?.dateExpected).toLocaleString()
           product.currentStatus = history.pop()
-          console.log(history.pop());
-
         }
 
         this.ChangeDetectorRef.markForCheck()

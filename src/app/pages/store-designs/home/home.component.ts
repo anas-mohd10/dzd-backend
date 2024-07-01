@@ -593,7 +593,6 @@ export class HomeComponent implements OnInit {
 
   addWidgetDetails() {
     this.widgetImages[this.widgetImagePreviewIndex] = { ...this.widgetImages[this.widgetImagePreviewIndex], ...this.widgetForm.value }
-    console.log(this.widgetImages[this.widgetImagePreviewIndex]);
   }
 
   deleteWidgetImage(index: number, event: Event): void {
@@ -640,7 +639,6 @@ export class HomeComponent implements OnInit {
     if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
       let widgetImages = []
       for (let widgetImage of this.widgetImages) {
-        console.log(widgetImage);
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id })
       }
       widgetPayload['widgetImages'] = widgetImages

@@ -90,8 +90,6 @@ export class AboutComponent implements OnInit {
   }
 
   onStoryThumbnailSelected(event: any) {
-    console.log(event);
-    console.log(this.storyThumbnails);
     this.storyThumbnails.push(event)
   }
 

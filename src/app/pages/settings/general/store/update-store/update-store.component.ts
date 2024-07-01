@@ -40,9 +40,7 @@ export class UpdateStoreComponent implements OnInit {
     this.form.get('mobile')?.updateValueAndValidity();
   }
 
-  handleMobilePattern() {
-    console.log(this.form.get("countryCode")?.value);
-    
+  handleMobilePattern() {    
     switch (this.form.get("countryCode")?.value) {
       case "+91":
         this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);

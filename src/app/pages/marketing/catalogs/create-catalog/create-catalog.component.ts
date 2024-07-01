@@ -124,7 +124,6 @@ export class CreateCatalogComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log(event.previousIndex, event.currentIndex);
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
   }
 

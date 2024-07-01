@@ -19,14 +19,12 @@ export class AsideMenuComponent implements OnInit {
 
   getRoles() {
     this.http.get(this.rootUrl + "/roles").subscribe((_res) => {
-      console.log(_res)
       return _res
     })
   }
 
   getPermissions() {
     this.http.get(this.rootUrl + "/permissions").subscribe((_res) => {
-      console.log(_res)
       return _res
     })
   }

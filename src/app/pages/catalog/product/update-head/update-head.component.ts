@@ -235,8 +235,6 @@ export class UpdateHeadComponent implements OnInit {
   }
 
   hideEditModal() {
-    console.log("hide edit modal");
-
     this.close.emit(this.isClose = true);
   }
 

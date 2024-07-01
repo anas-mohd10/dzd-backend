@@ -67,8 +67,6 @@ export class TimeslotsComponent implements OnInit {
       return
     }
 
-    console.log(this.refid);
-
     if (!this.refid) {
       this.TimeslotsService.add(this.form.value).subscribe((res: any) => {
         if (res?.errorCode == 0) {
