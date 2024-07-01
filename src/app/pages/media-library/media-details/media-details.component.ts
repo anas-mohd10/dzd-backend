@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { ClipboardService } from 'ngx-clipboard';
 import { HotToastService } from '@ngneat/hot-toast';
 import { mediaEndpoints } from 'src/app/config/endpoints';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-media-details',
@@ -35,7 +36,9 @@ export class MediaDetailsComponent implements OnInit {
     private ClipboardService: ClipboardService,
     private Toast: HotToastService,
     private Router: Router,
+    private HttpClient: HttpClient
   ) { }
+
 
   ngOnInit(): void {
     this.mediaQuery = this.ActivatedRoute.snapshot.params.media || ''
@@ -64,6 +67,21 @@ export class MediaDetailsComponent implements OnInit {
         this.ToastrService.error(err.error.message)
       }, complete: () => {
         this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  downloadImage(url: string){
+    this.HttpClient.get(url, {responseType: 'blob'}).subscribe({
+      next: (res: any) => {
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(res);
+        a.href = objectUrl;
+        a.download = this.mediaDetails.title;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
       }
     })
   }
