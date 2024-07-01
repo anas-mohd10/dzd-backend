@@ -92,14 +92,24 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-7">
-                <div class="modal-widgets">
-                    <ng-container *ngFor="let widget of widgets; let i = index">
+
+                <div class="mb-2">
+                    <input type="text" placeholder="Search widgets" [formControl]="homeWidgetKeyword" (ngModelChange)="searchWidgets($event)"
+                        class="form-control">
+                </div>
+
+                <div class="modal-widgets" *ngIf="homeWidgets.length > 0">
+                    <ng-container *ngFor="let widget of homeWidgets; let i = index">
                         <div class="modal-widget p-4 rounded border w-100" (click)="focusWidget(widget)"
                             [ngClass]="{'border-primary shadow-sm': focusedWidget.type == widget.type, 'border-secondary border-dotted': focusedWidget.type != widget.type}">
                             <img class="h-auto w-100 ratio ratio-1x1" src="{{widget?.icon}}" alt="{{widget?.title}}">
                             <div class="text-center mt-2 fs-6">{{widget?.title}}</div>
                         </div>
                     </ng-container>
+                </div>
+
+                <div *ngIf="homeWidgets.length == 0">
+                    <app-no-results></app-no-results>
                 </div>
             </div>
             <div class="col-lg-5">

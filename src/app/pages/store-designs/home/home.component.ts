@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
     { title: 'Image Slider', type: 'image-slider', icon: 'assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Video', type: 'video', icon: 'assets/widgets/video.png', description: 'This widget is used to showcase full width video only.' },
     { title: 'Motion Canvas', type: 'motion-canvas', icon: 'assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
-    { title: 'Products', type: 'products', icon: 'assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
+    { title: 'Products', type: 'products', icon: 'assets/widgets/blogs.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Noble Nodes', type: 'noble-nodes', icon: 'assets/widgets/noble-nodes.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Prime Plates', type: 'prime-plates', icon: 'assets/widgets/prime-plates.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Elite Elements', type: 'elite-elements', icon: 'assets/widgets/elite-elements.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
@@ -53,13 +53,14 @@ export class HomeComponent implements OnInit {
     { title: 'Testimonials', type: 'testimonial-cards', icon: 'assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Regal Rolls', type: 'regal-rolls', icon: 'assets/widgets/regal-rolls.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Radiant Rectangles', type: 'radiant-rectangles', icon: 'assets/widgets/radiant-rectangles.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
-    { title: 'Unity Nexus', type: 'unity-nexus', icon: 'assets/widgets/unity-nexus.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
-    { title: 'Picture Palette', type: 'picture-palette', icon: 'assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
-    { title: 'Store Chronicles', type: 'store-chronicles', icon: 'assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Quad Squares', type: 'quad-square', icon: 'assets/widgets/quad-sqaure.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
-    { title: 'Insight Hub', type: 'insight-hub', icon: 'assets/widgets/insighthub.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
-    { title: 'Hyper Link Hero', type: 'hyperlinkhero', icon: 'assets/widgets/hyperlinkhero.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Insight Hub', type: 'insight-hub', icon: 'assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Hyper Link Hero', type: 'hyperlinkhero', icon: 'assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
   ]
+
+  homeWidgets: Array<any> = []
+  homeWidgetKeyword: FormControl = new FormControl("", Validators.required)
+
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
   widgetsRef?: BsModalRef;
@@ -72,7 +73,7 @@ export class HomeComponent implements OnInit {
   form: FormGroup;
   widgetForm: FormGroup
   widgetImages: Array<any> = []
-  base: string ='';
+  base: string = '';
   previewDetails: string = ''
   widgetImagePreview: any;
   widgetImagePreviewIndex: any;
@@ -112,6 +113,8 @@ export class HomeComponent implements OnInit {
   cmsPages: Array<any> = [
     { title: 'FAQs', value: '/faqs' },
     { title: 'Stores', value: '/stores' },
+    { title: 'Brands', value: '/brands' },
+    { title: 'Category', value: '/categories' },
     { title: 'Reviews', value: '/reviews' },
     { title: 'Contact Us', value: '/contact-us' },
   ]
@@ -826,7 +829,12 @@ export class HomeComponent implements OnInit {
   }
   //hyperlink hero
 
+  searchWidgets(event: any) {
+    this.homeWidgets = this.widgets.filter((widget: any) => widget.title.toLowerCase().startsWith(this.homeWidgetKeyword?.value.toLowerCase()))
+  }
+
   ngOnInit(): void {
+    this.homeWidgets = this.widgets
     this.widgets = this.widgets.sort((a: any, b: any) => {
       if (a.title < b.title) {
         return -1;
