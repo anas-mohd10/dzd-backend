@@ -117,6 +117,18 @@
                               }"></textarea>
                     </div>
                 </div>
+                <div class="mb-3 row">
+                    <label for="description" class="col-lg-2 required">Meta Thumbnail</label>
+                    <div class="col-lg-10">
+                        <div class="w-100 ratio ratio-21x9 position-relative">
+                            <app-assets (mediaClicked)="handleThumbnail($event)"
+                                [previewDetails]="thumbnail"></app-assets>
+                            <div class="position-absolute bottom-0 end-0 m-4" *ngIf="thumbnail">
+                                <button class="btn btn-danger" (click)="removeThumbnail()">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-lg-2"></div>

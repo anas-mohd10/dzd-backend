@@ -361,13 +361,13 @@
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
-                          <img src="{{base}}{{image.path}}" class="rounded" class="h-100 w-100" alt="{{image.title}}">
+                          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="{{image.title}}">
                         </div>
                       </div>
                     </ng-container>
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'"
+                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'contain'"
                           [previewEnabled]="false"></app-assets>
                       </div>
                     </div>
@@ -379,7 +379,7 @@
                   <div class="row" id="thumbnail">
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets [image]="'cover'" [previewDetails]="thumbnailPreview"
+                        <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
                           (mediaClicked)="productThumbnailClicked($event)"></app-assets>
                       </div>
                     </div>

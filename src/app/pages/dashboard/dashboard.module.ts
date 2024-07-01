@@ -6,6 +6,7 @@ import { WidgetsModule } from '../../shared/partials';
 import { NgApexchartsModule } from 'ng-apexcharts'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MonthStatsComponent } from './month-stats/month-stats.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [DashboardComponent, MonthStatsComponent],
@@ -13,6 +14,7 @@ import { MonthStatsComponent } from './month-stats/month-stats.component';
     CommonModule,
     RouterModule.forChild([{ path: '', component: DashboardComponent }]),
     NgApexchartsModule,
+    SharedModule,
     FormsModule,
     WidgetsModule,
     ReactiveFormsModule

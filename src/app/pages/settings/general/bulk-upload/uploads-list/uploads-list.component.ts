@@ -64,6 +64,10 @@ export class UploadsListComponent implements OnInit {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true })
   }
 
+  getMinutes(milliSeconds: number) {
+    return Math.floor(milliSeconds / 60000)
+  }
+
   close() {
     this.modalRef?.hide()
     this.importType.setValue("")

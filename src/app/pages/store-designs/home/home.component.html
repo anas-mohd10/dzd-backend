@@ -4,7 +4,7 @@
 <div>
     <div class="row storedesign-wrapper">
         <div class="w-82 h-100 overflow-auto d-flex align-items-center justify-content-center">
-            <app-screens class="w-100" [device]="device"></app-screens>
+            <app-screens class="w-100" [device]="device" [load]="screenLoad"></app-screens>
         </div>
         <div class="w-18 h-100 overflow-auto bg-white p-5">
             <div class="fs-3 fw-bolder mb-2">Homepage</div>
@@ -347,19 +347,19 @@
                             </div>
                             <div class="col-lg-7">
                                 <form [formGroup]="widgetForm">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div>
-                                            <a target="_blank"
-                                                href="{{settings?.domain}}{{widgetImagePreview.redirection}}">
-                                                <svg height="18" width="18" data-slot="icon" fill="none"
-                                                    stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
-                                                    </path>
-                                                </svg> {{settings?.domain}}{{widgetImagePreview.redirection}}
-                                            </a>
-                                        </div>
+                                    <div>
+                                        <a target="_blank"
+                                            href="{{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}">
+                                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                                stroke="currentColor" viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
+                                                </path>
+                                            </svg> {{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}
+                                        </a>
+                                    </div>
+                                    <div class="mt-2 d-flex align-items-center justify-content-end">
                                         <div class="d-flex align-items-center justify-content-end gap-2">
                                             <button class="btn btn-primary" (click)="continueRedirectionQuery()">
                                                 Save changes
@@ -515,8 +515,8 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="insightHubRedirection" class="fs-6">Redirection</label>
-                                    <input type="text" id="insightHubRedirection" formControlName="insightHubRedirection"
-                                        class="form-control">
+                                    <input type="text" id="insightHubRedirection"
+                                        formControlName="insightHubRedirection" class="form-control">
                                 </div>
                             </div>
                         </div>

@@ -13,7 +13,7 @@ import { DeliverySlotsService } from 'src/app/includes/services/delivery-slots.s
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-orders',

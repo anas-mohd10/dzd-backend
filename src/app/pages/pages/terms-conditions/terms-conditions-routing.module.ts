@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddTermsConditionsComponent } from './add-terms-conditions/add-terms-conditions.component';
+import { PermissionGuard } from 'src/app/core/auth/permission.guard';
 
 const routes: Routes = [
-  { path:'' , component : AddTermsConditionsComponent}
+  { path: '', component: AddTermsConditionsComponent, canActivate: [PermissionGuard] }
 ];
 
 @NgModule({

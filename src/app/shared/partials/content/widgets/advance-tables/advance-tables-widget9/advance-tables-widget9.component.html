@@ -8,23 +8,21 @@
     <div class="tab-content">
       <div class="table-responsive">
         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
-          <thead class="common_thead">
-            <tr class="text-left fs-6 text-gray-400">
-              <th style="min-width: 120px">&nbsp;</th>
-              <th style="min-width: 120px">Order</th>
-              <th style="min-width: 100px">Date</th>
-              <th style="min-width: 100px">Customer</th>
-              <th style="min-width: 100px">Total</th>
-              <th style="min-width: 100px">Source</th>
-              <th style="min-width: 100px">Method</th>
-              <th style="min-width: 100px">Status</th>
-              <th style="min-width: 100px">Action</th>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Source</th>
+              <th>Method</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody class="fs-6">
             <ng-container *ngFor="let order of orders; let  i = index">
               <tr>
-                <td>{{i+1}}</td>
                 <td>{{order?.orderNo}}</td>
                 <td>{{order?.orderDate}}</td>
                 <td>{{order?.customerId?.name}}</td>
@@ -43,10 +41,6 @@
             </ng-container>
           </tbody>
         </table>
-
-        <ng-container *ngIf="orders.length == 0">
-          No new orders
-        </ng-container>
       </div>
     </div>
   </div>

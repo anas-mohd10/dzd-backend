@@ -17,6 +17,7 @@ export class SeoDetailsComponent implements OnInit {
   isSubmitted: boolean = false;
   modalRef?: BsModalRef;
   isEditMode: boolean = false
+  thumbnail: string = ''
 
   constructor(
     private SeoService: SeoService,
@@ -34,12 +35,23 @@ export class SeoDetailsComponent implements OnInit {
       page: new FormControl('', Validators.required),
       url: new FormControl('', Validators.required),
       type: new FormControl('create'),
+      thumbnail: new FormControl(null),
       title: new FormControl('', Validators.required),
       keywords: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
     })
-
+    
     this.fetchSeoDetails()
+  }
+
+  handleThumbnail(event: any) {
+    this.form.patchValue({ thumbnail: event?._id })
+    this.thumbnail = event?.path
+  }
+
+  removeThumbnail() {
+    this.form.patchValue({ thumbnail: null })
+    this.thumbnail = ''
   }
 
   fetchSeoDetails() {
@@ -62,6 +74,8 @@ export class SeoDetailsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result)
+          this.thumbnail = res?.result?.thumbnail?.path
+          this.form.patchValue({ thumbnail: res?.result?.thumbnail?._id })
           this.ChangeDetectorRef.markForCheck()
         }
       }
@@ -71,6 +85,7 @@ export class SeoDetailsComponent implements OnInit {
   close() {
     this.form.reset()
     this.form.get('page')?.setValue('')
+    this.thumbnail = ''
     this.modalRef?.hide()
     this.isEditMode = false
     this.isSubmitted = false

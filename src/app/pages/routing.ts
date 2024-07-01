@@ -125,39 +125,23 @@ export const Routing: Routes = [
           },
         ],
         canActivate: [AuthenticationGuard]
-      },
-      {
-        path: 'variant-product',
-        children: [
-          {
-            path: '',
-            loadChildren: () => import('./catalog/variant-product/variant-product-list/variant-product-list.module').then((m) => m.VariantProductModule),
-          },
-          {
-            path: 'add',
-            loadChildren: () => import('./catalog/variant-product/add-variant-product/add-variant-product.module').then((m) => m.AddVariantProductModule),
-          },
-          {
-            path: 'update',
-            loadChildren: () => import('./catalog/variant-product/update-variant-product/update-variant-product.module').then((m) => m.UpdateVariantProductModule),
-          }
-        ],
-        canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: '',
         children: [
           {
             path: 'offer',
             loadChildren: () => import('./marketing/offer/offer-list/offer-list.module').then((m) => m.OfferModule),
+            canActivate: [PermissionGuard]
           },
           {
             path: 'add-offer',
             loadChildren: () => import('./marketing/offer/add-offer/add-offer.module').then((m) => m.AddOfferModule),
+            canActivate: [PermissionGuard]
           },
           {
             path: 'update-offer',
             loadChildren: () => import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
+            canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]
@@ -315,11 +299,11 @@ export const Routing: Routes = [
         path: 'help-center',
         loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCenterModule),
         canActivate: [AuthenticationGuard]
-      },{
+      }, {
         path: 'privacy-policy',
         loadChildren: () => import('./pages/privacy-policy/privacy-policy.module').then((m) => m.PrivacyPolicyModule),
         canActivate: [AuthenticationGuard]
-      },{
+      }, {
         path: 'terms-conditions',
         loadChildren: () => import('./pages/terms-conditions/terms-conditions.module').then((m) => m.TermsConditionsModule),
         canActivate: [AuthenticationGuard]
@@ -350,23 +334,23 @@ export const Routing: Routes = [
       }, {
         path: 'mailer-subscriptions',
         component: MailerComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'payment-settings',
         component: PaymentSettingsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'seo-details',
         component: SeoDetailsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'monthly-comparison',
         component: MonthlyComparisonComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'sales-analytics',
         component: SalesAnalyticsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'replace-requests',
         loadChildren: () => import('./replace-requests/replace-requests.module').then((m) => m.ReplaceRequestsModule),
@@ -374,31 +358,31 @@ export const Routing: Routes = [
       }, {
         path: 'activity-logs',
         component: ActivitiesComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'gift-wrap',
         component: GiftWrapComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'banner-images',
         component: BannerImagesComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'shipping-charges',
         component: ShippingChargeComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'store-popup',
         component: StorePopupComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'time-slots',
         component: TimeslotsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'delivery-slots',
         component: DeliverySlotsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'media-library',
         loadChildren: () => import('./media-library/media-library.module').then((m) => m.MediaLibraryModule),
@@ -414,11 +398,11 @@ export const Routing: Routes = [
       }, {
         path: 'enquiries',
         component: EnquiresComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'wishlist',
         loadChildren: () => import('./sales/wishlist/wishlist.module').then((m) => m.WishlistModule),
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'more-offers',
         loadChildren: () => import('./marketing/more-offers/more-offers.module').then((m) => m.MoreOffersModule),
@@ -426,23 +410,23 @@ export const Routing: Routes = [
       }, {
         path: 'dynamic-scripts',
         component: DynamicScriptsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'analytics',
         component: AnalyticsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'page-covers',
         component: PageCoversComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'loyalty',
         component: LoyaltyComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'feeds',
         component: FeedsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'custom-mailers',
         component: CustomMailersComponent,
@@ -454,27 +438,27 @@ export const Routing: Routes = [
       }, {
         path: 'navigation',
         component: NavigationMenuComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'sitemap',
         component: SitemapComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'shipping-policy',
         component: ShippingPolicyComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'payment-policy',
         component: PaymentPolicyComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'service-warranty',
         component: ServiceWarrantyComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'refund-policy',
         component: RefundPolicyComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'shipping-settings',
         component: ShippingComponent,

@@ -67,7 +67,7 @@
                         <th>Created by</th>
                         <th>Status</th>
                         <th>Type</th>
-                        <th>Execution time</th>
+                        <th>Time</th>
                         <th>Date</th>
                     </tr>
                 </thead>
@@ -109,7 +109,7 @@
                                     class="p-1 w-100 d-flex align-items-center justify-content-center rounded bg-secondary">
                                     {{import?.type}}</div>
                             </td>
-                            <td>{{import?.executionTime}} sec</td>
+                            <td>{{getMinutes(import?.executionTime)}} min</td>
                             <td>{{import?.createdAt}}</td>
                         </tr>
                     </ng-container>
