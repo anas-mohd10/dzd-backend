@@ -1,5 +1,11 @@
-<button type="button" class="btn btn-primary" (click)="openModal(template)">
-    Send notification
+<button class="ms-1 btns-sx p-2" style="border: 1px solid #E8E8E8; background: #d1d1d1; border-radius: 5px;" (click)="openModal(template)">
+    Send
+    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5">
+        </path>
+    </svg>
 </button>
 
 <ng-template #template>
@@ -11,10 +17,9 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="form">
-            <div class="my-3">
+            <div class="mb-3">
                 <div class="d-flex align-items-center justify-content-end">
                     <div>
-                        <label for="create" class="form-label">&nbsp;</label>
                         <input type="button" value="Create coupon" name="create" id="create"
                             class="btn btn-dark form-control" (click)="openCoupon(coupon)">
                     </div>
