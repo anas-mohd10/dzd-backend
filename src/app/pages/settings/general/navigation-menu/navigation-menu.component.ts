@@ -527,6 +527,7 @@ export class NavigationMenuComponent implements OnInit {
     this.CategoryService.updateCategory(category?.slug, {
       catid: category?.catid,
       slug: category?.slug,
+      _id: category?._id,
       name: category?.name,
       isFooter: true
     }).subscribe((res: any) => {
@@ -541,6 +542,8 @@ export class NavigationMenuComponent implements OnInit {
   removeCategoryFromFooter(category: any) {
     this.CategoryService.updateCategory(category?.slug, {
       catid: category?.catid,
+      slug: category?.slug,
+      _id: category?._id,
       name: category?.name,
       isFooter: false
     }).subscribe((res: any) => {
