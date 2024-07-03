@@ -1,0 +1,89 @@
+stages:
+  - prepare
+  - build
+  - update_version
+
+variables:
+  GIT_STRATEGY: clone
+  GIT_SUBMODULE_STRATEGY: recursive
+  GITHUB_PAT: "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"  # Replace with your GitHub Personal Access Token
+  GITHUB_USERNAME: "ankithaldar1995"  # Replace with your GitHub username
+  GIT_COMMITTER_NAME: "GitLab CI"
+  GIT_COMMITTER_EMAIL: "ci@example.com"
+  
+  # AWS Credentials and Docker Build Variables
+  AWS_ACCESS_KEY_ID: "AKIATCKAQPCQ56Z4UJGT"
+  AWS_SECRET_ACCESS_KEY: "0UYZLSu+73OBvFRon1YRXOWv0deUduZcLXx3xWBQ"
+  AWS_DEFAULT_REGION: "ap-south-1"
+  AWS_ACCOUNT_ID: "211125565601"
+  ECR_REPO: "admin"
+  IMAGE_KEY_NAME: "adminImageVersion"  # Define your key for image version
+  VALUES_FILE_PATH: "xclient-resources/common.values.yaml"  # Define path to values file
+
+before_script:
+  - apt-get update -y
+  - apt-get install -y jq git awscli  # Install jq, git, and AWS CLI
+
+prepare:
+  stage: prepare
+  only:
+    - staging
+  script:
+    - echo "Cloning infra repository..."
+    - git clone https://$GITHUB_PAT@github.com/$GITHUB_USERNAME/infra-dada.git
+    - cd infra-dada
+    - echo "Reading current version from $VALUES_FILE_PATH..."
+    - current_version=$(grep "$IMAGE_KEY_NAME" ./$VALUES_FILE_PATH | awk '{print $2}' | tr -d '"')    
+    - 'echo "Current version: $current_version"'
+    - IFS='.' read -r major minor patch <<< "${current_version}"
+    - patch=$((patch+1))
+    - new_version="$major.$minor.$patch"
+    - 'echo "Incremented version: $new_version"'
+    - echo $new_version > ../new_version.txt
+  artifacts:
+    paths:
+      - new_version.txt
+      - infra-dada/
+
+build:
+  stage: build
+  image: docker:cli
+  services:
+    - docker:dind
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  only:
+    - staging
+  before_script:
+    - apk add --no-cache aws-cli
+  script:
+    - new_version=$(cat new_version.txt)
+    - echo "Installing AWS CLI..."
+    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile hub
+    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile hub
+    - aws configure set default.region $AWS_DEFAULT_REGION --profile hub
+    - aws configure set default.output json --profile hub
+    - 'echo "Building Docker image with version: $new_version"'
+    - ls
+    - chmod +x ./sh.sh  # Ensure script is executable
+    - sh ./sh.sh -a $AWS_ACCOUNT_ID -r $AWS_DEFAULT_REGION -e $ECR_REPO -t $new_version
+    - echo $new_version > ./new_version.txt
+  artifacts:
+    paths:
+      - new_version.txt
+      - infra-dada/
+
+update_version:
+  stage: update_version
+  only:
+    - staging
+  script:
+    - echo "Updating version in infra repository..."
+    - new_version=$(cat new_version.txt)
+    - cd infra-dada
+    - 'sed -i "s/$IMAGE_KEY_NAME: .*/$IMAGE_KEY_NAME: \"$new_version\"/" $VALUES_FILE_PATH'
+    - git config user.name "$GIT_COMMITTER_NAME"
+    - git config user.email "$GIT_COMMITTER_EMAIL"
+    - git add $VALUES_FILE_PATH
+    - git commit -m "Update $IMAGE_KEY_NAME to $new_version"
+    - git push https://$GITHUB_PAT@github.com/$GITHUB_USERNAME/infra-dada.git
