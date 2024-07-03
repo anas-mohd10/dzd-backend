@@ -87,6 +87,10 @@ export class CartListComponent implements OnInit {
     })
   }
 
+  getTotal(qty: number, price: number){
+    return Math.round(qty * price)
+  }
+
   clearFilter() {
     this.keyword.setValue('')
     this.type.setValue('')

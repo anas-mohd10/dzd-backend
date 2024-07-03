@@ -49,7 +49,6 @@
       <thead>
         <tr>
           <th>Customer</th>
-          <th>Total</th>
           <th>Products</th>
           <th>Date</th>
           <th>Type</th>
@@ -60,7 +59,6 @@
         <ng-container *ngFor="let cart of carts; let i = index">
           <tr>
             <td>{{ cart?.customer?.name }}</td>
-            <td>{{ cart?.total }}</td>
             <td>{{ cart?.products }}</td>
             <td>{{ cart?.date }}</td>
             <td>
@@ -139,7 +137,7 @@
               x {{ item?.quantity }}
             </div>
             <div class="totalPrice ms-2">
-              {{ settings?.currency }} {{ item?.total }}
+              {{ settings?.currency }} {{ getTotal(item?.quantity, item?.product?.price?.selling) }}
             </div>
           </div>
         </div>
@@ -155,16 +153,6 @@
             </path>
           </svg>
           {{ cartDetails?.coupon?.code }} has been applied
-        </div>
-      </div>
-      <div>
-        <div class="fs-3 mb-2 fw-bolder">
-          Total :
-          <span class="text-primary">{{ settings?.currency }} {{ cartDetails?.total }}</span>
-        </div>
-        <div class="fs-5 mb-2 fw-bolder" *ngIf="cartDetails?.coupon">
-          Discount :
-          <span class="text-primary">{{ settings?.currency }} {{ cartDetails?.discountTotal }}</span>
         </div>
       </div>
     </div>

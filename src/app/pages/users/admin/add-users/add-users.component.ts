@@ -39,7 +39,7 @@ export class AddUsersComponent implements OnInit {
       countryCode: ['+971', Validators.required],
       mobile: ['', [Validators.required, Validators.pattern("^[0-9]{9}$")]],
       username: ['', Validators.required],
-      role: ['', Validators.required],
+      role: [''],
       password: ['', Validators.required],
       isActive: ['true',],
     });
