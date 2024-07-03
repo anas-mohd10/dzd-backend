@@ -18,8 +18,8 @@ export const environment = {
 
   //Local
   // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   // baseUrl: 'http://localhost:3000/api/v1/w/',
   // base: 'http://localhost:3000',
   base: '',
@@ -33,9 +33,9 @@ export const environment = {
   //Mattressland
 
   //Fresh fruits
-  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
+  apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
+  baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
+  appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
   // base: 'https://freshfruitmart-api.storedada.net',
   //Fresh fruits
 

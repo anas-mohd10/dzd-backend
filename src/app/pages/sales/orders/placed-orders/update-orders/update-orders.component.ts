@@ -98,6 +98,10 @@ export class UpdateOrdersComponent implements OnInit {
     private Toast: HotToastService
   ) { }
 
+  getLocaleDateString(date: string){
+    return new Date(date).toLocaleString()
+  }
+
   ngOnInit(): void {
     this.base = environment.base
     this.initForm()

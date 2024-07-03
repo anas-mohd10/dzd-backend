@@ -29,5 +29,6 @@ export const customerEndpoints = {
   getLoyaltyTransactions: '/get-loyalty-history',
   getNewsletterSubscribers: '/newsletter-subscribers',
   customerDetails: '/get-customer-details',
-  usersBulkImport: '/import-users'
+  usersBulkImport: '/import-users',
+  deleteCustomer: '/delete-customer'
 }

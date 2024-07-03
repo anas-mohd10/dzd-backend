@@ -81,6 +81,11 @@ export class CustomersService {
     return this.http.get(`${url}`)
   }
 
+  deleteCustomer(userid: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.deleteCustomer + `/${userid}`);
+    return this.http.delete(`${url}`)
+  }
+
   getAddressDetails(data: any) {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_address_details + `/${data}`);
     return this.http.get(`${url}`)

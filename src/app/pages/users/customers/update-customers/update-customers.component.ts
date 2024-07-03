@@ -62,7 +62,6 @@ export class UpdateCustomersComponent implements OnInit {
     private route: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private toastr: ToastrService,
     private Toast: HotToastService,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
@@ -78,6 +77,21 @@ export class UpdateCustomersComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+      }
+    })
+  }
+
+  deleteCustomer() {
+    this.customerService.deleteCustomer(this.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST])
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message);
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message);
       }
     })
   }

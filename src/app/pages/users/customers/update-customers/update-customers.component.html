@@ -35,16 +35,19 @@
                      </div>
                   </div>
 
-                  <div class="d-flex justify-content-end">
-                     <button class="btn btn-secondary ms-1"
+                  <div class="d-flex justify-content-end gap-2">
+                     <button class="btn btn-secondary"
                         routerLink="{{appRoute.customers.referralHistory + '/' + customerData?.userid}}">
                         Referral history
                      </button>
-                     <button class="btn btn-secondary ms-1" (click)="openLoyalty(loyaltyTemplate)">
+                     <button class="btn btn-secondary" (click)="openLoyalty(loyaltyTemplate)">
                         Loyalty points
                      </button>
-                     <button class="btn btn-secondary ms-1" (click)="openWallet(walletTemplate)">
+                     <button class="btn btn-secondary" (click)="openWallet(walletTemplate)">
                         Wallet transactions
+                     </button>
+                     <button class="btn btn-danger" (click)="deleteCustomer()">
+                        Delete customer
                      </button>
                   </div>
 
