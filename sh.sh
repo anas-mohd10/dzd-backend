@@ -1,10 +1,21 @@
 #!/bin/bash
 
 # Variables
-AWS_ACCOUNT_ID="211125565601"
-AWS_REGION="ap-south-1"
-ECR_REPO="admin"
-IMAGE_TAG="v0.0.11"  # e.g., v1.0.0
+AWS_ACCOUNT_ID=""
+AWS_REGION=""
+ECR_REPO=""
+IMAGE_TAG=""
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -a|--aws-account-id) AWS_ACCOUNT_ID="$2"; shift ;;
+        -r|--aws-region) AWS_REGION="$2"; shift ;;
+        -e|--ecr-repo) ECR_REPO="$2"; shift ;;
+        -t|--image-tag) IMAGE_TAG="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
 
 # Login to AWS ECR
 aws ecr get-login-password --region ${AWS_REGION} --profile hub | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
