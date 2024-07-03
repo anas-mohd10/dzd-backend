@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
 
@@ -50,6 +50,7 @@ export class BulkInvoicesComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+        this.base = this.settings?.baseS3Url
         this.ChangeDetectorRef.markForCheck()
       }
     })

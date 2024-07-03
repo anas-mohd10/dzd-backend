@@ -21,12 +21,12 @@ export const routes: Routes = [
     loadChildren: () => import('./shared/layout/layout.module').then((m) => m.LayoutModule),
   },
   { path: 'generate-invoice', component: GenerateInvoiceComponent },
+  { path: 'packing-slip', component: PackingSlipComponent },
   { path: 'bulk-invoices', component: BulkInvoicesComponent },
   { path: 'bulk-packing-slips', component: BulkPackingSlipsComponent },
   { path: 'support-email/:token', component: SupportEmailVerificationComponent },
   { path: 'access-denied', component: AccessDeniedComponent },
   { path: "designs", loadChildren: () => import("./pages/store-designs/store-designs.module").then(m => m.StoreDesignsModule) },
-  { path: 'packing-slip', component: PackingSlipComponent },
   { path: '**', redirectTo: 'error/404' },
 ];
 

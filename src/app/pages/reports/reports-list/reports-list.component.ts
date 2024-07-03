@@ -50,22 +50,22 @@ export class ReportsListComponent implements OnInit {
   exportReport(type: string) {
     switch (type) {
       case 'product':
-        this.exportUrl = environment.apiUrl + reportsEndpoints.productReport
+        this.exportUrl = '/api/v1/w/admin/auth' + reportsEndpoints.productReport
         break
       case 'order':
-        this.exportUrl = environment.apiUrl + reportsEndpoints.orderReport
+        this.exportUrl = '/api/v1/w/admin/auth' + reportsEndpoints.orderReport
         break
       case 'order-detailed':
-        this.exportUrl = environment.apiUrl + reportsEndpoints.detailedOrderReport
+        this.exportUrl = '/api/v1/w/admin/auth' + reportsEndpoints.detailedOrderReport
         break
       case 'customer':
-        this.exportUrl = environment.apiUrl + reportsEndpoints.customerReport
+        this.exportUrl = '/api/v1/w/admin/auth' + reportsEndpoints.customerReport
         break
       case 'customer-order':
-        this.exportUrl = environment.apiUrl + reportsEndpoints.customerOrderReport
+        this.exportUrl = '/api/v1/w/admin/auth' + reportsEndpoints.customerOrderReport
         break
       case 'product-order':
-        this.exportUrl = environment.apiUrl + reportsEndpoints.productOrderReport
+        this.exportUrl = '/api/v1/w/admin/auth' + reportsEndpoints.productOrderReport
         break
     }
   }
