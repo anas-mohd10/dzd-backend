@@ -43,6 +43,15 @@ export class ActivitiesComponent implements OnInit {
     })
   }
 
+  getLocaleDateString(date: any) {
+    return new Date(date).toLocaleDateString()
+  }
+
+  getLocaleTimeString(date: any) {
+    return new Date(date).toLocaleTimeString()
+  }
+
+
   onPageTrigger(event: { pageIndex: number, pageSize: number }) {
     this.page = event.pageIndex
     this.limit = Number(event.pageSize)
