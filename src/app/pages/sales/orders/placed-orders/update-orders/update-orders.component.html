@@ -73,7 +73,7 @@
           <div class="fs-6">Reason for cancellation :</div>
           <div class="fs-5">{{order?.cancel?.reason}}</div>
         </div>
-        <div class="fs-6">Cancelled on {{order?.cancel?.date}}</div>
+        <div class="fs-6">Cancelled on {{getLocaleDateFormat(order?.cancel?.date)}} {{getLocaleTimeFormat(order?.cancel?.date)}}</div>
       </div>
     </div>
 
