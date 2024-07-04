@@ -196,9 +196,9 @@
           </td>
           <td>{{order?.orderNo}}</td>
           <td>
-            {{order?.orderDate}}
+            {{getLocaleDateFormat(order?.orderDate)}}
             <br>
-            {{order.orderTime}}
+            {{getLocaleTimeFormat(order?.orderDate)}}
           </td>
           <td>
             <div>{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>

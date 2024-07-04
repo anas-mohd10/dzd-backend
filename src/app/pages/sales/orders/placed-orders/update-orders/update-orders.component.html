@@ -92,7 +92,8 @@
             <div class="my-2">
               <div class="itemDetails">
                 <div class="itemTitle">Order Placed on</div>
-                <div class="itemResponse">{{order?.orderDate}}, {{order?.orderTime}}</div>
+                <div class="itemResponse"> {{getLocaleDateFormat(order?.orderDate)}},
+                  {{getLocaleTimeFormat(order?.orderDate)}}</div>
               </div>
               <div class="itemDetails">
                 <div class="itemTitle">Payment Method</div>

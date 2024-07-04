@@ -149,8 +149,12 @@ export class OrdersListComponent implements OnInit {
     this.tagOrder = ''
   }
 
-  getLocalDate(data: any){
+  getLocaleDateFormat(data: any){
     return new Date(data).toLocaleDateString()
+  }
+
+  getLocaleTimeFormat(data: any){
+    return new Date(data).toLocaleTimeString()
   }
 
   formatOrderStatus(orderStatus: string){
@@ -313,7 +317,6 @@ export class OrdersListComponent implements OnInit {
     this.OrdersService.getOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
-        for (let order of this.orders) order.orderDate = new Date(order.orderDate).toLocaleDateString()
         this.totalOrders = res?.result?.total_orders
         this.averageSales = res?.result?.average_sales
         this.totalRevenues = res?.result?.total_revenue

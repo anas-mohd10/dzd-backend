@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { MailerService } from 'src/app/includes/services/mailer.service';
 
@@ -26,7 +26,7 @@ export class MailerComponent implements OnInit {
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
     private MailerService: MailerService,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   get formControls() {
@@ -75,14 +75,19 @@ export class MailerComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.resetMailers()
           this.mailerDetails = res?.result
-          for (let _key of Object.keys(this.mailerDetails))
-            for (let item of this.mailerDetails[_key]) this.mailers[_key].push(item)
+          if (this.mailerDetails) {
+            for (let _key of Object.keys(this.mailerDetails)) {
+              for (let item of this.mailerDetails[_key]) {
+                if (!['updatedAt', 'refid'].includes(_key)) this.mailers[_key].push(item)
+              }
+            }
+          }
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.error.message)
+        this.HotToastService.error(err.error.message)
       }
     })
   }
@@ -92,14 +97,14 @@ export class MailerComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getMailerDetails()
-          this.ToastrService.success(res?.message)
+          this.HotToastService.success(res?.message)
           this.ChangeDetectorRef.markForCheck()
           this.isChangeDetected = false
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.error.message)
+        this.HotToastService.error(err.error.message)
       }
     })
   }

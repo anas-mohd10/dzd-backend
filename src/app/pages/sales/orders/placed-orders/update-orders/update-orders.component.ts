@@ -179,13 +179,21 @@ export class UpdateOrdersComponent implements OnInit {
     return `${new Date(date).toLocaleString()}`
   }
 
+  getLocaleDateFormat(data: any) {
+    return new Date(data).toLocaleDateString()
+  }
+
+  getLocaleTimeFormat(data: any) {
+    return new Date(data).toLocaleTimeString()
+  }
+
+
   getOrderDetails() {
     this.OrdersService.getOrderDetails({ order: this.slug }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.order = res?.result
         this.orderNumber = res?.result?.orderNo
         this.productCount = this.order.products.length
-        this.order.orderDate = new Date(this.order.orderDate).toDateString()
         this.form.get("paymentStatus")?.setValue(this.order?.paymentStatus)
         this.orderNote?.setValue(this.order?.orderNote)
         this.form.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
