@@ -59,8 +59,8 @@ input[type=button],
 
 .offerCoupon {
   position: relative;
-  -webkit-mask-image: url('/assets/images/coupon.png');
-  mask-image: url('/assets/images/coupon.png');
+  -webkit-mask-image: url('assets/images/coupon.png');
+  mask-image: url('assets/images/coupon.png');
   -webkit-mask-position: top right;
   mask-position: top right;
   -webkit-mask-repeat: no-repeat;

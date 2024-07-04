@@ -24,7 +24,6 @@
           Cancel Order
         </div>
 
-
         <button class="btn border d-flex align-items-center justify-content-center bg-white text-primary border-primary"
           (click)="acceptOrderPayment()" *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
           Accept payment
@@ -34,9 +33,8 @@
           </svg>
         </button>
 
-
         <a class="btn border bg-white text-primary border-primary" *ngIf="isPackingSlipAvailable"
-          href="/packing-slip?order={{orderNumber?.split('#')[1]}}" target="_blank">
+          href="packing-slip?order={{orderNumber?.split('#')[1]}}" target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -46,7 +44,7 @@
         </a>
 
         <a class="btn btn-primary" *ngIf="isInvoiceAvailable"
-          href="/generate-invoice?order={{orderNumber?.split('#')[1]}}" target="_blank">
+          href="generate-invoice?order={{orderNumber?.split('#')[1]}}" target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path

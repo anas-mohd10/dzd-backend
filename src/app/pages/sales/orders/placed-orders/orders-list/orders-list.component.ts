@@ -262,12 +262,12 @@ export class OrdersListComponent implements OnInit {
 
   bulkPrintInvoice() {
     let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
-    this.Router.navigate([`/bulk-invoices`], { queryParams: { 'order': queryString } })
+    this.Router.navigate([`bulk-invoices`], { queryParams: { 'order': queryString } })
   }
 
   bulkPrintPackingSlips() {
     let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
-    this.Router.navigate([`/bulk-packing-slips`], { queryParams: { 'order': queryString } })
+    this.Router.navigate([`bulk-packing-slips`], { queryParams: { 'order': queryString } })
   }
 
   exportOrders() {
