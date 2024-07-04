@@ -84,7 +84,7 @@ update_version:
     - 'sed -i "s/$IMAGE_KEY_NAME: .*/$IMAGE_KEY_NAME: \"$new_version\"/" $VALUES_FILE_PATH'
     - git config user.name "$GIT_COMMITTER_NAME"
     - git config user.email "$GIT_COMMITTER_EMAIL"
-    - git pull https://$GITHUB_PAT@github.com/$GITHUB_USERNAME/infra-dada.git
     - git add $VALUES_FILE_PATH
     - git commit -m "Update $IMAGE_KEY_NAME to $new_version"
+    - git pull https://$GITHUB_PAT@github.com/$GITHUB_USERNAME/infra-dada.git --ff
     - git push https://$GITHUB_PAT@github.com/$GITHUB_USERNAME/infra-dada.git
