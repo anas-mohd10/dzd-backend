@@ -34,7 +34,7 @@ export class NotificationPermissionComponent implements OnInit {
     !this.disablePrompt ? document.body?.classList.add('overflow-hidden') : document.body?.classList.remove('overflow-hidden')
   }
 
-  allowPrompt() {
+  allowPrompt() {    
     try {
       this.nextStep = true
       let messaging = getMessaging(this.fbApp);

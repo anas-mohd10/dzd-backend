@@ -60,7 +60,7 @@ export class ShippingComponent implements OnInit {
 
     this.form = new FormGroup({
       cost: new FormControl('', Validators.required),
-      amount: new FormControl(499, Validators.pattern("^[1-9]*")),
+      amount: new FormControl(499, Validators.pattern("^[0-9]*")),
       charge: new FormControl(10, Validators.pattern("^[0-9]*"))
     })
   }

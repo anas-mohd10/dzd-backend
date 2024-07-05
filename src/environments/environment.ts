@@ -17,9 +17,9 @@ export const environment = {
   //Dev
 
   //Local
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  appBaserl: 'http://localhost:3000/api/v1/a/',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  // appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   //Local
 
@@ -31,7 +31,10 @@ export const environment = {
   //Mattressland
 
   //Fresh fruits
-  // apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
+  apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
+  baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
+  appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
+  //   apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
   // baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
   // appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
   // base: '',

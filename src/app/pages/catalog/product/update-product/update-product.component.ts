@@ -265,6 +265,15 @@ export class UpdateProductComponent implements OnInit {
   }
 
   saveChanges() {
+    if (this.productDetails?.price?.offer == this.form.get('price')?.value?.offer) {
+    } else {
+      this.form.get('price')?.setValue({
+        mrp: this.form.get('price')?.value?.mrp,
+        offer: this.form.get('price')?.value?.offer,
+        selling: this.form.get('price')?.value?.offer
+      })
+    }
+
     if (!this.form.valid) {
       this.isSubmitted = true
       return
@@ -308,7 +317,7 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  toggleSearchKeywords(event: any, type: string) {    
+  toggleSearchKeywords(event: any, type: string) {
     if (type == 'add' && event.target.value) {
       if (this.searchKeywords.includes(event.target.value)) {
         this.HotToastService.info('Keyword already added')
