@@ -16,6 +16,7 @@ import { ThemeComponent } from './theme/theme.component';
 import { AppImagesComponent } from './app-images/app-images.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
+import { ProductDesignsComponent } from './product-designs/product-designs.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AboutComponent } from './about/about.component';
     ThemeComponent,
     AppImagesComponent,
     ContactComponent,
-    AboutComponent
+    AboutComponent,
+    ProductDesignsComponent
   ],
   imports: [
     CommonModule,

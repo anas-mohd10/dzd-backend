@@ -295,7 +295,8 @@ export const appRoutes = {
     theme: "/designs/theme",
     appImages: "/designs/app-images",
     contactUs: "/designs/contact-us",
-    aboutUs: "/designs/about-us"
+    aboutUs: "/designs/about-us",
+    productDesigns: '/designs/product-designs'
   },
   customMailers: `${app}/custom-mailers`,
   mailerDetails: `${app}/mailer-details`,

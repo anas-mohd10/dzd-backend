@@ -6,6 +6,7 @@ import { ThemeComponent } from './theme/theme.component';
 import { AppImagesComponent } from './app-images/app-images.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
+import { ProductDesignsComponent } from './product-designs/product-designs.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: "theme", component: ThemeComponent },
   { path: "app-images", component: AppImagesComponent },
   { path: "contact-us", component: ContactComponent },
+  { path: "product-designs", component: ProductDesignsComponent }
 ];
 
 @NgModule({

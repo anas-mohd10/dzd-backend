@@ -94,8 +94,8 @@
             <div class="col-lg-7">
 
                 <div class="mb-2">
-                    <input type="text" placeholder="Search widgets" [formControl]="homeWidgetKeyword" (ngModelChange)="searchWidgets($event)"
-                        class="form-control">
+                    <input type="text" placeholder="Search widgets" [formControl]="homeWidgetKeyword"
+                        (ngModelChange)="searchWidgets($event)" class="form-control">
                 </div>
 
                 <div class="modal-widgets" *ngIf="homeWidgets.length > 0">
@@ -475,10 +475,11 @@
                     </div>
                 </div>
 
-                <div *ngIf="widgetDetails?.widgetType == 'html'">
+                <div *ngIf="widgetDetails?.widgetType == 'html' || widgetDetails?.widgetType == 'delivery-timer'">
                     <p class="text-muted">You can paste/write your widget code and images in this section.</p>
-                    <angular-editor class="form-control fs-6" formControlName="html" [config]="editorConfig">
-                    </angular-editor>
+                    <div class="form-group">
+                        <textarea formControlName="html" class="form-control"></textarea>
+                    </div>
                 </div>
 
                 <div *ngIf="widgetDetails?.widgetType == 'blogs'">

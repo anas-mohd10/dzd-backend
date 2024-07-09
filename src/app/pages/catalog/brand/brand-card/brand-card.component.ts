@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({

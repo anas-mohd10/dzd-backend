@@ -3,34 +3,23 @@ export const environment = {
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  // apiUrl: 'https://ccapi.previewbay.com/api/v1/w/admin/auth',
-  // baseUrl: 'https://ccapi.previewbay.com/api/v1/w/',
-  // appBaserl: 'https://ccapi.previewbay.com/api/v1/a/',
-  // base: 'https://ccapi.previewbay.com',
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // appBaserl: 'http://localhost:3000/api/v1/a/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   // Local
 
   //Fresh fruit
-  apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
-  baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
-  appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
+  // apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
+  // baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
+  // appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
   // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
   // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
   // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
   // base: '',
   //Fresh fruit
-
-  //Vperfumes
-  // apiUrl: 'https://vperfumes-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://vperfumes-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://vperfumes-api.storedada.net/api/v1/a/',
-  // base: 'https://vperfumes-api.storedada.net',
-  //Vperfumes
 
   //Mattressland
   // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',

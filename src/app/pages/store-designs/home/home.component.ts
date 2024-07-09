@@ -55,6 +55,7 @@ export class HomeComponent implements OnInit {
     { title: 'Radiant Rectangles', type: 'radiant-rectangles', icon: 'assets/widgets/radiant-rectangles.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Quad Squares', type: 'quad-square', icon: 'assets/widgets/quad-sqaure.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Insight Hub', type: 'insight-hub', icon: 'assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Delivery Timer', type: 'delivery-timer', icon: 'assets/widgets/delivery-timer.png', description: 'The following widget can be used to run a delivery timer with custom designs' },
     { title: 'Hyper Link Hero', type: 'hyperlinkhero', icon: 'assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
   ]
 
