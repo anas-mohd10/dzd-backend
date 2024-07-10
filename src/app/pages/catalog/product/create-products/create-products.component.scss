@@ -1,0 +1,9 @@
+.rotate {
+    transform: rotate(180deg);
+    transition: 0.3s all ease-in-out;
+}
+
+.btn,
+label {
+    font-weight: 400 !important;
+}

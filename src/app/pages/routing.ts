@@ -35,6 +35,7 @@ import { GuestsComponent } from './users/guests/guests.component';
 import { ShippingChargeComponent } from './settings/general/shipping-charge/shipping-charge.component';
 import { PageCoversComponent } from './page-covers/page-covers.component';
 import { PaymentSettingsComponent } from './settings/general/payment-settings/payment-settings.component';
+import { CreateProductsComponent } from './catalog/product/create-products/create-products.component';
 
 export const Routing: Routes = [
   {
@@ -235,8 +236,11 @@ export const Routing: Routes = [
         path: 'invoice-settings',
         loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
+        path: 'create-products',
+        component: CreateProductsComponent,
+        canActivate: [AuthenticationGuard]
+      }, {
         path: 'banners',
         loadChildren: () => import('./design/banners/banners.module').then((m) => m.BannersModule),
         canActivate: [AuthenticationGuard]
