@@ -418,10 +418,17 @@
                                 *ngIf="itemForm.get('menuType')?.value == 'collection'" [formControl]="keyword"
                                 (ngModelChange)="searchItems()">
                             <select class="form-select" [formControl]="keyword"
-                                *ngIf="itemForm.get('menuType')?.value == 'staticpages'" (change)="searchItems()">
+                                *ngIf="itemForm.get('menuType')?.value == 'cmspages'" (change)="searchItems()">
                                 <option value="">-- Select an option --</option>
                                 <option *ngFor="let cmsPage of cmsPages" value="{{cmsPage.value}}">
                                     {{cmsPage?.title}}
+                                </option>
+                            </select>
+                            <select class="form-select" [formControl]="keyword"
+                                *ngIf="itemForm.get('menuType')?.value == 'staticpages'" (change)="searchItems()">
+                                <option value="">-- Select an option --</option>
+                                <option *ngFor="let staticPage of staticPages" value="{{staticPage.value}}">
+                                    {{staticPage?.title}}
                                 </option>
                             </select>
                         </div>
@@ -532,10 +539,17 @@
                                 *ngIf="itemForm.get('menuType')?.value == 'search-filters'" [formControl]="keyword"
                                 (ngModelChange)="searchItems()">
                             <select class="form-select" [formControl]="keyword"
-                                *ngIf="itemForm.get('menuType')?.value == 'staticpages'" (change)="searchItems()">
+                                *ngIf="itemForm.get('menuType')?.value == 'cmspages'" (change)="searchItems()">
                                 <option value="">-- Select an option --</option>
                                 <option *ngFor="let cmsPage of cmsPages" value="{{cmsPage.value}}">
                                     {{cmsPage?.title}}
+                                </option>
+                            </select>
+                            <select class="form-select" [formControl]="keyword"
+                                *ngIf="itemForm.get('menuType')?.value == 'staticpages'" (change)="searchItems()">
+                                <option value="">-- Select an option --</option>
+                                <option *ngFor="let staticPage of staticPages" value="{{staticPage.value}}">
+                                    {{staticPage?.title}}
                                 </option>
                             </select>
                         </div>

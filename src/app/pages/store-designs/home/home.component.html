@@ -322,12 +322,20 @@
                                 (switchToggled)="switchToggled($event)"
                                 [isToggledProps]="form.get('pagination')?.value"></app-switch>
                         </div>
+
                         <div *ngIf="form.get('view')?.value == 'slider'"
                             class="form-group mb-5 d-flex align-items-center justify-content-between">
                             <label for="continue" class="fs-5">Slider Buttons</label>
                             <app-switch id="continue" [switchId]="'sliderButtons'"
                                 (switchToggled)="switchToggled($event)"
                                 [isToggledProps]="form.get('sliderButtons')?.value"></app-switch>
+                        </div>
+
+                        <div class="form-group mb-5 d-flex align-items-center justify-content-between">
+                            <label for="continue" class="fs-5">Hovering</label>
+                            <app-switch id="continue" [switchId]="'hovering'"
+                                (switchToggled)="switchToggled($event)"
+                                [isToggledProps]="form.get('hovering')?.value"></app-switch>
                         </div>
 
                     </div>

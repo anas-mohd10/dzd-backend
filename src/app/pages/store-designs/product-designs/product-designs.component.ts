@@ -62,7 +62,7 @@ export class ProductDesignsComponent implements OnInit {
       holidays: new FormControl(this.holidays, [Validators.required]),
       deliveryGap: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')]),
       isEnabled: new FormControl(true),
-      note: new FormControl(''),
+      note: new FormControl('', Validators.maxLength(100)),
       gridEnabled: new FormControl(true),
     })
 

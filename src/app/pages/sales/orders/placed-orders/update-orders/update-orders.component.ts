@@ -140,6 +140,8 @@ export class UpdateOrdersComponent implements OnInit {
     this.form = this.formBuilder.group({
       paymentStatus: [''],
       orderId: [''],
+      paymentMessage: [''],
+      transactionTime: [''],
       paymentId: ['']
     });
   }
@@ -201,6 +203,8 @@ export class UpdateOrdersComponent implements OnInit {
         this.form.get("paymentStatus")?.setValue(this.order?.paymentStatus)
         this.orderNote?.setValue(this.order?.orderNote)
         this.form.get("orderId")?.setValue(this.order?.payment?.reference?.payment)
+        this.form.get("paymentMessage")?.setValue(this.order?.paymentMessage)
+        this.form.get("transactionTime")?.setValue(this.order?.payment?.transactionTime)
         this.form.get("paymentId")?.setValue(this.order?.payment?.referenceId)
         this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
         this.orderStatusList.includes(res.result.orderStatus) ? this.isCancelEligible = false : this.isCancelEligible = true

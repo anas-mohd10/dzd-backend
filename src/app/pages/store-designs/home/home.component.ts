@@ -606,6 +606,7 @@ export class HomeComponent implements OnInit {
     this.widgetImagePreview = this.widgetImages[index]
     this.previewDetails = this.widgetImagePreview.url ? this.widgetImagePreview.url?.path : ""
     this.ChangeDetectorRef.markForCheck()
+    this.widgetForm.patchValue(this.widgetImagePreview)
   }
 
   productMediaTriggered(event: any, type: string) {
@@ -886,6 +887,7 @@ export class HomeComponent implements OnInit {
       }),
       pagination: new FormControl(true),
       sliderButtons: new FormControl(true),
+      hovering: new FormControl(false),
       buttonVisibility: new FormControl(false),
       buttonText: new FormControl(""),
       buttonLink: new FormControl(""),

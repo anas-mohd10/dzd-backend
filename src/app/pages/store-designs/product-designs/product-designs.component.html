@@ -46,7 +46,9 @@
                         <div class="fs-5">Note <span class="fs-6 text-muted">( Text which is shown instead of the
                                 delivery timer )</span></div>
                         <div class="mt-2 form-group">
-                            <input type="text" class="form-control  w-100" formControlName="note">
+                            <input type="text" class="form-control w-100"
+                                [ngClass]="{'is-invalid': isSubmitted || formControls.note.errors?.maxLength}"
+                                formControlName="note">
                         </div>
                     </div>
                 </form>
@@ -57,8 +59,8 @@
             <button (click)="onSubmit()" class="d-flex btn btn-primary align-items-center justify-content-center gap-2">
                 <div>Save changes</div>
                 <div>
-                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
                     </svg>
                 </div>

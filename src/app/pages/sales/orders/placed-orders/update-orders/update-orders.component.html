@@ -73,7 +73,8 @@
           <div class="fs-6">Reason for cancellation :</div>
           <div class="fs-5">{{order?.cancel?.reason}}</div>
         </div>
-        <div class="fs-6">Cancelled on {{getLocaleDateFormat(order?.cancel?.date)}} {{getLocaleTimeFormat(order?.cancel?.date)}}</div>
+        <div class="fs-6">Cancelled on {{getLocaleDateFormat(order?.cancel?.date)}}
+          {{getLocaleTimeFormat(order?.cancel?.date)}}</div>
       </div>
     </div>
 
@@ -431,18 +432,27 @@
             </div>
             <form [formGroup]="form">
               <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                   <div class="form-group">
                     <label for="orderId" class="form-label mb-3">Payment Order</label>
                     <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
                   </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                   <div class="form-group">
                     <label for="orderId" class="form-label mb-3">Transaction Reference</label>
                     <input type="text" placeholder="Transaction Reference ID" class="form-control"
                       formControlName="paymentId">
                   </div>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="orderId" class="form-label mb-3">Payment Message</label>
+                  <input type="text" placeholder="Payment Message" class="form-control"
+                    formControlName="paymentMessage">
+                </div>
+                <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
+                  <div>Transaction Time : </div>
+                  <div>{{getLocalDate(form.get('transactionTime')?.value)}}</div>
                 </div>
               </div>
             </form>

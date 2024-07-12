@@ -10,6 +10,7 @@ import { AdminUsersService } from 'src/app/includes/services/admin.users.service
 import { MenuService } from 'src/app/includes/services/menu.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { StaticPageService } from 'src/app/includes/services/static-page.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -63,6 +64,9 @@ export class NavigationMenuComponent implements OnInit {
   }, {
     key: 'Static Pages',
     value: 'staticpages'
+  }, {
+    key: 'CMS Pages',
+    value: 'cmspages'
   }]
   cmsPages: Array<any> = [
     { title: 'FAQs', value: '/faqs' },
@@ -73,6 +77,7 @@ export class NavigationMenuComponent implements OnInit {
     { title: 'About Us', value: '/about' },
     { title: 'Home', value: '/' },
   ]
+  staticPages: Array<any> = []
   isInvalidItem: boolean = false
   savedItems: Array<any> = []
   archivedItems: Array<any> = []
@@ -119,7 +124,8 @@ export class NavigationMenuComponent implements OnInit {
     private modalService: BsModalService,
     private AdminUsersService: AdminUsersService,
     private MenuService: MenuService,
-    private Toast: HotToastService
+    private Toast: HotToastService,
+    private StaticPageService: StaticPageService
   ) { }
 
   //Rearrange menu items
@@ -166,6 +172,17 @@ export class NavigationMenuComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.StaticPageService.active().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          res?.result?.forEach((item: any) => {
+            this.staticPages.push({ title: item?.title, value: '/' + item?.slug })
+          })
+        }
+      }
+    })
+
     this.getCategories()
 
     //Advanced menu configurations
@@ -238,6 +255,7 @@ export class NavigationMenuComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.itemDetails = res?.result
         for (let _key of Object.keys(res?.result)) this.itemForm.get(_key)?.setValue(res?.result[_key])
+          if(res?.result?.menuType == 'staticpa')
         this.itemForm.get('icon')?.setValue(this.itemDetails?.icon?._id)
         this.ChangeDetectorRef.markForCheck()
       }
