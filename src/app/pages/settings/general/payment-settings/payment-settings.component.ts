@@ -6,11 +6,13 @@ import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { PaymentDetailsService } from 'src/app/includes/services/payment-details.service';
 import { environment } from 'src/environments/environment';
+
 @Component({
   selector: 'app-payment-settings',
   templateUrl: './payment-settings.component.html',
   styleUrls: ['./payment-settings.component.scss']
 })
+
 export class PaymentSettingsComponent implements OnInit {
   appRoute = appRoutes;
   details: any;
@@ -182,7 +184,8 @@ export class PaymentSettingsComponent implements OnInit {
     const fields = ['profileId', 'merchantCode', 'merchantId', 'secretKey', 'displayName', 'displayIcon', 'publicKey', 'region', 'serverKey'];
 
     fields.forEach(field => {
-      if (this.paymentGatewayConfig[paymentGateway].includes(field)) {
+      let pgConfig = this.paymentGatewayConfig[paymentGateway] || []
+      if (pgConfig?.includes(field)) {
         this.form.get(field)?.setValidators([Validators.required]);
       } else {
         this.form.get(field)?.clearValidators();
