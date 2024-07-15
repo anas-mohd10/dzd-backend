@@ -199,7 +199,7 @@ export class NavigationMenuComponent implements OnInit {
     this.advancedMenuItemForm = new FormGroup({
       codeSpace: new FormControl('', Validators.required),
       title: new FormControl('', Validators.required),
-      menuItems: new FormControl([], Validators.required)
+      menuItems: new FormControl([])
     })
 
     this.menuItemForm = new FormGroup({
@@ -255,7 +255,6 @@ export class NavigationMenuComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.itemDetails = res?.result
         for (let _key of Object.keys(res?.result)) this.itemForm.get(_key)?.setValue(res?.result[_key])
-          if(res?.result?.menuType == 'staticpa')
         this.itemForm.get('icon')?.setValue(this.itemDetails?.icon?._id)
         this.ChangeDetectorRef.markForCheck()
       }
@@ -684,12 +683,14 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   saveTitleItemsRef() {
+
     if (!this.advancedMenuItemForm.valid) {
       this.isAdvancedMenuItemSubmitted = true
       return
     }
 
     this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
+    console.log(this.advancedMenuItemForm.value);
     if (this.menuItemId) {
       this.MenuService.updateCsTitleItems({ _id: this.menuItemDetails?._id, ...this.advancedMenuItemForm.value }).subscribe({
         next: (res: any) => {

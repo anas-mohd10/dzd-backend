@@ -677,7 +677,9 @@
                             </div>
                         </div>
                         <ng-container *ngIf="titleRefDetails?.menuItems.length == 0">
-                            <div class="fs-5 text-muted">No menu items found</div>
+                            <div class="text-center">
+                                <app-no-results></app-no-results>
+                            </div>
                         </ng-container>
                     </div>
                 </div>
@@ -729,7 +731,7 @@
 
 <ng-template #createMenuItemsRef>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">&nbsp;</h4>
+        <h4 class="modal-title pull-left">Advanced Menu Items</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeTitleItemsRef()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
