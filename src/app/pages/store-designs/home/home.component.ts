@@ -268,12 +268,13 @@ export class HomeComponent implements OnInit {
   //Smart tiles widgets
   getTileProducts() {
     if (!this.tileProductsInput.valid) {
+      this.tileProducts = []
       return
     }
 
     this.ProductService.searchProducts({
       name: this.tileProductsInput.value, page: 1, limit: 100,
-      isActive: true, isVisible: 0
+      isActive: true, isVisible: '0'
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

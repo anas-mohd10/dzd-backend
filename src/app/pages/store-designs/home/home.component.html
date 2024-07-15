@@ -787,6 +787,10 @@
                                 </ng-container>
                             </div>
                         </ng-container>
+
+                        <ng-container *ngIf="tileProducts.length  == 0 && tileProductsInput?.value">
+                            <app-no-results></app-no-results>
+                        </ng-container>
                     </div>
 
                     <div *ngIf="selectedProductType == 'collections'">

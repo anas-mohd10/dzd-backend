@@ -50,7 +50,13 @@
       margin: 0 0 40px 0;
       height: 40px;
       text-align: center;
+
+      img{
+        height: 40px;
+        width: auto;
+      }
     }
+
     input {
       height: 46px;
     }
@@ -64,8 +70,8 @@
 }
 .forgot {
   color: #3C3C43;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   display: flex;
   justify-content: end;
   margin-top: 8px;
@@ -76,6 +82,13 @@
   font-weight: 400;
 }
 
+.password-icon{
+  height: 28px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .modal-header{
   border-bottom: none !important;

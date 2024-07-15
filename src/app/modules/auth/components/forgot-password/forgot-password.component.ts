@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { authRoute } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 
@@ -22,7 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
     private AdminUsersService: AdminUsersService,
     private Router: Router,
     private ActivatedRoute: ActivatedRoute,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
@@ -39,11 +39,11 @@ export class ForgotPasswordComponent implements OnInit {
           this.isDisabled = false
         } else {
           this.isDisabled = true
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
         this.ChangeDetectorRef.markForCheck()
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.HotToastService.error(err.message)
       }
     })
   }
@@ -65,12 +65,12 @@ export class ForgotPasswordComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate(['/auth/login'])
-          this.ToastrService.success(res?.message);
+          this.HotToastService.success(res?.message);
         } else {
-          this.ToastrService.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message);
+        this.HotToastService.error(err?.message);
       }
     })
   }
