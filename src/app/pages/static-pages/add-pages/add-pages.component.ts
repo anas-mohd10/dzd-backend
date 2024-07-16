@@ -44,7 +44,7 @@ export class AddPagesComponent implements OnInit {
     private HotToastService: HotToastService
   ) { }
 
-  get formControls(){
+  get formControls() {
     return this.form.controls
   }
 
@@ -55,8 +55,17 @@ export class AddPagesComponent implements OnInit {
       slug: new FormControl(''),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
-      metaKeywords: new FormControl('')
+      metaKeywords: new FormControl(''),
+      metaThumbnail: new FormControl(null)
     })
+  }
+
+  onMediaClicked(event: any) {
+    this.form.patchValue({ metaThumbnail: event?._id })
+  }
+
+  onMediaRemoved() {
+    this.form.patchValue({ metaThumbnail: null })
   }
 
   onSubmit() {

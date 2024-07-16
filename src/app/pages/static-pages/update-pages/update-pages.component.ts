@@ -19,6 +19,7 @@ export class UpdatePagesComponent implements OnInit {
   details: any;
   staticPageId: any;
   modalRef?: BsModalRef;
+  metaThumbnail: string = ''
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -55,6 +56,13 @@ export class UpdatePagesComponent implements OnInit {
     return this.form.controls
   }
 
+  onMediaClicked(event: any) {
+    this.form.patchValue({ metaThumbnail: event?._id })
+  }
+
+  onMediaRemoved() {
+    this.form.patchValue({ metaThumbnail: null })
+  }
 
   ngOnInit(): void {
     this.staticPageId = this.ActivatedRoute.snapshot.queryParams.id || '';
@@ -63,6 +71,7 @@ export class UpdatePagesComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.details = res?.result;
+          this.metaThumbnail = res?.result?.metaThumbnail && res?.result?.metaThumbnail.path
           this.form.patchValue(this.details);
           this.ChangeDetectorRef.markForCheck()
         } else { }
@@ -75,7 +84,8 @@ export class UpdatePagesComponent implements OnInit {
       slug: new FormControl(''),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
-      metaKeywords: new FormControl('')
+      metaKeywords: new FormControl(''),
+      metaThumbnail: new FormControl(null)
     })
   }
 

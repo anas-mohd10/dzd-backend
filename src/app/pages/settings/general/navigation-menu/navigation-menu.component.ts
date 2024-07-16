@@ -88,6 +88,7 @@ export class NavigationMenuComponent implements OnInit {
   itemDetails: any = {}
   allCategories: Array<any> = []
   footerCategories: Array<any> = []
+  activeAdvancedMenuItemIndex: any;
   headerText: FormControl = new FormControl('')
 
   //Advanced Menu
@@ -669,8 +670,13 @@ export class NavigationMenuComponent implements OnInit {
     return this.advancedMenuItemForm.controls
   }
 
-  removeAdvancedMenuItemItem(index: number) {
+  removeAdvancedMenuItem(index: number) {
     this.advancedMenuItems = this.advancedMenuItems.filter((item, i) => i != index)
+  }
+
+  editAdvancedMenuItem(index: number) {
+    this.activeAdvancedMenuItemIndex = index
+    this.menuItemForm.patchValue(this.advancedMenuItems[index])
   }
 
   closeTitleItemsRef() {
@@ -690,7 +696,6 @@ export class NavigationMenuComponent implements OnInit {
     }
 
     this.advancedMenuItemForm.patchValue({ menuItems: this.advancedMenuItems })
-    console.log(this.advancedMenuItemForm.value);
     if (this.menuItemId) {
       this.MenuService.updateCsTitleItems({ _id: this.menuItemDetails?._id, ...this.advancedMenuItemForm.value }).subscribe({
         next: (res: any) => {
@@ -730,7 +735,12 @@ export class NavigationMenuComponent implements OnInit {
       return
     }
 
-    this.advancedMenuItems = [...this.advancedMenuItems, this.menuItemForm.value]
+    if(this.activeAdvancedMenuItemIndex){      
+      this.advancedMenuItems[this.activeAdvancedMenuItemIndex] = this.menuItemForm.value
+    }else{
+      this.advancedMenuItems = [...this.advancedMenuItems, this.menuItemForm.value]
+    }
+
     this.menuItemForm.reset()
   }
 

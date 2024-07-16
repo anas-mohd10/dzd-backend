@@ -110,6 +110,15 @@ label,
     }
 }
 
+.handle-advance-menuitem{
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 .itemTypes {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

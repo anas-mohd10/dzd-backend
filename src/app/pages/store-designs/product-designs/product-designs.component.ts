@@ -58,7 +58,7 @@ export class ProductDesignsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      cutOffTime: new FormControl('', [Validators.required]),
+      cutoffTime: new FormControl('', [Validators.required]),
       holidays: new FormControl(this.holidays, [Validators.required]),
       deliveryGap: new FormControl('', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]*$')]),
       isEnabled: new FormControl(true),

@@ -34,24 +34,35 @@
 
                 <div class="form-group mb-3">
                     <label for="description" class="fs-6 mb-3 required">Description</label>
-                    <textarea type="text" id="message" class="form-control" formControlName="description" rows="4"
+                    <textarea type="text" id="message" class="form-control" formControlName="description" rows="20"
                         [ngClass]="{
                                 'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></textarea>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="metaTitle" class="mb-3 fs-6">Meta Title</label>
-                    <input type="text" id="metaTitle" formControlName="metaTitle" class="form-control">
-                </div>
+                <div class="row">
 
-                <div class="form-group mb-3">
-                    <label for="metaDescription" class="mb-3 fs-6">Meta Description</label>
-                    <input type="text" id="metaDescription" formControlName="metaDescription" class="form-control">
-                </div>
+                    <div class="col-lg-3">
+                        <app-assets (mediaClicked)="onMediaClicked($event)"></app-assets>
+                    </div>
 
-                <div class="form-group mb-3">
-                    <label for="metaKeywords" class="mb-3 fs-6">Meta Keywords</label>
-                    <input type="text" id="metaKeywords" formControlName="metaKeywords" class="form-control">
+                    <div class="col-lg-9">
+                        <div class="form-group mb-3">
+                            <label for="metaTitle" class="mb-3 fs-6">Meta Title</label>
+                            <input type="text" id="metaTitle" formControlName="metaTitle" class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="metaDescription" class="mb-3 fs-6">Meta Description</label>
+                            <input type="text" id="metaDescription" formControlName="metaDescription"
+                                class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="metaKeywords" class="mb-3 fs-6">Meta Keywords</label>
+                            <input type="text" id="metaKeywords" formControlName="metaKeywords" class="form-control">
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="d-flex align-items-center gap-2 justify-content-end">

@@ -5,9 +5,9 @@ export const environment = {
   isMockEnabled: true,
 
   //Local
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  appBaserl: 'http://localhost:3000/api/v1/a/',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  // appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   // Local
 
@@ -22,17 +22,16 @@ export const environment = {
   //Fresh fruit
 
   //Mattressland
-  // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
+  apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
   //Mattressland
 
-  //Sico foods
-  // apiUrl: '/api/v1/w/admin/auth',
-  // baseUrl: '/api/v1/w/',
-  // appBaserl: '/api/v1/a/',
-  // base: 'https://sidcofoods-api.storedada.net',
-  //Sico foods
+  //Mattressland
+  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  //Mattressland
 
   //Storedada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
