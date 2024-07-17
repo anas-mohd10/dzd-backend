@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     if (Notification.permission === 'granted') {
       this.isNotificationEnabled = true;
       let messaging = getMessaging(this.FirebaseApp);
-      getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
+      getToken(messaging, { vapidKey: environment.firebaseConfig.vapidKey }).then((currentToken) => {
         if (currentToken) {
           this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
             next: (res: any) => {

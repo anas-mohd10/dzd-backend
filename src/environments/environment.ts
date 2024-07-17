@@ -48,7 +48,7 @@ export const environment = {
     storageBucket: "commerce-castle-app.appspot.com",
     messagingSenderId: "392497910088",
     appId: "1:392497910088:web:ecdd2acbbe577c6265637d",
-    measurementId: "G-H0K55ZER4E"
+    measurementId: "G-H0K55ZER4E",
+    vapidKey: 'BGBVeTQBGpLoGMFZAXq4E6t5v_PBAgkv50sZBB6gYd9GbNu_9nfmQQq7V65T6Yy0Bh9LlH9JRZ3wmiK1nlHPgvc'
   },
-  vapidKey: 'BGBVeTQBGpLoGMFZAXq4E6t5v_PBAgkv50sZBB6gYd9GbNu_9nfmQQq7V65T6Yy0Bh9LlH9JRZ3wmiK1nlHPgvc'
 };

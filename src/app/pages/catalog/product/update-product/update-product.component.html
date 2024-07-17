@@ -101,45 +101,41 @@
                       </div>
                     </ng-container>
                   </div>
+                </div>
+
+                <div>
                   <div class="form-group">
-                    <div class="fs-4 fw-bold" for="attributes">Attributes</div>
-                    <div id="attributes">
-                      <ng-container *ngIf="attributes.length > 0">
-                        <div class="my-3">
-                          <ng-container *ngFor="let attribute of attributes">
-                            <div class="my-3">
-                              <div class="fs-5 mb-3 fw-bold">{{attribute.name}}</div>
-                              <div *ngIf="attribute.type == 'text'">
-                                <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
-                                  <ng-container *ngFor="let value of attribute?.values">
-                                    <div
-                                      class="p-2 rounded attribute text cursor-pointer {{attributeExists(attribute, value)}}"
-                                      (click)="toggleAttributes(attribute, value)">
-                                      {{value.value}}
-                                    </div>
-                                  </ng-container>
-                                </div>
-                              </div>
-                              <div *ngIf="attribute.type == 'color'">
-                                <div class="d-flex gap-3 align-items-center justify-content-start flex-wrap">
-                                  <ng-container *ngFor="let value of attribute?.values">
-                                    <div class="p-2 color-box rounded {{attributeExists(attribute, value)}}">
-                                      <div class="attribute color rounded cursor-pointer"
-                                        (click)="toggleAttributes(attribute, value)"
-                                        [ngStyle]="{'background': value?.value}">
-                                      </div>
-                                    </div>
-                                  </ng-container>
-                                </div>
-                              </div>
-                            </div>
-                          </ng-container>
+                    <div class="fs-3 fw-bold">
+                      Attributes <span class="text-primary cursor-pointer fs-5 ms-4 text-decoration-underline"
+                        (click)="open(template)">Add
+                        variants</span>
+                    </div>
+                    <p class="text-muted">Manage your product variants to showcase your product. Create combination of
+                      attributes for your product.</p>
+
+                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                      <ng-container *ngFor="let attribute of attributes; let i = index">
+                        <div
+                          class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
+                          <div class="d-flex align-items-center justify-content-start gap-2">
+                            <div class="fs-5 fw-bold">{{attribute?.title}} : </div>
+                            <div class="fs-5">{{attribute?.value}}</div>
+                          </div>
+                          <div (click)="removeAttribute(i)">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
                         </div>
                       </ng-container>
-                      <ng-container *ngIf="attributes.length == 0">
-                        <div class="my-2">No attributes found</div>
-                      </ng-container>
                     </div>
+
+                    <ng-container *ngIf="attributes.length == 0">
+                      <div class="fs-4 text-muted">No variants found</div>
+                    </ng-container>
+
                   </div>
                 </div>
 
@@ -361,7 +357,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
-                          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="{{image.title}}">
+                          <img src="{{base}}{{image?.path}}" class="h-100 rounded w-100" alt="{{image?.title}}">
                         </div>
                       </div>
                     </ng-container>
@@ -486,3 +482,55 @@
     </div>
   </div>
 </div>
+
+<!-- Attributes modal starts here -->
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add Variants</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="attributeForm">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label for="attributeType" class="fs-6 mb-3">Option Type</label>
+            <select formControlName="type" id="attributeType" class="form-select">
+              <option value="" disabled>-- Select an option --</option>
+              <option *ngFor="let attributeType of attributeTypes" value="{{attributeType.value}}">
+                {{attributeType.title}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="mb-3 form-group">
+            <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
+            <input type="text" id="attributeTitle" class="form-control fs-6"
+              [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
+              placeholder="Size" formControlName="title">
+          </div>
+          <div class="mb-3 form-group">
+            <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+            <input type="text" id="attributeValue" class="form-control fs-6"
+              [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+              placeholder="8.5 kg" formControlName="value">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="d-flex align-items-center justify-content-end gap-2">
+      <button (click)="submitVariant()" class="d-flex btn btn-primary align-items-center justify-content-center gap-2">
+        <div>Save changes</div>
+        <div>
+          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- Attributes modal ends here -->

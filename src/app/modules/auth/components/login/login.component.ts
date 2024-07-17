@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   modalRef?: BsModalRef
   email: FormControl = new FormControl('', [Validators.required, Validators.email]);
   isValidated: boolean = false;
-  isPassword: boolean = false
+  isPassword: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,

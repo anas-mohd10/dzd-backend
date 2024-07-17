@@ -30,6 +30,11 @@
     <div class="modal-body">
         <tabset #staticTabs [justified]="true" type="pills">
             <tab heading="Assets ({{totalResults}})">
+
+                <div class="mt-4">
+                    <input type="text" [formControl]="keyword" (ngModelChange)="searchAssets()" placeholder="Search items" class="form-control">
+                </div>
+
                 <div class="my-4">
                     <div class="assets">
                         <ng-container *ngFor="let media of medias; let i = index">
@@ -45,6 +50,11 @@
                             </div>
                         </ng-container>
                     </div>
+
+                    <div *ngIf="medias.length == 0">
+                        <app-no-results></app-no-results>
+                    </div>
+
                     <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults"
                         [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"></app-pagination>
                 </div>

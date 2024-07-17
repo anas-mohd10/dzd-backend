@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { UpdateProductComponent } from './update-product.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularEditorModule } from '@kolkov/angular-editor';
@@ -25,18 +24,7 @@ import { SharedModule } from 'src/app/pages/shared/shared.module';
     TabsModule,
     SharedModule,
     AngularEditorModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      progressAnimation: 'decreasing',
-      preventDuplicates: true,
-      progressBar: true,
-    }),
-    RouterModule.forChild([
-      {
-        path: '',
-        component: UpdateProductComponent,
-      },
-    ]),
+    RouterModule.forChild([{ path: '', component: UpdateProductComponent, }]),
   ],
 })
 export class UpdateProductModule { }

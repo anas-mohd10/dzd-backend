@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
@@ -27,7 +28,7 @@ interface Media {
 export class AssetsComponent implements OnInit, OnChanges {
   modalRef?: BsModalRef
   page: number = 1;
-  limit: number = 50
+  limit: number = 30
   totalPages: number = 1
   totalResults: number = 0
   medias: Array<any> = []
@@ -39,6 +40,7 @@ export class AssetsComponent implements OnInit, OnChanges {
   preview: any;
   files: Array<any> = []
   previews: Array<any> = []
+  keyword: FormControl = new FormControl('')
   @Output('mediaClicked') onMediaClicked = new EventEmitter<any>();
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
 
@@ -99,6 +101,12 @@ export class AssetsComponent implements OnInit, OnChanges {
     this.getMedias()
   }
 
+  searchAssets() {
+    setTimeout(() => {
+      this.getMedias()
+    }, 800)
+  }
+
   cancelMedias() {
     this.files = []
     this.previews = []
@@ -148,7 +156,7 @@ export class AssetsComponent implements OnInit, OnChanges {
 
 
   getMedias() {
-    this.MediaService.getMedias({ page: this.page, limit: this.limit }).subscribe({
+    this.MediaService.getMedias({ keyword: this.keyword.value, page: this.page, limit: this.limit }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.medias = res?.result?.data;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormControl, FormGroup, Validators, } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { HotToastService } from '@ngneat/hot-toast';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 interface StoreField {
   title: string,
@@ -103,6 +104,14 @@ export class AddProductComponent implements OnInit {
   storeFields: Array<StoreField> = []
   storeFieldForm: FormGroup = new FormGroup({})
   isStoreSubmitted: boolean = false
+  modalRef?: BsModalRef
+  attributeForm: FormGroup = new FormGroup({})
+  isAttributeSubmitted: boolean = false
+  attributeTypes: Array<any> = [
+    { title: "Text", value: "text" },
+    { title: "Color", value: "color" },
+    { title: "Image", value: "image" },
+  ]
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -115,7 +124,8 @@ export class AddProductComponent implements OnInit {
     private ProductHeadService: ProductHeadService,
     private AttributeService: AttributeService,
     private HotToastService: HotToastService,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private BsModalService: BsModalService
   ) { }
 
   get parentControls() {
@@ -302,26 +312,12 @@ export class AddProductComponent implements OnInit {
           this.parentCategories = res?.result?.parentCategory.id
           let categories = this.parentCategories.map((item: any) => item?._id)
           this.getChildCategory(categories)
-          res?.result?.defaultCategory ? this.getAttributes(res?.result?.defaultCategory?.id?._id) : null
           res?.result?.brand ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id) : this.parentForm.get('brand')?.setValue('')
           res?.result?.defaultCategory ? this.parentForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id?._id) : this.parentForm.get('defaultCategory')?.setValue('')
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
           this.ChangeDetectorRef.markForCheck()
         } else {
 
-        }
-      }, error: (err: any) => {
-
-      }
-    })
-  }
-
-  getAttributes(category: string) {
-    this.AttributeService.getAttributes(category).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.attributes = res?.result
-          this.ChangeDetectorRef.markForCheck()
         }
       }, error: (err: any) => {
 
@@ -348,7 +344,7 @@ export class AddProductComponent implements OnInit {
       productTags: this.tagsForm.value,
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
-      attributes: this.productAttributes,
+      attributes: this.attributes,
       productIcons: this.icons.map((icon: any) => icon._id),
       storeFrontFields: this.storeFields,
       category: {
@@ -437,24 +433,6 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  toggleAttributes(attributeDetails: any, valueDetails: any) {
-    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails.id);
-    if (isIdPresent) {
-      const index = this.productAttributes.findIndex(attribute => attribute.type == attributeDetails.id);
-      this.productAttributes[index].value = valueDetails._id
-    } else {
-      this.productAttributes.push({
-        type: attributeDetails._id,
-        value: valueDetails._id
-      })
-    }
-  }
-
-  attributeExists(attributeDetails: any, valueDetails: any) {
-    const isIdPresent = this.productAttributes.some(attribute => attribute.type == attributeDetails._id && attribute.value == valueDetails._id);
-    return isIdPresent ? 'active' : null
-  }
-
   searchProducts() {
 
   }
@@ -465,6 +443,12 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.base = environment.base
+
+    this.attributeForm = new FormGroup({
+      type: new FormControl("text"),
+      title: new FormControl("", Validators.required),
+      value: new FormControl("", Validators.required)
+    })
 
     this.storeFieldForm = new FormGroup({
       title: new FormControl('  ', Validators.required),
@@ -632,4 +616,42 @@ export class AddProductComponent implements OnInit {
     this.storeFields.splice(storeFieldIndex, 1)
   }
   //Store fields
+
+    //Attributes
+    removeAttribute(attributeIndex: number) {
+      this.HotToastService.info('Attribute removed successfully')
+      this.attributes.splice(attributeIndex, 1)
+    }
+  
+    open(template: TemplateRef<any>) {
+      this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+    }
+  
+    close() {
+      this.modalRef?.hide()
+      this.attributeForm.patchValue({ type: "text", title: "", value: "" })
+      this.isAttributeSubmitted = false
+    }
+  
+    get attributeControls() {
+      return this.attributeForm.controls
+    }
+  
+    submitVariant() {
+      if (!this.attributeForm.valid) {
+        this.isAttributeSubmitted = true
+        return
+      }
+  
+      let isExists = this.attributes.some((attribute: any) => attribute.title == this.attributeForm.get('title')?.value)
+      if (isExists) {
+        this.HotToastService.info('Attribute already exists with same title')
+        return
+      } else {
+        this.HotToastService.success('Attribute added successfully')
+        this.attributes.push(this.attributeForm.value)
+        this.close()
+      }
+    }
+    //Attributes
 }

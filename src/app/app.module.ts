@@ -46,7 +46,7 @@ import { HotToastModule } from '@ngneat/hot-toast';
 import { NotificationPermissionComponent } from './shared/layout/components/notification-permission/notification-permission.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { SubscribersComponent } from './pages/users/subscribers/subscribers.component';
 import { DetailedOrderComponent } from './pages/reports/detailed-order/detailed-order.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
