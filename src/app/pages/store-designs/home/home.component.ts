@@ -385,7 +385,7 @@ export class HomeComponent implements OnInit {
         this.widgetForm.get('redirection')?.setValue("/products" + this.redirectionQuery.value)
         break
       case 'category':
-        this.widgetForm.get('redirection')?.setValue("/products?category=" + this.redirectionQuery.value)
+        this.widgetForm.get('redirection')?.setValue("/products/" + this.redirectionQuery.value)
         break
       case 'brand':
         this.widgetForm.get('redirection')?.setValue("/products?brand=" + this.redirectionQuery.value)

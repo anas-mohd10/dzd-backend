@@ -12,9 +12,9 @@ export const environment = {
   //Local
 
   //Mattressland
-  apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/', 
+  // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/', 
   //Mattressland
 
   //Fresh fruits
@@ -28,9 +28,9 @@ export const environment = {
   //Fresh fruits
 
   //Sico foods
-  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
   //Sico foods
 
   //StoreDada

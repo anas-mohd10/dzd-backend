@@ -4,7 +4,7 @@ export const environment = {
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
 
-  //Local
+  // Local
   // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   // baseUrl: 'http://localhost:3000/api/v1/w/',
   // appBaserl: 'http://localhost:3000/api/v1/a/',
@@ -22,15 +22,15 @@ export const environment = {
   //Fresh fruit
 
   //Mattressland
-  apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
   //Mattressland
 
-  //Mattressland
-  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  // Mattressland
+  apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
   //Mattressland
 
   //Storedada

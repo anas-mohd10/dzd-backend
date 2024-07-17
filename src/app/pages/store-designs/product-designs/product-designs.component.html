@@ -2,7 +2,18 @@
 <app-design-sidebar></app-design-sidebar>
 
 <div class="storedesign-wrapper p-6">
-    <h4 class="fs-2 fw-bold">Product Designs</h4>
+    <div class="d-flex align-items-center justify-content-between gap-2">
+        <h4 class="fs-2 fw-bold">Product Designs</h4>
+        <button (click)="onSubmit()" class="d-flex btn btn-primary align-items-center justify-content-center gap-2">
+            <div>Save changes</div>
+            <div>
+                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                </svg>
+            </div>
+        </button>
+    </div>
 
     <div class="my-4 row">
         <div class="card">
@@ -11,6 +22,7 @@
                     <div class="fs-4 mb-1 fw-bold">Timer Functionality</div>
                     <p class="text-muted">Applicable for product listing and product details</p>
                 </div>
+
                 <form [formGroup]="form">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="fs-5">Delivery timer enabled</div>
@@ -19,18 +31,7 @@
                                 (switchToggled)="switchToggled($event)"></app-switch>
                         </div>
                     </div>
-                    <div class="my-4 d-flex align-items-center justify-content-between">
-                        <div class="fs-5">Cut off time</div>
-                        <div class="form-group">
-                            <input type="time" class="form-control" formControlName="cutoffTime">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="fs-5">Delivery Gap</div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" formControlName="deliveryGap">
-                        </div>
-                    </div>
+
                     <div class="my-4">
                         <div class="fs-5">Holidays</div>
                         <div class="d-flex mt-2 flex-wrap align-items-center justify-content-start gap-2">
@@ -52,19 +53,48 @@
                         </div>
                     </div>
                 </form>
-            </div>
-        </div>
 
-        <div class="d-flex align-items-center justify-content-end gap-2 mt-6">
-            <button (click)="onSubmit()" class="d-flex btn btn-primary align-items-center justify-content-center gap-2">
-                <div>Save changes</div>
-                <div>
-                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                    </svg>
+                <div class="my-8">
+                    <tabset>
+                        <ng-container *ngFor="let day of days">
+                            <tab heading="{{day}}" id="{{day}}" (selectTab)="getStoreTimer(day)">
+
+                                <form [formGroup]="timerForm">
+                                    <div class="my-4 d-flex align-items-center justify-content-between">
+                                        <div class="fs-5">Cut off time</div>
+                                        <div class="form-group">
+                                            <input type="time" class="form-control" formControlName="cutoffTime">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="fs-5">Delivery Gap</div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" formControlName="deliveryGap">
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 d-flex align-items-center justify-content-end gap-2">
+                                        <button type="button" (click)="addStoreTimer()"
+                                            class="d-flex btn btn-secondary align-items-center justify-content-center gap-2">
+                                            <div>Save changes</div>
+                                            <div>
+                                                <svg height="16" width="16" data-slot="icon" fill="none"
+                                                    stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </tab>
+                        </ng-container>
+                    </tabset>
                 </div>
-            </button>
+            </div>
         </div>
     </div>
 </div>

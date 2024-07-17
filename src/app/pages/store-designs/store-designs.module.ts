@@ -17,6 +17,7 @@ import { AppImagesComponent } from './app-images/app-images.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ProductDesignsComponent } from './product-designs/product-designs.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ProductDesignsComponent } from './product-designs/product-designs.compo
     AccordionModule,
     FormsModule,
     SharedModule,
+    TabsModule.forRoot(),
     BsDatepickerModule,
     AngularEditorModule,
     ReactiveFormsModule,
