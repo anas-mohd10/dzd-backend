@@ -11,6 +11,13 @@ $background: #f1f1f1;
 $error: #F1416C;
 $black: #000000;
 
+.menuboxes{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    place-content: center;
+    gap: 10px;
+}
+
 //Custom classes
 .w-min {
     min-width: max-content;

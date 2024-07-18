@@ -79,6 +79,7 @@ import { ShippingChargeComponent } from './pages/settings/general/shipping-charg
 import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
 import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packing-slips.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { PageCoversComponent } from './pages/page-covers/page-covers.component';
 import { PaymentSettingsComponent } from './pages/settings/general/payment-settings/payment-settings.component';
 import { CreateProductsComponent } from './pages/catalog/product/create-products/create-products.component';
@@ -153,6 +154,7 @@ const DragConfig = {
     InlineSVGModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
+    AccordionModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-bottom-center',

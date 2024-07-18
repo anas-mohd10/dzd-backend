@@ -246,99 +246,97 @@
                     </div>
                 </div>
 
+                <div class="mb-2" *ngIf="widgetDetails?.widgetType == 'image-slider' || widgetDetails?.widgetType == 'products' || widgetDetails?.widgetType == 'motion-canvas'">
+                    <div class="form-group mb-3" *ngIf="widgetDetails?.widgetType != 'products' && widgetDetails?.widgetType != 'motion-canvas'">
+                        <label for="widgetView" class="form-label">View</label>
+                        <select formControlName="view" id="widgetView" class="form-select">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="mb-5" *ngIf="form.get('view')?.value == 'slider' || widgetDetails?.widgetType == 'products' || widgetDetails?.widgetType == 'motion-canvas'">
+                        <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
+                        <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                <input type="text" class="form-control" formControlName="desktop" placeholder="3">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                <input type="text" class="form-control" formControlName="tablet" placeholder="3">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                <input type="text" class="form-control" formControlName="mobile" placeholder="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5" *ngIf="['slider', 'grid'].includes(form.get('view')?.value) && widgetDetails?.widgetType != 'products' && widgetDetails?.widgetType != 'motion-canvas'" >
+                        <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
+                        <div id="slidesPerView" class="row" formGroupName="spacing">
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                <input type="text" class="form-control" formControlName="desktop" placeholder="3">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                <input type="text" class="form-control" formControlName="tablet" placeholder="3">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                <input type="text" class="form-control" formControlName="mobile" placeholder="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5" *ngIf="form.get('view')?.value == 'grid'">
+                        <label for="gridsPerView" class="fs-5 mb-2">Grid Per View</label>
+                        <div id="gridsPerView" class="row" formGroupName="gridsPerCount">
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                <input type="text" class="form-control" formControlName="desktop" placeholder="3">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                <input type="text" class="form-control" formControlName="tablet" placeholder="3">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                <input type="text" class="form-control" formControlName="mobile" placeholder="3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="form.get('view')?.value == 'slider'"
+                        class="form-group mb-5 d-flex align-items-center justify-content-between">
+                        <label for="pagination" class="fs-5">Pagination</label>
+                        <app-switch id="pagination" [switchId]="'pagination'" (switchToggled)="switchToggled($event)"
+                            [isToggledProps]="form.get('pagination')?.value"></app-switch>
+                    </div>
+
+                    <div *ngIf="form.get('view')?.value == 'slider'"
+                        class="form-group mb-5 d-flex align-items-center justify-content-between">
+                        <label for="continue" class="fs-5">Slider Buttons</label>
+                        <app-switch id="continue" [switchId]="'sliderButtons'" (switchToggled)="switchToggled($event)"
+                            [isToggledProps]="form.get('sliderButtons')?.value"></app-switch>
+                    </div>
+
+                    <div class="form-group mb-5 d-flex align-items-center justify-content-between">
+                        <label for="continue" class="fs-5">Hovering</label>
+                        <app-switch id="continue" [switchId]="'hovering'" (switchToggled)="switchToggled($event)"
+                            [isToggledProps]="form.get('hovering')?.value"></app-switch>
+                    </div>
+
+                </div>
+
                 <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
                     <p class="mb-3 text-muted">
                         In this section you can write content and upload images from your
                         computer or can use from variety of images from web.
                     </p>
-                    <div class="mb-2" *ngIf="widgetDetails?.widgetType == 'image-slider'">
-                        <div class="form-group mb-3">
-                            <label for="widgetView" class="form-label">View</label>
-                            <select formControlName="view" id="widgetView" class="form-select">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">{{view}}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-5" *ngIf="form.get('view')?.value == 'slider'">
-                            <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
-                            <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
-                                    <input type="text" class="form-control" formControlName="desktop" placeholder="3">
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
-                                    <input type="text" class="form-control" formControlName="tablet" placeholder="3">
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
-                                    <input type="text" class="form-control" formControlName="mobile" placeholder="3">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-5" *ngIf="['slider', 'grid'].includes(form.get('view')?.value)">
-                            <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
-                            <div id="slidesPerView" class="row" formGroupName="spacing">
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
-                                    <input type="text" class="form-control" formControlName="desktop" placeholder="3">
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
-                                    <input type="text" class="form-control" formControlName="tablet" placeholder="3">
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
-                                    <input type="text" class="form-control" formControlName="mobile" placeholder="3">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-5" *ngIf="form.get('view')?.value == 'grid'">
-                            <label for="gridsPerView" class="fs-5 mb-2">Grid Per View</label>
-                            <div id="gridsPerView" class="row" formGroupName="gridsPerCount">
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
-                                    <input type="text" class="form-control" formControlName="desktop" placeholder="3">
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
-                                    <input type="text" class="form-control" formControlName="tablet" placeholder="3">
-                                </div>
-                                <div class="col-lg-4 form-group">
-                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
-                                    <input type="text" class="form-control" formControlName="mobile" placeholder="3">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div *ngIf="form.get('view')?.value == 'slider'"
-                            class="form-group mb-5 d-flex align-items-center justify-content-between">
-                            <label for="pagination" class="fs-5">Pagination</label>
-                            <app-switch id="pagination" [switchId]="'pagination'"
-                                (switchToggled)="switchToggled($event)"
-                                [isToggledProps]="form.get('pagination')?.value"></app-switch>
-                        </div>
-
-                        <div *ngIf="form.get('view')?.value == 'slider'"
-                            class="form-group mb-5 d-flex align-items-center justify-content-between">
-                            <label for="continue" class="fs-5">Slider Buttons</label>
-                            <app-switch id="continue" [switchId]="'sliderButtons'"
-                                (switchToggled)="switchToggled($event)"
-                                [isToggledProps]="form.get('sliderButtons')?.value"></app-switch>
-                        </div>
-
-                        <div class="form-group mb-5 d-flex align-items-center justify-content-between">
-                            <label for="continue" class="fs-5">Hovering</label>
-                            <app-switch id="continue" [switchId]="'hovering'"
-                                (switchToggled)="switchToggled($event)"
-                                [isToggledProps]="form.get('hovering')?.value"></app-switch>
-                        </div>
-
-                    </div>
                     <div class="mb-2 p-4 rounded border border-secondary">
                         <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
                             (cdkDropListDropped)="dropWidgetImages($event)">

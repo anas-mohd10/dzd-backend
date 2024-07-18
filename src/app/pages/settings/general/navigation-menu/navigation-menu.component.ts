@@ -4,13 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { MenuService } from 'src/app/includes/services/menu.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
+import { MegamenuService } from 'src/app/includes/services/megamenu.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -45,6 +46,9 @@ export class NavigationMenuComponent implements OnInit {
   }, {
     key: 'Side Menu',
     value: '2'
+  }, {
+    key: 'New Mega Menu',
+    value: '4'
   }]
   itemTypes: Array<any> = [{
     key: 'Category',
@@ -112,6 +116,12 @@ export class NavigationMenuComponent implements OnInit {
   isAdvancedMenuItemSubmitted: boolean = false
   isAdvancedMenuItemItemSubmitted: boolean = false
 
+  megaMenuForm: FormGroup = new FormGroup({})
+  megaMenuModalRef?: BsModalRef
+  megaMenuItems: Array<any> = []
+  subMenuBoxForm: FormGroup = new FormGroup({})
+  subMenuBoxes: Array<any> = []
+  subMenuBoxIcon: string = ''
 
   get itemControls() {
     return this.itemForm.controls
@@ -126,8 +136,62 @@ export class NavigationMenuComponent implements OnInit {
     private AdminUsersService: AdminUsersService,
     private MenuService: MenuService,
     private Toast: HotToastService,
+    private MegamenuService: MegamenuService,
     private StaticPageService: StaticPageService
   ) { }
+
+  //Mega menu items
+  openMegaMenuModal(template: TemplateRef<any>, type?: string, menuId?: string) {
+    this.megaMenuModalRef = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-dialog-centered modal-xl' });
+    if(type == 'edit'){
+      this.MegamenuService.getMegaMenuDetails(menuId).subscribe({
+        next: (res: any) => {
+          if(res?.errorCode == 0){
+            this.megaMenuForm.patchValue(res?.result)
+            this.subMenuBoxes = res?.result?.subMenuBoxes
+          }
+        }
+      })
+    }
+  }
+
+  closeMegaMenuModal() {
+    this.megaMenuModalRef?.hide()
+  }
+
+  handleMegaMenuMedia(type: string, event: any) {
+    this.megaMenuForm.patchValue({ [type]: event.path })
+  }
+
+  handleMegaMenuBoxMedia(event: any) {
+    this.subMenuBoxIcon = event.path
+    this.subMenuBoxForm.patchValue({ icon: event.path })
+  }
+
+  saveSubMenuBox() {
+    this.subMenuBoxIcon = ''
+    this.subMenuBoxes.push(this.subMenuBoxForm.value)
+    this.subMenuBoxForm.reset()
+  }
+
+  saveMegaMenuItem() {
+    this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
+    this.MegamenuService.addMegaMenu({
+      index: this.megaMenuItems.length + 1,
+      ...this.megaMenuForm.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.result)
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+  //Mega menu items
 
   //Rearrange menu items
   drop(event: any) {
@@ -173,6 +237,24 @@ export class NavigationMenuComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getMegaMenu()
+
+    this.subMenuBoxForm = new FormGroup({
+      title: new FormControl(''),
+      icon: new FormControl(''),
+      redirection: new FormControl(''),
+    })
+
+    this.megaMenuForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      icon: new FormControl(''),
+      redirection: new FormControl('', Validators.required),
+      advertisement: new FormControl(''),
+      subMenuBoxes: new FormGroup({
+        title: new FormControl(''),
+        menuBoxes: new FormControl([])
+      })
+    })
 
     this.StaticPageService.active().subscribe({
       next: (res: any) => {
@@ -735,9 +817,9 @@ export class NavigationMenuComponent implements OnInit {
       return
     }
 
-    if(this.activeAdvancedMenuItemIndex){      
+    if (this.activeAdvancedMenuItemIndex) {
       this.advancedMenuItems[this.activeAdvancedMenuItemIndex] = this.menuItemForm.value
-    }else{
+    } else {
       this.advancedMenuItems = [...this.advancedMenuItems, this.menuItemForm.value]
     }
 
@@ -858,6 +940,42 @@ export class NavigationMenuComponent implements OnInit {
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.advancedMenuTitles = [...items]
     this.rearrangeMenuTitles()
+  }
+
+  dropMegaMenu(event: any) {
+    let items = [...this.megaMenuItems]
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.megaMenuItems = [...items]
+    this.rearrangeMegaMenu()
+  }
+
+  rearrangeMegaMenu() {
+
+  }
+
+  getMegaMenu() {
+    this.MegamenuService.getMegaMenuItems().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.megaMenuItems = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+
+  deleteMegaMenuItem(menuId: string) {
+    this.MegamenuService.deleteMegaMenu(menuId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getMegaMenu()
+        }
+      }
+    })
   }
 
   dropTitleItems(event: any) {
