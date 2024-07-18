@@ -110,6 +110,7 @@ export class UpdateProductComponent implements OnInit {
     { title: "Color", value: "color" },
     { title: "Image", value: "image" },
   ]
+  productBannerDetails: string = ''
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -335,6 +336,14 @@ export class UpdateProductComponent implements OnInit {
 
   }
 
+  handleProductBanner(event: any) {
+    this.form.get('productBanner')?.setValue(event._id)
+  }
+
+  removeProductBanner() {
+    this.form.get('productBanner')?.setValue(null)
+  }
+
   get formControls() {
     return this.form.controls
   }
@@ -379,6 +388,8 @@ export class UpdateProductComponent implements OnInit {
               bottomLeftTag: res?.result?.productTags?.bottomLeftTag?.path,
             }
           }
+          this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner?.path
+          this.form.patchValue({ productBanner: res?.result?.productBanner?._id })
           this.attributes = res?.result?.attributes
           this.relatedProducts = res?.result?.relatedProducts
           this.searchKeywords = res?.result?.searchKeywords
@@ -427,6 +438,7 @@ export class UpdateProductComponent implements OnInit {
       files: new FormControl(""),
       video: new FormControl(""),
       unit: new FormControl(""),
+      productBanner: new FormControl(null),
       origin: new FormControl(""),
       overview: new FormControl(""),
       details: new FormGroup({

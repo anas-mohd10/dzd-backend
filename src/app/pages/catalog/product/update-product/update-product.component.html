@@ -344,6 +344,21 @@
                   <input type="text" class="form-control" id="video" formControlName="video" />
                 </div>
 
+                <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3" id="productBanner">Product banner</label>
+                  <p class="text-muted">
+                    Priority will be given to dedicated product details if a banner has been uploaded here. 
+                    The banner for product details can be added from the banner images section, which will be common throughout all the PDP design.</p>
+                  <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
+                    <app-assets id="productBanner" [previewDetails]="productBannerDetails"
+                      (mediaClicked)="handleProductBanner($event)"></app-assets>
+
+                      <div class="position-absolute top-100 end-0 m-4" *ngIf="productBannerDetails">
+                        <button class="btn btn-danger" (click)="removeProductBanner()">Remove banner</button>
+                      </div>
+                  </div>
+                </div>
+
                 <div class="mb-3">
                   <label for="images" class="fs-6 mb-3">Product images</label>
                   <div class="row" id="images">
