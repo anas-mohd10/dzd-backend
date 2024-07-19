@@ -75,8 +75,7 @@
                 </ng-container>
             </div>
             <div class="my-8 d-flex flex-column align-items-center justify-content-center" *ngIf="medias.length == 0">
-                <div class="fs-4 fw-bold">No medias found</div>
-                <p class="text-muted">We couldn't find any item based on your search</p>
+                <app-no-results></app-no-results>
             </div>
             <app-pagination [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults"
                 [totalPages]="totalPages" (pageTrigger)="onPageTrigger($event)"></app-pagination>
