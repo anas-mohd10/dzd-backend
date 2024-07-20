@@ -1,22 +1,27 @@
 <div>
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Update Collection</h1>
-    </div>
+  <div class="page-header d-flex align-items-center justify-content-between">
     <div>
-      <ul class="breadcrumb">
-        <li class="breadcrumb-item fs-6">
-          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item fs-6">
-          <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
-        </li>
-        <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
-            [queryParams]="{'collection': collectionSlug}">Update Collection</a>
-        </li>
-      </ul>
+      <div class="page-title">
+        <h1 class="fw-bolder">Update Collection</h1>
+      </div>
+      <div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.collection.UPDATE_COLLECTION }}"
+              [queryParams]="{'collection': collectionSlug}">Update Collection</a>
+          </li>
+        </ul>
+      </div>
     </div>
+    <button type="button" (click)="onDelete()" class="btn btn-danger">
+      Delete collection
+    </button>
   </div>
 
   <div class="my-4">

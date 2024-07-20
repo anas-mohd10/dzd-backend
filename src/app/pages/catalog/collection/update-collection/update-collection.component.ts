@@ -89,6 +89,25 @@ export class UpdateCollectionComponent implements OnInit {
     this.previews.thumbnailPreview = event.path
   }
 
+  onDelete() {
+    this.CollectionService.updateCollection({
+      isDelete: true,
+      colid: this.collectionDetails.colid,
+      slug: this.collectionSlug
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+          this.HotToastService.success(res.message)
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    })
+  }
+
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':

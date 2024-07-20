@@ -1,7 +1,7 @@
 <div>
     <div class="page-header d-flex align-items-start justify-content-between">
         <div class="page-title">
-            <h1 class="fw-bolder">Shipping settings</h1>
+            <h1 class="fw-bold">Shipping settings</h1>
             <ul class="breadcrumb gap-1">
                 <li class="breadcrumb-item fs-6">
                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -11,7 +11,7 @@
                 </li>
             </ul>
         </div>
-        <button class="btn btn-primary d-flex align-items-center justify-content-center gap-1" color="primary" routerLink="{{ appRoute.shippingCharges }}">
+        <button *ngIf="form.get('cost')?.value == 'city'" class="btn btn-primary d-flex align-items-center justify-content-center gap-1" color="primary" routerLink="{{ appRoute.shippingCharges }}">
             Shipping charges
             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

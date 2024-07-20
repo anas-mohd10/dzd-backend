@@ -1,7 +1,7 @@
 <div>
     <div class="page-header d-flex align-items-start justify-content-between">
         <div class="page-title">
-            <h1 class="fw-bolder">Shipping charges</h1>
+            <h1 class="fw-bold">Shipping charges</h1>
             <ul class="breadcrumb gap-1">
                 <li class="breadcrumb-item fs-6">
                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
@@ -35,7 +35,60 @@
             </div>
         </div>
 
-        <div class="my-4 card">
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="d-flex mb-3 align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-3 fw-bold">Delivery Methods </div>
+                        <div class="text-muted">Update your delivery methods here.</div>
+                    </div>
+                    <button (click)="openMethod(methodTemplate)"
+                        class="btn btn-primary d-flex align-items-center justify-content-center gap-1">
+                        Add new method
+                    </button>
+                </div>
+
+                <ng-container *ngIf="deliveryMethods.length > 0">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <th class="p-2">Name</th>
+                            <th class="p-2">Icon</th>
+                            <th class="p-2">Amount</th>
+                            <th class="p-2">&nbsp;</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let deliveryMethod of deliveryMethods; let i = index">
+                                <td>{{deliveryMethod.name}}</td>
+                                <td>
+                                    <img class="rounded border border-secondary" src="{{base}}{{deliveryMethod.icon}}" alt="{{deliveryMethod.name}}">
+                                </td>
+                                <td>{{deliveryMethod.amount}}</td>
+                                <td>
+                                    <div>
+                                        <button (click)="openMethod(methodTemplate, 'update', deliveryMethod?._id)" class="btn p-1 btn-secondary">
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <div class="mt-2">
+                                        <button class="btn p-1 btn-danger">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+
+                <ng-container *ngIf="deliveryMethods.length == 0">
+                    <div class="fs-5 text-muted my-3">
+                        No delivery methods found
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="card-body">
                 <div class="fs-3 fw-bold">Blacklisted City</div>
                 <div class="text-muted">Below are the list of the blacklisted cities from which orders won't be allowed.
@@ -60,21 +113,23 @@
 
         </div>
 
-        <div class="card">
+        <div class="card my-4">
             <div class="card-body">
                 <div class="fs-3 fw-bold">City Charges </div>
                 <div class="text-muted">List of the cities with shipping charges.</div>
-                
+
                 <ng-container *ngIf="cityCharges.length > 0">
                     <div class="my-3">
                         <ng-container *ngFor="let cityCharge of cityCharges; let i = index">
-                            <div class="border border-secondary my-2 rounded p-4 d-flex align-items-center justify-content-between">
+                            <div
+                                class="border border-secondary my-2 rounded p-4 d-flex align-items-center justify-content-between">
                                 <div>
                                     <div class="fs-5">{{cityCharge.city}}</div>
                                     <div>{{settings?.currency}} {{cityCharge.charge}}</div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-end gap-2">
-                                    <app-switch [switchId]="cityCharge.city" [isToggledProps]="cityCharge.isBlacklisted" (switchToggled)="switchToggled($event)"></app-switch>
+                                    <app-switch [switchId]="cityCharge.city" [isToggledProps]="cityCharge.isBlacklisted"
+                                        (switchToggled)="switchToggled($event)"></app-switch>
                                 </div>
                             </div>
                         </ng-container>
@@ -120,6 +175,90 @@
 
             <div class="d-flex justify-content-end">
                 <button class="btn btn-primary" (click)="saveCityCharge()">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #methodTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Delivery Method</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeMethod()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="methodForm">
+
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="ratio ratio-1x1">
+                        <app-assets [previewDetails]="methodIcon" (mediaClicked)="handleMethodIcon($event)"></app-assets>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="form-group mb-3">
+                        <label for="name" class="form-label required">Name</label>
+                        <input type="text"
+                            [ngClass]="{'is-invalid': (methodFormControls.name.touched || isMethodSubmitted) && (methodFormControls.name.errors?.required)}"
+                            id="name" class="form-control" formControlName="name"
+                            placeholder="Express, Next Day, Standard">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="amountType" class="form-label">Amount Type</label>
+                            <select formControlName="amountType" id="amountType" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let itemType of ['flat', 'percentage']" value="{{itemType}}">
+                                    {{itemType}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="amount" class="form-label required">Amount</label>
+                            <input type="text"
+                                [ngClass]="{'is-invalid': (methodFormControls.amount.touched || isMethodSubmitted) && (methodFormControls.amount.errors?.required || methodFormControls.amount.errors?.pattern)}"
+                                id="amount" class="form-control" formControlName="amount" placeholder="50">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="freeAbove" class="form-label required">Free Above</label>
+                            <input type="text"
+                                [ngClass]="{'is-invalid': (methodFormControls.freeAbove.touched || isMethodSubmitted) && (methodFormControls.freeAbove.errors?.required || methodFormControls.freeAbove.errors?.pattern)}"
+                                id="freeAbove" class="form-control" formControlName="freeAbove" placeholder="50">
+                        </div>
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="orderAmount" class="form-label required">Minimum Order Amount</label>
+                            <input type="text"
+                                [ngClass]="{'is-invalid': (methodFormControls.orderAmount.touched || isMethodSubmitted) && (methodFormControls.orderAmount.errors?.required || methodFormControls.orderAmount.errors?.pattern)}"
+                                id="orderAmount" class="form-control" formControlName="orderAmount" placeholder="50">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="amountType" class="form-label">Apply On</label>
+                            <select formControlName="applyOn" id="amountType" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let itemType of ['total', 'subtotal']" value="{{itemType}}">
+                                    {{itemType}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="isActive" class="form-label">Is Active</label>
+                            <select formControlName="isActive" id="isActive" class="form-select">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let itemType of ['true', 'false']" value="{{itemType}}">
+                                    {{itemType}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" (click)="addMethod()">Save changes</button>
             </div>
         </form>
     </div>
