@@ -81,8 +81,10 @@ import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packi
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { PageCoversComponent } from './pages/page-covers/page-covers.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaymentSettingsComponent } from './pages/settings/general/payment-settings/payment-settings.component';
 import { CreateProductsComponent } from './pages/catalog/product/create-products/create-products.component';
+import { ShippingRulesComponent } from './pages/settings/general/shipping-rules/shipping-rules.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -142,6 +144,7 @@ const DragConfig = {
     PageCoversComponent,
     PaymentSettingsComponent,
     CreateProductsComponent,
+    ShippingRulesComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -163,6 +166,7 @@ const DragConfig = {
     HotToastModule.forRoot({
       position: 'bottom-center'
     }),
+    TooltipModule.forRoot(),
     AppRoutingModule,
     NgApexchartsModule,
     AngularEditorModule,

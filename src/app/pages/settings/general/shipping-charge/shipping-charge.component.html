@@ -1,36 +1,99 @@
 <div>
     <div class="page-header d-flex align-items-start justify-content-between">
         <div class="page-title">
-            <h1 class="fw-bold">Shipping charges</h1>
+            <h1 class="fw-bold">Shipping Charges</h1>
             <ul class="breadcrumb gap-1">
                 <li class="breadcrumb-item fs-6">
                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.shippingSettings}}">Shipping settings</a>
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.shippingSettings}}">Shipping Settings</a>
                 </li>
                 <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.shippingCharges}}">Shipping charges</a>
+                    <a routerLink="{{ appRoute.shippingCharges}}">Shipping Charges</a>
                 </li>
             </ul>
         </div>
-        <button class="btn btn-primary d-flex align-items-center justify-content-center gap-1" (click)="open(template)">
-            Add new charge
-            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-            </svg>
-        </button>
     </div>
 
     <div class="my-4">
         <div class="card">
             <div class="card-body">
-                <div class="fs-3 fw-bold">Available Country to Sell </div>
-                <div class="text-muted">Orders will be allowed from the country selected below.</div>
-                <div class="my-2">
-                    <div class="bg-secondary rounded-pill py-1 cursor-pointer px-3" style="width: max-content">
-                        {{shippingDetails.country}}</div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="fs-3 fw-bold">Available Country to Sell </div>
+                        <div class="text-muted">Orders will be allowed from the country selected below.</div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        <button *ngIf="!isCountryEditable" class="btn btn-link" (click)="countryEditable()">
+                            Edit details
+                        </button>
+                        <button *ngIf="isCountryEditable" class="btn btn-secondary"
+                            (click)="isCountryEditable = false; selectedCountries = []; countrySelected.setValue('')">Cancel</button>
+                        <button *ngIf="isCountryEditable" class="btn btn-primary" (click)="onSaveChanges()">Save
+                            changes</button>
+                    </div>
+                </div>
+
+                <div class="my-4" *ngIf="isCountryEditable">
+                    <div class="form-group mb-3">
+                        <label for="country" class="fs-6 mb-1">Country</label>
+                        <select [formControl]="countrySelected" (change)="toggleCountry()" id="country"
+                            class="form-select">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let country of countries" value="{{country}}">
+                                {{country}}
+                            </option>
+                        </select>
+                        <div class="mt-3">
+                            <p class="mb-1">Below are the selected countries for your store operations</p>
+                            <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                                <div *ngFor="let country of selectedCountries" (click)="removeCountry(country)"
+                                    class="bg-secondary d-flex align-items-center justify-content-center gap-1 rounded py-1 cursor-pointer px-3" style="width: max-content">
+                                    <div> {{country}}</div>
+                                    <div>
+                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6 18 18 6M6 6l12 12" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="country" class="fs-6 mb-1">Fill your default country and state name
+                            (India,Kerala)</label>
+                        <input type="text" class="form-control" placeholder="India,Kerala"
+                            [formControl]="defaultCountryAndState">
+                    </div>
+                </div>
+
+                <div class="my-2" *ngIf="!isCountryEditable">
+                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                        <div *ngFor="let country of shippingDetails.country"
+                            class="bg-secondary rounded py-1 cursor-pointer px-3" style="width: max-content">
+                            {{country}}
+                        </div>
+                    </div>
+
+                    <div class="fs-5 my-3">
+                        Default Country : <span class="fw-bold text-primary">{{shippingDetails.defaultCountry}}</span>
+                    </div>
+                    <div class="fs-5">
+                        Default State : <span class="fw-bold text-primary">{{shippingDetails.defaultState}}</span>
+                    </div>
+
+                    <div class="my-3">
+                        <div class="fs-5">Notes : </div>
+                        <ul class="fs-6">
+                            <li>On pdp page user will get info according default data if no country and state is selected or user</li>
+                            <li>On cart page user will get info according default data if shipping address is not set</li>
+                            <li>Customers will view details for selected country and state </li>
+                        </ul>
+                    </div>
+                
                 </div>
             </div>
         </div>
@@ -42,10 +105,16 @@
                         <div class="fs-3 fw-bold">Delivery Methods </div>
                         <div class="text-muted">Update your delivery methods here.</div>
                     </div>
-                    <button (click)="openMethod(methodTemplate)"
-                        class="btn btn-primary d-flex align-items-center justify-content-center gap-1">
-                        Add new method
-                    </button>
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                        <button routerLink="{{ appRoute.shippingRules }}"
+                            class="btn btn-primary d-flex align-items-center justify-content-center gap-1">
+                            Set rules
+                        </button>
+                        <button (click)="openMethod(methodTemplate)"
+                            class="btn btn-primary d-flex align-items-center justify-content-center gap-1">
+                            Add new method
+                        </button>
+                    </div>
                 </div>
 
                 <ng-container *ngIf="deliveryMethods.length > 0">
@@ -53,26 +122,35 @@
                         <thead>
                             <th class="p-2">Name</th>
                             <th class="p-2">Icon</th>
+                            <th class="p-2">Amount Type</th>
                             <th class="p-2">Amount</th>
+                            <th class="p-2">Apply On</th>
                             <th class="p-2">&nbsp;</th>
                         </thead>
                         <tbody>
                             <tr *ngFor="let deliveryMethod of deliveryMethods; let i = index">
                                 <td>{{deliveryMethod.name}}</td>
                                 <td>
-                                    <img class="rounded border border-secondary" src="{{base}}{{deliveryMethod.icon}}" alt="{{deliveryMethod.name}}">
+                                    <img class="rounded border border-secondary" src="{{base}}{{deliveryMethod.icon}}"
+                                        onerror="this.src = 'assets/images/default.png'" alt="{{deliveryMethod.name}}">
                                 </td>
+                                <td>{{deliveryMethod.amountType}}</td>
                                 <td>{{deliveryMethod.amount}}</td>
+                                <td>{{deliveryMethod.applyOn}}</td>
                                 <td>
-                                    <div>
-                                        <button (click)="openMethod(methodTemplate, 'update', deliveryMethod?._id)" class="btn p-1 btn-secondary">
-                                            Edit
-                                        </button>
-                                    </div>
-                                    <div class="mt-2">
-                                        <button class="btn p-1 btn-danger">
-                                            Delete
-                                        </button>
+                                    <div class="d-flex align-items-center justify-content-start gap-2">
+                                        <div>
+                                            <button (click)="openMethod(methodTemplate, 'update', deliveryMethod?._id)"
+                                                class="btn p-1 btn-secondary">
+                                                Edit
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button (click)="deleteMethod(deliveryMethod?._id)"
+                                                class="btn p-1 btn-danger">
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -112,73 +190,8 @@
             </div>
 
         </div>
-
-        <div class="card my-4">
-            <div class="card-body">
-                <div class="fs-3 fw-bold">City Charges </div>
-                <div class="text-muted">List of the cities with shipping charges.</div>
-
-                <ng-container *ngIf="cityCharges.length > 0">
-                    <div class="my-3">
-                        <ng-container *ngFor="let cityCharge of cityCharges; let i = index">
-                            <div
-                                class="border border-secondary my-2 rounded p-4 d-flex align-items-center justify-content-between">
-                                <div>
-                                    <div class="fs-5">{{cityCharge.city}}</div>
-                                    <div>{{settings?.currency}} {{cityCharge.charge}}</div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-end gap-2">
-                                    <app-switch [switchId]="cityCharge.city" [isToggledProps]="cityCharge.isBlacklisted"
-                                        (switchToggled)="switchToggled($event)"></app-switch>
-                                </div>
-                            </div>
-                        </ng-container>
-                    </div>
-                </ng-container>
-
-                <ng-container *ngIf="cityCharges.length == 0">
-                    <div class="fs-5 text-muted my-3">
-                        No city charges found
-                    </div>
-                </ng-container>
-
-            </div>
-        </div>
     </div>
 </div>
-
-<ng-template #template>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Shipping charge</h4>
-        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
-            <span aria-hidden="true" class="visually-hidden">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form [formGroup]="form">
-            <div class="form-group mb-3">
-                <label for="city" class="form-label required">City</label>
-                <select formControlName="city" id="city" class="form-select"
-                    [ngClass]="{'is-invalid': (formControls.city.touched || !isSubmitted) && (formControls.city.errors?.required)}">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let cityItem of cityItems" value="{{cityItem.title}}">
-                        {{cityItem.title}}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group mb-3">
-                <label for="charge" class="form-label required">Shipping Charge</label>
-                <input type="text"
-                    [ngClass]="{'is-invalid': (formControls.charge.touched || !isSubmitted) && (formControls.charge.errors?.required || formControls.charge.errors?.pattern)}"
-                    id="charge" class="form-control" formControlName="charge" placeholder="50">
-            </div>
-
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" (click)="saveCityCharge()">Save changes</button>
-            </div>
-        </form>
-    </div>
-</ng-template>
 
 <ng-template #methodTemplate>
     <div class="modal-header">
@@ -193,7 +206,8 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="ratio ratio-1x1">
-                        <app-assets [previewDetails]="methodIcon" (mediaClicked)="handleMethodIcon($event)"></app-assets>
+                        <app-assets [previewDetails]="methodIcon"
+                            (mediaClicked)="handleMethodIcon($event)"></app-assets>
                     </div>
                 </div>
                 <div class="col-lg-9">

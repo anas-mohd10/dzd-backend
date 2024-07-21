@@ -1,0 +1,224 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div class="page-title">
+            <h1 class="fw-bold">Shipping Rules</h1>
+            <ul class="breadcrumb gap-1">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.shippingSettings}}">Shipping Settings</a>
+                </li>
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.shippingCharges}}">Shipping Charges</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.shippingRules}}">Shipping Rules</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                (click)="open(template)">
+                <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <div>
+                    Add Shipping Rule
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <div class="my-4 card">
+        <div class="card-body">
+            <div class="mb-2">
+                <div class="fs-5 text-muted">Manage how you want to ship your orders based on delivery methods.</div>
+                <div>
+                    <div class="fs-3 fw-bold mt-4">Existing Rules</div>
+                    <p class="fs-6 m-0 text-muted">Please set default rule for all shipping methods of countries</p>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <th class="p-4">Country</th>
+                    <th class="p-4">States</th>
+                    <th class="p-4">Cities</th>
+                    <th class="p-4">Delivery Method</th>
+                    <th class="p-4">Cut Off Time</th>
+                    <th class="p-4">Days</th>
+                    <th class="p-4">Off Days</th>
+                    <th class="p-4">Action</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let shippingCharge of shippingCharges">
+                        <td>{{shippingCharge?.country}}</td>
+                        <td>
+                            <div *ngFor="let state of shippingCharge?.states">
+                                {{state}}
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngFor="let city of shippingCharge?.cities">
+                                {{city}}
+                            </div>
+                        </td>
+                        <td>{{shippingCharge?.deliveryMethod?.name}}</td>
+                        <td>{{shippingCharge?.cutOffTime}}</td>
+                        <td>{{shippingCharge?.minimumDay}} - {{shippingCharge?.maximumDay}}</td>
+                        <td>
+                            <div *ngFor="let holiday of shippingCharge?.holidays">
+                                {{holiday}}
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <div>
+                                    <button (click)="open(template, 'update', shippingCharge?._id)"
+                                        class="btn p-1 btn-secondary d-flex align-items-center justify-content-center gap-2">
+                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                        <div>Edit</div>
+                                    </button>
+                                </div>
+                                <div class="mt-2">
+                                    <button (click)="delete(shippingCharge?._id)"
+                                        class="btn p-1 btn-danger d-flex align-items-center justify-content-center gap-2">
+                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                        </svg>
+                                        <div>Delete</div>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Shipping Rule</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form">
+            <div class="row mb-3 align-items-end">
+                <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                        <label for="country" class="fs-6 mb-3">Country</label>
+                        <select class="form-select" id="country" (change)="onCountryChange()" formControlName="country">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="d-flex align-items-center gap-2 justify-content-start">
+                        <app-switch tooltip="For all other area you can make another rule for
+                        same country with check Is
+                        Areawise" id="areaSwitch" [switchId]="'isAreaWise'" [isToggledProps]="form.get('isAreaWise')?.value"
+                            (switchToggled)="onSwitchToggled($event)"></app-switch>
+                        <label for="areaSwitch" class="fs-6">Is Areawise?</label>
+                    </div>
+                </div>
+                <div class="form-group mb-3"
+                    *ngIf="form.get('isAreaWise')?.value == true && form.get('country')?.value">
+                    <label for="state" class="fs-6 mb-3">State</label>
+                    <select class="form-select" id="state" (change)="onStateChange()" [formControl]="stateInput">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let state of states" [value]="state?.state">{{ state?.state }}</option>
+                    </select>
+                    <div class="d-flex mt-2 flex-wrap align-items-center justify-content-start gap-2">
+                        <div *ngFor="let state of selectedStates" (click)="removeState(state)"
+                            class="rounded d-flex align-items-center justify-content-center gap-1 cursor-pointer p-2 bg-secondary">
+                            <div> {{ state }}</div>
+                            <div>
+                                <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3" *ngIf="selectedStates.length > 0 && cities.length > 0">
+                    <label for="city" class="fs-6 mb-3">City</label>
+                    <select class="form-select" id="city" (change)="onCityChange()" [formControl]="cityInput">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+                    </select>
+                    <div class="d-flex mt-2 flex-wrap align-items-center justify-content-start gap-2">
+                        <div *ngFor="let city of selectedCities" (click)="removeCity(city)"
+                            class="rounded d-flex align-items-center justify-content-center gap-1 cursor-pointer p-2 bg-secondary">
+                            <div> {{ city }}</div>
+                            <div>
+                                <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                        <label for="" class="fs-6 mb-3">Delivery Method</label>
+                        <select class="form-select" id="deliveryMethod" formControlName="deliveryMethod">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let method of deliveryMethods" [value]="method?._id">{{ method?.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                        <label for="cutOffTime" class="fs-6 mb-3">Cut Off Time</label>
+                        <input type="time" class="form-control" id="cutOffTime" formControlName="cutOffTime">
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                        <label for="minimumDay" class="fs-6 mb-3">Minimum Days</label>
+                        <input type="text"
+                            [ngClass]="{'is-invalid': (formControls.minimumDay.touched || isSubmitted) && (formControls.minimumDay.errors?.required || formControls.minimumDay.errors?.pattern)}"
+                            class="form-control" id="minimumDay" formControlName="minimumDay">
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                        <label for="maximumDay" class="fs-6 mb-3">Maximum Days</label>
+                        <input type="text"
+                            [ngClass]="{'is-invalid': (formControls.maximumDay.touched || isSubmitted) && (formControls.maximumDay.errors?.required || formControls.maximumDay.errors?.pattern)}"
+                            class="form-control" id="maximumDay" formControlName="maximumDay">
+                    </div>
+                </div>
+                <div>
+                    <label for="holidays" class="fs-6 mb-3">Off Days</label>
+                    <div id="holidays" class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
+                        <div *ngFor="let holiday of holidays" (click)="toggleHoliday(holiday)"
+                            class="rounded p-2 border cursor-pointer"
+                            [ngClass]="{'border-primary bg-white': selectedHolidays.includes(holiday), 'border-secondary bg-secondary ': !selectedHolidays.includes(holiday)}">
+                            {{holiday}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn btn-primary" (click)="onSubmit()">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

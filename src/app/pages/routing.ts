@@ -36,6 +36,7 @@ import { ShippingChargeComponent } from './settings/general/shipping-charge/ship
 import { PageCoversComponent } from './page-covers/page-covers.component';
 import { PaymentSettingsComponent } from './settings/general/payment-settings/payment-settings.component';
 import { CreateProductsComponent } from './catalog/product/create-products/create-products.component';
+import { ShippingRulesComponent } from './settings/general/shipping-rules/shipping-rules.component';
 
 export const Routing: Routes = [
   {
@@ -450,6 +451,10 @@ export const Routing: Routes = [
       }, {
         path: 'shipping-policy',
         component: ShippingPolicyComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'shipping-rules',
+        component: ShippingRulesComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'payment-policy',

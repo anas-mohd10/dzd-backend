@@ -1,7 +1,9 @@
 export const shippingEndpoints = {
     manageShipping: '/manage-shipping',
     shippingDetails: '/shipping-details',
-    manageShippingCharge: '/manage-shippingcharge',
-    getShippingCity: '/get-shippingcity',
-    getShippingCharges: '/get-shippingcharges'
+    createShippingCharge: '/create-shippingcharge',
+    updateShippingCharge: '/update-shippingcharge',
+    deleteShippingCharge: '/delete-shippingcharge',
+    getShippingCharges: '/shipping-charges',
+    getShippingChargeDetails: '/shipping-charge'
 }

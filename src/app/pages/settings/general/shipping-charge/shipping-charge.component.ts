@@ -30,7 +30,12 @@ export class ShippingChargeComponent implements OnInit {
   isMethodSubmitted: boolean = false
   isMethodUpdate: boolean = false
   methodDetails: any;
+  countries: Array<any> = ["India", "UAE"]
+  isCountryEditable: boolean = false
+  selectedCountries: Array<any> = []
   methodForm: FormGroup = new FormGroup({})
+  countrySelected: FormControl = new FormControl("")
+  defaultCountryAndState: FormControl = new FormControl("UAE,Dubai")
 
   constructor(
     private BsModalService: BsModalService,
@@ -40,6 +45,56 @@ export class ShippingChargeComponent implements OnInit {
     private DeliveryMethodService: DeliveryMethodService,
     private AppSettingsService: AppSettingsService
   ) { }
+
+  toggleCountry() {
+    if (this.selectedCountries.includes(this.countrySelected.value)) {
+      this.selectedCountries = this.selectedCountries.filter((item: string) => item != this.countrySelected.value)
+      this.HotToastService.success(`Country removed successfully`)
+    } else {
+      this.selectedCountries.push(this.countrySelected.value)
+      this.HotToastService.success(`Country added successfully`)
+    }
+    this.countrySelected.setValue('')
+  }
+
+  removeCountry(country: string) {
+    this.selectedCountries = this.selectedCountries.filter((item: string) => item != country)
+  }
+
+  countryEditable() {
+    this.isCountryEditable = true
+    this.selectedCountries = [...this.shippingDetails.country]
+    this.defaultCountryAndState.setValue(`${this.shippingDetails.defaultCountry},${this.shippingDetails.defaultState}`)
+  }
+
+  onSaveChanges() {
+    if (!this.selectedCountries.includes(this.defaultCountryAndState.value.split(',')[0])) {
+      this.HotToastService.error('Default country is not selected')
+      return
+    }
+
+    this.ShippingService.manageShipping({
+      country: this.selectedCountries,
+      defaultCountry: this.defaultCountryAndState.value.split(',')[0],
+      defaultState: this.defaultCountryAndState.value.split(',')[1]
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getDetails()
+          this.isCountryEditable = false
+          this.selectedCountries = []
+          this.countrySelected.setValue('')
+          this.defaultCountryAndState.setValue('')
+          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -69,7 +124,6 @@ export class ShippingChargeComponent implements OnInit {
     })
 
     this.getMethods()
-
     this.getDetails()
   }
 
@@ -143,8 +197,24 @@ export class ShippingChargeComponent implements OnInit {
 
   }
 
+  deleteMethod(methodId: string) {
+    this.DeliveryMethodService.deleteMethod(methodId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getMethods()
+          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    })
+  }
+
   getMethods() {
-    this.DeliveryMethodService.getMethods().subscribe({
+    this.DeliveryMethodService.getMethods("").subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.deliveryMethods = res?.result
@@ -161,26 +231,12 @@ export class ShippingChargeComponent implements OnInit {
   }
   //Delivery methods
 
-  open(template: TemplateRef<any>, type?: string) {
-    if (type == 'update') {
-      this.isSubmitted = false
-    }
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
-  }
-
-  close() {
-    this.modalRef?.hide()
-  }
-
-
   getDetails() {
     this.ShippingService.shippingDetails().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.shippingDetails = res?.result
-          this.getCityDetails()
           this.getBlacklistedDetails()
-          this.getChargeDetails()
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.HotToastService.error(res.message)
@@ -192,7 +248,7 @@ export class ShippingChargeComponent implements OnInit {
   }
 
   getBlacklistedDetails() {
-    this.ShippingService.getShippingCityCharges(this.shippingDetails.country, "true").subscribe({
+    this.ShippingService.getShippingCharges("true").subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.blacklistedCities = res?.result
@@ -202,74 +258,6 @@ export class ShippingChargeComponent implements OnInit {
         }
       }, error: (err: any) => {
 
-      }
-    })
-  }
-
-  switchToggled(event: any) {
-    this.ShippingService.manageShippingCharge({ city: event.switchId, country: this.shippingDetails.country, isBlacklisted: event.toggleState }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.getBlacklistedDetails()
-          this.getDetails()
-          this.HotToastService.success(res?.message)
-        } else {
-          this.HotToastService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
-  }
-
-  getChargeDetails() {
-    this.ShippingService.getShippingCityCharges(this.shippingDetails.country).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.cityCharges = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
-    })
-  }
-
-  getCityDetails() {
-    this.ShippingService.getShippingCity(this.shippingDetails.country).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.cityItems = res?.result[0]
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
-    })
-  }
-
-  saveCityCharge() {
-    if (!this.form.valid) {
-      this.isSubmitted = true
-      return
-    }
-
-    this.ShippingService.manageShippingCharge(this.form.value).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.close()
-          this.isSubmitted = false
-          this.getDetails()
-          this.HotToastService.success(res?.message)
-        } else {
-          this.HotToastService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
       }
     })
   }
