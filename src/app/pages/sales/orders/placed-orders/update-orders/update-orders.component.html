@@ -98,6 +98,12 @@
                 <div class="itemTitle">Payment Method</div>
                 <div class="itemResponse">{{order?.paymentMethod}}</div>
               </div>
+              <div class="itemDetails">
+                <div class="itemTitle">Payment Gateway</div>
+                <div class="itemResponse fw-normal">
+                  <div class="bg-secondary p-2 rounded">{{order?.paymentGateway}}</div>
+                </div>
+              </div>
               <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">
                 <div class="itemTitle">Gateway Status</div>
                 <div class="itemResponse">{{order?.gatewayStatus}}</div>
@@ -343,8 +349,8 @@
                 </div>
               </div>
               <ng-container *ngFor="let product of order?.products; let i = index">
-                <div class="row mb-8 pb-8 border-bottom border-secondary"
-                  [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled'}">
+                <div class="row mb-8 pb-8 border-secondary"
+                  [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
                   <div class="col-lg-1">
                     <div class="checkbox"
                       [ngClass]="{'checked': bulkProducts.includes(product), 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
@@ -451,8 +457,9 @@
                     formControlName="paymentMessage">
                 </div>
                 <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
-                  <div>Transaction Time : </div>
-                  <div>{{getLocalDate(form.get('transactionTime')?.value)}}</div>
+                  <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
+                  <input type="text" id="transactionTime" readonly class="form-control"
+                    value="{{getLocalDate(form.get('transactionTime')?.value)}}">
                 </div>
               </div>
             </form>
