@@ -110,8 +110,9 @@ export class NavigationMenuComponent implements OnInit {
   titleRefDetails: any;
   advancedTitleRefItems: BsModalRef;
   advancedMenuTitleItems: Array<any> = []
-  menuItemId: boolean = false
-  menuItemDetails: any = {}
+
+
+
   //Advanced Menu
   isAdvancedMenuItemSubmitted: boolean = false
   isAdvancedMenuItemItemSubmitted: boolean = false
@@ -123,6 +124,13 @@ export class NavigationMenuComponent implements OnInit {
   subMenuBoxes: Array<any> = []
   subMenuBoxIcon: string = ''
   megaMenuDetails: any;
+  megaMenuIcon: string = '';
+  menuItemDetails: any = {}
+  menuItemId: boolean = false
+  megaMenuItemForm: FormGroup = new FormGroup({})
+  isMegaMenuItemDetailsSubmitted: boolean = false
+  subMenus: Array<any> = []
+  megaMenuAdvertisement: string = '';
   megaMenuEdit: boolean = false
 
   get itemControls() {
@@ -151,16 +159,29 @@ export class NavigationMenuComponent implements OnInit {
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.megaMenuDetails = res?.result
+            this.subMenus = res?.result?.subMenus
+            this.megaMenuIcon = res?.result?.icon
+            this.megaMenuAdvertisement = res?.result?.advertisement
             this.megaMenuForm.patchValue(res?.result)
-            this.subMenuBoxes = res?.result?.subMenuBoxes
+            this.subMenuBoxes = res?.result?.subMenuBoxes?.menuBoxes
+            this.ChangeDetectorRef.markForCheck()
           }
         }
       })
     }
   }
 
+  removeSubMenuBox(index: number){
+    this.subMenuBoxes.splice(index, 1)
+  }
+
   closeMegaMenuModal() {
     this.megaMenuModalRef?.hide()
+    this.megaMenuAdvertisement = '';
+    this.megaMenuIcon = '';
+    this.megaMenuDetails = {};
+    this.megaMenuForm.reset();
+    this.subMenuBoxes = [];
   }
 
   handleMegaMenuMedia(type: string, event: any) {
@@ -182,38 +203,60 @@ export class NavigationMenuComponent implements OnInit {
     if (this.megaMenuEdit) {
       this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
       this.MegamenuService.updateMegaMenu({
-        index: this.megaMenuItems.length + 1,
-        ...this.megaMenuForm.value
+        _id: this.megaMenuDetails?._id,
+        ...this.megaMenuForm.value,
+        subMenus: this.subMenus
       }).subscribe({
-        next: (res: any) => {
+        next: (res: any) => {          
           if (res?.errorCode == 0) {
-            this.Toast.success(res?.result)
+            this.Toast.success(res?.message)
             this.closeMegaMenuModal()
           } else {
-
+            this.Toast.error(res?.message)
           }
         }, error: (err: any) => {
-
+          this.Toast.error(err?.error?.message || "An error occurred")
         }
       })
     } else {
       this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
       this.MegamenuService.addMegaMenu({
         index: this.megaMenuItems.length + 1,
-        ...this.megaMenuForm.value
+        ...this.megaMenuForm.value,
+        subMenus: this.subMenus
       }).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
-            this.Toast.success(res?.result)
+            this.Toast.success(res?.message)
             this.closeMegaMenuModal()
           } else {
-
+            this.Toast.error(res?.message)
           }
         }, error: (err: any) => {
-
+          this.Toast.error(err?.error?.message)
         }
       })
     }
+  }
+
+  get megaMenuItemFormControls(){
+    return this.megaMenuItemForm.controls
+  }
+
+  saveMegaMenuItemDetails(){
+    if(!this.megaMenuItemForm.valid){
+      this.isMegaMenuItemDetailsSubmitted = true
+      return
+    }
+
+    this.subMenus.push(this.megaMenuItemForm.value)
+    this.Toast.success('Menu item added successfully')
+    this.megaMenuItemForm.reset()
+    this.isMegaMenuItemDetailsSubmitted = false
+  }
+
+  removeMegaMenuItem(index: number){
+    this.subMenus.splice(index, 1)
   }
   //Mega menu items
 
@@ -267,6 +310,11 @@ export class NavigationMenuComponent implements OnInit {
       title: new FormControl(''),
       icon: new FormControl(''),
       redirection: new FormControl(''),
+    })
+
+    this.megaMenuItemForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      redirection: new FormControl('', Validators.required),
     })
 
     this.megaMenuForm = new FormGroup({

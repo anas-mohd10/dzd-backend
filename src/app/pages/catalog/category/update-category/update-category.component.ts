@@ -84,10 +84,7 @@ export class UpdateCategoryComponent implements OnInit {
           }
           res?.result?.root ? this.root = res?.result?.root?._id : null
           this.form.patchValue(res?.result)
-          this.path = res?.result?.path
-
-          console.log(this.categories.includes(res?.result?.path))
-          
+          this.path = res?.result?.path          
           this.form.get('parent')?.setValue(this.path)
           this.form.get('background')?.setValue(res?.result?.style?.background);
           this.form.get('border')?.setValue(res?.result?.style?.border);
@@ -117,6 +114,10 @@ export class UpdateCategoryComponent implements OnInit {
       isArchive: new FormControl(false),
       background: new FormControl(''),
       border: new FormControl(''),
+      description: new FormControl(''),
+      metaTitle: new FormControl(''),
+      metaDescription: new FormControl(''),
+      metaKeywords: new FormControl(''),
       radius: new FormControl(''),
       color: new FormControl(''),
       fontSize: new FormControl(''),
@@ -197,6 +198,10 @@ export class UpdateCategoryComponent implements OnInit {
       parent: this.parentDetails?.refid ? this.parentDetails : null,
       _id: this.details._id,
       slug: this.details.slug,
+      description: this.form.get("description")?.value,
+      metaTitle: this.form.get("metaTitle")?.value,
+      metaDescription: this.form.get("metaDescription")?.value,
+      metaKeywords: this.form.get("metaKeywords")?.value,
       thumbnail: this.form.get('thumbnail')?.value,
       cover: this.form.get('cover')?.value,
       catid: this.details.catid,
