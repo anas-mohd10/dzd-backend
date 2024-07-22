@@ -228,6 +228,8 @@ export class ShippingChargeComponent implements OnInit {
     this.methodIcon = ''
     this.isMethodUpdate = false
     this.methodRef?.hide()
+    this.methodForm.reset()
+    this.methodForm.patchValue({ amountType: "flat", applyOn: "total", isActive: "true" })
   }
   //Delivery methods
 

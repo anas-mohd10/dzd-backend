@@ -195,6 +195,9 @@ export class ShippingRulesComponent implements OnInit {
       cutOffTime: "12:00",
       deliveryMethod: ""
     })
+    this.selectedCities = []
+    this.selectedStates = []
+    this.selectedHolidays = []
     this.isSubmitted = false
   }
 

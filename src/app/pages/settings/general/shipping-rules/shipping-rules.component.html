@@ -100,6 +100,11 @@
                             </div>
                         </td>
                     </tr>
+                    <tr *ngIf="shippingCharges.length == 0">
+                        <td colspan="8">
+                            <app-no-results></app-no-results>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -130,7 +135,8 @@
                     <div class="d-flex align-items-center gap-2 justify-content-start">
                         <app-switch tooltip="For all other area you can make another rule for
                         same country with check Is
-                        Areawise" id="areaSwitch" [switchId]="'isAreaWise'" [isToggledProps]="form.get('isAreaWise')?.value"
+                        Areawise" id="areaSwitch" [switchId]="'isAreaWise'"
+                            [isToggledProps]="form.get('isAreaWise')?.value"
                             (switchToggled)="onSwitchToggled($event)"></app-switch>
                         <label for="areaSwitch" class="fs-6">Is Areawise?</label>
                     </div>
