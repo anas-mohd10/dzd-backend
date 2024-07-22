@@ -274,7 +274,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-5" *ngIf="['slider', 'grid'].includes(form.get('view')?.value) && widgetDetails?.widgetType != 'products' && widgetDetails?.widgetType != 'motion-canvas'" >
+                    <div class="mb-5" *ngIf="['slider', 'grid'].includes(form.get('view')?.value) || widgetDetails?.widgetType == 'products' || widgetDetails?.widgetType == 'motion-canvas'" >
                         <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
                         <div id="slidesPerView" class="row" formGroupName="spacing">
                             <div class="col-lg-4 form-group">

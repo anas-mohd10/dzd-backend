@@ -221,15 +221,15 @@
                                 class="savedItem w-min p-3 border border-secondary gap-2 rounded d-flex align-items-center justify-content-between">
                                 <div class="d-flex gap-2 align-items-center justify-content-between">
                                     <div>
-                                        <img class="object-fit-contain rounded" src="{{base}}{{item?.icon}}" height="40"
+                                        <img class="border rounded" src="{{base}}{{item?.icon}}" height="40"
                                             width="40" onerror="this.src = 'assets/images/default.png'"
-                                            alt="{{item?.title}}">
+                                            alt="{{item?.title}}" style="object-fit: contain;">
                                     </div>
                                     <div class="fs-6">{{item?.title}}</div>
                                 </div>
                                 <div
                                     class="gap-2 d-flex align-items-center text-muted cursor-pointer justify-content-end">
-                                    <div (click)="openMegaMenuModal(megaMenuTemplate, 'update', item?._id)">
+                                    <div (click)="openMegaMenuModal(megaMenuTemplate, 'edit', item?._id)">
                                         <svg height="24" width="24" data-slot="icon" fill="none" stroke-width="1.5"
                                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                             aria-hidden="true">

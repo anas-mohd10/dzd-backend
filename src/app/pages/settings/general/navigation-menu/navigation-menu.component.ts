@@ -122,6 +122,8 @@ export class NavigationMenuComponent implements OnInit {
   subMenuBoxForm: FormGroup = new FormGroup({})
   subMenuBoxes: Array<any> = []
   subMenuBoxIcon: string = ''
+  megaMenuDetails: any;
+  megaMenuEdit: boolean = false
 
   get itemControls() {
     return this.itemForm.controls
@@ -143,10 +145,12 @@ export class NavigationMenuComponent implements OnInit {
   //Mega menu items
   openMegaMenuModal(template: TemplateRef<any>, type?: string, menuId?: string) {
     this.megaMenuModalRef = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-dialog-centered modal-xl' });
-    if(type == 'edit'){
+    if (type == 'edit') {
+      this.megaMenuEdit = true
       this.MegamenuService.getMegaMenuDetails(menuId).subscribe({
         next: (res: any) => {
-          if(res?.errorCode == 0){
+          if (res?.errorCode == 0) {
+            this.megaMenuDetails = res?.result
             this.megaMenuForm.patchValue(res?.result)
             this.subMenuBoxes = res?.result?.subMenuBoxes
           }
@@ -175,21 +179,41 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   saveMegaMenuItem() {
-    this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
-    this.MegamenuService.addMegaMenu({
-      index: this.megaMenuItems.length + 1,
-      ...this.megaMenuForm.value
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.Toast.success(res?.result)
-        } else {
+    if (this.megaMenuEdit) {
+      this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
+      this.MegamenuService.updateMegaMenu({
+        index: this.megaMenuItems.length + 1,
+        ...this.megaMenuForm.value
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.result)
+            this.closeMegaMenuModal()
+          } else {
+
+          }
+        }, error: (err: any) => {
 
         }
-      }, error: (err: any) => {
+      })
+    } else {
+      this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
+      this.MegamenuService.addMegaMenu({
+        index: this.megaMenuItems.length + 1,
+        ...this.megaMenuForm.value
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Toast.success(res?.result)
+            this.closeMegaMenuModal()
+          } else {
 
-      }
-    })
+          }
+        }, error: (err: any) => {
+
+        }
+      })
+    }
   }
   //Mega menu items
 
