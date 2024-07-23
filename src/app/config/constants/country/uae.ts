@@ -19,4 +19,7 @@ export const uaeStates = [{
 }, {
     state: 'Umm Al Quwain',
     cities: []
+}, {
+    state: 'Al Ain',
+    cities: []
 }]
