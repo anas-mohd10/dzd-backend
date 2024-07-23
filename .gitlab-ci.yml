@@ -16,9 +16,17 @@ variables:
   AWS_SECRET_ACCESS_KEY: "0UYZLSu+73OBvFRon1YRXOWv0deUduZcLXx3xWBQ"
   AWS_DEFAULT_REGION: "ap-south-1"
   AWS_ACCOUNT_ID: "211125565601"
-  ECR_REPO: "admin"
   IMAGE_KEY_NAME: "adminImageVersion"  # Define your key for image version
-  VALUES_FILE_PATH: "xclient-resources/common.values.yaml"  # Define path to values file
+
+
+  # Changes based on env + branch
+  # For develop
+  ECR_REPO: "admin-dev"
+  VALUES_FILE_PATH: "xclient-all-devenv/common.values.yaml"  # Define path to values file
+
+  # For staging
+  # ECR_REPO: "admin"
+  # VALUES_FILE_PATH: "xclient-resources/common.values.yaml"  # Define path to values file
 
 before_script:
   - apt-get update -y
@@ -27,6 +35,7 @@ before_script:
 prepare:
   stage: prepare
   only:
+    - develop
     - staging
   script:
     - echo "Cloning infra repository..."
@@ -53,6 +62,7 @@ build:
   variables:
     DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   only:
+    - develop
     - staging
   before_script:
     - apk add --no-cache aws-cli
@@ -76,6 +86,7 @@ build:
 update_version:
   stage: update_version
   only:
+    - develop
     - staging
   script:
     - echo "Updating version in infra repository..."
