@@ -18,6 +18,14 @@ $black: #000000;
     gap: 10px;
 }
 
+.remove-submenu{
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 //Custom classes
 .w-min {
     min-width: max-content;

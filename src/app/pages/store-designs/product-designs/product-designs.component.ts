@@ -70,7 +70,7 @@ export class ProductDesignsComponent implements OnInit {
       cutoffTime: new FormControl('', [Validators.required]),
       holidays: new FormControl(this.holidays, [Validators.required]),
       isEnabled: new FormControl(true),
-      note: new FormControl('', Validators.maxLength(100)),
+      note: new FormControl(''),
       gridEnabled: new FormControl(true),
     });
 
