@@ -1,10 +1,10 @@
 <div class="w-100 d-flex align-items-center justify-content-center device-wrapper">
     <div class="desktop" *ngIf="device == 'desktop' && websiteLink">
-        <iframe [src]="websiteLink" style="width:100%;">
+        <iframe [src]="websiteLink" style="width:100%;" (load)="isLoading = false" *ngIf="!isLoading">
         </iframe>
     </div>
     <div class="mobile" *ngIf="device == 'mobile' && websiteLink">
-        <iframe [src]="websiteLink" style="width:100%;">
+        <iframe [src]="websiteLink" style="width:100%;" (load)="isLoading = false" *ngIf="!isLoading">
         </iframe>
     </div>
 </div>

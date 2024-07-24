@@ -171,7 +171,7 @@ export class NavigationMenuComponent implements OnInit {
     }
   }
 
-  removeSubMenuBox(index: number){
+  removeSubMenuBox(index: number) {
     this.subMenuBoxes.splice(index, 1)
   }
 
@@ -207,10 +207,11 @@ export class NavigationMenuComponent implements OnInit {
         ...this.megaMenuForm.value,
         subMenus: this.subMenus
       }).subscribe({
-        next: (res: any) => {          
+        next: (res: any) => {
           if (res?.errorCode == 0) {
             this.Toast.success(res?.message)
             this.closeMegaMenuModal()
+            this.getMegaMenu()
           } else {
             this.Toast.error(res?.message)
           }
@@ -239,12 +240,12 @@ export class NavigationMenuComponent implements OnInit {
     }
   }
 
-  get megaMenuItemFormControls(){
+  get megaMenuItemFormControls() {
     return this.megaMenuItemForm.controls
   }
 
-  saveMegaMenuItemDetails(){
-    if(!this.megaMenuItemForm.valid){
+  saveMegaMenuItemDetails() {
+    if (!this.megaMenuItemForm.valid) {
       this.isMegaMenuItemDetailsSubmitted = true
       return
     }
@@ -255,7 +256,7 @@ export class NavigationMenuComponent implements OnInit {
     this.isMegaMenuItemDetailsSubmitted = false
   }
 
-  removeMegaMenuItem(index: number){
+  removeMegaMenuItem(index: number) {
     this.subMenus.splice(index, 1)
   }
   //Mega menu items
@@ -1022,7 +1023,23 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   rearrangeMegaMenu() {
+    let items = this.megaMenuItems.map((item: any, index: number) => {
+      return { index: index, _id: item._id }
+    })
 
+    this.MegamenuService.rearrangeMegaMenu({ items: items }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getMegaMenu()
+          this.ChangeDetectorRef.markForCheck()
+          this.Toast.success(res?.message)
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
   }
 
   getMegaMenu() {

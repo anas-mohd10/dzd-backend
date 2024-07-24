@@ -10,7 +10,8 @@ export class ScreensComponent implements OnInit, OnChanges {
   @Input() device?: string;
   @ViewChild("frame") frame: ElementRef | undefined;
   settings: any;
-  websiteLink: SafeResourceUrl ;
+  websiteLink: SafeResourceUrl;
+  isLoading: boolean = true; // Flag to track loading state
   @Input() load: number = 0;
 
   constructor(
@@ -33,17 +34,18 @@ export class ScreensComponent implements OnInit, OnChanges {
           this.settings = res.result;
           this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=draft`);
           this.ChangeDetectorRef.markForCheck()
-        } else {
-
-          
-        }
-      }, error: (err: any) => {
-
+        } else { }
+      }, error: (err: any) => { },
+      complete: () => {
+        this.isLoading = false; // Mark loading as complete
       }
     });
   }
 
   reloadFrame() {
-    this.frame?.nativeElement.contentWindow?.location.reload();
+    if (this.frame && this.frame.nativeElement) {
+      this.isLoading = true; // Start loading state
+      this.frame?.nativeElement.contentWindow?.location.reload();
+    }
   }
 }

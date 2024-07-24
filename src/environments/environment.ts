@@ -27,6 +27,12 @@ export const environment = {
   // base: '',
   //Fresh fruits
 
+  // Fresh Market
+  // apiUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://thefreshmarket-api.storedada.net/api/v1/a/',
+  // Fresh Market
+
   //Sico foods
   // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
   // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
@@ -39,7 +45,7 @@ export const environment = {
   // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
   // base: 'https://api.demo.storedada.com',
   //StoreDada
-  
+
   loginUrl: 'api',
   firebaseConfig: {
     apiKey: "AIzaSyCzj_q9s6UhfZ-mYSAfRdRWWlI47mOinuE",

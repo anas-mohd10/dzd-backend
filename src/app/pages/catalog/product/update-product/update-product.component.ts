@@ -284,7 +284,7 @@ export class UpdateProductComponent implements OnInit {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.productDetails.slug,
-      files: this.images.map((item: any) => item._id),
+      files: this.images.map((item: any) => item?._id),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.attributes,

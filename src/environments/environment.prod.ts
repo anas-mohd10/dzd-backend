@@ -27,11 +27,17 @@ export const environment = {
   // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
   //Mattressland
 
-  // Mattressland
+  // Sidco Foods
   // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
   // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
   // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
-  //Mattressland
+  // Sidco Foods
+
+  // Fresh Market
+  // apiUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://thefreshmarket-api.storedada.net/api/v1/a/',
+  // Fresh Market
 
   //Storedada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',

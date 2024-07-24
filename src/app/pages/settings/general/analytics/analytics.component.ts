@@ -1,11 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { AnalyticsService } from 'src/app/includes/services/analytics.service';
 
-AnalyticsService
-ToastrService
 
 @Component({
   selector: 'app-analytics',
@@ -20,7 +18,7 @@ export class AnalyticsComponent implements OnInit {
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private AnalyticsService: AnalyticsService
   ) { }
 
@@ -47,9 +45,9 @@ export class AnalyticsComponent implements OnInit {
     this.AnalyticsService.manageAnalytics(this.form.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ngOnInit()
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
       } else {
-        this.ToastrService.error(res?.message)
+        this.HotToastService.error(res?.message)
       }
     })
   }
