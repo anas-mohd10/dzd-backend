@@ -78,6 +78,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   modalRef?: BsModalRef
   secondary: string = ''
   storeStatus: boolean = true
+  defaultImage: string = ''
 
   constructor(
     private formBuilder: FormBuilder,
@@ -126,6 +127,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isStoreLive')?.setValue(res?.result?.isStoreLive)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('name')?.setValue(res?.result?.name)
+        this.form.get('defaultImage')?.setValue(res?.result?.defaultImage)
+        this.defaultImage = res?.result?.defaultImage
         this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
@@ -141,6 +144,10 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.storeStatus = res?.result?.isStoreLive
       }
     })
+  }
+
+  handleDefaultImage(event: any) {
+    this.form.get('defaultImage')?.setValue(event.path)
   }
 
   toggleStoreStatus(event: { toggleState: boolean, switchId: string }, template: TemplateRef<any>) {
@@ -178,6 +185,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       packingSlip: ['', Validators.required],
       isOutOfStock: ['false'],
       isStoreLive: ['true'],
+      defaultImage: [''],
       isNotifyStock: ['false'],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
@@ -228,6 +236,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
+      defaultImage: this.form.get('defaultImage')?.value,
       name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,

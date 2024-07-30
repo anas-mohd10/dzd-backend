@@ -119,8 +119,8 @@
       </div>
       <div class="fs-4 mt-2">Customer Order Report</div>
     </a>
-    <a class="item rounded d-flex align-items-center gap-2" (click)="exportReport('customer')" [href]="exportUrl"
-      target="_blank">
+
+    <a class="item rounded d-flex align-items-center gap-2" (click)="generateReport('allcustomers')">
       <div class="icon p-2 rounded">
         <svg width="60" height="60" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="0.5" y="0.5" width="48" height="48" rx="24" fill="#FFE5F3" />
@@ -136,10 +136,146 @@
           </defs>
         </svg>
       </div>
-      <div class="fs-4 mt-2">Customers Report</div>
+      <div>
+        <div class="fs-4 mt-2">Customers Report</div>
+        <p class="text-muted">Get the list of current users in the platform</p>
+      </div>
+    </a>
+
+    <a class="item rounded" (click)="generateReport('lowstock')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Product Low Stock Report</div>
+          <p class="text-muted">Get low stock report with products having stock less than or equal to 10 till date</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="item rounded" (click)="generateReport('abandonedorder')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Abandoned Order Report</div>
+          <p class="text-muted">Get orders with failed or pending status till date</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="item rounded" (click)="generateReport('nomovement')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">No Movement Order Report</div>
+          <p class="text-muted">Get orders which have no movement in 24 hours</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="item rounded" (click)="oepnProductsModal(productsTemplate)">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Product Wise Detailed Order Report</div>
+          <p class="text-muted">Get the product wise detailed order report</p>
+        </div>
+      </div>
     </a>
   </div>
 </div>
+
+<ng-template #productsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Products</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeProductsModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div *ngIf="productIds.length > 0">
+      <div class="fs-5 text-muted">Choosen products</div>
+      <div class="d-flex my-2 flex-wrap align-items-center justify-content-start gap-2">
+        <ng-container *ngFor="let product of productIds; let i = index">
+          <div (click)="toggleProducts(product)" class="bg-secondary gap-2 p-2 rounded">
+            {{product?.name}}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <input type="search" placeholder="Search products" class="form-control" [formControl]="productsKeyword"
+        (ngModelChange)="searchProducts()">
+    </div>
+
+    <div class="products-wrapper">
+      <ng-container *ngFor="let product of products; let i = index">
+        <div (click)="toggleProducts(product)"
+          class="products-card cursor-pointer d-flex align-items-center justify-content-start gap-2 my-3 py-2 border-bottom border-secondary">
+          <div>
+            <img class="border border-secondary rounded" src="{{base}}{{product?.thumbnail?.path}}"
+              alt="{{product?.name}}" onerror="this.src = 'assets/images/default.png'">
+          </div>
+          <div>
+            <div class="fs-5">{{product?.name}}</div>
+            <div class="fs-6 text-muted">SKU : {{product?.sku}}</div>
+            <div class="fs-6 text-muted">Stock : {{product?.stock}}</div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="d-flex justify-content-end my-2" *ngIf="productIds.length > 0">
+      <button class="btn btn-primary d-flex justify-content-center align-items-center gap-2"
+        (click)="generateProductWiseOrderReport()">
+        <div>Generate report</div>
+        <div>
+          <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #template>
   <div class="modal-header">

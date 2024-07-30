@@ -279,6 +279,7 @@ export class UpdateProductComponent implements OnInit {
       return
     }
 
+    console.log(this.parentDetails);
 
     let payload = {
       ...this.form.value,
@@ -287,6 +288,7 @@ export class UpdateProductComponent implements OnInit {
       files: this.images.map((item: any) => item?._id),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
+      parentId: this.parentDetails?._id,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
       productIcons: this.icons.map((icon: any) => icon._id),
@@ -388,6 +390,7 @@ export class UpdateProductComponent implements OnInit {
               bottomLeftTag: res?.result?.productTags?.bottomLeftTag?.path,
             }
           }
+          this.parentDetails = res?.result?.product?.id
           this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner?.path
           this.form.patchValue({ productBanner: res?.result?.productBanner?._id })
           this.attributes = res?.result?.attributes
@@ -421,7 +424,7 @@ export class UpdateProductComponent implements OnInit {
       shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
       return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
       replace: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-    })
+    });
 
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
@@ -456,7 +459,7 @@ export class UpdateProductComponent implements OnInit {
       relatedProducts: new FormControl(""),
       isActive: new FormControl("true"),
       isVisible: new FormControl("true"),
-    })
+    });
 
     this.categoryService.getActiveCategory().subscribe({
       next: (res: any) => {

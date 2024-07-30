@@ -1,12 +1,13 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { reportsEndpoints } from 'src/app/config/endpoints';
 import { appRoutes } from 'src/app/config/routes';
+import { ProductService } from 'src/app/includes/services/product.service';
 import { ReportsService } from 'src/app/includes/services/reports.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-reports-list',
@@ -17,7 +18,13 @@ export class ReportsListComponent implements OnInit {
   appRoute = appRoutes;
   salesRef: BsModalRef
   exportUrl: string = environment.apiUrl
-  dateRange: string = '15'
+  dateRange: string = '15';
+  base: string = environment.base
+  productsModalRef?: BsModalRef;
+  productsKeyword: FormControl = new FormControl('');
+  products: Array<any> = [];
+  productIds: Array<any> = [];
+
   dateRanges: Array<any> = [
     { title: '15 Days', description: 'Get the sales report for last 15 days', dateRange: '15' },
     { title: '1 Months', description: 'Get the sales report for last 30 days', dateRange: '1' },
@@ -28,8 +35,9 @@ export class ReportsListComponent implements OnInit {
 
   constructor(
     private ReportsService: ReportsService,
-    private ToastrService: ToastrService,
+    private ChangeDetectorRef: ChangeDetectorRef,
     private Router: Router,
+    private ProductService: ProductService,
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
   ) { }
@@ -87,5 +95,108 @@ export class ReportsListComponent implements OnInit {
         this.HotToastService.error(err.error.message)
       }
     })
+  }
+
+  generateReport(type: string) {
+    switch (type) {
+      case 'lowstock':
+        this.ReportsService.lowStockReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'abandonedorder':
+        this.ReportsService.abandonedOrderReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'nomovement':
+        this.ReportsService.orderMovementReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'productwiseorder':
+        let ids = this.productIds.map((productId: any) => productId._id)
+        this.ReportsService.productWiseDetailedOrderReport({ products: ids }).subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.closeProductsModal()
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'allcustomers':
+        this.ReportsService.customerReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.closeProductsModal()
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+    }
+  }
+
+  oepnProductsModal(template: TemplateRef<any>) {
+    this.productsModalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  searchProducts() {
+    setTimeout(() => {
+      this.ProductService.searchProducts({ name: this.productsKeyword.value }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.products = res?.result?.data
+            this.ChangeDetectorRef.markForCheck()
+          } else { }
+        }, error: (err: any) => { }
+      })
+    }, 800)
+  }
+
+  generateProductWiseOrderReport() {
+    this.generateReport('productwiseorder')
+  }
+
+  toggleProducts(product: any) {
+    let index = this.productIds.findIndex((productId: any) => productId._id == product._id)
+    if (index == -1) {
+      this.productIds.push(product)
+    } else {
+      this.productIds.splice(index, 1)
+    }
+  }
+
+  closeProductsModal() {
+    this.productsModalRef?.hide()
+    this.productIds = []
+    this.products = []
+    this.productsKeyword.setValue('')
+  }
+
+  onReponse(res: any) {
+    if (res.errorCode == 0) {
+      this.HotToastService.success(res?.message)
+    } else {
+      this.HotToastService.error(res.message)
+    }
   }
 }

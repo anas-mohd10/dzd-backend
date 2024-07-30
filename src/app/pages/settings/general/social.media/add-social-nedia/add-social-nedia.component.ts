@@ -31,6 +31,7 @@ export class AddSocialNediaComponent implements OnInit {
       twitter: new FormControl(''),
       behance: new FormControl(''),
       tiktok: new FormControl(''),
+      pinterest: new FormControl(''),
       appStore: new FormControl(''),
       googlePlay: new FormControl('')
     });

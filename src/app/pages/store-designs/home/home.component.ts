@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
     { title: 'Custom HTML', type: 'html', icon: 'assets/widgets/custom-html.png', description: '' },
     { title: 'Image Slider', type: 'image-slider', icon: 'assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Video', type: 'video', icon: 'assets/widgets/video.png', description: 'This widget is used to showcase full width video only.' },
-    { title: 'Motion Canvas', type: 'motion-canvas', icon: 'assets/widgets/video.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
+    { title: 'Motion Canvas', type: 'motion-canvas', icon: 'assets/widgets/regal-rolls.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Products', type: 'products', icon: 'assets/widgets/blogs.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Noble Nodes', type: 'noble-nodes', icon: 'assets/widgets/noble-nodes.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Prime Plates', type: 'prime-plates', icon: 'assets/widgets/prime-plates.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
@@ -51,13 +51,14 @@ export class HomeComponent implements OnInit {
     { title: 'Smart Tiles', type: 'smart-tiles', icon: 'assets/widgets/smart-tiles.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Stellar Selections', type: 'stellar-selections', icon: 'assets/widgets/stellar-selections.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Testimonials', type: 'testimonial-cards', icon: 'assets/widgets/image-slider.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
-    { title: 'Regal Rolls', type: 'regal-rolls', icon: 'assets/widgets/regal-rolls.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Radiant Rectangles', type: 'radiant-rectangles', icon: 'assets/widgets/radiant-rectangles.png', description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.' },
     { title: 'Quad Squares', type: 'quad-square', icon: 'assets/widgets/quad-sqaure.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Insight Hub', type: 'insight-hub', icon: 'assets/widgets/store-chronicles.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Delivery Timer', type: 'delivery-timer', icon: 'assets/widgets/delivery-timer.png', description: 'The following widget can be used to run a delivery timer with custom designs' },
     { title: 'Hyper Link Hero', type: 'hyperlinkhero', icon: 'assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
-  ]
+    { title: 'Aurora Grid', type: 'aurora-grid', icon: 'assets/widgets/aurora-grid.png', description: 'The following widget can be used to run a delivery timer with custom designs' },
+    { title: 'Aurora Slider', type: 'aurora-slider', icon: 'assets/widgets/aurora-slider.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+  ];
 
   homeWidgets: Array<any> = []
   homeWidgetKeyword: FormControl = new FormControl("", Validators.required)
@@ -82,7 +83,7 @@ export class HomeComponent implements OnInit {
   smartTileProducts: Array<any> = [] // Smart tiles widgets
   tileProductsInput: FormControl = new FormControl("", Validators.required); // Smart tiles widgets
   tileProducts: Array<any> = [] // Smart tiles widgets
-  widgetProductTypes: Array<any> = ["smart-tiles", "products", "motion-canvas"]
+  widgetProductTypes: Array<any> = ["smart-tiles", 'aurora-slider', "aurora-grid", "products", "motion-canvas"]
   widgetImageTypes: Array<any> = [
     "image-slider", "radiant-rectangles",
     "quad-square", "prime-plates",
@@ -224,7 +225,7 @@ export class HomeComponent implements OnInit {
 
   //Motion canvas
   toggleMotionCanvasThumbnail(event: any) {
-    this.productAd?.setValue(event._id)
+    this.productAd?.setValue(event.path)
     this.productsAdThumbnail = event.path
   }
 
@@ -388,13 +389,13 @@ export class HomeComponent implements OnInit {
         this.widgetForm.get('redirection')?.setValue("/products/" + this.redirectionQuery.value)
         break
       case 'brand':
-        this.widgetForm.get('redirection')?.setValue("/products?brand=" + this.redirectionQuery.value)
+        this.widgetForm.get('redirection')?.setValue("/brands/" + this.redirectionQuery.value)
         break
       case 'products':
         this.widgetForm.get('redirection')?.setValue("/p/" + this.redirectionQuery.value)
         break
       case 'collection':
-        this.widgetForm.get('redirection')?.setValue("/products?collection=" + this.redirectionQuery.value)
+        this.widgetForm.get('redirection')?.setValue("/c/" + this.redirectionQuery.value)
         break
     }
 
@@ -452,8 +453,7 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials
           }
-          this.widgetDetails?.widgetType == 'smart-tiles' || this.widgetDetails?.widgetType == 'products' ? this.smartTileProducts = [...this.widgetDetails?.products] : null
-          this.widgetDetails?.widgetType == 'motion-canvas' ? this.smartTileProducts = [...this.widgetDetails?.products] : null
+          ['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
           if (this.widgetDetails?.titleImage) {
@@ -480,9 +480,9 @@ export class HomeComponent implements OnInit {
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
           this.ChangeDetectorRef.markForCheck()
-          if (this.widgetDetails?.widgetType == 'motion-canvas') {
-            this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail?.path
-            this.productAd?.setValue(this.widgetDetails?.productAd?._id)
+          if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+            this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail
+            this.productAd?.setValue(this.widgetDetails?.productsAdThumbnail)
             this.productsAdRedirection?.setValue(this.widgetDetails?.productsAdRedirection)
           }
         } else {
@@ -677,7 +677,9 @@ export class HomeComponent implements OnInit {
 
     type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
 
-    if (this.widgetDetails?.widgetType == 'motion-canvas') {
+    if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+      console.log('this.productAd.value', this.productAd.value);
+      console.log('this.productsAdRedirection.value', this.productsAdRedirection.value);
       widgetPayload['productsAdThumbnail'] = this.productAd.value ? this.productAd.value : null
       widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value
     }
@@ -689,6 +691,8 @@ export class HomeComponent implements OnInit {
     if (this.widgetDetails?.widgetType == 'insight-hub') {
       widgetPayload = { ...widgetPayload, ...this.insightHubForm.value }
     }
+
+    console.log(widgetPayload)
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
       next: (res: any) => {
@@ -886,9 +890,19 @@ export class HomeComponent implements OnInit {
         tablet: new FormControl(3, [Validators.required, Validators.pattern("^[0-9]*$")]),
         desktop: new FormControl(4, [Validators.required, Validators.pattern("^[0-9]*$")])
       }),
-      pagination: new FormControl(true),
-      sliderButtons: new FormControl(true),
-      hovering: new FormControl(false),
+      pagination: new FormGroup({
+        desktop: new FormControl(true),
+        mobile: new FormControl(true),
+      }),
+      sliderButtons: new FormGroup({
+        desktop: new FormControl(true),
+        mobile: new FormControl(true),
+      }),
+      sliderButtonPosition: new FormControl("relative"),
+      hovering: new FormGroup({
+        desktop: new FormControl(false),
+        mobile: new FormControl(false),
+      }),
       buttonVisibility: new FormControl(false),
       buttonText: new FormControl(""),
       buttonLink: new FormControl(""),
@@ -1050,6 +1064,25 @@ export class HomeComponent implements OnInit {
   }
 
   switchToggled(event: { switchId: string, toggleState: boolean }) {
-    this.form.get(event.switchId)?.setValue(event.toggleState)
+    switch (event.switchId) {
+      case 'desktop-pagination':
+        this.form.get('pagination.desktop')?.setValue(event.toggleState);
+        break;
+      case 'mobile-pagination':
+        this.form.get('pagination.mobile')?.setValue(event.toggleState);
+        break;
+      case 'desktop-slider':
+        this.form.get('sliderButtons.desktop')?.setValue(event.toggleState);
+        break;
+      case 'mobile-slider':
+        this.form.get('sliderButtons.mobile')?.setValue(event.toggleState);
+        break;
+      case 'desktop-hover':
+        this.form.get('hovering.desktop')?.setValue(event.toggleState);
+        break;
+      case 'mobile-hover':
+        this.form.get('hovering.mobile')?.setValue(event.toggleState);
+        break;
+    }
   }
 }

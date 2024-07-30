@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { reportsEndpoints } from 'src/app/config/endpoints';
+import { productReportEndpoints, reportsEndpoints } from 'src/app/config/endpoints';
 import { CommonService } from './common.service';
-
 @Injectable({
   providedIn: 'root'
 })
 export class ReportsService {
   reportsEndpoints = reportsEndpoints
+  productReportEndpoints = productReportEndpoints
 
   constructor(
     private http: HttpClient,
@@ -18,16 +18,37 @@ export class ReportsService {
     return this.commonService.getFullUrl(this.reportsEndpoints.downloadSubscribers);
   }
 
-  customerReport() {
-    return this.commonService.getFullUrl(this.reportsEndpoints.customerReport);
-  }
-
   customerOrderReport() {
     return this.commonService.getFullUrl(this.reportsEndpoints.customerOrderReport);
   }
 
   salesReport(dateRange: string) {
     const url = this.commonService.getFullUrl(reportsEndpoints.salesReport + `?dateRange=${dateRange}`);
+    return this.http.get(`${url}`);
+  }
+
+  lowStockReport() {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.lowstockReport);
+    return this.http.get(`${url}`);
+  }
+
+  abandonedOrderReport() {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.abandonedReport);
+    return this.http.get(`${url}`);
+  }
+
+  orderMovementReport() {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.orderMovementReport);
+    return this.http.get(`${url}`);
+  }
+
+  productWiseDetailedOrderReport(query: any) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.productWiseDetailedOrderReport);
+    return this.http.post(`${url}`, query);
+  }
+
+  customerReport() {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.customerReport);
     return this.http.get(`${url}`);
   }
 }

@@ -20,8 +20,7 @@ export class PageCoversComponent implements OnInit {
   isEditMode: boolean = false;
   form: FormGroup = new FormGroup({});
   pages: Array<any> = [
-    { title: 'About Us', path: '/about' },
-    { title: 'Contact Us', path: '/contact-us' },
+    { title: 'Blogs', path: '/blogs' },
     { title: 'Stores', path: '/stores' },
     { title: 'Reviews', path: '/reviews' },
     { title: 'FAQs', path: '/faq' }

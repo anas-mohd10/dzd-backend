@@ -1,6 +1,6 @@
 .items {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 
   .item {
@@ -15,4 +15,19 @@
 
 .btn {
   font-weight: 400 !important;
+}
+
+.products-wrapper {
+  height: max-content;
+  max-height: 300px;
+  overflow-y: scroll;
+
+  .products-card {
+
+    img {
+      height: 60px;
+      width: 60px;
+    }
+
+  }
 }

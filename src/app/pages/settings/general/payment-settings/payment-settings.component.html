@@ -49,8 +49,7 @@
                 <div class="pg-card position-relative cursor-pointer p-4 border  rounded"
                     *ngFor="let pg of pgs; let i = index" (click)="open(template, pg?.id)"
                     [ngClass]="{'border-secondary': !paymentGatewayEnabled(pg?.id), 'border-primary': paymentGatewayEnabled(pg?.id)}">
-                    <img src="{{pg?.icon}}" alt="{{pg?.title}}"
-                        onerror="this.src = 'assets/images/default.png'">
+                    <img src="{{pg?.icon}}" alt="{{pg?.title}}" onerror="this.src = 'assets/images/default.png'">
                     <div class="fs-5 text-center mt-2">{{pg?.title}}</div>
                 </div>
             </div>
@@ -148,15 +147,37 @@
                 </div>
 
                 <div class="mb-3 form-group"
-                *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('privateKey')">
-                <label for="privateKey" class="fs-6 mb-3">Private Key</label>
-                <input type="text" id="privateKey" placeholder="Private Key" formControlName="privateKey"
-                    class="form-control" [ngClass]="{
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('apiKey')">
+                    <label for="apiKey" class="fs-6 mb-3">API Key</label>
+                    <input type="text" id="apiKey" placeholder="API Key" formControlName="apiKey" class="form-control"
+                        [ngClass]="{
+                        'is-invalid':
+                        (formControls.apiKey.touched || isSubmitted) &&
+                        formControls.apiKey.errors?.required
+                      }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('outletReference')">
+                    <label for="outletReference" class="fs-6 mb-3">Outlet Reference</label>
+                    <input type="text" id="outletReference" placeholder="Outlet Reference"
+                        formControlName="outletReference" class="form-control" [ngClass]="{
+                    'is-invalid':
+                    (formControls.outletReference.touched || isSubmitted) &&
+                    formControls.outletReference.errors?.required
+                  }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('privateKey')">
+                    <label for="privateKey" class="fs-6 mb-3">Private Key</label>
+                    <input type="text" id="privateKey" placeholder="Private Key" formControlName="privateKey"
+                        class="form-control" [ngClass]="{
                         'is-invalid':
                         (formControls.privateKey.touched || isSubmitted) &&
                         formControls.privateKey.errors?.required
                       }">
-            </div>
+                </div>
 
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('serverKey')">

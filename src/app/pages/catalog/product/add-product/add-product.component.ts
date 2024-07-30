@@ -345,6 +345,7 @@ export class AddProductComponent implements OnInit {
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.attributes,
+      parentId: this.parentDetails?._id,
       productIcons: this.icons.map((icon: any) => icon._id),
       storeFrontFields: this.storeFields,
       category: {

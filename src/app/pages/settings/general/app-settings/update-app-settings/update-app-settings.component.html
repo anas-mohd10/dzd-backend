@@ -119,36 +119,34 @@
                      </div>
                   </div>
 
-                  <div class="col-12 storeWrapper">
-                     <div class="card">
-                        <div class="card-body">
-                           <h2 class="form-title">Store Details</h2>
-                           <div class="col-12">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Store Name</label>
-                                 <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
-                                    formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
+                  <div>
+
+                     <h2 class="form-title">Store Details</h2>
+                     <div class="col-12">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 required">Store Name</label>
+                           <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
+                              formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
                                     formControls.name.errors?.required}" />
-                              </div>
-                           </div>
-                           <div class="col-12">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Domain</label>
-                                 <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
-                                    formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
-                                    formControls.domain.errors?.required}" />
-                              </div>
-                           </div>
-                           <div class="col-12">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Description</label>
-                                 <textarea type="text" placeholder="Eg. All in one ecommerce store"
-                                    class="form-control fs-6" formControlName="description" [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) &&
-                                    formControls.description.errors?.required}"></textarea>
-                              </div>
-                           </div>
                         </div>
                      </div>
+                     <div class="col-12">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 required">Domain</label>
+                           <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
+                              formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
+                                    formControls.domain.errors?.required}" />
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="form-group mb-3">
+                           <label class="fs-6 mb-3 required">Description</label>
+                           <textarea type="text" placeholder="Eg. All in one ecommerce store" class="form-control fs-6"
+                              formControlName="description" [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) &&
+                                    formControls.description.errors?.required}"></textarea>
+                        </div>
+                     </div>
+
                   </div>
 
                   <div class="col-12 buttonsWrapper">
@@ -247,11 +245,20 @@
                            <app-assets (mediaClicked)="handleStoreLogo($event)" [previewDetails]="logo"></app-assets>
                         </div>
                      </div>
-                     <div>
-                        <div class="fs-5 mb-2 required">Favicon</div>
-                        <div class="h-auto ratio ratio-1x1 w-100">
-                           <app-assets (mediaClicked)="handleStoreFavicon($event)"
-                              [previewDetails]="favicon"></app-assets>
+                     <div class="row">
+                        <div class="col-lg-6">
+                           <div class="fs-5 mb-2 required">Favicon</div>
+                           <div class="h-auto ratio ratio-1x1 w-100">
+                              <app-assets (mediaClicked)="handleStoreFavicon($event)"
+                                 [previewDetails]="favicon"></app-assets>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <div class="fs-5 mb-2 required">Default Image</div>
+                           <div class="h-auto ratio ratio-1x1 w-100">
+                              <app-assets (mediaClicked)="handleDefaultImage($event)"
+                                 [previewDetails]="defaultImage"></app-assets>
+                           </div>
                         </div>
                      </div>
                   </div>

@@ -27,7 +27,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: "Tabby", id: "tabby", icon: `${environment.base}uploads/medias/tabby.png` },
     { title: "Tap Payments", id: "tap", icon: `${environment.base}uploads/medias/tap.jpg` },
     { title: "Rak Bank", id: "rakbank", icon: `${environment.base}uploads/medias/rakbank.png` },
-    { title: "Network", id: "network", icon: `${environment.base}uploads/medias/network.png` },
+    { title: "Network", id: "network-international", icon: `${environment.base}uploads/medias/network-international.png` },
   ]
   displayIcon: string = ''
   modalRef?: BsModalRef
@@ -37,6 +37,7 @@ export class PaymentSettingsComponent implements OnInit {
     'tabby': ['merchantCode', 'secretKey', 'publicKey'],
     'tap': ['secretKey', 'publicKey'],
     'rakbank': ['publicKey', 'privateKey'],
+    'network-international': ['outletReference', 'apiKey']
   };
 
   get formControls() {
@@ -60,6 +61,8 @@ export class PaymentSettingsComponent implements OnInit {
       secretKey: new FormControl(''),
       displayName: new FormControl(''),
       displayIcon: new FormControl(null),
+      apiKey: new FormControl(''),
+      outletReference: new FormControl(''),
       publicKey: new FormControl(''),
       privateKey: new FormControl(''),
       region: new FormControl(''),
@@ -181,7 +184,7 @@ export class PaymentSettingsComponent implements OnInit {
     })
 
     const paymentGateway = this.form.get('paymentGateway')?.value;
-    const fields = ['profileId', 'merchantCode', 'merchantId', 'secretKey', 'displayName', 'displayIcon', 'publicKey', 'region', 'serverKey'];
+    const fields = ['profileId', 'apiKey', 'outletReference', 'merchantCode', 'merchantId', 'secretKey', 'displayName', 'displayIcon', 'publicKey', 'region', 'serverKey'];
 
     fields.forEach(field => {
       let pgConfig = this.paymentGatewayConfig[paymentGateway] || []
