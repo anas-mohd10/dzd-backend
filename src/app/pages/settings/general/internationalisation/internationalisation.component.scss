@@ -1,0 +1,42 @@
+label,
+.btn {
+    font-weight: 400 !important;
+}
+
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
+ 
+    tbody{
+ 
+       tr{
+ 
+          td{
+             vertical-align: middle;
+          }
+       }
+    }
+ 
+    thead {
+ 
+       tr{
+ 
+          th{
+             font-weight: 400 !important;
+          }
+       }
+       background: #E4E7F4;
+    }
+    
+    button{
+        width: 120px;
+    }
+
+    img{
+        height: 60px;
+        width: 60px;
+        object-fit: contain;
+    }
+ }
+ //Table designs

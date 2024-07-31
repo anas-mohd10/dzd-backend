@@ -85,6 +85,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { PaymentSettingsComponent } from './pages/settings/general/payment-settings/payment-settings.component';
 import { CreateProductsComponent } from './pages/catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './pages/settings/general/shipping-rules/shipping-rules.component';
+import { InternationalisationComponent } from './pages/settings/general/internationalisation/internationalisation.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -145,6 +146,7 @@ const DragConfig = {
     PaymentSettingsComponent,
     CreateProductsComponent,
     ShippingRulesComponent,
+    InternationalisationComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

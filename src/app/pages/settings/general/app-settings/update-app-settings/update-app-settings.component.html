@@ -173,6 +173,16 @@
                         </div>
                      </div>
                   </div>
+
+                  <div class="mt-4">
+                     <h2 class="form-title">Language Settings</h2>
+                     <p class="text-muted">Edit the language settings of your store</p>
+                     <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                        <div class="py-2 px-4 cursor-pointer rounded-pill bg-secondary" *ngFor="let language of languageItems; let i = index" (click)="toggleLanguages(language)">
+                           <div>{{language?.name}}</div>
+                        </div>
+                     </div>
+                  </div>
                </form>
             </div>
          </div>

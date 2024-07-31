@@ -20,7 +20,7 @@ interface Media {
   uploadedDescription: string;
   uploadedTo: string;
   createdAt: string;
-}
+};
 
 @Component({
   selector: 'app-update-app-settings',
@@ -71,14 +71,19 @@ export class UpdateAppSettingsComponent implements OnInit {
     'BookAntiqua',
     'Active',
     'Hellix'
-  ]
-  logo?: string
-  favicon?: string
-  primary: string = ''
-  modalRef?: BsModalRef
-  secondary: string = ''
-  storeStatus: boolean = true
-  defaultImage: string = ''
+  ];
+  logo?: string;
+  favicon?: string;
+  primary: string = '';
+  modalRef?: BsModalRef;
+  secondary: string = '';
+  storeStatus: boolean = true;
+  defaultImage: string = '';
+  languageItems: Array<any> = [
+    { name: 'English', value: 'en' },
+    { name: 'Arabic', value: 'ar' }
+  ];
+  languages: Array<any> = ['en'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -89,6 +94,12 @@ export class UpdateAppSettingsComponent implements OnInit {
     private BsModalService: BsModalService,
     private BsModalRef: BsModalRef
   ) { }
+
+  toggleLanguages(language: string) {
+    this.languages.includes(language)
+      ? this.languages = this.languages.filter((item: string) => item != language)
+      : this.languages.push(language)
+  }
 
   ngOnInit(): void {
     this.initform();
@@ -182,6 +193,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       name: ['', Validators.required],
       domain: ['', Validators.required],
       description: ['', Validators.required],
+      primaryLang: ['en'],
+      isMultiLang: ['false'],
+      languages: [[]],
       packingSlip: ['', Validators.required],
       isOutOfStock: ['false'],
       isStoreLive: ['true'],
@@ -236,6 +250,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
+      primaryLang: this.form.get('primaryLang')?.value,
+      isMultiLang: this.form.get('isMultiLang')?.value,
+      languages: this.form.get('languages')?.value,
       defaultImage: this.form.get('defaultImage')?.value,
       name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,

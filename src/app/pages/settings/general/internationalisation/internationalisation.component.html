@@ -1,0 +1,59 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Internationalisation</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.internationalisation }}">Internationalisation</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="d-flex align-items-start justify-content-end gap-4">
+            <button class="btn btn-primary" (click)="open(template)">Save changes</button>
+
+            <div class="form-group d-flex align-items-center justify-content-end gap-4">
+                <select [formControl]="language" class="form-select" id="language" (change)="getDetails()">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option value="ar">Arabic</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th class="p-2">Key</th>
+                    <th class="p-2">Custom Value</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let langKey of langKeys; let i = index">
+                        <td>{{langKey?.key}}</td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Value"
+                                    [(ngModel)]="langKeys[i].value">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal-body text-center">
+        <p>Do you want to confirm?</p>
+        <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+</ng-template>

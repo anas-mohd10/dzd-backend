@@ -37,6 +37,7 @@ import { PageCoversComponent } from './page-covers/page-covers.component';
 import { PaymentSettingsComponent } from './settings/general/payment-settings/payment-settings.component';
 import { CreateProductsComponent } from './catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './settings/general/shipping-rules/shipping-rules.component';
+import { InternationalisationComponent } from './settings/general/internationalisation/internationalisation.component';
 
 export const Routing: Routes = [
   {
@@ -355,6 +356,10 @@ export const Routing: Routes = [
       }, {
         path: 'sales-analytics',
         component: SalesAnalyticsComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'internationalisation',
+        component: InternationalisationComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'replace-requests',
