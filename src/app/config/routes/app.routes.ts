@@ -314,5 +314,5 @@ export const appRoutes = {
   },
   paymentSettings: `${app}/payment-settings`,
   shippingRules: `${app}/shipping-rules`,
-  internationalisation: `${app}/internationalisation`,
+  internationalisation: `${app}/internationalization`,
 }

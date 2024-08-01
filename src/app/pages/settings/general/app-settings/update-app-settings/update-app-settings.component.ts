@@ -80,10 +80,10 @@ export class UpdateAppSettingsComponent implements OnInit {
   storeStatus: boolean = true;
   defaultImage: string = '';
   languageItems: Array<any> = [
-    { name: 'English', value: 'en' },
-    { name: 'Arabic', value: 'ar' }
+    { lang: 'English', langCode: 'en' },
+    { lang: 'Arabic', langCode: 'ar' }
   ];
-  languages: Array<any> = ['en'];
+  languages: Array<any> = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,10 +95,24 @@ export class UpdateAppSettingsComponent implements OnInit {
     private BsModalRef: BsModalRef
   ) { }
 
-  toggleLanguages(language: string) {
-    this.languages.includes(language)
-      ? this.languages = this.languages.filter((item: string) => item != language)
-      : this.languages.push(language)
+  toggleLanguages(language: { lang: string, langCode: string }) {
+    let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == language.lang)
+    if (isExists) {
+      if (this.form.get('primaryLang')?.value == language.langCode) {
+        this.HotToastService.error('Primary language cannot be removed')
+      } else {
+        this.languages = this.languages.filter((item: { lang: string, langCode: string }) => item.lang != language.lang)
+        this.HotToastService.info('Language removed successfully')
+      }
+    } else {
+      this.languages.push(language)
+      this.HotToastService.success('Language added successfully')
+    }
+  }
+
+  languageExists(language: { lang: string, langCode: string }) {
+    let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == language.lang)
+    return isExists
   }
 
   ngOnInit(): void {
@@ -150,6 +164,12 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
         this.form.get('logo')?.setValue(res?.result?.logo?._id)
+
+        for (let lang of res?.result?.languages) {
+          this.languages.push({ lang: lang?.lang, langCode: lang?.langCode })
+        }
+
+        this.form.get('primaryLang')?.setValue(res?.result?.primaryLang)
         this.form.get('favicon')?.setValue(res?.result?.favicon?._id)
         this.ChangeDetectorRef.markForCheck()
         this.storeStatus = res?.result?.isStoreLive
@@ -193,7 +213,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       name: ['', Validators.required],
       domain: ['', Validators.required],
       description: ['', Validators.required],
-      primaryLang: ['en'],
+      primaryLang: [''],
       isMultiLang: ['false'],
       languages: [[]],
       packingSlip: ['', Validators.required],
@@ -225,6 +245,7 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   onSubmit() {
     this.form.get('paymentGateway')?.setValue(this.paymentGateways)
+    this.form.get('languages')?.setValue(this.languages)
 
     if (!this.form.valid) {
       this.isSubmitted = true

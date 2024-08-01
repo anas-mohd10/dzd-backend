@@ -104,7 +104,7 @@
           <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
             [queryParams]="{product: product?.slug}">
             <div class="product-image">
-              <img src='{{base}}{{product?.thumbnail?.path}}' alt="product image"
+              <img src='{{base}}{{product?.thumbnail}}' alt="product image"
                 onerror="this.src = 'assets/images/default.png'" />
               <div class="p-2 product-status-{{product?.isActive}} fs-6">
                 {{product?.isActive ? 'Active' : 'Inactive'}}
@@ -167,7 +167,7 @@
             <ng-container *ngFor="let product of products; let i = index">
               <tr>
                 <td>
-                  <img src="{{base}}{{product?.thumbnail?.path}}" alt="Product" height="45" width="45" class="border border-secondary rounded"
+                  <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="border border-secondary rounded"
                     onerror="this.src = 'assets/images/default.png'">
                 </td>
                 <td>

@@ -31,7 +31,7 @@ export class InternationalisationComponent implements OnInit {
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' });
   }
 
   confirm() {

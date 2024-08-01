@@ -358,7 +358,7 @@ export const Routing: Routes = [
         component: SalesAnalyticsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
-        path: 'internationalisation',
+        path: 'internationalization',
         component: InternationalisationComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {

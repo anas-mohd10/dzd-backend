@@ -279,15 +279,13 @@ export class UpdateProductComponent implements OnInit {
       return
     }
 
-    console.log(this.parentDetails);
-
     let payload = {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.productDetails.slug,
       files: this.images.map((item: any) => item?._id),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
-      product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
+      product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
       parentId: this.parentDetails?._id,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
@@ -298,7 +296,7 @@ export class UpdateProductComponent implements OnInit {
       },
       productTags: this.tagsForm.value,
     }
-
+    
     this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
