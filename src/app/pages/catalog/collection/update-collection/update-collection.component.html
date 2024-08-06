@@ -64,6 +64,21 @@
                   <input type="text" class="form-control fs-6" formControlName="subname" />
                 </div>
 
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Meta Title</label>
+                  <input type="text" class="form-control fs-6" formControlName="metaTitle" />
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Meta Description</label>
+                  <textarea type="text" class="form-control fs-6" formControlName="metaDescription"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Meta Keywords</label>
+                  <input type="text" class="form-control fs-6" formControlName="metaKeywords" />
+                </div>
+
                 <div>
                   <div>
                     <label class="fs-6 required">Products</label>
@@ -90,6 +105,7 @@
                       <table class="table">
                         <thead>
                           <tr class="fs-6">
+                            <th>&nbsp;</th>
                             <th>Name</th>
                             <th>Stock</th>
                             <th>SKU</th>
@@ -99,6 +115,10 @@
                         <tbody>
                           <ng-container *ngFor="let product of searchProducts; let i = index;">
                             <tr>
+                              <td>
+                                <img class="rounded border border-secondary" src="{{base}}{{product?.thumbnail}}"
+                                  alt="{{product?.name}}">
+                              </td>
                               <td>
                                 {{product?.name}}
                               </td>
@@ -131,7 +151,14 @@
                         <div class="example-box" *ngFor="let product of productDetails" cdkDrag>
                           <div class="addedProductCard">
                             <div class="close" (click)="addProductSku(product)">
-                              <img src="assets/icons/close.svg" alt="Icon">
+                              <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                              </svg>
+                            </div>
+                            <div>
+                              <img class="product-image" src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}">
                             </div>
                             <div class="name fs-6">{{product?.name}}</div>
                             <div class="sku">SKU: {{product?.sku}}</div>

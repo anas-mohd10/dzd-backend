@@ -106,7 +106,7 @@ export class ProductCardComponent implements OnInit {
       replaceDays: new FormControl(1, Validators.pattern("^[0-9]*")),
       cod: new FormControl('false'),
       codCharge: new FormControl(0, Validators.pattern("^[0-9]*")),
-      tax: new FormControl('', Validators.required),
+      tax: new FormControl(''),
       sku: new FormControl('', Validators.required),
       hsn: new FormControl(''),
       parentCategory: new FormControl('', Validators.required),

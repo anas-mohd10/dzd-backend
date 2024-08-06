@@ -195,14 +195,14 @@
                                 <div class="accordion-body">
                                     <div>
                                         <div class="row align-items-center mb-3">
-                                            <div class="col-lg-9">
+                                            <div class="col-lg-10">
                                                 <div class="form-floating mb-3">
                                                     <input type="text" placeholder="Latest arrivals"
                                                         class="form-control" formControlName="title" id="title">
                                                     <label for="title">Title</label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-2">
                                                 <div class="ratio ratio-1x1">
                                                     <app-assets (mediaClicked)="onTitleImageTriggered($event)"
                                                         [previewDetails]="titleThumbnailDetails"></app-assets>
@@ -239,6 +239,22 @@
                                             <label for="buttonLink" class="form-label">Button redirection</label>
                                             <input type="text" placeholder="View more" id="buttonLink"
                                                 formControlName="buttonLink" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4 align-items-center">
+                                        <div class="col-lg-4 form-group">
+                                            <label for="isTimeBound" class="fs-6 mb-3">Time Bound Widget?</label>
+                                            <app-switch id="isTimeBound" [switchId]="''"
+                                                (switchToggled)="onTimeBoundSwitch($event)"
+                                                [isToggledProps]="form.get('isTimeBoundWidget')?.value"></app-switch>
+                                        </div>
+                                        <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
+                                            <label for="widgetTime" class="fs-6 mb-3">Widget Start Time </label>
+                                            <input type="datetime-local" class="form-control" formControlName="widgetStartTime">
+                                        </div>
+                                        <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
+                                            <label for="widgetTime" class="fs-6 mb-3">Widget End Time </label>
+                                            <input type="datetime-local"  class="form-control" formControlName="widgetEndTime">
                                         </div>
                                     </div>
                                 </div>
@@ -338,18 +354,22 @@
 
 
                                         <div class="row">
-                                            <div *ngIf="form.get('view')?.value == 'slider'" class="form-group col-lg-6 mb-3">
+                                            <div *ngIf="form.get('view')?.value == 'slider'"
+                                                class="form-group col-lg-6 mb-3">
                                                 <div>
                                                     <label for="pagination" class="fs-5 mb-3">Pagination</label>
                                                     <div
                                                         class="d-flex form-control gap-8 align-items-center justify-content-start">
-                                                        <div class="d-flex gap-4 align-items-center justify-content-start">
+                                                        <div
+                                                            class="d-flex gap-4 align-items-center justify-content-start">
                                                             <div class="fs-5 fw-normal">Web</div>
-                                                            <app-switch id="pagination" [switchId]="'desktop-pagination'"
+                                                            <app-switch id="pagination"
+                                                                [switchId]="'desktop-pagination'"
                                                                 (switchToggled)="switchToggled($event)"
                                                                 [isToggledProps]="form.get('pagination')?.value?.desktop"></app-switch>
                                                         </div>
-                                                        <div class="d-flex gap-4 align-items-center justify-content-start">
+                                                        <div
+                                                            class="d-flex gap-4 align-items-center justify-content-start">
                                                             <div class="fs-5 fw-normal">Mobile</div>
                                                             <app-switch id="pagination" [switchId]="'mobile-pagination'"
                                                                 (switchToggled)="switchToggled($event)"
@@ -358,8 +378,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-    
-                                            <div *ngIf="form.get('view')?.value == 'slider'" class="form-group col-lg-6 mb-3">
+
+                                            <div *ngIf="form.get('view')?.value == 'slider'"
+                                                class="form-group col-lg-6 mb-3">
                                                 <label for="pagination" class="fs-5 mb-3">Slider Buttons</label>
                                                 <div
                                                     class="d-flex form-control gap-8 align-items-center justify-content-start">
@@ -377,7 +398,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-    
+
                                             <div class="col-lg-6 mb-3">
                                                 <label for="pagination" class="fs-5 mb-3">Hovering</label>
                                                 <div
@@ -397,11 +418,27 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="sliderButtonPosition" class="fs-5 mb-3">Slider Buttons Position</label>
-                                                <select id="sliderButtonPosition" class="form-select" formControlName="sliderButtonPosition">
+                                            <div class="form-group col-lg-6 mb-3"
+                                                *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="sliderButtonPosition" class="fs-5 mb-3">Slider Buttons
+                                                    Position</label>
+                                                <select id="sliderButtonPosition" class="form-select"
+                                                    formControlName="sliderButtonPosition">
                                                     <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let position of ['relative', 'absolute']" value="{{position}}">{{position}}</option>
+                                                    <option *ngFor="let position of ['relative', 'absolute']"
+                                                        value="{{position}}">{{position}}</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-lg-6 mb-3"
+                                                *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="paginationPosition" class="fs-5 mb-3">Pagination
+                                                    Position</label>
+                                                <select id="paginationPosition" class="form-select"
+                                                    formControlName="paginationPosition">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let position of ['relative', 'absolute']"
+                                                        value="{{position}}">{{position}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -843,7 +880,7 @@
                                         class="rounded cursor-pointer col-lg-4 p-4 border border-secondary d-flex align-items-center justify-content-start gap-3">
                                         <div>
                                             <img class="rounded" height="40" width="40"
-                                                src="{{base}}{{product.thumbnail?.path}}"
+                                                src="{{base}}{{product.thumbnail}}"
                                                 onerror="this.src = 'assets/images/default.png'" alt="{{product.name}}">
                                         </div>
                                         <div>
@@ -872,7 +909,7 @@
                                         class="rounded cursor-pointer col-lg-4 p-4 border d-flex align-items-center justify-content-start gap-3">
                                         <div>
                                             <img class="rounded" height="40" width="40"
-                                                src="{{base}}{{product.thumbnail?.path}}"
+                                                src="{{base}}{{product.thumbnail}}"
                                                 onerror="this.src = 'assets/images/default.png'" alt="{{product.name}}">
                                         </div>
                                         <div>

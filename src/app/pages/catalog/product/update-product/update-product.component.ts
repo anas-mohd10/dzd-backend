@@ -221,7 +221,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   handleThumbnail(event: any) {
-    this.parentForm.get('thumbnail')?.setValue(event._id)
+    this.parentForm.get('thumbnail')?.setValue(event.path)
   }
 
   productMediaClicked(event: any) {
@@ -247,7 +247,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   productThumbnailClicked(event: any) {
-    this.form.get('thumbnail')?.setValue(event._id)
+    this.form.get('thumbnail')?.setValue(event.path)
   }
 
   toggleProductCategory(event: any, type: string) {
@@ -283,20 +283,20 @@ export class UpdateProductComponent implements OnInit {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.productDetails.slug,
-      files: this.images.map((item: any) => item?._id),
+      files: this.images.length > 0 && this.images.map((item: any) => item?.path),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
       parentId: this.parentDetails?._id,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
-      productIcons: this.icons.map((icon: any) => icon._id),
+      productIcons: this.icons.map((icon: any) => icon.path),
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       },
       productTags: this.tagsForm.value,
     }
-    
+
     this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -376,26 +376,26 @@ export class UpdateProductComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result)
           this.productDetails = res?.result
-          this.images = res?.result?.files
+          this.images = res?.result?.files ? res?.result?.files : []
           this.storeFields = res?.result?.storeFrontFields
           this.categories = res?.result?.category?.id
           if (res?.result?.productTags) {
             this.tagsForm.patchValue(res?.result?.productTags)
             this.productTags = {
-              topRightTag: res?.result?.productTags?.topRightTag?.path,
-              topLeftTag: res?.result?.productTags?.topLeftTag?.path,
-              bottomRightTag: res?.result?.productTags?.bottomRightTag?.path,
-              bottomLeftTag: res?.result?.productTags?.bottomLeftTag?.path,
+              topRightTag: res?.result?.productTags?.topRightTag,
+              topLeftTag: res?.result?.productTags?.topLeftTag,
+              bottomRightTag: res?.result?.productTags?.bottomRightTag,
+              bottomLeftTag: res?.result?.productTags?.bottomLeftTag,
             }
           }
           this.parentDetails = res?.result?.product?.id
-          this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner?.path
+          this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner
           this.form.patchValue({ productBanner: res?.result?.productBanner?._id })
           this.attributes = res?.result?.attributes
           this.relatedProducts = res?.result?.relatedProducts
           this.searchKeywords = res?.result?.searchKeywords
           this.icons = res?.result?.productIcons ? res?.result?.productIcons : []
-          this.thumbnailPreview = res?.result?.thumbnail?.path
+          this.thumbnailPreview = res?.result?.thumbnail
           this.ChangeDetectorRef.markForCheck()
         }
       }

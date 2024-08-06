@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { LayoutService } from '../../core/layout.service';
 import { MenuComponent } from '../../../kt/components';
 import { appRoutes } from 'src/app/config/routes';
+import { SocketService } from 'src/app/includes/services/socket.service';
 
 @Component({
   selector: 'app-header',
@@ -15,24 +16,28 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   asideDisplay: boolean = true;
   headerLeft: string = 'menu';
   pageTitleCssClasses: string = '';
-  pageTitleAttributes: {
-    [attrName: string]: string | boolean;
-  };
+  pageTitleAttributes: { [attrName: string]: string | boolean };
   appRoute = appRoutes
   @ViewChild('ktPageTitle', { static: true }) ktPageTitle: ElementRef;
-
+  private socket: any;
   private unsubscribe: Subscription[] = [];
 
-  constructor(private layout: LayoutService, private router: Router) {
-    this.routingChanges();
-  }
+  constructor(
+    private LayoutService: LayoutService,
+    private Router: Router,
+    private SocketService: SocketService
+  ) { this.routingChanges() }
 
   ngOnInit(): void {
-    this.headerContainerCssClasses = this.layout.getStringCSSClasses('headerContainer');
-    this.asideDisplay = this.layout.getProp('aside.display') as boolean;
-    this.headerLeft = this.layout.getProp('header.left') as string;
-    this.pageTitleCssClasses = this.layout.getStringCSSClasses('pageTitle');
-    this.pageTitleAttributes = this.layout.getHTMLAttributes('pageTitle');
+    this.headerContainerCssClasses = this.LayoutService.getStringCSSClasses('headerContainer');
+    this.asideDisplay = this.LayoutService.getProp('aside.display') as boolean;
+    this.headerLeft = this.LayoutService.getProp('header.left') as string;
+    this.pageTitleCssClasses = this.LayoutService.getStringCSSClasses('pageTitle');
+    this.pageTitleAttributes = this.LayoutService.getHTMLAttributes('pageTitle');
+
+    this.SocketService.onOrderPlaced().subscribe((data: any) => {
+      console.log(data);
+    })
   }
 
   ngAfterViewInit() {
@@ -47,7 +52,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   routingChanges() {
-    const routerSubscription = this.router.events.subscribe((event) => {
+    const routerSubscription = this.Router.events.subscribe((event) => {
       if (event instanceof NavigationEnd || event instanceof NavigationCancel) {
         MenuComponent.reinitialization();
       }

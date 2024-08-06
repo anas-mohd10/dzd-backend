@@ -50,20 +50,16 @@ export class UpdateCollectionComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result[0])
           this.collectionDetails = res?.result[0]
-          if (res?.result[0]?.thumbnail?.path) {
-            this.previews.thumbnailPreview = res?.result[0]?.thumbnail?.path
-            this.form.get('thumbnail')?.setValue(res?.result[0]?.thumbnail?._id)
-          }
-          if (res?.result[0]?.cover?.path) {
-            this.previews.coverPreview = res?.result[0]?.cover?.path
-            this.form.get('cover')?.setValue(res?.result[0]?.cover?._id)
-          }
+          if (res?.result[0]?.thumbnail) this.previews.thumbnailPreview = res?.result[0]?.thumbnail
+          if (res?.result[0]?.cover) this.previews.coverPreview = res?.result[0]?.cover
           this.productDetails = res?.result[0]?.products
           this.productIds = res?.result[0]?.products.map((item: any) => item?._id)
           this.ChangeDetectorRef.markForCheck()
         }
       }
     })
+
+    console.log(this.previews);
 
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
@@ -72,11 +68,14 @@ export class UpdateCollectionComponent implements OnInit {
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
+      metaTitle: new FormControl(''),
+      metaDescription: new FormControl(''),
+      metaKeywords: new FormControl(''),
     });
   }
 
   handleCollectionCover(event: any) {
-    this.form.get('cover')?.setValue(event._id)
+    this.form.get('cover')?.setValue(event.path)
     this.previews.coverPreview = event.path
   }
 
@@ -85,7 +84,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   handleCollectionThumbnail(event: any) {
-    this.form.get('thumbnail')?.setValue(event._id)
+    this.form.get('thumbnail')?.setValue(event.path)
     this.previews.thumbnailPreview = event.path
   }
 

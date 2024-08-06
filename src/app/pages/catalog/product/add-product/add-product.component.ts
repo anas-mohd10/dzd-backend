@@ -160,7 +160,7 @@ export class AddProductComponent implements OnInit {
     switch (type) {
       case 'topright':
         if (method == 'add') {
-          this.tagsForm.get('topRightTag')?.setValue(event._id)
+          this.tagsForm.get('topRightTag')?.setValue(event.path)
           this.productTags.topRightTag = event.path
         } else {
           this.tagsForm.get('topRightTag')?.setValue(null)
@@ -169,7 +169,7 @@ export class AddProductComponent implements OnInit {
         break
       case 'topleft':
         if (method == 'add') {
-          this.tagsForm.get('topLeftTag')?.setValue(event._id)
+          this.tagsForm.get('topLeftTag')?.setValue(event.path)
           this.productTags.topLeftTag = event.path
         } else {
           this.tagsForm.get('topLeftTag')?.setValue(null)
@@ -178,7 +178,7 @@ export class AddProductComponent implements OnInit {
         break
       case 'bottomright':
         if (method == 'add') {
-          this.tagsForm.get('bottomRightTag')?.setValue(event._id)
+          this.tagsForm.get('bottomRightTag')?.setValue(event.path)
           this.productTags.bottomRightTag = event.path
         } else {
           this.tagsForm.get('bottomRightTag')?.setValue(null)
@@ -187,7 +187,7 @@ export class AddProductComponent implements OnInit {
         break
       case 'bottomleft':
         if (method == 'add') {
-          this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
+          this.tagsForm.get('bottomLeftTag')?.setValue(event.path)
           this.productTags.bottomLeftTag = event.path
         } else {
           this.tagsForm.get('bottomLeftTag')?.setValue(null)
@@ -213,7 +213,7 @@ export class AddProductComponent implements OnInit {
   }
 
   handleThumbnail(event: any) {
-    this.parentForm.get('thumbnail')?.setValue(event._id)
+    this.parentForm.get('thumbnail')?.setValue(event.path)
     this.previewDetails = event.path
   }
 
@@ -245,7 +245,7 @@ export class AddProductComponent implements OnInit {
   }
 
   productThumbnailClicked(event: any) {
-    this.form.get('thumbnail')?.setValue(event._id)
+    this.form.get('thumbnail')?.setValue(event.path)
   }
 
   toggleProductCategory(event: any, type: string) {
@@ -330,7 +330,7 @@ export class AddProductComponent implements OnInit {
   }
 
   saveChanges() {
-    let files = this.images.map((item: any) => item._id) || []
+    let files = this.images.map((item: any) => item.path) || []
     this.form.get('files')?.setValue(files)
 
     if (!this.form.valid) {
@@ -340,13 +340,13 @@ export class AddProductComponent implements OnInit {
 
     let payload = {
       ...this.form.value,
-      icons: this.icons.map((icon: any) => icon._id),
+      icons: this.icons.map((icon: any) => icon.path),
       productTags: this.tagsForm.value,
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.attributes,
       parentId: this.parentDetails?._id,
-      productIcons: this.icons.map((icon: any) => icon._id),
+      productIcons: this.icons.map((icon: any) => icon.path),
       storeFrontFields: this.storeFields,
       category: {
         id: this.categories.map((category: any) => category?._id),

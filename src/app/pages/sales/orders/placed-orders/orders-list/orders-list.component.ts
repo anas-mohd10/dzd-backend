@@ -3,11 +3,11 @@ import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import SwiperCore, { SwiperOptions } from 'swiper';
+import { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
-import { routes } from 'src/app/app-routing.module';
+
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
@@ -149,15 +149,15 @@ export class OrdersListComponent implements OnInit {
     this.tagOrder = ''
   }
 
-  getLocaleDateFormat(data: any){
+  getLocaleDateFormat(data: any) {
     return new Date(data).toLocaleDateString()
   }
 
-  getLocaleTimeFormat(data: any){
+  getLocaleTimeFormat(data: any) {
     return new Date(data).toLocaleTimeString()
   }
 
-  formatOrderStatus(orderStatus: string){
+  formatOrderStatus(orderStatus: string) {
     return `${orderStatus.charAt(0).toUpperCase()}${orderStatus.slice(1).toLowerCase()}`
   }
 

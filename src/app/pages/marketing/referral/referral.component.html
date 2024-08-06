@@ -1,29 +1,28 @@
 <div>
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bold">Referral</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.referralProgram }}">Referral</a>
-          </li>
-        </ul>
-        <button class="btn btn-primary fs-6" (click)="open(template)">
-          Update referral
-        </button>
-      </div>
-    </div>
-  </div>
-  <div class="card my-4 py-4 px-2">
+  <div class="page-header d-flex align-items-start justify-content-between">
     <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Referral</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.referralProgram }}">Referral</a>
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-primary fs-6" (click)="open(template)">
+      Update referral
+    </button>
+  </div>
+
+  <div class="card my-4">
+    <div class="card-body">
       <div class="row">
         <div class="col-lg-4">
-          <div class="" style="display: flex; gap: 10px">
+          <div style="display: flex; gap: 10px">
             <div class="icon">
               <svg height="24px" width="24px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -32,14 +31,14 @@
                 </path>
               </svg>
             </div>
-            <span class="">
-              <div class="fw-bold fs-4">Step 1</div>
-              <p class="fs-6">Invite your friends to StoreDada</p>
+            <span>
+              <div class="fw-bold text-primary fs-4">Step 1</div>
+              <p class="fs-6 text-muted">Invite your friends to StoreDada</p>
             </span>
           </div>
         </div>
         <div class="col-lg-4">
-          <div class="" style="display: flex; gap: 10px">
+          <div style="display: flex; gap: 10px">
             <div class="icon">
               <svg height="24px" width="24px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -49,8 +48,8 @@
               </svg>
             </div>
             <span>
-              <div class="fw-bold fs-4">Step 2</div>
-              <p class="fs-6">
+              <div class="fw-bold text-primary fs-4">Step 2</div>
+              <p class="fs-6 text-muted">
                 Your friend gets {{ settings?.currency }}
                 {{ referralProgram?.welcomeBonus }} as welcome bonus after their
                 first purchase.
@@ -59,7 +58,7 @@
           </div>
         </div>
         <div class="col-lg-4">
-          <div class="" style="display: flex; gap: 10px">
+          <div style="display: flex; gap: 10px">
             <div class="icon">
               <svg height="24px" width="24px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -69,8 +68,8 @@
               </svg>
             </div>
             <span>
-              <div class="fw-bold fs-4">Step 3</div>
-              <p class="fs-6">
+              <div class="fw-bold text-primary fs-4">Step 3</div>
+              <p class="fs-6 text-muted">
                 You get a referral bonus of {{ settings?.currency }}
                 {{ referralProgram?.referralBonus }} for every friend that makes
                 a {{ settings?.currency }}
@@ -82,62 +81,65 @@
         </div>
       </div>
     </div>
-    <div class="row mb-5 d-flex justify-content-end align-items-end">
-      <div class="col-lg-14">
-        <label class="form-label">&nbsp;</label>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div>
         <input type="search" class="form-control" placeholder="Search customers" [formControl]="keyword"
           (ngModelChange)="getInvitedCustomers()" />
       </div>
+
+      <div class="my-4">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Mobile</th>
+              <th>Created</th>
+              <th>Invited by</th>
+              <th>Orders</th>
+            </tr>
+          </thead>
+          <tbody class="fs-6">
+            <ng-container *ngFor="let customer of invitedCustomers; let i = index">
+              <tr>
+                <td>
+                  <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}"
+                    [queryParams]="{ customer: customer?.userid }">
+                    {{ customer?.name }}
+                  </a>
+                </td>
+                <td>{{ customer?.countryCode }} {{ customer?.mobile }}</td>
+                <td>{{ customer?.createdAt }}</td>
+                <td>
+                  <a routerLink="{{ appRoute.customers.UPDATE_CUSTOMERS_LIST }}"
+                    [queryParams]="{ customer: customer?.invitedBy?.userid }">{{ customer?.invitedBy?.name }}</a>
+                </td>
+                <td>
+                  {{ customer?.orders == 0 ? "Yet to order" : "Order has been placed" }}
+                </td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="invitedCustomers.length == 0">
+              <td colspan="5">
+                <app-no-results></app-no-results>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <div class="table-responsive" style="border-radius: 12px;">
-    <table class="table table-head-custom table-vertical-center table-head-bg" *ngIf="invitedCustomers.length > 0">
-      <thead class="common_thead">
-        <tr class="text-left fs-6 text-gray-400">
-          <th>Customer</th>
-          <th>Mobile</th>
-          <th>Created</th>
-          <th>Invited by</th>
-          <th>Orders</th>
-        </tr>
-      </thead>
-      <tbody class="fs-6">
-        <ng-container *ngFor="let customer of invitedCustomers; let i = index">
-          <tr>
-            <td>
-              <a routerLink="{{
-                  appRoute.customers.UPDATE_CUSTOMERS_LIST
-                }}" [queryParams]="{ customer: customer?.userid }">{{ customer?.name }}</a>
-            </td>
-            <td>{{ customer?.countryCode }} {{ customer?.mobile }}</td>
-            <td>{{ customer?.createdAt }}</td>
-            <td>
-              <a routerLink="{{
-                  appRoute.customers.UPDATE_CUSTOMERS_LIST
-                }}" [queryParams]="{
-                  customer: customer?.invitedBy?.userid
-                }">{{ customer?.invitedBy?.name }}</a>
-            </td>
-            <td>
-              {{ customer?.orders == 0 ? "Yet to order" : "Order has been placed" }}
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
-
-    <div *ngIf="invitedCustomers.length == 0">
-      <app-no-results></app-no-results>>
-    </div>
-
-    <app-pagination *ngIf="invitedCustomers.length > 0" (pageTrigger)="onPageTriggered($event)" [pageSize]="limit"
-      [pageIndex]="page" [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
+  <div class="my-4">
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
+      [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
   </div>
 </div>
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Referral program</h4>
+    <h4 class="modal-title pull-left">Referral & Wallet Details</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close"
       (click)="modalRef?.hide(); form.reset(); getReferralProgram()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
@@ -145,32 +147,55 @@
   </div>
   <div class="modal-body">
     <form [formGroup]="form" (ngSubmit)="manageReferral()">
-      <div class="form-group mb-3">
-        <label for="welcomeBonus" class="form-label required">Welcome bonus</label>
-        <input type="text" class="form-control" formControlName="welcomeBonus" [ngClass]="{
-            'is-invalid':
-              (formControls.welcomeBonus.touched || isSubmitted) &&
-              (formControls.welcomeBonus.errors?.required ||
-                formControls.welcomeBonus.errors?.pattern)
-          }" />
+      <div class="row mb-6">
+        <div class="col-lg-6">
+          <label for="walletEnabled" class="fs-6 mb-3">Wallet Enabled?</label>
+          <app-switch id="walletEnabled" [switchId]="'isWalletEnabled'" (switchToggled)="switchToggled($event)"
+            [isToggledProps]="form.get('isWalletEnabled')?.value"></app-switch>
+        </div>
+        <div class="col-lg-6">
+          <label for="referralEnabled" class="fs-6 mb-3">Refer a Friend Enabled?</label>
+          <app-switch id="referralEnabled" [switchId]="'isReferralEnabled'" (switchToggled)="switchToggled($event)"
+            [isToggledProps]="form.get('isReferralEnabled')?.value"></app-switch>
+        </div>
       </div>
-      <div class="form-group mb-3">
-        <label for="referralBonus" class="form-label required">Referral bonus</label>
-        <input type="text" class="form-control" formControlName="referralBonus" [ngClass]="{
-            'is-invalid':
-              (formControls.referralBonus.touched || isSubmitted) &&
-              (formControls.referralBonus.errors?.required ||
-                formControls.referralBonus.errors?.pattern)
-          }" />
-      </div>
-      <div class="form-group mb-3">
-        <label for="minimumPurchase" class="form-label required">Minimum purchase</label>
-        <input type="text" class="form-control" formControlName="minimumPurchase" [ngClass]="{
-            'is-invalid':
-              (formControls.minimumPurchase.touched || isSubmitted) &&
-              (formControls.minimumPurchase.errors?.required ||
-                formControls.minimumPurchase.errors?.pattern)
-          }" />
+      <div class="row mb-6">
+        <div class="form-group col-lg-4 mb-3">
+          <label for="welcomeBonus" class="form-label required">Welcome bonus</label>
+          <input type="text" class="form-control" formControlName="welcomeBonus" [ngClass]="{
+              'is-invalid':
+                (formControls.welcomeBonus.touched || isSubmitted) &&
+                (formControls.welcomeBonus.errors?.required ||
+                  formControls.welcomeBonus.errors?.pattern)
+            }" />
+        </div>
+        <div class="form-group col-lg-4 mb-3">
+          <label for="referralBonus" class="form-label required">Referral bonus</label>
+          <input type="text" class="form-control" formControlName="referralBonus" [ngClass]="{
+              'is-invalid':
+                (formControls.referralBonus.touched || isSubmitted) &&
+                (formControls.referralBonus.errors?.required ||
+                  formControls.referralBonus.errors?.pattern)
+            }" />
+        </div>
+        <div class="form-group col-lg-4 mb-3">
+          <label for="minimumPurchase" class="form-label required">Min. purchase</label>
+          <input type="text" class="form-control" formControlName="minimumPurchase" [ngClass]="{
+              'is-invalid':
+                (formControls.minimumPurchase.touched || isSubmitted) &&
+                (formControls.minimumPurchase.errors?.required ||
+                  formControls.minimumPurchase.errors?.pattern)
+            }" />
+        </div>
+        <div class="form-group">
+          <label for="minimumCartAmount" class="form-label required">Minimum Cart Amount</label>
+          <input type="text" class="form-control" formControlName="minimumCartAmount" [ngClass]="{
+              'is-invalid':
+                (formControls.minimumCartAmount.touched || isSubmitted) &&
+                (formControls.minimumCartAmount.errors?.required ||
+                  formControls.minimumCartAmount.errors?.pattern)
+            }" />
+        </div>
       </div>
       <div class="d-flex justify-content-end gap-2 align-items-center">
         <button type="button" class="btn btn-secondary" (click)="modalRef?.hide(); form.reset(); getReferralProgram()">

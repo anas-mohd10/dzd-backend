@@ -39,9 +39,12 @@ export class ReferralComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      welcomeBonus: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")]),
-      referralBonus: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")]),
-      minimumPurchase: new FormControl('', [Validators.required, Validators.pattern("^[0-9]+$")])
+      welcomeBonus: new FormControl(0, [Validators.required, Validators.pattern("^[0-9]+$")]),
+      referralBonus: new FormControl(0, [Validators.required, Validators.pattern("^[0-9]+$")]),
+      minimumPurchase: new FormControl(0, [Validators.required, Validators.pattern("^[0-9]+$")]),
+      isWalletEnabled: new FormControl('false'),
+      minimumCartAmount: new FormControl(0, [Validators.required, Validators.pattern("^[0-9]+$")]),
+      isReferralEnabled: new FormControl('false'),
     })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
@@ -73,6 +76,10 @@ export class ReferralComponent implements OnInit {
     })
   }
 
+  switchToggled(event: { switchId: string, toggleState: boolean }) {
+    this.form.patchValue({ [event.switchId]: event.toggleState })
+  }
+
   open(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true })
   }
@@ -93,7 +100,7 @@ export class ReferralComponent implements OnInit {
   getInvitedCustomers() {
     this.ReferralService.getInvitedCustomers({
       page: this.page,
-       limit: this.limit, keyword: this.keyword.value
+      limit: this.limit, keyword: this.keyword.value
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

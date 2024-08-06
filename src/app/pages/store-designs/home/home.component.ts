@@ -456,6 +456,8 @@ export class HomeComponent implements OnInit {
           ['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
+          console.log(new Date(this.widgetDetails?.widgetStartTime));
+          
           if (this.widgetDetails?.titleImage) {
             this.titleThumbnailDetails = this.widgetDetails?.titleImage?.path
           }
@@ -898,12 +900,18 @@ export class HomeComponent implements OnInit {
         desktop: new FormControl(true),
         mobile: new FormControl(true),
       }),
+
+      isTimeBoundWidget: new FormControl(false),
+      widgetStartTime: new FormControl(""),
+      widgetEndTime: new FormControl(""),
+
       sliderButtonPosition: new FormControl("relative"),
+      paginationPosition: new FormControl("relative"),
       hovering: new FormGroup({
         desktop: new FormControl(false),
         mobile: new FormControl(false),
       }),
-      buttonVisibility: new FormControl(false),
+      buttonVisibility: new FormControl(true),
       buttonText: new FormControl(""),
       buttonLink: new FormControl(""),
       slidesPerCount: new FormGroup({
@@ -977,6 +985,10 @@ export class HomeComponent implements OnInit {
   removeSaleThumbnail() {
     this.saleForm.get("saleThumbnail")?.setValue(null)
     this.saleThumbnailDetails = ""
+  }
+
+  onTimeBoundSwitch(event: { toggleState: boolean, switchId: string }) {
+    this.form.get('isTimeBoundWidget')?.setValue(event.toggleState)
   }
 
   getProducts() {

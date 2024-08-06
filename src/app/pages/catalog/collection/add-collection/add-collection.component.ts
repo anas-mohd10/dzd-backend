@@ -46,11 +46,14 @@ export class AddCollectionComponent implements OnInit {
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
+      metaTitle: new FormControl(''),
+      metaDescription: new FormControl(''),
+      metaKeywords: new FormControl(''),
     });
   }
 
   handleCollectionCover(event: any) {
-    this.form.get('cover')?.setValue(event._id)
+    this.form.get('cover')?.setValue(event.path)
     this.cover = event.path
   }
 
@@ -59,7 +62,7 @@ export class AddCollectionComponent implements OnInit {
   }
 
   handleCollectionThumbnail(event: any) {
-    this.form.get('thumbnail')?.setValue(event._id)
+    this.form.get('thumbnail')?.setValue(event.path)
     this.thumbnail = event.path
   }
 

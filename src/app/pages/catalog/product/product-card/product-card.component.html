@@ -73,7 +73,7 @@
                <ng-container *ngFor="let product of products; let i = index">
                   <tr>
                      <td>
-                        <img src="{{base}}{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
+                        <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
                            class="rounded" onerror="this.src = 'assets/images/default.png'">
                      </td>
                      <td>{{product?.name}}</td>
@@ -159,9 +159,8 @@
             </div>
 
             <div class="col-lg-6 mb-3">
-               <label class="fs-6 mb-3 required" for="tax">Tax</label>
-               <select name="tax" id="tax" formControlName="tax" class="form-select"
-                  [ngClass]="{ 'is-invalid': (formControls.tax.touched || isSubmitted) && formControls.tax.errors?.required}">
+               <label class="fs-6 mb-3" for="tax">Tax</label>
+               <select name="tax" id="tax" formControlName="tax" class="form-select">
                   <option value="" disabled>-- Select an option --</option>
                   <option *ngFor="let tax of taxes" value="{{tax?._id}}">{{tax?.name}}</option>
                </select>
@@ -337,7 +336,7 @@
                <ng-container *ngFor="let product of childProducts; let i = index">
                   <tr>
                      <td>
-                        <img src="{{base}}{{product?.thumbnail?.path}}" alt="Product" height="45" width="45"
+                        <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
                            class="rounded border border-secondary"
                            onerror="this.src = 'assets/images/default.png'">
                      </td>
