@@ -9,17 +9,17 @@ export class SocketService {
   socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:3000');
+    // this.socket = io('http://localhost:3000/');
   }
 
-  onOrderPlaced(): Observable<any> {
-    return new Observable((observer: any) => {
-      this.socket.on('order-placed', (data: any) => {
-        console.log("Hello");
+  // onOrderPlaced(): Observable<any> {
+  //   return new Observable((observer: any) => {
+  //     this.socket.on('order-placed', (data: any) => {
+  //       console.log("Hello");
         
-        observer.next(data);
-        console.log(data);
-      });
-    });
-  }
+  //       observer.next(data);
+  //       console.log(data);
+  //     });
+  //   });
+  // }
 }

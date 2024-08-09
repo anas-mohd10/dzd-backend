@@ -35,9 +35,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pageTitleCssClasses = this.LayoutService.getStringCSSClasses('pageTitle');
     this.pageTitleAttributes = this.LayoutService.getHTMLAttributes('pageTitle');
 
-    this.SocketService.onOrderPlaced().subscribe((data: any) => {
-      console.log(data);
-    })
+    // this.SocketService.onOrderPlaced().subscribe((data: any) => {
+    //   console.log(data);
+    // })
   }
 
   ngAfterViewInit() {

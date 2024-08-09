@@ -7,7 +7,7 @@ import { AddFaqComponent } from './add-faq/add-faq.component';
 import { UpdateFaqComponent } from './update-faq/update-faq.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/pages/shared/shared.module';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -19,6 +19,7 @@ import { SharedModule } from 'src/app/pages/shared/shared.module';
     CommonModule,
     FaqRoutingModule,
     FormsModule,
+    AngularEditorModule,
     ReactiveFormsModule,
     SharedModule,
   ]

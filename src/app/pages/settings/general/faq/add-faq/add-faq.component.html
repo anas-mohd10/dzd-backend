@@ -55,9 +55,9 @@
 
           <div class="form-group mb-3">
             <label class="fs-6 mb-3 required required">Answer</label>
-            <textarea class=" form-control fs-6" formControlName="answer" style="resize: none" id="featureddescription"
-              rows="3"
-              [ngClass]="{'is-invalid':(formControls.answer.touched || isSubmitted) && formControls.answer.errors?.required}"></textarea>
+            <angular-editor
+              [ngClass]="{'is-invalid':(formControls.answer.touched || isSubmitted) && formControls.answer.errors?.required}"
+              class="form-control fs-6" formControlName="answer" [config]="editorConfig"></angular-editor>
           </div>
 
           <div class="gap-2 d-flex align-items-center justify-content-end">

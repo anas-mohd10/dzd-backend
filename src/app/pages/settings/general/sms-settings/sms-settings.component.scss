@@ -1,0 +1,19 @@
+.sms-gateways {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    .sms-gateway {
+        background: #ffffff;
+
+        img {
+            object-fit: cover;
+        }
+
+    }
+}
+
+label,
+.btn {
+    font-weight: 400 !important;
+}

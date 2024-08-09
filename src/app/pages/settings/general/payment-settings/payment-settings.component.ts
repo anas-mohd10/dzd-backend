@@ -23,11 +23,11 @@ export class PaymentSettingsComponent implements OnInit {
   isSubmitted: boolean = false;
   form: FormGroup = new FormGroup({});
   pgs: Array<any> = [
-    { title: "Paytabs", id: "paytabs", icon: `${environment.base}uploads/medias/paytabs.png` },
-    { title: "Tabby", id: "tabby", icon: `${environment.base}uploads/medias/tabby.png` },
-    { title: "Tap Payments", id: "tap", icon: `${environment.base}uploads/medias/tap.jpg` },
-    { title: "Rak Bank", id: "rakbank", icon: `${environment.base}uploads/medias/rakbank.png` },
-    { title: "Network", id: "network-international", icon: `${environment.base}uploads/medias/network-international.png` },
+    { title: "Paytabs", id: "paytabs", icon: `${environment.base}paytabs.png` },
+    { title: "Tabby", id: "tabby", icon: `${environment.base}tabby.png` },
+    { title: "Tap Payments", id: "tap", icon: `${environment.base}tap.jpg` },
+    { title: "Rak Bank", id: "rakbank", icon: `${environment.base}rakbank.png` },
+    { title: "Network", id: "network-international", icon: `${environment.base}network-international.png` },
   ]
   displayIcon: string = ''
   modalRef?: BsModalRef

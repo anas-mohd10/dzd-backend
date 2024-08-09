@@ -323,6 +323,7 @@ export class NavigationMenuComponent implements OnInit {
       icon: new FormControl(''),
       redirection: new FormControl('', Validators.required),
       advertisement: new FormControl(''),
+      advertisementRedirection: new FormControl(''),
       subMenuBoxes: new FormGroup({
         title: new FormControl(''),
         menuBoxes: new FormControl([])

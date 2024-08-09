@@ -86,6 +86,7 @@ import { PaymentSettingsComponent } from './pages/settings/general/payment-setti
 import { CreateProductsComponent } from './pages/catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './pages/settings/general/shipping-rules/shipping-rules.component';
 import { InternationalisationComponent } from './pages/settings/general/internationalisation/internationalisation.component';
+import { SmsSettingsComponent } from './pages/settings/general/sms-settings/sms-settings.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -147,6 +148,7 @@ const DragConfig = {
     CreateProductsComponent,
     ShippingRulesComponent,
     InternationalisationComponent,
+    SmsSettingsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

@@ -315,4 +315,5 @@ export const appRoutes = {
   paymentSettings: `${app}/payment-settings`,
   shippingRules: `${app}/shipping-rules`,
   internationalisation: `${app}/internationalization`,
+  smsSettings: `${app}/sms-settings`,
 }

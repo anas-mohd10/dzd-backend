@@ -38,6 +38,7 @@ import { PaymentSettingsComponent } from './settings/general/payment-settings/pa
 import { CreateProductsComponent } from './catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './settings/general/shipping-rules/shipping-rules.component';
 import { InternationalisationComponent } from './settings/general/internationalisation/internationalisation.component';
+import { SmsSettingsComponent } from './settings/general/sms-settings/sms-settings.component';
 
 export const Routing: Routes = [
   {
@@ -476,7 +477,11 @@ export const Routing: Routes = [
       }, {
         path: 'shipping-settings',
         component: ShippingComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'sms-settings',
+        component: SmsSettingsComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }
     ]
   }, {

@@ -908,7 +908,7 @@
             <div class="my-4">
                 <div class="fs-4 mb-2">Menu Details</div>
                 <p class="text-muted">Add items to the menu for display.</p>
-                <div class="row" formGroupName="subMenuBoxes">
+                <div class="row">
                     <div class="col-lg-4">
                         <div class="h-100 w-100">
                             <app-assets [previewDetails]="megaMenuAdvertisement"
@@ -917,70 +917,80 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="form-group mb-3">
-                            <label for="megaMenuTitle" class="fs-6 mb-3">Title</label>
-                            <input type="text" class="form-control" formControlName="title" id="megaMenuTitle">
+                            <label for="advertisementRedirection" class="fs-6 mb-3">Advertisement Redirection</label>
+                            <input type="text" class="form-control" id="advertisementRedirection"
+                                formControlName="advertisementRedirection">
                         </div>
 
-                        <div class="menuboxes my-4">
-                            <ng-container *ngFor="let subMenuBox of subMenuBoxes; let i = index">
-                                <div class="position-relative">
-                                    <div class="w-100 ratio ratio-1x1 border border-secondary rounded">
-                                        <img class="w-100 rounded h-auto" src="{{base}}{{subMenuBox?.icon}}" alt="">
-                                    </div>
-                                    <div class="position-absolute top-0 end-0 m-2">
-                                        <div (click)="removeSubMenuBox(i)"
-                                            class="remove-submenu bg-danger rounded text-white cursor-pointer">
-                                            <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M6 18 18 6M6 6l12 12" />
-                                            </svg>
+                        <div formGroupName="subMenuBoxes">
+                            <div class="form-group mb-3">
+                                <label for="megaMenuTitle" class="fs-6 mb-3">Title</label>
+                                <input type="text" class="form-control" formControlName="title" id="megaMenuTitle">
+                            </div>
+
+                            <div class="menuboxes my-4">
+                                <ng-container *ngFor="let subMenuBox of subMenuBoxes; let i = index">
+                                    <div class="position-relative">
+                                        <div class="w-100 ratio ratio-1x1 border border-secondary rounded">
+                                            <img class="w-100 rounded h-auto" src="{{base}}{{subMenuBox?.icon}}" alt="">
+                                        </div>
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <div (click)="removeSubMenuBox(i)"
+                                                class="remove-submenu bg-danger rounded text-white cursor-pointer">
+                                                <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                                    stroke="currentColor" class="size-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M6 18 18 6M6 6l12 12" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </ng-container>
-                        </div>
+                                </ng-container>
+                            </div>
 
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header m-0" id="headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Menu item details
-                                    </button>
-                                </h2>
-                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                                    data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <form [formGroup]="subMenuBoxForm">
-                                            <div class="row align-items-center">
-                                                <div class="col-lg-4">
-                                                    <div class="ratio ratio-1x1">
-                                                        <app-assets [previewDetails]="subMenuBoxIcon"
-                                                            (mediaClicked)="handleMegaMenuBoxMedia($event)"></app-assets>
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header m-0" id="headingOne">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Menu item details
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <form [formGroup]="subMenuBoxForm">
+                                                <div class="row align-items-center">
+                                                    <div class="col-lg-4">
+                                                        <div class="ratio ratio-1x1">
+                                                            <app-assets [previewDetails]="subMenuBoxIcon"
+                                                                (mediaClicked)="handleMegaMenuBoxMedia($event)"></app-assets>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="form-group mb-3">
+                                                            <label for="subMenuBoxTitle" class="fs-6 mb-3">Title</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="title" id="subMenuBoxTitle">
+                                                        </div>
+                                                        <div class="form-group mb-3">
+                                                            <label for="subMenuBoxRedirection"
+                                                                class="fs-6 mb-3">Redirection</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="redirection"
+                                                                id="subMenuBoxRedirection">
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-end">
+                                                            <button class="btn btn-secondary"
+                                                                (click)="saveSubMenuBox()">Continue</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-8">
-                                                    <div class="form-group mb-3">
-                                                        <label for="subMenuBoxTitle" class="fs-6 mb-3">Title</label>
-                                                        <input type="text" class="form-control" formControlName="title"
-                                                            id="subMenuBoxTitle">
-                                                    </div>
-                                                    <div class="form-group mb-3">
-                                                        <label for="subMenuBoxRedirection"
-                                                            class="fs-6 mb-3">Redirection</label>
-                                                        <input type="text" class="form-control"
-                                                            formControlName="redirection" id="subMenuBoxRedirection">
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-end">
-                                                        <button class="btn btn-secondary"
-                                                            (click)="saveSubMenuBox()">Continue</button>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -993,12 +1003,13 @@
                     <p class="text-muted">Add items to the menu for display.</p>
 
                     <div class="my-2 gap-2 d-flex align-items-center flex-wrap justify-content-start">
-                        <div class="d-flex bg-secondary p-2 rounded gap-4 align-items-center justify-content-between" *ngFor="let subMenu of subMenus; let i = index">
+                        <div class="d-flex bg-secondary p-2 rounded gap-4 align-items-center justify-content-between"
+                            *ngFor="let subMenu of subMenus; let i = index">
                             <div class="fs-5">{{i + 1}}. {{subMenu?.title}}</div>
                             <div class="d-flex align-items-center justify-content-end gap-2">
                                 <div (click)="removeMegaMenuItem(i)">
-                                    <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                     </svg>
                                 </div>
