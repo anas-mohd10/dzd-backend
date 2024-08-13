@@ -39,6 +39,7 @@ import { CreateProductsComponent } from './catalog/product/create-products/creat
 import { ShippingRulesComponent } from './settings/general/shipping-rules/shipping-rules.component';
 import { InternationalisationComponent } from './settings/general/internationalisation/internationalisation.component';
 import { SmsSettingsComponent } from './settings/general/sms-settings/sms-settings.component';
+import { AuthenticationComponent } from './settings/general/authentication/authentication.component';
 
 export const Routing: Routes = [
   {
@@ -469,6 +470,10 @@ export const Routing: Routes = [
       }, {
         path: 'service-warranty',
         component: ServiceWarrantyComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'auth-settings',
+        component: AuthenticationComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'refund-policy',

@@ -316,4 +316,5 @@ export const appRoutes = {
   shippingRules: `${app}/shipping-rules`,
   internationalisation: `${app}/internationalization`,
   smsSettings: `${app}/sms-settings`,
+  authSettings: `${app}/auth-settings`,
 }
