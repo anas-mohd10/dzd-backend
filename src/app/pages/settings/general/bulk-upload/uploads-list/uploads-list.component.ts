@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
+import { BlogService } from 'src/app/includes/services/blog.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
@@ -30,6 +31,7 @@ export class UploadsListComponent implements OnInit {
     { title: 'Product', type: 'product' },
     { title: 'Brand', type: 'brand' },
     { title: 'User', type: 'user' },
+    { title: 'Blogs', type: 'blog' },
     { title: 'Collection', type: 'collection' }
   ];
   fileData: any;
@@ -57,7 +59,8 @@ export class UploadsListComponent implements OnInit {
     private HotToastService: HotToastService,
     private CollectionService: CollectionService,
     private ProductService: ProductService,
-    private CustomersService: CustomersService
+    private CustomersService: CustomersService,
+    private BlogService: BlogService
   ) { }
 
   open(template: TemplateRef<any>) {
@@ -160,6 +163,20 @@ export class UploadsListComponent implements OnInit {
           break
         case 'product':
           this.ProductService.bulkFileUpload(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+                this.onSuccess(res?.message)
+              } else {
+                this.HotToastService.error(res?.message)
+              }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
+              this.isSubmitting = false
+            }
+          })
+          break
+        case 'blog':
+          this.BlogService.importBlogs(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
                 this.onSuccess(res?.message)

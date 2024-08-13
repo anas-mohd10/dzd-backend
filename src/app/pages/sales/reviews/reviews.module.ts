@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs'
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,12 +20,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs'
     ReactiveFormsModule,
     DataTablesModule,
     TabsModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      progressAnimation: 'decreasing',
-      preventDuplicates: true,
-      progressBar: true,
-    }),
+    SharedModule
   ]
 })
 export class ReviewsModule { }

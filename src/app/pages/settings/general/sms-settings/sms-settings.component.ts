@@ -25,8 +25,14 @@ export class SmsSettingsComponent implements OnInit {
   modalRef?: BsModalRef
   smsGateways: Array<any> = [];
   smsGatewayConfig: any = {
-    'etisalat': ['username', 'password', 'senderId'],
+    'etisalat': ['username', 'password', 'senderId', 'usages'],
+    'twilio': ['username', 'password', 'usages', 'fromNumber']
   };
+  usageItems: Array<any> = [
+    { title: 'Registration', value: 'registration' },
+    { title: 'Login', value: 'login' },
+    { title: 'Order Confirmation', value: 'order-confirmation' },
+  ]
 
   constructor(
     private SmsDetailsService: SmsDetailsService,
@@ -36,12 +42,31 @@ export class SmsSettingsComponent implements OnInit {
     private AppSettingsService: AppSettingsService
   ) { }
 
+  toggleUsageItem(usage: any) {
+    let usages = this.form.get('usages')?.value || []
+    if (usages.includes(usage.value)) {
+      usages = usages.filter((item: any) => item != usage.value)
+      this.HotToastService.success(`${usage.title} removed`)
+    } else {
+      usages.push(usage.value)
+      this.HotToastService.success(`${usage.title} added`)
+    }
+    this.form.get('usages')?.setValue(usages)
+  }
+
+  usageItemExists(usage: any) {
+    let usages = this.form.get('usages')?.value || []
+    return usages && usages.includes(usage.value)
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       smsGateway: new FormControl('', Validators.required),
       username: new FormControl(''),
       password: new FormControl(''),
       senderId: new FormControl(''),
+      usages: new FormControl([]),
+      fromNumber: new FormControl(''),
       apiKey: new FormControl(''),
       isEnabled: new FormControl(false)
     })
@@ -50,11 +75,11 @@ export class SmsSettingsComponent implements OnInit {
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
-        if(res?.errorCode == 0){
+        if (res?.errorCode == 0) {
           this.isSmsGatewayEnabled?.setValue(res?.result?.isSmsGatewayEnabled)
           this.ChangeDetectorRef.markForCheck()
-        }else{ }
-      }, error: (err: any) => {}
+        } else { }
+      }, error: (err: any) => { }
     })
   }
 
@@ -91,7 +116,7 @@ export class SmsSettingsComponent implements OnInit {
     )
   }
 
-  onSubmit() {
+  onSubmit() {        
     this.SmsDetailsService.manage({ _id: this.selectedSmsGateway?._id, ...this.form.value }).subscribe({
       next: (response: any) => {
         if (response.errorCode == 0) {
@@ -123,6 +148,7 @@ export class SmsSettingsComponent implements OnInit {
       username: '',
       password: '',
       senderId: '',
+      usages: [],
       apiKey: '',
       isEnabled: false
     })
@@ -140,7 +166,7 @@ export class SmsSettingsComponent implements OnInit {
           /**
            * This code block is used to dynamically set the validators for the form fields based on the smsGatewayConfig
           */
-          const fields = ['username', 'password', 'senderId'];
+          const fields = ['username', 'password', 'senderId', 'usages', 'fromNumber'];
           fields.forEach(field => {
             let smsConfig = this.smsGatewayConfig[res?.result?.smsGateway || this.activeSmsGateway?.id] || []
             if (smsConfig?.includes(field)) {

@@ -132,6 +132,7 @@ export class NavigationMenuComponent implements OnInit {
   subMenus: Array<any> = []
   megaMenuAdvertisement: string = '';
   megaMenuEdit: boolean = false
+  menuItemIcon: string = ''
 
   get itemControls() {
     return this.itemForm.controls
@@ -303,6 +304,10 @@ export class NavigationMenuComponent implements OnInit {
     }
   }
 
+  handleMegaMenuItemIcon(event: any) {
+    this.menuItemForm.get('icon')?.setValue(event?.path)
+    this.menuItemIcon = event?.path
+  }
 
   ngOnInit(): void {
     this.getMegaMenu()
@@ -360,7 +365,8 @@ export class NavigationMenuComponent implements OnInit {
     })
 
     this.menuItemForm = new FormGroup({
-      title: new FormControl('', Validators.required),
+      icon: new FormControl(''),
+      title: new FormControl(''),
       redirection: new FormControl('', Validators.required),
     })
 
@@ -898,6 +904,7 @@ export class NavigationMenuComponent implements OnInit {
     }
 
     this.menuItemForm.reset()
+    this.menuItemIcon = ''
   }
 
   onSubmitTitleRef() {

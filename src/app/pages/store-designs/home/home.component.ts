@@ -901,6 +901,8 @@ export class HomeComponent implements OnInit {
         mobile: new FormControl(true),
       }),
 
+      isAutoScroll: new FormControl(false),
+
       isTimeBoundWidget: new FormControl(false),
       widgetStartTime: new FormControl(""),
       widgetEndTime: new FormControl(""),

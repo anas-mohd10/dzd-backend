@@ -11,6 +11,11 @@ $background: #f1f1f1;
 $error: #F1416C;
 $black: #000000;
 
+.icon{
+    height: 60px;
+    width: 60px;
+}
+
 .menuboxes{
     display: grid;
     grid-template-columns: repeat(3, 1fr);

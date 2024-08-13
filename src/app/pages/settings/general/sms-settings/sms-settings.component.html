@@ -23,7 +23,7 @@
                 <div class="d-flex align-items-center justify-content-start gap-2">
                     <div class="fs-5">SMS Gateway Enabled</div>
                     <app-switch (switchToggled)="enableSmsSettings($event)" [switchId]="''"
-                        [isToggledProps]="isSmsGatewayEnabled?.value"></app-switch>
+                        [isToggledProps]="isSmsGatewayEnabled.value"></app-switch>
                 </div>
             </div>
         </div>
@@ -81,6 +81,22 @@
                 <label for="senderId" class="fs-6 mb-3 required">Sender ID</label>
                 <input type="text" id="senderId" formControlName="senderId" class="form-control">
             </div>
+            <div class="form-group mb-3"
+                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('fromNumber')">
+                <label for="fromNumber" class="fs-6 mb-3 required">From Number</label>
+                <input type="text" id="fromNumber" formControlName="fromNumber" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="senderId" class="fs-6 mb-3 required">Usage</label>
+                <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
+                    <div class="border p-2 rounded" *ngFor="let usageItem of usageItems"
+                        (click)="toggleUsageItem(usageItem)" [ngClass]="{
+                            'border-primary': usageItemExists(usageItem),
+                         'border-secondary': !usageItemExists(usageItem)}">
+                        {{usageItem.title}}</div>
+                </div>
+            </div>
+
 
             <div class="d-flex align-items-center justify-content-end">
                 <button tpe="submit" class="btn btn-primary">Save changes</button>

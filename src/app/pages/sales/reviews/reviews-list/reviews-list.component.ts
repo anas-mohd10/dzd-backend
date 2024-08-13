@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { appRoutes } from 'src/app/config/routes';
 import { ReviewService } from 'src/app/includes/services/review.service';
-import { ToastrService } from 'ngx-toastr';
 import { FormControl } from '@angular/forms';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { HotToastService } from '@ngneat/hot-toast';
 @Component({
   selector: 'app-reviews-list',
   templateUrl: './reviews-list.component.html',
@@ -15,15 +15,18 @@ export class ReviewsListComponent implements OnInit {
   appRoute = appRoutes
   reviews: any = []
   page: number = 1
-  limit: FormControl = new FormControl(20)
+  limit: number = 20
+  isLastPage: Boolean = false
+  totalResults: number = 0
+  totalPages: number = 1
+
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
   fromDate: FormControl = new FormControl('')
   toDate: FormControl = new FormControl('')
-  isLastPage: Boolean = false
+
   review: FormControl = new FormControl('')
   data: any = {}
-  totalResults: string = ''
   rating: FormControl = new FormControl('')
 
   productKeyword: FormControl = new FormControl('')
@@ -38,36 +41,71 @@ export class ReviewsListComponent implements OnInit {
   modalRef?: BsModalRef
   productDetails: any = {}
   reviewKeyword: FormControl = new FormControl('')
+  isReviewEnabled: FormControl = new FormControl(false)
 
   constructor(
     private ReviewService: ReviewService,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ProductService: ProductService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
     this.getReviews()
     this.getProducts()
+    this.getSettings()
+  }
+
+  getSettings() {
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.isReviewEnabled.setValue(res?.result?.isReviewEnabled)
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
   }
 
   updateReview(data: any) {
     this.ReviewService.updateReview({ refid: data }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
         this.getReviews()
         if (this.productDetails?.prodid) this.getProductReviews()
       } else {
-        this.ToastrService.error(res?.message)
+        this.HotToastService.error(res?.message)
       }
     })
   }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString()
+  }
+
+  toggleReviewStatus(event: { toggleState: boolean, switchId: string }) {
+    this.ReviewService.updateReview({ reviewId: event.switchId, isActive: event.toggleState }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.getReviews()
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
+  }
+
+
   deleteReview(data: any) {
     this.ReviewService.deleteReview({ refid: data }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
         this.getReviews()
       }
     })
@@ -79,38 +117,57 @@ export class ReviewsListComponent implements OnInit {
     this.ChangeDetectorRef.markForCheck()
   }
 
-  getReviews() {
-    let payload = {
-      page: this.page,
-      limit: this.limit?.value,
-      keyword: this.keyword?.value,
-      isActive: this.isActive?.value,
-      fromDate: this.fromDate?.value,
-      toDate: this.toDate?.value
-    }
-
-    this.ReviewService.searchReviews(payload).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.reviews = res?.result?.data
-        this.totalResults = res?.result?.totalResults
-        for (let data of this.reviews) {
-          data.created = new Date(data?.created).toDateString()
-          if (data.isActive) this.review.setValue(data?.refid)
+  enableReviewSettings(event: { toggleState: string, switchId: string }) {
+    this.isReviewEnabled.setValue(event.toggleState)
+    this.AppSettingsService.updateSettings({ isReviewEnabled: this.isReviewEnabled.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSettings()
+          this.HotToastService.success(res?.message)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
         }
-        this.isLastPage = res?.result?.isLastPage
-        this.ChangeDetectorRef.markForCheck()
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
       }
     })
   }
 
-  getPreviousPage() {
-    this.page -= 1
+  getReviews() {
+    this.ReviewService.searchReviews({
+      page: this.page,
+      limit: this.limit,
+      keyword: this.keyword?.value,
+      isActive: this.isActive?.value,
+      fromDate: this.fromDate?.value,
+      toDate: this.toDate?.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.reviews = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.isLastPage = res?.result?.isLastPage
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
     this.getReviews()
   }
 
-  getNextPage() {
-    this.page += 1
+  clearFilters() {
+    this.keyword.setValue('')
+    this.isActive.setValue('')
+    this.fromDate.setValue('')
+    this.toDate.setValue('')
     this.getReviews()
+    this.limit = 20
+    this.page = 1
   }
 
   getProductsPreviousPage() {
@@ -121,16 +178,6 @@ export class ReviewsListComponent implements OnInit {
   getProductsNextPage() {
     this.productPage += 1
     this.getProducts()
-  }
-
-  clearFilters() {
-    this.keyword.setValue('')
-    this.isActive.setValue('')
-    this.fromDate.setValue('')
-    this.toDate.setValue('')
-    this.getReviews()
-    this.limit.setValue(20)
-    this.page = 1
   }
 
   open(template: TemplateRef<any>, productDetails: any) {
@@ -147,10 +194,10 @@ export class ReviewsListComponent implements OnInit {
           this.totalReviews = res?.result?.totalReviews
           for (let review of this.productReviews) review.created = new Date(review?.created).toDateString()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
@@ -164,7 +211,7 @@ export class ReviewsListComponent implements OnInit {
   updateProductReview(refid: any) {
     this.ReviewService.updateReview({ refid: refid }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
         this.getProductReviews()
       }
     })
@@ -192,10 +239,10 @@ export class ReviewsListComponent implements OnInit {
           this.isProductLastPage = res?.result?.isLastPage
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
