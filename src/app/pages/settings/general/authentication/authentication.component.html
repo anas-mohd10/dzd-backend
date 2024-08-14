@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="fs-5">OTP Login Enabled</div>
+                            <div class="fs-5">OTP Login</div>
                         </div>
                         <div class="col-lg-8">
                             <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpLogin'"
@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="fs-5">Password Login Enabled</div>
+                            <div class="fs-5">Password Login</div>
                         </div>
                         <div class="col-lg-8">
                             <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isPasswordLogin'"
@@ -49,7 +49,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="fs-5">Guest Checkout Enabled</div>
+                            <div class="fs-5">Guest Checkout</div>
                         </div>
                         <div class="col-lg-8">
                             <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isGuestCheckout'"
@@ -62,11 +62,28 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="fs-5">Facebook Login Enabled</div>
+                            <div class="fs-5">Facebook Login</div>
                         </div>
                         <div class="col-lg-8">
                             <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isFacebookLogin'"
                                 [isToggledProps]="form.get('isFacebookLogin')?.value"></app-switch>
+                        </div>
+                    </div>
+                    <div *ngIf="form.get('isFacebookLogin')?.value">
+                        <div class="row mt-4" formGroupName="facebookLogin">
+                            <div class="col-lg-4 form-group">
+                                <label for="facebookText" class="fs-6 mb-1">Button Text</label>
+                                <input type="text" formControlName="text" class="form-control">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="gClientId" class="fs-6 mb-1">Client ID</label>
+                                <input type="text" id="gClientId" formControlName="clientId" class="form-control">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
+                                <input type="text" id="gClientSecret" formControlName="clientSecret"
+                                    class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,49 +92,27 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
-                            <div class="fs-5">Google Login Enabled</div>
+                            <div class="fs-5">Google Login</div>
                         </div>
                         <div class="col-lg-8">
                             <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isGoogleLogin'"
                                 [isToggledProps]="form.get('isGoogleLogin')?.value"></app-switch>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="fs-5">Facebook Login Details</div>
-                    <div class="row mt-4" formGroupName="facebookLogin">
-                        <div class="col-lg-4 form-group">
-                            <label for="facebookText" class="fs-6 mb-1">Button Text</label>
-                            <input type="text" formControlName="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4 form-group">
-                            <label for="gClientId" class="fs-6 mb-1">Client ID</label>
-                            <input type="text" id="gClientId" formControlName="clientId" class="form-control">
-                        </div>
-                        <div class="col-lg-4 form-group">
-                            <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
-                            <input type="text" id="gClientSecret" formControlName="clientSecret" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="fs-5">Google Login Details</div>
-                    <div class="row mt-4" formGroupName="googleLogin">
-                        <div class="col-lg-4 form-group">
-                            <label for="facebookText" class="fs-6 mb-1">Button Text</label>
-                            <input type="text" formControlName="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4 form-group">
-                            <label for="gClientId" class="fs-6 mb-1">Client ID</label>
-                            <input type="text" id="gClientId" formControlName="clientId" class="form-control">
-                        </div>
-                        <div class="col-lg-4 form-group">
-                            <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
-                            <input type="text" id="gClientSecret" formControlName="clientSecret" class="form-control">
+                    <div *ngIf="form.get('isGoogleLogin')?.value">
+                        <div class="row mt-4" formGroupName="googleLogin">
+                            <div class="col-lg-4 form-group">
+                                <label for="facebookText" class="fs-6 mb-1">Button Text</label>
+                                <input type="text" formControlName="text" class="form-control">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="gClientId" class="fs-6 mb-1">Client ID</label>
+                                <input type="text" id="gClientId" formControlName="clientId" class="form-control">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
+                                <input type="text" id="gClientSecret" formControlName="clientSecret" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>

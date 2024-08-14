@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit {
     { title: 'Hyper Link Hero', type: 'hyperlinkhero', icon: 'assets/widgets/picture-palette.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Aurora Grid', type: 'aurora-grid', icon: 'assets/widgets/aurora-grid.png', description: 'The following widget can be used to run a delivery timer with custom designs' },
     { title: 'Aurora Slider', type: 'aurora-slider', icon: 'assets/widgets/aurora-slider.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
+    { title: 'Text Twirl', type: 'text-twirl', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.' },
   ];
 
   homeWidgets: Array<any> = []
@@ -457,7 +458,7 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails)
           console.log(new Date(this.widgetDetails?.widgetStartTime));
-          
+
           if (this.widgetDetails?.titleImage) {
             this.titleThumbnailDetails = this.widgetDetails?.titleImage?.path
           }

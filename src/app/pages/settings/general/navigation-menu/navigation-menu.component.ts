@@ -9,9 +9,11 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { MenuService } from 'src/app/includes/services/menu.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
 import { MegamenuService } from 'src/app/includes/services/megamenu.service';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { FooterService } from 'src/app/includes/services/footer.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -31,12 +33,8 @@ export class NavigationMenuComponent implements OnInit {
   menuType: FormControl = new FormControl('1')
   settings: any = {}
   itemForm!: FormGroup
-
-
   @ViewChild('scrollItems') scrollItems: ElementRef = new ElementRef<any>({})
   translateXValue = 0;
-
-
   types: Array<any> = [{
     key: 'Mega Menu',
     value: '1'
@@ -94,8 +92,39 @@ export class NavigationMenuComponent implements OnInit {
   footerCategories: Array<any> = []
   activeAdvancedMenuItemIndex: any;
   headerText: FormControl = new FormControl('')
-
-  //Advanced Menu
+  //Footer Details
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '0',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: true,
+    showToolbar: true,
+    placeholder: 'Type here',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'sen', name: 'Sen' },
+      { class: 'josefin', name: 'Josefin Sans' },
+      { class: 'poppins', name: 'Poppins' }
+    ]
+  };
+  facilityIndex: any = null;
+  footerForm: FormGroup = new FormGroup({})
+  storeFacilities: Array<{
+    name: string,
+    description: string
+    icon: string,
+  }> = []
+  storeFacilityModal?: BsModalRef
+  storeFacilityForm: FormGroup = new FormGroup({})
+  //Footer Details
   advacnedMenuForm: FormGroup = new FormGroup({})
   advancedMenuItemForm: FormGroup = new FormGroup({})
   menuItemForm: FormGroup = new FormGroup({})
@@ -110,13 +139,8 @@ export class NavigationMenuComponent implements OnInit {
   titleRefDetails: any;
   advancedTitleRefItems: BsModalRef;
   advancedMenuTitleItems: Array<any> = []
-
-
-
-  //Advanced Menu
   isAdvancedMenuItemSubmitted: boolean = false
   isAdvancedMenuItemItemSubmitted: boolean = false
-
   megaMenuForm: FormGroup = new FormGroup({})
   megaMenuModalRef?: BsModalRef
   megaMenuItems: Array<any> = []
@@ -148,8 +172,72 @@ export class NavigationMenuComponent implements OnInit {
     private MenuService: MenuService,
     private Toast: HotToastService,
     private MegamenuService: MegamenuService,
-    private StaticPageService: StaticPageService
+    private StaticPageService: StaticPageService,
+    private FooterService: FooterService
   ) { }
+
+  //Store facility modal starts here
+  openStoreFacilityModal(template: TemplateRef<any>, facilityDetails?: any, index?: number) {
+    this.facilityIndex = index
+    this.storeFacilityModal = this.modalService.show(template, { ignoreBackdropClick: true, class: 'modal-lg modal-dialog-centered' });
+    this.storeFacilityForm.patchValue(facilityDetails)
+  }
+
+  get storeFacilityControls() {
+    return this.storeFacilityForm.controls
+  }
+
+  closeStoreFacilityModal() {
+    this.storeFacilityModal?.hide()
+  }
+
+  onStoreFacilityMedia(event: any) {
+    this.storeFacilityForm.patchValue({ icon: event.path })
+  }
+
+  saveStoreFacility() {
+    if (this.facilityIndex !== null && this.facilityIndex !== undefined) {
+      this.storeFacilities[this.facilityIndex] = this.storeFacilityForm.value
+    } else {
+      this.storeFacilities.push(this.storeFacilityForm.value)
+    }
+    this.facilityIndex = null
+    this.storeFacilityForm.reset()
+    this.closeStoreFacilityModal()
+  }
+
+  removeStoreFacility(index: number){
+    this.storeFacilities.splice(index, 1)
+  }
+
+  getFooterDetails() {
+    this.FooterService.footerDetails().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.footerForm.patchValue(res?.result)
+          this.storeFacilities = res?.result?.storeFacilities || []
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
+  }
+
+  submitFooterDetails() {
+    this.footerForm.patchValue({ storeFacilities: this.storeFacilities })
+    this.FooterService.manageFooterDetails(this.footerForm.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.getFooterDetails()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
+  }
+  //Store facility modal ends here
 
   //Mega menu items
   openMegaMenuModal(template: TemplateRef<any>, type?: string, menuId?: string) {
@@ -312,10 +400,23 @@ export class NavigationMenuComponent implements OnInit {
   ngOnInit(): void {
     this.getMegaMenu()
 
+    this.getFooterDetails()
+
     this.subMenuBoxForm = new FormGroup({
       title: new FormControl(''),
       icon: new FormControl(''),
       redirection: new FormControl(''),
+    })
+
+    this.footerForm = new FormGroup({
+      seoContent: new FormControl(''),
+      storeFacilities: new FormControl([])
+    })
+
+    this.storeFacilityForm = new FormGroup({
+      name: new FormControl(''),
+      description: new FormControl(''),
+      icon: new FormControl('')
     })
 
     this.megaMenuItemForm = new FormGroup({

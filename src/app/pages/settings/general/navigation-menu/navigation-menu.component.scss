@@ -16,6 +16,19 @@ $black: #000000;
     width: 60px;
 }
 
+.store-facility{
+
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+textarea {
+    resize: none;
+}
+
 .menuboxes{
     display: grid;
     grid-template-columns: repeat(3, 1fr);

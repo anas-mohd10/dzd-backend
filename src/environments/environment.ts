@@ -39,6 +39,12 @@ export const environment = {
   // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
   //Sico foods
 
+  //Mamame
+  // apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
+  //Mamame
+
   //StoreDada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
   // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',

@@ -38,6 +38,12 @@ export const environment = {
   // baseUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/',
   // appBaserl: 'https://thefreshmarket-api.storedada.net/api/v1/a/',
   // Fresh Market
+  
+    //Mamame
+    // apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
+    // baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
+    // appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
+    //Mamame
 
   //Storedada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
