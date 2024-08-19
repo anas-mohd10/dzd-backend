@@ -412,6 +412,10 @@ export const Routing: Routes = [
         component: EnquiresComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
+        path: 'pickup-locations',
+        loadChildren: () => import('./settings/general/pickup/pickup.module').then((m) => m.PickupModule),
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
         path: 'wishlist',
         loadChildren: () => import('./sales/wishlist/wishlist.module').then((m) => m.WishlistModule),
         canActivate: [AuthenticationGuard, PermissionGuard]

@@ -317,4 +317,9 @@ export const appRoutes = {
   internationalisation: `${app}/internationalization`,
   smsSettings: `${app}/sms-settings`,
   authSettings: `${app}/auth-settings`,
+  pickupLocations: {
+    list: `${app}/pickup-locations`,
+    create: `${app}/pickup-locations/add`,
+    update: `${app}/pickup-locations/update`
+  }
 }

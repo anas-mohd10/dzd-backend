@@ -36,7 +36,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   isSubmitted = false;
   refid: any;
   currency: any
-  currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED']
+  currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD']
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,

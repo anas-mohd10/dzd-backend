@@ -49,11 +49,11 @@
             <div class="card-body">
                 <div class="fs-6">Configure payment gateways for your store</div>
                 <div class="pg-cards my-4">
-                    <div class="pg-card position-relative cursor-pointer p-4 border  rounded"
+                    <div class="pg-card cursor-pointer p-4 border rounded"
                         *ngFor="let pg of pgs; let i = index" (click)="open(template, pg?.id)"
                         [ngClass]="{'border-secondary': !paymentGatewayEnabled(pg?.id), 'border-primary': paymentGatewayEnabled(pg?.id)}">
                         <img src="{{pg?.icon}}" alt="{{pg?.title}}" onerror="this.src = 'assets/images/default.png'">
-                        <div class="fs-5 text-center mt-2">{{pg?.title}}</div>
+                        <div class="fs-6 text-center mt-2">{{pg?.title}}</div>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@
 
                 <div class="row mb-3">
                     <div class="col-lg-3">
-                        <label for="displayIcon" class="fs-6 mb-3">Display Name</label>
+                        <label for="displayIcon" class="fs-6 mb-3">Display Icon</label>
                         <div class="ratio ratio-1x1" id="displayIcon">
                             <app-assets [previewDetails]="displayIcon"
                                 (mediaClicked)="onMediaTriggered($event)"></app-assets>
@@ -91,6 +91,11 @@
                             <label for="displayTitle" class="fs-6 mb-3">Display Name</label>
                             <input type="text" id="displayTitle" placeholder="Display name"
                                 formControlName="displayName" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="displayTitle" class="fs-6 mb-3">Display Description</label>
+                            <input type="text" id="displayTitle" placeholder="Display description"
+                                formControlName="displayDescription" class="form-control">
                         </div>
                     </div>
                 </div>

@@ -225,18 +225,18 @@ export class UpdateProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
-    let isExists: boolean = this.images.some((item: any) => item._id == event._id)
+    let isExists: boolean = this.images.some((item: any) => item.path == event.path)
     if (isExists) {
-      this.images = this.images.filter((item: any) => item._id != event._id)
+      this.images = this.images.filter((item: any) => item.path != event.path)
     } else {
       this.images.push(event)
     }
   }
 
   productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item._id == event._id)
+    let isExists: boolean = this.icons.some((item: any) => item.path == event.path)
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item._id != event._id)
+      this.icons = this.icons.filter((item: any) => item.path != event.path)
     } else {
       this.icons.push(event)
     }
@@ -332,12 +332,8 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  searchProducts() {
-
-  }
-
   handleProductBanner(event: any) {
-    this.form.get('productBanner')?.setValue(event._id)
+    this.form.get('productBanner')?.setValue(event.path)
   }
 
   removeProductBanner() {

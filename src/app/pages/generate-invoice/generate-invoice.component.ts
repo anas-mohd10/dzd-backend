@@ -16,7 +16,7 @@ export class GenerateInvoiceComponent implements OnInit {
   orderDetails: any = {}
   settings: any = {}
   base: string = environment.base
-  store: any = {}
+  store: any;
   helpCenter: any
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

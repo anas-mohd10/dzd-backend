@@ -25,9 +25,10 @@ export class PaymentSettingsComponent implements OnInit {
   pgs: Array<any> = [
     { title: "Paytabs", id: "paytabs", icon: `${environment.base}paytabs.png` },
     { title: "Tabby", id: "tabby", icon: `${environment.base}tabby.png` },
-    { title: "Tap Payments", id: "tap", icon: `${environment.base}tap.jpg` },
+    { title: "Tap Payments", id: "tap", icon: `${environment.base}tap.png` },
     { title: "Rak Bank", id: "rakbank", icon: `${environment.base}rakbank.png` },
-    { title: "Network", id: "network-international", icon: `${environment.base}network-international.png` },
+    { title: "Network International", id: "network-international", icon: `${environment.base}network-international.png` },
+    { title: "Newtork International (Tokenized)", id: "network-international-tokenized", icon: `${environment.base}network-international.png` }
   ]
   displayIcon: string = ''
   modalRef?: BsModalRef
@@ -37,7 +38,8 @@ export class PaymentSettingsComponent implements OnInit {
     'tabby': ['merchantCode', 'secretKey', 'publicKey'],
     'tap': ['secretKey', 'publicKey'],
     'rakbank': ['publicKey', 'privateKey'],
-    'network-international': ['outletReference', 'apiKey']
+    'network-international': ['outletReference', 'apiKey'],
+    'network-international-tokenized': ['outletReference', 'apiKey']
   };
 
   get formControls() {
@@ -61,6 +63,7 @@ export class PaymentSettingsComponent implements OnInit {
       secretKey: new FormControl(''),
       displayName: new FormControl(''),
       displayIcon: new FormControl(null),
+      displayDescription: new FormControl(''),
       apiKey: new FormControl(''),
       outletReference: new FormControl(''),
       publicKey: new FormControl(''),
@@ -68,7 +71,7 @@ export class PaymentSettingsComponent implements OnInit {
       region: new FormControl(''),
       serverKey: new FormControl(''),
       isEnabled: new FormControl(false),
-    })
+    });
 
     this.fetchGateways()
     this.fetchSettings()
