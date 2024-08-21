@@ -18,6 +18,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 })
 export class UpdateCustomersComponent implements OnInit {
   @ViewChild('deleteModal') deleteModal: ElementRef;
+  savedCardsModal?: BsModalRef;
   task = PageTasks.UPDATE;
   editMode = false;
   appRoute = appRoutes
@@ -32,7 +33,6 @@ export class UpdateCustomersComponent implements OnInit {
   validBtn: boolean = false
   selectedID: any = ''
   selectedAddress: string = ''
-
   isAddressSubmitted: boolean = false
   addressForm: FormGroup
   defaultAddress: FormControl = new FormControl('')
@@ -54,6 +54,7 @@ export class UpdateCustomersComponent implements OnInit {
   points: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)])
   loyaltyDescription: FormControl = new FormControl('')
   isLoyaltySubmitted: boolean = false
+  savedCards: Array<any> = []
   loyalityType: FormControl = new FormControl('all')
 
   constructor(
@@ -66,6 +67,15 @@ export class UpdateCustomersComponent implements OnInit {
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
   ) { }
+
+  //Function to open the saved cards modal
+  openSavedCards(template: TemplateRef<any>) {
+    this.savedCardsModal = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg' });
+  }
+
+  closeSavedCards() {
+    this.savedCardsModal?.hide()
+  }
 
   ngOnInit(): void {
     this.initForm()
@@ -419,6 +429,7 @@ export class UpdateCustomersComponent implements OnInit {
   getCustomerDetails() {
     this.customerService.getCustomerDetails(this.slug).subscribe((res: any) => {
       this.customerData = res?.result
+      this.savedCards = res?.result?.savedCards || []
       this.referralCode.setValue(res?.result?.referralCode)
       this.referralCode.disable()
       this.form.patchValue(res?.result)
@@ -427,13 +438,21 @@ export class UpdateCustomersComponent implements OnInit {
     })
   }
 
+  deleteCard(cardNo: any) {
+    this.savedCards = this.savedCards.filter((item: any) => item?.cardNo !== cardNo)
+    this.Toast.success('Card deleted successfully')
+  }
+
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true
       return;
     }
 
-    this.customerService.updateCustomer(this.slug, this.form.value).subscribe({
+    this.customerService.updateCustomer(this.slug, {
+      savedCards: this.savedCards,
+      ...this.form.value
+    }).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.Toast.success(res?.message);

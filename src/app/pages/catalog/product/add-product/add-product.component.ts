@@ -232,11 +232,11 @@ export class AddProductComponent implements OnInit {
   }
 
   productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item._id == event._id)
+    let isExists: boolean = this.icons.some((item: any) => item == event.path)
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item._id != event._id)
+      this.icons = this.icons.filter((item: any) => item != event.path)
     } else {
-      this.icons.push(event)
+      this.icons.push(event?.path)
     }
   }
 
@@ -346,7 +346,7 @@ export class AddProductComponent implements OnInit {
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.attributes,
       parentId: this.parentDetails?._id,
-      productIcons: this.icons.map((icon: any) => icon.path),
+      productIcons: this.icons,
       storeFrontFields: this.storeFields,
       category: {
         id: this.categories.map((category: any) => category?._id),

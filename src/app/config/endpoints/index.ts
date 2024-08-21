@@ -75,4 +75,5 @@ export * from './delivery.method.endpoints'
 export * from './internationalisation.endpoints'
 export * from './sms.details.endpoints'
 export * from './footer.endpoints'
-export * from './pickup.endpoints'
+export * from './pickup.endpoints';
+export * from './app-keys.endpoints';

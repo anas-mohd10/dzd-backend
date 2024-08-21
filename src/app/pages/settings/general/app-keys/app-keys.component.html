@@ -1,0 +1,54 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">App Keys</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.appKeys }}">App Keys</a>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+            Save Changes
+        </button>
+    </div>
+
+    <form [formGroup]="form">
+        <div class="my-4 card">
+            <div class="card-body">
+                <div class="row mb-3 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="fs-5">Use my current location</div>
+                        <p class="m-0 text-muted mb-2">This settings will toggle the current location button from
+                            address form where user can fetch their current location</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <app-switch [switchId]="'isCurrentLocation'"
+                            [isToggledProps]="isCurrentLocation.value"
+                            (switchToggled)="enableSettings($event)"></app-switch>
+                    </div>
+                </div>
+                <div class="row mb-3 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="fs-5">Search location</div>
+                        <p class="m-0 text-muted mb-2">This settings will toggle a search bar in address form in which user can search and choose a delivery location</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <app-switch [switchId]="'isSearchLocation'"
+                            [isToggledProps]="isSearchLocation.value"
+                            (switchToggled)="enableSettings($event)"></app-switch>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="isCurrentLocation.value == true || isSearchLocation.value == true">
+                    <label for="googleMapKey" class="fs-6 mb-3">Google Map Key</label>
+                    <input type="text" formControlName="googleMapKey" class="form-control">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

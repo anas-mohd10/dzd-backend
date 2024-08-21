@@ -25,13 +25,17 @@ export class SmsSettingsComponent implements OnInit {
   modalRef?: BsModalRef
   smsGateways: Array<any> = [];
   smsGatewayConfig: any = {
-    'etisalat': ['username', 'password', 'senderId', 'usages'],
+    'etisalat': ['username', 'password', 'senderId', 'usages', 'clientId', 'apiUrl', 'port'],
     'twilio': ['username', 'password', 'usages', 'fromNumber']
   };
   usageItems: Array<any> = [
     { title: 'Registration', value: 'registration' },
     { title: 'Login', value: 'login' },
     { title: 'Order Confirmation', value: 'order-confirmation' },
+    { title: 'Order Cancellation', value: 'order-cancellation' },
+    { title: 'Order Delivered', value: 'order-delivered' },
+    { title: 'Order Accepted', value: 'order-accepted' },
+    { title: 'Order Out for Delivery', value: 'order-out-for-delivery' },
   ]
 
   constructor(
@@ -68,6 +72,9 @@ export class SmsSettingsComponent implements OnInit {
       usages: new FormControl([]),
       fromNumber: new FormControl(''),
       apiKey: new FormControl(''),
+      port: new FormControl(''),
+      apiUrl: new FormControl(''),
+      clientId: new FormControl(''),
       isEnabled: new FormControl(false)
     })
 
@@ -116,7 +123,7 @@ export class SmsSettingsComponent implements OnInit {
     )
   }
 
-  onSubmit() {        
+  onSubmit() {
     this.SmsDetailsService.manage({ _id: this.selectedSmsGateway?._id, ...this.form.value }).subscribe({
       next: (response: any) => {
         if (response.errorCode == 0) {
@@ -148,6 +155,10 @@ export class SmsSettingsComponent implements OnInit {
       username: '',
       password: '',
       senderId: '',
+      port: '',
+      apiUrl: '',
+      clientId: '',
+      fromNumber: '',
       usages: [],
       apiKey: '',
       isEnabled: false
@@ -166,7 +177,7 @@ export class SmsSettingsComponent implements OnInit {
           /**
            * This code block is used to dynamically set the validators for the form fields based on the smsGatewayConfig
           */
-          const fields = ['username', 'password', 'senderId', 'usages', 'fromNumber'];
+          const fields = ['username', 'password', 'port', 'apiUrl', 'clientId', 'senderId', 'usages', 'fromNumber'];
           fields.forEach(field => {
             let smsConfig = this.smsGatewayConfig[res?.result?.smsGateway || this.activeSmsGateway?.id] || []
             if (smsConfig?.includes(field)) {

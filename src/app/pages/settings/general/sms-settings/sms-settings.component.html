@@ -1,5 +1,4 @@
 <div>
-
     <div class="page-header d-flex align-items-start justify-content-between">
         <div>
             <div class="page-title">
@@ -86,6 +85,21 @@
                 <label for="fromNumber" class="fs-6 mb-3 required">From Number</label>
                 <input type="text" id="fromNumber" formControlName="fromNumber" class="form-control">
             </div>
+            <div class="form-group mb-3"
+                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('port')">
+                <label for="port" class="fs-6 mb-3 required">Port</label>
+                <input type="text" id="port" formControlName="port" class="form-control">
+            </div>
+            <div class="form-group mb-3"
+                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('clientId')">
+                <label for="clientId" class="fs-6 mb-3 required">Client ID</label>
+                <input type="text" id="clientId" formControlName="clientId" class="form-control">
+            </div>
+            <div class="form-group mb-3"
+                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('apiUrl')">
+                <label for="apiUrl" class="fs-6 mb-3 required">API Url</label>
+                <input type="text" id="apiUrl" formControlName="apiUrl" class="form-control">
+            </div>
             <div class="form-group mb-3">
                 <label for="senderId" class="fs-6 mb-3 required">Usage</label>
                 <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
@@ -96,7 +110,6 @@
                         {{usageItem.title}}</div>
                 </div>
             </div>
-
 
             <div class="d-flex align-items-center justify-content-end">
                 <button tpe="submit" class="btn btn-primary">Save changes</button>

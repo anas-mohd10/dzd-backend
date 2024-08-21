@@ -18,6 +18,9 @@
             </li>
          </ul>
       </div>
+      <button class="btn btn-danger" (click)="deleteCustomer()">
+         Delete customer
+      </button>
    </div>
 
    <div class="row my-4">
@@ -36,6 +39,9 @@
                   </div>
 
                   <div class="d-flex justify-content-end gap-2">
+                     <button class="btn btn-secondary" (click)="openSavedCards(savedCardTemplate)">
+                        Saved cards
+                     </button>
                      <button class="btn btn-secondary"
                         routerLink="{{appRoute.customers.referralHistory + '/' + customerData?.userid}}">
                         Referral history
@@ -46,14 +52,11 @@
                      <button class="btn btn-secondary" (click)="openWallet(walletTemplate)">
                         Wallet transactions
                      </button>
-                     <button class="btn btn-danger" (click)="deleteCustomer()">
-                        Delete customer
-                     </button>
                   </div>
 
                   <div class="addressWrapper">
                      <div class="d-flex align-items-end justify-content-between">
-                        <div class="fw-bold fs-4">Address details</div>
+                        <div class="fw-bold fs-2">Address details</div>
                         <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
                      </div>
 
@@ -437,6 +440,41 @@
          <ng-container *ngIf="historyItems.length == 0">
             <app-no-results></app-no-results>
          </ng-container>
+      </div>
+   </div>
+</ng-template>
+
+<ng-template #savedCardTemplate>
+   <div class="modal-header">
+      <h4 class="modal-title pull-left">Saved Cards</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeSavedCards()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div *ngIf="savedCards.length > 0">
+         <div *ngFor="let savedCard of savedCards">
+            <div class="card border border-secondary mb-2">
+               <div class="card-body">
+                  <div class="d-flex align-items-center justify-content-start gap-2">
+                     <div class="fs-4">{{savedCard?.cardType}}</div>
+                     <div class="fs-3 fw-bold">{{savedCard?.cardNo}}</div>
+                  </div>
+                  <div class="mt-4">
+                     <div class="fs-4">{{savedCard?.cardHolder}}</div>
+                     <div class="mt-2 d-flex align-items-center justify-content-between">
+                        <div>Expriy: {{savedCard?.cardExpiry}}</div>
+                        <div>
+                           <button class="btn btn-danger p-2" (click)="deleteCard(savedCard?.cardNo)">Delete</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div *ngIf="savedCards.length == 0">
+         <app-no-results></app-no-results>
       </div>
    </div>
 </ng-template>

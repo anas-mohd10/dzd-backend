@@ -18,8 +18,8 @@ export class PickupService {
     return this.HttpClient.post(`${url}`, data);
   }
 
-  update(data: any) {
-    const url = this.CommonService.getFullUrl(pickupEndpoints.updatePickup);
+  update(pickupId: string, data: any) {
+    const url = this.CommonService.getFullUrl(pickupEndpoints.updatePickup + `/${pickupId}`);
     return this.HttpClient.put(`${url}`, data);
   }
 

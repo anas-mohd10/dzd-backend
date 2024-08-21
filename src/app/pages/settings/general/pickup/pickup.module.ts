@@ -6,6 +6,7 @@ import { CreatePickupComponent } from './create-pickup/create-pickup.component';
 import { UpdatePickupComponent } from './update-pickup/update-pickup.component';
 import { PickupListComponent } from './pickup-list/pickup-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from "../../../shared/shared.module";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     PickupRoutingModule,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    SharedModule
+]
 })
 export class PickupModule { }

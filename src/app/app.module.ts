@@ -88,6 +88,7 @@ import { ShippingRulesComponent } from './pages/settings/general/shipping-rules/
 import { InternationalisationComponent } from './pages/settings/general/internationalisation/internationalisation.component';
 import { SmsSettingsComponent } from './pages/settings/general/sms-settings/sms-settings.component';
 import { AuthenticationComponent } from './pages/settings/general/authentication/authentication.component';
+import { AppKeysComponent } from './pages/settings/general/app-keys/app-keys.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -151,6 +152,7 @@ const DragConfig = {
     InternationalisationComponent,
     SmsSettingsComponent,
     AuthenticationComponent,
+    AppKeysComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

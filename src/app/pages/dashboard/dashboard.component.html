@@ -217,7 +217,7 @@
     <div class="fs-4 fw-bolder mb-lg-5 info_head">Top selling products</div>
     <div class="selling_box">
       <ng-container *ngFor="let product of products">
-        <div class="selling_products">
+        <div class="selling_products cursor-pointer" routerLink="{{appRoutes.product.UPDATE_PRODUCT}}" [queryParams]="{'product': product?.slug}">
           <div class="selling_phoneImg">
             <img src="{{product?.thumbnail}}" onerror="this.src = 'assets/images/default.png'" alt="Product" />
           </div>

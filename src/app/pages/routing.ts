@@ -40,6 +40,7 @@ import { ShippingRulesComponent } from './settings/general/shipping-rules/shippi
 import { InternationalisationComponent } from './settings/general/internationalisation/internationalisation.component';
 import { SmsSettingsComponent } from './settings/general/sms-settings/sms-settings.component';
 import { AuthenticationComponent } from './settings/general/authentication/authentication.component';
+import { AppKeysComponent } from './settings/general/app-keys/app-keys.component';
 
 export const Routing: Routes = [
   {
@@ -403,6 +404,10 @@ export const Routing: Routes = [
         path: 'vouchers',
         loadChildren: () => import('./marketing/vouchers/vouchers.module').then((m) => m.VouchersModule),
         canActivate: [AuthenticationGuard]
+      }, {
+        path: 'app-keys',
+        component: AppKeysComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'stores',
         loadChildren: () => import('./settings/general/store/store.module').then((m) => m.StoreModule),

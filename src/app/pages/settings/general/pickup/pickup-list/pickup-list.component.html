@@ -9,12 +9,76 @@
                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.pickupLocations }}">Pickup Locations</a>
+                    <a routerLink="{{ appRoute.pickupLocations.list }}">Pickup Locations</a>
                 </li>
             </ul>
         </div>
         <button class="btn btn-primary" routerLink="{{ appRoute.pickupLocations.create }}">
             Add location
         </button>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body row">
+            <div class="col-lg-4">
+                <div class="fs-5">Pickup Locations</div>
+            </div>
+            <div class="col-lg-8">
+                <app-switch [switchId]="''" [isToggledProps]="isPickUp.value" (switchToggled)="enablePickUp($event)"></app-switch>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <input type="search" class="form-control" placeholder="Search locations" [formControl]="name" (ngModelChange)="searchLocations()">
+        </div>
+    </div>
+
+    <div class="my-4">
+        <table class="table">
+            <thead>
+                <th class="p-2">Country</th>
+                <th class="p-2">State</th>
+                <th class="p-2">Name</th>
+                <th class="p-2">Address</th>
+                <th class="p-2">Status</th>
+                <th class="p-2">&nbsp;</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let location of locations">
+                    <td>{{location.country}}</td>
+                    <td>{{location.state}}</td>
+                    <td>{{location.name}}</td>
+                    <td>{{location.address}}</td>
+                    <td>
+                        <app-switch [isToggledProps]="location.isActive" (switchToggled)="onSwitchChange($event)" [switchId]="location._id"></app-switch>
+                    </td>
+                    <td class="d-flex align-items-center justify-content-center gap-2">
+                        <div class="cursor-pointer" routerLink="{{ appRoute.pickupLocations.update + '/' + location._id }}">
+                            <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                            </svg>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="locations.length == 0">
+                    <td colspan="6">
+                        <app-no-results></app-no-results>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
+            [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
     </div>
 </div>

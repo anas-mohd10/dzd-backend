@@ -156,7 +156,7 @@ export class NavigationMenuComponent implements OnInit {
   subMenus: Array<any> = []
   megaMenuAdvertisement: string = '';
   megaMenuEdit: boolean = false
-  menuItemIcon: string = ''
+  menuItemIcon: string = '';
 
   get itemControls() {
     return this.itemForm.controls
@@ -206,7 +206,7 @@ export class NavigationMenuComponent implements OnInit {
     this.closeStoreFacilityModal()
   }
 
-  removeStoreFacility(index: number){
+  removeStoreFacility(index: number) {
     this.storeFacilities.splice(index, 1)
   }
 
@@ -410,6 +410,7 @@ export class NavigationMenuComponent implements OnInit {
 
     this.footerForm = new FormGroup({
       seoContent: new FormControl(''),
+      seoContentDisabledFor: new FormControl([]),
       storeFacilities: new FormControl([])
     })
 

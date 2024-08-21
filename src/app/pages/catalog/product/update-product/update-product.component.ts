@@ -234,11 +234,11 @@ export class UpdateProductComponent implements OnInit {
   }
 
   productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item.path == event.path)
+    let isExists: boolean = this.icons.some((item: any) => item == event?.path)
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item.path != event.path)
+      this.icons = this.icons.filter((item: any) => item != event?.path)
     } else {
-      this.icons.push(event)
+      this.icons.push(event?.path)
     }
   }
 
@@ -289,7 +289,7 @@ export class UpdateProductComponent implements OnInit {
       parentId: this.parentDetails?._id,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
-      productIcons: this.icons.map((icon: any) => icon.path),
+      productIcons: this.icons,
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),

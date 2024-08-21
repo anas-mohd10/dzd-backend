@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
 import { PickupService } from 'src/app/includes/services/pickup.service';
 
@@ -72,9 +73,31 @@ export class CreatePickupComponent implements OnInit {
       country: new FormControl('UAE', Validators.required),
       state: new FormControl('Dubai', Validators.required),
       name: new FormControl('', Validators.required),
+      countryCode: new FormControl('+971', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
       address: new FormControl('', Validators.required),
       isActive: new FormControl(true),
     });
+    this.handleMobilePattern()
+  }
+
+  updateMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
   }
 
   get formControls() {
@@ -100,5 +123,4 @@ export class CreatePickupComponent implements OnInit {
       }
     })
   }
-
 }
