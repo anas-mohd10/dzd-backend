@@ -117,6 +117,19 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="fs-5">OTP for Guest Checkout</div>
+                        </div>
+                        <div class="col-lg-8">
+                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpForGuestCheckout'"
+                                [isToggledProps]="form.get('isOtpForGuestCheckout')?.value"></app-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>

@@ -98,7 +98,7 @@ export class UpdateOrdersComponent implements OnInit {
     private Toast: HotToastService
   ) { }
 
-  getLocaleDateString(date: string){
+  getLocaleDateString(date: string) {
     return new Date(date).toLocaleString()
   }
 
@@ -352,7 +352,10 @@ export class UpdateOrdersComponent implements OnInit {
         this.bulkProducts.push(product)
       }
     }
+
     product ? null : this.bulkProducts.length == this.order?.products.length ? this.bulkProducts = [] : this.bulkProducts = [...this.order?.products]
+    //Check the last status of the product, if cancelled then don't allow to change the status
+
     this.bulkProducts.length > 0 ? this.toggleBulkStatus() : null
   }
 

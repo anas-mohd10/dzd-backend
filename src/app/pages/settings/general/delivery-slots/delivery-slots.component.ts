@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChil
 import { FormControl, FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { indiaStates } from 'src/app/config/constants/country/india';
+import { uaeStates } from 'src/app/config/constants/country/uae';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { DeliverySlotsService } from 'src/app/includes/services/delivery-slots.service';
@@ -13,11 +15,17 @@ interface DeliverySlotInputs {
   ordersPerSlot: number
 }
 
+type CountryProps = {
+  key: string,
+  value: string
+}
+
 @Component({
   selector: 'app-delivery-slots',
   templateUrl: './delivery-slots.component.html',
   styleUrls: ['./delivery-slots.component.scss']
 })
+
 export class DeliverySlotsComponent implements OnInit {
   appRoute = appRoutes
   modalRef?: BsModalRef
@@ -31,10 +39,17 @@ export class DeliverySlotsComponent implements OnInit {
   isSubmitted: boolean = false
   activeDay: string = 'Sunday';
   settings: any;
+  isEmirateDeliverySlots: FormControl = new FormControl(false)
+  isDeliverySlots: FormControl = new FormControl(false)
   futureDays: FormControl = new FormControl(7)
   slotItems: Array<DeliverySlotInputs> = [];
   addModalRef?: BsModalRef
   @ViewChild('template') template: any;
+  countryItems: CountryProps[] = [
+    { key: 'United Arab Emirates', value: 'uae' },
+    { key: 'India', value: 'india' }
+  ];
+  stateItems: Array<any> = uaeStates
   selectedDays: Array<any> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
   constructor(
@@ -54,11 +69,23 @@ export class DeliverySlotsComponent implements OnInit {
 
   }
 
+  onCountryChange() {
+    switch (this.form.get('country')?.value) {
+      case 'uae':
+        this.stateItems = uaeStates
+        break;
+      case 'india':
+        this.stateItems = indiaStates
+    }
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       from: new FormControl('', [Validators.required, Validators.maxLength(5), Validators.pattern(/^[\d:]+$/)]),
       to: new FormControl('', [Validators.required, Validators.maxLength(5), Validators.pattern(/^[\d:]+$/)]),
       ordersPerSlot: new FormControl('', [Validators.required, Validators.min(1), Validators.max(100)]),
+      country: new FormControl('uae'),
+      state: new FormControl('Dubai')
     });
 
     this.getSettings()
@@ -80,6 +107,21 @@ export class DeliverySlotsComponent implements OnInit {
     })
   }
 
+  enableSettings(event: { toggleState: any, switchId: any }) {
+    this.AppSettingsService.updateSettings({ [event.switchId]: event.toggleState }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSettings()
+          this.Toast.success(res?.message)
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
   toggleDays(day: string) {
     if (this.selectedDays.includes(day)) {
       this.selectedDays = this.selectedDays.filter(item => item != day)
@@ -94,9 +136,11 @@ export class DeliverySlotsComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.settings = res?.result
           this.futureDays.setValue(this.settings?.futureDays)
+          this.isDeliverySlots.setValue(res?.result?.isDeliverySlots)
+          this.isEmirateDeliverySlots.setValue(res?.result?.isEmirateDeliverySlots)
           this.ChangeDetectorRef.markForCheck()
-        }
-      }
+        } else { }
+      }, error: (err: any) => { }
     })
   }
 
@@ -140,12 +184,8 @@ export class DeliverySlotsComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.slotItems = res?.result
           this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
+        } else { }
+      }, error: (err: any) => { }
     })
   }
 
@@ -174,6 +214,7 @@ export class DeliverySlotsComponent implements OnInit {
     this.addModalRef?.hide()
     this.isSubmitted = false
     this.form.reset()
+    this.form.patchValue({ country: 'uae', state: 'Dubai' })
     this.selectedDays = this.days
   }
 
@@ -188,6 +229,7 @@ export class DeliverySlotsComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getSlots()
           this.form.reset()
+          this.form.patchValue({ country: 'uae', state: 'Dubai' })
           this.Toast.success(res?.message)
           this.addModalRef?.hide()
           this.selectedDays = this.days
@@ -237,6 +279,7 @@ export class DeliverySlotsComponent implements OnInit {
   close() {
     this.isEditMode = false
     this.form.reset()
+    this.form.patchValue({ country: 'uae', state: 'Dubai' })
     this.form.get('isActive')?.setValue('true')
     this.modalRef?.hide()
     this.isSubmitted = false
@@ -275,6 +318,10 @@ export class DeliverySlotsComponent implements OnInit {
       return
     }
 
+    if (this.isEmirateDeliverySlots.value == false) {
+      this.form.patchValue({ state: '', country: '' })
+    }
+
     if (this.isEditMode) {
       this.DeliveryService.updateSlot({ refid: this.slotDetails.refid, ...this.form.value }).subscribe({
         next: (res: any) => {
@@ -283,6 +330,7 @@ export class DeliverySlotsComponent implements OnInit {
             this.slotDetails = null
             this.modalRef?.hide()
             this.form.reset()
+            this.form.patchValue({ country: 'uae', state: 'Dubai' })
             this.form.get('isActive')?.setValue('true')
             this.getSlots()
             this.ChangeDetectorRef.markForCheck()

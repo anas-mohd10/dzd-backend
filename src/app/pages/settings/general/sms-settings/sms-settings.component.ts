@@ -35,6 +35,7 @@ export class SmsSettingsComponent implements OnInit {
     { title: 'Order Cancellation', value: 'order-cancellation' },
     { title: 'Order Delivered', value: 'order-delivered' },
     { title: 'Order Accepted', value: 'order-accepted' },
+    { title: 'Guest OTP', value: 'guest-otp' },
     { title: 'Order Out for Delivery', value: 'order-out-for-delivery' },
   ]
 

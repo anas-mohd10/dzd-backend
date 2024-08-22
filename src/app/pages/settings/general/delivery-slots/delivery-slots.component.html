@@ -13,21 +13,29 @@
         </li>
       </ul>
     </div>
-    <div class="row justify-content-end">
-      <div class="col-lg-4 d-flex align-items-center justify-content-start gap-2">
-        <div class="fs-5">Enabled delivery slots</div>
-        <app-switch (switchToggled)="toggleDelivery()" [switchId]=""
+    <button class="btn btn-primary" (click)="openAdd(addTemplate)">Add new slot</button>
+  </div>
+
+  <div class="card my-4">
+    <div class="card-body">
+      <div class="d-flex align-items-center justify-content-start gap-2">
+        <div class="fs-5">Delivery slots</div>
+        <app-switch (switchToggled)="enableSettings($event)" [switchId]="'isDeliverySlots'"
           [isToggledProps]="settings?.isDeliverySlots"></app-switch>
       </div>
-      <div class="col-lg-4 d-flex align-items-center justify-content-start gap-2">
+
+      <div class="d-flex my-4 align-items-center justify-content-start gap-2">
         <div class="fs-5">Delivery available in future days</div>
         <select (change)="toggleFutureDays()" [formControl]="futureDays" class="form-select" style="width: 80px">
           <option value="" disabled>-- Select an option --</option>
-          <option *ngFor="let day of [3, 7, 9, 12]" value="{{day}}">{{day}}</option>
+          <option *ngFor="let day of [0, 1, 3, 7, 9, 12]" value="{{day}}">{{day}}</option>
         </select>
       </div>
-      <div class="col-lg-4">
-        <button class="btn btn-primary w-100" (click)="openAdd(addTemplate)">Add new slot</button>
+
+      <div class="d-flex align-items-center justify-content-start gap-2">
+        <div class="fs-5">State wise delivery slots</div>
+        <app-switch (switchToggled)="enableSettings($event)" [switchId]="'isEmirateDeliverySlots'"
+          [isToggledProps]="settings?.isEmirateDeliverySlots"></app-switch>
       </div>
     </div>
   </div>
@@ -52,10 +60,13 @@
 
         <div class="delivery-slots">
           <ng-container *ngFor="let slotItem of slot?.slots; let j = index">
-            <div class="p-2 rounded border border-secondary d-flex align-items-center justify-content-between">
-              <div class="fs-5">{{slotItem.from}} - {{slotItem.to}}</div>
-              <app-switch [isToggledProps]="slotItem?.isActive" [switchId]="slotItem.refid"
-                (switchToggled)="toggleSlot($event)"></app-switch>
+            <div class="p-2 rounded border border-secondary">
+              <div *ngIf="isEmirateDeliverySlots.value == true">{{slotItem.state ? slotItem.state : '-'}}</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="fs-5">{{slotItem.from}} - {{slotItem.to}}</div>
+                <app-switch [isToggledProps]="slotItem?.isActive" [switchId]="slotItem.refid"
+                  (switchToggled)="toggleSlot($event)"></app-switch>
+              </div>
             </div>
           </ng-container>
         </div>
@@ -149,6 +160,20 @@
             </div>
           </ng-container>
         </div>
+      </div>
+      <div class="form-group mb-3" *ngIf="isEmirateDeliverySlots.value == true">
+        <label for="country" class="form-label">Country</label>
+        <select id="country" formControlName="country" class="form-select" (change)="onCountryChange()">
+          <option value="" disabled>-- Select an option --</option>
+          <option *ngFor="let countryItem of countryItems" value="{{countryItem.value}}">{{countryItem.key}}</option>
+        </select>
+      </div>
+      <div class="form-group mb-3" *ngIf="isEmirateDeliverySlots.value == true">
+        <label for="state" class="form-label">State</label>
+        <select id="state" formControlName="state" class="form-select">
+          <option value="" disabled>-- Select an option --</option>
+          <option *ngFor="let stateItem of stateItems" value="{{stateItem.state}}">{{stateItem.state}}</option>
+        </select>
       </div>
       <div class="form-group mb-3">
         <label for="from" class="form-label">From</label>
