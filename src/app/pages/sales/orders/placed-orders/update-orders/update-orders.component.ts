@@ -118,7 +118,8 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   formdateDate(date: any) {
-    return `${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
+    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    return `${days[new Date(date).getDay()]}, ${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
   }
 
   acceptOrderPayment() {

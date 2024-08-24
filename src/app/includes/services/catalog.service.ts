@@ -7,7 +7,7 @@ interface AddWidget {
   index: number;
   widgetType: string;
   widgetName: string;
-  catalog: string;
+  catalogId: string;
 }
 
 interface DuplicateWidget {

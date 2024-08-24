@@ -25,6 +25,22 @@ export class ReportsListComponent implements OnInit {
   products: Array<any> = [];
   productIds: Array<any> = [];
 
+  reportItems: Array<any> = [
+    { title: 'Product', description: 'Get the product report', type: 'product' },
+    { title: 'Order', description: 'Get the order report', type: 'order' },
+    { title: 'Order Detailed', description: 'Get the detailed order report', type: 'order-detailed' },
+    { title: 'Customer', description: 'Get the customer report', type: 'customer' },
+    { title: 'Customer Order', description: 'Get the customer order report', type: 'customer-order' },
+    { title: 'Product Order', description: 'Get the product order report', type: 'product-order' },
+    { title: 'Sales', description: 'Get the sales report', type: 'sales' },
+    { title: 'Low Stock', description: 'Get the low stock report', type: 'lowstock' },
+    { title: 'Abandoned Order', description: 'Get the abandoned order report', type: 'abandonedorder' },
+    { title: 'Enquiry', description: 'Get the enquiry report', type: 'enquiry' },
+    { title: 'No Movement', description: 'Get the no movement report', type: 'nomovement' },
+    { title: 'Product Wise Order', description: 'Get the product wise order report', type: 'productwiseorder' },
+    { title: 'All Customers', description: 'Get the all customers report', type: 'allcustomers' },
+  ]
+
   dateRanges: Array<any> = [
     { title: '15 Days', description: 'Get the sales report for last 15 days', dateRange: '15' },
     { title: '1 Months', description: 'Get the sales report for last 30 days', dateRange: '1' },
@@ -111,6 +127,26 @@ export class ReportsListComponent implements OnInit {
         break
       case 'abandonedorder':
         this.ReportsService.abandonedOrderReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'customerOrder':
+        this.ReportsService.customerOrderReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'enquiry':
+        this.ReportsService.enquiryReport().subscribe({
           next: (res: any) => {
             this.onReponse(res)
             this.ChangeDetectorRef.markForCheck()

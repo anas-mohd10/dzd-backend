@@ -1,7 +1,7 @@
 export const reportsEndpoints = {
     downloadSubscribers: '/download-subscribers',
     customerReport: '/customer-report',
-    customerOrderReport: '/customer-order-report',
+    customerOrderReport: '/customerOrderReport',
     detailedOrderReport: '/detailed-order-report',
     productReport: '/product-report',
     orderReport: '/order-report',

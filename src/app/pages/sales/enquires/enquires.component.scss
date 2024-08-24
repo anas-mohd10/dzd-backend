@@ -15,45 +15,43 @@ input[type="button"] {
   font-weight: normal !important;
 }
 
-.resultsContainer {
-  margin: 20px 0 0 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
 
-  .enquiryCard {
-    background: $white;
-    border-radius: 10px;
-    padding: 10px;
-    position: relative;
+  tbody{
 
-    .editButton {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      height: 40px;
-      width: 40px;
-      display: grid;
-      place-items: center;
+     tr{
 
-      border-radius: 20px;
-    }
-
-    .editButton {
-      img {
-        border: 1px solid #dcdcdc;
-        padding: 3px;
-        border-radius: 5px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: $hover;
+        td{
+           vertical-align: middle;
         }
-      }
+     }
+  }
 
-    }
+  thead {
+
+     tr{
+
+        th{
+           font-weight: 400 !important;
+        }
+     }
+     background: #E4E7F4;
+  }
+  
+  button{
+      width: 120px;
+  }
+
+  img{
+      height: 60px;
+      width: 60px;
+      object-fit: contain;
   }
 }
+//Table designs
 
 .modal {
   .modal-dialog {
@@ -66,45 +64,5 @@ input[type="button"] {
         }
       }
     }
-  }
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .paginationBefore,
-  .paginationNext {
-    height: 30px;
-    width: 30px;
-    border-radius: 15px;
-    display: grid;
-    place-items: center;
-    background: $background;
-    cursor: pointer;
-
-    &.disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-  }
-
-  .paginationPage {
-    margin: 0 10px;
-  }
-}
-
-.search {
-  input[type="button"] {
-    width: 100%;
-  }
-}
-
-.emptyNote {
-  margin: 0 0 20px 0;
-
-  .note {
-    font-weight: normal;
   }
 }

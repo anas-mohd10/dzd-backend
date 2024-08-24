@@ -101,7 +101,7 @@
               <div class="itemDetails">
                 <div class="itemTitle">Payment Gateway</div>
                 <div class="itemResponse fw-normal">
-                  <div *ngIf="order?.paymentGateway" class="bg-secondary p-2 rounded">{{order?.paymentGateway}}</div>
+                  <div *ngIf="order?.paymentGateway" class="bg-secondary p-2 rounded">{{order?.paymentGateway ? order?.paymentGateway : '-'}}</div>
                 </div>
               </div>
               <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">

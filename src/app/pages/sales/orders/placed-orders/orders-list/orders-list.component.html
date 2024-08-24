@@ -207,6 +207,7 @@
               {{order?.customerType}}</div>
           </td>
           <td>
+            <div *ngIf="order?.pickUpLocation">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}</div>
             <div *ngIf="order?.clickPoint">{{order?.clickPoint?.address?.city}}</div>
             <div *ngIf="order?.deliverySlot">
               {{convertTimeFormat(order?.deliverySlot?.from + ' - ' + order?.deliverySlot?.to)}}

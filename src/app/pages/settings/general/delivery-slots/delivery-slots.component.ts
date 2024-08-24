@@ -49,6 +49,8 @@ export class DeliverySlotsComponent implements OnInit {
     { key: 'United Arab Emirates', value: 'uae' },
     { key: 'India', value: 'india' }
   ];
+  toggleConfirmRef?: BsModalRef;
+  isToggleConfirmation: boolean = false;
   stateItems: Array<any> = uaeStates
   selectedDays: Array<any> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -77,6 +79,33 @@ export class DeliverySlotsComponent implements OnInit {
       case 'india':
         this.stateItems = indiaStates
     }
+  }
+
+  openToggleConfirm(template: TemplateRef<any>) {
+    this.isToggleConfirmation = true
+    this.toggleConfirmRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  closeToggleConfirm() {
+    this.isToggleConfirmation = false
+    this.toggleConfirmRef?.hide()
+  }
+
+  confirmEmirate() {
+    this.AppSettingsService.updateSettings({
+      isEmirateDeliverySlots: this.isEmirateDeliverySlots.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getSettings()
+          this.Toast.success(res?.message || "Emirate delivery slot updated")
+        } else {
+          this.Toast.error(res?.message || "Something went wrong")
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message || 'Something went wrong')
+      }
+    })
   }
 
   ngOnInit(): void {

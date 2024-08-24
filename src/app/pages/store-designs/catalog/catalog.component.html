@@ -1,142 +1,126 @@
 <app-design-topbar [page]="'catalog'"></app-design-topbar>
 <app-design-sidebar></app-design-sidebar>
 
-<div class="storedesign-container">
-    <div class="row mx-0">
-        <div class="col-lg-9">
-            <iframe src="http://demo.StoreDada.com" style="width:100%;" frameborder="0">
-            </iframe>
-        </div>
-        <div class="col-lg-3 bg-white rounded p-5 widget-container">
-            <div class="fs-3 fw-bolder mb-2">Catalog Pages</div>
-            <p class="text-muted fs-6">Design special pages for catalog</p>
-            <div>
-                <div class="accordion" id="catalogAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header m-0">
-                            <button class="accordion-button p-2" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#createCatalog" aria-expanded="true" aria-controls="createCatalog">
-                                Create catalog
+<div class="row storedesign-container">
+    <div class="w-82 h-100 overflow-auto d-flex align-items-center justify-content-center">
+        <app-screens class="w-100" [device]="device" [load]="screenLoad"></app-screens>
+    </div>
+    <div class="w-18 h-100 overflow-auto bg-white p-5">
+        <div class="fs-3 fw-bolder mb-2">Catalog Pages</div>
+        <div>
+            <div class="accordion" id="catalogAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0">
+                        <button class="accordion-button p-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#createCatalog" aria-expanded="true" aria-controls="createCatalog">
+                            Create catalog
+                        </button>
+                    </h2>
+                    <div id="createCatalog" class="accordion-collapse collapse show" data-bs-parent="#catalogAccordion">
+                        <div class="accordion-body p-2">
+                            <button class="d-flex align-items-center p-1 justify-content-center btn btn-secondary w-100"
+                                (click)="openCreate(createTemplate)">
+                                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="2"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15">
+                                    </path>
+                                </svg>
+                                <div class="ms-1">Create catalog</div>
                             </button>
-                        </h2>
-                        <div id="createCatalog" class="accordion-collapse collapse show"
-                            data-bs-parent="#catalogAccordion">
-                            <div class="accordion-body p-2">
-                                <button class="d-flex align-items-center justify-content-center btn btn-secondary w-100"
-                                    (click)="openCreate(createTemplate)">
-                                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="2"
+                            <div class="mt-2" *ngIf="catalogPages.length > 0">
+                                <div class="form-group">
+                                    <label for="catalogPage" class="form-label">Catalog pages</label>
+                                    <select [formControl]="catalogPage" id="catalogPage" class="form-select p-2"
+                                        (change)="getCatalogDetails()">
+                                        <option value="" disabled>-- Select an option --</option>
+                                        <option *ngFor="let catalogPage of catalogPages" value="{{catalogPage?.slug}}">
+                                            {{catalogPage?.title}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 justify-content-between mt-2">
+                                    <div class="form-group w-50">
+                                        <button (click)="openUpdate(updateTemplate)"
+                                            class="btn p-1 btn-secondary w-100">
+                                            View
+                                        </button>
+                                    </div>
+                                    <div class="form-group w-50">
+                                        <button (click)="openDelete(deleteTemplate)"
+                                            class="btn p-1 btn-danger w-100">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0">
+                        <button class="accordion-button p-2 collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Catalog widgets
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#catalogAccordion">
+                        <div class="accordion-body p-2">
+                            <div>
+                                <button (click)="openWidgets(widgetsTemplate)"
+                                    class="d-flex align-items-center p-1 justify-content-center btn btn-secondary w-100">
+                                    <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="2"
                                         stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                         aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15">
                                         </path>
                                     </svg>
-                                    <div class="ms-1">Create catalog</div>
-                                </button>
-                                <div class="my-5">
-                                    <div class="row">
-                                        <div class="form-group" [ngClass]="{'col-lg-8': catalogPages.length > 0}">
-                                            <label for="catalogPage" class="form-label">Catalog pages</label>
-                                            <select [formControl]="catalogPage" id="catalogPage" class="form-select p-2"
-                                                (change)="getCatalogDetails()">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let catalogPage of catalogPages"
-                                                    value="{{catalogPage?.slug}}">{{catalogPage?.title}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-4 form-group" *ngIf="catalogPages.length > 0">
-                                            <label for="catalogPage" class="form-label">&nbsp;</label>
-                                            <button (click)="openUpdate(updateTemplate)"
-                                                class="btn p-2 btn-secondary w-100">
-                                                View
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="d-flex align-items-center justify-content-center btn btn-danger w-100"
-                                    (click)="openDelete(deleteTemplate)">
-                                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
-                                        </path>
-                                    </svg>
-                                    <div class="ms-1">Delete catalog</div>
+                                    <div class="ms-1">Add new widgets</div>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header m-0">
-                            <button class="accordion-button p-2 collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Catalog widgets
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#catalogAccordion">
-                            <div class="accordion-body p-2">
-                                <div>
-                                    <button (click)="openWidgets(widgetsTemplate)"
-                                        class="d-flex align-items-center justify-content-center btn btn-secondary w-100">
-                                        <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="2"
-                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                            aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M12 4.5v15m7.5-7.5h-15"></path>
-                                        </svg>
-                                        <div class="ms-1">Add new widgets</div>
-                                    </button>
+                            <div class="my-5">
+                                <div class="mb-2">
+                                    <div class="fs-3 fw-bolder">Widgets</div>
                                 </div>
-                                <div class="my-5">
-                                    <div class="mb-2">
-                                        <div class="fs-3 fw-bolder">Widgets</div>
-                                        <div class="fs-6 text-muted">Manage section order, design, data.</div>
-                                    </div>
-                                    <div cdkDropList class="widget-items rounded" (cdkDropListDropped)="drop($event)">
-                                        <div class="widget-item mb-2 pb-2 fs-6 border-bottom border-secondary"
-                                            *ngFor="let widgetItem of widgetItems; let i = index" cdkDrag>
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <div class="text-primary">#{{i+1}}:</div>
-                                                <div class="d-flex align-items-center justify-content-end">
-                                                    <div class="duplicate"
-                                                        (click)="openDuplication(duplicateTemplate, widgetItem)">
-                                                        <img src="assets/widgets/assets/copy.svg"
-                                                            alt="Copy widget">
-                                                    </div>
-                                                    <div class="delete ms-2"
-                                                        (click)="openConfirmation(deleteWidgetTemplate, widgetItem)">
-                                                        <img src="assets/widgets/assets/delete.svg"
-                                                            alt="Delete widget">
-                                                    </div>
+                                <div cdkDropList class="widget-items rounded" (cdkDropListDropped)="drop($event)">
+                                    <div class="widget-item mb-2 pb-2 fs-6 border-bottom border-secondary"
+                                        *ngFor="let widgetItem of widgetItems; let i = index" cdkDrag>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div class="text-primary">#{{i+1}}:</div>
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <div class="duplicate"
+                                                    (click)="openDuplication(duplicateTemplate, widgetItem)">
+                                                    <img src="assets/widgets/assets/copy.svg" alt="Copy widget">
+                                                </div>
+                                                <div class="delete ms-2"
+                                                    (click)="openConfirmation(deleteWidgetTemplate, widgetItem)">
+                                                    <img src="assets/widgets/assets/delete.svg" alt="Delete widget">
                                                 </div>
                                             </div>
-                                            <div>{{widgetItem?.widgetName}}</div>
-                                            <div class="text-muted mt-1">
-                                                Visible in {{widgetItem?.visibility == 'all' ? 'all devices':
-                                                widgetItem?.visibility}}
-                                            </div>
-                                            <div class="mt-2 d-flex align-items-center justify-content-between">
-                                                <button
-                                                    class="btn w-50 bg-white me-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
-                                                    placement="bottom" tooltip="Customize this widget design">
-                                                    <img src="assets/widgets/assets/design.svg" alt="Design"
-                                                        class="me-1">
-                                                    <div>Design</div>
-                                                    <img src="assets/widgets/assets/chevron-right.svg"
-                                                        alt="Design" class="me-1">
-                                                </button>
-                                                <button (click)="openWidgetUpdate(updateWidgetTemplate, widgetItem)"
-                                                    class="btn w-50 bg-white ms-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
-                                                    placement="bottom"
-                                                    tooltip="Upload content which you want to show in this widget">
-                                                    <img src="assets/widgets/assets/edit.svg" alt="Design"
-                                                        class="me-1">
-                                                    <div>Content</div>
-                                                    <img src="assets/widgets/assets/chevron-right.svg"
-                                                        alt="Design" class="me-1">
-                                                </button>
-                                            </div>
+                                        </div>
+                                        <div>{{widgetItem?.widgetName}}</div>
+                                        <div class="text-muted mt-1">
+                                            Visible in {{widgetItem?.visibility == 'all' ? 'all devices':
+                                            widgetItem?.visibility}}
+                                        </div>
+                                        <div class="mt-2 d-flex align-items-center justify-content-between">
+                                            <button
+                                                class="btn w-50 bg-white me-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
+                                                placement="bottom" tooltip="Customize this widget design">
+                                                <img src="assets/widgets/assets/design.svg" alt="Design" class="me-1">
+                                                <div>Design</div>
+                                                <img src="assets/widgets/assets/chevron-right.svg" alt="Design"
+                                                    class="me-1">
+                                            </button>
+                                            <button (click)="openWidgetUpdate(updateWidgetTemplate, widgetItem)"
+                                                class="btn w-50 bg-white ms-2 p-1 border-secondary border d-flex align-items-center justify-content-center"
+                                                placement="bottom"
+                                                tooltip="Upload content which you want to show in this widget">
+                                                <img src="assets/widgets/assets/edit.svg" alt="Design" class="me-1">
+                                                <div>Content</div>
+                                                <img src="assets/widgets/assets/chevron-right.svg" alt="Design"
+                                                    class="me-1">
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +192,7 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="catalogForm">
-            <div class="accordion" id="updateCatalogDetails">
+            <div class="accordion mb-2" id="updateCatalogDetails">
                 <div class="accordion-item">
                     <h2 class="accordion-header m-0" id="basicDetailsHeading">
                         <button class="accordion-button p-2" type="button" data-bs-toggle="collapse"
@@ -263,7 +247,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary me-1" (click)="closeUpdate()">Cancel</button>
-                <button class="btn btn-primary ms-1" (click)="updateCatalog()">Continue</button>
+                <button class="btn btn-primary ms-1" (click)="updateCatalog()">Save changes</button>
             </div>
         </form>
     </div>
@@ -288,14 +272,24 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-lg-7">
-                <div class="modal-widgets">
-                    <ng-container *ngFor="let widget of widgets; let i = index">
+
+                <div class="mb-2">
+                    <input type="text" placeholder="Search widgets" [formControl]="homeWidgetKeyword"
+                        (ngModelChange)="searchWidgets($event)" class="form-control">
+                </div>
+
+                <div class="modal-widgets" *ngIf="homeWidgets.length > 0">
+                    <ng-container *ngFor="let widget of homeWidgets; let i = index">
                         <div class="modal-widget p-4 rounded border w-100" (click)="focusWidget(widget)"
                             [ngClass]="{'border-primary shadow-sm': focusedWidget.type == widget.type, 'border-secondary border-dotted': focusedWidget.type != widget.type}">
                             <img class="h-auto w-100 ratio ratio-1x1" src="{{widget?.icon}}" alt="{{widget?.title}}">
                             <div class="text-center mt-2 fs-6">{{widget?.title}}</div>
                         </div>
                     </ng-container>
+                </div>
+
+                <div *ngIf="homeWidgets.length == 0">
+                    <app-no-results></app-no-results>
                 </div>
             </div>
             <div class="col-lg-5">

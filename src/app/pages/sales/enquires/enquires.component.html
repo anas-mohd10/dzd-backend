@@ -24,34 +24,40 @@
     </div>
   </div>
 
-  <div class="resultsContainer">
-    <ng-container *ngFor="let enquiry of enquires">
-      <div class="enquiryCard cursor-pointer" (click)="open(template, enquiry)">
-        <div class="d-flex gap-2">
-          <p class="text-muted">Name:</p>
-          <span class="fs-6">{{ enquiry?.firstname }} {{ enquiry?.lastname }}</span>
-        </div>
-        <div class="d-flex gap-2">
-          <p class="text-muted">Phone Number:</p>
-          <span class="fs-6">{{ enquiry?.countryCode }} {{ enquiry?.mobile }}</span>
-        </div>
-        <div class="d-flex gap-2">
-          <p class="text-muted">Mail Id:</p>
-          <span class="fs-6"> {{ enquiry?.email }}</span>
-        </div>
-        <div class="d-flex gap-2">
-          <p class="text-muted">Date and Time:</p>
-          <span> {{ enquiry?.date }}</span>
-        </div>
-      </div>
-    </ng-container>
-  </div>
-
-  <div *ngIf="enquires.length == 0">
-    <app-no-results></app-no-results>
-  </div>
-
   <div>
+    <table class="table">
+      <thead>
+        <th class="p-2">Name</th>
+        <th class="p-2">Phone</th>
+        <th class="p-2">Email</th>
+        <th class="p-2">Date</th>
+        <th class="p-2">&nbsp;</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let enquiry of enquires">
+          <td>{{ enquiry.firstname }} {{ enquiry.lastname }}</td>
+          <td>{{ enquiry.countryCode }} {{ enquiry.mobile }}</td>
+          <td>{{ enquiry.email }}</td>
+          <td>{{ enquiry.date }}</td>
+          <td>
+            <div (click)="open(template, enquiry)" class="cursor-pointer">
+              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="enquires.length == 0">
+          <td colspan="5">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="my-4">
     <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
       [totalPages]="totalPages" [totalResults]="totalResults"></app-pagination>
   </div>

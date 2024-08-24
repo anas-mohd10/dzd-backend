@@ -90,6 +90,7 @@ export class UpdatePickupComponent implements OnInit {
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{6,15}$")]),
       address: new FormControl('', Validators.required),
       isActive: new FormControl(true),
+      city: new FormControl('', Validators.required),
     });
     this.handleMobilePattern()
   }
