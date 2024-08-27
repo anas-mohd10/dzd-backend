@@ -75,6 +75,25 @@
                         <div class="text-muted mt-1">
                             Visible in {{widgetItem?.visibility == 'all' ? 'all devices': widgetItem?.visibility}}
                         </div>
+                        <div class="d-flex align-items-center justify-content-start gap-2 mt-1"
+                            *ngIf="widgetItem?.isTimeBoundWidget == true">
+                            <div *ngIf="widgetItem?.isTimeBoundWidget == true"
+                                style="width: max-content; font-size: 14px;" class="p-1 rounded bg-secondary">
+                                Time bound
+                            </div>
+                            <div class="p-1 bg-danger text-white rounded" style="width: max-content; font-size: 14px;"
+                                *ngIf="isExpired(widgetItem?.widgetEndTime)">
+                                Expired
+                            </div>
+                            <div class="p-1 bg-warning text-white rounded" style="width: max-content; font-size: 14px;"
+                                *ngIf="isRunning(widgetItem?.widgetStartTime, widgetItem?.widgetEndTime)">
+                                Running
+                            </div>
+                            <div class="p-1 bg-success text-white rounded" style="width: max-content; font-size: 14px;"
+                                *ngIf="isScheduled(widgetItem?.widgetStartTime)">
+                                Scheduled
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,13 +269,12 @@
                                         </div>
                                         <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
                                             <label for="widgetTime" class="fs-6 mb-3">Widget Start Time </label>
-                                            <input type="datetime-local" class="form-control"
-                                                formControlName="widgetStartTime">
+                                            <input type="date" class="form-control" formControlName="widgetStartTime"
+                                                [min]="today">
                                         </div>
                                         <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
                                             <label for="widgetTime" class="fs-6 mb-3">Widget End Time </label>
-                                            <input type="datetime-local" class="form-control"
-                                                formControlName="widgetEndTime">
+                                            <input type="date" class="form-control" formControlName="widgetEndTime">
                                         </div>
                                     </div>
                                 </div>
@@ -450,8 +468,8 @@
                                                 <select id="isAutoScroll" class="form-select"
                                                     formControlName="isAutoScroll">
                                                     <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let item of ['true', 'false']"
-                                                        value="{{item}}">{{item == 'true' ? 'Yes' : 'No'}}</option>
+                                                    <option *ngFor="let item of ['true', 'false']" value="{{item}}">
+                                                        {{item == 'true' ? 'Yes' : 'No'}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -468,6 +486,16 @@
                         In this section you can write content and upload images from your
                         computer or can use from variety of images from web.
                     </p>
+                    <div *ngIf="widgetDetails?.widgetType == 'text-twirl'">
+                        <div class="form-group mb-3">
+                            <label for="textTwirlTitle" class="fs-6 mb-3">Title</label>
+                            <input type="text" id="textTwirlTitle" formControlName="textTwirlTitle" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="textTwirlDescription" class="fs-6 mb-3">Description</label>
+                            <input type="text" id="textTwirlDescription" formControlName="textTwirlDescription" class="form-control">
+                        </div>
+                    </div>
                     <div class="mb-2 p-4 rounded border border-secondary">
                         <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
                             (cdkDropListDropped)="dropWidgetImages($event)">

@@ -23,7 +23,9 @@ export class PageCoversComponent implements OnInit {
     { title: 'Blogs', path: '/blogs' },
     { title: 'Stores', path: '/stores' },
     { title: 'Reviews', path: '/reviews' },
-    { title: 'FAQs', path: '/faq' }
+    { title: 'FAQs', path: '/faq' },
+    { title: 'Cart', path: '/cart' },
+    { title: 'Product Details', path: '/p' },
   ];
   pageCovers: Array<any> = [];
   isSubmitted: boolean = false;

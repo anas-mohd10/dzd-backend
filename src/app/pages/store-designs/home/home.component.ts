@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
   ];
   homeWidgets: Array<any> = []
   homeWidgetKeyword: FormControl = new FormControl("", Validators.required)
-
+  today: Date = new Date()
   widgetItems: Array<any> = []
   focusedWidget: WidgetProps = { title: '', type: '', icon: '', description: '' }
   widgetsRef?: BsModalRef;
@@ -92,7 +92,8 @@ export class HomeComponent implements OnInit {
     "glamour-glaze", "dazzle-design",
     "grandeur-gallery", "celestial-canvas",
     "twin-towers", "stellar-selections",
-    "slider-spotlight", "trending-teasers"
+    "slider-spotlight", "trending-teasers",
+    "text-twirl"
   ]
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
@@ -142,12 +143,12 @@ export class HomeComponent implements OnInit {
   saleThumbnailDetails: string = ''
   hiddenHeaderItems: Array<string> = ['sale-timer', 'hyperlinkhero', 'insight-hub']
   selectedProductType: string = 'products';
-  collections: Array<any> = []
   widgetCollection: FormControl = new FormControl("")
   redirectionQuery: FormControl = new FormControl("")
   redirectionDetails: any
   spotlightSliders: Array<any> = []
   settings: any = {}
+  collections: Array<any> = []
   categories: Array<any> = []
   brands: Array<any> = []
   testimonialKeyword: FormControl = new FormControl("", Validators.required);
@@ -426,6 +427,18 @@ export class HomeComponent implements OnInit {
     this.getWidgetDetails(widget)
   }
 
+  isExpired(date: string) {
+    return new Date(date) < new Date()
+  }
+
+  isScheduled(date: string) {
+    return new Date(date) > new Date()
+  }
+
+  isRunning(startDate: string, endDate: string) {
+    return new Date(startDate) < new Date() && new Date(endDate) > new Date()
+  }
+
   getWidgetDetails(widget: any) {
     this.HomeWidgetsService.homeWidgetDetails(widget?.refid).subscribe({
       next: (res: any) => {
@@ -455,8 +468,14 @@ export class HomeComponent implements OnInit {
           }
           ['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
-          this.form.patchValue(this.widgetDetails)
-          console.log(new Date(this.widgetDetails?.widgetStartTime));
+          this.form.patchValue(this.widgetDetails);
+
+          if (this.widgetDetails?.isTimeBoundWidget == true) {
+            this.form.patchValue({
+              widgetStartTime: this.widgetDetails?.widgetStartTime?.split('T')[0],
+              widgetEndTime: this.widgetDetails?.widgetEndTime?.split('T')[0],
+            })
+          }
 
           if (this.widgetDetails?.titleImage) {
             this.titleThumbnailDetails = this.widgetDetails?.titleImage?.path
@@ -882,6 +901,8 @@ export class HomeComponent implements OnInit {
       html: new FormControl(""),
       video: new FormControl(""),
       view: new FormControl("grid"),
+      textTwirlTitle: new FormControl(""),
+      textTwirlDescription: new FormControl(""),
       gridsPerCount: new FormGroup({
         mobile: new FormControl(2, [Validators.required, Validators.pattern("^[0-9]*$")]),
         tablet: new FormControl(3, [Validators.required, Validators.pattern("^[0-9]*$")]),

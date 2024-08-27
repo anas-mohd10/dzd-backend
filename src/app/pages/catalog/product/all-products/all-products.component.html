@@ -47,20 +47,27 @@
           </select>
         </div>
         <div class="col-lg-3 form-group">
+          <label for="categories" class="form-label">Brands</label>
+          <select [formControl]="productBrand" id="brands" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let brand of brands" value="{{brand._id}}">{{brand?.name}}</option>
+          </select>
+        </div>
+        <div class="col-lg-2 form-group">
           <label for="status" class="form-label">Status</label>
           <select [formControl]="isActive" id="status" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let statusItem of statusFilters" value="{{statusItem.value}}">{{statusItem?.key}}</option>
           </select>
         </div>
-        <div class="col-lg-3 form-group">
+        <div class="col-lg-2 form-group">
           <label for="stock" class="form-label">Stock</label>
           <select [formControl]="stock" id="stock" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let stockItem of stockFilters" value="{{stockItem.value}}">{{stockItem?.key}}</option>
           </select>
         </div>
-        <div class="col-lg-3 form-group">
+        <div class="col-lg-2 form-group">
           <label for="sort" class="form-label">Price</label>
           <select [formControl]="sort" id="sort" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
@@ -155,6 +162,7 @@
               <th>&nbsp;</th>
               <th>Name</th>
               <th>SKU</th>
+              <th>Brand</th>
               <th>Category</th>
               <th>Price</th>
               <th>Stock</th>
@@ -182,6 +190,9 @@
                   </div>
                 </td>
                 <td>{{product?.sku}}</td>
+                <td>
+                  {{product?.product?.id?.brand?.name}}
+                </td>
                 <td>
 
                   <ng-container *ngFor="let category of product?.category?.id; let i = index">

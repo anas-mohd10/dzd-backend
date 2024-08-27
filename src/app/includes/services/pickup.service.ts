@@ -23,6 +23,11 @@ export class PickupService {
     return this.HttpClient.put(`${url}`, data);
   }
 
+  list(){
+    const url = this.CommonService.getFullUrl(pickupEndpoints.pickupLists)
+    return this.HttpClient.get(`${url}`)
+  }
+
   search(data: any) {
     const url = this.CommonService.getFullUrl(pickupEndpoints.searchPickups);
     return this.HttpClient.post(`${url}`, data);

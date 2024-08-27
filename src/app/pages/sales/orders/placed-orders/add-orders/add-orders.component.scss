@@ -7,6 +7,61 @@ $activeBackground: #00bdab20;
 $border: #E4E6EF;
 $grey: #888888;
 
+.quantityBtn{
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteBtn{
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+//Table designs
+.table {
+  border: 1px solid #E4E6EF;
+  background: #ffffff;
+  font-size: 15px;
+
+  tbody{
+
+     tr{
+
+        td{
+           vertical-align: middle;
+        }
+     }
+  }
+
+  thead {
+
+     tr{
+
+        th{
+           font-weight: 400 !important;
+        }
+     }
+     background: #E4E7F4;
+  }
+  
+  button{
+      width: 120px;
+  }
+
+  img{
+      height: 60px;
+      width: 60px;
+      object-fit: contain;
+  }
+}
+//Table designs
+
 .modal-header {
   border-bottom: none !important;
 }

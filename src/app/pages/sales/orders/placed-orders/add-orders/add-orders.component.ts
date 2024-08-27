@@ -11,6 +11,7 @@ import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { DeliverySlotsService } from 'src/app/includes/services/delivery-slots.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
+import { PickupService } from 'src/app/includes/services/pickup.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment';
@@ -75,6 +76,7 @@ export class AddOrdersComponent implements OnInit {
   deliverySlots: Array<any> = []
   deliverySlot: any;
   isAddressSubmitted: boolean = false
+  pickupLocations: Array<any> = []
 
   constructor(
     private OrderService: OrdersService,
@@ -82,6 +84,7 @@ export class AddOrdersComponent implements OnInit {
     private Router: Router,
     private ToastrService: HotToastService,
     private formBuilder: FormBuilder,
+    private PickupService: PickupService,
     private productService: ProductService,
     private couponsService: CouponsService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -98,6 +101,15 @@ export class AddOrdersComponent implements OnInit {
     this.getActiveProducts()
     this.getActiveCoupons()
 
+    this.PickupService.list().subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.pickupLocations = response?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (error: any) => { }
+    })
+
     this.StoresService.getClickPoints().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.stores = res?.result
@@ -105,15 +117,15 @@ export class AddOrdersComponent implements OnInit {
       }
     })
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-      }
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.settings = response?.result
+          this.dates = this.getNextSevenDays();
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (error: any) => { }
     })
-
-    this.dates = this.getNextSevenDays();
-    // this.deliveryDate = this.dates[0]
-    // this.orderForm.get('deliveryDate')?.setValue(this.deliveryDate)
 
     this.addressForm = new FormGroup({
       type: new FormControl('Home'),
@@ -159,13 +171,13 @@ export class AddOrdersComponent implements OnInit {
   getNextSevenDays() {
     const dates = [];
     const today = new Date();
+    console.log(this.settings);
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < this.settings?.futureDays; i++) {
       const date = new Date();
       date.setDate(today.getDate() + i).toLocaleString();
       dates.push(date);
     }
-
     return dates;
   }
 
@@ -240,7 +252,8 @@ export class AddOrdersComponent implements OnInit {
       transactionId: [''],
       additionalCharge: [0, Validators.pattern(/^[0-9]+$/)],
       products: [[], Validators.required],
-      clickPoint: ['', Validators.required],
+      clickPoint: [null],
+      pickUpLocation: [null],
       deliveryDate: ['', Validators.required],
       deliveryType: ['0'],
       deliverySlot: ['', Validators.required],
@@ -338,9 +351,6 @@ export class AddOrdersComponent implements OnInit {
             const timeB = this.convertTo24Hour(b.from);
             return timeA.localeCompare(timeB);
           });
-
-          // this.deliveryTime = this.timeslots[0]['refid']
-          // this.orderForm.get('deliverySlot')?.setValue(this.timeslots[0]['refid'])
           this.ChangeDetectorRef.markForCheck()
         } else {
 
@@ -582,7 +592,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id)
     this.orderForm.get('products')?.setValue(this.cartItems)
 
-    if (!this.orderForm.valid) {      
+    if (!this.orderForm.valid) {
       this.isSubmitted = true
       return;
     }

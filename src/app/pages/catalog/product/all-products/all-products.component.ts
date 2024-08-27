@@ -7,6 +7,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 @Component({
   selector: 'app-all-products',
@@ -35,6 +36,7 @@ export class AllProductsComponent implements OnInit {
   activeAccordion: string = 'category';
   isFilters: boolean = false;
   totalResults: any;
+  productBrand: FormControl = new FormControl('');
   totalPages: any;
   productCategory: FormControl = new FormControl('');
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -55,9 +57,11 @@ export class AllProductsComponent implements OnInit {
     { key: 'Visible products', value: '0', label: 'visibility' },
     { key: 'Invisible products', value: '1', label: 'visibility' }
   ]
+  brands: Array<any> = []
   base: string = environment.base
 
   constructor(
+    private BrandService: BrandService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ProductService: ProductService,
     private CategoryService: CategoryService,
@@ -87,6 +91,15 @@ export class AllProductsComponent implements OnInit {
       }
     })
 
+    this.BrandService.getBrand().subscribe({
+      next: (response: any) => {
+        if (response.errorCode == 0) {
+          this.brands = response?.result
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (error: any) => { }
+    })
+
     this.getProducts()
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
@@ -112,6 +125,7 @@ export class AllProductsComponent implements OnInit {
   getProducts() {
     let categoryItems = this.categoryItems.map((item: any) => item.catid)
     const payload = {
+      brand: this.productBrand?.value,
       name: this.name?.value,
       isActive: this.isActive?.value,
       isFeatured: this.isFeatured?.value,
@@ -160,6 +174,7 @@ export class AllProductsComponent implements OnInit {
     this.stock?.setValue('')
     this.sort?.setValue('')
     this.name?.setValue('')
+    this.productBrand?.setValue('')
     this.page = 1
     this.limit = 20
     this.categoryItems = []

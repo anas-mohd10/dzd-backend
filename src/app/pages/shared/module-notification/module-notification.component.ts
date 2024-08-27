@@ -27,9 +27,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   form: FormGroup
   isInvalid: boolean;
 
-  ngOnChanges(changes: SimpleChanges): void {
-
-  }
+  ngOnChanges(changes: SimpleChanges): void {  }
 
   constructor(
     private BsModalService: BsModalService,
@@ -67,8 +65,6 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       title: new FormControl('Finish your shopping now'),
       message: new FormControl('Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone')
     })
-
-
 
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),
