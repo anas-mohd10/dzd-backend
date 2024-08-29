@@ -2,7 +2,7 @@
     <div class="w-100 d-flex align-items-center justify-content-between">
         <div class="fs-3 fw-bolder">Design your store</div>
 
-        <div class="d-flex align-items-center justify-content-start" *ngIf="!hideTopbarDetails">
+        <div class="d-flex align-items-center justify-content-start" *ngIf="showDevices.includes(page)">
             <div class="device rounded cursor-pointer me-1 d-flex align-items-center justify-content-center border border-secondary"
                 [ngClass]="{'bg-primary text-white border-none': deviceType == 'desktop'}"
                 (click)="toggleDevice('desktop')">

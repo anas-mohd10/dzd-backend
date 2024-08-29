@@ -40,7 +40,6 @@ export class CatalogComponent implements OnInit {
     { title: 'Magestic Mosaic', type: 'magestic-mosaic', icon: 'assets/widgets/rush-lake.png', description: 'The following widget can be used to show images within a particular category.The widget contains images.' },
     { title: 'Glamour Glaze', type: 'glamour-glaze', icon: 'assets/widgets/volta-lake.png', description: 'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button.' },
     { title: 'Dazzle Design', type: 'dazzle-design', icon: 'assets/widgets/1x4.png', description: 'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.' },
-    { title: 'Grandeur Gallery', type: 'grandeur-gallery', icon: 'assets/widgets/grandeur-gallery.png', description: 'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.' },
     { title: 'Celestial Canvas', type: 'celestial-canvas', icon: 'assets/widgets/celestial-canvas.png', description: 'This widget is used to showcase banner carousel and video' },
     { title: 'Blogs', type: 'blogs', icon: 'assets/widgets/blogs.png', description: 'The following widget can be used to display the recent blogs, or categories.The widget contains image and white transluscent descriptive box.The description box contain text and button.' },
     { title: 'Custom HTML', type: 'html', icon: 'assets/widgets/custom-html.png', description: '' },
@@ -86,11 +85,12 @@ export class CatalogComponent implements OnInit {
   focusedWidget: WidgetProps = this.widgets[0];
   updateRef: BsModalRef<unknown>;
   deleteRef: BsModalRef<unknown>;
+  count: number = 0
   widgetItems: any;
   widgetDetailsRef: BsModalRef<unknown>;
   widgetDetails: any;
   widgetImageTypes: Array<any> = ["image-slider", "classic-banners", "magestic-mosaic", "glamour-glaze", "dazzle-design", "grandeur-gallery", "celestial-canvas"]
-  widgetImages: any;
+  widgetImages: Array<any> = [];
   widgetBlogs: any;
   settings: any
   collections: Array<any> = []
@@ -99,6 +99,7 @@ export class CatalogComponent implements OnInit {
   products: Array<any> = []
   testimonials: Array<any> = []
   staticPages: Array<any> = []
+  designRef?: BsModalRef
   productsAdThumbnail: string
   productAd: FormControl = new FormControl(null)
   productsAdRedirection: FormControl = new FormControl("")
@@ -121,7 +122,6 @@ export class CatalogComponent implements OnInit {
     placeholder: 'Enter text here...',
     defaultParagraphSeparator: '',
     defaultFontName: '',
-    
     defaultFontSize: '',
     fonts: [
       { class: 'arial', name: 'Arial' },
@@ -197,7 +197,7 @@ export class CatalogComponent implements OnInit {
     { key: "Open static page", value: "static-pages" },
     { key: "Search filters", value: "search-filters" },
   ]
-
+  catalogItems: Array<any> = []
   searchRedirections: Array<string> = ["category", "brands", "collection", "products", "catalog", "blogs"]
 
   constructor(
@@ -245,36 +245,43 @@ export class CatalogComponent implements OnInit {
     this.saleThumbnailDetails = ""
   }
 
-    //Testimonial widget operations
-    getTestimonials() {
-      if (!this.testimonialKeyword.valid) {
-        this.testimonials = []
-        return
-      }
-  
-      this.TestimonialService.searchTestimonials({ keyword: this.testimonialKeyword.value, isActive: true }, 1, 20).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.testimonials = res?.result?.data
-            this.ChangeDetectorRef.markForCheck()
-          } else {
-            this.Toast.error(res.message)
-          }
-        }, error: (err: any) => {
-  
+  closeDesign() {
+    this.designRef?.hide();
+    this.widgetImages = []
+    this.widgetImagePreviewIndex = null
+    this.widgetImagePreview = null
+  }
+
+  //Testimonial widget operations
+  getTestimonials() {
+    if (!this.testimonialKeyword.valid) {
+      this.testimonials = []
+      return
+    }
+
+    this.TestimonialService.searchTestimonials({ keyword: this.testimonialKeyword.value, isActive: true }, 1, 20).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.testimonials = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res.message)
         }
-      })
-    }
-  
-    toggleTestimonials(testimonial: any) {
-      let isExists = this.widgetTestimonials.some((item: any) => item._id == testimonial._id)
-      if (isExists) {
-        this.widgetTestimonials = this.widgetTestimonials.filter(item => item._id != testimonial._id)
-      } else {
-        this.widgetTestimonials.push(testimonial)
+      }, error: (err: any) => {
+
       }
+    })
+  }
+
+  toggleTestimonials(testimonial: any) {
+    let isExists = this.widgetTestimonials.some((item: any) => item._id == testimonial._id)
+    if (isExists) {
+      this.widgetTestimonials = this.widgetTestimonials.filter(item => item._id != testimonial._id)
+    } else {
+      this.widgetTestimonials.push(testimonial)
     }
-    //Testimonial widget operations
+  }
+  //Testimonial widget operations
 
   //Smart tiles widgets
   getTileProducts() {
@@ -332,8 +339,10 @@ export class CatalogComponent implements OnInit {
   toggleTileProducts(productDetails: any) {
     let isExists = this.smartTileProducts.some((item: any) => item._id == productDetails._id)
     if (isExists) {
+      this.Toast.info("Product removed from the list")
       this.smartTileProducts = this.smartTileProducts.filter(item => item._id != productDetails._id)
     } else {
+      this.Toast.success("Product added to the list")
       this.smartTileProducts.push(productDetails)
     }
     this.widgetCollection.setValue("")
@@ -368,19 +377,96 @@ export class CatalogComponent implements OnInit {
 
 
   //Add widgets starts here
-  openWidgets(template: TemplateRef<any>) {
-    this.widgetsRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
-  }
 
   searchWidgets(event: any) {
     this.homeWidgets = this.widgets.filter((widget: any) => widget.title.toLowerCase().startsWith(this.homeWidgetKeyword?.value.toLowerCase()))
   }
 
+  onBackgroundTriggered(event: any) {
+    this.designForm.get("backgroundImage")?.setValue(event._id)
+  }
+
+  openDesign(template: TemplateRef<any>, widget: any) {
+    this.designRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true });
+    this.CatalogService.catalogWidgetDetails(widget?.refid).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.widgetDetails = res?.result;
+          if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
+            for (let widgetImage of this.widgetDetails?.widgetImages) {
+              this.widgetImages.push({
+                url: widgetImage?.media,
+                title: widgetImage?.title,
+                description: widgetImage?.description,
+                button: widgetImage?.button,
+                redirection: widgetImage?.redirection
+              })
+            }
+            this.widgetImagePreview = this.widgetImages?.length > 0 ? this.widgetImages[0] : null
+            this.widgetImagePreviewIndex = 0
+            this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : ""
+            this.widgetForm.patchValue(this.widgetImagePreview)
+          }
+          if (this.widgetDetails?.widgetType == 'blog') {
+            this.widgetBlogs = this.widgetDetails?.blogs
+            this.getBlogs('')
+          }
+          if (this.widgetDetails?.widgetType == 'testimonial-cards') {
+            this.widgetTestimonials = this.widgetDetails?.testimonials
+          }
+          ['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
+          if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
+          this.form.patchValue(this.widgetDetails);
+
+          if (this.widgetDetails?.isTimeBoundWidget == true) {
+            this.form.patchValue({
+              widgetStartTime: this.widgetDetails?.widgetStartTime?.split('T')[0],
+              widgetEndTime: this.widgetDetails?.widgetEndTime?.split('T')[0],
+            })
+          }
+
+          if (this.widgetDetails?.titleImage) {
+            this.titleThumbnailDetails = this.widgetDetails?.titleImage?.path
+          }
+          this.saleForm.patchValue(this.widgetDetails)
+          if (this.widgetDetails?.saleThumbnail) {
+            this.saleThumbnailDetails = this.widgetDetails?.saleThumbnail?.path
+            this.saleForm.get("saleThumbnail")?.setValue(this.widgetDetails?.saleThumbnail?._id)
+          }
+          this.widgetDetails.collection ? this.widgetCollection.setValue(this.widgetDetails?.collection?._id) : null
+          if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
+            this.widgetDetails.products.length > 0 ? this.selectedProductType = 'products' : this.selectedProductType = 'collections'
+          }
+          if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
+            this.hyperlinkheroForm.patchValue(this.widgetDetails)
+            this.hyperLinkHeroThumbnail = this.widgetDetails?.hyperLinkThumbnail?.path
+          }
+          if (this.widgetDetails?.widgetType == 'insight-hub') {
+            this.insightHubForm.patchValue(this.widgetDetails)
+            this.insightHubThumbnailSmall = this.widgetDetails?.insightHubThumbnailSmall?.path
+            this.insightHubThumbnailLarge = this.widgetDetails?.insightHubThumbnailLarge?.path
+          }
+          this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
+          this.designForm.patchValue(this.widgetDetails?.styles)
+          this.ChangeDetectorRef.markForCheck()
+          if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+            this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail
+            this.productAd?.setValue(this.widgetDetails?.productsAdThumbnail)
+            this.productsAdRedirection?.setValue(this.widgetDetails?.productsAdRedirection)
+          }
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
   focusWidget(widget: WidgetProps) {
     this.focusedWidget = widget;
   }
-
-  
 
   onTimeBoundSwitch(event: { toggleState: boolean, switchId: string }) {
     this.form.get('isTimeBoundWidget')?.setValue(event.toggleState)
@@ -407,10 +493,6 @@ export class CatalogComponent implements OnInit {
         this.form.get('hovering.mobile')?.setValue(event.toggleState);
         break;
     }
-  }
-
-  closeWidgets() {
-    this.widgetsRef?.hide();
   }
   //Add widgets ends here
 
@@ -464,6 +546,9 @@ export class CatalogComponent implements OnInit {
       case 'collection':
         this.getCollections()
         break
+      case 'catalog':
+        this.getCatalogPages()
+        break
       case 'static-pages':
         this.getStaticPages()
         break
@@ -474,6 +559,8 @@ export class CatalogComponent implements OnInit {
     }
   }
 
+
+  // Get redirection items starts here --------------------------
   getCollections() {
     this.CollectionService.getActiveCollection().subscribe({
       next: (res: any) => {
@@ -531,6 +618,29 @@ export class CatalogComponent implements OnInit {
     })
   }
 
+  getCatalogPages() {
+    this.CatalogService.getCatalogs().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.catalogItems = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+
+  getBlogs(query: string) {
+    this.BlogService.blogs({ keyword: query, page: 1, limit: 100 }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.blogs = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
+  }
+  // Get redirection items ends here --------------------------
+
   continueRedirectionQuery() {
     switch (this.widgetForm.value.redirectionType) {
       case 'blogs':
@@ -547,6 +657,9 @@ export class CatalogComponent implements OnInit {
         break
       case 'category':
         this.widgetForm.get('redirection')?.setValue("/products/" + this.redirectionQuery.value)
+        break
+      case 'catalog':
+        this.widgetForm.get('redirection')?.setValue("/catalogs/" + this.redirectionQuery.value)
         break
       case 'brand':
         this.widgetForm.get('redirection')?.setValue("/brands/" + this.redirectionQuery.value)
@@ -577,6 +690,18 @@ export class CatalogComponent implements OnInit {
     this.updateRef?.hide()
     this.catalogForm.reset()
     this.catalogForm.get("isCopy")?.setValue(false)
+  }
+
+  isExpired(date: string) {
+    return new Date(date) < new Date()
+  }
+
+  isScheduled(date: string) {
+    return new Date(date) > new Date()
+  }
+
+  isRunning(startDate: string, endDate: string) {
+    return new Date(startDate) < new Date() && new Date(endDate) > new Date()
   }
 
   updateCatalog() {
@@ -625,8 +750,15 @@ export class CatalogComponent implements OnInit {
   //Catalog delete ends here
 
   //Add widgets starts here
+  openWidgets(template: TemplateRef<any>) {
+    this.widgetsRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
+  }
 
-  addWidget(widget: WidgetProps) {
+  closeWidgets() {
+    this.widgetsRef?.hide();
+  }
+
+  addCatalogWidget(widget: WidgetProps) {
     this.CatalogService.addCatalogWidget({
       index: this.widgetItems.length,
       widgetName: widget.title,
@@ -636,7 +768,9 @@ export class CatalogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
-          this.getCatalogDetails()
+          this.getCatalogWidgets()
+          this.screenLoad++
+          this.count++
           this.closeWidgets()
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -646,6 +780,29 @@ export class CatalogComponent implements OnInit {
         this.Toast.error(err?.error?.message)
       }
     })
+  }
+
+  getCatalogWidgets() {
+    this.CatalogService.getCatalogDetails(this.catalogPage.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.catalogPageDetails = res?.result?.catalogDetails
+          this.widgetItems = res?.result?.catalogWidgets
+          this.screenLoad++
+          this.count++
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }
+    })
+  }
+
+  openDeleteWidget(template: TemplateRef<any>, widget: any,) {
+    this.confirmedWidget = widget
+    this.confirmRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
   }
   //Add widgets ends here
 
@@ -736,7 +893,7 @@ export class CatalogComponent implements OnInit {
     this.form.reset()
   }
 
-  updateWidget() {
+  updateWidget(type?: string) {
     let widgetPayload = { ...this.form.value, refid: this.widgetDetails?.refid }
 
     if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
@@ -747,19 +904,82 @@ export class CatalogComponent implements OnInit {
       widgetPayload['widgetImages'] = widgetImages
     } else if (this.widgetDetails?.widgetType == 'blogs') {
       let widgetBlogs = []
+    } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
+      let widgetTestimonials = this.widgetTestimonials.map((testimonial: any) => testimonial._id)
+      widgetPayload['testimonials'] = widgetTestimonials
+    } else if (this.widgetDetails?.widgetType == 'sale-timer') {
+      widgetPayload = {
+        visibility: this.form.get("visibility")?.value,
+        refid: this.widgetDetails?.refid,
+        widgetType: this.widgetDetails?.widgetType,
+        ...this.saleForm.value,
+        ...this.form.value,
+        startDate: this.saleForm.get("startDate")?.value ?
+          this.saleForm.get('startDate')?.value :
+          new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+        endDate: this.saleForm.get("endDate")?.value ?
+          this.saleForm.get("endDate")?.value :
+          new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
+      }
+    } else if (this.widgetProductTypes.includes(this.widgetDetails.widgetType)) {
+      widgetPayload = {
+        visibility: this.form.get("visibility")?.value,
+        refid: this.widgetDetails?.refid,
+        ...this.form.value,
+        widgetType: this.widgetDetails?.widgetType,
+        products: this.widgetCollection.value ? [] : this.smartTileProducts.map((product) => product?._id),
+        collections: this.widgetCollection.value ? this.widgetCollection.value : null
+      }
+    }
 
+    type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
+
+    if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+      widgetPayload['productsAdThumbnail'] = this.productAd.value ? this.productAd.value : null
+      widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value
+    }
+
+    if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
+      widgetPayload = { ...widgetPayload, ...this.hyperlinkheroForm.value }
+    }
+
+    if (this.widgetDetails?.widgetType == 'insight-hub') {
+      widgetPayload = { ...widgetPayload, ...this.insightHubForm.value }
     }
 
     this.CatalogService.updateCatalogWidget(widgetPayload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
-          this.getCatalogDetails()
+          this.getCatalogWidgets()
+          this.count++
+          this.tileProductsInput.setValue('')
+          this.tileProducts = []
+          this.smartTileProducts = []
           this.widgetImages = []
+          this.widgetDetailsRef?.hide()
+          this.screenLoad++
           this.widgetImagePreviewIndex = null
           this.widgetImagePreview = null
           this.form.reset()
-          this.closeWidgetUpdate()
+          this.widgetForm.patchValue({
+            "title": "",
+            "redirection": "",
+            "redirectionType": "",
+            "buttonText": "",
+            "buttonRedirection": "",
+            "redirectionQuery": ""
+          })
+          this.testimonialKeyword.setValue("")
+          this.widgetTestimonials = []
+          this.designForm.patchValue({
+            backgroundColor: '#ffffff', backgroundImage: null, marginLeft: 0,
+            marginTop: 0, marginRight: 0, marginBottom: 0,
+            paddingTop: 0, paddingBottom: 0, paddingLeft: 0,
+            paddingRight: 0, borderRadius: 0, borderWidth: 0
+          })
+          this.closeUpdate()
+          this.closeDesign()
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -787,7 +1007,7 @@ export class CatalogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
-          this.getCatalogDetails()
+          this.getCatalogWidgets()
           this.closeConfirmation()
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -812,11 +1032,12 @@ export class CatalogComponent implements OnInit {
   }
 
   duplicateWidget() {
-    this.CatalogService.duplicateCatalogWidget({ widget: this.duplicatedWidget?.refid, index: this.widgetItems.length }).subscribe({
+    this.CatalogService.duplicateCatalogWidget({ 
+      widget: this.duplicatedWidget?.refid, index: this.widgetItems.length }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
-          this.getCatalogDetails()
+          this.getCatalogWidgets()
           this.closeDuplication()
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -829,16 +1050,20 @@ export class CatalogComponent implements OnInit {
   }
   //Duplicate widgets ends here
 
+  //Rearrange widgets ends here
   reorderWidgets() {
     let widgets = this.widgetItems.map((widget: { widgetType: any; refid: any; }, index: any) => {
       return { widgetType: widget?.widgetType, refid: widget?.refid, index: index }
     })
 
-    this.CatalogService.reorderWidgets({ widgets: widgets }).subscribe({
+    this.CatalogService.reorderWidgets({
+      catalogId: this.catalogPageDetails?._id,
+      widgets: widgets
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
-          this.getCatalogDetails()
+          this.getCatalogWidgets()
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -848,6 +1073,7 @@ export class CatalogComponent implements OnInit {
       }
     })
   }
+  //Rearrange widgets ends here
 
   mediaTriggered(event: any) {
     this.widgetImages[this.widgetImagePreviewIndex] = { ...this.widgetImagePreview, url: event }
@@ -903,24 +1129,8 @@ export class CatalogComponent implements OnInit {
       }, complete: () => {
         if (this.catalogPages.length > 0) {
           this.catalogPage.setValue(this.catalogPages[0].slug)
-          this.getCatalogDetails()
+          this.getCatalogWidgets()
         }
-      }
-    })
-  }
-
-  getCatalogDetails() {
-    this.CatalogService.getCatalogDetails(this.catalogPage.value).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.catalogPageDetails = res?.result?.catalogDetails
-          this.widgetItems = res?.result?.catalogWidgets
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.Toast.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.Toast.error(err?.error?.message)
       }
     })
   }
@@ -936,7 +1146,7 @@ export class CatalogComponent implements OnInit {
       marginBottom: new FormControl(0),
       elevation: new FormControl(0),
       backgroundColor: new FormControl("#ffffff"),
-      backgroundImage: new FormControl(""),
+      backgroundImage: new FormControl(null),
       paddingLeft: new FormControl(0),
       paddingRight: new FormControl(0),
       paddingTop: new FormControl(0),
@@ -1045,17 +1255,6 @@ export class CatalogComponent implements OnInit {
       buttonText: new FormControl(""),
       buttonRedirection: new FormControl(""),
       redirectionQuery: new FormControl("")
-    })
-  }
-
-  getBlogs(query: string) {
-    this.BlogService.blogs({ keyword: query, page: 1, limit: 100 }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogs = res?.result?.data
-          this.ChangeDetectorRef.markForCheck()
-        }
-      }
     })
   }
 }

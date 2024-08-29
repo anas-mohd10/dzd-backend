@@ -47,4 +47,9 @@ export class CsvService {
     const url = this.commonService.getFullUrl(csvEndpoints.fileImports);
     return this.http.post(`${url}`, query)
   }
+
+  downloadImportLog(fileId: string){
+    const url = this.commonService.getFullUrl(csvEndpoints.downloadImportLog + `/${fileId}`);
+    return this.http.get(`${url}`)
+  }
 }

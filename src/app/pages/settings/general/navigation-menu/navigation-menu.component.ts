@@ -397,6 +397,11 @@ export class NavigationMenuComponent implements OnInit {
     this.menuItemIcon = event?.path
   }
 
+  removeMegaMenuItemIcon() {
+    this.menuItemForm.get('icon')?.setValue(null)
+    this.menuItemIcon = ''
+  }
+
   ngOnInit(): void {
     this.getMegaMenu()
 
@@ -940,6 +945,7 @@ export class NavigationMenuComponent implements OnInit {
 
   editAdvancedMenuItem(index: number) {
     this.activeAdvancedMenuItemIndex = index
+    this.menuItemIcon = this.advancedMenuItems[index]?.icon
     this.menuItemForm.patchValue(this.advancedMenuItems[index])
   }
 

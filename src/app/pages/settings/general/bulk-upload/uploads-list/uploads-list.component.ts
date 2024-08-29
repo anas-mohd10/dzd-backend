@@ -232,4 +232,14 @@ export class UploadsListComponent implements OnInit {
       }
     })
   }
+
+  downloadImportLog(fileId: string) {
+    this.CsvService.downloadImportLog(fileId).subscribe({
+      next: (res: any) => {
+        
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
 }

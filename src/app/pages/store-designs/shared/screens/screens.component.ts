@@ -9,6 +9,8 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 export class ScreensComponent implements OnInit, OnChanges {
   @Input() device?: string;
   @ViewChild("frame") frame: ElementRef | undefined;
+  @Input() page: string = '';
+  @Input()catalogId?: string = '';
   settings: any;
   websiteLink: SafeResourceUrl;
   isLoading: boolean = true; // Flag to track loading state
@@ -21,8 +23,11 @@ export class ScreensComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.load) {
+    if (changes.load) {      
       this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=preview`);
+      if(this.page == 'catalog') {
+        this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}/catalogs/${this.catalogId}`);
+      }
       this.reloadFrame()
     }
   }
@@ -33,6 +38,11 @@ export class ScreensComponent implements OnInit, OnChanges {
         if (res?.errorCode == 0) {
           this.settings = res.result;
           this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=draft`);
+          console.log(this.catalogId);
+          
+          if(this.page == 'catalog') {
+            this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}/catalogs/${this.catalogId}`);
+          }
           this.ChangeDetectorRef.markForCheck()
         } else { }
       }, error: (err: any) => { },
