@@ -3,7 +3,8 @@ export const reportsEndpoints = {
     customerReport: '/customer-report',
     customerOrderReport: '/customerOrderReport',
     detailedOrderReport: '/detailed-order-report',
-    productReport: '/product-report',
+    productReport: '/productReport',
+    unfullfilledStockReport: '/unfullfilledStockReport',
     orderReport: '/order-report',
     productOrderReport: '/product-order-report',
     salesReport: '/sales-report'

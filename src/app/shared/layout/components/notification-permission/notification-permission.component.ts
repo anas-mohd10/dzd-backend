@@ -38,7 +38,7 @@ export class NotificationPermissionComponent implements OnInit {
     try {
       this.nextStep = true
       let messaging = getMessaging(this.fbApp);
-      getToken(messaging, { vapidKey: environment.firebaseConfig.vapidKey }).then((currentToken) => {
+      getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
         this.disposePrompt()
         if (currentToken) {
           this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({

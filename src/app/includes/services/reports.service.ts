@@ -28,6 +28,16 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
+  productReport() {
+    const url = this.commonService.getFullUrl(reportsEndpoints.productReport);
+    return this.http.get(`${url}`);
+  }
+
+  unfullfilledStockReport() {
+    const url = this.commonService.getFullUrl(reportsEndpoints.unfullfilledStockReport);
+    return this.http.get(`${url}`);
+  }
+
   lowStockReport() {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.lowstockReport);
     return this.http.get(`${url}`);

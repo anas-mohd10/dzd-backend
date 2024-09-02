@@ -125,6 +125,26 @@ export class ReportsListComponent implements OnInit {
           }
         })
         break
+      case 'product':
+        this.ReportsService.productReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
+      case 'unfullfilledStock':
+        this.ReportsService.unfullfilledStockReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
       case 'abandonedorder':
         this.ReportsService.abandonedOrderReport().subscribe({
           next: (res: any) => {

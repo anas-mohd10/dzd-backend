@@ -41,6 +41,7 @@ import { InternationalisationComponent } from './settings/general/internationali
 import { SmsSettingsComponent } from './settings/general/sms-settings/sms-settings.component';
 import { AuthenticationComponent } from './settings/general/authentication/authentication.component';
 import { AppKeysComponent } from './settings/general/app-keys/app-keys.component';
+import { CartSettingsComponent } from './settings/general/cart-settings/cart-settings.component';
 
 export const Routing: Routes = [
   {
@@ -423,6 +424,10 @@ export const Routing: Routes = [
       }, {
         path: 'wishlist',
         loadChildren: () => import('./sales/wishlist/wishlist.module').then((m) => m.WishlistModule),
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'cart-settings',
+        component: CartSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'more-offers',

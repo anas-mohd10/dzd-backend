@@ -1,0 +1,62 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Cart Settings</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.cartSettings }}">Cart Settings</a>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+            Save Changes
+        </button>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 fs-5">Mini Cart</div>
+                <div class="col-lg-8">
+                    <app-switch [isToggledProps]="form.get('isMiniCart')?.value" [switchId]="'isMiniCart'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 fs-5">Show Recently Bought Together</div>
+                <div class="col-lg-8">
+                    <app-switch [isToggledProps]="form.get('isRecentlyBought')?.value" [switchId]="'isRecentlyBought'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 fs-5">Show Top Selling Products</div>
+                <div class="col-lg-8">
+                    <app-switch [isToggledProps]="form.get('isTopSelling')?.value" [switchId]="'isTopSelling'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 fs-5">Show Top Rated Products</div>
+                <div class="col-lg-8">
+                    <app-switch [isToggledProps]="form.get('isTopRated')?.value" [switchId]="'isTopRated'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

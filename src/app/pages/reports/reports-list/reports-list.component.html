@@ -62,19 +62,23 @@
       <div class="fs-4 mt-2">Detailed Order Report</div>
     </a>
 
-    <a class="item rounded d-flex align-items-center gap-2" (click)="exportReport('product')" [href]="exportUrl"
-      target="_blank">
-      <div class="icon p-2 rounded">
-        <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-            stroke-width="1.5" stroke-linejoin="round" />
-          <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-          <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-        </svg>
+    <a class="item rounded" (click)="generateReport('product')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Product Report</div>
+          <p class="text-muted">Get the list of products with details</p>
+        </div>
       </div>
-      <div class="fs-4 mt-2">Products Report</div>
     </a>
 
     <a class="item rounded d-flex align-items-center gap-2" (click)="exportReport('product-order')" [href]="exportUrl"
@@ -92,37 +96,41 @@
       <div class="fs-4 mt-2">Product Order Report</div>
     </a>
 
-    <a class="item rounded d-flex align-items-center gap-2" (click)="generateReport('customerOrder')">
-      <div class="icon p-2 rounded">
-        <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-            stroke-width="1.5" stroke-linejoin="round" />
-          <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-          <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-        </svg>
-      </div>
-      <div>
-        <div class="fs-4 mt-2">Customer Order Report</div>
-        <p class="text-muted">Get the list of customers with the orders details</p>
+    <a class="item rounded" (click)="generateReport('customerOrder')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Customer Order Report</div>
+          <p class="text-muted">Get the list of customers with the orders details</p>
+        </div>
       </div>
     </a>
 
-    <a class="item rounded d-flex align-items-center gap-2" (click)="generateReport('allcustomers')">
-      <div class="icon p-2 rounded">
-        <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-            stroke-width="1.5" stroke-linejoin="round" />
-          <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-          <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-        </svg>
-      </div>
-      <div>
-        <div class="fs-4 mt-2">Customers Report</div>
-        <p class="text-muted">Get the list of current users in the platform</p>
+    <a class="item rounded" (click)="generateReport('allcustomers')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Customers Report</div>
+          <p class="text-muted">Get the list of current users in the platform</p>
+        </div>
       </div>
     </a>
 
@@ -198,6 +206,25 @@
         <div>
           <div class="fs-4 mt-2">No Movement Order Report</div>
           <p class="text-muted">Get orders which have no movement in 24 hours</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="item rounded" (click)="generateReport('unfullfilledStock')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Unfullfilled Stock Report</div>
+          <p class="text-muted">This report lists items or products that have no stock left</p>
         </div>
       </div>
     </a>
