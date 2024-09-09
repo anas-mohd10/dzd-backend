@@ -1,54 +1,32 @@
-$hover: #e3e3e3;
-$white: #ffffff;
-
-.categoryWrapper {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-
-  .categoryCard {
-    padding: 10px;
-    background: #ffffff;
-    border-radius: 10px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    position: relative;
-
-    .editButton {
-      position: absolute;
-      right: 1.25rem;
-      top: 1.25rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      border-radius: 0.5rem;
-
-      &:hover {
-        background: $hover;
-      }
-    }
-
-    img {
-      height: 60px;
-      width: 60px;
-      object-fit: contain;
-      border-radius: 5px;
-    }
-
-    .categoryDetails {
-
-      .category-name {
-        overflow: hidden;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-      }
-    }
-  }
+.btn,
+label {
+    font-weight: 400 !important;
 }
+
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
+ 
+    tbody{
+ 
+       tr{
+ 
+          td{
+             vertical-align: middle;
+          }
+       }
+    }
+ 
+    thead {
+ 
+       tr{
+ 
+          th{
+             font-weight: 400 !important;
+          }
+       }
+       background: #E4E7F4;
+    }
+ }
+ //Table designs

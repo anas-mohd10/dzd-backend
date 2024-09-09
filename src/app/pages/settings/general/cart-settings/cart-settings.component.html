@@ -18,45 +18,61 @@
         </button>
     </div>
 
-    <div class="card my-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-4 fs-5">Mini Cart</div>
-                <div class="col-lg-8">
-                    <app-switch [isToggledProps]="form.get('isMiniCart')?.value" [switchId]="'isMiniCart'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+    <form [formGroup]="form">
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 fs-5">Mini Cart</div>
+                    <div class="col-lg-8">
+                        <app-switch [isToggledProps]="form.get('isMiniCart')?.value" [switchId]="'isMiniCart'"
+                            (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card my-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-4 fs-5">Show Recently Bought Together</div>
-                <div class="col-lg-8">
-                    <app-switch [isToggledProps]="form.get('isRecentlyBought')?.value" [switchId]="'isRecentlyBought'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 fs-5">Show Recently Bought Together</div>
+                    <div class="col-lg-8">
+                        <app-switch [isToggledProps]="form.get('isRecentlyBought')?.value"
+                            [switchId]="'isRecentlyBought'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card my-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-4 fs-5">Show Top Selling Products</div>
-                <div class="col-lg-8">
-                    <app-switch [isToggledProps]="form.get('isTopSelling')?.value" [switchId]="'isTopSelling'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 fs-5">Show Top Selling Products</div>
+                    <div class="col-lg-8">
+                        <app-switch [isToggledProps]="form.get('isTopSelling')?.value" [switchId]="'isTopSelling'"
+                            (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card my-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-4 fs-5">Show Top Rated Products</div>
-                <div class="col-lg-8">
-                    <app-switch [isToggledProps]="form.get('isTopRated')?.value" [switchId]="'isTopRated'" (switchToggled)="onSwitchTriggered($event)"></app-switch>
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 fs-5">Show Top Rated Products</div>
+                    <div class="col-lg-8">
+                        <app-switch [isToggledProps]="form.get('isTopRated')?.value" [switchId]="'isTopRated'"
+                            (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 fs-5">Minimum Cart Purchase</div>
+                    <div class="col-lg-8 form-group">
+                        <input type="text" class="form-control" formControlName="minimumCartAmount">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 
 </div>

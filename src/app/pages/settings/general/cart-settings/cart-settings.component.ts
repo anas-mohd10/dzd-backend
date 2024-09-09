@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -24,6 +24,7 @@ export class CartSettingsComponent implements OnInit {
       isMiniCart: new FormControl(false),
       isRecentlyBought: new FormControl(false),
       isTopSelling: new FormControl(false),
+      minimumCartAmount: new FormControl(0, Validators.pattern('^[0-9]*$')),
       isTopRated: new FormControl(false),
     })
 
@@ -46,6 +47,11 @@ export class CartSettingsComponent implements OnInit {
   }
 
   onSubmit() {
+    if(!this.form.valid){
+      this.HotToastService.error('Please fill appropiate values in the form')
+      return
+    }
+
     this.AppSettingsService.updateSettings(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

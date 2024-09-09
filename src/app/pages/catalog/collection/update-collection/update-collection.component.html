@@ -2,7 +2,7 @@
   <div class="page-header d-flex align-items-center justify-content-between">
     <div>
       <div class="page-title">
-        <h1 class="fw-bolder">Update Collection</h1>
+        <h1 class="fw-bold">Update Collection</h1>
       </div>
       <div>
         <ul class="breadcrumb">
@@ -144,7 +144,7 @@
                   </ng-container>
 
                   <ng-container *ngIf="productDetails.length > 0">
-                    <div class="fs-7 mt-10 mb-3">Drag the products to rearrange there order in the collection.</div>
+                    <div class="fs-7 my-3">Drag the products to rearrange there order in the collection.</div>
                     <div class="addedProductsWrapper">
                       <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
                         (cdkDropListDropped)="drop($event)">
@@ -161,7 +161,7 @@
                               <img class="product-image" src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}">
                             </div>
                             <div class="name fs-6">{{product?.name}}</div>
-                            <div class="sku">SKU: {{product?.sku}}</div>
+                            <div class="sku rounded-pill px-1 bg-secondary">{{product?.sku}}</div>
                           </div>
                         </div>
                       </div>

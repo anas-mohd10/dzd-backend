@@ -16,6 +16,8 @@ export class CustomersListComponent implements OnInit {
   totalResults: number = 0
   customers: Array<any> = []
   limit: number = 40
+  regdType: FormControl = new FormControl('')
+  regdTypes: Array<any> = ['Facebook', 'Google', 'Email', 'Apple', 'Admin']
   page: number = 1
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
@@ -30,8 +32,9 @@ export class CustomersListComponent implements OnInit {
     this.getCustomers()
   }
 
-  clearFilters(){
+  clearFilters() {
     this.keyword.setValue('')
+    this.regdType.setValue('')
     this.isActive.setValue('')
     this.getCustomers()
     this.page = 1
@@ -49,6 +52,7 @@ export class CustomersListComponent implements OnInit {
       this.customersService.searchCustomers({
         keyword: this.keyword.value,
         limit: this.limit,
+        regdType: this.regdType.value,
         page: this.page,
         isActive: this.isActive.value
       }).subscribe((res: any) => {

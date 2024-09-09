@@ -44,38 +44,49 @@
     </div>
   </div>
 
-  <div class="categoryWrapper">
-    <ng-container *ngFor="let category of categories">
-      <div class="categoryCard">
-        <div class="editButton">
-          <div routerLink="{{ appRoute.category.UPDATE_CATEGORY }}" [queryParams]="{ category: category?.slug }">
-            <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-              stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-            </svg>
-          </div>
-        </div>
-
-        <img height="60" width="60" class="rounded me-3" src='{{base}}{{category?.thumbnail?.path}}'
-          alt="{{category?.name}}" onerror="this.src = 'assets/images/default.png'" />
-
-        <div class="categoryDetails h-100 d-flex flex-column justify-content-between">
-          <div class="fs-5 category-name fw-bolder">{{category?.name}}</div>
-          <div class="d-flex mt-2">
-            <div class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
-              {{category?.isActive ? 'Active' : 'Inactive'}}
+  <div>
+    <table class="table">
+      <thead>
+        <th class="p-2">Name</th>
+        <th class="p-2">Status</th>
+        <th class="p-2">&nbsp;</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories">
+          <td>
+            <div class="d-flex align-items-center gap-2 justify-content-start">
+              <img height="40" width="40" class="rounded border border-secondary"
+                src="{{base}}{{category?.thumbnail?.path}}" alt="{{category?.name}}"
+                onerror="this.src = 'assets/images/default.png'" />
+              <div>{{category?.name}}</div>
             </div>
-          </div>
-        </div>
-      </div>
-    </ng-container>
+          </td>
+          <td>
+            <span class="fs-6 me-1 p-1 alert alert-success" [ngClass]="{'alert-danger': !category?.isActive}">
+              {{category?.isActive ? 'Active' : 'Inactive'}}
+            </span>
+          </td>
+          <td>
+            <div class="cursor-pointer" routerLink="{{appRoute.category.UPDATE_CATEGORY}}"
+              [queryParams]="{'category': category.slug}">
+              <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                </path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="categories.length == 0">
+          <td colspan="3">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
-  <ng-container *ngIf="categories.length == 0">
-    <app-no-results></app-no-results>
-  </ng-container>
 
   <div class="my-4">
     <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"

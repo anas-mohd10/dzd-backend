@@ -1,259 +1,32 @@
-$hover: #e3e3e3;
-$grey: #888888;
-$white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00bdab;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
-
-label,
-input[type=button],
-.btn-secondary,
-.btn-primary {
-  font-weight: normal !important;
+.btn,
+label {
+    font-weight: 400 !important;
 }
 
-.categoryWrapper {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-
-  .categoryCard {
-    padding: 10px;
+//Table designs
+.table {
     background: #ffffff;
-    border-radius: 10px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    position: relative;
-
-    .editButton {
-      position: absolute;
-      right: 1.25rem;
-      top: 1.25rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      border-radius: 0.5rem;
-
-      &:hover {
-        background: $hover;
-      }
+    font-size: 15px;
+ 
+    tbody{
+ 
+       tr{
+ 
+          td{
+             vertical-align: middle;
+          }
+       }
     }
-
-    img{
-      height: 60px;
-      width: 60px;
-      object-fit: contain;
-      border-radius: 5px;
+ 
+    thead {
+ 
+       tr{
+ 
+          th{
+             font-weight: 400 !important;
+          }
+       }
+       background: #E4E7F4;
     }
-
-    .categoryDetails {
-
-      .category-name {
-        overflow: hidden;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-      }
-
-      .featured {
-        background: #ddfffc;
-        color: #00bdab;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-
-      .activeStatus {
-        background: #d9fff4;
-        color: #00A676;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-
-      .attributesBtn {
-        cursor: pointer;
-      }
-    }
-  }
-}
-
-.filteringWrapper {
-  .filtering {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    gap: 8px;
-
-    span {
-      color: #8B909A;
-      line-height: 18px;
-    }
-
-    select {
-      border: 1px solid #E8E8E8;
-      border-radius: 6px;
-      padding: 5px;
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .paginationBefore,
-    .paginationNext {
-      height: 1.875rem;
-      width: 1.875rem;
-      border-radius: 0.9375rem;
-      display: grid;
-      place-items: center;
-      background: $background;
-      cursor: pointer;
-
-      &.disabled {
-        opacity: 0.5;
-        pointer-events: none;
-      }
-    }
-
-    .paginationPage {
-      margin: 0 0.625rem;
-    }
-  }
-}
-
-.attributeModal {
-  min-height: 25rem;
-
-  .more {
-    cursor: pointer;
-  }
-
-  .attributesWrapper {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.625rem;
-
-    .attributeCard {
-      padding: 10px;
-      background: #ffffff;
-      border: 1px solid #e2e2e2;
-      border-radius: 10px;
-      position: relative;
-
-      .editButton {
-        position: absolute;
-        right: 0.75rem;
-        top: 0.75rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        border-radius: 0.5rem;
-
-        &:hover {
-          background: $hover;
-        }
-      }
-
-      .featured {
-        background: #ddfffc;
-        color: #00bdab;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-
-      .activeStatus {
-        background: #d9fff4;
-        color: #00A676;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-
-      .inactiveStatus {
-        background: #ffd9d9;
-        color: #a60000;
-        border-radius: 1.25rem;
-        padding: 0 0.625rem;
-        width: max-content;
-      }
-    }
-  }
-}
-
-.manageAttributeModal {
-
-  .textWrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.625rem;
-
-    .textCard {
-      background: #ddfffc;
-      color: #00bdab;
-      width: max-content;
-    }
-  }
-
-  .colorWrapper {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.625rem;
-
-    .colorCard {
-      border-radius: 0.375rem;
-      height: 2.5rem;
-      position: relative;
-
-      .maskOverlay {
-        position: absolute;
-        right: 0;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        border-radius: 0 0.375rem 0.375rem 0;
-
-        .attributeRemoveIcon {
-          background: none;
-          color: $white;
-        }
-      }
-    }
-  }
-}
-
-.attributeRemoveIcon {
-  height: 1.875rem;
-  width: 1.875rem;
-  border-radius: 0.9375rem;
-  display: grid;
-  place-items: center;
-  background: $white;
-  margin: 0 0 0 0.625rem;
-  cursor: pointer;
-  color: inherit;
-}
+ }
+ //Table designs

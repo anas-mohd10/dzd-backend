@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { csvEndpoints } from 'src/app/config/endpoints';
 import { appRoutes } from 'src/app/config/routes';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
@@ -10,6 +11,7 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { CsvService } from 'src/app/includes/services/csv.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-uploads-list',
@@ -49,6 +51,7 @@ export class UploadsListComponent implements OnInit {
   ]
   isSubmitting: boolean = false
   createdAt: string;
+  baseUrl = `${environment.apiUrl}/${csvEndpoints.downloadImportLog}/`
 
   constructor(
     private CsvService: CsvService,
@@ -236,7 +239,7 @@ export class UploadsListComponent implements OnInit {
   downloadImportLog(fileId: string) {
     this.CsvService.downloadImportLog(fileId).subscribe({
       next: (res: any) => {
-        
+        this.HotToastService.success(res?.message || "Downloaded successfully")
       }, error: (err: any) => {
         this.HotToastService.error(err?.error?.message)
       }

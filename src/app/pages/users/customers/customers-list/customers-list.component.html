@@ -26,17 +26,24 @@
    <div class="card my-4">
       <div class="card-body">
          <div class="row d-flex justify-content-end align-items-end">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                <label class="form-label">&nbsp;</label>
                <input type="text" class="form-control" placeholder="Search customers here" [formControl]="keyword"
                   (ngModelChange)="getCustomers()">
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                <label class="fs-6 mb-1">Status</label>
                <select class="form-select fs-6 text-dark" [formControl]="isActive" (change)="getCustomers()">
                   <option value="" disabled>-- Select an option --</option>
                   <option value=false>Inactive</option>
                   <option value=true>Active</option>
+               </select>
+            </div>
+            <div class="col-lg-3">
+               <label class="fs-6 mb-1">Methods</label>
+               <select class="form-select fs-6 text-dark" [formControl]="regdType" (change)="getCustomers()">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option *ngFor="let regdType of regdTypes" value="{{regdType}}">{{regdType}}</option>
                </select>
             </div>
             <div class="col-lg-2">
@@ -52,7 +59,7 @@
          <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Id</th>
+            <th>ID</th>
             <th>Mobile</th>
             <th>Status</th>
             <th>Action</th>

@@ -1,49 +1,34 @@
-$hover: #e3e3e3;
-$white: #ffffff;
-
-label,
-.btn-secondary,
-.btn-primary {
-  font-weight: normal !important;
+.btn,
+label {
+  font-weight: 400 !important;
 }
 
-.collection-cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
 
-  .collection-card {
-    background: $white;
-    position: relative;
+  tbody {
 
-    img {
-      height: 60px;
-      width: 60px;
-    }
+    tr {
 
-    .editButton {
-      position: absolute;
-      right: .625rem;
-      top: .625rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      border-radius: 0.5rem;
-
-      &:hover {
-        background: $hover;
-      }
-    }
-
-    .collectionDetails {
-      margin: 0 0 0 10px;
-      width: calc(100% - 70px);
-
-      .alert {
-        width: max-content;
+      td {
+        vertical-align: middle;
       }
     }
   }
+
+  thead {
+
+    tr {
+
+      th {
+        font-weight: 400 !important;
+      }
+    }
+
+    background: #E4E7F4;
+  }
 }
+
+//Table designs

@@ -147,6 +147,7 @@ label,
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  overflow-x: scroll;
   gap: .375rem;
   overflow-x: scroll;
 
@@ -199,7 +200,7 @@ label,
   max-width: 100%;
   min-height: 60px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 10px;
   background: white;
   border-radius: 4px;
