@@ -1,4 +1,22 @@
 <ng-container>
   <router-outlet></router-outlet>
+  <div class="notification p-4" *ngIf="isNotificationTriggered">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div class="d-flex align-items-center justify-content-start">
+        <div *ngIf="notification.image">
+          <img height="50" width="50" class="rounded me-4 border border-secondary" src="{{notification.image}}">
+        </div>
+        <div class="fs-4 fw-bold">{{notification.title}}</div>
+      </div>
+      <div class="cursor-pointer" (click)="isNotificationTriggered = false">
+        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-start">
+      <div class="fs-5">{{notification.body}}</div>
+    </div>
+  </div>
 </ng-container>
-<app-notification-permission *ngIf="!isNotificationEnabled"></app-notification-permission>

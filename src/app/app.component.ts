@@ -9,6 +9,13 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { AppSettingsService } from './includes/services/app.settings.service';
 
 declare const $: any;
+
+interface Notification {
+  title: string;
+  body: string;
+  image?: string;
+}
+
 @Component({
   selector: 'body[root]',
   templateUrl: './app.component.html',
@@ -18,49 +25,84 @@ declare const $: any;
 export class AppComponent implements OnInit {
   isNotificationEnabled = false;
   isReady: boolean = false;
+  isNotificationTriggered: boolean = false;
+  notification: Notification = {
+    title: '',
+    body: '',
+    image: ''
+  };
+  audio: HTMLAudioElement = new Audio();
 
   constructor(
-    private NotificationsService: NotificationsService,
     private AdminUsersService: AdminUsersService,
     private FirebaseApp: FirebaseApp,
-    private toast: ToastrService,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AppSettingsService: AppSettingsService
-  ) { }
+  ) {
+    // Load the beep sound
+    this.audio.src = 'assets/notification.wav';
+    this.audio.load()
+  }
 
-  ngOnInit() {    
-
-    if (Notification.permission === 'granted') {
-      this.isNotificationEnabled = true;
-      let messaging = getMessaging(this.FirebaseApp);
-      getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
-        if (currentToken) {
-          this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
-            next: (res: any) => {
-
-            }, error: (err: any) => {
-
-            }
-          })
-        }
-      }).catch((err) => {
-      });
-    }
-
-    if ($(".datatable").length > 0) {
-      $(".datatable").DataTable({
-        bFilter: false,
-      });
-    }
-
+  ngOnInit() {
+    this.requestPermission();
     this.listen()
+
+    // if ($(".datatable").length > 0) {
+    //   $(".datatable").DataTable({
+    //     bFilter: false,
+    //   });
+    // }
+  }
+
+  // Request permission for notifications
+  requestPermission() {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          let messaging = getMessaging(this.FirebaseApp);
+          getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
+            if (currentToken) {
+              this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
+                next: (res: any) => {
+                  if (!localStorage.getItem('notificationEnabled')) {
+                    this.HotToastService.success('You have enabled notifications');
+                  }
+                  localStorage.setItem('notificationEnabled', 'true')
+                }, error: (err: any) => { }
+              })
+            }
+          }).catch((err: any) => { })
+        } else {
+          localStorage.setItem('notificationEnabled', 'false')
+          this.HotToastService.success('You have blocked notifications');
+        }
+      });
+    } else {
+      console.error('This browser does not support notifications.');
+    }
   }
 
   listen() {
     const messaging = getMessaging(this.FirebaseApp);
     onMessage(messaging, (payload: any) => {
-      this.HotToastService.info(`payload.notification.body`, payload.notification.title)
+      this.playBeepSound()
+      this.isNotificationTriggered = true;
+      this.notification = payload.notification;
+      this.ChangeDetectorRef.markForCheck()
+
+       // Automatically reset `isNotificationTriggered` after 10 seconds
+       setTimeout(() => {
+        this.isNotificationTriggered = false;
+        this.ChangeDetectorRef.markForCheck();
+      }, 10000); // 10 seconds in milliseconds
+    });
+  }
+
+  playBeepSound() {
+    // Play the beep sound when notification is received
+    this.audio.play().catch((error) => {
+      console.error('Failed to play beep sound:', error);
     });
   }
 }

@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { getMessaging, getToken } from '@angular/fire/messaging'
 import { FirebaseApp } from '@angular/fire/app';
 import { environment } from 'src/environments/environment';
@@ -13,9 +12,8 @@ import { AdminUsersService } from 'src/app/includes/services/admin.users.service
 export class NotificationPermissionComponent implements OnInit {
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private fbApp: FirebaseApp,
+    private FirebaseApp: FirebaseApp,
     private AdminUsersService: AdminUsersService
   ) { }
 
@@ -34,37 +32,41 @@ export class NotificationPermissionComponent implements OnInit {
     !this.disablePrompt ? document.body?.classList.add('overflow-hidden') : document.body?.classList.remove('overflow-hidden')
   }
 
-  allowPrompt() {    
-    try {
-      this.nextStep = true
-      let messaging = getMessaging(this.fbApp);
-      getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
-        this.disposePrompt()
-        if (currentToken) {
-          this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
-            next: (res: any) => { 
-              this.disposePrompt()
-            }, error: (err: any) => { 
-              this.disposePrompt()
-            }
-          })
-        }
-      }).catch((err) => {
-        this.disposePrompt()
-        if (Notification.permission === 'denied') {
-          this.isNotificationsBlocked = true
-          this.ChangeDetectorRef.markForCheck()
-        }
-      });
-    } catch (error) {
-      this.nextStep = false
-    }
+  allowPrompt() {
+    this.nextStep = true
+    // if (Notification.permission == 'granted') {
+    //   let messaging = getMessaging(this.FirebaseApp);
+    //   getToken(messaging, { vapidKey: environment.vapidKey }).then((currentToken) => {
+    //     this.disposePrompt()
+    //     if (currentToken) {
+    //       this.AdminUsersService.subscribeAdmin({ token: currentToken }).subscribe({
+    //         next: (res: any) => {
+    //           this.disposePrompt()
+    //         }, error: (err: any) => {
+    //           this.disposePrompt()
+    //         }
+    //       })
+    //     }
+    //   }).catch((err) => {
+    //     this.disablePrompt = true
+    //     this.nextStep = false
+    //     localStorage.setItem('notification_prompt', 'false')
+    //     document.body?.classList.toggle('overflow-hidden')
+    //     this.ChangeDetectorRef.markForCheck()
+    //   });
+    // } else if (Notification.permission === 'denied') {
+    //   this.disablePrompt = true
+    //   this.nextStep = false
+    //   // localStorage.setItem('notification_prompt', 'false')
+    //   document.body?.classList.toggle('overflow-hidden')
+    //   this.ChangeDetectorRef.markForCheck()
+    // }
   }
 
   disposePrompt() {
     this.disablePrompt = true
     this.nextStep = false
-    localStorage.setItem('notification_prompt', 'false')
+    // localStorage.setItem('notification_prompt', 'false')
     document.body?.classList.toggle('overflow-hidden')
     this.ChangeDetectorRef.markForCheck()
   }
