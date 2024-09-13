@@ -106,9 +106,9 @@
                                                             alt="{{product?.productId?.name}}">
                                                         <div>
                                                             <div>{{product?.productId?.name}}</div>
-                                                            <div class="text-muted overview">{{product?.productId?.overview}}</div>
                                                             <div>SKU : {{product?.productId?.sku}}</div>
-                                                            <div *ngIf="product?.productId?.origin">COO : {{product?.productId?.origin}}</div>
+                                                            <div class="text-muted overview">{{product?.productId?.overview}}</div>
+                                                            <div class="text-muted coo" *ngIf="product?.productId?.origin">COO : {{product?.productId?.origin}}</div>
                                                         </div>
                                                     </div>
                                                 </td>

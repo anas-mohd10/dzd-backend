@@ -22,7 +22,7 @@
                         <div class="row">
                             <div class="row fs-5">
                                 <div class="col-6">
-                                    <address>
+                                    <address *ngIf="store">
                                         <strong>Store Address:</strong><br>
                                         <div>{{store?.address?.firstlane}} {{store?.address?.secondlane}}</div>
                                         <div>{{store?.address?.area}}</div>
@@ -34,6 +34,12 @@
                                     </address>
                                     <address>
                                         <strong>Billed To:</strong><br>
+                                        <div class="mb-2">
+                                            <div>{{orderDetails?.customerId?.name}}</div>
+                                            <div>{{orderDetails?.customerId?.email}}</div>
+                                            <div>{{orderDetails?.customerId?.countryCode}} {{orderDetails?.customerId?.mobile}}
+                                            </div>
+                                        </div>
                                         <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
                                         </div>
                                         <div>{{orderDetails?.address?.landmark}}</div>
@@ -45,6 +51,12 @@
                                 <div class="col-6 text-right">
                                     <address>
                                         <strong>Shipped To:</strong><br>
+                                        <div class="mb-2">
+                                            <div>{{orderDetails?.customerId?.name}}</div>
+                                            <div>{{orderDetails?.customerId?.email}}</div>
+                                            <div>{{orderDetails?.customerId?.countryCode}} {{orderDetails?.customerId?.mobile}}
+                                            </div>
+                                        </div>
                                         <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
                                         </div>
                                         <div>{{orderDetails?.address?.landmark}}</div>
@@ -60,7 +72,7 @@
                                     </address>
                                     <address>
                                         <strong>Order Date:</strong><br>
-                                        {{orderDetails?.orderDate}}<br><br>
+                                        {{getDeliveryDate(orderDetails?.orderDate)}}<br><br>
                                     </address>
                                 </div>
                             </div>
@@ -90,9 +102,9 @@
                                                                     alt="{{product?.productId?.name}}">
                                                                 <div>
                                                                     <div>{{product?.productId?.name}}</div>
-                                                                    <div>{{product?.productId?.overview}}</div>
                                                                     <div>SKU : {{product?.productId?.sku}}</div>
-                                                                    <div *ngIf="product?.productId?.origin">COO : {{product?.productId?.origin}}</div>
+                                                                    <div class="text-muted overview">{{product?.productId?.overview}}</div>
+                                                                    <div class="text-muted overview" *ngIf="product?.productId?.origin">COO : {{product?.productId?.origin}}</div>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -137,7 +149,9 @@
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>Delivery Charges</strong></td>
-                                                    <td class="text-right"> Free</td>
+                                                    <td class="text-right"> 
+                                                        {{orderDetails.shippingCost}}
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="no-line"></td>

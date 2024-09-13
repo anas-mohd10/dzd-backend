@@ -24,13 +24,24 @@
     margin: 0mm;
 }
 
+.overview,
+.coo {
+    font-size: 14px;
+}
+
+table {
+    img {
+        width: auto;
+    }
+}
+
 html {
     background-color: #FFFFFF;
     margin: 0px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.btn-primary{
+.btn-primary {
     font-weight: 400 !important;
 }
 
@@ -205,33 +216,33 @@ label {
     width: 35px !important;
 }
 
-.table-striped tbody tr:nth-of-type(odd){
+.table-striped tbody tr:nth-of-type(odd) {
     height: max-content !important;
 }
 
-.table-striped tbody tr:nth-of-type(even){
+.table-striped tbody tr:nth-of-type(even) {
     height: max-content !important;
 }
 
-table{
+table {
     border-collapse: collapse;
 
-    tr{
-        td{
+    tr {
+        td {
             border: none;
             border-top: 1px solid #acacac !important;
 
-            &.no-line{
+            &.no-line {
                 border-top: 0 !important;
             }
         }
     }
 }
 
-.text-right{
+.text-right {
     text-align: right;
 }
 
-.fw-bold-800{
+.fw-bold-800 {
     font-weight: 700;
 }

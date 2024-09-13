@@ -94,6 +94,9 @@ export class BulkInvoicesComponent implements OnInit {
     return `${this.weekDays[new Date(date).getDay()]} ${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
   }
 
+  getOrderDate(date: any) {
+    return `${this.weekDays[new Date(date).getDay()]} ${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
+  }
 
   print(content: any) {
     let contents: any = document.querySelector('.' + content)?.innerHTML
