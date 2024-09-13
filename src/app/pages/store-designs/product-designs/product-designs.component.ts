@@ -13,7 +13,7 @@ import { StoretimerService } from 'src/app/includes/services/storetimer.service'
 export class ProductDesignsComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   days: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  holidays: Array<string> = ['Sunday']
+  holidays: Array<string> = []
   isSubmitted: boolean = false;
   isTimerSubmitted: boolean = false;
   timerForm: FormGroup = new FormGroup({})
@@ -46,6 +46,8 @@ export class ProductDesignsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.form.get('holidays')?.setValue(this.holidays) // set holidays
+
     if (!this.form.valid) {
       this.isSubmitted = true
       return

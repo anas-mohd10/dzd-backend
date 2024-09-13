@@ -49,6 +49,7 @@ export class AddCollectionComponent implements OnInit {
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
+      icons: new FormControl([]),
     });
   }
 
