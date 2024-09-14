@@ -58,7 +58,7 @@
 
                 <div class="form-group my-3">
                   <label class="fs-6 mb-3">Description</label>
-                  <input type="text" class="form-control fs-6" formControlName="subname" />
+                  <input type="text" class="form-control fs-6" formControlName="description" />
                 </div>
 
                 <div class="form-group mb-3">
@@ -173,6 +173,26 @@
                       <option value="false">Inactive</option>
                       <option value="true">Active</option>
                     </select>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="fs-6 mb-3">Icons</div>
+                  <div class="icons">
+                    <div *ngFor="let icon of form.get('icons')?.value" class="icon">
+                      <img src="{{base}}{{icon}}" alt="Icon" class="rounded border border-secondary">
+                      <div class="remove" (click)="removeIcon(icon)">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="icon">
+                      <div class="ratio ratio-1x1">
+                        <app-assets [previewEnabled]="false" (mediaClicked)="addIcon($event)"></app-assets>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

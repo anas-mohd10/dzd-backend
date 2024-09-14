@@ -31,6 +31,7 @@ export class UpdateCollectionComponent implements OnInit {
   previews: any = { thumbnailPreview: '', coverPreview: '' }
   collectionDetails: any;
   cover: string = ''
+  icons: Array<string> = []
   thumbnail: string = ''
 
   constructor(
@@ -50,6 +51,7 @@ export class UpdateCollectionComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result[0])
           this.collectionDetails = res?.result[0]
+          this.icons = res?.result[0]?.icons
           if (res?.result[0]?.thumbnail) this.previews.thumbnailPreview = res?.result[0]?.thumbnail
           if (res?.result[0]?.cover) this.previews.coverPreview = res?.result[0]?.cover
           this.productDetails = res?.result[0]?.products
@@ -59,14 +61,13 @@ export class UpdateCollectionComponent implements OnInit {
       }
     })
 
-    console.log(this.previews);
-
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
-      subname: new FormControl(""),
+      description: new FormControl(""),
       products: new FormControl("", Validators.required),
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
+      icons: new FormControl([]),
       cover: new FormControl(null),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
@@ -81,6 +82,14 @@ export class UpdateCollectionComponent implements OnInit {
 
   get formControls() {
     return this.form.controls
+  }
+
+  addIcon(event: any) {
+    this.form.get('icons')?.value.push(event.path)
+  }
+
+  removeIcon(icon: string) {
+    this.form.get('icons')?.setValue(this.form.get('icons')?.value.filter((item: string) => item !== icon))
   }
 
   handleCollectionThumbnail(event: any) {

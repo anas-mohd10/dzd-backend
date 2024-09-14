@@ -194,6 +194,34 @@ label,
   }
 }
 
+.icons{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  
+  .icon{
+    position: relative;
+
+    img{
+      height: auto;
+      width: 100%;
+    }
+  
+    .remove{
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 30px;
+      width: 30px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      background: #e53838;
+      border-radius: 5px;
+    }
+  }
+}
+
 
 //Drag and Drop style
 .example-list {

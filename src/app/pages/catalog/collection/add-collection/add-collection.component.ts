@@ -41,7 +41,7 @@ export class AddCollectionComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
-      subname: new FormControl(""),
+      description: new FormControl(""),
       products: new FormControl("", Validators.required),
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
@@ -51,6 +51,14 @@ export class AddCollectionComponent implements OnInit {
       metaKeywords: new FormControl(''),
       icons: new FormControl([]),
     });
+  }
+
+  addIcon(event: any) {
+    this.form.get('icons')?.value.push(event.path)
+  }
+
+  removeIcon(icon: string) {
+    this.form.get('icons')?.setValue(this.form.get('icons')?.value.filter((item: string) => item !== icon))
   }
 
   handleCollectionCover(event: any) {
