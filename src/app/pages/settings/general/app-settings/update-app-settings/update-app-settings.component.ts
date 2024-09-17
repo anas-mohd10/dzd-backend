@@ -133,9 +133,9 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId(this.refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.data = res?.result
-        this.logo = res?.result?.logo?.path
+        this.logo = res?.result?.logo
         this.paymentGateways = res?.result?.paymentGateway
-        this.favicon = res?.result?.favicon?.path
+        this.favicon = res?.result?.favicon
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
@@ -166,7 +166,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('logo')?.setValue(res?.result?.logo?.path)
 
         for (let lang of res?.result?.languages) {
-          this.languages.push({ lang: lang?.lang, langCode: lang?.langCode })
+          let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == lang?.lang)
+          !isExists && this.languages.push({ lang: lang?.lang, langCode: lang?.langCode })
         }
 
         this.form.get('primaryLang')?.setValue(res?.result?.primaryLang)
