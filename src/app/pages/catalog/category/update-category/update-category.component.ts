@@ -68,6 +68,10 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleString();
+  }
+
   ngOnInit(): void {
     this.categorySlug = this.ActivatedRoute.snapshot.queryParams.category || ""
     this.initForm();

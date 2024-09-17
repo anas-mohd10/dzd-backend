@@ -3,7 +3,7 @@
   <div class="page-header d-flex align-items-start justify-content-between">
     <div>
       <div class="page-title">
-        <h1 class="fw-bolder">Update brands</h1>
+        <h1 class="fw-bold">Update Brands</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -13,7 +13,7 @@
           <a routerLink="{{ appRoute.brand.BRAND_LIST }}">Brands</a>
         </li>
         <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{'brand': slug}">Update brands</a>
+          <a routerLink="{{ appRoute.brand.UPDATE_BRAND }}" [queryParams]="{'brand': slug}">Update Brands</a>
         </li>
       </ul>
     </div>
@@ -32,6 +32,11 @@
 
     <div class="card">
       <div class="card-body">
+
+        <div class="mb-4 fs-5 text-muted">
+          Created on {{formatDate(brandDetails?.createdAt)}}
+        </div>
+
         <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
 
           <div>

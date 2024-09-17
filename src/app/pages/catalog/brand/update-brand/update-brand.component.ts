@@ -35,6 +35,10 @@ export class UpdateBrandComponent implements OnInit {
     return this.brandForm.controls;
   }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleString();
+  }
+
   ngOnInit(): void {
     this.initForm();
     this.slug = this.ActivatedRoute.snapshot.queryParams.brand || '';

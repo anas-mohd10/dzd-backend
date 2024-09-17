@@ -163,14 +163,14 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
-        this.form.get('logo')?.setValue(res?.result?.logo?._id)
+        this.form.get('logo')?.setValue(res?.result?.logo?.path)
 
         for (let lang of res?.result?.languages) {
           this.languages.push({ lang: lang?.lang, langCode: lang?.langCode })
         }
 
         this.form.get('primaryLang')?.setValue(res?.result?.primaryLang)
-        this.form.get('favicon')?.setValue(res?.result?.favicon?._id)
+        this.form.get('favicon')?.setValue(res?.result?.favicon?.path)
         this.ChangeDetectorRef.markForCheck()
         this.storeStatus = res?.result?.isStoreLive
       }
@@ -230,11 +230,11 @@ export class UpdateAppSettingsComponent implements OnInit {
   }
 
   handleStoreLogo(event: any) {
-    this.form.get('logo')?.setValue(event._id)
+    this.form.get('logo')?.setValue(event.path)
   }
 
   handleStoreFavicon(event: any) {
-    this.form.get('favicon')?.setValue(event._id)
+    this.form.get('favicon')?.setValue(event.path)
   }
 
   setPaymentGateways(paymentGateway: string) {
