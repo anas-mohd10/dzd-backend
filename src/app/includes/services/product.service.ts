@@ -101,6 +101,11 @@ export class ProductService {
     return this.http.post(`${url}`, query);
   }
 
+  deleteProduct(productId: any){
+    const url = this.commonService.getFullUrl(this.productEndpoints.deleteProduct);
+    return this.http.delete(`${url}/${productId}`);
+  }
+
   productThumbnailImages(query: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.thumbnail_images);
     return this.http.post(`${url}`, query);

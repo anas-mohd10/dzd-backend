@@ -5,9 +5,9 @@ export const environment = {
   isMockEnabled: true,
 
   //Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // appBaserl: 'http://localhost:3000/api/v1/a/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   //Local
 
@@ -28,9 +28,9 @@ export const environment = {
   //Fresh fruits
 
   // Fresh Market
-  apiUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://thefreshmarket-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://thefreshmarket-api.storedada.net/api/v1/a/',
   // Fresh Market
 
   //Sico foods

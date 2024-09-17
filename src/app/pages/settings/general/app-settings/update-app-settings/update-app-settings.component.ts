@@ -83,7 +83,9 @@ export class UpdateAppSettingsComponent implements OnInit {
     { lang: 'English', langCode: 'en' },
     { lang: 'Arabic', langCode: 'ar' }
   ];
-  languages: Array<any> = [];
+  languages: Array<{
+    lang: string, langCode: string
+  }> = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -163,7 +165,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
-        this.form.get('logo')?.setValue(res?.result?.logo?.path)
+        this.form.get('logo')?.setValue(res?.result?.logo)
+        this.form.get('favicon')?.setValue(res?.result?.favicon)
 
         for (let lang of res?.result?.languages) {
           let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == lang?.lang)
@@ -171,7 +174,6 @@ export class UpdateAppSettingsComponent implements OnInit {
         }
 
         this.form.get('primaryLang')?.setValue(res?.result?.primaryLang)
-        this.form.get('favicon')?.setValue(res?.result?.favicon?.path)
         this.ChangeDetectorRef.markForCheck()
         this.storeStatus = res?.result?.isStoreLive
       }
@@ -217,7 +219,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       primaryLang: [''],
       isMultiLang: ['false'],
       languages: [[]],
-      packingSlip: ['', Validators.required],
+      packingSlip: [''],
       isOutOfStock: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
@@ -248,7 +250,8 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.form.get('paymentGateway')?.setValue(this.paymentGateways)
     this.form.get('languages')?.setValue(this.languages)
 
-    if (!this.form.valid) {
+    if (!this.form.valid) {      
+      this.HotToastService.error('Please fill all required fields')
       this.isSubmitted = true
       return
     }

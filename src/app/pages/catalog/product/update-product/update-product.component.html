@@ -1,24 +1,26 @@
 <div>
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bolder">Update product</h1>
-    </div>
-    <div class="row">
-      <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: productSlug }">
-              Update product
-            </a>
-          </li>
-        </ul>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Update product</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Products</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: productSlug }">
+            Update product
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-start justify-content-end gap-2">
+      <div></div>
+      <button class="btn btn-danger" (click)="onDelete()">Delete product</button>
     </div>
   </div>
 
@@ -472,8 +474,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
-                          <img src="{{base}}{{icon}}" class="rounded object-fit-cover"
-                            class="h-100 w-100 object-cover">
+                          <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
                         </div>
                       </div>
                     </ng-container>

@@ -15,7 +15,9 @@ export class CreateProductsComponent implements OnInit {
   modalRef?: BsModalRef
   taxItems: Array<any> = []
   files: Array<any> = []
-
+  tagIcons: Array<any> = []
+  productIcons: Array<any> = []
+  
   constructor(
     private BsModalService: BsModalService
   ) { }
@@ -50,7 +52,7 @@ export class CreateProductsComponent implements OnInit {
       selling: this.form.get('price.offer')?.value ? this.form.get('price.offer')?.value : this.form.get('price.mrp')?.value,
     })
 
-    let files = this.files.map((file: any) => file._id)
+    let files = this.files.map((file: any) => file.path)
     this.form.get('files')?.setValue(files)
 
     if (!this.form.valid) {

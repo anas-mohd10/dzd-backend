@@ -30,5 +30,6 @@ export const productEndpoints = {
     manageProductIcons: '/manage-product-icons',
     deleteProductIcon: '/delete-product-icon',
     getProductDetails: '/get-productdetails',
-    getProducts: '/get-products'
+    getProducts: '/get-products',
+    deleteProduct: '/delete-product'
 }

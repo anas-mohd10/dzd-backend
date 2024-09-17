@@ -157,6 +157,7 @@ export class NavigationMenuComponent implements OnInit {
   megaMenuAdvertisement: string = '';
   megaMenuEdit: boolean = false
   menuItemIcon: string = '';
+  megaMenuItemIndex: any
 
   get itemControls() {
     return this.itemForm.controls
@@ -270,6 +271,7 @@ export class NavigationMenuComponent implements OnInit {
     this.megaMenuIcon = '';
     this.megaMenuDetails = {};
     this.megaMenuForm.reset();
+    this.megaMenuItemForm.reset()
     this.subMenuBoxes = [];
   }
 
@@ -339,14 +341,27 @@ export class NavigationMenuComponent implements OnInit {
       return
     }
 
-    this.subMenus.push(this.megaMenuItemForm.value)
-    this.Toast.success('Menu item added successfully')
-    this.megaMenuItemForm.reset()
-    this.isMegaMenuItemDetailsSubmitted = false
+    if (this.megaMenuItemIndex) {
+      this.subMenus[this.megaMenuItemIndex] = this.megaMenuItemForm.value
+      this.Toast.success('Menu item added successfully')
+      this.megaMenuItemForm.reset()
+      this.isMegaMenuItemDetailsSubmitted = false
+      this.megaMenuItemIndex = null
+    } else {
+      this.subMenus.push(this.megaMenuItemForm.value)
+      this.Toast.success('Menu item added successfully')
+      this.megaMenuItemForm.reset()
+      this.isMegaMenuItemDetailsSubmitted = false
+    }
   }
 
   removeMegaMenuItem(index: number) {
     this.subMenus.splice(index, 1)
+  }
+
+  getMegaMenuItem(index: number) {
+    this.megaMenuItemForm.patchValue(this.subMenus[index])
+    this.megaMenuItemIndex = index
   }
   //Mega menu items
 

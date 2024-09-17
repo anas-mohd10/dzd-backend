@@ -110,7 +110,8 @@ export class UpdateProductComponent implements OnInit {
     { title: "Color", value: "color" },
     { title: "Image", value: "image" },
   ]
-  productBannerDetails: string = ''
+  productBannerDetails: string = '';
+  languages: Array<string> = []
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -400,6 +401,7 @@ export class UpdateProductComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+        this.languages = res?.result?.languages
         this.ChangeDetectorRef.markForCheck()
       }
     })
@@ -552,4 +554,19 @@ export class UpdateProductComponent implements OnInit {
     }
   }
   //Attributes
+
+  onDelete() {
+    this.ProductService.deleteProduct(this.productDetails?._id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.Router.navigate(['/app/product'])
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.error.message)
+      }
+    })
+  }
 }
