@@ -341,7 +341,10 @@ export class NavigationMenuComponent implements OnInit {
       return
     }
 
-    if (this.megaMenuItemIndex) {
+    console.log(this.megaMenuItemIndex);
+    
+
+    if (this.megaMenuItemIndex != null) {
       this.subMenus[this.megaMenuItemIndex] = this.megaMenuItemForm.value
       this.Toast.success('Menu item added successfully')
       this.megaMenuItemForm.reset()
@@ -361,7 +364,7 @@ export class NavigationMenuComponent implements OnInit {
 
   getMegaMenuItem(index: number) {
     this.megaMenuItemForm.patchValue(this.subMenus[index])
-    this.megaMenuItemIndex = index
+    this.megaMenuItemIndex = index    
   }
   //Mega menu items
 
