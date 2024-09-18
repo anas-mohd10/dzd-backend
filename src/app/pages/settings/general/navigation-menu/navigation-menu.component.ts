@@ -303,6 +303,7 @@ export class NavigationMenuComponent implements OnInit {
             this.Toast.success(res?.message)
             this.closeMegaMenuModal()
             this.getMegaMenu()
+            this.subMenus = []
           } else {
             this.Toast.error(res?.message)
           }
@@ -321,6 +322,7 @@ export class NavigationMenuComponent implements OnInit {
           if (res?.errorCode == 0) {
             this.Toast.success(res?.message)
             this.closeMegaMenuModal()
+            this.subMenus = []
             this.getMegaMenu()
           } else {
             this.Toast.error(res?.message)
