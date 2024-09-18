@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { feedEndpoints } from 'src/app/config/endpoints';
 import { appRoutes } from 'src/app/config/routes';
 import { FeedService } from 'src/app/includes/services/feed.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { ClipboardService } from 'ngx-clipboard';
 import { HotToastService } from '@ngneat/hot-toast';
 

@@ -112,6 +112,8 @@ export class AddProductComponent implements OnInit {
     { title: "Color", value: "color" },
     { title: "Image", value: "image" },
   ]
+  languages: Array<string> = []
+  tagIcons: Array<string> = []
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -345,6 +347,7 @@ export class AddProductComponent implements OnInit {
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
       attributes: this.attributes,
+      tagIcons: this.tagIcons,
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
@@ -655,4 +658,16 @@ export class AddProductComponent implements OnInit {
       }
     }
     //Attributes
+
+    handleTagIcons(event: any) {
+      if (this.tagIcons.includes(event)) {
+        this.tagIcons = this.tagIcons.filter((item: any) => item != event.path)
+      } else {
+        this.tagIcons.push(event.path)
+      }
+    }
+  
+    removeTagIcons(icon: any) {
+      this.tagIcons = this.tagIcons.filter((item: any) => item != icon)
+    }
 }

@@ -551,88 +551,43 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="tags" class="fs-6 mb-3">Product tags</label>
-                  <div class="row" id="tags">
-
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Top left</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'topleft', 'add')"
-                          [previewDetails]="productTags?.topLeftTag" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                        <div class="position-absolute top-0 end-0 m-2" *ngIf="productTags?.topLeftTag">
-                          <button class="btn btn-danger p-2" (click)="onTagsTriggered(null, 'topleft', 'remove')">
-                            Remove tag
-                          </button>
+                  <label for="images" class="fs-6 mb-3">Product icons</label>
+                  <div class="icons" id="images">
+                    <ng-container *ngFor="let icon of icons">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
                         </div>
+                        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
                       </div>
+                    </ng-container>
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
                     </div>
-
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Top right</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'topright', 'add')"
-                          [previewDetails]="productTags?.topRightTag" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                        <div class="position-absolute top-0 end-0 m-2" *ngIf="productTags?.topRightTag">
-                          <button class="btn btn-danger p-2"
-                            (click)="onTagsTriggered(null, 'topright', 'remove')">Remove
-                            tag</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Bottom left</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomleft', 'add')"
-                          [previewDetails]="productTags?.bottomLeftTag" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                        <div class="position-absolute top-0 end-0 m-2" *ngIf="productTags?.bottomLeftTag">
-                          <button class="btn btn-danger p-2"
-                            (click)="onTagsTriggered(null, 'bottomleft', 'remove')">Remove tag</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-6 mb-3">
-                      <div class="fs-6 mb-2 text-muted">Bottom right</div>
-                      <div class="w-100 position-relative" style="aspect-ratio: 4/1;">
-                        <app-assets (mediaClicked)="onTagsTriggered($event, 'bottomright', 'add')"
-                          [previewDetails]="productTags?.bottomRightTag" [image]="'cover'"
-                          [previewEnabled]="true"></app-assets>
-                        <div class="position-absolute top-0 end-0 m-2" *ngIf="productTags?.bottomRightTag">
-                          <button class="btn btn-danger p-2"
-                            (click)="onTagsTriggered(null, 'bottomright', 'remove')">Remove tag</button>
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
 
                 <div class="mb-3">
                   <label for="images" class="fs-6 mb-3">Product icons</label>
-                  <div class="row" id="images">
+                  <div class="icons" id="images">
                     <ng-container *ngFor="let icon of icons">
-                      <div class="col-lg-2">
-                        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                          <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <img src="{{base}}{{icon}}" class="rounded object-fit-cover"
-                            class="h-100 w-100 object-cover">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
                         </div>
+                        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
                       </div>
                     </ng-container>
-                    <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
-                      </div>
+                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                      <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
                     </div>
                   </div>
                 </div>

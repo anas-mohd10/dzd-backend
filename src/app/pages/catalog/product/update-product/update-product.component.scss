@@ -3,6 +3,16 @@ label,
   font-weight: 400 !important;
 }
 
+.icons{
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+
+  img{
+    object-fit: contain;
+  }
+}
+
 .close-icon {
   z-index: 9;
   top: 10px;
@@ -344,7 +354,6 @@ nav {
 .page-title {
   margin: 0;
 }
-
 
 .addedProductsWrapper {
   .example-list {

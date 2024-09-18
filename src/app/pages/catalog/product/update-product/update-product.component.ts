@@ -112,6 +112,7 @@ export class UpdateProductComponent implements OnInit {
   ]
   productBannerDetails: string = '';
   languages: Array<string> = []
+  tagIcons: Array<string> = []
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -288,6 +289,7 @@ export class UpdateProductComponent implements OnInit {
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
       parentId: this.parentDetails?._id,
+      tagIcons: this.tagIcons,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
       productIcons: this.icons,
@@ -375,6 +377,7 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails = res?.result
           this.images = res?.result?.files ? res?.result?.files : []
           this.storeFields = res?.result?.storeFrontFields
+          this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : []
           this.categories = res?.result?.category?.id
           if (res?.result?.productTags) {
             this.tagsForm.patchValue(res?.result?.productTags)
@@ -568,5 +571,17 @@ export class UpdateProductComponent implements OnInit {
         this.HotToastService.error(err.error.message)
       }
     })
+  }
+
+  handleTagIcons(event: any) {
+    if (this.tagIcons.includes(event)) {
+      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path)
+    } else {
+      this.tagIcons.push(event.path)
+    }
+  }
+
+  removeTagIcons(icon: any) {
+    this.tagIcons = this.tagIcons.filter((item: any) => item != icon)
   }
 }
