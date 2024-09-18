@@ -321,6 +321,7 @@ export class NavigationMenuComponent implements OnInit {
           if (res?.errorCode == 0) {
             this.Toast.success(res?.message)
             this.closeMegaMenuModal()
+            this.getMegaMenu()
           } else {
             this.Toast.error(res?.message)
           }
