@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
+import { appRoutes } from 'src/app/config/routes';
 import { ProductDesignsService } from 'src/app/includes/services/product.designs.service';
 import { StoretimerService } from 'src/app/includes/services/storetimer.service';
 
@@ -11,6 +12,7 @@ import { StoretimerService } from 'src/app/includes/services/storetimer.service'
   styleUrls: ['./product-designs.component.scss']
 })
 export class ProductDesignsComponent implements OnInit {
+  appRoute = appRoutes
   form: FormGroup = new FormGroup({});
   days: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   holidays: Array<string> = []
@@ -49,6 +51,7 @@ export class ProductDesignsComponent implements OnInit {
     this.form.get('holidays')?.setValue(this.holidays) // set holidays
 
     if (!this.form.valid) {
+      this.HotToastService.error('Please fill all the required fields')
       this.isSubmitted = true
       return
     }
@@ -69,8 +72,7 @@ export class ProductDesignsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      cutoffTime: new FormControl('', [Validators.required]),
-      holidays: new FormControl(this.holidays, [Validators.required]),
+      holidays: new FormControl(this.holidays),
       isEnabled: new FormControl(true),
       note: new FormControl(''),
       gridEnabled: new FormControl(true),
@@ -115,12 +117,8 @@ export class ProductDesignsComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.timerForm.patchValue(res?.result)
           this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
+        } else { }
+      }, error: (err: any) => { }
     })
   }
 
@@ -129,13 +127,10 @@ export class ProductDesignsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result)
+          this.holidays = res?.result?.holidays
           this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
+        } else {   }
+      }, error: (err: any) => { }
     })
   }
 

@@ -35,6 +35,9 @@ export class PermissionGuard implements CanActivate {
       case 'static-pages':
         module[1] == 'add' ? path = 'add-staticpages' : module[1] == 'update' ? path = 'update-staticpages' : path = 'static-pages'
         break
+      case 'orders':
+        module[1] == 'add' ? path = 'add-order' : module[1] == 'update' ? path = 'update-order' : path = 'orders'
+        break
       case 'admin-users':
         module[1] == 'add' ? path = 'add-adminusers' : module[1] == 'update' ? path = 'update-adminusers' : path = 'admin-users'
         break
@@ -42,13 +45,22 @@ export class PermissionGuard implements CanActivate {
         module[1] == 'add' ? path = 'add-testimonials' : module[1] == 'update' ? path = 'update-testimonials' : path = 'testimonials'
         break
       case 'payment-settings':
-        module[1] == 'payment-settings' ? path = 'payment-settings' : null
+        module[0] == 'payment-settings' ? path = 'payment-settings' : null
+        break
+      case 'returns':
+        module[0] == 'returns' ? path = 'returns' : null
         break
       case 'media-library':
-        module[1] == 'media-library' ? path = 'media-library' : null
+        module[0] == 'media-library' ? path = 'media-library' : null
         break
       case 'feeds':
-        module[1] == 'feeds' ? path = 'feeds' : null
+        module[0] == 'feeds' ? path = 'feeds' : null
+        break
+      case 'monthly-comparison':
+        module[0] == 'monthly-comparison' ? path = 'monthly-comparison' : null
+        break
+      case 'sales-analytics':
+        module[0] == 'sales-analytics' ? path = 'sales-analytics' : null
         break
       case 'blogs':
         module[1] == 'add' ? path = 'add-blogs' : module[1] == 'update' ? path = 'update-blogs' : path = 'blogs'
@@ -63,7 +75,7 @@ export class PermissionGuard implements CanActivate {
         module[1] == 'add' ? path = 'add-offers' : module[1] == 'update' ? path = 'update-offers' : path = 'offers'
         break
       case 'loyalty':
-        module[1] == 'loyalty' ? path = 'loyalty' : null
+        module[0] == 'loyalty' ? path = 'loyalty' : null
         break
       case 'referral':
         module[0] == 'referral' ? path = 'referral' : null
@@ -83,8 +95,32 @@ export class PermissionGuard implements CanActivate {
       case 'stores':
         module[1] == 'add' ? path = 'add-stores' : module[1] == 'update' ? path = 'update-stores' : path = 'stores'
         break
+      case 'pickup-locations':
+        module[1] == 'add' ? path = 'add-pickup-locations' : module[1] == 'update' ? path = 'update-pickup-locations' : path = 'pickup-locations'
+        break
       case 'payment-settings':
         module[0] == 'payment-settings' ? path = 'payment-settings' : null
+        break
+      case 'cart-settings':
+        module[0] == 'cart-settings' ? path = 'cart-settings' : null
+        break
+      case 'app-keys':
+        module[0] == 'app-keys' ? path = 'app-keys' : null
+        break
+      case 'designs':
+        module[0] == 'designs' ? path = 'designs' : null
+        break
+      case 'internationalization':
+        module[0] == 'internationalization' ? path = 'internationalization' : null
+        break
+      case 'sms-settings':
+        module[0] == 'sms-settings' ? path = 'sms-settings' : null
+        break
+      case 'timer-settings':
+        module[0] == 'timer-settings' ? path = 'timer-settings' : null
+        break
+      case 'auth-settings':
+        module[0] == 'auth-settings' ? path = 'auth-settings' : null
         break
       case 'seo-details':
         module[0] == 'seo-details' ? path = 'seo-details' : null
@@ -149,6 +185,9 @@ export class PermissionGuard implements CanActivate {
       case 'faq':
         module[1] == 'add' ? path = 'add-faq' : module[1] == 'update' ? path = 'update-faq' : path = 'faq'
         break
+      case 'reports':
+        module[0] == 'reports' ? path = 'reports' : null
+        break
       case 'store-popup':
         module[0] == 'store-popup' ? path = 'store-popup' : null
         break
@@ -159,8 +198,7 @@ export class PermissionGuard implements CanActivate {
         if (res?.errorCode === 0) {
           const isAccessDenied: boolean = res?.result?.isAccessDenied || false;
           if (isAccessDenied) {
-            // return this.router.parseUrl('/access-denied');
-            return true
+            return this.router.parseUrl('/access-denied');
           } else {
             return true;
           }

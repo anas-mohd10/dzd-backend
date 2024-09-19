@@ -3,8 +3,7 @@ import { AdminUsersService } from 'src/app/includes/services/admin.users.service
 import { appRoutes } from "../../../../config/routes/app.routes"
 import { FormControl } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
-
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-users',
@@ -28,7 +27,7 @@ export class UsersComponent implements OnInit {
     private AdminUsersService: AdminUsersService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -86,12 +85,12 @@ export class UsersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.decline()
           this.getAdminUsers()
-          this.ToastrService.success(res.message)
+          this.HotToastService.success(res.message)
         } else {
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.HotToastService.error(err.message)
       }
     })
   }

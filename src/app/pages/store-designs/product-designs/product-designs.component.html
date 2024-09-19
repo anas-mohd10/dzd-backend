@@ -1,9 +1,18 @@
-<app-design-topbar [page]="'product-designs'"></app-design-topbar>
-<app-design-sidebar></app-design-sidebar>
-
-<div class="storedesign-wrapper p-6">
-    <div class="d-flex align-items-center justify-content-between gap-2">
-        <h4 class="fs-2 fw-bold">Product Designs</h4>
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Timer settings</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.timerSettings }}">Timer settings</a>
+                </li>
+            </ul>
+        </div>
         <button (click)="onSubmit()" class="d-flex btn btn-primary align-items-center justify-content-center gap-2">
             <div>Save changes</div>
             <div>
@@ -15,7 +24,7 @@
         </button>
     </div>
 
-    <div class="my-4 row">
+    <div class="my-4">
         <div class="card">
             <div class="card-body">
                 <div>
@@ -48,7 +57,7 @@
                                 delivery timer )</span></div>
                         <div class="mt-2 form-group">
                             <input type="text" class="form-control w-100"
-                                [ngClass]="{'is-invalid': isSubmitted || formControls.note.errors?.maxLength}"
+                                [ngClass]="{'is-invalid': formControls.note.errors?.maxLength}"
                                 formControlName="note">
                         </div>
                     </div>

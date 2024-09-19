@@ -42,13 +42,32 @@ export class UpdateUsersComponent implements OnInit {
     private BsModalService: BsModalService
   ) { }
 
+  updateMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{10}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{9}$`);
+        break;
+    }
+  }
+
   ngOnInit(): void {
     this.form = this.FormBuilder.group({
       firstname: ['', Validators.required],
       lastname: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       countryCode: ['+91', Validators.required],
-      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+      mobile: ['', [Validators.required, Validators.pattern("^[0-9]{9}$")]],
       username: ['', Validators.required],
       role: ['', Validators.required],
       isActive: ['true', Validators.required],

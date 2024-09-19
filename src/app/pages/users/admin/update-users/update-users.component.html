@@ -126,7 +126,7 @@
             <div class="row">
               <div class="col-lg-2">
                 <div class="form-group" [ngClass]="{'disabled-group': !isMobileEditable}">
-                  <select class="form-select mb-3" formControlName="countryCode"
+                  <select class="form-select mb-3" formControlName="countryCode"  (change)="handleMobilePattern()"
                     [ngClass]="{
                             'is-invalid':(formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
                     <option value="" disabled>-- Select an option --</option>

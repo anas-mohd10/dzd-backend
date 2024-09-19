@@ -300,6 +300,7 @@ export const appRoutes = {
   },
   customMailers: `${app}/custom-mailers`,
   mailerDetails: `${app}/mailer-details`,
+  timerSettings: `${app}/timer-settings`,
   bulk: {
     import: `${app}/bulk-import`,
   },
