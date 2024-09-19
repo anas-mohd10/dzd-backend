@@ -52,8 +52,7 @@ export const Routing: Routes = [
         path: 'dashboard',
         loadChildren: () => import("./dashboard/dashboard.module").then((m) => m.DashboardModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'brands',
         children: [
           {
@@ -73,8 +72,7 @@ export const Routing: Routes = [
           },
         ],
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'category',
         children: [
           {
@@ -94,8 +92,7 @@ export const Routing: Routes = [
           },
         ],
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'collection',
         children: [
           {
@@ -115,21 +112,23 @@ export const Routing: Routes = [
           },
         ],
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: '',
         children: [
           {
             path: '',
             loadChildren: () => import('./catalog/product/product-list/product-list.module').then((m) => m.ProductModule),
+            canActivate: [PermissionGuard]
           },
           {
             path: 'product/add',
             loadChildren: () => import('./catalog/product/add-product/add-product.module').then((m) => m.AddProductModule),
+            canActivate: [PermissionGuard]
           },
           {
             path: 'product/update',
             loadChildren: () => import('./catalog/product/update-product/update-product.module').then((m) => m.UpdateProductModule),
+            canActivate: [PermissionGuard]
           },
         ],
         canActivate: [AuthenticationGuard]

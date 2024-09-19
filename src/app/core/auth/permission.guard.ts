@@ -44,8 +44,20 @@ export class PermissionGuard implements CanActivate {
       case 'testimonials':
         module[1] == 'add' ? path = 'add-testimonials' : module[1] == 'update' ? path = 'update-testimonials' : path = 'testimonials'
         break
+      case 'product':
+        module[1] == 'add' ? path = 'add-product' : module[1] == 'update' ? path = 'update-product' : path = 'product'
+        break
+      case 'product-head':
+        module[1] == 'add' ? path = 'add-product-head' : module[1] == 'update' ? path = 'update-product-head' : path = 'product-head'
+        break
+      case 'notifications':
+        module[1] == 'add' ? path = 'add-notifications' : module[1] == 'update' ? path = 'update-notifications' : path = 'notifications'
+        break
       case 'payment-settings':
         module[0] == 'payment-settings' ? path = 'payment-settings' : null
+        break
+      case 'help-center':
+        module[0] == 'help-center' ? path = 'help-center' : null
         break
       case 'returns':
         module[0] == 'returns' ? path = 'returns' : null
@@ -71,7 +83,7 @@ export class PermissionGuard implements CanActivate {
       case 'coupons':
         module[1] == 'add' ? path = 'add-coupons' : module[1] == 'update' ? path = 'update-coupons' : path = 'coupons'
         break
-      case 'offers':
+      case 'offer':
         module[1] == 'add' ? path = 'add-offers' : module[1] == 'update' ? path = 'update-offers' : path = 'offers'
         break
       case 'loyalty':
@@ -83,8 +95,23 @@ export class PermissionGuard implements CanActivate {
       case 'gift-wrap':
         module[0] == 'gift-wrap' ? path = 'gift-wrap' : null
         break
+      case 'delivery-slots':
+        module[0] == 'delivery-slots' ? path = 'delivery-slots' : null
+        break
+      case 'sitemap':
+        module[0] == 'sitemap' ? path = 'sitemap' : null
+        break
+      case 'custom-mailers':
+        module[0] == 'custom-mailers' ? path = 'custom-mailers' : null
+        break
+      case 'mailer-subscriptions':
+        module[0] == 'mailer-subscriptions' ? path = 'mailer-subscriptions' : null
+        break
       case 'customers':
         module[1] == 'add' ? path = 'add-customers' : module[1] == 'update' ? path = 'update-customers' : path = 'customers'
+        break
+      case 'social-media':
+        module[1] == 'add' ? path = 'add-social-media' : module[1] == 'update' ? path = 'update-social-media' : path = 'social-media'
         break
       case 'roles':
         module[1] == 'add' ? path = 'add-roles' : module[1] == 'update' ? path = 'update-roles' : path = 'roles'
@@ -161,6 +188,9 @@ export class PermissionGuard implements CanActivate {
       case 'shipping-policy':
         module[0] == 'shipping-policy' ? path = 'shipping-policy' : null
         break
+      case 'shipping-settings':
+        module[0] == 'shipping-settings' ? path = 'shipping-settings' : null
+        break
       case 'refund-policy':
         module[0] == 'refund-policy' ? path = 'refund-policy' : null
         break
@@ -185,8 +215,17 @@ export class PermissionGuard implements CanActivate {
       case 'faq':
         module[1] == 'add' ? path = 'add-faq' : module[1] == 'update' ? path = 'update-faq' : path = 'faq'
         break
+      case 'tax-rules':
+        module[1] == 'add' ? path = 'add-tax-rules' : module[1] == 'update' ? path = 'update-tax-rules' : path = 'tax-rules'
+        break
+      case 'tax-classes':
+        module[1] == 'add' ? path = 'add-tax-classes' : module[1] == 'update' ? path = 'update-tax-classes' : path = 'tax-classes'
+        break
       case 'reports':
         module[0] == 'reports' ? path = 'reports' : null
+        break
+      case 'invoice-settings':
+        module[0] == 'invoice-settings' ? path = 'invoice-settings' : null
         break
       case 'store-popup':
         module[0] == 'store-popup' ? path = 'store-popup' : null
