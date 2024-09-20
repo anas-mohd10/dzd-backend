@@ -1,9 +1,9 @@
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00bdab;
-$primary: #00bdab;
-$activeBackground: #00bdab20;
+$activeState: #00BDAB;
+$primary: #00BDAB;
+$activeBackground: #00BDAB20;
 $border: #E4E6EF;
 $grey: #888888;
 
@@ -106,11 +106,11 @@ label {
     font-size: 14px;
 
     &:hover {
-      background: #00bdab15;
+      background: #00BDAB15;
     }
 
     &.active {
-      background: #00bdab;
+      background: #00BDAB;
       color: #ffffff;
     }
   }
@@ -201,8 +201,8 @@ label {
   }
 
   &.active {
-    background: #00bdab15;
-    border: 1px solid #00bdab;
+    background: #00BDAB15;
+    border: 1px solid #00BDAB;
   }
 }
 
@@ -241,8 +241,8 @@ label {
       }
 
       &.active {
-        background: #00bdab15;
-        border: 1px solid #00bdab;
+        background: #00BDAB15;
+        border: 1px solid #00BDAB;
       }
     }
   }

@@ -63,7 +63,7 @@ export class AddAppSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initform()
-    this.primary = AppSettings.PRIMARY_COLOR ? AppSettings.PRIMARY_COLOR : '#00bdab'
+    this.primary = AppSettings.PRIMARY_COLOR ? AppSettings.PRIMARY_COLOR : '#00BDAB'
     this.secondary = AppSettings.SECONDARY_COLOR ? AppSettings.SECONDARY_COLOR : '#333333'
     this.items_per_page = AppSettings.ITEMS_PER_PAGE ? AppSettings.ITEMS_PER_PAGE : 25
     this.text = AppSettings.TEXT || "#000000"

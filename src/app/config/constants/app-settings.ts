@@ -1,5 +1,5 @@
 export enum AppSettings {
-   PRIMARY_COLOR = '#00bdab',
+   PRIMARY_COLOR = '#00BDAB',
    SECONDARY_COLOR = '#333333',
    ITEMS_PER_PAGE = 25,
    TEXT = "#000000",

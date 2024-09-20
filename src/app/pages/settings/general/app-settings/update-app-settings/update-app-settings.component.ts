@@ -122,9 +122,9 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.refid = this.ActivatedRoute.snapshot.queryParams.id || '1';
     this.getSettings();
 
-    this.primary = '#00bdab'
+    this.primary = '#00BDAB'
     this.secondary = '#aaaaaa'
-    this.form.get('primary')?.setValue('#00bdab')
+    this.form.get('primary')?.setValue('#00BDAB')
   }
 
   get formControls() {

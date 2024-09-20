@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit {
               this.dayValues.push(dayItem?.revenue)
             }
             this.chartOptions = {
-              series: [{ name: "Revenue", data: this.dayValues, color: '#00bdab' }],
+              series: [{ name: "Revenue", data: this.dayValues, color: '#00BDAB' }],
               chart: {
                 type: "area",
                 height: 350,

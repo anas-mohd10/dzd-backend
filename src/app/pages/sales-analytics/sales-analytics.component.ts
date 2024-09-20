@@ -90,7 +90,7 @@ export class SalesAnalyticsComponent implements OnInit {
 
   getRevenueChartOptions() {
     this.revenueChartOptions = {
-      series: [{ name: "Revenues", data: this.revenues, color: '#00bdab' }],
+      series: [{ name: "Revenues", data: this.revenues, color: '#00BDAB' }],
       chart: {
         type: "area",
         height: 400,
@@ -108,7 +108,7 @@ export class SalesAnalyticsComponent implements OnInit {
 
   getOrderChartOptions() {
     this.orderChartOptions = {
-      series: [{ name: "Orders", data: this.orders, color: '#00bdab' }],
+      series: [{ name: "Orders", data: this.orders, color: '#00BDAB' }],
       chart: {
         type: "area",
         height: 400,

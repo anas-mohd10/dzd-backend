@@ -1,10 +1,8 @@
 export const invoiceSettingsEndpoints = {
-   add_invoice: '/invoice-settings/create',
-   get_invoice: '/invoice-settings/invoices',
-   get_active_invoices: '/invoice-settings/active-invoices',
-   get_invoice_by_slug: '/invoice-settings/get-invoice',
-   update_invoice: '/invoice-settings/update-invoice ',
-   generate_invoice: '/generate-invoice',
+   add_invoice: '/create-invoicedetails',
+   get_invoice: '/invoice-details',
+   update_invoice: '/update-invoicedetails ',
+   
    generate_shipping_details: '/generate-shipping-bill',
    generate_products: '/generate-products'
 }

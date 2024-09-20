@@ -47,19 +47,19 @@ export class InvoiceListComponent implements OnInit {
   }
 
   getInvoice() {
-    this.invoiceSettingsService.getInvoiceSettings().subscribe((res: any) => {
-      this.invoiceSettingsData = res?.result
-      let isDataLem = this.invoiceSettingsData.length
-      if (this.invoiceSettingsData.length > 0) {
+    this.invoiceSettingsService.getInvoiceSettings().subscribe({
+      next: (res: any) => {
+        this.invoiceSettingsData = res?.result
         this.currentData = {
-          code: res?.result[isDataLem - 1].code,
-          startingRange: res?.result[isDataLem - 1].startingRange
+          code: res?.result?.code,
+          startingRange: res?.result?.startingRange
         }
-        this.form.get("code")?.setValue(res?.result[isDataLem - 1].code)
-        this.form.get("startingRange")?.setValue(res?.result[isDataLem - 1].startingRange)
+        this.form.patchValue(res?.result)
       }
     })
   }
+
+
 
   onSubmit() {
     if (!this.form.valid) {

@@ -122,8 +122,11 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="text-center">{{product?.quantity}}
-                                                            ({{product?.productId?.unit}})</td>
+                                                        <td class="text-center">
+                                                            {{product?.quantity}}
+                                                            <span *ngIf="product?.productId?.unit">
+                                                                ({{product?.productId?.unit}})</span>
+                                                        </td>
                                                         <td class="text-center">{{product?.pricePerUnit}}</td>
                                                         <td class="text-right">{{product?.total}}</td>
                                                     </tr>

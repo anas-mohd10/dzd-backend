@@ -49,7 +49,7 @@ export class StatsWidget4Component implements OnInit {
         }
 
         this.chartOptions = {
-          series: [{ name: "Revenue", data: this.monthlyValues, color: '#00bdab' }],
+          series: [{ name: "Revenue", data: this.monthlyValues, color: '#00BDAB' }],
           chart: {
             type: "area",
             height: 350,

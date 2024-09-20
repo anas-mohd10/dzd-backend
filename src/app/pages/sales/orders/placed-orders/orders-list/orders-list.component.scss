@@ -1,9 +1,9 @@
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00bdab;
+$activeState: #00BDAB;
 $primaryBackground: #20BDAB40;
-$activeBackground: #00bdab20;
+$activeBackground: #00BDAB20;
 $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
@@ -47,11 +47,11 @@ $error: #F1416C;
         content: '';
         height: 10px;
         width: 10px;
-        background: #00bdab;
+        background: #00BDAB;
         border-radius: 2px;
       }
 
-      border: 2px solid #00bdab;
+      border: 2px solid #00BDAB;
     }
   }
 
@@ -466,8 +466,8 @@ label {
 
 input.form-control.btn-secondary.fs-6.text-dark {
   background-color: white;
-  color: #00bdab !important;
-  border: 1px solid #00bdab;
+  color: #00BDAB !important;
+  border: 1px solid #00BDAB;
   font-size: 15px !important;
   height: 37px;
   padding: 0;
