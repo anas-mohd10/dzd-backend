@@ -352,8 +352,10 @@ export class UpdateOrdersComponent implements OnInit {
       } else {
         this.bulkProducts.push(product)
       }
-    }
+    }else{
 
+    }
+    
     product ? null : this.bulkProducts.length == this.order?.products.length ? this.bulkProducts = [] : this.bulkProducts = [...this.order?.products]
     //Check the last status of the product, if cancelled then don't allow to change the status
 
