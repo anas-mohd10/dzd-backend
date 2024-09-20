@@ -138,7 +138,7 @@
               <div class="col-lg-7">
                 <div class="form-group" [ngClass]="{'disabled-group': !isMobileEditable}">
                   <input type="text" class="form-control fs-6" formControlName="mobile" placeholder="Mobile number"
-                    [ngClass]="{'is-invalid': (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required }" />
+                    [ngClass]="{'is-invalid': formControls.mobile.errors?.required }" />
                 </div>
                 <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="formControls.mobile.errors?.pattern">
                   Please, enter valid mobile number

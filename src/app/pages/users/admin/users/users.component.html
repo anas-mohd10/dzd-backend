@@ -50,7 +50,6 @@
                          <thead>
                               <tr class="text-left fs-6">
                                    <th>Email</th>
-                                   <th>Mobile</th>
                                    <th>Status</th>
                                    <th>Action</th>
                               </tr>
@@ -59,7 +58,6 @@
                               <ng-container *ngFor="let customer of users; let i =index">
                                    <tr>
                                         <td>{{customer?.email}}</td>
-                                        <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
                                         <td>
                                              <span class="alert p-1"
                                                   [ngClass]="{'alert-danger': customer?.isActive == false, 'alert-success': customer?.isActive == true}">

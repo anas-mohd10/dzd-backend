@@ -53,7 +53,8 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label class="fs-6 mb-3 required"> Email</label>
-              <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+              <input type="text" class="form-control fs-6" formControlName="email"
+                [ngClass]="{
                     'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required || formControls.email.errors?.pattern }"
                 (change)="verifyEmailAddress()" />
             </div>
@@ -75,9 +76,8 @@
           <div class="col-lg-6 mb-3">
             <div class="form-group">
               <label class="fs-6 mb-3 required"> Mobile Number</label>
-              <input type="text" class="form-control fs-6" formControlName="mobile"
-                [ngClass]="{
-                    'is-invalid': (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required || formControls.mobile.errors?.pattern }" />
+              <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                    'is-invalid': formControls.mobile.errors?.pattern}" />
             </div>
           </div>
 
