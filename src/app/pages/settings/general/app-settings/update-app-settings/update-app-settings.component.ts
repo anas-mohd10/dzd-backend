@@ -149,6 +149,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('toastError')?.setValue("#" + res?.result?.toast?.error.split('FF')[1])
         this.form.get('toastInfo')?.setValue("#" + res?.result?.toast?.info.split('FF')[1])
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
+        this.form.get('primaryAddress')?.setValue(res?.result?.primaryAddress)
         this.form.get('paymentGateway')?.setValue(res?.result?.paymentGateway)
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('isStoreLive')?.setValue(res?.result?.isStoreLive)
@@ -212,6 +213,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       toastInfo: ['', Validators.required],
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
+      primaryAddress: ['', Validators.required],
       fontFamily: ['', Validators.required],
       name: ['', Validators.required],
       domain: ['', Validators.required],
@@ -275,6 +277,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
+      primaryAddress: this.form.get('primaryAddress')?.value,
       primaryLang: this.form.get('primaryLang')?.value,
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,

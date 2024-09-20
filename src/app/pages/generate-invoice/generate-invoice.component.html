@@ -5,8 +5,15 @@
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-8">
-                        <img src="{{base}}{{settings?.logo?.path}}"
-                            style="width: 200px; min-height: 80px; object-fit: contain;" alt="">
+                        <img src="{{base}}{{settings?.logo}}"
+                            style="width: 200px; min-height: 80px; object-fit: contain;" alt="{{settings?.name}}">
+                        <div class="mt-4">
+                            {{settings?.primaryAddress}}
+                        </div>
+                        <div>
+                            <div>{{helpCenter?.countryCode}} {{helpCenter?.phone}}</div>
+                            <div>{{helpCenter?.email}}</div>
+                        </div>
                     </div>
                     <div class="col-4 text-right">
                         <h4 class="fs-1 fw-bold-800 mt-2">Order #{{order}}</h4>
@@ -107,8 +114,11 @@
                                                         <div>
                                                             <div>{{product?.productId?.name}}</div>
                                                             <div>SKU : {{product?.productId?.sku}}</div>
-                                                            <div class="text-muted overview">{{product?.productId?.overview}}</div>
-                                                            <div class="text-muted coo" *ngIf="product?.productId?.origin">COO : {{product?.productId?.origin}}</div>
+                                                            <div class="text-muted overview">
+                                                                {{product?.productId?.overview}}</div>
+                                                            <div class="text-muted coo"
+                                                                *ngIf="product?.productId?.origin">COO :
+                                                                {{product?.productId?.origin}}</div>
                                                         </div>
                                                     </div>
                                                 </td>
