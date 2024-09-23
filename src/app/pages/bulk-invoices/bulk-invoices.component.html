@@ -134,10 +134,12 @@
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
-                                                    <td class="text-center"><strong>Total</strong></td>
+                                                    <td class="text-center"><strong>Sub Total</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
-                                                        {{orderDetails.total}}</td>
+                                                        {{orderDetails.subtotal}}
+                                                    </td>
                                                 </tr>
+        
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
@@ -146,14 +148,7 @@
                                                         {{orderDetails.discount}}
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="no-line"></td>
-                                                    <td class="no-line"></td>
-                                                    <td class="text-center"><strong>Sub Total</strong></td>
-                                                    <td class="text-right"> {{settings?.currency}}
-                                                        {{orderDetails.subtotal}}
-                                                    </td>
-                                                </tr>
+        
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
@@ -161,15 +156,15 @@
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails?.tax}}</td>
                                                 </tr>
-
+        
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>Delivery Charges</strong></td>
-                                                    <td class="text-right">
-                                                        {{orderDetails.shippingCost}}
-                                                    </td>
+                                                    <td class="text-right"> {{settings?.currency}}
+                                                        {{orderDetails.shippingCost}}</td>
                                                 </tr>
+        
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>

@@ -881,6 +881,9 @@
     <div class="modal-header">
         <h4 class="modal-title pull-left">Menu Items</h4>
         <div class="d-flex align-items-center justify-content-end gap-2">
+            <button *ngIf="menuItemId" class="btn btn-danger" (click)="onDeleteTitleItemRef()">
+                Delete Changes
+            </button>
             <button class="btn btn-primary" (click)="saveTitleItemsRef()">
                 Save Changes
             </button>
@@ -993,7 +996,6 @@
         </div>
     </div>
     <div class="modal-body">
-
         <form [formGroup]="megaMenuForm">
             <div class="row align-items-center">
                 <div class="col-lg-2">

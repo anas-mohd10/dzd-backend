@@ -312,6 +312,8 @@ export class NavigationMenuComponent implements OnInit {
         }
       })
     } else {
+      console.log("subMenus", this.subMenus);
+
       this.megaMenuForm.get("subMenuBoxes")?.patchValue({ 'menuBoxes': this.subMenuBoxes })
       this.MegamenuService.addMegaMenu({
         index: this.megaMenuItems.length + 1,
@@ -344,9 +346,6 @@ export class NavigationMenuComponent implements OnInit {
       return
     }
 
-    console.log(this.megaMenuItemIndex);
-    
-
     if (this.megaMenuItemIndex != null) {
       this.subMenus[this.megaMenuItemIndex] = this.megaMenuItemForm.value
       this.Toast.success('Menu item added successfully')
@@ -367,7 +366,7 @@ export class NavigationMenuComponent implements OnInit {
 
   getMegaMenuItem(index: number) {
     this.megaMenuItemForm.patchValue(this.subMenus[index])
-    this.megaMenuItemIndex = index    
+    this.megaMenuItemIndex = index
   }
   //Mega menu items
 
@@ -1026,10 +1025,12 @@ export class NavigationMenuComponent implements OnInit {
       return
     }
 
-    if (this.activeAdvancedMenuItemIndex) {
+    if (this.activeAdvancedMenuItemIndex != null) {
       this.advancedMenuItems[this.activeAdvancedMenuItemIndex] = this.menuItemForm.value
+      this.activeAdvancedMenuItemIndex = null
     } else {
       this.advancedMenuItems = [...this.advancedMenuItems, this.menuItemForm.value]
+      this.activeAdvancedMenuItemIndex = null
     }
 
     this.menuItemForm.reset()
@@ -1115,18 +1116,15 @@ export class NavigationMenuComponent implements OnInit {
     })
   }
 
-  onDeleteTitleItemRef(id: string) {
-    this.MenuService.deleteCsTitleItems(id).subscribe({
+  onDeleteTitleItemRef() {
+    this.MenuService.deleteCsTitleItems(this.menuItemDetails?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
           this.getCsTitles()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
+          this.closeTitleItemsRef()
+        } else { }
+      }, error: (err: any) => { }
     })
   }
 

@@ -130,21 +130,7 @@
                                                 <td class="text-right">{{product?.total}}</td>
                                             </tr>
                                         </ng-container>
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="text-center"><strong>Total</strong></td>
-                                            <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails.total}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="text-center"><strong>Discount</strong></td>
-                                            <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails.discount}}
-                                            </td>
-                                        </tr>
+
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
@@ -153,6 +139,16 @@
                                                 {{orderDetails.subtotal}}
                                             </td>
                                         </tr>
+
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Discount</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails.discount}}
+                                            </td>
+                                        </tr>
+
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
@@ -168,6 +164,7 @@
                                             <td class="text-right"> {{settings?.currency}}
                                                 {{orderDetails.shippingCost}}</td>
                                         </tr>
+
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
