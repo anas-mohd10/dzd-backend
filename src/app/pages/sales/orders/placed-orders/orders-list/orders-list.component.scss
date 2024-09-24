@@ -8,6 +8,16 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%; /* or a specific width */
+  display: block;
+  width: 100px;
+  color: #28C76F;
+}
+
 .btn-secondary {
   font-weight: 400 !important;
 }

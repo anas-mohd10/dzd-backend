@@ -20,13 +20,19 @@
             <div class="form-group mb-3">
                <label class="fs-6 mb-3 required"> Code</label>
                <input type="text" class="form-control fs-6" formControlName="code"
-                  [ngClass]="{'is-invalid':(isf.code.touched || isSubmitted) &&isf.code.errors?.required}" />
+                  [ngClass]="{'is-invalid':(formControls.code.touched || isSubmitted) && formControls.code.errors?.required}" />
             </div>
 
             <div class="form-group mb-3">
                <label class="fs-6 mb-3 required"> Starting range</label>
                <input type="text" class="form-control fs-6" formControlName="startingRange"
-                  [ngClass]="{'is-invalid':(isf.startingRange.touched || isSubmitted) &&isf.startingRange.errors?.required}" />
+                  [ngClass]="{'is-invalid':(formControls.startingRange.touched || isSubmitted) && formControls.startingRange.errors?.required}" />
+            </div>
+
+            <div class="form-group mb-3">
+               <label class="fs-6 mb-3 required"> Order Starting range</label>
+               <input type="text" class="form-control fs-6" formControlName="orderStartingRange"
+                  [ngClass]="{'is-invalid':(formControls.orderStartingRange.touched || isSubmitted) && formControls.orderStartingRange.errors?.required}" />
             </div>
 
             <div class="gap-2 d-flex align-items-center justify-content-end">

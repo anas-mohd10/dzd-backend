@@ -7,8 +7,6 @@
             <app-screens class="w-100" [page]="'home'" [device]="device" [load]="screenLoad"></app-screens>
         </div>
         <div class="w-18 h-100 overflow-auto bg-white p-5">
-            <div class="fs-3 fw-bolder mb-2">Homepage</div>
-            <p class="text-muted">Configure your widgets for desktop & mobile view.</p>
             <div>
                 <button class="d-flex align-items-center justify-content-center btn btn-secondary w-100"
                     (click)="openWidgets(widgetsTemplate)">
@@ -71,7 +69,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div>{{widgetItem?.widgetName}}</div>
+                        <div>{{widgetItem?.title || widgetItem?.widgetName}}</div>
                         <div class="text-muted mt-1">
                             Visible in {{widgetItem?.visibility == 'all' ? 'all devices': widgetItem?.visibility}}
                         </div>

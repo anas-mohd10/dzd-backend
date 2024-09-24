@@ -119,6 +119,14 @@
                                                                     <div class="text-muted overview"
                                                                         *ngIf="product?.productId?.origin">COO :
                                                                         {{product?.productId?.origin}}</div>
+                                                                    <ng-container
+                                                                        *ngFor="let attribute of product?.productId?.attributes">
+                                                                        <div
+                                                                            class="text-muted d-flex align-items-center justify-content-start gap-2">
+                                                                            <div>{{attribute?.title}} : </div>
+                                                                            <div>{{attribute?.value}}</div>
+                                                                        </div>
+                                                                    </ng-container>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -139,7 +147,7 @@
                                                         {{orderDetails.subtotal}}
                                                     </td>
                                                 </tr>
-        
+
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
@@ -148,7 +156,7 @@
                                                         {{orderDetails.discount}}
                                                     </td>
                                                 </tr>
-        
+
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
@@ -156,7 +164,7 @@
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails?.tax}}</td>
                                                 </tr>
-        
+
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
@@ -164,7 +172,7 @@
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails.shippingCost}}</td>
                                                 </tr>
-        
+
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>

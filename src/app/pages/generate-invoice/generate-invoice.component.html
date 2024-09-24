@@ -119,12 +119,19 @@
                                                             <div class="text-muted coo"
                                                                 *ngIf="product?.productId?.origin">COO :
                                                                 {{product?.productId?.origin}}</div>
+                                                            <ng-container *ngFor="let attribute of product?.productId?.attributes">
+                                                                <div class="text-muted d-flex align-items-center justify-content-start gap-2">
+                                                                   <div>{{attribute?.title}} : </div>
+                                                                   <div>{{attribute?.value}}</div>
+                                                                </div>
+                                                            </ng-container>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
                                                     b{{product?.quantity}}
-                                                   <span *ngIf="product?.productId?.unit"> ({{product?.productId?.unit}})</span>
+                                                    <span *ngIf="product?.productId?.unit">
+                                                        ({{product?.productId?.unit}})</span>
                                                 </td>
                                                 <td class="text-center">{{product?.pricePerUnit}}</td>
                                                 <td class="text-right">{{product?.total}}</td>

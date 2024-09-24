@@ -207,7 +207,8 @@
               {{order?.customerType}}</div>
           </td>
           <td>
-            <div *ngIf="order?.pickUpLocation">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}</div>
+            <div *ngIf="order?.pickUpLocation">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}
+            </div>
             <div *ngIf="order?.clickPoint">{{order?.clickPoint?.address?.city}}</div>
             <div *ngIf="order?.deliverySlot">
               {{convertTimeFormat(order?.deliverySlot?.from + ' - ' + order?.deliverySlot?.to)}}
@@ -242,7 +243,12 @@
               </ng-container>
             </div>
           </td>
-          <td>{{order?.paymentMethod}}</td>
+          <td>
+            <div>
+              <div>{{order?.paymentMethod}}</div>
+              <div class="ellipsis">{{order?.paymentGateway}}</div>
+            </div>
+          </td>
           <td>
             <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{'success-orders': successOrders.includes(order?.orderStatus), 
               'accepted-orders': acceptedOrders.includes(order?.orderStatus), 

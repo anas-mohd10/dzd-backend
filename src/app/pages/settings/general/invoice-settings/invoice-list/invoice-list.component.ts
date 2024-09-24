@@ -19,7 +19,7 @@ export class InvoiceListComponent implements OnInit {
   task = PageTasks.ADD;
   editMode: boolean;
   isSubmitted: boolean;
-  currentData: { code: any; startingRange: any; };
+  currentData: { code: any; startingRange: any; orderStartingRange: any };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,14 +35,15 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoice()
   }
 
-  get isf() {
+  get formControls() {
     return this.form.controls;
   }
 
   initForm() {
     this.form = this.formBuilder.group({
       code: ['', Validators.required],
-      startingRange: ['', Validators.required],
+      orderStartingRange: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      startingRange: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
     });
   }
 
@@ -52,14 +53,13 @@ export class InvoiceListComponent implements OnInit {
         this.invoiceSettingsData = res?.result
         this.currentData = {
           code: res?.result?.code,
+          orderStartingRange: res?.result?.orderStartingRange,
           startingRange: res?.result?.startingRange
         }
         this.form.patchValue(res?.result)
       }
     })
   }
-
-
 
   onSubmit() {
     if (!this.form.valid) {
@@ -68,11 +68,13 @@ export class InvoiceListComponent implements OnInit {
 
     let data = {
       code: this.form.get("code")?.value,
-      startingRange: this.form.get("startingRange")?.value
+      startingRange: this.form.get("startingRange")?.value,
+      orderStartingRange: this.form.get("orderStartingRange")?.value,
     }
     if (this.currentData) {
       if (this.currentData["code"] == this.form.get("code")?.value
-        && this.currentData["startingRange"] == this.form.get("startingRange")?.value) {
+        && this.currentData["startingRange"] == this.form.get("startingRange")?.value
+        && this.currentData["orderStartingRange"] == this.form.get("orderStartingRange")?.value) {
         this.HotToastService.info('Make any changes');
       } else {
         this.invoiceSettingsService.addInvoiceSettings(this.form.value).subscribe((res: any) => {

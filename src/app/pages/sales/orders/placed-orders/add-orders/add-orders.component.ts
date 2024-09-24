@@ -254,9 +254,9 @@ export class AddOrdersComponent implements OnInit {
       products: [[], Validators.required],
       clickPoint: [null],
       pickUpLocation: [null],
-      deliveryDate: ['', Validators.required],
+      deliveryDate: [''],
       deliveryType: ['0'],
-      deliverySlot: ['', Validators.required],
+      deliverySlot: [null],
       orderNote: [''],
       shippingNote: ['']
     });
@@ -593,6 +593,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm.get('products')?.setValue(this.cartItems)
 
     if (!this.orderForm.valid) {
+      this.ToastrService.error("Please fill all the required fields")
       this.isSubmitted = true
       return;
     }
