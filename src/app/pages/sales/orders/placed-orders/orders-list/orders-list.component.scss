@@ -14,8 +14,8 @@ $error: #F1416C;
   text-overflow: ellipsis;
   width: 100%; /* or a specific width */
   display: block;
-  width: 100px;
-  color: #28C76F;
+  max-width: 100px;
+  width: max-content;
 }
 
 .btn-secondary {

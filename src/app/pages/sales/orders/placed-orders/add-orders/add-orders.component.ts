@@ -77,6 +77,8 @@ export class AddOrdersComponent implements OnInit {
   deliverySlot: any;
   isAddressSubmitted: boolean = false
   pickupLocations: Array<any> = []
+  addCustomerRef?: BsModalRef
+  userForm: FormGroup = new FormGroup({})
 
   constructor(
     private OrderService: OrdersService,
@@ -143,6 +145,14 @@ export class AddOrdersComponent implements OnInit {
       longitude: new FormControl(''),
     })
 
+    this.userForm = new FormGroup({
+      name: new FormControl("", Validators.required),
+      countryCode: new FormControl("+971", Validators.required),
+      mobile: new FormControl("", [Validators.required, Validators.pattern("^[0-9]{10}$")]),
+      email: new FormControl("", Validators.email),
+      isActive: new FormControl(true),
+    })
+
     this.selectDeliveryDate(this.deliveryDate)
   }
 
@@ -155,6 +165,62 @@ export class AddOrdersComponent implements OnInit {
     if (newPattern) newValidators.push(Validators.pattern(newPattern));
     this.addressForm.get('mobile')?.setValidators(newValidators);
     this.addressForm.get('mobile')?.updateValueAndValidity();
+  }
+
+  /**
+   * 
+   * @param template
+   * Open create customer modal and set the modal reference to addCustomerRef
+   * Update the mobile pattern based on the country code
+   * Close the modal on close button click
+   */
+  openCreateCustomer(template: TemplateRef<any>) {
+    this.addCustomerRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
+  }
+
+  updateUserMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.userForm.get('mobile')?.setValidators(newValidators);
+    this.userForm.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleUserMobilePattern() {
+    switch (this.userForm.get("countryCode")?.value) {
+      case "+91":
+        this.updateUserMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateUserMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
+  }
+
+  createCustomer() {
+    if (!this.userForm.valid) {
+      this.ToastrService.error("Please fill all the required fields")
+      return
+    }
+
+    this.customerService.addCustomer(this.userForm.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res.message)
+          this.userForm.patchValue({ name: "", mobile: "", email: "", isActive: true, countryCode: "+971" })
+          this.addCustomerRef?.hide()
+          const customerDetails = res?.result
+          this.getAddress(this.addressModal, customerDetails)
+        } else {
+          this.ToastrService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
+  }
+
+  closeCreateCustomer() {
+    this.addCustomerRef?.hide()
   }
 
   handleAddressMobilePattern() {
