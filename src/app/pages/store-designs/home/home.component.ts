@@ -477,6 +477,13 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails);
 
+          this.getCollections()
+          
+          if(this.widgetDetails?.collections) {
+            this.selectedProductType = 'collections'                        
+            this.widgetCollection.setValue(this.widgetDetails?.collections?._id)
+          }
+
           if (this.widgetDetails?.isTimeBoundWidget == true) {
             this.form.patchValue({
               widgetStartTime: this.widgetDetails?.widgetStartTime?.split('T')[0],
@@ -654,6 +661,8 @@ export class HomeComponent implements OnInit {
     this.widgetImagePreviewIndex = null
     this.widgetImagePreview = null
     this.form.reset()
+    this.selectedProductType = 'products'
+    this.widgetCollection.reset()
     this.saleForm.reset()
     this.saleForm.get('saleButtonVisibility')?.setValue(true)
   }

@@ -3,5 +3,6 @@ export const storeEndpoints = {
     update_store: '/update-store',
     store_details: '/get-store-details',
     stores: '/get-stores',
-    click_points: '/click-points'
+    click_points: '/click-points',
+    deleteStore: '/delete-store',
 }

@@ -38,4 +38,9 @@ export class StoresService {
     const url = this.commonService.getFullUrl(this.storeEndpoints.update_store);
     return this.http.put(`${url}`, data);
   }
+
+  delete(storeId: string) {
+    const url = this.commonService.getFullUrl(this.storeEndpoints.deleteStore);
+    return this.http.delete(`${url}/${storeId}`);
+  }
 }

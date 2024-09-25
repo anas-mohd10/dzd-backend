@@ -1,22 +1,27 @@
 <div class="storesContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bolder">Stores</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.stores.STORE_LIST}}">Stores</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.stores.UPDATE_STORE}}">Update Stores</a>
-                    </li>
-                </ul>
+    <div class="page-header d-flex align-items-center justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bolder">Stores</h1>
             </div>
+            <div class="row">
+                <div class="col d-flex align-items-start justify-content-between">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item fs-6">
+                            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item fs-6">
+                            <a routerLink="{{ appRoute.stores.STORE_LIST}}">Stores</a>
+                        </li>
+                        <li class="breadcrumb-item active fs-6">
+                            <a routerLink="{{ appRoute.stores.UPDATE_STORE}}">Update Stores</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-danger" (click)="deleteStore()">Delete Store</button>
         </div>
     </div>
 

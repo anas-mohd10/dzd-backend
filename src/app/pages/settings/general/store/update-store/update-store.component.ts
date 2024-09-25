@@ -19,6 +19,7 @@ export class UpdateStoreComponent implements OnInit {
   appRoute = appRoutes
   isValid: Boolean = true
   refid: any = null
+  storeDetails: any = null
 
   constructor(
     private StoresService: StoresService,
@@ -40,7 +41,7 @@ export class UpdateStoreComponent implements OnInit {
     this.form.get('mobile')?.updateValueAndValidity();
   }
 
-  handleMobilePattern() {    
+  handleMobilePattern() {
     switch (this.form.get("countryCode")?.value) {
       case "+91":
         this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
@@ -49,6 +50,21 @@ export class UpdateStoreComponent implements OnInit {
         this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
         break;
     }
+  }
+
+  deleteStore() {
+    this.StoresService.delete(this.storeDetails?._id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.Router.navigate([appRoutes.stores.STORE_LIST])
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -64,6 +80,7 @@ export class UpdateStoreComponent implements OnInit {
     if (this.refid) {
       this.StoresService.getStoreDetails({ refid: this.refid }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
+          this.storeDetails = res?.result
           this.form.get('name')?.setValue(res?.result?.name)
           this.form.get('email')?.setValue(res?.result?.contact?.email)
           this.form.get('tel')?.setValue(res?.result?.contact?.tel)
