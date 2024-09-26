@@ -6,6 +6,7 @@ import { FeedService } from 'src/app/includes/services/feed.service';
 import { environment } from 'src/environments/environment';
 import { ClipboardService } from 'ngx-clipboard';
 import { HotToastService } from '@ngneat/hot-toast';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-feeds',
@@ -18,15 +19,16 @@ export class FeedsComponent implements OnInit {
   feedEndpoints = feedEndpoints
   form!: FormGroup
   feedDetails: any = {}
-  exportGoogleFeed: string = environment.apiUrl + feedEndpoints.export_feed + "?type=google"
-  exportFacebookXmlFeed: string = environment.apiUrl + feedEndpoints.export_feed + "?type=facebook&format=xml"
-  exportFacebookCsvFeed: string = environment.apiUrl + feedEndpoints.export_feed + "?type=facebook&format=csv"
+  exportGoogleFeed: string = ''
+  exportFacebookXmlFeed: string = ''
+  exportFacebookCsvFeed: string = ''
 
   constructor(
     private FeedService: FeedService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private HotToastService: HotToastService,
-    private ClipboardService: ClipboardService
+    private ClipboardService: ClipboardService,
+    private AppSettingsService: AppSettingsService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +38,22 @@ export class FeedsComponent implements OnInit {
       googleFeedUrl: new FormControl(this.exportGoogleFeed),
       facebookXmlFeedUrl: new FormControl(this.exportFacebookXmlFeed),
       facebookCsvFeedUrl: new FormControl(this.exportFacebookCsvFeed),
+    })
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (response: any) => {
+        if(response?.errorCode == 0) {
+          this.exportGoogleFeed = response?.result?.domainUrl + 'api/v1/w/admin/auth' +  feedEndpoints.export_feed + "?type=google"
+          this.exportFacebookXmlFeed = response?.result?.domainUrl + 'api/v1/w/admin/auth' + feedEndpoints.export_feed + "?type=facebook&format=xml"
+          this.exportFacebookCsvFeed = response?.result?.domainUrl + 'api/v1/w/admin/auth' + feedEndpoints.export_feed + "?type=facebook&format=csv"
+          this.form.patchValue({
+            googleFeedUrl: this.exportGoogleFeed,
+            facebookXmlFeedUrl: this.exportFacebookXmlFeed,
+            facebookCsvFeedUrl: this.exportFacebookCsvFeed
+          })
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
     })
 
     this.FeedService.getFeedDetails().subscribe((res: any) => {

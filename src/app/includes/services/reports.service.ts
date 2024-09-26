@@ -33,6 +33,11 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
+  orderReport() {
+    const url = this.commonService.getFullUrl(reportsEndpoints.orderReport);
+    return this.http.get(`${url}`);
+  }
+
   unfullfilledStockReport() {
     const url = this.commonService.getFullUrl(reportsEndpoints.unfullfilledStockReport);
     return this.http.get(`${url}`);

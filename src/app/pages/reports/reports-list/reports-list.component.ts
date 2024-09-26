@@ -135,6 +135,16 @@ export class ReportsListComponent implements OnInit {
           }
         })
         break
+      case 'order-report':
+        this.ReportsService.orderReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res)
+            this.ChangeDetectorRef.markForCheck()
+          }, error: (err: any) => {
+            this.HotToastService.error(err?.error?.message)
+          }
+        })
+        break
       case 'unfullfilledStock':
         this.ReportsService.unfullfilledStockReport().subscribe({
           next: (res: any) => {
