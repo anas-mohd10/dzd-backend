@@ -80,6 +80,22 @@ export class ProductCardComponent implements OnInit {
     return this.editForm.controls
   }
 
+  deleteProduct() {
+    this.ProductHeadService.deleteProductHead(this.headDetails?._id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+          this.close()
+          this.getProductHeads()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(''),

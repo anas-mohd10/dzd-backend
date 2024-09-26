@@ -24,8 +24,8 @@
             <div class="row justify-content-end">
                <div class="search-input col-lg-4">
                   <label class="fs-6">&nbsp;</label>
-                  <input type="search" placeholder="Search products here" class="form-control fs-6" formControlName="name"
-                     (ngModelChange)="getProductHeads()">
+                  <input type="search" placeholder="Search products here" class="form-control fs-6"
+                     formControlName="name" (ngModelChange)="getProductHeads()">
                </div>
                <div class="col-lg-3">
                   <label class="fs-6">Status</label>
@@ -73,8 +73,8 @@
                <ng-container *ngFor="let product of products; let i = index">
                   <tr>
                      <td>
-                        <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
-                           class="rounded" onerror="this.src = 'assets/images/default.png'">
+                        <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="rounded"
+                           onerror="this.src = 'assets/images/default.png'">
                      </td>
                      <td>{{product?.name}}</td>
                      <td>{{product?.sku}}</td>
@@ -133,9 +133,14 @@
 <ng-template #template>
    <div class="modal-header">
       <h4 class="modal-title pull-left">Edit details</h4>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
-         <span aria-hidden="true" class="visually-hidden">&times;</span>
-      </button>
+      <div class="d-flex align-items-center justify-content-end gap-2">
+         <button type="button" class="btn btn-danger" aria-label="Close" (click)="deleteProduct()">
+            Delete
+         </button>
+         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+         </button>
+      </div>
    </div>
    <div class="modal-body">
       <form [formGroup]="editForm">
@@ -185,11 +190,12 @@
                <div class="mt-3 d-flex flex-wrap gap-2 align-items-center jusitfy-content-start"
                   *ngIf="parentCategories.length > 0">
                   <ng-container *ngFor="let category of parentCategories; let i = index">
-                     <div class="bg-secondary p-2 d-flex align-items-center justify-content-center gap-2 rounded" (click)="removeCategory(category?._id)">
+                     <div class="bg-secondary p-2 d-flex align-items-center justify-content-center gap-2 rounded"
+                        (click)="removeCategory(category?._id)">
                         <div>{{category?.name}}</div>
                         <div>
-                           <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                              stroke="currentColor" class="w-6 h-6">
+                           <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                            </svg>
                         </div>
@@ -337,19 +343,20 @@
                   <tr>
                      <td>
                         <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
-                           class="rounded border border-secondary"
-                           onerror="this.src = 'assets/images/default.png'">
+                           class="rounded border border-secondary" onerror="this.src = 'assets/images/default.png'">
                      </td>
                      <td>
                         <div>
                            {{product?.name}}
-                         </div>
-                         <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
-                           <div class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2" *ngFor="let attribute of product?.attributes">
-                             <div>{{attribute?.title}} : </div>
-                             <div>{{attribute?.value}}</div>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                           <div
+                              class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
+                              *ngFor="let attribute of product?.attributes">
+                              <div>{{attribute?.title}} : </div>
+                              <div>{{attribute?.value}}</div>
                            </div>
-                         </div>
+                        </div>
                      </td>
                      <td>{{product?.sku}}</td>
                      <td>
