@@ -43,9 +43,9 @@ export class FeedsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (response: any) => {
         if(response?.errorCode == 0) {
-          this.exportGoogleFeed = response?.result?.domainUrl + 'api/v1/w/admin/auth' +  feedEndpoints.export_feed + "?type=google"
-          this.exportFacebookXmlFeed = response?.result?.domainUrl + 'api/v1/w/admin/auth' + feedEndpoints.export_feed + "?type=facebook&format=xml"
-          this.exportFacebookCsvFeed = response?.result?.domainUrl + 'api/v1/w/admin/auth' + feedEndpoints.export_feed + "?type=facebook&format=csv"
+          this.exportGoogleFeed = response?.result?.domainUrl + '/api/v1/w/admin/auth' +  feedEndpoints.export_feed + "?type=google"
+          this.exportFacebookXmlFeed = response?.result?.domainUrl + '/api/v1/w/admin/auth' + feedEndpoints.export_feed + "?type=facebook&format=xml"
+          this.exportFacebookCsvFeed = response?.result?.domainUrl + '/api/v1/w/admin/auth' + feedEndpoints.export_feed + "?type=facebook&format=csv"
           this.form.patchValue({
             googleFeedUrl: this.exportGoogleFeed,
             facebookXmlFeedUrl: this.exportFacebookXmlFeed,
