@@ -120,7 +120,8 @@ export class AllProductsComponent implements OnInit {
     } else {
       this.isTableView = true
     }
-  }
+    }
+
 
   getProducts() {
     let categoryItems = this.categoryItems.map((item: any) => item.catid)

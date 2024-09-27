@@ -7,6 +7,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { validators } from 'src/app/config/constants/mobile-validators';
 
 interface Media {
   title: string;
@@ -149,10 +150,15 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('toastError')?.setValue("#" + res?.result?.toast?.error.split('FF')[1])
         this.form.get('toastInfo')?.setValue("#" + res?.result?.toast?.info.split('FF')[1])
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
+        this.form.get('email')?.setValue(res?.result?.email)
+        this.form.get('gstNo')?.setValue(res?.result?.gstNo)
+        this.form.get('countryCode')?.setValue(res?.result?.countryCode)
+        this.form.get('mobile')?.setValue(res?.result?.mobile)
         this.form.get('primaryAddress')?.setValue(res?.result?.primaryAddress)
         this.form.get('paymentGateway')?.setValue(res?.result?.paymentGateway)
         this.form.get('currency')?.setValue(res?.result?.currency)
         this.form.get('isStoreLive')?.setValue(res?.result?.isStoreLive)
+        this.form.get('companyName')?.setValue(res?.result?.companyName)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('name')?.setValue(res?.result?.name)
         this.form.get('defaultImage')?.setValue(res?.result?.defaultImage)
@@ -214,8 +220,13 @@ export class UpdateAppSettingsComponent implements OnInit {
       text: ['', Validators.required],
       itemsPerPage: ['', Validators.required],
       primaryAddress: ['', Validators.required],
+      gstNo: [''],
+      email: ['', [Validators.required, Validators.email]],
+      countryCode: ['+971', Validators.required],
+      mobile: ['', Validators.required],
       fontFamily: ['', Validators.required],
       name: ['', Validators.required],
+      companyName: [''], 
       domain: ['', Validators.required],
       description: ['', Validators.required],
       primaryLang: [''],
@@ -232,6 +243,24 @@ export class UpdateAppSettingsComponent implements OnInit {
       logo: ['', Validators.required],
       favicon: ['', Validators.required],
     })
+  }
+
+  updateMobilePattern(newPattern: string) {
+    const newValidators = [Validators.required];
+    if (newPattern) newValidators.push(Validators.pattern(newPattern));
+    this.form.get('mobile')?.setValidators(newValidators);
+    this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleMobilePattern() {
+    switch (this.form.get("countryCode")?.value) {
+      case "+91":
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+        break;
+      case "+971":
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+    }
   }
 
   handleStoreLogo(event: any) {
@@ -278,6 +307,11 @@ export class UpdateAppSettingsComponent implements OnInit {
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
       primaryAddress: this.form.get('primaryAddress')?.value,
+      gstNo: this.form.get('gstNo')?.value,
+      email: this.form.get('email')?.value,
+      countryCode: this.form.get('countryCode')?.value,
+      companyName: this.form.get('companyName')?.value,
+      mobile: this.form.get('mobile')?.value,
       primaryLang: this.form.get('primaryLang')?.value,
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,

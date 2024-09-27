@@ -7,20 +7,23 @@
                 <div class="card py-4" id="print">
                     <div class="card-body">
                         <div class="row align-items-center">
-                            <div class="col-8">
+                            <div class="col-lg-6">
                                 <img src="{{base}}{{settings?.logo}}"
                                     style="width: 200px; min-height: 80px; object-fit: contain;" alt="logo">
                                 <div class="mt-4">
-                                    {{settings?.primaryAddress}}
+                                    <div class="mb-2 fs-4 fw-bold">{{settings?.companyName}}</div>
+                                    <div>{{settings?.primaryAddress}}</div>
                                 </div>
                                 <div>
-                                    <div>{{helpCenter?.countryCode}} {{helpCenter?.phone}}</div>
-                                    <div>{{helpCenter?.email}}</div>
+                                    <div>{{settings?.countryCode}} {{settings?.mobile}}</div>
+                                    <div>{{settings?.email}}</div>
                                 </div>
                             </div>
-                            <div class="col-4 text-right">
-                                <h4 class="fs-1 fw-bold-800 mt-2">Order {{orderDetails?.orderNo}}</h4>
-                                <h4 class="fs-3 fw-bold mt-2">Invoice #{{orderDetails?.invoiceNo}}</h4>
+                            <div class="col-lg-6 text-right">
+                                <h4 class="fs-1 fw-bold mt-2">Invoice #{{orderDetails?.invoiceNo}}</h4>
+                                <div class="fs-5 fw-bold mt-2" *ngIf="settings?.gstNo">
+                                    TRN : {{settings?.gstNo}}
+                                </div>
                             </div>
                         </div>
                         <h6 class="fw-bold my-2 fs-3 text-center">TAX INVOICE</h6>
@@ -74,10 +77,14 @@
                                         <br>
                                         <strong>Delivery Date And Time:</strong>
                                         <br>
-                                        {{convertTimeFormat(orderDetails?.deliverySlot?.from + ' - ' +
-                                        orderDetails?.deliverySlot?.to)}}
-                                        <br>
-                                        ( {{getDeliveryDate(orderDetails?.deliveryDate)}} )
+                                        <div class="m-0" *ngIf="orderDetails?.deliverySlot">
+                                            <strong>Delivery Date And Time:</strong>
+                                            <br>
+                                            {{convertTimeFormat(orderDetails?.deliverySlot?.from + ' - ' +
+                                            orderDetails?.deliverySlot?.to)}}
+                                            <br>
+                                            ( {{getDeliveryDate(orderDetails?.deliveryDate)}} )
+                                        </div>
                                     </address>
                                     <address>
                                         <strong>Order Date:</strong><br>
@@ -98,6 +105,7 @@
                                                     <td class="text-left"><strong>Item</strong></td>
                                                     <td class="text-center"><strong>Quantity</strong></td>
                                                     <td class="text-center"><strong>Price</strong></td>
+                                                    <td class="text-center"><strong>Tax ( 5% )</strong></td>
                                                     <td class="text-right"><strong>Total in AED</strong></td>
                                                 </tr>
                                             </thead>
@@ -136,36 +144,22 @@
                                                                 ({{product?.productId?.unit}})</span>
                                                         </td>
                                                         <td class="text-center">{{product?.pricePerUnit}}</td>
+                                                        <td class="text-center">{{product?.taxTotal}}</td>
                                                         <td class="text-right">{{product?.total}}</td>
                                                     </tr>
                                                 </ng-container>
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
+                                                    <td class="no-line"></td>
                                                     <td class="text-center"><strong>Sub Total</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
-                                                        {{orderDetails.subtotal}}
+                                                        {{orderDetails.priceAfterTax}}
                                                     </td>
                                                 </tr>
 
                                                 <tr>
                                                     <td class="no-line"></td>
-                                                    <td class="no-line"></td>
-                                                    <td class="text-center"><strong>Discount</strong></td>
-                                                    <td class="text-right"> {{settings?.currency}}
-                                                        {{orderDetails.discount}}
-                                                    </td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td class="no-line"></td>
-                                                    <td class="no-line"></td>
-                                                    <td class="text-center"><strong>VAT 5%</strong></td>
-                                                    <td class="text-right"> {{settings?.currency}}
-                                                        {{orderDetails?.tax}}</td>
-                                                </tr>
-
-                                                <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>Delivery Charges</strong></td>
@@ -176,9 +170,19 @@
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
+                                                    <td class="no-line"></td>
                                                     <td class="text-center"><strong>Total</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails.total}}</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="no-line"></td>
+                                                    <td class="text-center"><strong>VAT (Inclusive)</strong></td>
+                                                    <td class="text-right"> {{settings?.currency}}
+                                                        {{orderDetails?.tax}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -58,7 +58,7 @@
                <div class="fs-3 fw-bold mb-2">Store Settings</div>
                <div class="row">
                   <div class="col-lg-6 form-group mb-3">
-                     <label class="fs-6 mb-3 required">Store Name</label>
+                     <label class="fs-6 mb-3 required">Brand Name</label>
                      <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
                         formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
                                        formControls.name.errors?.required}" />
@@ -69,11 +69,38 @@
                         formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
                                        formControls.domain.errors?.required}" />
                   </div>
+                  <div class="form-group mb-3">
+                     <label class="fs-6 mb-3">Company Name</label>
+                     <input type="text" class="form-control fs-6"
+                        formControlName="companyName" />
+                  </div>
+                  <div class="col-lg-6 form-group mb-3">
+                     <label for="countryCode" class="fs-6 mb-3 required">Country Code</label>
+                     <select formControlName="countryCode" (change)="handleMobilePattern()" id="countryCode"
+                        class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="+91">+91</option>
+                        <option value="+971">+971</option>
+                     </select>
+                  </div>
+                  <div class="col-lg-6 form-group mb-3">
+                     <label class="fs-6 mb-3 required">Mobile No.</label>
+                     <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{'is-invalid': (formControls.mobile.touched || isSubmitted) &&
+                                       formControls.mobile.errors?.required}" />
+                  </div>
+               </div>
+               <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Email</label>
+                  <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) &&
+                                       formControls.email.errors?.required}"/>
+               </div>
+               <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">TRN / GST No</label>
+                  <input type="text" class="form-control fs-6" formControlName="gstNo" />
                </div>
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3 required">Store Address</label>
-                  <input type="text" class="form-control fs-6"
-                     formControlName="primaryAddress" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
+                  <input type="text" class="form-control fs-6" formControlName="primaryAddress" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
                                     formControls.name.errors?.required}" />
                </div>
                <div class="form-group mb-3">
@@ -84,7 +111,7 @@
                </div>
             </div>
          </div>
-         
+
          <div class="card">
             <div class="card-body">
                <div class="fs-3 fw-bold mb-2">Media Settings</div>
@@ -98,8 +125,7 @@
                   <div class="col-lg-3">
                      <div class="fs-5 mb-2 required">Favicon</div>
                      <div class="h-auto ratio ratio-1x1 w-100">
-                        <app-assets (mediaClicked)="handleStoreFavicon($event)"
-                           [previewDetails]="favicon"></app-assets>
+                        <app-assets (mediaClicked)="handleStoreFavicon($event)" [previewDetails]="favicon"></app-assets>
                      </div>
                   </div>
                   <div class="col-lg-3">

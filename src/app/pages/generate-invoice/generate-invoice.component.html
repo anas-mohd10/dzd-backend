@@ -8,15 +8,19 @@
                         <img src="{{base}}{{settings?.logo}}"
                             style="width: 200px; min-height: 80px; object-fit: contain;" alt="{{settings?.name}}">
                         <div class="mt-4">
-                            {{settings?.primaryAddress}}
+                            <div class="mb-2 fs-4 fw-bold">{{settings?.companyName}}</div>
+                            <div>{{settings?.primaryAddress}}</div>
                         </div>
                         <div>
-                            <div class="mt-2">{{helpCenter?.countryCode}} {{helpCenter?.phone}}</div>
-                            <div class="mt-2">{{helpCenter?.email}}</div>
+                            <div>{{settings?.countryCode}} {{settings?.mobile}}</div>
+                            <div>{{settings?.email}}</div>
                         </div>
                     </div>
                     <div class="col-lg-6 text-right">
                         <h4 class="fs-1 fw-bold mt-2">Invoice #{{orderDetails?.invoiceNo}}</h4>
+                        <div class="fs-5 fw-bold mt-2" *ngIf="settings?.gstNo">
+                            TRN : {{settings?.gstNo}}
+                        </div>
                     </div>
                 </div>
                 <h6 class="fw-bold my-2 fs-3 text-center">TAX INVOICE</h6>
@@ -100,6 +104,7 @@
                                             <td class="text-left"><strong>Item</strong></td>
                                             <td class="text-center"><strong>Quantity</strong></td>
                                             <td class="text-center"><strong>Price</strong></td>
+                                            <td class="text-center"><strong>Tax ( 5% )</strong></td>
                                             <td class="text-right"><strong>Total in AED</strong></td>
                                         </tr>
                                     </thead>
@@ -115,14 +120,17 @@
                                                             <div>{{product?.productId?.name}}</div>
                                                             <div>SKU : {{product?.productId?.sku}}</div>
                                                             <div class="text-muted overview">
-                                                                {{product?.productId?.overview}}</div>
+                                                                {{product?.productId?.overview}}
+                                                            </div>
                                                             <div class="text-muted coo"
                                                                 *ngIf="product?.productId?.origin">COO :
                                                                 {{product?.productId?.origin}}</div>
-                                                            <ng-container *ngFor="let attribute of product?.productId?.attributes">
-                                                                <div class="text-muted d-flex align-items-center justify-content-start gap-2">
-                                                                   <div>{{attribute?.title}} : </div>
-                                                                   <div>{{attribute?.value}}</div>
+                                                            <ng-container
+                                                                *ngFor="let attribute of product?.productId?.attributes">
+                                                                <div
+                                                                    class="text-muted d-flex align-items-center justify-content-start gap-2">
+                                                                    <div>{{attribute?.title}} : </div>
+                                                                    <div>{{attribute?.value}}</div>
                                                                 </div>
                                                             </ng-container>
                                                         </div>
@@ -130,10 +138,11 @@
                                                 </td>
                                                 <td class="text-center">
                                                     {{product?.quantity}}
-                                                    <span *ngIf="product?.productId?.unit">
-                                                        ({{product?.productId?.unit}})</span>
+                                                    <span
+                                                        *ngIf="product?.productId?.unit">({{product?.productId?.unit}})</span>
                                                 </td>
                                                 <td class="text-center">{{product?.pricePerUnit}}</td>
+                                                <td class="text-center">{{product?.taxTotal}}</td>
                                                 <td class="text-right">{{product?.total}}</td>
                                             </tr>
                                         </ng-container>
@@ -141,30 +150,15 @@
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
+                                            <td class="no-line"></td>
                                             <td class="text-center"><strong>Sub Total</strong></td>
                                             <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails.subtotal}}
+                                                {{orderDetails.priceAfterTax}}
                                             </td>
                                         </tr>
 
                                         <tr>
                                             <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="text-center"><strong>Discount</strong></td>
-                                            <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails.discount}}
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="text-center"><strong>VAT 5%</strong></td>
-                                            <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails?.tax}}</td>
-                                        </tr>
-
-                                        <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
                                             <td class="text-center"><strong>Delivery Charges</strong></td>
@@ -175,9 +169,19 @@
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
+                                            <td class="no-line"></td>
                                             <td class="text-center"><strong>Total</strong></td>
                                             <td class="text-right"> {{settings?.currency}}
                                                 {{orderDetails.total}}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>VAT (Inclusive)</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails?.tax}}</td>
                                         </tr>
                                     </tbody>
                                 </table>

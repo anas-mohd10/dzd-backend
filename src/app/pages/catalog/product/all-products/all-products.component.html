@@ -166,6 +166,7 @@
               <th>Category</th>
               <th>Price</th>
               <th>Stock</th>
+              <th>Visibility</th>
               <th>Updated On</th>
               <th>Status</th>
               <th>&nbsp;</th>
@@ -202,6 +203,11 @@
                 </td>
                 <td> {{settings?.currency}} {{product?.price?.offer}}</td>
                 <td>{{product?.stock}}</td>
+                <td>
+                  <span class="p-1 rounded" [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
+                    {{product?.isVisible == true ?  'Visible' : 'Hidden'}}
+                  </span>
+                </td>
                 <td>{{formdateDate(product?.updatedAt)}}</td>
                 <td>
                   <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.slug"
