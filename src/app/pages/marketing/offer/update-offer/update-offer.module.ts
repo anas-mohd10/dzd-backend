@@ -18,7 +18,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FormsModule,
     RouterModule.forChild([
       {
-        path: '',
+        path: ':offerId',
         component: UpdateOfferComponent,
       },
     ]),

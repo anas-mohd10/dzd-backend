@@ -22,6 +22,9 @@ export class PermissionGuard implements CanActivate {
 
     let path = ''
 
+    console.log(module);
+    
+
     switch (module[0]) {
       case 'brands':
         module[1] == 'add' ? path = 'add-brand' : module[1] == 'update' ? path = 'update-brand' : path = 'brand'

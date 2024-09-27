@@ -65,7 +65,7 @@ export class UpdateOfferComponent implements OnInit {
     this.toDate = new Date(date.setDate(getDate + 10)).toISOString().split('T')[0]
 
     this.base = environment.base
-    this.offerId = this.route.snapshot.queryParams.offer || '';
+    this.offerId = this.route.snapshot.params.offerId || '';
     this.initForm();
     this.getOffer();
 
