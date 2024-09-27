@@ -19,12 +19,8 @@ export class PermissionGuard implements CanActivate {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     let paths = state.url.split('/app/');
     let module = paths[1].split('/')
-
     let path = ''
-
-    console.log(module);
     
-
     switch (module[0]) {
       case 'brands':
         module[1] == 'add' ? path = 'add-brand' : module[1] == 'update' ? path = 'update-brand' : path = 'brand'

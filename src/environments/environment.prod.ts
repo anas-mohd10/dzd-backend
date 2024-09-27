@@ -5,9 +5,9 @@ export const environment = {
   isMockEnabled: true,
 
   // Local
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  appBaserl: 'http://localhost:3000/api/v1/a/',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  // appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   // Local
 
@@ -22,6 +22,9 @@ export const environment = {
   //Fresh fruit
 
   //Mattressland
+  apiUrl: 'https://mattressland.ae/api/v1/w/admin/auth',
+  baseUrl: 'https://mattressland.ae/api/v1/w/',
+  appBaserl: 'https://mattressland.ae/api/v1/a/',
   // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
   // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
   // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
@@ -38,12 +41,12 @@ export const environment = {
   // baseUrl: 'https://thefreshmarket-api.storedada.net/api/v1/w/',
   // appBaserl: 'https://thefreshmarket-api.storedada.net/api/v1/a/',
   // Fresh Market
-  
-    //Mamame
-    // apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
-    // baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
-    // appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
-    //Mamame
+
+  //Mamame
+  // apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
+  //Mamame
 
   //Storedada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
