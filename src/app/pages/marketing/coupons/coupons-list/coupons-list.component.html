@@ -52,7 +52,7 @@
 
   <div class="offer-cards my-3">
     <ng-container *ngFor="let offer of coupons">
-      <div class="p-3 rounded bg-white cursor-pointer d-flex align-items-start justify-content-between offerCoupon">
+      <div class="p-3 rounded bg-white cursor-pointer d-flex align-items-start justify-content-between bg-white">
         <div routerLink="{{ appRoute.coupons.UPDATE_COUPONS_LIST }}" [queryParams]="{ coupon: offer?.refid }"
           class="w-80">
           <img src="" onerror="this.src = 'assets/images/default.png'" class="w-100 rounded h-100"

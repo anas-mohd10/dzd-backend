@@ -65,6 +65,9 @@ export class PermissionGuard implements CanActivate {
       case 'media-library':
         module[0] == 'media-library' ? path = 'media-library' : null
         break
+        case 'guests':
+          module[0] == 'guests' ? path = 'guests' : null
+          break
       case 'feeds':
         module[0] == 'feeds' ? path = 'feeds' : null
         break
@@ -84,7 +87,13 @@ export class PermissionGuard implements CanActivate {
         module[1] == 'add' ? path = 'add-coupons' : module[1] == 'update' ? path = 'update-coupons' : path = 'coupons'
         break
       case 'offer':
-        module[1] == 'add' ? path = 'add-offers' : module[1] == 'update' ? path = 'update-offers' : path = 'offers'
+        module[0] == 'offer' ? path = 'offer' : null
+        break
+      case 'add-offer':
+        module[0] == 'add-offer' ? path = 'add-offer' : null
+        break
+      case 'update-offer':
+        module[0] == 'update-offer' ? path = 'update-offer' : null
         break
       case 'loyalty':
         module[0] == 'loyalty' ? path = 'loyalty' : null
@@ -166,6 +175,9 @@ export class PermissionGuard implements CanActivate {
         break
       case 'reviews':
         module[0] == 'reviews' ? path = 'reviews' : null
+        break
+      case 'user-alerts':
+        module[0] == 'user-alerts' ? path = 'user-alerts' : null
         break
       case 'cart':
         module[0] == 'cart' ? path = 'cart' : null
