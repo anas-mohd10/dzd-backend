@@ -153,6 +153,8 @@ export class AddOrdersComponent implements OnInit {
       isActive: new FormControl(true),
     })
 
+    this.handleUserMobilePattern()
+
     this.selectDeliveryDate(this.deliveryDate)
   }
 
