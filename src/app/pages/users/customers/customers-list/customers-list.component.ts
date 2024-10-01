@@ -3,6 +3,7 @@ import { appRoutes } from "../../../../config/routes/app.routes"
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { FormControl } from '@angular/forms';
 import { CsvService } from 'src/app/includes/services/csv.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customers-list',
@@ -26,7 +27,11 @@ export class CustomersListComponent implements OnInit {
     private customersService: CustomersService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private CsvService: CsvService
-  ) { }
+  ) { 
+    this.keyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.getCustomers()
+    })
+  }
 
   ngOnInit(): void {
     this.getCustomers()
