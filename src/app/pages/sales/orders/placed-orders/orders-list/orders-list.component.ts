@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -137,6 +138,13 @@ export class OrdersListComponent implements OnInit {
       }, error: (err: any) => {
         this.Toast.error(err.message)
       }
+    })
+
+
+    this.keyword.valueChanges
+    .pipe(debounceTime(500))
+    .subscribe(() => {
+      this.getOrders()
     })
   }
 

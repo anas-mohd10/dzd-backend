@@ -70,7 +70,7 @@
                         <div class="col-lg-10">
                             <label for="searchUsers" class="fs-6 mb-3 required">Customers</label>
                             <input id="searchUsers" type="search" placeholder="Search customers here"
-                                class="form-control" [formControl]="customer" (ngModelChange)="getCustomers()"
+                                class="form-control" [formControl]="customer"
                                 [ngClass]="{ 'is-invalid': (of.customerId.touched || isSubmitted) && of.customerId.errors?.required}">
                         </div>
                         <div class="col-lg-2">
