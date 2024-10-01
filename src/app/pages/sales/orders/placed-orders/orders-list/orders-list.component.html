@@ -272,9 +272,18 @@
           </td>
         </tr>
       </ng-container>
-      <tr *ngIf="orders.length == 0">
+      <tr *ngIf="orders.length == 0 && isLoading">
         <td colspan="11">
           <app-no-results></app-no-results>
+        </td>
+      </tr>
+      <tr *ngIf="!isLoading">
+        <td colspan="11">
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
         </td>
       </tr>
     </tbody>

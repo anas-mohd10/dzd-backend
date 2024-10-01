@@ -49,6 +49,7 @@ export class OrdersListComponent implements OnInit {
   keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'
+  isLoading: boolean = false
   orderStatus: Array<any> = [{
     status: 'All Orders',
     value: '',
@@ -307,6 +308,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   getOrders() {
+    this.isLoading = false
     let payload = {
       status: this.activeValue,
       page: this.page,
@@ -324,6 +326,7 @@ export class OrdersListComponent implements OnInit {
         this.totalResults = res?.result?.totalResults
         this.totalPages = res?.result?.totalPages
         this.page = res?.result?.page
+        this.isLoading = true
         this.ChangeDetectorRef.markForCheck()
       }
     })
