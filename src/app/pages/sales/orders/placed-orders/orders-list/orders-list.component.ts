@@ -314,7 +314,7 @@ export class OrdersListComponent implements OnInit {
       ...this.orderForm.value,
       keyword: this.keyword.value,
     }
-    this.OrdersService.getOrders(payload).subscribe((res: any) => {
+    this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
         this.totalOrders = res?.result?.total_orders

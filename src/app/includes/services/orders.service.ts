@@ -20,6 +20,12 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order);
     return this.http.post(`${url}`, data)
   }
+  listOrders(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.list_orders);
+    return this.http.post(`${url}`, data)
+  }
+
+  
 
   bulkOrders(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.bulk_orders);
