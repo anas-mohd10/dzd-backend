@@ -46,7 +46,7 @@
                                         <strong>Billed To:</strong><br>
                                         <div class="mb-2">
                                             <div>{{orderDetails?.customerId?.name || orderDetails?.guestId?.name}}</div>
-                                            <div>{{orderDetails?.customerId?.email || orderDetails?.guestId?.name}}</div>
+                                            <div>{{orderDetails?.customerId?.email || orderDetails?.guestId?.email}}</div>
                                             <div>
                                                 {{orderDetails?.customerId?.countryCode || orderDetails?.guestId?.countryCode}}
                                                 {{orderDetails?.customerId?.mobile || orderDetails?.guestId?.mobile}}
@@ -65,7 +65,7 @@
                                         <strong>Shipped To:</strong><br>
                                         <div class="mb-2">
                                             <div>{{orderDetails?.customerId?.name || orderDetails?.guestId?.name}}</div>
-                                            <div>{{orderDetails?.customerId?.email || orderDetails?.guestId?.name}}</div>
+                                            <div>{{orderDetails?.customerId?.email || orderDetails?.guestId?.email}}</div>
                                             <div>
                                                 {{orderDetails?.customerId?.countryCode || orderDetails?.guestId?.countryCode}}
                                                 {{orderDetails?.customerId?.mobile || orderDetails?.guestId?.mobile}}
