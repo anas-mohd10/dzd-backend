@@ -107,7 +107,6 @@
                                                     <td class="text-left"><strong>Item</strong></td>
                                                     <td class="text-center"><strong>Quantity</strong></td>
                                                     <td class="text-center"><strong>Price</strong></td>
-                                                    <td class="text-center"><strong>Tax ( 5% )</strong></td>
                                                     <td class="text-right"><strong>Total in AED</strong></td>
                                                 </tr>
                                             </thead>
@@ -146,12 +145,10 @@
                                                                 ({{product?.productId?.unit}})</span>
                                                         </td>
                                                         <td class="text-center">{{product?.pricePerUnit}}</td>
-                                                        <td class="text-center">{{product?.taxTotal}}</td>
                                                         <td class="text-right">{{product?.total}}</td>
                                                     </tr>
                                                 </ng-container>
                                                 <tr>
-                                                    <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>Sub Total</strong></td>
@@ -163,7 +160,6 @@
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
-                                                    <td class="no-line"></td>
                                                     <td class="text-center"><strong>Delivery Charges</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails.shippingCost}}</td>
@@ -172,14 +168,12 @@
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
-                                                    <td class="no-line"></td>
                                                     <td class="text-center"><strong>Total</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails.total}}</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>VAT (Inclusive)</strong></td>

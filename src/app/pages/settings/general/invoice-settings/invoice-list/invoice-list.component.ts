@@ -6,6 +6,12 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
+interface InvoiceProps {
+  code: string;
+  startingRange: number;
+  orderStartingRange: number,
+  invoiceTemplate: string;
+}
 
 @Component({
   selector: 'app-invoice-list',
@@ -19,7 +25,7 @@ export class InvoiceListComponent implements OnInit {
   task = PageTasks.ADD;
   editMode: boolean;
   isSubmitted: boolean;
-  currentData: { code: any; startingRange: any; orderStartingRange: any };
+  currentData: InvoiceProps;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,9 +35,7 @@ export class InvoiceListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.initForm()
-
     this.getInvoice()
   }
 
@@ -44,6 +48,7 @@ export class InvoiceListComponent implements OnInit {
       code: ['', Validators.required],
       orderStartingRange: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       startingRange: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
+      invoiceTemplate: ['', Validators.required],
     });
   }
 
@@ -54,7 +59,8 @@ export class InvoiceListComponent implements OnInit {
         this.currentData = {
           code: res?.result?.code,
           orderStartingRange: res?.result?.orderStartingRange,
-          startingRange: res?.result?.startingRange
+          startingRange: res?.result?.startingRange,
+          invoiceTemplate: res?.result?.invoiceTemplate
         }
         this.form.patchValue(res?.result)
       }
@@ -63,6 +69,7 @@ export class InvoiceListComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
+      this.isSubmitted = true;
       return;
     }
 
@@ -70,11 +77,13 @@ export class InvoiceListComponent implements OnInit {
       code: this.form.get("code")?.value,
       startingRange: this.form.get("startingRange")?.value,
       orderStartingRange: this.form.get("orderStartingRange")?.value,
+      invoiceTemplate: this.form.get("invoiceTemplate")?.value
     }
     if (this.currentData) {
       if (this.currentData["code"] == this.form.get("code")?.value
         && this.currentData["startingRange"] == this.form.get("startingRange")?.value
-        && this.currentData["orderStartingRange"] == this.form.get("orderStartingRange")?.value) {
+        && this.currentData["orderStartingRange"] == this.form.get("orderStartingRange")?.value
+        && this.currentData["invoiceTemplate"] == this.form.get("invoiceTemplate")?.value) {
         this.HotToastService.info('Make any changes');
       } else {
         this.invoiceSettingsService.addInvoiceSettings(this.form.value).subscribe((res: any) => {

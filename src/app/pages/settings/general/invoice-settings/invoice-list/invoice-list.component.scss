@@ -2,3 +2,14 @@ label,
 .btn-primary {
     font-weight: normal !important;
 }
+
+textarea{
+    font-family: monospace;
+    background: #1b1b1b;
+    color: #ffffff;
+
+    &:focus {
+        background: #1b1b1b;
+        color: #ffffff;
+    }
+}
