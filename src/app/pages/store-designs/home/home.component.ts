@@ -94,6 +94,7 @@ export class HomeComponent implements OnInit {
     "slider-spotlight", "trending-teasers",
     "text-twirl"
   ]
+  isWidgetLoaded: boolean = false
   redirectionItems: Array<any> = [
     { key: "None", value: "" },
     { key: "Open category products", value: "category" },
@@ -447,6 +448,7 @@ export class HomeComponent implements OnInit {
   }
 
   getWidgetDetails(widget: any) {
+    this.isWidgetLoaded = false
     this.HomeWidgetsService.homeWidgetDetails(widget?.refid).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -514,6 +516,7 @@ export class HomeComponent implements OnInit {
           }
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
+          this.isWidgetLoaded = true
           this.ChangeDetectorRef.markForCheck()
           if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
             this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail

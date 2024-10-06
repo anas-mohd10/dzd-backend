@@ -22,12 +22,12 @@ export const environment = {
   //Fresh fruit
 
   //Mattressland
-  apiUrl: 'https://mattressland.ae/api/v1/w/admin/auth',
-  baseUrl: 'https://mattressland.ae/api/v1/w/',
-  appBaserl: 'https://mattressland.ae/api/v1/a/',
-  // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://mattressland.ae/api/v1/w/admin/auth',
+  // baseUrl: 'https://mattressland.ae/api/v1/w/',
+  // appBaserl: 'https://mattressland.ae/api/v1/a/',
+  apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
   //Mattressland
 
   // Sidco Foods

@@ -166,6 +166,14 @@
                                                 {{orderDetails.shippingCost}}</td>
                                         </tr>
 
+                                        <tr *ngIf="orderDetails.additionalCharge != '0'">
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>Additional Charge   </strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails.additionalCharge}}</td>
+                                        </tr>
+
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
@@ -191,6 +199,7 @@
                     This is a computer generated invoice and does not require a signature.
                 </div>
             </div>
+            <!-- <div class="card-body" [innerHTML]="invoice"></div> -->
         </div>
     </div>
 </div>

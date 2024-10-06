@@ -502,6 +502,7 @@ export class AddProductComponent implements OnInit {
         offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
         selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
       }),
+      slug: new FormControl("", Validators.required),
       stock: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
       moq: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
       sku: new FormControl("", Validators.required),
@@ -580,7 +581,25 @@ export class AddProductComponent implements OnInit {
       }
     });
     //Tax class details
+    
+    this.generateSlug()
   }
+
+  //Auto generate slug starts here
+  autoGenerateSlug(){
+    this.generateSlug()
+  }
+
+  generateSlug() {
+    const name = this.form.get('name')?.value || ''; // Get the form value for 'name'
+    const slug = name
+      .toLowerCase() // Convert to lowercase
+      .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
+      .trim() // Remove any extra spaces at the start and end
+      .replace(/\s+/g, '-'); // Replace spaces with '-'
+    this.form.patchValue({ slug })
+  }
+  //Auto generate slug ends here
 
   //Get child products for corresponding parentId
   getProducts() {
@@ -621,53 +640,53 @@ export class AddProductComponent implements OnInit {
   }
   //Store fields
 
-    //Attributes
-    removeAttribute(attributeIndex: number) {
-      this.HotToastService.info('Attribute removed successfully')
-      this.attributes.splice(attributeIndex, 1)
-    }
-  
-    open(template: TemplateRef<any>) {
-      this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
-    }
-  
-    close() {
-      this.modalRef?.hide()
-      this.attributeForm.patchValue({ type: "text", title: "", value: "" })
-      this.isAttributeSubmitted = false
-    }
-  
-    get attributeControls() {
-      return this.attributeForm.controls
-    }
-  
-    submitVariant() {
-      if (!this.attributeForm.valid) {
-        this.isAttributeSubmitted = true
-        return
-      }
-  
-      let isExists = this.attributes.some((attribute: any) => attribute.title == this.attributeForm.get('title')?.value)
-      if (isExists) {
-        this.HotToastService.info('Attribute already exists with same title')
-        return
-      } else {
-        this.HotToastService.success('Attribute added successfully')
-        this.attributes.push(this.attributeForm.value)
-        this.close()
-      }
-    }
-    //Attributes
+  //Attributes
+  removeAttribute(attributeIndex: number) {
+    this.HotToastService.info('Attribute removed successfully')
+    this.attributes.splice(attributeIndex, 1)
+  }
 
-    handleTagIcons(event: any) {
-      if (this.tagIcons.includes(event)) {
-        this.tagIcons = this.tagIcons.filter((item: any) => item != event.path)
-      } else {
-        this.tagIcons.push(event.path)
-      }
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+  }
+
+  close() {
+    this.modalRef?.hide()
+    this.attributeForm.patchValue({ type: "text", title: "", value: "" })
+    this.isAttributeSubmitted = false
+  }
+
+  get attributeControls() {
+    return this.attributeForm.controls
+  }
+
+  submitVariant() {
+    if (!this.attributeForm.valid) {
+      this.isAttributeSubmitted = true
+      return
     }
-  
-    removeTagIcons(icon: any) {
-      this.tagIcons = this.tagIcons.filter((item: any) => item != icon)
+
+    let isExists = this.attributes.some((attribute: any) => attribute.title == this.attributeForm.get('title')?.value)
+    if (isExists) {
+      this.HotToastService.info('Attribute already exists with same title')
+      return
+    } else {
+      this.HotToastService.success('Attribute added successfully')
+      this.attributes.push(this.attributeForm.value)
+      this.close()
     }
+  }
+  //Attributes
+
+  handleTagIcons(event: any) {
+    if (this.tagIcons.includes(event)) {
+      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path)
+    } else {
+      this.tagIcons.push(event.path)
+    }
+  }
+
+  removeTagIcons(icon: any) {
+    this.tagIcons = this.tagIcons.filter((item: any) => item != icon)
+  }
 }

@@ -284,7 +284,7 @@ export class UpdateProductComponent implements OnInit {
     let payload = {
       ...this.form.value,
       prodid: this.productDetails.prodid,
-      slug: this.productDetails.slug,
+      slug: this.form.get('slug')?.value,
       files: this.images.length > 0 && this.images.map((item: any) => item?.path),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
@@ -345,6 +345,16 @@ export class UpdateProductComponent implements OnInit {
 
   get formControls() {
     return this.form.controls
+  }
+
+  generateSlug() {
+    const name = this.form.get('name')?.value || ''; // Get the form value for 'name'
+    const slug = name
+      .toLowerCase() // Convert to lowercase
+      .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
+      .trim() // Remove any extra spaces at the start and end
+      .replace(/\s+/g, '-'); // Replace spaces with '-'
+    this.form.patchValue({ slug })
   }
 
   ngOnInit(): void {
@@ -432,6 +442,7 @@ export class UpdateProductComponent implements OnInit {
         offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
         selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
       }),
+      slug: new FormControl("", [Validators.required]),
       stock: new FormControl("", [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
       moq: new FormControl(1, [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
       sku: new FormControl("", Validators.required),

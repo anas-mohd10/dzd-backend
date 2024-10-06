@@ -12,6 +12,13 @@
     width: 82%;
 }
 
+.widget-loader{
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .text-ellipsis {
     overflow: hidden;
     -o-text-overflow: ellipsis;

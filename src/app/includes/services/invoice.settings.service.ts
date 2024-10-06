@@ -35,4 +35,9 @@ export class InvoiceSettingsService {
     const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.generate_products);
     return this.http.post(`${url}`, data);
   }
+
+  generateInvoice(orderId: string) {
+    const url = this.commonService.getFullUrl(this.invoiceSettingsEndpoints.generateInvoice + `/${orderId}`);
+    return this.http.get(`${url}`);
+  }
 }
