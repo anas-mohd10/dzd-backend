@@ -210,7 +210,7 @@
                 </td>
                 <td>{{formdateDate(product?.updatedAt)}}</td>
                 <td>
-                  <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.slug"
+                  <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.prodid"
                     (switchToggled)="updateProduct($event)"></app-switch>
                 </td>
                 <td routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{product: product?.slug}">
