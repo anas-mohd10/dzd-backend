@@ -7,7 +7,7 @@
                     <div class="col-lg-6">
                         <img src="{{base}}{{settings?.logo}}"
                             style="width: 200px; min-height: 80px; object-fit: contain;" alt="{{settings?.name}}">
-                        <div class="mt-4" style="width:70%">
+                        <div class="mt-4">
                             <div class="mb-2 fs-4 fw-bold">{{settings?.companyName}}</div>
                             <div>{{settings?.primaryAddress}}</div>
                         </div>
@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="row fs-5">
                         <div class="col-6">
-                            <address *ngIf="store" class="" style="width: 30%;">
+                            <address *ngIf="store">
                                 <strong>Store Address:</strong><br>
                                 <div>
                                     {{store?.address?.firstlane}}
@@ -161,35 +161,10 @@
                                         <tr>
                                             <td class="no-line"></td>
                                             <td class="no-line"></td>
-                                            <td class="text-center"><strong>Discount</strong></td>
-                                            <td class="text-right">{{settings?.currency}} {{orderDetails.discount}}</td>
-                                        </tr>
-
-
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
                                             <td class="text-center"><strong>Delivery Charges</strong></td>
                                             <td class="text-right"> {{settings?.currency}}
                                                 {{orderDetails.shippingCost}}</td>
                                         </tr>
-
-                                        <tr *ngIf="orderDetails.additionalCharge != '0'">
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="text-center"><strong>Additional Charge   </strong></td>
-                                            <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails.additionalCharge}}</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td class="no-line"></td>
-                                            <td class="no-line"></td>
-                                            <td class="text-center"><strong>VAT (Inclusive)</strong></td>
-                                            <td class="text-right"> {{settings?.currency}}
-                                                {{orderDetails?.tax}}</td>
-                                        </tr>
-
 
                                         <tr>
                                             <td class="no-line"></td>
@@ -199,7 +174,13 @@
                                                 {{orderDetails.total}}</td>
                                         </tr>
 
-                                        
+                                        <tr>
+                                            <td class="no-line"></td>
+                                            <td class="no-line"></td>
+                                            <td class="text-center"><strong>VAT (Inclusive)</strong></td>
+                                            <td class="text-right"> {{settings?.currency}}
+                                                {{orderDetails?.tax}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -210,7 +191,6 @@
                     This is a computer generated invoice and does not require a signature.
                 </div>
             </div>
-            <!-- <div class="card-body" [innerHTML]="invoice"></div> -->
         </div>
     </div>
 </div>
