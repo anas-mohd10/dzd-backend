@@ -3,8 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { environment } from 'src/environments/environment';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { HelpCenterService } from 'src/app/includes/services/help-center.service';
+import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 
 @Component({
   selector: 'app-generate-invoice',
@@ -18,6 +20,8 @@ export class GenerateInvoiceComponent implements OnInit {
   base: string = environment.base
   store: any;
   helpCenter: any
+  invoice: SafeHtml = '';
+  styles: string = '';
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -25,13 +29,43 @@ export class GenerateInvoiceComponent implements OnInit {
     private OrdersService: OrdersService,
     private ActivatedRoute: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef,
+    private InvoiceSettingsService: InvoiceSettingsService,
     private AppSettingsService: AppSettingsService,
+    private DomSanitizer: DomSanitizer,
     private StoresService: StoresService,
     private HelpCenterService: HelpCenterService
   ) { }
 
   ngOnInit(): void {
     this.order = this.ActivatedRoute.snapshot.queryParams.order || ''
+
+    this.InvoiceSettingsService.generateInvoice(this.order).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.invoice = res?.result
+          this.ChangeDetectorRef.markForCheck()
+
+          // Extract styles and HTML
+          // const parser = new DOMParser();
+          // const doc = parser.parseFromString(res?.result, 'text/html');
+          // const styleElement = doc.querySelector('style');
+
+          // if (styleElement) {
+          //   this.styles = styleElement.textContent || '';
+          //   styleElement.remove(); // Remove the style tag from the HTML
+          // }
+
+          // Sanitize the remaining HTML
+          // this.invoice = this.DomSanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
+        } else { }
+      }, error: (err: any) => { }
+    })
+
+    // Add the extracted styles to the document
+    // const styleElement = document.createElement('style');
+    // styleElement.textContent = this.styles;
+    // document.head.appendChild(styleElement);
+
     this.OrdersService.getOrderDetails({ order: '#' + this.order }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orderDetails = res?.result

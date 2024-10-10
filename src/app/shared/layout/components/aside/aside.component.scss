@@ -1,3 +1,8 @@
 .Side_Menu_bar {
     margin-top: 0 !important;
 }
+
+#sidebar{
+    height: calc(100vh - 80px);
+    overflow-y: scroll;
+}

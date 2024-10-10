@@ -12,7 +12,7 @@ export const collectionEndpoints = {
     archive_collection: '/collections/archive',
     restore_collection: '/collections/restore',
     collection_images: '/collections/images',
-    collection_bulk_file_upload: '/collections/bulk-file-upload',
+    collection_bulk_file_upload: '/import-collections',
     collection_bulk_image_upload: '/collections/bulk-image-upload',
     removeCoverImage: '/remove-collection-cover',
     updateMedias: '/update-collection-media',

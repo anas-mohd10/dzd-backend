@@ -252,7 +252,7 @@ export const Routing: Routes = [
       }, {
         path: 'create-products',
         component: CreateProductsComponent,
-        canActivate: [AuthenticationGuard, PermissionGuard]
+        canActivate: [AuthenticationGuard]
       }, {
         path: 'banners',
         loadChildren: () => import('./design/banners/banners.module').then((m) => m.BannersModule),

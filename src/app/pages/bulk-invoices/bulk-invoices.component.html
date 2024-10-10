@@ -45,10 +45,11 @@
                                     <address>
                                         <strong>Billed To:</strong><br>
                                         <div class="mb-2">
-                                            <div>{{orderDetails?.customerId?.name}}</div>
-                                            <div>{{orderDetails?.customerId?.email}}</div>
-                                            <div>{{orderDetails?.customerId?.countryCode}}
-                                                {{orderDetails?.customerId?.mobile}}
+                                            <div>{{orderDetails?.customerId?.name || orderDetails?.guestId?.name}}</div>
+                                            <div>{{orderDetails?.customerId?.email || orderDetails?.guestId?.email}}</div>
+                                            <div>
+                                                {{orderDetails?.customerId?.countryCode || orderDetails?.guestId?.countryCode}}
+                                                {{orderDetails?.customerId?.mobile || orderDetails?.guestId?.mobile}}
                                             </div>
                                         </div>
                                         <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
@@ -63,10 +64,11 @@
                                     <address>
                                         <strong>Shipped To:</strong><br>
                                         <div class="mb-2">
-                                            <div>{{orderDetails?.customerId?.name}}</div>
-                                            <div>{{orderDetails?.customerId?.email}}</div>
-                                            <div>{{orderDetails?.customerId?.countryCode}}
-                                                {{orderDetails?.customerId?.mobile}}
+                                            <div>{{orderDetails?.customerId?.name || orderDetails?.guestId?.name}}</div>
+                                            <div>{{orderDetails?.customerId?.email || orderDetails?.guestId?.email}}</div>
+                                            <div>
+                                                {{orderDetails?.customerId?.countryCode || orderDetails?.guestId?.countryCode}}
+                                                {{orderDetails?.customerId?.mobile || orderDetails?.guestId?.mobile}}
                                             </div>
                                         </div>
                                         <div>{{orderDetails?.address?.firstlane}} {{orderDetails?.address?.secondlane}}
@@ -105,7 +107,6 @@
                                                     <td class="text-left"><strong>Item</strong></td>
                                                     <td class="text-center"><strong>Quantity</strong></td>
                                                     <td class="text-center"><strong>Price</strong></td>
-                                                    <td class="text-center"><strong>Tax ( 5% )</strong></td>
                                                     <td class="text-right"><strong>Total in AED</strong></td>
                                                 </tr>
                                             </thead>
@@ -144,12 +145,10 @@
                                                                 ({{product?.productId?.unit}})</span>
                                                         </td>
                                                         <td class="text-center">{{product?.pricePerUnit}}</td>
-                                                        <td class="text-center">{{product?.taxTotal}}</td>
                                                         <td class="text-right">{{product?.total}}</td>
                                                     </tr>
                                                 </ng-container>
                                                 <tr>
-                                                    <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>Sub Total</strong></td>
@@ -161,7 +160,6 @@
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
-                                                    <td class="no-line"></td>
                                                     <td class="text-center"><strong>Delivery Charges</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails.shippingCost}}</td>
@@ -170,14 +168,12 @@
                                                 <tr>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
-                                                    <td class="no-line"></td>
                                                     <td class="text-center"><strong>Total</strong></td>
                                                     <td class="text-right"> {{settings?.currency}}
                                                         {{orderDetails.total}}</td>
                                                 </tr>
 
                                                 <tr>
-                                                    <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="no-line"></td>
                                                     <td class="text-center"><strong>VAT (Inclusive)</strong></td>

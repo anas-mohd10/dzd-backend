@@ -4,5 +4,6 @@ export const invoiceSettingsEndpoints = {
    update_invoice: '/update-invoicedetails ',
    
    generate_shipping_details: '/generate-shipping-bill',
-   generate_products: '/generate-products'
+   generate_products: '/generate-products',
+   generateInvoice: '/generate-invoice'
 }

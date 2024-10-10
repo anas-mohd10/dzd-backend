@@ -15,9 +15,9 @@ export const environment = {
   // apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
   // baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
   // appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
-  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
+  apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
   // base: '',
   //Fresh fruit
 
@@ -37,9 +37,9 @@ export const environment = {
   // Sidco Foods
 
   // Fresh Market
-  apiUrl: 'https://fmrk-01.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://fmrk-01.storedada.net/api/v1/w/',
-  appBaserl: 'https://fmrk-01.storedada.net/api/v1/a/',
+  // apiUrl: 'https://fmrk-01.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://fmrk-01.storedada.net/api/v1/w/',
+  // appBaserl: 'https://fmrk-01.storedada.net/api/v1/a/',
   // Fresh Market
 
   //Mamame

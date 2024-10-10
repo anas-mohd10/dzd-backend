@@ -1,6 +1,7 @@
 export const orderEndpoints = {
    add_order: '/create-order',
    get_order: '/orders',
+   list_orders:'/list-orders',
    bulk_orders: '/bulk-orders',
    get_pending_orders: '/orders/pending',
    get_pending_orders_by_orderNo: '/orders/pending/number',

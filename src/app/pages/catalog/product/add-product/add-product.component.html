@@ -211,7 +211,18 @@
                 <div class="row">
                   <div class="col-lg-8 mb-3 form-group">
                     <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" class="form-control fs-6" formControlName="name" />
+                    <input type="text" class="form-control fs-6" formControlName="name" (change)="autoGenerateSlug()"/>
+                  </div>
+                </div>
+
+                <div class="row align-items-end">
+                  <div class="col-lg-10 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Slug</label>
+                    <input type="text" class="form-control fs-6" formControlName="slug"
+                      [ngClass]="{ 'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required }" />
+                  </div>
+                  <div class="col-lg-2 mb-3 form-group">
+                    <button class="w-100 btn btn-secondary" (click)="generateSlug()">Generate slug</button>
                   </div>
                 </div>
 

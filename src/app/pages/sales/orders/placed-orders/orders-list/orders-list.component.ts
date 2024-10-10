@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -49,6 +50,7 @@ export class OrdersListComponent implements OnInit {
   keyword: FormControl = new FormControl('')
   activeValue: String = ''
   activeStatus: String = 'All Orders'
+  isLoading: boolean = false
   orderStatus: Array<any> = [{
     status: 'All Orders',
     value: '',
@@ -136,6 +138,13 @@ export class OrdersListComponent implements OnInit {
       }, error: (err: any) => {
         this.Toast.error(err.message)
       }
+    })
+
+
+    this.keyword.valueChanges
+    .pipe(debounceTime(500))
+    .subscribe(() => {
+      this.getOrders()
     })
   }
 
@@ -307,6 +316,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   getOrders() {
+    this.isLoading = false
     let payload = {
       status: this.activeValue,
       page: this.page,
@@ -314,7 +324,7 @@ export class OrdersListComponent implements OnInit {
       ...this.orderForm.value,
       keyword: this.keyword.value,
     }
-    this.OrdersService.getOrders(payload).subscribe((res: any) => {
+    this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders
         this.totalOrders = res?.result?.total_orders
@@ -324,6 +334,7 @@ export class OrdersListComponent implements OnInit {
         this.totalResults = res?.result?.totalResults
         this.totalPages = res?.result?.totalPages
         this.page = res?.result?.page
+        this.isLoading = true
         this.ChangeDetectorRef.markForCheck()
       }
     })

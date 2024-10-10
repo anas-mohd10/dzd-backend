@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { debounce, debounceTime } from 'rxjs/operators';
 import { PageTasks } from 'src/app/config/constants';
 import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
@@ -94,7 +95,14 @@ export class AddOrdersComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
     private DeliverySlotsService: DeliverySlotsService
-  ) { }
+  ) {
+
+    this.customer.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe(() => {
+        this.getCustomers()
+      })
+  }
 
   ngOnInit(): void {
     this.base = environment.base
@@ -531,22 +539,22 @@ export class AddOrdersComponent implements OnInit {
 
   //Customer and address management
   getCustomers() {
-    if (this.customer.value) {
-      this.customerService.searchCustomers({ keyword: this.customer.value, page: 1, limit: 100 }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.customers = res?.result?.data
-            this.ChangeDetectorRef.markForCheck()
-          } else {
-            this.ToastrService.error(res.message)
-          }
-        }, error: (err: any) => {
-          this.ToastrService.error(err.message)
+    this.customerService.searchCustomers({
+      keyword: this.customer.value,
+      page: 1,
+      limit: 100
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.customers = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res.message)
         }
-      })
-    } else {
-      this.customers = []
-    }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
+    })
   }
 
   getAddress(template: TemplateRef<any>, customer: any) {

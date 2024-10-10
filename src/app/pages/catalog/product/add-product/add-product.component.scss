@@ -3,6 +3,16 @@ label,
   font-weight: normal !important;
 }
 
+.icons{
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+
+  img{
+    object-fit: contain;
+  }
+}
+
 .close-icon {
   z-index: 9;
   top: 10px;

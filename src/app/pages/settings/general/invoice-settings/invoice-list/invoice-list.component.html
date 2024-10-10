@@ -1,21 +1,27 @@
-<div class="coupon-page-container">
-   <div class="page-header">
-      <div class="page-title">
-         <h1 class="fw-bold">Invoice settings</h1>
+<div>
+   <div class="page-header d-flex align-items-center justify-content-between">
+      <div>
+         <div class="page-title">
+            <h1 class="fw-bold">Invoice settings</h1>
+         </div>
+         <ul class="breadcrumb">
+            <li class="breadcrumb-item fs-6">
+               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+               <a routerLink="{{ appRoute.invoiceSettings.INVOICE_SETTINGS_LIST }}">Invoice settings</a>
+            </li>
+         </ul>
       </div>
-      <ul class="breadcrumb">
-         <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-         </li>
-         <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.invoiceSettings.INVOICE_SETTINGS_LIST }}">Invoice settings</a>
-         </li>
-      </ul>
+
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+         Save changes
+      </button>
    </div>
 
    <div class="card my-4">
       <div class="card-body">
-         <form (ngSubmit)="onSubmit()" [formGroup]="form">
+         <form [formGroup]="form">
 
             <div class="form-group mb-3">
                <label class="fs-6 mb-3 required"> Code</label>
@@ -35,12 +41,11 @@
                   [ngClass]="{'is-invalid':(formControls.orderStartingRange.touched || isSubmitted) && formControls.orderStartingRange.errors?.required}" />
             </div>
 
-            <div class="gap-2 d-flex align-items-center justify-content-end">
-               <button type="submit" class="btn btn-primary">
-                  Save changes
-               </button>
+            <div class="form-group mb-3">
+               <label class="fs-6 mb-3 required">Invoice Template</label>
+               <textarea type="text" class="form-control fs-6" rows="20" formControlName="invoiceTemplate"
+                  [ngClass]="{'is-invalid':(formControls.invoiceTemplate.touched || isSubmitted) && formControls.invoiceTemplate.errors?.required}"></textarea>
             </div>
-
          </form>
       </div>
 
