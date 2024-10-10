@@ -5,9 +5,9 @@ export const environment = {
   isMockEnabled: true,
 
   //Local
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  appBaserl: 'http://localhost:3000/api/v1/a/',
+  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  // baseUrl: 'http://localhost:3000/api/v1/w/',
+  // appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   //Local
 
@@ -43,14 +43,15 @@ export const environment = {
   //Sico foods
 
   //Mamame
-  // apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
+  apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
+  baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
+  appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
   //Mamame
 
   //StoreDada
   // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
   // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
+  
   // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
   // base: 'https://api.demo.storedada.com',
   //StoreDada
