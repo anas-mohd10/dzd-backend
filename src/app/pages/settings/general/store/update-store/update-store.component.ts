@@ -88,6 +88,9 @@ export class UpdateStoreComponent implements OnInit {
           this.form.get('countryCode')?.setValue(res?.result?.contact?.countryCode)
 
           this.form.get('map')?.setValue(res?.result?.map)
+          
+          this.form.get('embedMap')?.setValue(res?.result?.embedMap)
+
           this.form.get('firstlane')?.setValue(res?.result?.address?.firstlane)
           this.form.get('secondlane')?.setValue(res?.result?.address?.secondlane)
           this.form.get('area')?.setValue(res?.result?.address?.area)
@@ -127,6 +130,7 @@ export class UpdateStoreComponent implements OnInit {
       endTime: new FormControl(''),
       city: new FormControl('', Validators.required),
       map: new FormControl('', Validators.required),
+      embedMap: new FormControl(''),
       countryCode: new FormControl('+971', Validators.required),
       isActive: new FormControl(true),
       isDelete: new FormControl(false),
@@ -183,6 +187,7 @@ export class UpdateStoreComponent implements OnInit {
       lat: this.form.get('lat')?.value,
       lng: this.form.get('lng')?.value,
       map: this.form.get('map')?.value,
+      embedMap: this.form.get('embedMap')?.value,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
       isClickPoint: this.form.get('isClickPoint')?.value,
