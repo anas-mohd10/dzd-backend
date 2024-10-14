@@ -27,6 +27,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: "Tabby", id: "tabby", icon: `${environment.base}tabby.png` },
     { title: "Tap Payments", id: "tap", icon: `${environment.base}tap.png` },
     { title: "Rak Bank", id: "rakbank", icon: `${environment.base}rakbank.png` },
+    { title: "Qi", id: "qi", icon: `${environment.base}qi.png` },
     { title: "Network International", id: "network-international", icon: `${environment.base}network-international.png` },
     { title: "Newtork International (Tokenized)", id: "network-international-tokenized", icon: `${environment.base}network-international.png` }
   ]
@@ -39,7 +40,8 @@ export class PaymentSettingsComponent implements OnInit {
     'tap': ['secretKey', 'publicKey'],
     'rakbank': ['publicKey', 'privateKey'],
     'network-international': ['outletReference', 'apiKey'],
-    'network-international-tokenized': ['outletReference', 'apiKey']
+    'network-international-tokenized': ['outletReference', 'apiKey'],
+    'qi': ['secretKey', 'publicKey']
   };
 
   get formControls() {

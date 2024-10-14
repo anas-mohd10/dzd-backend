@@ -298,6 +298,9 @@ export class HomeComponent implements OnInit {
     if (isExists) {
       this.smartTileProducts = this.smartTileProducts.filter(item => item._id != productDetails._id)
     } else {
+      if(this.smartTileProducts.length >= 20){
+        return this.Toast.error('Maximum limit reachced')
+      }
       this.smartTileProducts.push(productDetails)
     }
     this.widgetCollection.setValue("")

@@ -132,7 +132,8 @@
           </div>
           <div class="col-lg-2">
             <div class="search_input">
-              <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders" [formControl]="keyword">
+              <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders"
+                [formControl]="keyword">
               <img src="assets/icons/Search.svg" alt="">
             </div>
           </div>
@@ -200,10 +201,11 @@
             {{getLocaleTimeFormat(order?.orderDate)}}
           </td>
           <td>
-            <div>{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
+            <div class="customer-details">{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
             <div
               class="rounded border border-secondary customer-type p-1 my-1 d-flex align-items-center justify-content-center">
-              {{order?.customerType}}</div>
+              {{order?.customerType}}
+            </div>
           </td>
           <td>
             <div *ngIf="order?.pickUpLocation">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}

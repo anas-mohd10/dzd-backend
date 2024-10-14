@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -22,6 +22,7 @@ export class GenerateInvoiceComponent implements OnInit {
   helpCenter: any
   invoice: SafeHtml = '';
   styles: string = '';
+  @ViewChild('dynamicStyles', { static: true }) dynamicStyles: ElementRef;
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -33,7 +34,8 @@ export class GenerateInvoiceComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private DomSanitizer: DomSanitizer,
     private StoresService: StoresService,
-    private HelpCenterService: HelpCenterService
+    private HelpCenterService: HelpCenterService,
+    private Renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -44,27 +46,9 @@ export class GenerateInvoiceComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.invoice = res?.result
           this.ChangeDetectorRef.markForCheck()
-
-          // Extract styles and HTML
-          // const parser = new DOMParser();
-          // const doc = parser.parseFromString(res?.result, 'text/html');
-          // const styleElement = doc.querySelector('style');
-
-          // if (styleElement) {
-          //   this.styles = styleElement.textContent || '';
-          //   styleElement.remove(); // Remove the style tag from the HTML
-          // }
-
-          // Sanitize the remaining HTML
-          // this.invoice = this.DomSanitizer.bypassSecurityTrustHtml(doc.body.innerHTML);
         } else { }
       }, error: (err: any) => { }
     })
-
-    // Add the extracted styles to the document
-    // const styleElement = document.createElement('style');
-    // styleElement.textContent = this.styles;
-    // document.head.appendChild(styleElement);
 
     this.OrdersService.getOrderDetails({ order: '#' + this.order }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -100,16 +84,9 @@ export class GenerateInvoiceComponent implements OnInit {
     })
 
     this.OrdersService.invoiceDetails(this.order).subscribe({
-      next: (res: any) => {
-
-      }, error: (err: any) => {
-
-      }, complete: () => {
-
-      }
+      next: (res: any) => { }, error: (err: any) => { }, complete: () => { }
     })
   }
-
 
   convertTimeFormat(timeString: any) {
     const [start, end] = timeString.split(' - ');
@@ -142,5 +119,5 @@ export class GenerateInvoiceComponent implements OnInit {
     window.print()
     document.body.innerHTML = body;
   }
-
+ 
 }

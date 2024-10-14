@@ -8,6 +8,14 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+.customer-details{
+  max-width: 120px;
+  width: max-content;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
