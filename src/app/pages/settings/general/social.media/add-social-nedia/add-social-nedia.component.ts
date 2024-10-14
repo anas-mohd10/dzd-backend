@@ -26,6 +26,7 @@ export class AddSocialNediaComponent implements OnInit {
       facebook: new FormControl(''),
       whatsapp: new FormControl(''),
       instagram: new FormControl(''),
+      threads: new FormControl(''),
       linkedin: new FormControl(''),
       youtube: new FormControl(''),
       twitter: new FormControl(''),
