@@ -1,5 +1,5 @@
 # Stage 1: Build the Angular application
-FROM node:18 AS build
+FROM 211125565601.dkr.ecr.ap-south-1.amazonaws.com/node-18-alpine:latest AS base
 
 # Set the working directory
 WORKDIR /app
