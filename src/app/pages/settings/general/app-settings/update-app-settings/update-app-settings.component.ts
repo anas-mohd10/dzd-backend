@@ -8,6 +8,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { validators } from 'src/app/config/constants/mobile-validators';
+import { HttpClient } from '@angular/common/http';
 
 interface Media {
   title: string;
@@ -77,6 +78,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   favicon?: string;
   primary: string = '';
   modalRef?: BsModalRef;
+  discardModalRef?: BsModalRef;
   secondary: string = '';
   storeStatus: boolean = true;
   defaultImage: string = '';
@@ -95,7 +97,8 @@ export class UpdateAppSettingsComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private HotToastService: HotToastService,
     private BsModalService: BsModalService,
-    private BsModalRef: BsModalRef
+    private BsModalRef: BsModalRef,
+    private HttpClient: HttpClient
   ) { }
 
   toggleLanguages(language: { lang: string, langCode: string }) {
@@ -226,7 +229,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       mobile: ['', Validators.required],
       fontFamily: ['', Validators.required],
       name: ['', Validators.required],
-      companyName: [''], 
+      companyName: [''],
       domain: ['', Validators.required],
       description: ['', Validators.required],
       primaryLang: [''],
@@ -263,6 +266,30 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
+  declineDiscard() {
+    this.discardModalRef?.hide()
+  }
+
+  approveDiscard() {
+    let websiteUrl = this.data.domain?.endsWith('/') ? this.data.domain : this.data.domain + '/'
+    this.HttpClient.post(`${websiteUrl}api/v1/w/cacheFlush`, {}).subscribe({
+      next: (res: any) => {
+        if (res?.status == true) {
+          this.HotToastService.success("Cache flushed successfully")
+          this.declineDiscard()
+        } else {
+          this.HotToastService.error("Something went wrong")
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error("Something went wrong")
+      }
+    })
+  }
+
+  openDiscardModal(template: TemplateRef<any>) {
+    this.discardModalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' });
+  }
+
   handleStoreLogo(event: any) {
     this.form.get('logo')?.setValue(event.path)
   }
@@ -281,7 +308,7 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.form.get('paymentGateway')?.setValue(this.paymentGateways)
     this.form.get('languages')?.setValue(this.languages)
 
-    if (!this.form.valid) {      
+    if (!this.form.valid) {
       this.HotToastService.error('Please fill all required fields')
       this.isSubmitted = true
       return
