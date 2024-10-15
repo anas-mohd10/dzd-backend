@@ -41,7 +41,7 @@ export class PaymentSettingsComponent implements OnInit {
     'rakbank': ['publicKey', 'privateKey'],
     'network-international': ['outletReference', 'apiKey'],
     'network-international-tokenized': ['outletReference', 'apiKey'],
-    'qi': ['secretKey', 'publicKey']
+    'qi': ['secretKey']
   };
 
   get formControls() {
