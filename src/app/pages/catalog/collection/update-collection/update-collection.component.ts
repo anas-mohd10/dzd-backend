@@ -49,13 +49,13 @@ export class UpdateCollectionComponent implements OnInit {
     this.CollectionService.getCollectionBySlug(this.collectionSlug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.form.patchValue(res?.result[0])
-          this.collectionDetails = res?.result[0]
-          this.icons = res?.result[0]?.icons
-          if (res?.result[0]?.thumbnail) this.previews.thumbnailPreview = res?.result[0]?.thumbnail
-          if (res?.result[0]?.cover) this.previews.coverPreview = res?.result[0]?.cover
-          this.productDetails = res?.result[0]?.products
-          this.productIds = res?.result[0]?.products.map((item: any) => item?._id)
+          this.form.patchValue(res?.result)
+          this.collectionDetails = res?.result
+          this.icons = res?.result?.icons
+          if (res?.result?.thumbnail) this.previews.thumbnailPreview = res?.result?.thumbnail
+          if (res?.result?.cover) this.previews.coverPreview = res?.result?.cover
+          this.productDetails = res?.result?.products
+          this.productIds = res?.result?.products.map((item: any) => item?._id)
           this.ChangeDetectorRef.markForCheck()
         }
       }
