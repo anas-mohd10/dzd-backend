@@ -513,6 +513,7 @@ export class AddProductComponent implements OnInit {
       unit: new FormControl(""),
       origin: new FormControl(""),
       overview: new FormControl(""),
+      boostScore: new FormControl(0, [Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
       details: new FormGroup({
         additionalButton: new FormControl(""),
         buttonRedirectUrl: new FormControl(""),

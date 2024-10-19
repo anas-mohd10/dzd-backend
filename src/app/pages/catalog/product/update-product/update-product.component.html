@@ -65,6 +65,12 @@
                   </div>
                 </div>
 
+                <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3">Boost Score</label>
+                  <input type="text" class="form-control fs-6" formControlName="boostScore"
+                    [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
+                </div>
+
                 <div class="my-4">
                   <div class="fs-3 fw-bold">Price Details</div>
                   <p class="text-muted">Easily manage price details to showacse your product</p>

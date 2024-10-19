@@ -452,6 +452,7 @@ export class UpdateProductComponent implements OnInit {
       video: new FormControl(""),
       unit: new FormControl(""),
       productBanner: new FormControl(null),
+      boostScore: new FormControl(0, [Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
       origin: new FormControl(""),
       overview: new FormControl(""),
       details: new FormGroup({
