@@ -285,7 +285,7 @@ export class UpdateProductComponent implements OnInit {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.form.get('slug')?.value,
-      files: this.images.length > 0 && this.images.map((item: any) => item?.path),
+      files: this.images,
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
       parentId: this.parentDetails?._id,
@@ -386,6 +386,8 @@ export class UpdateProductComponent implements OnInit {
           this.form.patchValue(res?.result)
           this.productDetails = res?.result
           this.images = res?.result?.files ? res?.result?.files : []
+          // Remove null and undefined values from array of images 
+          this.images = this.images.filter((item: any) => item != null)
           this.storeFields = res?.result?.storeFrontFields
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : []
           this.categories = res?.result?.category?.id

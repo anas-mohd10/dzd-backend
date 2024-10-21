@@ -100,8 +100,7 @@ export class UpdateCollectionComponent implements OnInit {
   onDelete() {
     this.CollectionService.updateCollection({
       isDelete: true,
-      colid: this.collectionDetails.colid,
-      slug: this.collectionSlug
+      _id: this.collectionDetails._id
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -177,6 +176,7 @@ export class UpdateCollectionComponent implements OnInit {
 
     this.CollectionService.updateCollection({
       ...this.form.value,
+      _id: this.collectionDetails?._id,
       colid: this.collectionDetails.colid, slug: this.collectionSlug,
       isSku: this.isAutoCompleteEnabled ? false : true
     }).subscribe({

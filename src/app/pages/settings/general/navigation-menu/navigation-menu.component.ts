@@ -279,6 +279,11 @@ export class NavigationMenuComponent implements OnInit {
     this.megaMenuForm.patchValue({ [type]: event.path })
   }
 
+  removeMegaMenuMedia(type: string) {
+    this.megaMenuForm.patchValue({ [type]: '' })
+    type == 'icon' ? this.megaMenuIcon = '' : this.megaMenuAdvertisement = ''
+  }
+
   handleMegaMenuBoxMedia(event: any) {
     this.subMenuBoxIcon = event.path
     this.subMenuBoxForm.patchValue({ icon: event.path })

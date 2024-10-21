@@ -30,6 +30,8 @@ export class AllProductsComponent implements OnInit {
   isFeatured: FormControl = new FormControl('')
   stock: FormControl = new FormControl('')
   sort: FormControl = new FormControl('')
+  boostScore: FormControl = new FormControl('')
+  visibility: FormControl = new FormControl('')
   category: FormControl = new FormControl('')
   categoryItems: Array<any> = []
   isTableView: boolean = true;
@@ -49,9 +51,17 @@ export class AllProductsComponent implements OnInit {
     { key: 'Active', value: 'true', label: 'status' },
     { key: 'Inactive', value: 'false', label: 'status' }
   ]
+  visibilityFilters: Array<any> = [
+    { key: 'Visible', value: 'true', label: 'visibility' },
+    { key: 'Invisible', value: 'false', label: 'visibility' }
+  ]
   sortFilters: Array<any> = [
     { key: 'Price : High to Low', value: '0', label: 'sort' },
     { key: 'Price : Low to High', value: '1', label: 'sort' }
+  ]
+  boostScoreFilters: Array<any> = [
+    { key: 'High to Low', value: '3', label: 'boostScore' },
+    { key: 'Low to High', value: '4', label: 'boostScore' }
   ]
   visibleFilters: Array<any> = [
     { key: 'Visible products', value: '0', label: 'visibility' },
@@ -120,7 +130,7 @@ export class AllProductsComponent implements OnInit {
     } else {
       this.isTableView = true
     }
-    }
+  }
 
 
   getProducts() {
@@ -132,6 +142,7 @@ export class AllProductsComponent implements OnInit {
       isFeatured: this.isFeatured?.value,
       isVisible: this.isVisible?.value,
       stock: this.stock?.value,
+      visibility: this.visibility?.value,
       sort: this.sort?.value,
       categories: categoryItems,
       page: this.page,
@@ -175,6 +186,7 @@ export class AllProductsComponent implements OnInit {
     this.stock?.setValue('')
     this.sort?.setValue('')
     this.name?.setValue('')
+    this.visibility?.setValue('')
     this.productBrand?.setValue('')
     this.page = 1
     this.limit = 20
@@ -214,6 +226,9 @@ export class AllProductsComponent implements OnInit {
         break
       case 'sort':
         this.sort?.value != value ? this.sort?.setValue(value) : this.sort?.setValue('')
+        break
+      case 'visibility':
+        this.visibility?.value != value ? this.visibility?.setValue(value) : this.visibility?.setValue('')
         break
       case 'category':
         let categoryDetails = this.categories.filter((category: any) => category.catid == this.productCategory.value)
