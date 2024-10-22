@@ -236,6 +236,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   productIconClicked(event: any) {
+
     let isExists: boolean = this.icons.some((item: any) => item == event?.path)
     if (isExists) {
       this.icons = this.icons.filter((item: any) => item != event?.path)
@@ -280,12 +281,11 @@ export class UpdateProductComponent implements OnInit {
       this.isSubmitted = true
       return
     }
-
     let payload = {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.form.get('slug')?.value,
-      files: this.images,
+      files: this.images.map((file: any) => file.path),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
       product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
       parentId: this.parentDetails?._id,
