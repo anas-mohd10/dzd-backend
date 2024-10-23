@@ -11,6 +11,7 @@ interface InvoiceProps {
   startingRange: number;
   orderStartingRange: number,
   invoiceTemplate: string;
+  packingSlipTemplate: string;
 }
 
 @Component({
@@ -49,6 +50,7 @@ export class InvoiceListComponent implements OnInit {
       orderStartingRange: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       startingRange: ['', [Validators.required, Validators.pattern(/^[0-9]*$/)]],
       invoiceTemplate: ['', Validators.required],
+      packingSlipTemplate: ['', Validators.required]
     });
   }
 
@@ -60,7 +62,8 @@ export class InvoiceListComponent implements OnInit {
           code: res?.result?.code,
           orderStartingRange: res?.result?.orderStartingRange,
           startingRange: res?.result?.startingRange,
-          invoiceTemplate: res?.result?.invoiceTemplate
+          invoiceTemplate: res?.result?.invoiceTemplate,
+          packingSlipTemplate: res?.result?.packingSlipTemplate
         }
         this.form.patchValue(res?.result)
       }
@@ -77,13 +80,15 @@ export class InvoiceListComponent implements OnInit {
       code: this.form.get("code")?.value,
       startingRange: this.form.get("startingRange")?.value,
       orderStartingRange: this.form.get("orderStartingRange")?.value,
-      invoiceTemplate: this.form.get("invoiceTemplate")?.value
+      invoiceTemplate: this.form.get("invoiceTemplate")?.value,
+      packingSlipTemplate: this.form.get("packingSlipTemplate")?.value
     }
     if (this.currentData) {
       if (this.currentData["code"] == this.form.get("code")?.value
         && this.currentData["startingRange"] == this.form.get("startingRange")?.value
         && this.currentData["orderStartingRange"] == this.form.get("orderStartingRange")?.value
-        && this.currentData["invoiceTemplate"] == this.form.get("invoiceTemplate")?.value) {
+        && this.currentData["invoiceTemplate"] == this.form.get("invoiceTemplate")?.value
+        && this.currentData["packingSlipTemplate"] == this.form.get("packingSlipTemplate")?.value) {
         this.HotToastService.info('Make any changes');
       } else {
         this.invoiceSettingsService.addInvoiceSettings(this.form.value).subscribe((res: any) => {

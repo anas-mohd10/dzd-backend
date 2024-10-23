@@ -210,13 +210,11 @@
                   {{product?.product?.id?.brand?.name}}
                 </td>
                 <td>
-
                   <ng-container *ngFor="let category of product?.category?.id; let i = index">
                     <div>{{category?.name}}</div>
                   </ng-container>
-
                 </td>
-                <td> {{settings?.currency}} {{product?.price?.offer}}</td>
+                <td>{{product?.price?.offer}}</td>
                 <td>{{product?.stock}}</td>
                 <td>
                   <span class="p-1 rounded" [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">

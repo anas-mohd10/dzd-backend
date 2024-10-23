@@ -60,6 +60,8 @@ export class ProductCardComponent implements OnInit {
   parentCategories: Array<any> = []
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+  parentStatus: FormControl = new FormControl('')
+
   constructor(
     private ProductService: ProductService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -78,6 +80,41 @@ export class ProductCardComponent implements OnInit {
 
   get editFormControls() {
     return this.editForm.controls
+  }
+
+  manageChildProducts() {
+    this.ProductService.manageChildProducts(this.productDetails._id, {
+      isActive: this.parentStatus.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.closeProducts()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message)
+      }
+    })
+  }
+
+  updateChildProduct(event: { switchId: string, toggleState: boolean }) {
+    this.ProductService.updateProduct(event.switchId, {
+      prodid: event.switchId,
+      isActive: event.toggleState
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getProducts()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
   }
 
   deleteProduct() {
@@ -241,13 +278,11 @@ export class ProductCardComponent implements OnInit {
   }
 
   getProducts() {
-    let payload = {
+    this.ProductService.searchProducts({
       page: this.productPage,
       limit: this.productLimit?.value,
       parent: this.productDetails?.prodid
-    }
-
-    this.ProductService.searchProducts(payload).subscribe({
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.childProducts = res?.result?.data

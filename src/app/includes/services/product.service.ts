@@ -16,6 +16,11 @@ export class ProductService {
     return this.http.post(`${url}`, data);
   }
 
+  manageChildProducts(productId: string, payload: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.manageChildProducts + `/${productId}`);
+    return this.http.post(`${url}`, payload);
+  }
+
   getProductbyId(data: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.product_by_prodid);
     return this.http.post(`${url}`, data);
@@ -101,7 +106,7 @@ export class ProductService {
     return this.http.post(`${url}`, query);
   }
 
-  deleteProduct(productId: any){
+  deleteProduct(productId: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.deleteProduct);
     return this.http.delete(`${url}/${productId}`);
   }
