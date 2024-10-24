@@ -300,6 +300,8 @@ export class UpdateProductComponent implements OnInit {
       productTags: this.tagsForm.value,
     }
 
+    console.log(payload)
+
     this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -387,7 +389,13 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails = res?.result
           this.images = res?.result?.files ? res?.result?.files : []
           // Remove null and undefined values from array of images 
-          this.images = this.images.filter((item: any) => item != null)
+          this.images = this.images.map(item => {
+            if(item !== null){
+              return {
+                path: item,
+              }
+            }
+          }).filter(Boolean)
           this.storeFields = res?.result?.storeFrontFields
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : []
           this.categories = res?.result?.category?.id
