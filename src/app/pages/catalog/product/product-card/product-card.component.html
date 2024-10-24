@@ -302,7 +302,7 @@
 
 <ng-template #productTemplate>
    <div class="modal-header">
-      <div class="fs-2 fw-bolder pull-left">{{productDetails?.name}} products</div>
+      <div class="fs-2 fw-bolder pull-left"></div>
       <div class="d-flex align-items-center justify-content-end gap-8">
          <button class="col-lg-3" (click)="closeProducts()" routerLink="{{appRoute.product.ADD_PRODUCT}}"
             [queryParams]="{'product': productDetails?.slug}"
@@ -319,9 +319,12 @@
       </div>
    </div>
 
-   
+
    <div class="modal-body">
-      <div class="row justify-content-end">
+      <div class="row">
+         <div class="col-lg-7 d-flex jusitfy-content-start align-items-end">
+           <div class="fs-2 fw-bolder">{{productDetails?.name}} ({{childProducts.length}})</div>
+         </div>
          <div class="form-group col-lg-3 align-items-end">
             <label for="parentStatus" class="fs-6 mb-3">Status</label>
             <select [formControl]="parentStatus" id="parentStatus" class="form-select">
@@ -332,7 +335,13 @@
          </div>
          <div class="col-lg-2">
             <label for="parentStatus" class="fs-6 mb-3">&nbsp;</label>
-            <button class="btn btn-primary w-100" (click)="manageChildProducts()">Save changes</button>
+            <button class="btn btn-secondary w-100" (click)="manageChildProducts()">Save changes</button>
+         </div>
+      </div>
+
+      <div class="alert my-4 alert-warning" *ngIf="parentStatus.value == 'false'">
+         <div class="fs-6">
+            Note: Disabling this product will also disable all associated child products on the website.
          </div>
       </div>
 
@@ -349,7 +358,6 @@
                   <th>Stock</th>
                   <th>Visibility</th>
                   <th>Score</th>
-                  <th>Updated</th>
                   <th>Status</th>
                   <th>&nbsp;</th>
                </tr>
@@ -377,7 +385,7 @@
                      <td>{{product?.sku}}</td>
                      <td>
                         {{product?.product?.id?.brand?.name}}
-                      </td>
+                     </td>
                      <td>
                         <ng-container *ngFor="let category of product?.category?.id; let i = index">
                            <div>{{category?.name}}</div>
@@ -386,16 +394,16 @@
                      <td>{{product?.price?.offer}}</td>
                      <td>{{product?.stock}}</td>
                      <td>
-                        <span class="p-1 rounded" [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
-                           {{product?.isVisible == true ?  'Visible' : 'Hidden'}}
-                         </span>
+                        <span class="p-1 rounded"
+                           [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
+                           {{product?.isVisible == true ? 'Visible' : 'Hidden'}}
+                        </span>
                      </td>
                      <td>{{product?.boostScore}}</td>
-                     <td>{{formdateDate(product?.updatedAt)}}</td>
                      <td>
                         <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.prodid"
-                          (switchToggled)="updateChildProduct($event)"></app-switch>
-                      </td>
+                           (switchToggled)="updateChildProduct($event)"></app-switch>
+                     </td>
                      <td (click)="closeProducts()" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
                         [queryParams]="{product: product?.slug}">
                         <div

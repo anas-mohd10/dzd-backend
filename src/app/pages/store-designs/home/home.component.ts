@@ -143,7 +143,11 @@ export class HomeComponent implements OnInit {
   saleThumbnailDetails: string = ''
   hiddenHeaderItems: Array<string> = ['sale-timer', 'hyperlinkhero', 'insight-hub']
   selectedProductType: string = 'products';
+
   widgetCollection: FormControl = new FormControl("")
+  widgetBrand: FormControl = new FormControl("")
+  widgetCategory: FormControl = new FormControl("")
+
   redirectionQuery: FormControl = new FormControl("")
   redirectionDetails: any
   spotlightSliders: Array<any> = []
@@ -298,7 +302,7 @@ export class HomeComponent implements OnInit {
     if (isExists) {
       this.smartTileProducts = this.smartTileProducts.filter(item => item._id != productDetails._id)
     } else {
-      if(this.smartTileProducts.length >= 20){
+      if (this.smartTileProducts.length >= 20) {
         return this.Toast.error('Maximum limit reachced')
       }
       this.smartTileProducts.push(productDetails)
@@ -428,7 +432,17 @@ export class HomeComponent implements OnInit {
 
   toggleProductSelection(type: string) {
     this.selectedProductType = type
-    if (type == 'collections') this.getCollections()
+    switch (type) {
+      case 'collections':
+        this.getCollections()
+        break
+      case 'brands':
+        this.getBrands()
+        break
+      case 'categories':
+        this.getCategories()
+        break
+    }
   }
   //Toggle device
 
@@ -483,10 +497,22 @@ export class HomeComponent implements OnInit {
           this.form.patchValue(this.widgetDetails);
 
           this.getCollections()
-          
-          if(this.widgetDetails?.collections) {
-            this.selectedProductType = 'collections'                        
+          this.getBrands()
+          this.getCategories()
+
+          if (this.widgetDetails?.collections) {
+            this.selectedProductType = 'collections'
             this.widgetCollection.setValue(this.widgetDetails?.collections?._id)
+          }
+
+          if (this.widgetDetails?.productBrands) {
+            this.selectedProductType = 'brands'
+            this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id)
+          }
+
+          if (this.widgetDetails?.productCategories) {
+            this.selectedProductType = 'categories'
+            this.widgetCategory.setValue(this.widgetDetails?.productCategories?._id)
           }
 
           if (this.widgetDetails?.isTimeBoundWidget == true) {
@@ -506,7 +532,9 @@ export class HomeComponent implements OnInit {
           }
           this.widgetDetails.collection ? this.widgetCollection.setValue(this.widgetDetails?.collection?._id) : null
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
-            this.widgetDetails.products.length > 0 ? this.selectedProductType = 'products' : this.selectedProductType = 'collections'
+            this.widgetDetails.products.length > 0 ? 
+            this.selectedProductType = 'products' : 
+            this.selectedProductType = 'collections'
           }
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails)
@@ -669,6 +697,8 @@ export class HomeComponent implements OnInit {
     this.form.reset()
     this.selectedProductType = 'products'
     this.widgetCollection.reset()
+    this.widgetBrand.reset()  
+    this.widgetCategory.reset()
     this.saleForm.reset()
     this.saleForm.get('saleButtonVisibility')?.setValue(true)
   }
@@ -714,15 +744,15 @@ export class HomeComponent implements OnInit {
         ...this.form.value,
         widgetType: this.widgetDetails?.widgetType,
         products: this.widgetCollection.value ? [] : this.smartTileProducts.map((product) => product?._id),
-        collections: this.widgetCollection.value ? this.widgetCollection.value : null
+        collections: this.widgetCollection.value ? this.widgetCollection.value : null,
+        productBrands: this.widgetBrand.value ? this.widgetBrand.value : null,
+        productCategories: this.widgetCategory.value ? this.widgetCategory.value : null
       }
     }
 
     type == 'styles' ? widgetPayload['styles'] = this.designForm.value : null
 
     if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
-      console.log('this.productAd.value', this.productAd.value);
-      console.log('this.productsAdRedirection.value', this.productsAdRedirection.value);
       widgetPayload['productsAdThumbnail'] = this.productAd.value ? this.productAd.value : null
       widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value
     }

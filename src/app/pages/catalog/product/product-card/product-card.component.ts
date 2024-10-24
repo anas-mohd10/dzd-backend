@@ -89,6 +89,7 @@ export class ProductCardComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message)
+          this.parentStatus.setValue('')
           this.closeProducts()
         } else {
           this.ToastrService.error(res?.message)
