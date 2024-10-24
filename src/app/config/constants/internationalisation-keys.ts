@@ -75,4 +75,5 @@ export const internationalisationKeys = {
     type: 'type',
     verify: 'verify',
     walletDiscount: 'walletDiscount',
+    Noproductsfound:'No products found',
 }
