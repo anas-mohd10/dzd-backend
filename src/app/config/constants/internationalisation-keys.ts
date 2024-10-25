@@ -137,4 +137,6 @@ export const internationalisationKeys = {
     somethingWrong: 'somethingWrong',
     ProfileUpdated: 'ProfileUpdated',
     sessionExpired: 'sessionExpired',
+    loginuseOtp: 'loginuseOtp',
+    emailorNumber: 'emailorNumber',
 }
