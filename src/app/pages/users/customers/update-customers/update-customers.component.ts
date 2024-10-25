@@ -121,6 +121,9 @@ export class UpdateCustomersComponent implements OnInit {
       case "+971":
         this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
         break;
+      case "+964":
+        this.updateMobilePattern(`^[0-9]{${validators.iraq.validation.maximum}}$`);
+        break;
     }
   }
 
@@ -138,6 +141,9 @@ export class UpdateCustomersComponent implements OnInit {
         break;
       case "+971":
         this.updateAddressMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+      case "+964":
+        this.updateAddressMobilePattern(`^[0-9]{${validators.iraq.validation.maximum}}$`);
         break;
     }
   }

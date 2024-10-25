@@ -84,7 +84,7 @@ export class UpdateOrdersComponent implements OnInit {
   reason: FormControl = new FormControl('')
   isNoteDetected: boolean = false
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
+  domainUrl: string = ''
 
   constructor(
     private OrdersService: OrdersService,
@@ -109,10 +109,17 @@ export class UpdateOrdersComponent implements OnInit {
     this.slug = this.route.snapshot.queryParams.order || ''
     this.getOrderDetails()
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result
+          this.domainUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/'
+          this.ChangeDetectorRef.markForCheck()
+        }else{
+
+        }
+      }, error: (err: any) => {
+
       }
     })
   }

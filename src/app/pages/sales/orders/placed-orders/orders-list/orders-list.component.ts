@@ -8,6 +8,7 @@ import { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-orders-list',
@@ -118,6 +119,9 @@ export class OrdersListComponent implements OnInit {
   acceptedOrders: Array<string> = ['ACCEPTED']
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
 
+  domainUrl: string = ''
+  settings: any;
+
   constructor(
     private OrdersService: OrdersService,
     private ToastrService: ToastrService,
@@ -125,6 +129,7 @@ export class OrdersListComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
     private Toast: HotToastService,
+    private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
   ) {
     this.OrdersService.getOrderCounts({ status: this.orderStatus }).subscribe({
@@ -142,10 +147,10 @@ export class OrdersListComponent implements OnInit {
 
 
     this.keyword.valueChanges
-    .pipe(debounceTime(500))
-    .subscribe(() => {
-      this.getOrders()
-    })
+      .pipe(debounceTime(500))
+      .subscribe(() => {
+        this.getOrders()
+      })
   }
 
   openTag(template: TemplateRef<any>, order: string) {
@@ -238,6 +243,19 @@ export class OrdersListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.settings = res?.result
+          this.domainUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/'
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
+    })
     this.type = this.ActivatedRoute.snapshot.queryParams.type || ''
     switch (this.type) {
       case 'pending':
