@@ -31,9 +31,7 @@ export class UpdateOrdersComponent implements OnInit {
   price: any = 0
   slug: any
   base: string;
-  settings: {
-    currency: 'INR'
-  }
+  settings: any
   swiperConfig: SwiperOptions = {
     slidesPerView: 'auto',
     spaceBetween: 50,
