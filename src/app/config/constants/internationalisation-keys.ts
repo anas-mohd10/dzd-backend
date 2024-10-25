@@ -139,4 +139,7 @@ export const internationalisationKeys = {
     sessionExpired: 'sessionExpired',
     loginuseOtp: 'loginuseOtp',
     emailorNumber: 'emailorNumber',
+    noCategoryFound: 'noCategoryFound',
+    loginWithOtp: 'loginWithOtp',
+    forgetEmail: 'forgetEmail',
 }
