@@ -2,7 +2,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { PageTasks } from 'src/app/config/constants';
 import { validators } from 'src/app/config/constants/mobile-validators';
 import { appRoutes } from 'src/app/config/routes';
@@ -10,6 +9,23 @@ import { CustomersService } from 'src/app/includes/services/customers.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { OrdersService } from 'src/app/includes/services/orders.service';
+
+interface CustomerOrder {
+  orderNo: string,
+  orderStatus: string,
+  createdAt: string,
+  total: string,
+  paymentMethod: string,
+  source: string,
+  paymentStatus: string
+}
+
+interface CustomerOrderDetails {
+  totalResults: number,
+  totalPages: number,
+  orders: Array<CustomerOrder>
+}
 
 @Component({
   selector: 'app-update-customers',
@@ -26,7 +42,7 @@ export class UpdateCustomersComponent implements OnInit {
   isSubmitted = false;
   isEmailExists: boolean = false
   isPhoneExists: boolean = false
-  customerData: any;
+  customerDetails: any;
   slug: any;
   addresses: Array<any> = []
   address: any
@@ -56,9 +72,22 @@ export class UpdateCustomersComponent implements OnInit {
   isLoyaltySubmitted: boolean = false
   savedCards: Array<any> = []
   loyalityType: FormControl = new FormControl('all')
+  page: number = 1
+  limit: number = 20
+  orders: Array<any> = []
+  customerOrderDetails: CustomerOrderDetails = {
+    totalResults: 0,
+    totalPages: 0,
+    orders: []
+  }
+  ordersRef?: BsModalRef
+  successOrders: Array<string> = ['PLACED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
+  acceptedOrders: Array<string> = ['ACCEPTED']
+  cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
 
   constructor(
     private formBuilder: FormBuilder,
+    private OrdersService: OrdersService,
     private customerService: CustomersService,
     private route: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -148,6 +177,58 @@ export class UpdateCustomersComponent implements OnInit {
     }
   }
 
+  openCustomerOrders(template: TemplateRef<any>) {
+    this.ordersRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+    this.getCustomerOrders()
+  }
+
+  getCustomerOrders(){
+    this.OrdersService.getCustomerOrders(this.customerDetails._id, this.page).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.customerOrderDetails = res?.result
+          this.orders = res?.result?.orders
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getCustomerOrders()
+  }
+
+  formatOrderDate(orderDate: string){
+    let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    let date = new Date(orderDate)
+    let day = days[date.getDay()]
+    let month = months[date.getMonth()]
+    let year = date.getFullYear()
+    return `${date.getDate()} ${day} ${month} ${year}`
+  }
+
+  formatOrderStatus(orderStatus: string) {
+    return `${orderStatus.charAt(0).toUpperCase()}${orderStatus.slice(1).toLowerCase()}`
+  }
+
+  formatOrderPayment(payment: string){
+    return payment == 'COD' ? 'Cash' : 'Online'
+  }
+
+  formatOrderTime(orderDate: string){
+    let date = new Date(orderDate)
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    let ampm = hours >= 12 ? 'PM' : 'AM'
+    hours = hours % 12
+    hours = hours ? hours : 12
+    let newMinutes = minutes < 10 ? '0' + minutes : minutes
+    return `${hours}:${newMinutes} ${ampm}`
+  }
+
   initForm() {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
@@ -208,7 +289,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getHistory() {
-    this.customerService.getLoyaltyTransactions(this.customerData?.slug, this.loyalityType?.value).subscribe({
+    this.customerService.getLoyaltyTransactions(this.customerDetails?.slug, this.loyalityType?.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.historyItems = res?.result
@@ -218,7 +299,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getTransactions() {
-    this.customerService.getTransactions(this.customerData?.slug, this.transactionType.value).subscribe({
+    this.customerService.getTransactions(this.customerDetails?.slug, this.transactionType.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.transactions = res?.result
@@ -235,7 +316,7 @@ export class UpdateCustomersComponent implements OnInit {
 
     this.customerService.createTransaction({
       amount: this.amount.value,
-      user: this.customerData?._id,
+      user: this.customerDetails?._id,
       description: this.description.value,
       type: type
     }).subscribe({
@@ -295,7 +376,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   //Function to check whether the email address exists
   emailExists(emailString: any) {
-    this.customerService.customerDetails({ _id: { '$eq': this.customerData?._id }, email: emailString.value }).subscribe((res: any) => {
+    this.customerService.customerDetails({ _id: { '$eq': this.customerDetails?._id }, email: emailString.value }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         if (res?.result) {
           this.isEmailExists = true
@@ -313,7 +394,7 @@ export class UpdateCustomersComponent implements OnInit {
   //Function to check whether the phone exists
   phoneExists(phoneString: any) {
     this.customerService.customerDetails({
-      _id: { '$eq': this.customerData?._id },
+      _id: { '$eq': this.customerDetails?._id },
       countryCode: this.form.get('countryCode')?.value,
       mobile: phoneString.value
     }).subscribe((res: any) => {
@@ -339,7 +420,7 @@ export class UpdateCustomersComponent implements OnInit {
 
     let payload = {
       ...this.addressForm?.value,
-      customer: this.customerData?._id
+      customer: this.customerDetails?._id
     }
 
     if (!this.isEditAddress) {
@@ -434,7 +515,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   getCustomerDetails() {
     this.customerService.getCustomerDetails(this.slug).subscribe((res: any) => {
-      this.customerData = res?.result
+      this.customerDetails = res?.result
       this.savedCards = res?.result?.savedCards || []
       this.referralCode.setValue(res?.result?.referralCode)
       this.referralCode.disable()

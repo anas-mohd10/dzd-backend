@@ -30,6 +30,11 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
+  getCustomerOrders(customerId: string, page: number) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.customerOrders + `/${customerId}?page${page}`);
+    return this.http.get(`${url}`)
+  }
+
   exportOrderTabs(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.exportOrderTabs);
     return this.http.post(`${url}`, data)

@@ -29,27 +29,30 @@
             <form [formGroup]="form">
                <div class="row">
 
-                  <div class="my-5" *ngIf="customerData?.referralSource">
+                  <div class="my-5" *ngIf="customerDetails?.referralSource">
                      <div class="border p-6 bg-white border-secondary rounded shadow">
-                        {{customerData.name}} signed up for the account, using
-                        <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customerData?.referralSource?.user?.userid}}"
-                           target="_blank">{{customerData?.referralSource?.user?.name}}'s</a>
+                        {{customerDetails.name}} signed up for the account, using
+                        <a routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customerDetails?.referralSource?.user?.userid}}"
+                           target="_blank">{{customerDetails?.referralSource?.user?.name}}'s</a>
                         referral code.
                      </div>
                   </div>
 
-                  <div class="d-flex justify-content-end gap-2">
-                     <button class="btn btn-secondary" (click)="openSavedCards(savedCardTemplate)">
+                  <div class="d-flex justify-content-end gap-8">
+                     <button class="btn btn-link" (click)="openCustomerOrders(ordersTemplate)">
+                        Orders
+                     </button>
+                     <button class="btn btn-link" (click)="openSavedCards(savedCardTemplate)">
                         Saved cards
                      </button>
-                     <button class="btn btn-secondary"
-                        routerLink="{{appRoute.customers.referralHistory + '/' + customerData?.userid}}">
+                     <button class="btn btn-link"
+                        routerLink="{{appRoute.customers.referralHistory + '/' + customerDetails?.userid}}">
                         Referral history
                      </button>
-                     <button class="btn btn-secondary" (click)="openLoyalty(loyaltyTemplate)">
+                     <button class="btn btn-link" (click)="openLoyalty(loyaltyTemplate)">
                         Loyalty points
                      </button>
-                     <button class="btn btn-secondary" (click)="openWallet(walletTemplate)">
+                     <button class="btn btn-link" (click)="openWallet(walletTemplate)">
                         Wallet transactions
                      </button>
                   </div>
@@ -329,7 +332,7 @@
          <div class="col-lg-5 mb-3">
             <div class="mb-4">
                <div class="fs-6 text-primary">Wallet balance</div>
-               <div class="modal-title">{{settings?.currency}} {{customerData?.walletBalance}}</div>
+               <div class="modal-title">{{settings?.currency}} {{customerDetails?.walletBalance}}</div>
             </div>
             <div class="form-group mb-3">
                <label for="amount" class="form-label mb-3 required">Amount</label>
@@ -342,7 +345,7 @@
                   class="form-control">
             </div>
             <div class="d-flex justify-content-end align-items-center">
-               <button class="btn btn-secondary w-50 me-1" [ngClass]="{'pe-none': customerData?.walletBalance == 0}"
+               <button class="btn btn-secondary w-50 me-1" [ngClass]="{'pe-none': customerDetails?.walletBalance == 0}"
                   (click)="addToWallet('debit')">Withdraw</button>
                <button class="btn btn-primary w-50 ms-1" (click)="addToWallet('credit')">Add to Wallet</button>
             </div>
@@ -406,7 +409,7 @@
                </svg>
             </div>
             <div class="ms-2">
-               {{customerData?.loyaltyPoints}}
+               {{customerDetails?.loyaltyPoints}}
             </div>
          </div>
       </div>
@@ -477,6 +480,62 @@
       </div>
       <div *ngIf="savedCards.length == 0">
          <app-no-results></app-no-results>
+      </div>
+   </div>
+</ng-template>
+
+<ng-template #ordersTemplate>
+   <div class="modal-header">
+      <h4 class="modal-title pull-left">Orders ({{customerOrderDetails.totalResults || 0}})</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="ordersRef?.hide()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div>
+         <table class="table">
+            <thead>
+               <th class="p-2">Order No</th>
+               <th class="p-2">Date</th>
+               <th class="p-2">Total</th>
+               <th class="p-2">Source</th>
+               <th class="p-2">Status</th>
+               <th class="p-2">Method</th>
+            </thead>
+            <tbody>
+               <tr *ngFor="let order of customerOrderDetails.orders">
+                  <td>{{order.orderNo}}</td>
+                  <td>
+                     <div>{{formatOrderDate(order.createdAt)}}</div>
+                     <div>{{formatOrderTime(order.createdAt)}}</div>
+                  </td>
+                  <td>{{order.total}}</td>
+                  <td>{{order.source}}</td>
+                  <td>
+                     <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{
+                     'success-orders': successOrders.includes(order.orderStatus), 
+                     'accepted-orders': acceptedOrders.includes(order.orderStatus), 
+                     'cancelled-orders': cancelledOrders.includes(order.orderStatus)
+                     }">
+                        {{formatOrderStatus(order.orderStatus)}}
+                     </div>
+                  </td>
+                  <td>{{formatOrderPayment(order.paymentMethod)}}</td>
+               </tr>
+               <tr *ngIf="customerOrderDetails.orders && customerOrderDetails.orders.length == 0">
+                  <td colspan="6"><app-no-results></app-no-results></td>
+               </tr>
+            </tbody>
+            <tfoot>
+               <tr>
+                  <td colspan="6">
+                     <app-pagination [totalPages]="customerOrderDetails.totalPages"
+                        [totalResults]="customerOrderDetails.totalResults" [pageIndex]="page" [pageSize]="limit"
+                        (pageTrigger)="onPageTriggered($event)"></app-pagination>
+                  </td>
+               </tr>
+            </tfoot>
+         </table>
       </div>
    </div>
 </ng-template>

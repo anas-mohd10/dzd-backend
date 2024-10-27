@@ -72,12 +72,12 @@
                <td>{{customer?.email}}</td>
                <td>{{customer?.userid}}</td>
                <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
+               <td>{{customer?.regdType}}</td>
                <td>
                   <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
                      {{customer?.isActive ? 'Active' : 'Inactive'}}
                   </span>
                </td>
-               <td>{{customer?.regdType}}</td>
                <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
                   <img src="assets/icons/editPen.svg" alt="Icon">
                </td>
