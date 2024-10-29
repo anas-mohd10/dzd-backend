@@ -472,7 +472,64 @@
   </div>
 </div>
 
-<!-- Attributes modal starts here -->
+<ng-template #siblingsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">List of Variants</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="siblingsRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-items-center justify-content-end">
+      <button class="btn btn-secondary p-1 mb-2" (click)="skipUpdate()">
+        Skip this step
+      </button>
+    </div>
+    <div class="alert alert-warning">
+      Note : Before hiding a product, you need to show at least one version of it.
+      This helps customers see what the product looks like and understand what they can buy.
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <th class="p-2">Name</th>
+        <th class="p-2">SKU</th>
+        <th class="p-2">Stock</th>
+        <th class="p-2">Visible</th>
+        <th class="p-2">Status</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sibling of siblings">
+          <td>
+            <div class="d-flex align-items-center justify-content-start gap-2">
+              <img class="rounded border border-secondary" src="{{base + sibling.thumbnail}}" height="30" width="30"
+                alt="{{sibling.name}}">
+              <div>{{sibling.name}}</div>
+            </div>
+            <div class="mt-1" *ngFor="let attribute of sibling.attributes">
+              <div>{{attribute.title}} : {{attribute.value}}</div>
+            </div>
+          </td>
+          <td>{{sibling.sku}}</td>
+          <td>{{sibling.stock}}</td>
+          <td>
+            <app-switch [switchId]="sibling.prodid" [isToggledProps]="sibling.isVisible"
+              (switchToggled)="onTriggerSiblings($event, 'isVisible')"></app-switch>
+          </td>
+          <td>
+            <app-switch [switchId]="sibling.prodid" [isToggledProps]="sibling.isActive"
+              (switchToggled)="onTriggerSiblings($event, 'isActive')"></app-switch>
+          </td>
+        </tr>
+        <tr *ngIf="siblings.length == 0">
+          <td colspan="5">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Add Variants</h4>
@@ -522,4 +579,3 @@
     </div>
   </div>
 </ng-template>
-<!-- Attributes modal ends here -->

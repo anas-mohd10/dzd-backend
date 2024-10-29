@@ -97,6 +97,7 @@
               <select class="form-select fs-6" formControlName="offerType">
                 <option value="" disabled>-- Select an option --</option>s
                 <option value="products">Products</option>
+                <option value="parents">Config Products</option>
                 <option value="brands">Brands</option>
                 <option value="categories">Categories</option>
                 <option value="collections">Collections</option>
@@ -131,6 +132,16 @@
               <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
                 placeholder="Select collections applicable to this offer" [multiple]=true
                 [ngModelOptions]="{standalone: true}" (change)="getTypes('collections')">
+              </ng-select>
+            </div>
+          </div>
+
+          <div *ngIf="offerForm.get('offerType')?.value == 'parents'">
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Config Products</label>
+              <ng-select [items]="parentsData" bindLabel="name" bindValue="_id" [(ngModel)]="parents"
+                placeholder="Select config products applicable to this offer" [multiple]=true
+                [ngModelOptions]="{standalone: true}" (change)="getTypes('parents')">
               </ng-select>
             </div>
           </div>

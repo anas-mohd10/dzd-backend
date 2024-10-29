@@ -31,6 +31,11 @@ export class ProductHeadService {
     return this.http.delete(`${url}`);
   }
 
+  activeParents(){
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.activeParents);
+    return this.http.get(`${url}`);
+  }
+
   getDetails(product: string) {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.getDetails + `/${product}`);
     return this.http.get(`${url}`);

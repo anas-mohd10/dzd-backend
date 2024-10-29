@@ -7,10 +7,12 @@ import { UploadsListComponent } from './uploads-list/uploads-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/pages/shared/shared.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { UploadDetailsComponent } from './upload-details/upload-details.component';
 
 @NgModule({
   declarations: [
-    UploadsListComponent
+    UploadsListComponent,
+    UploadDetailsComponent
   ],
   imports: [
     CommonModule,
