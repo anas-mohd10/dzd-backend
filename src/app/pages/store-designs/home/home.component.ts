@@ -1051,6 +1051,11 @@ export class HomeComponent implements OnInit {
     this.designForm.get("backgroundImage")?.setValue(event._id)
   }
 
+  onRemoveBackground(){
+    this.designForm.get("backgroundImage")?.setValue(null)
+    this.backgroundDetails = ''
+  }
+
   onSaleThumbnailTriggered(event: any) {
     this.saleForm.get("saleThumbnail")?.setValue(event._id)
   }
