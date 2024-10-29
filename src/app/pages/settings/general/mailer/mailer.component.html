@@ -1,7 +1,7 @@
 <div>
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Mailer subscriptions</h1>
+            <h1 class="fw-bold">Mailer subscriptions</h1>
         </div>
         <div class="row align-items-center">
             <div class="col d-flex flex-row justify-content-between">
@@ -21,7 +21,7 @@
         <div class="card-body">
             <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
                 <div class="mailerWrapper mb-5">
-                    <div class="fs-5 fw-bolder">Order transaction mailers </div>
+                    <div class="fs-5">Order transaction mailers </div>
                     <div class="form-group mt-3">
                         <input class="form-control" type="text" placeholder="Email address"
                             (keyup.Enter)="addMailer($event, 'orderTransactions')" formControlName="orderTransactions"
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="mailerWrapper mb-5">
-                    <div class="fs-5 fw-bolder">Cancelled or Return order mailers </div>
+                    <div class="fs-5">Cancelled or Return order mailers </div>
                     <div class="form-group mt-3">
                         <input class="form-control" type="text" placeholder="Email address"
                             (keyup.Enter)="addMailer($event, 'cancelledOrders')" formControlName="cancelledOrders"
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="mailerWrapper mb-5">
-                    <div class="fs-5 fw-bolder">Abandoned carts </div>
+                    <div class="fs-5">Abandoned carts </div>
                     <div class="form-group mt-3">
                         <input class="form-control" type="text" placeholder="Email address"
                             (keyup.Enter)="addMailer($event, 'abandonedCarts')" formControlName="abandonedCarts"
@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="mailerWrapper mb-5">
-                    <div class="fs-5 fw-bolder">Daily reports </div>
+                    <div class="fs-5">Daily reports </div>
                     <div class="form-group mt-3">
                         <input class="form-control" type="text" placeholder="Email address"
                             (keyup.Enter)="addMailer($event, 'dailyReports')" formControlName="dailyReports"
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="mailerWrapper mb-5">
-                    <div class="fs-5 fw-bolder">Subscribers </div>
+                    <div class="fs-5">Subscribers </div>
                     <div class="form-group mt-3">
                         <input class="form-control" type="text" placeholder="Email address"
                             (keyup.Enter)="addMailer($event, 'subscribers')" formControlName="subscribers"
@@ -111,7 +111,25 @@
                     </div>
                 </div>
                 <div class="mailerWrapper mb-5">
-                    <div class="fs-5 fw-bolder">Newsletters </div>
+                    <div class="fs-5">Enquiries </div>
+                    <div class="form-group mt-3">
+                        <input class="form-control" type="text" placeholder="Email address"
+                            (keyup.Enter)="addMailer($event, 'enquiries')" formControlName="enquiries"
+                            [ngClass]="{'is-invalid': formControls.enquiries.errors?.pattern}">
+                    </div>
+                    <div class="mailers mt-2">
+                        <ng-container *ngFor="let mail of mailers.enquiries; let i = index">
+                            <div class="mailer">
+                                {{mail}}
+                                <span class="ms-1" (click)="removeMailer(mail, 'enquiries')">
+                                    <img src="assets/icons/close.svg" alt="Icon">
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="mailerWrapper mb-5">
+                    <div class="fs-5">Newsletters </div>
                     <div class="form-group mt-3">
                         <input class="form-control" type="text" placeholder="Email address"
                             (keyup.Enter)="addMailer($event, 'newsletters')" formControlName="newsletters"
