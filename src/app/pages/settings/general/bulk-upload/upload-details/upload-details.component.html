@@ -1,0 +1,33 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">{{uploadDetails.title }}</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.bulk.import }}">Bulk import</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{appRoute.bulk.import + '/' + uploadId}}">Bulk import details</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="fs-5">Status</div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="fs-4 {{uploadDetails?.status}} fw-bold">{{formatStatus(uploadDetails?.status)}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

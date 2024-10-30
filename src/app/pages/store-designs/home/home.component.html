@@ -1239,7 +1239,9 @@
                                     <app-assets (mediaClicked)="onBackgroundTriggered($event)" [image]="'cover'"
                                         [previewDetails]="backgroundDetails"></app-assets>
                                 </div>
-                                <p class="text-muted mx-2">This image will appear on widget backgrounds.</p>
+                                <div *ngIf="backgroundDetails">
+                                    <button class="btn btn-danger mt-2 p-2" (click)="onRemoveBackground()">Remove</button>
+                                </div>
                             </div>
                         </div>
                     </div>

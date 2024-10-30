@@ -9,6 +9,7 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -36,6 +37,8 @@ export class AddOfferComponent implements OnInit {
   categories: Array<any> = []
   collectionsdata: Array<any> = []
   collections: Array<any> = []
+  parentsData: Array<any> = []
+  parents: Array<any> = []
   brandsdata: Array<any> = []
   brands: Array<any> = []
   isValidValue: boolean = true;
@@ -50,6 +53,7 @@ export class AddOfferComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private CategoryService: CategoryService,
     private CollectionService: CollectionService,
+    private ProductHeadService: ProductHeadService,
     private BrandService: BrandService
   ) { }
 
@@ -80,6 +84,19 @@ export class AddOfferComponent implements OnInit {
     this.BrandService.getActiveBrands().subscribe((res: any) => {
       this.brandsdata = res?.result
       this.ChangeDetectorRef.markForCheck()
+    })
+
+    this.ProductHeadService.activeParents().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.parentsData = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+
+        }
+      }, error: (err: any) => {
+
+      }
     })
   }
 
@@ -128,21 +145,31 @@ export class AddOfferComponent implements OnInit {
         this.categories = []
         this.collections = []
         this.brands = []
+        this.parents = []
         break
       case 'categories':
         this.products = []
         this.collections = []
         this.brands = []
+        this.parents = []
         break
       case 'collections':
         this.products = []
         this.categories = []
         this.brands = []
+        this.parents = []
         break
       case 'brands':
         this.products = []
         this.categories = []
         this.collections = []
+        this.parents = []
+        break
+      case 'parents':
+        this.products = []
+        this.categories = []
+        this.collections = []
+        this.brands = []
         break
     }
   }
@@ -167,6 +194,7 @@ export class AddOfferComponent implements OnInit {
       offerType: this.offerForm.get('offerType')?.value == 'complete' ? 'complete' : 'partial',
       categories: this.categories.length > 0 ? this.categories : null,
       products: this.products.length > 0 ? this.products : null,
+      parents: this.parents.length > 0 ? this.parents : null,
       collections: this.collections.length > 0 ? this.collections : null,
       brands: this.brands.length > 0 ? this.brands : null,
     }).subscribe((res: any) => {

@@ -48,6 +48,11 @@ export class CsvService {
     return this.http.post(`${url}`, query)
   }
 
+  getFileImportDetails(uploadId:string) {
+    const url = this.commonService.getFullUrl(csvEndpoints.fileImport + `/${uploadId}`);
+    return this.http.get(`${url}`)
+  }
+
   downloadImportLog(fileId: string){
     const url = this.commonService.getFullUrl(csvEndpoints.downloadImportLog + `/${fileId}`);
     return this.http.get(`${url}`)

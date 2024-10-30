@@ -110,9 +110,13 @@ export class UpdateProductComponent implements OnInit {
     { title: "Color", value: "color" },
     { title: "Image", value: "image" },
   ]
+  siblings: Array<any> = []
   productBannerDetails: string = '';
   languages: Array<string> = []
   tagIcons: Array<string> = []
+  siblingsRef?: BsModalRef;
+  @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
+  isSkipUpdate: FormControl = new FormControl(false)
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -121,7 +125,6 @@ export class UpdateProductComponent implements OnInit {
     private categoryService: CategoryService,
     private taxClassService: TaxClassesService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AttributeService: AttributeService,
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
@@ -281,7 +284,8 @@ export class UpdateProductComponent implements OnInit {
       this.isSubmitted = true
       return
     }
-    let payload = {
+
+    this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
       prodid: this.productDetails.prodid,
       slug: this.form.get('slug')?.value,
@@ -293,20 +297,39 @@ export class UpdateProductComponent implements OnInit {
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
       productIcons: this.icons,
+      isSkipUpdate: this.isSkipUpdate.value,
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       },
       productTags: this.tagsForm.value,
-    }
-
-    console.log(payload)
-
-    this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate(['/app/product'])
+          this.siblingsRef?.hide()
           this.HotToastService.success(res?.message)
+        } else if (res.errorCode == 2) {
+          this.siblingsRef = this.BsModalService.show(
+            this.siblingsTemplateModal,
+            { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true }
+          )
+
+          this.ProductService.getProducts({
+            parentId: this.productDetails.parentId,
+            productId: this.productDetails._id
+          }).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+                this.siblings = res?.result
+                this.ChangeDetectorRef.markForCheck()
+              } else {
+                this.HotToastService.error(res?.message)
+              }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.message)
+            }
+          })
         } else {
           this.HotToastService.error(res?.message)
         }
@@ -314,6 +337,32 @@ export class UpdateProductComponent implements OnInit {
         this.HotToastService.error(err.error.message)
       }
     })
+  }
+
+  onTriggerSiblings(event: { switchId: string, toggleState: boolean }, switchType: string) {
+    let payload: any = { prodid: event.switchId }
+    if (switchType == 'isActive') {
+      payload['isActive'] = event.toggleState
+    } else if (switchType == 'isVisible') {
+      payload['isVisible'] = event.toggleState
+    }
+
+    this.ProductService.updateProduct('', payload).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
+  }
+
+  skipUpdate() {
+    this.isSkipUpdate.setValue(true)
+    this.saveChanges()
   }
 
   toggleTab(index: number) {
@@ -390,7 +439,7 @@ export class UpdateProductComponent implements OnInit {
           this.images = res?.result?.files ? res?.result?.files : []
           // Remove null and undefined values from array of images 
           this.images = this.images.map(item => {
-            if(item !== null){
+            if (item !== null) {
               return {
                 path: item,
               }

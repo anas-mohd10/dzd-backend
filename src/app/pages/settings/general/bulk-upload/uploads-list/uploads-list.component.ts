@@ -34,7 +34,8 @@ export class UploadsListComponent implements OnInit {
     { title: 'Brand', type: 'brand' },
     { title: 'User', type: 'user' },
     { title: 'Blogs', type: 'blog' },
-    { title: 'Collection', type: 'collection' }
+    { title: 'Collection', type: 'collection' },
+    {title: 'Subscribers', type: 'subscriber'}
   ];
   fileData: any;
   fileName: string;
@@ -152,6 +153,20 @@ export class UploadsListComponent implements OnInit {
           break
         case 'user':
           this.CustomersService.bulkFileUpload(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+                this.onSuccess(res?.message)
+              } else {
+                this.HotToastService.error(res?.message)
+              }
+            }, error: (err: any) => {
+              this.HotToastService.error(err?.error?.message)
+              this.isSubmitting = false
+            }
+          })
+          break
+        case 'subscriber':
+          this.CustomersService.bulkSubscribersFileUpload(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
                 this.onSuccess(res?.message)

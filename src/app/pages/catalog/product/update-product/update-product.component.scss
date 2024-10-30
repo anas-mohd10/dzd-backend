@@ -13,6 +13,35 @@ label,
   }
 }
 
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
+
+  tbody {
+
+      tr {
+
+          td {
+              vertical-align: middle;
+          }
+      }
+  }
+
+  thead {
+
+      tr {
+
+          th {
+              font-weight: 400 !important;
+          }
+      }
+
+      background: #E4E7F4;
+  }
+}
+//Table designs
+
 .close-icon {
   z-index: 9;
   top: 10px;

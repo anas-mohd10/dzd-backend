@@ -75,7 +75,7 @@
                 <tbody class="fs-6">
                     <ng-container *ngFor="let import of fileImports">
                         <tr>
-                            <td>{{import?.title}}</td>
+                            <td class="title">{{import?.title}}</td>
                             <td> {{import?.createdBy}}</td>
                             <td>
                                 <svg *ngIf="import?.status == 'progress'" xmlns="http://www.w3.org/2000/svg" width="16"
@@ -113,9 +113,9 @@
                             <td>{{getMinutes(import?.executionTime)}} min</td>
                             <td>{{import?.createdAt}}</td>
                             <td>
-                                <a class="cursor-pointer btn btn-primary p-1" href="{{baseUrl + import?._id}}" target="_blank">
-                                    Download log
-                                </a>
+                                <button class="btn btn-secondary p-1" routerLink="{{import._id}}">
+                                    View logs
+                                </button>
                             </td>
                         </tr>
                     </ng-container>
