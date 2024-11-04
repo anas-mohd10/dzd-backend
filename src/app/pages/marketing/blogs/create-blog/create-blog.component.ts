@@ -59,6 +59,7 @@ export class CreateBlogComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
+      overview: new FormControl(''),
       description: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       category: new FormControl('', Validators.required),

@@ -87,6 +87,13 @@
                                 'is-invalid':  (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
                         </div>
                         <div class="form-group mb-3">
+                            <label for="overview" class="form-label">Overview</label>
+                            <textarea id="overview" formControlName="overview" class="form-control" rows="3"
+                                [ngClass]="{
+                                'is-invalid':  (formControls.overview.touched || isSubmitted) && formControls.overview.errors?.required}"
+                                placeholder="Brief overview of the blog post"></textarea>
+                        </div>
+                        <div class="form-group mb-3">
                             <label for="description" class="form-label required">Description</label>
                             <angular-editor id="description" class="form-control" formControlName="description"
                                 [config]="editorConfig"

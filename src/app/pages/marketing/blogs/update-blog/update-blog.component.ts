@@ -79,6 +79,7 @@ export class UpdateBlogComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
+      overview: new FormControl(''),
       isActive: new FormControl(true),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
