@@ -3,6 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { CsvService } from 'src/app/includes/services/csv.service';
 
+interface UploadDetails {
+  estimatedTimeRemaining: number
+  totalRecords: number
+  status: string  
+  processedRecords: number
+  logs: string[]
+  executionTime: number
+  location: string
+  title: string
+}
+
 @Component({
   selector: 'app-upload-details',
   templateUrl: './upload-details.component.html',
@@ -11,7 +22,7 @@ import { CsvService } from 'src/app/includes/services/csv.service';
 export class UploadDetailsComponent implements OnInit {
   uploadId: string;
   appRoute = appRoutes
-  uploadDetails: any
+  uploadDetails: UploadDetails
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -21,7 +32,7 @@ export class UploadDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.uploadId = this.ActivatedRoute.snapshot.params.uploadId || ''
-    
+
     this.CsvService.getFileImportDetails(this.uploadId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -32,7 +43,7 @@ export class UploadDetailsComponent implements OnInit {
     })
   }
 
-  formatStatus(status: string){
-    return status[0].toUpperCase() + status.slice(1)
+  formatStatus(status: string) {
+    return `${status[0].toUpperCase()}${status.slice(1)}`
   }
 }
