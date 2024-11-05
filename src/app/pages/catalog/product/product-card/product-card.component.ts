@@ -83,9 +83,10 @@ export class ProductCardComponent implements OnInit {
   }
 
   manageChildProducts() {
-    this.ProductService.manageChildProducts(this.productDetails._id, {
-      isActive: this.parentStatus.value
-    }).subscribe({
+    this.ProductService.manageChildProducts(
+      this.productDetails._id,
+      { isActive: this.parentStatus.value }
+    ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message)
@@ -96,6 +97,25 @@ export class ProductCardComponent implements OnInit {
         }
       }, error: (err: any) => {
         this.ToastrService.error(err?.error?.message)
+      }
+    })
+  }
+
+  updateParent(event: { switchId: string, toggleState: boolean }) {
+    this.ProductService.manageChildProducts(
+      event.switchId,
+      { isActive: event.toggleState }
+    ).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.parentStatus.setValue('')
+          this.getProductHeads()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
       }
     })
   }
@@ -230,13 +250,11 @@ export class ProductCardComponent implements OnInit {
   }
 
   getProductHeads() {
-    let payload = {
+    this.ProductHeadService.searchProductHead({
       limit: this.limit,
       page: this.page,
       ...this.form.value
-    }
-
-    this.ProductHeadService.searchProductHead(payload).subscribe({
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.products = res?.result?.data
@@ -282,7 +300,7 @@ export class ProductCardComponent implements OnInit {
     this.ProductService.searchProducts({
       page: this.productPage,
       limit: this.productLimit?.value,
-      parent: this.productDetails?.prodid
+      parent: this.productDetails?._id
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

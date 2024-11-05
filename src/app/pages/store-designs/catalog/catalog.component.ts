@@ -153,7 +153,11 @@ export class CatalogComponent implements OnInit {
     ]
   };
   widgetProductTypes: Array<any> = ["smart-tiles", 'aurora-slider', "aurora-grid", "products", "motion-canvas"]
+
   widgetCollection: FormControl = new FormControl("")
+  widgetBrand: FormControl = new FormControl("")
+  widgetCategory: FormControl = new FormControl("")
+
   insightHubForm: FormGroup;
   widgetImagePreviewIndex: any;
   smartTileProducts: Array<any> = [] // Smart tiles widgets
@@ -333,7 +337,17 @@ export class CatalogComponent implements OnInit {
 
   toggleProductSelection(type: string) {
     this.selectedProductType = type
-    if (type == 'collections') this.getCollections()
+    switch (type) {
+      case 'collections':
+        this.getCollections()
+        break
+      case 'brands':
+        this.getBrands()
+        break
+      case 'categories':
+        this.getCategories()
+        break
+    }
   }
 
   toggleTileProducts(productDetails: any) {
@@ -835,9 +849,35 @@ export class CatalogComponent implements OnInit {
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials
           }
-          ['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
+
+          [
+            'smart-tiles', 
+            'products', 
+            'motion-canvas', 
+            'aurora-grid', 
+            'aurora-slider'
+          ]?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails);
+
+          this.getCollections()
+          this.getBrands()
+          this.getCategories()
+
+          if (this.widgetDetails?.collections) {
+            this.selectedProductType = 'collections'
+            this.widgetCollection.setValue(this.widgetDetails?.collections?._id)
+          }
+
+          if (this.widgetDetails?.productBrands) {
+            this.selectedProductType = 'brands'
+            this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id)
+          }
+
+          if (this.widgetDetails?.productCategories) {
+            this.selectedProductType = 'categories'
+            this.widgetCategory.setValue(this.widgetDetails?.productCategories?._id)
+          }
 
           if (this.widgetDetails?.isTimeBoundWidget == true) {
             this.form.patchValue({
@@ -870,12 +910,16 @@ export class CatalogComponent implements OnInit {
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
           this.ChangeDetectorRef.markForCheck()
-          if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+
+          if ([
+            'motion-canvas',
+            'aurora-grid',
+            'aurora-slider'
+          ].includes(this.widgetDetails?.widgetType)) {
             this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail
             this.productAd?.setValue(this.widgetDetails?.productsAdThumbnail)
             this.productsAdRedirection?.setValue(this.widgetDetails?.productsAdRedirection)
           }
-          this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
         }
@@ -928,7 +972,9 @@ export class CatalogComponent implements OnInit {
         ...this.form.value,
         widgetType: this.widgetDetails?.widgetType,
         products: this.widgetCollection.value ? [] : this.smartTileProducts.map((product) => product?._id),
-        collections: this.widgetCollection.value ? this.widgetCollection.value : null
+        collections: this.widgetCollection.value ? this.widgetCollection.value : null,
+        productBrands: this.widgetBrand.value ? this.widgetBrand.value : null,
+        productCategories: this.widgetCategory.value ? this.widgetCategory.value : null
       }
     }
 
@@ -1032,8 +1078,9 @@ export class CatalogComponent implements OnInit {
   }
 
   duplicateWidget() {
-    this.CatalogService.duplicateCatalogWidget({ 
-      widget: this.duplicatedWidget?.refid, index: this.widgetItems.length }).subscribe({
+    this.CatalogService.duplicateCatalogWidget({
+      widget: this.duplicatedWidget?.refid, index: this.widgetItems.length
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)

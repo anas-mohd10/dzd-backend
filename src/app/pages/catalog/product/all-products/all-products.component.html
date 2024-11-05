@@ -71,7 +71,8 @@
           <label for="status" class="form-label">Visibiltiy</label>
           <select [formControl]="visibility" id="status" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
-            <option *ngFor="let statusItem of visibilityFilters" value="{{statusItem.value}}">{{statusItem?.key}}</option>
+            <option *ngFor="let statusItem of visibilityFilters" value="{{statusItem.value}}">{{statusItem?.key}}
+            </option>
           </select>
         </div>
         <div class="col-lg-3 form-group">
@@ -191,17 +192,21 @@
             <ng-container *ngFor="let product of products; let i = index">
               <tr>
                 <td>
-                  <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="border border-secondary rounded"
-                    onerror="this.src = 'assets/images/default.png'">
+                  <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
+                    class="border border-secondary rounded" onerror="this.src = 'assets/images/default.png'">
                 </td>
                 <td>
-                  <div>
-                    {{product?.name}}
-                  </div>
-                  <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
-                    <div class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2" *ngFor="let attribute of product?.attributes">
-                      <div>{{attribute?.title}} : </div>
-                      <div>{{attribute?.value}}</div>
+                  <div class="productName">
+                    <div>
+                      {{product?.name}}
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                      <div
+                        class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
+                        *ngFor="let attribute of product?.attributes">
+                        <div>{{attribute?.title}} : </div>
+                        <div>{{attribute?.value}}</div>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -217,8 +222,9 @@
                 <td>{{product?.price?.offer}}</td>
                 <td>{{product?.stock}}</td>
                 <td>
-                  <span class="p-1 rounded" [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
-                    {{product?.isVisible == true ?  'Visible' : 'Hidden'}}
+                  <span class="p-1 rounded"
+                    [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
+                    {{product?.isVisible == true ? 'Visible' : 'Hidden'}}
                   </span>
                 </td>
                 <td>{{product?.boostScore}}</td>

@@ -492,7 +492,13 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials
           }
-          ['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
+          [
+            'smart-tiles', 
+            'products', 
+            'motion-canvas', 
+            'aurora-grid', 
+            'aurora-slider'
+          ]?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
           if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails);
 

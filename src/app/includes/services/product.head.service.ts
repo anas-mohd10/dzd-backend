@@ -47,7 +47,7 @@ export class ProductHeadService {
   }
 
   updateProductHead(data: any) {
-    const url = this.commonService.getFullUrl(this.productHeadEndpoints.update_product_head);
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.updateProductHead);
     return this.http.put(`${url}`, data);
   }
 
