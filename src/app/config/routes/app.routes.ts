@@ -319,6 +319,7 @@ export const appRoutes = {
   smsSettings: `${app}/sms-settings`,
   authSettings: `${app}/auth-settings`,
   cartSettings: `${app}/cart-settings`,
+  orderSettings: `${app}/order-settings`,
   appKeys: `${app}/app-keys`,
   pickupLocations: {
     list: `${app}/pickup-locations`,

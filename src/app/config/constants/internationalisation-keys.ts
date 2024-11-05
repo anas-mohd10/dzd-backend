@@ -248,4 +248,7 @@ export const internationalisationKeys = {
     billingAddress: 'billingAddress',
     orderProcessedText: 'orderProcessedText',
     thankYouForPurchase: 'thankYouForPurchase',
+    cancelOrder: 'cancelOrder',
+    messageIsRequired: 'messageIsRequired',
+    writeMessageHere: 'writeMessageHere'
 }
