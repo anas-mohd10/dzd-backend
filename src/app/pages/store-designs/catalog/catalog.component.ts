@@ -342,7 +342,11 @@ export class CatalogComponent implements OnInit {
     'products',
     'motion-canvas',
   ];
+
   widgetCollection: FormControl = new FormControl('');
+  widgetBrand: FormControl = new FormControl('');
+  widgetCategory: FormControl = new FormControl('');
+
   insightHubForm: FormGroup;
   widgetImagePreviewIndex: any;
   smartTileProducts: Array<any> = []; // Smart tiles widgets
@@ -414,7 +418,7 @@ export class CatalogComponent implements OnInit {
   //Title image
   onTitleImageTriggered(event: any) {
     this.titleThumbnailDetails = event.path;
-    this.form.get('titleImage')?.setValue(event?._id);
+    this.form.get('titleImage')?.setValue(event._id);
   }
 
   removeTitleImage() {
@@ -432,7 +436,7 @@ export class CatalogComponent implements OnInit {
   }
 
   onSaleThumbnailTriggered(event: any) {
-    this.saleForm.get('saleThumbnail')?.setValue(event?._id);
+    this.saleForm.get('saleThumbnail')?.setValue(event._id);
   }
 
   removeSaleThumbnail() {
@@ -473,11 +477,11 @@ export class CatalogComponent implements OnInit {
 
   toggleTestimonials(testimonial: any) {
     let isExists = this.widgetTestimonials.some(
-      (item: any) => item?._id == testimonial?._id
+      (item: any) => item._id == testimonial._id
     );
     if (isExists) {
       this.widgetTestimonials = this.widgetTestimonials.filter(
-        (item) => item?._id != testimonial?._id
+        (item) => item._id != testimonial._id
       );
     } else {
       this.widgetTestimonials.push(testimonial);
@@ -527,7 +531,7 @@ export class CatalogComponent implements OnInit {
 
   //hyperlink hero
   onHyperlinkHeroTriggered(event: any) {
-    this.hyperlinkheroForm.get('hyperLinkThumbnail')?.setValue(event?._id);
+    this.hyperlinkheroForm.get('hyperLinkThumbnail')?.setValue(event._id);
     this.hyperLinkHeroThumbnail = event.path;
   }
 
@@ -539,17 +543,27 @@ export class CatalogComponent implements OnInit {
 
   toggleProductSelection(type: string) {
     this.selectedProductType = type;
-    if (type == 'collections') this.getCollections();
+    switch (type) {
+      case 'collections':
+        this.getCollections();
+        break;
+      case 'brands':
+        this.getBrands();
+        break;
+      case 'categories':
+        this.getCategories();
+        break;
+    }
   }
 
   toggleTileProducts(productDetails: any) {
     let isExists = this.smartTileProducts.some(
-      (item: any) => item?._id == productDetails?._id
+      (item: any) => item._id == productDetails._id
     );
     if (isExists) {
       this.Toast.info('Product removed from the list');
       this.smartTileProducts = this.smartTileProducts.filter(
-        (item) => item?._id != productDetails?._id
+        (item) => item._id != productDetails._id
       );
     } else {
       this.Toast.success('Product added to the list');
@@ -560,7 +574,7 @@ export class CatalogComponent implements OnInit {
 
   isTileProductExists(productDetails: any) {
     return this.smartTileProducts.some(
-      (item: any) => item?._id == productDetails?._id
+      (item: any) => item._id == productDetails._id
     )
       ? true
       : false;
@@ -570,10 +584,10 @@ export class CatalogComponent implements OnInit {
   //Insight hub
   handleInsightHubThumbnail(event: any, type: string) {
     if (type == 'small') {
-      this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(event?._id);
+      this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(event._id);
       this.insightHubThumbnailSmall = event.path;
     } else {
-      this.insightHubForm.get('insightHubThumbnailLarge')?.setValue(event?._id);
+      this.insightHubForm.get('insightHubThumbnailLarge')?.setValue(event._id);
       this.insightHubThumbnailLarge = event.path;
     }
   }
@@ -600,7 +614,7 @@ export class CatalogComponent implements OnInit {
   }
 
   onBackgroundTriggered(event: any) {
-    this.designForm.get('backgroundImage')?.setValue(event?._id);
+    this.designForm.get('backgroundImage')?.setValue(event._id);
   }
 
   openDesign(template: TemplateRef<any>, widget: any) {
@@ -1138,6 +1152,7 @@ export class CatalogComponent implements OnInit {
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
           }
+
           [
             'smart-tiles',
             'products',
@@ -1222,6 +1237,7 @@ export class CatalogComponent implements OnInit {
             : null;
           this.designForm.patchValue(this.widgetDetails?.styles);
           this.ChangeDetectorRef.markForCheck();
+
           if (
             ['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(
               this.widgetDetails?.widgetType
@@ -1233,7 +1249,6 @@ export class CatalogComponent implements OnInit {
               this.widgetDetails?.productsAdRedirection
             );
           }
-          this.ChangeDetectorRef.markForCheck();
         } else {
           this.Toast.error(res?.message);
         }
@@ -1268,7 +1283,7 @@ export class CatalogComponent implements OnInit {
       let widgetBlogs = [];
     } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
       let widgetTestimonials = this.widgetTestimonials.map(
-        (testimonial: any) => testimonial?._id
+        (testimonial: any) => testimonial._id
       );
       widgetPayload['testimonials'] = widgetTestimonials;
     } else if (this.widgetDetails?.widgetType == 'sale-timer') {
@@ -1298,6 +1313,10 @@ export class CatalogComponent implements OnInit {
           : this.smartTileProducts.map((product) => product?._id),
         collections: this.widgetCollection.value
           ? this.widgetCollection.value
+          : null,
+        productBrands: this.widgetBrand.value ? this.widgetBrand.value : null,
+        productCategories: this.widgetCategory.value
+          ? this.widgetCategory.value
           : null,
       };
     }
