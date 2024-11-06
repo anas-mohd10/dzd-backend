@@ -393,7 +393,7 @@ export class AddProductComponent implements OnInit {
       relatedProducts: this.relatedProducts
         ? this.relatedProducts.map((product: any) => product?._id)
         : [],
-      product: { id: this.parentDetails?._id, refid: '' },
+      product: { id: this.parentDetails?._id, refid: this.parentDetails?._id },
       attributes: this.attributes,
       tagIcons: this.tagIcons,
       parentId: this.parentDetails?._id,
@@ -438,16 +438,21 @@ export class AddProductComponent implements OnInit {
       };
       this.parentForm.get('parentCategory')?.setValue(parentCategory);
     }
-
     if (this.parentForm.get('defaultCategory')?.value) {
-      let defaultCategory = {
-        id: this.parentForm.get('defaultCategory')?.value,
-        refid: this.defaultCategories.filter(
-          (category: any) =>
-            category?._id == this.parentForm.get('defaultCategory')?.value
-        )[0]?.catid,
-      };
-      this.parentForm.get('defaultCategory')?.setValue(defaultCategory);
+      // Get the category details
+      const selectedCategory = this.defaultCategories.find(
+        (category: any) =>
+          category?._id === this.parentForm.get('defaultCategory')?.value
+      );
+
+      // Only create the object if we found the category
+      if (selectedCategory) {
+        const defaultCategory = {
+          id: selectedCategory._id,
+          refid: selectedCategory.catid,
+        };
+        this.parentForm.get('defaultCategory')?.setValue(defaultCategory);
+      }
     }
 
     if (!this.parentForm.valid) {
