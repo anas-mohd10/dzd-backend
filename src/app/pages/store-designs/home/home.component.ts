@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit {
     { title: 'Aurora Grid', type: 'aurora-grid', icon: 'assets/widgets/aurora-grid.png', description: 'The following widget can be used to run a delivery timer with custom designs' },
     { title: 'Aurora Slider', type: 'aurora-slider', icon: 'assets/widgets/aurora-slider.png', description: 'The following widget can be used to show images within a particular category. The widget contains images.' },
     { title: 'Text Twirl', type: 'text-twirl', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.' },
+    { title: 'Vibrant Banner', type: 'vibrant-banner', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show one full width banner. The widget contains images.' },
   ];
   homeWidgets: Array<any> = []
   homeWidgetKeyword: FormControl = new FormControl("", Validators.required)
@@ -92,7 +93,7 @@ export class HomeComponent implements OnInit {
     "grandeur-gallery", "celestial-canvas",
     "twin-towers", "stellar-selections",
     "slider-spotlight", "trending-teasers",
-    "text-twirl"
+    "text-twirl", "vibrant-banner"
   ]
   isWidgetLoaded: boolean = false
   redirectionItems: Array<any> = [
