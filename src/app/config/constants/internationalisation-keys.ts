@@ -248,7 +248,12 @@ export const internationalisationKeys = {
     billingAddress: 'billingAddress',
     orderProcessedText: 'orderProcessedText',
     thankYouForPurchase: 'thankYouForPurchase',
+
     cancelOrder: 'cancelOrder',
     messageIsRequired: 'messageIsRequired',
     writeMessageHere: 'writeMessageHere'
+    AddressTypeRequired: 'AddressTypeRequired',
+    forgetPassword: 'forgetPassword',
+    didYouForgetPassword: 'didYouForgetPassword',
+    phoneNumberInvalid: 'phoneNumberInvalid'
 }
