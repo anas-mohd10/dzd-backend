@@ -74,7 +74,7 @@
                   <div class="product-delivery">{{product?.product?.id?.shipping?.method}} Shipping</div>
                   <div class="product-card-bottom">
                      <div class="card-edit-btn">
-                        <button routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?.prodid}"
+                        <button routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{id: product?._id}"
                            class="fs-5 cursor-pointer text-darker">
                            Edit
                         </button>

@@ -18,10 +18,10 @@ export class UpdateTaxClassComponent implements OnInit {
   isSubmitted = false;
   form: FormGroup;
   task = PageTasks.UPDATE;
-  rules: Array<any> = []
-  ruleDetails: Array<any> = []
-  classDetails: any = {}
-  class: string = ''
+  rules: Array<any> = [];
+  ruleDetails: Array<any> = [];
+  classDetails: any = {};
+  class: string = '';
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -31,7 +31,7 @@ export class UpdateTaxClassComponent implements OnInit {
     private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private TaxRulesService: TaxRulesService
-  ) { }
+  ) {}
 
   get formControls() {
     return this.form.controls;
@@ -48,56 +48,63 @@ export class UpdateTaxClassComponent implements OnInit {
     this.class = this.ActivatedRoute.snapshot.queryParams.tax || '';
     this.TaxRulesService.getActiveRules().subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.ruleDetails = res?.result
-        this.ChangeDetectorRef.markForCheck()
+        this.ruleDetails = res?.result;
+        this.ChangeDetectorRef.markForCheck();
       } else {
-        this.ToastrService.error(res?.message)
+        this.ToastrService.error(res?.message);
       }
     });
 
     this.TaxClassesService.getClassDetails(this.class).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.classDetails = res?.result
+        this.classDetails = res?.result;
         for (let _key of Object.keys(res?.result)) {
-          this.form.get(_key)?.setValue(res?.result[_key])
-          this.rules = res?.result?.rules
+          this.form.get(_key)?.setValue(res?.result[_key]);
+          this.rules = res?.result?.rules;
         }
-        this.ChangeDetectorRef.markForCheck()
+        this.ChangeDetectorRef.markForCheck();
       } else {
-        this.ToastrService.error(res?.message)
-      }
-    })
-  }
-
-  selectRule(event: any) {
-    let rule = this.ruleDetails.filter((rule: any) => { if (rule._id == event.target.value) return rule })
-    !this.rules.includes(rule[0]) ? this.rules.push(rule[0]) : this.ToastrService.info('Rule already present')
-    this.form.get('rules')?.setValue(this.rules)
-  }
-
-  removeRule(index: any) {
-    this.rules.splice(index, 1)
-    this.form.get('rules')?.setValue(this.rules)
-  }
-
-  update() {
-    if (!this.form.valid) {
-      this.isSubmitted = true
-      return;
-    }
-
-    this.TaxClassesService.updateClass({ ...this.form.value, slug: this.class }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message)
-          this.Router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST])
-        } else {
-          this.ToastrService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.ToastrService.error(res?.message);
       }
     });
   }
 
+  selectRule(event: any) {
+    let rule = this.ruleDetails.filter((rule: any) => {
+      if (rule?._id == event.target.value) return rule;
+    });
+    !this.rules.includes(rule[0])
+      ? this.rules.push(rule[0])
+      : this.ToastrService.info('Rule already present');
+    this.form.get('rules')?.setValue(this.rules);
+  }
+
+  removeRule(index: any) {
+    this.rules.splice(index, 1);
+    this.form.get('rules')?.setValue(this.rules);
+  }
+
+  update() {
+    if (!this.form.valid) {
+      this.isSubmitted = true;
+      return;
+    }
+
+    this.TaxClassesService.updateClass({
+      ...this.form.value,
+      slug: this.class,
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message);
+          this.Router.navigate([this.appRoute.taxClass.TAX_CLASS_LIST]);
+        } else {
+          this.ToastrService.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.ToastrService.error(err?.message);
+      },
+    });
+  }
 }

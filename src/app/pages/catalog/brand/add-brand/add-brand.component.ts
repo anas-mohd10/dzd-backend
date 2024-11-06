@@ -17,15 +17,15 @@ export class AddBrandComponent implements OnInit {
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
-  cover: string = ''
-  thumbnail: string = ''
+  cover: string = '';
+  thumbnail: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private Router: Router,
     private BrandService: BrandService,
-    private HotToastService: HotToastService,
-  ) { }
+    private HotToastService: HotToastService
+  ) {}
 
   get formControls() {
     return this.brandForm.controls;
@@ -36,25 +36,25 @@ export class AddBrandComponent implements OnInit {
   }
 
   onThumbnailTriggered(event: any) {
-    this.brandForm.get('thumbnail')?.setValue(event._id)
-    this.thumbnail = event?.path
+    this.brandForm.get('thumbnail')?.setValue(event?._id);
+    this.thumbnail = event?.path;
   }
 
   onCoverTriggered(event: any) {
-    this.brandForm.get('cover')?.setValue(event._id)
-    this.cover = event?.path
+    this.brandForm.get('cover')?.setValue(event?._id);
+    this.cover = event?.path;
   }
 
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
-        this.brandForm.get('cover')?.setValue(null)
-        this.cover = ''
-        break
+        this.brandForm.get('cover')?.setValue(null);
+        this.cover = '';
+        break;
       case 'thumbnail':
-        this.brandForm.get('thumbnail')?.setValue(null)
-        this.thumbnail = ''
-        break
+        this.brandForm.get('thumbnail')?.setValue(null);
+        this.thumbnail = '';
+        break;
     }
   }
 
@@ -76,14 +76,14 @@ export class AddBrandComponent implements OnInit {
       cover: [null],
       color: [''],
       fontSize: [''],
-      fontWeight: ['']
+      fontWeight: [''],
     });
-    this.brandForm.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.brandForm.get('border')?.setValue(AppSettings.BORDER)
-    this.brandForm.get('color')?.setValue(AppSettings.COLOR)
-    this.brandForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.brandForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.brandForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
+    this.brandForm.get('background')?.setValue(AppSettings.BACKGROUND);
+    this.brandForm.get('border')?.setValue(AppSettings.BORDER);
+    this.brandForm.get('color')?.setValue(AppSettings.COLOR);
+    this.brandForm.get('radius')?.setValue(AppSettings.BORDER_RADIUS);
+    this.brandForm.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT);
+    this.brandForm.get('fontSize')?.setValue(AppSettings.FONT_SIZE);
   }
 
   //Add brand
@@ -92,7 +92,7 @@ export class AddBrandComponent implements OnInit {
       return;
     }
 
-    const payload = this.createPayload()
+    const payload = this.createPayload();
     if (payload) {
       this.BrandService.addBrand(payload).subscribe((res: any) => {
         if (res.errorCode != 0) {
@@ -109,16 +109,16 @@ export class AddBrandComponent implements OnInit {
 
   createPayload() {
     const data = {
-      name: this.brandForm.get("name")?.value,
-      description: this.brandForm.get("description")?.value,
-      metaTitle: this.brandForm.get("metaTitle")?.value,
-      metaDescription: this.brandForm.get("metaDescription")?.value,
-      metaKeywords: this.brandForm.get("metaKeywords")?.value,
-      isActive: this.brandForm.get("isActive")?.value,
-      isFeatured: this.brandForm.get("isFeatured")?.value,
-      isArchive: this.brandForm.get("isArchive")?.value,
-      thumbnail: this.brandForm.get("thumbnail")?.value,
-      cover: this.brandForm.get("cover")?.value,
+      name: this.brandForm.get('name')?.value,
+      description: this.brandForm.get('description')?.value,
+      metaTitle: this.brandForm.get('metaTitle')?.value,
+      metaDescription: this.brandForm.get('metaDescription')?.value,
+      metaKeywords: this.brandForm.get('metaKeywords')?.value,
+      isActive: this.brandForm.get('isActive')?.value,
+      isFeatured: this.brandForm.get('isFeatured')?.value,
+      isArchive: this.brandForm.get('isArchive')?.value,
+      thumbnail: this.brandForm.get('thumbnail')?.value,
+      cover: this.brandForm.get('cover')?.value,
       style: {
         background: this.brandForm.get('background')?.value,
         border: this.brandForm.get('border')?.value,
@@ -127,10 +127,10 @@ export class AddBrandComponent implements OnInit {
           color: this.brandForm.get('color')?.value,
           fontSize: this.brandForm.get('fontSize')?.value,
           fontWeight: this.brandForm.get('fontWeight')?.value,
-        }
-      }
-    }
+        },
+      },
+    };
 
-    return data
+    return data;
   }
 }

@@ -63,7 +63,7 @@
                       <label class="fs-6 mb-3">Tax</label>
                       <select formControlName="tax" id="tax" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass._id}}">{{taxClass.name}}
+                        <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass?._id}}">{{taxClass.name}}
                         </option>
                       </select>
                     </div>
@@ -112,7 +112,7 @@
                       <label class="fs-6 mb-3">Default category</label>
                       <select formControlName="defaultCategory" id="defaultCategory" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let category of defaultCategories" value="{{category._id}}">
+                        <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
                           {{category.name}}
                         </option>
                       </select>

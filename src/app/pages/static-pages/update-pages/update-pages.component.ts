@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -10,7 +15,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 @Component({
   selector: 'app-update-pages',
   templateUrl: './update-pages.component.html',
-  styleUrls: ['./update-pages.component.scss']
+  styleUrls: ['./update-pages.component.scss'],
 })
 export class UpdatePagesComponent implements OnInit {
   appRoute = appRoutes;
@@ -19,7 +24,7 @@ export class UpdatePagesComponent implements OnInit {
   details: any;
   staticPageId: any;
   modalRef?: BsModalRef;
-  metaThumbnail: string = ''
+  metaThumbnail: string = '';
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -39,8 +44,8 @@ export class UpdatePagesComponent implements OnInit {
       { class: 'poppins', name: 'Poppins' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
       { class: 'roboto', name: 'Roboto' },
-      { class: 'sora', name: 'Sora' }
-    ]
+      { class: 'sora', name: 'Sora' },
+    ],
   };
 
   constructor(
@@ -50,18 +55,18 @@ export class UpdatePagesComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService
-  ) { }
+  ) {}
 
-  get formControls(){
-    return this.form.controls
+  get formControls() {
+    return this.form.controls;
   }
 
   onMediaClicked(event: any) {
-    this.form.patchValue({ metaThumbnail: event?._id })
+    this.form.patchValue({ metaThumbnail: event?._id });
   }
 
   onMediaRemoved() {
-    this.form.patchValue({ metaThumbnail: null })
+    this.form.patchValue({ metaThumbnail: null });
   }
 
   ngOnInit(): void {
@@ -71,12 +76,15 @@ export class UpdatePagesComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.details = res?.result;
-          this.metaThumbnail = res?.result?.metaThumbnail && res?.result?.metaThumbnail.path
+          this.metaThumbnail =
+            res?.result?.metaThumbnail && res?.result?.metaThumbnail.path;
           this.form.patchValue(this.details);
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => {},
+    });
 
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -85,8 +93,8 @@ export class UpdatePagesComponent implements OnInit {
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
-      metaThumbnail: new FormControl(null)
-    })
+      metaThumbnail: new FormControl(null),
+    });
   }
 
   confirm() {
@@ -95,14 +103,15 @@ export class UpdatePagesComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.modalRef?.hide();
           this.HotToastService.success(res?.message);
-          this.Router.navigate([appRoutes.staticPages.list])
+          this.Router.navigate([appRoutes.staticPages.list]);
         } else {
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err?.message);
-      }
-    })
+      },
+    });
   }
 
   decline() {
@@ -110,31 +119,33 @@ export class UpdatePagesComponent implements OnInit {
   }
 
   onDelete(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' })
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+    });
   }
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     this.StaticPageService.update({
-      _id: this.details._id,
+      _id: this.details?._id,
       slug: this.details.slug,
-      ...this.form.value
+      ...this.form.value,
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
-          this.Router.navigate([appRoutes.staticPages.list])
+          this.Router.navigate([appRoutes.staticPages.list]);
         } else {
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err?.message);
-      }
-    })
+      },
+    });
   }
-
 }

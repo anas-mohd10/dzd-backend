@@ -8,7 +8,7 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
 @Component({
   selector: 'app-add-notifications',
   templateUrl: './add-notifications.component.html',
-  styleUrls: ['./add-notifications.component.scss']
+  styleUrls: ['./add-notifications.component.scss'],
 })
 export class AddNotificationsComponent implements OnInit {
   form: FormGroup;
@@ -28,7 +28,7 @@ export class AddNotificationsComponent implements OnInit {
     private Router: Router,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -44,29 +44,33 @@ export class AddNotificationsComponent implements OnInit {
       isActive: new FormControl('true', Validators.required),
     });
 
-    this.form.get('scheduledDate')?.setValue(this.scheduleDate) // set default schedule date
+    this.form.get('scheduledDate')?.setValue(this.scheduleDate); // set default schedule date
 
     this.CustomersService.getActiveCustomers().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.customersData = res?.result
-          for (let customer of this.customersData) customer.title = (customer?.name ? customer?.name : '-- Incomplete Profile --') + " ( " + customer?.mobile + " )"
-          this.ChangeDetectorRef.markForCheck()
+          this.customersData = res?.result;
+          for (let customer of this.customersData)
+            customer.title =
+              (customer?.name ? customer?.name : '-- Incomplete Profile --') +
+              ' ( ' +
+              customer?.mobile +
+              ' )';
+          this.ChangeDetectorRef.markForCheck();
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 
   handleThumbnail(event: any) {
-    this.form.get('thumbnail')?.setValue(event?._id)
-    this.thumbnail = event?.path
+    this.form.get('thumbnail')?.setValue(event?._id);
+    this.thumbnail = event?.path;
   }
 
   removeThumbnail() {
-    this.form.get('thumbnail')?.setValue(null)
-    this.thumbnail = ''
+    this.form.get('thumbnail')?.setValue(null);
+    this.thumbnail = '';
   }
 
   get formControls() {
@@ -94,9 +98,8 @@ export class AddNotificationsComponent implements OnInit {
         } else if (res.errorCode == 0) {
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 }

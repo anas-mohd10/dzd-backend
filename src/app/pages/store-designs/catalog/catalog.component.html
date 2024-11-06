@@ -1197,7 +1197,7 @@
                             <select [formControl]="widgetCollection" id="collections" class="form-select">
                                 <option value="" disabled>-- Select an option --</option>
                                 <option *ngFor="let collection of collections; let i = index"
-                                    value="{{collection._id}}">
+                                    value="{{collection?._id}}">
                                     {{collection.name}}
                                 </option>
                             </select>

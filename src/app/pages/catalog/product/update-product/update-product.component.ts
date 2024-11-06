@@ -1,13 +1,18 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormControl, FormGroup, Validators, } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { TaxClassesService } from 'src/app/includes/services/tax-classes.service';
 import { environment } from 'src/environments/environment';
-import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
@@ -15,8 +20,8 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 interface StoreField {
-  title: string,
-  description: string,
+  title: string;
+  description: string;
 }
 
 @Component({
@@ -24,15 +29,14 @@ interface StoreField {
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.scss'],
 })
-
 export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted: boolean = false;
   searchKeyowrds: any = [];
-  tumbnail: any
-  attributes: any = []
+  tumbnail: any;
+  attributes: any = [];
   slug: string = '';
   base: string;
   editorConfig: AngularEditorConfig = {
@@ -58,13 +62,13 @@ export class UpdateProductComponent implements OnInit {
       { class: 'manrope', name: 'Manrope' },
       { class: 'sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ]
+    ],
   };
-  productIcons: Array<any> = []
-  settings: any = {}
+  productIcons: Array<any> = [];
+  settings: any = {};
   parentForm: FormGroup;
   taxClassDetails: Array<any> = [];
-  brand: FormControl = new FormControl('', Validators.required)
+  brand: FormControl = new FormControl('', Validators.required);
   brands: Array<any> = [];
   productCategories: Array<any> = [];
   images: Array<any> = [];
@@ -87,36 +91,36 @@ export class UpdateProductComponent implements OnInit {
   tagsForm: FormGroup;
   icons: Array<any> = [];
   productTags: any = {
-    topRightTag: "",
-    topLeftTag: "",
-    bottomRightTag: "",
-    bottomLeftTag: "",
-  }
-  addOnItemsForm: FormGroup
-  productSlug: string = '' // Store product slug
-  productDetails: any // Store product details
+    topRightTag: '',
+    topLeftTag: '',
+    bottomRightTag: '',
+    bottomLeftTag: '',
+  };
+  addOnItemsForm: FormGroup;
+  productSlug: string = ''; // Store product slug
+  productDetails: any; // Store product details
   addOnItems: Array<any> = [];
-  thumbnailPreview: string = ''
-  activeRelatedProducts: Array<any> = []
-  relatedProduct: FormControl = new FormControl('')
-  storeFields: Array<StoreField> = []
-  storeFieldForm: FormGroup = new FormGroup({})
+  thumbnailPreview: string = '';
+  activeRelatedProducts: Array<any> = [];
+  relatedProduct: FormControl = new FormControl('');
+  storeFields: Array<StoreField> = [];
+  storeFieldForm: FormGroup = new FormGroup({});
   isStoreSubmitted: boolean = false;
-  modalRef?: BsModalRef
-  attributeForm: FormGroup = new FormGroup({})
-  isAttributeSubmitted: boolean = false
+  modalRef?: BsModalRef;
+  attributeForm: FormGroup = new FormGroup({});
+  isAttributeSubmitted: boolean = false;
   attributeTypes: Array<any> = [
-    { title: "Text", value: "text" },
-    { title: "Color", value: "color" },
-    { title: "Image", value: "image" },
-  ]
-  siblings: Array<any> = []
+    { title: 'Text', value: 'text' },
+    { title: 'Color', value: 'color' },
+    { title: 'Image', value: 'image' },
+  ];
+  siblings: Array<any> = [];
   productBannerDetails: string = '';
-  languages: Array<string> = []
-  tagIcons: Array<string> = []
+  languages: Array<string> = [];
+  tagIcons: Array<string> = [];
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
-  isSkipUpdate: FormControl = new FormControl(false)
+  isSkipUpdate: FormControl = new FormControl(false);
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -128,85 +132,93 @@ export class UpdateProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) { }
+  ) {}
 
   onBrandTriggered(event: any) {
-    this.parentForm.get('brand')?.setValue(event._id)
+    this.parentForm.get('brand')?.setValue(event?._id);
   }
 
   get storeFieldControls() {
-    return this.storeFieldForm.controls
+    return this.storeFieldForm.controls;
   }
 
   onCategoryTriggered(event: any) {
-    const isIdPresent = this.productCategories.some(category => category._id == event._id);
+    const isIdPresent = this.productCategories.some(
+      (category) => category?._id == event?._id
+    );
     if (isIdPresent) {
-      this.HotToastService.info('Category already added')
+      this.HotToastService.info('Category already added');
     } else {
-      this.productCategories.push(event)
-      this.getDefaultCategories(event.slug)
+      this.productCategories.push(event);
+      this.getDefaultCategories(event.slug);
     }
-    this.parentForm.get('parentCategories')?.setValue(this.productCategories)
+    this.parentForm.get('parentCategories')?.setValue(this.productCategories);
   }
 
   onProductsTriggered(productId?: any) {
-    let productDetails: any = null
+    let productDetails: any = null;
     if (productId) {
-      productDetails = productId
+      productDetails = productId;
     } else {
-      let productRef = this.activeRelatedProducts.filter((item: any) => item._id == this.relatedProduct.value)
-      productDetails = productRef[0]
+      let productRef = this.activeRelatedProducts.filter(
+        (item: any) => item?._id == this.relatedProduct.value
+      );
+      productDetails = productRef[0];
     }
-    const isIdPresent: boolean = this.relatedProducts.some(product => product._id == productDetails?._id);
+    const isIdPresent: boolean = this.relatedProducts.some(
+      (product) => product?._id == productDetails?._id
+    );
     if (isIdPresent) {
-      this.HotToastService.error('Product removed from list')
-      this.relatedProducts = this.relatedProducts.filter((item: any) => item._id != productDetails?._id)
+      this.HotToastService.error('Product removed from list');
+      this.relatedProducts = this.relatedProducts.filter(
+        (item: any) => item?._id != productDetails?._id
+      );
     } else {
-      this.relatedProducts.push(productDetails)
-      this.HotToastService.success('Product added to list')
+      this.relatedProducts.push(productDetails);
+      this.HotToastService.success('Product added to list');
     }
-    this.relatedProduct.setValue('')
-    this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts)
+    this.relatedProduct.setValue('');
+    this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts);
   }
 
   onTagsTriggered(event: any, type: string, method: string) {
     switch (type) {
       case 'topright':
         if (method == 'add') {
-          this.tagsForm.get('topRightTag')?.setValue(event._id)
-          this.productTags.topRightTag = event.path
+          this.tagsForm.get('topRightTag')?.setValue(event?._id);
+          this.productTags.topRightTag = event.path;
         } else {
-          this.tagsForm.get('topRightTag')?.setValue(null)
-          this.productTags.topRightTag = ''
+          this.tagsForm.get('topRightTag')?.setValue(null);
+          this.productTags.topRightTag = '';
         }
-        break
+        break;
       case 'topleft':
         if (method == 'add') {
-          this.tagsForm.get('topLeftTag')?.setValue(event._id)
-          this.productTags.topLeftTag = event.path
+          this.tagsForm.get('topLeftTag')?.setValue(event?._id);
+          this.productTags.topLeftTag = event.path;
         } else {
-          this.tagsForm.get('topLeftTag')?.setValue(null)
-          this.productTags.topLeftTag = ''
+          this.tagsForm.get('topLeftTag')?.setValue(null);
+          this.productTags.topLeftTag = '';
         }
-        break
+        break;
       case 'bottomright':
         if (method == 'add') {
-          this.tagsForm.get('bottomRightTag')?.setValue(event._id)
-          this.productTags.bottomRightTag = event.path
+          this.tagsForm.get('bottomRightTag')?.setValue(event?._id);
+          this.productTags.bottomRightTag = event.path;
         } else {
-          this.tagsForm.get('bottomRightTag')?.setValue(null)
-          this.productTags.bottomRightTag = ''
+          this.tagsForm.get('bottomRightTag')?.setValue(null);
+          this.productTags.bottomRightTag = '';
         }
-        break
+        break;
       case 'bottomleft':
         if (method == 'add') {
-          this.tagsForm.get('bottomLeftTag')?.setValue(event._id)
-          this.productTags.bottomLeftTag = event.path
+          this.tagsForm.get('bottomLeftTag')?.setValue(event?._id);
+          this.productTags.bottomLeftTag = event.path;
         } else {
-          this.tagsForm.get('bottomLeftTag')?.setValue(null)
-          this.productTags.bottomLeftTag = ''
+          this.tagsForm.get('bottomLeftTag')?.setValue(null);
+          this.productTags.bottomLeftTag = '';
         }
-        break
+        break;
     }
   }
 
@@ -214,84 +226,94 @@ export class UpdateProductComponent implements OnInit {
     this.categoryService.defaultCategories(category).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.defaultCategories = [...this.defaultCategories, ...res?.result]
-          this.ChangeDetectorRef.markForCheck()
+          this.defaultCategories = [...this.defaultCategories, ...res?.result];
+          this.ChangeDetectorRef.markForCheck();
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 
   handleThumbnail(event: any) {
-    this.parentForm.get('thumbnail')?.setValue(event.path)
+    this.parentForm.get('thumbnail')?.setValue(event.path);
   }
 
   productMediaClicked(event: any) {
-    let isExists: boolean = this.images.some((item: any) => item.path == event.path)
+    let isExists: boolean = this.images.some(
+      (item: any) => item.path == event.path
+    );
     if (isExists) {
-      this.images = this.images.filter((item: any) => item.path != event.path)
+      this.images = this.images.filter((item: any) => item.path != event.path);
     } else {
-      this.images.push(event)
+      this.images.push(event);
     }
   }
 
   productIconClicked(event: any) {
-
-    let isExists: boolean = this.icons.some((item: any) => item == event?.path)
+    let isExists: boolean = this.icons.some((item: any) => item == event?.path);
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item != event?.path)
+      this.icons = this.icons.filter((item: any) => item != event?.path);
     } else {
-      this.icons.push(event?.path)
+      this.icons.push(event?.path);
     }
   }
 
   removeProductMedia(image: any) {
-    this.images = this.images.filter((item: any) => item._id != image._id)
+    this.images = this.images.filter((item: any) => item?._id != image?._id);
   }
 
   productThumbnailClicked(event: any) {
-    this.form.get('thumbnail')?.setValue(event.path)
+    this.form.get('thumbnail')?.setValue(event.path);
   }
 
   toggleProductCategory(event: any, type: string) {
     if (type == 'add') {
-      let categoryDetails = this.defaultCategories.filter((item: any) => item._id == event.target.value)
-      this.categories.includes(categoryDetails[0]) ? this.HotToastService.info('Category already added') : this.categories.push(categoryDetails[0])
+      let categoryDetails = this.defaultCategories.filter(
+        (item: any) => item?._id == event.target.value
+      );
+      this.categories.includes(categoryDetails[0])
+        ? this.HotToastService.info('Category already added')
+        : this.categories.push(categoryDetails[0]);
     } else {
-      this.categories = this.categories.filter((item: any) => item?._id != event)
+      this.categories = this.categories.filter(
+        (item: any) => item?._id != event
+      );
     }
-    this.productCategory.setValue('')
+    this.productCategory.setValue('');
   }
 
-  toggleAddOnItems() {
-
-  }
+  toggleAddOnItems() {}
 
   saveChanges() {
-    if (this.productDetails?.price?.offer == this.form.get('price')?.value?.offer) {
+    if (
+      this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
+    ) {
     } else {
       this.form.get('price')?.setValue({
         mrp: this.form.get('price')?.value?.mrp,
         offer: this.form.get('price')?.value?.offer,
-        selling: this.form.get('price')?.value?.offer
-      })
+        selling: this.form.get('price')?.value?.offer,
+      });
     }
 
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
-      prodid: this.productDetails.prodid,
+      prodid: this.productDetails?._id,
       slug: this.form.get('slug')?.value,
       files: this.images.map((file: any) => file.path),
-      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
-      product: { id: this.parentDetails?._id, refid: this.productDetails?.product?.refid },
+      relatedProducts: this.relatedProducts
+        ? this.relatedProducts.map((product: any) => product?._id)
+        : [],
+      product: {
+        id: this.parentDetails?._id,
+        refid: this.productDetails?.product?.refid,
+      },
       parentId: this.parentDetails?._id,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -306,63 +328,72 @@ export class UpdateProductComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Router.navigate(['/app/product'])
-          this.siblingsRef?.hide()
-          this.HotToastService.success(res?.message)
+          this.Router.navigate(['/app/product']);
+          this.siblingsRef?.hide();
+          this.HotToastService.success(res?.message);
         } else if (res.errorCode == 2) {
           this.siblingsRef = this.BsModalService.show(
             this.siblingsTemplateModal,
-            { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true }
-          )
+            {
+              class: 'modal-dialog-centered modal-lg',
+              ignoreBackdropClick: true,
+            }
+          );
 
           this.ProductService.getProducts({
             parentId: this.productDetails.parentId,
-            productId: this.productDetails._id
+            productId: this.productDetails?._id,
           }).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
-                this.siblings = res?.result
-                this.ChangeDetectorRef.markForCheck()
+                this.siblings = res?.result;
+                this.ChangeDetectorRef.markForCheck();
               } else {
-                this.HotToastService.error(res?.message)
+                this.HotToastService.error(res?.message);
               }
-            }, error: (err: any) => {
-              this.HotToastService.error(err?.message)
-            }
-          })
+            },
+            error: (err: any) => {
+              this.HotToastService.error(err?.message);
+            },
+          });
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.error.message);
+      },
+    });
   }
 
-  onTriggerSiblings(event: { switchId: string, toggleState: boolean }, switchType: string) {
-    let payload: any = { prodid: event.switchId }
+  onTriggerSiblings(
+    event: { switchId: string; toggleState: boolean },
+    switchType: string
+  ) {
+    let payload: any = { prodid: event.switchId };
     if (switchType == 'isActive') {
-      payload['isActive'] = event.toggleState
+      payload['isActive'] = event.toggleState;
     } else if (switchType == 'isVisible') {
-      payload['isVisible'] = event.toggleState
+      payload['isVisible'] = event.toggleState;
     }
 
     this.ProductService.updateProduct('', payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
+          this.HotToastService.success(res?.message);
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      },
+    });
   }
 
   skipUpdate() {
-    this.isSkipUpdate.setValue(true)
-    this.saveChanges()
+    this.isSkipUpdate.setValue(true);
+    this.saveChanges();
   }
 
   toggleTab(index: number) {
@@ -374,28 +405,30 @@ export class UpdateProductComponent implements OnInit {
   toggleSearchKeywords(event: any, type: string) {
     if (type == 'add' && event.target.value) {
       if (this.searchKeywords.includes(event.target.value)) {
-        this.HotToastService.info('Keyword already added')
+        this.HotToastService.info('Keyword already added');
       } else {
-        this.searchKeywords.push(event.target.value)
-        this.searchKeyword?.setValue('')
+        this.searchKeywords.push(event.target.value);
+        this.searchKeyword?.setValue('');
       }
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     } else {
-      this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+      this.searchKeywords = this.searchKeywords.filter(
+        (item: any) => item != event
+      );
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     }
   }
 
   handleProductBanner(event: any) {
-    this.form.get('productBanner')?.setValue(event.path)
+    this.form.get('productBanner')?.setValue(event.path);
   }
 
   removeProductBanner() {
-    this.form.get('productBanner')?.setValue(null)
+    this.form.get('productBanner')?.setValue(null);
   }
 
   get formControls() {
-    return this.form.controls
+    return this.form.controls;
   }
 
   generateSlug() {
@@ -405,158 +438,195 @@ export class UpdateProductComponent implements OnInit {
       .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
       .trim() // Remove any extra spaces at the start and end
       .replace(/\s+/g, '-'); // Replace spaces with '-'
-    this.form.patchValue({ slug })
+    this.form.patchValue({ slug });
   }
 
   ngOnInit(): void {
-    this.base = environment.base
+    this.base = environment.base;
 
     this.attributeForm = new FormGroup({
-      type: new FormControl("text"),
-      title: new FormControl("", Validators.required),
-      value: new FormControl("", Validators.required)
-    })
+      type: new FormControl('text'),
+      title: new FormControl('', Validators.required),
+      value: new FormControl('', Validators.required),
+    });
 
     this.tagsForm = new FormGroup({
       topRightTag: new FormControl(null),
       topLeftTag: new FormControl(null),
       bottomRightTag: new FormControl(null),
-      bottomLeftTag: new FormControl(null)
-    })
+      bottomLeftTag: new FormControl(null),
+    });
 
     this.storeFieldForm = new FormGroup({
       title: new FormControl('  ', Validators.required),
-      description: new FormControl('  ', Validators.required)
-    })
+      description: new FormControl('  ', Validators.required),
+    });
 
-    this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || ''
+    this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || '';
 
     this.ProductService.getProductDetails(this.productSlug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.form.patchValue(res?.result)
-          this.productDetails = res?.result
-          this.images = res?.result?.files ? res?.result?.files : []
-          // Remove null and undefined values from array of images 
-          this.images = this.images.map(item => {
-            if (item !== null) {
-              return {
-                path: item,
+          this.form.patchValue(res?.result);
+          this.productDetails = res?.result;
+          this.images = res?.result?.files ? res?.result?.files : [];
+          // Remove null and undefined values from array of images
+          this.images = this.images
+            .map((item) => {
+              if (item !== null) {
+                return {
+                  path: item,
+                };
               }
-            }
-          }).filter(Boolean)
-          this.storeFields = res?.result?.storeFrontFields
-          this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : []
-          this.categories = res?.result?.category?.id
+            })
+            .filter(Boolean);
+          this.storeFields = res?.result?.storeFrontFields;
+          this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
+          this.categories = res?.result?.category?.id;
           if (res?.result?.productTags) {
-            this.tagsForm.patchValue(res?.result?.productTags)
+            this.tagsForm.patchValue(res?.result?.productTags);
             this.productTags = {
               topRightTag: res?.result?.productTags?.topRightTag,
               topLeftTag: res?.result?.productTags?.topLeftTag,
               bottomRightTag: res?.result?.productTags?.bottomRightTag,
               bottomLeftTag: res?.result?.productTags?.bottomLeftTag,
-            }
+            };
           }
-          this.parentDetails = res?.result?.product?.id
-          this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner
-          this.form.patchValue({ productBanner: res?.result?.productBanner?._id })
-          this.attributes = res?.result?.attributes
-          this.relatedProducts = res?.result?.relatedProducts
-          this.searchKeywords = res?.result?.searchKeywords
-          this.icons = res?.result?.productIcons ? res?.result?.productIcons : []
-          this.thumbnailPreview = res?.result?.thumbnail
-          this.ChangeDetectorRef.markForCheck()
+          this.parentDetails = res?.result?.product?.id;
+          this.productBannerDetails =
+            res?.result?.productBanner && res?.result?.productBanner;
+          this.form.patchValue({
+            productBanner: res?.result?.productBanner?._id,
+          });
+          this.attributes = res?.result?.attributes;
+          this.relatedProducts = res?.result?.relatedProducts;
+          this.searchKeywords = res?.result?.searchKeywords;
+          this.icons = res?.result?.productIcons
+            ? res?.result?.productIcons
+            : [];
+          this.thumbnailPreview = res?.result?.thumbnail;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+    });
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe(
+      (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result;
+          this.languages = res?.result?.languages;
+          this.ChangeDetectorRef.markForCheck();
         }
       }
-    })
-
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-        this.languages = res?.result?.languages
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
+    );
 
     this.parentForm = new FormGroup({
-      name: new FormControl("", Validators.required),
-      brand: new FormControl(""),
+      name: new FormControl('', Validators.required),
+      brand: new FormControl(''),
       category: new FormControl(null), // Default category
-      parentCategories: new FormControl("", Validators.required), //Main category
+      parentCategories: new FormControl('', Validators.required), //Main category
       thumbnail: new FormControl(null),
-      isActive: new FormControl("true"),
-      sku: new FormControl("", Validators.required),
-      tax: new FormControl(""),
-      hsn: new FormControl(""),
-      cod: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      shipping: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      return: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
-      replace: new FormGroup({ isPresent: new FormControl("false"), value: new FormControl(0) }),
+      isActive: new FormControl('true'),
+      sku: new FormControl('', Validators.required),
+      tax: new FormControl(''),
+      hsn: new FormControl(''),
+      cod: new FormGroup({
+        isPresent: new FormControl('false'),
+        value: new FormControl(0),
+      }),
+      shipping: new FormGroup({
+        isPresent: new FormControl('false'),
+        value: new FormControl(0),
+      }),
+      return: new FormGroup({
+        isPresent: new FormControl('false'),
+        value: new FormControl(0),
+      }),
+      replace: new FormGroup({
+        isPresent: new FormControl('false'),
+        value: new FormControl(0),
+      }),
     });
 
     this.form = new FormGroup({
-      name: new FormControl("", Validators.required),
+      name: new FormControl('', Validators.required),
       price: new FormGroup({
-        mrp: new FormControl("", [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
-        offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
-        selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
+        mrp: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^\\d+(\\.\\d+)?$'),
+        ]),
+        offer: new FormControl(
+          '',
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+        ),
+        selling: new FormControl(
+          '',
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+        ),
       }),
-      slug: new FormControl("", [Validators.required]),
-      stock: new FormControl("", [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
-      moq: new FormControl(1, [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
-      sku: new FormControl("", Validators.required),
-      maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
-      thumbnail: new FormControl(""),
-      files: new FormControl(""),
-      video: new FormControl(""),
-      unit: new FormControl(""),
+      slug: new FormControl('', [Validators.required]),
+      stock: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^\\d+(\\.\\d+)?$'),
+      ]),
+      moq: new FormControl(1, [
+        Validators.required,
+        Validators.pattern('^\\d+(\\.\\d+)?$'),
+      ]),
+      sku: new FormControl('', Validators.required),
+      maxOrderQuantity: new FormControl(1, [
+        Validators.required,
+        Validators.pattern('^\\d+(\\.\\d+)?$'),
+      ]),
+      thumbnail: new FormControl(''),
+      files: new FormControl(''),
+      video: new FormControl(''),
+      unit: new FormControl(''),
       productBanner: new FormControl(null),
-      boostScore: new FormControl(0, [Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-      origin: new FormControl(""),
-      overview: new FormControl(""),
+      boostScore: new FormControl(0, [
+        Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+      ]),
+      origin: new FormControl(''),
+      overview: new FormControl(''),
       details: new FormGroup({
-        additionalButton: new FormControl(""),
-        buttonRedirectUrl: new FormControl(""),
-        description: new FormControl(""),
-        features: new FormControl(""),
-        longDescription: new FormControl("")
+        additionalButton: new FormControl(''),
+        buttonRedirectUrl: new FormControl(''),
+        description: new FormControl(''),
+        features: new FormControl(''),
+        longDescription: new FormControl(''),
       }),
-      metaTitle: new FormControl(""),
-      metaDescription: new FormControl(""),
-      metaKeywords: new FormControl(""),
+      metaTitle: new FormControl(''),
+      metaDescription: new FormControl(''),
+      metaKeywords: new FormControl(''),
       stockWarning: new FormControl(10),
-      searchKeywords: new FormControl(""),
-      relatedProducts: new FormControl(""),
-      isActive: new FormControl("true"),
-      isVisible: new FormControl("true"),
+      searchKeywords: new FormControl(''),
+      relatedProducts: new FormControl(''),
+      isActive: new FormControl('true'),
+      isVisible: new FormControl('true'),
     });
 
     this.categoryService.getActiveCategory().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.defaultCategories = res?.result
-          this.ChangeDetectorRef.markForCheck()
+          this.defaultCategories = res?.result;
+          this.ChangeDetectorRef.markForCheck();
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
 
     //Get active products
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.activeRelatedProducts = res?.result
-          this.ChangeDetectorRef.markForCheck()
+          this.activeRelatedProducts = res?.result;
+          this.ChangeDetectorRef.markForCheck();
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
     //Get active products
 
     //Tax class details
@@ -565,11 +635,9 @@ export class UpdateProductComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.taxClassDetails = res?.result;
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
+      },
+      error: (err: any) => {},
     });
     //Tax class details
   }
@@ -577,54 +645,60 @@ export class UpdateProductComponent implements OnInit {
   //Store fields
   onSaveStoreField() {
     if (!this.storeFieldForm.valid) {
-      this.isStoreSubmitted = true
-      return
+      this.isStoreSubmitted = true;
+      return;
     }
 
-    this.storeFields.push(this.storeFieldForm.value)
-    this.storeFieldForm.reset()
-    this.isStoreSubmitted = false
+    this.storeFields.push(this.storeFieldForm.value);
+    this.storeFieldForm.reset();
+    this.isStoreSubmitted = false;
   }
 
   removeStoreField(storeFieldIndex: number) {
-    this.storeFields.splice(storeFieldIndex, 1)
+    this.storeFields.splice(storeFieldIndex, 1);
   }
   //Store fields
 
   //Attributes
   removeAttribute(attributeIndex: number) {
-    this.HotToastService.info('Attribute removed successfully')
-    this.attributes.splice(attributeIndex, 1)
+    this.HotToastService.info('Attribute removed successfully');
+    this.attributes.splice(attributeIndex, 1);
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
   }
 
   close() {
-    this.modalRef?.hide()
-    this.attributeForm.patchValue({ type: "text", title: "", value: "" })
-    this.isAttributeSubmitted = false
+    this.modalRef?.hide();
+    this.attributeForm.patchValue({ type: 'text', title: '', value: '' });
+    this.isAttributeSubmitted = false;
   }
 
   get attributeControls() {
-    return this.attributeForm.controls
+    return this.attributeForm.controls;
   }
 
   submitVariant() {
     if (!this.attributeForm.valid) {
-      this.isAttributeSubmitted = true
-      return
+      this.isAttributeSubmitted = true;
+      return;
     }
 
-    let isExists = this.attributes.some((attribute: any) => attribute.title == this.attributeForm.get('title')?.value)
+    let isExists = this.attributes.some(
+      (attribute: any) =>
+        attribute.title == this.attributeForm.get('title')?.value
+    );
     if (isExists) {
-      this.HotToastService.info('Attribute already exists with same title')
-      return
+      this.HotToastService.info('Attribute already exists with same title');
+      return;
     } else {
-      this.HotToastService.success('Attribute added successfully')
-      this.attributes.push(this.attributeForm.value)
-      this.close()
+      this.HotToastService.success('Attribute added successfully');
+      this.attributes.push(this.attributeForm.value);
+      this.close();
     }
   }
   //Attributes
@@ -633,26 +707,27 @@ export class UpdateProductComponent implements OnInit {
     this.ProductService.deleteProduct(this.productDetails?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.Router.navigate(['/app/product'])
+          this.HotToastService.success(res?.message);
+          this.Router.navigate(['/app/product']);
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.error.message);
+      },
+    });
   }
 
   handleTagIcons(event: any) {
     if (this.tagIcons.includes(event)) {
-      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path)
+      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path);
     } else {
-      this.tagIcons.push(event.path)
+      this.tagIcons.push(event.path);
     }
   }
 
   removeTagIcons(icon: any) {
-    this.tagIcons = this.tagIcons.filter((item: any) => item != icon)
+    this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
   }
 }
