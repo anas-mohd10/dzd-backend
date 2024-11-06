@@ -31,6 +31,16 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
+  getProductStoreFields() {
+    const url = this.commonService.getFullUrl(this.productEndpoints.productStoreFields);
+    return this.http.get(`${url}`);
+  }
+
+  updateStoreField(storeFieldValue: any){
+    const url = this.commonService.getFullUrl(this.productEndpoints.updateProductStoreFields);
+    return this.http.put(`${url}`, storeFieldValue);
+  }
+
   getProductById(data: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.get_product_by_id);
     return this.http.post(`${url}`, data);

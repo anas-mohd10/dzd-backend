@@ -320,6 +320,7 @@ export const appRoutes = {
   authSettings: `${app}/auth-settings`,
   cartSettings: `${app}/cart-settings`,
   orderSettings: `${app}/order-settings`,
+  filters: `${app}/filters`,
   appKeys: `${app}/app-keys`,
   pickupLocations: {
     list: `${app}/pickup-locations`,

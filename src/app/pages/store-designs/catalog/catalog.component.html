@@ -135,7 +135,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div>{{widgetItem?.widgetName}}</div>
+                                        <div>{{widgetItem?.title || widgetItem?.widgetName}}</div>
                                         <div class="text-muted mt-1">
                                             Visible in {{widgetItem?.visibility == 'all' ? 'all devices':
                                             widgetItem?.visibility}}
@@ -373,859 +373,890 @@
 
 <ng-template #updateWidgetTemplate>
     <form [formGroup]="form">
-        <div class="modal-header">
-            <h4 class="modal-title pull-left">
-                Widget details
-                <p class="text-muted fs-6 fw-normal">You can update your widget data and images in this section.</p>
-            </h4>
-            <div class="d-flex align-items-end justify-content-end">
-                <div class="form-group me-2">
-                    <label for="visibility" class="form-label">Visibility </label>
-                    <select formControlName="visibility" id="visibility" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let item of ['all', 'mobile', 'web', 'none']" value="{{item}}">
-                            {{item == 'all' ?
-                            'Mobile and Desktop' : item == 'web' ? 'Desktop only': item == 'mobile' ?
-                            'Mobile only': 'None'}}
-                        </option>
-                    </select>
+        <div *ngIf="isWidgetLoaded">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">
+                    Widget details
+                    <p class="text-muted fs-6 fw-normal">You can update your widget data and images in this section.</p>
+                </h4>
+                <div class="d-flex align-items-end justify-content-end">
+                    <div class="form-group me-2">
+                        <label for="visibility" class="form-label">Visibility </label>
+                        <select formControlName="visibility" id="visibility" class="form-select">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let item of ['all', 'mobile', 'web', 'none']" value="{{item}}">
+                                {{item == 'all' ?
+                                'Mobile and Desktop' : item == 'web' ? 'Desktop only': item == 'mobile' ?
+                                'Mobile only': 'None'}}
+                            </option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-primary me-2 btn d-flex align-items-center justify-content-center"
+                        (click)="updateWidget()">
+                        <div class="me-2">Save changes</div>
+                        <img src="assets/widgets/assets/save-light.svg" alt="Save changes">
+                    </button>
+                    <button type="button" class="btn-secondary btn d-flex align-items-center justify-content-center"
+                        (click)="closeWidgetUpdate()">
+                        <div class="me-1">Cancel</div>
+                        <img src="assets/widgets/assets/close.svg" alt="Cancel changes">
+                    </button>
                 </div>
-                <button type="button" class="btn-primary me-2 btn d-flex align-items-center justify-content-center"
-                    (click)="updateWidget()">
-                    <div class="me-2">Save changes</div>
-                    <img src="assets/widgets/assets/save-light.svg" alt="Save changes">
-                </button>
-                <button type="button" class="btn-secondary btn d-flex align-items-center justify-content-center"
-                    (click)="closeWidgetUpdate()">
-                    <div class="me-1">Cancel</div>
-                    <img src="assets/widgets/assets/close.svg" alt="Cancel changes">
-                </button>
             </div>
-        </div>
-        <div class="modal-body">
-            <div class="widget-form">
-                <div class="mb-4" *ngIf="!hiddenHeaderItems.includes(widgetDetails?.widgetType)">
-                    <div class="accordion" id="header">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header m-0">
-                                <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#headerDetails" aria-expanded="false" aria-controls="headerDetails">
-                                    Section header details
-                                </button>
-                            </h2>
-                            <div id="headerDetails" class="accordion-collapse collapse" data-bs-parent="#header">
-                                <div class="accordion-body">
-                                    <div>
-                                        <div class="row align-items-center mb-3">
-                                            <div class="col-lg-10">
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" placeholder="Latest arrivals"
-                                                        class="form-control" formControlName="title" id="title">
-                                                    <label for="title">Title</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="ratio ratio-1x1">
-                                                    <app-assets (mediaClicked)="onTitleImageTriggered($event)"
-                                                        [previewDetails]="titleThumbnailDetails"></app-assets>
-                                                </div>
-                                                <button *ngIf="titleThumbnailDetails" (click)="removeTitleImage()"
-                                                    class="btn mt-2 w-100 btn-secondary">Remove</button>
-                                            </div>
-                                        </div>
+            <div class="modal-body">
+                <div class="widget-form">
+                    <div class="mb-4" *ngIf="!hiddenHeaderItems.includes(widgetDetails?.widgetType)">
+                        <div class="accordion" id="header">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header m-0">
+                                    <button class="fs-5 accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#headerDetails" aria-expanded="false"
+                                        aria-controls="headerDetails">
+                                        Section header details
+                                    </button>
+                                </h2>
+                                <div id="headerDetails" class="accordion-collapse collapse" data-bs-parent="#header">
+                                    <div class="accordion-body">
                                         <div>
-                                            <div class="form-floating mb-3">
-                                                <input type="text"
-                                                    placeholder="Get latest arrival products from our store"
-                                                    class="form-control" formControlName="description" id="description">
-                                                <label for="description">Description</label>
+                                            <div class="row align-items-center mb-3">
+                                                <div class="col-lg-10">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" placeholder="Latest arrivals"
+                                                            class="form-control" formControlName="title" id="title">
+                                                        <label for="title">Title</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="ratio ratio-1x1">
+                                                        <app-assets (mediaClicked)="onTitleImageTriggered($event)"
+                                                            [previewDetails]="titleThumbnailDetails"></app-assets>
+                                                    </div>
+                                                    <button *ngIf="titleThumbnailDetails" (click)="removeTitleImage()"
+                                                        class="btn mt-2 w-100 btn-secondary">Remove</button>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="form-floating mb-3">
+                                                    <input type="text"
+                                                        placeholder="Get latest arrival products from our store"
+                                                        class="form-control" formControlName="description"
+                                                        id="description">
+                                                    <label for="description">Description</label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6 form-group mb-3">
-                                            <label for="buttonVisibility" class="form-label">Button
-                                                visibility</label>
-                                            <select formControlName="buttonVisibility" id="buttonVisibility"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let value of [true, false]" value="{{value}}">
-                                                    {{value ==
-                                                    true ? 'Visible' : 'Hidden'}}</option>
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-lg-6 form-group mb-3">
+                                                <label for="buttonVisibility" class="form-label">Button
+                                                    visibility</label>
+                                                <select formControlName="buttonVisibility" id="buttonVisibility"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let value of [true, false]" value="{{value}}">
+                                                        {{value ==
+                                                        true ? 'Visible' : 'Hidden'}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6 form-group mb-3">
+                                                <label for="buttonText" class="form-label">Button text</label>
+                                                <input type="text" placeholder="View more" id="buttonText"
+                                                    formControlName="buttonText" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="buttonLink" class="form-label">Button redirection</label>
+                                                <input type="text" placeholder="View more" id="buttonLink"
+                                                    formControlName="buttonLink" placeholder="" class="form-control">
+                                            </div>
                                         </div>
-                                        <div class="col-lg-6 form-group mb-3">
-                                            <label for="buttonText" class="form-label">Button text</label>
-                                            <input type="text" placeholder="View more" id="buttonText"
-                                                formControlName="buttonText" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="buttonLink" class="form-label">Button redirection</label>
-                                            <input type="text" placeholder="View more" id="buttonLink"
-                                                formControlName="buttonLink" placeholder="" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-4 align-items-center">
-                                        <div class="col-lg-4 form-group">
-                                            <label for="isTimeBound" class="fs-6 mb-3">Time Bound Widget?</label>
-                                            <app-switch id="isTimeBound" [switchId]="''"
-                                                (switchToggled)="onTimeBoundSwitch($event)"
-                                                [isToggledProps]="form.get('isTimeBoundWidget')?.value"></app-switch>
-                                        </div>
-                                        <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
-                                            <label for="widgetTime" class="fs-6 mb-3">Widget Start Time </label>
-                                            <input type="date" class="form-control" formControlName="widgetStartTime"
-                                                [min]="today">
-                                        </div>
-                                        <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
-                                            <label for="widgetTime" class="fs-6 mb-3">Widget End Time </label>
-                                            <input type="date" class="form-control" formControlName="widgetEndTime">
+                                        <div class="row mt-4 align-items-center">
+                                            <div class="col-lg-4 form-group">
+                                                <label for="isTimeBound" class="fs-6 mb-3">Time Bound Widget?</label>
+                                                <app-switch id="isTimeBound" [switchId]="''"
+                                                    (switchToggled)="onTimeBoundSwitch($event)"
+                                                    [isToggledProps]="form.get('isTimeBoundWidget')?.value"></app-switch>
+                                            </div>
+                                            <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
+                                                <label for="widgetTime" class="fs-6 mb-3">Widget Start Time </label>
+                                                <input type="date" class="form-control"
+                                                    formControlName="widgetStartTime" [min]="today">
+                                            </div>
+                                            <div class="col-lg-4" *ngIf="form.get('isTimeBoundWidget')?.value">
+                                                <label for="widgetTime" class="fs-6 mb-3">Widget End Time </label>
+                                                <input type="date" class="form-control" formControlName="widgetEndTime">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="mb-4">
-                    <div class="accordion" id="header">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header m-0">
-                                <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#displaySettings" aria-expanded="false"
-                                    aria-controls="displaySettings">
-                                    Section display settings
-                                </button>
-                            </h2>
-                            <div id="displaySettings" class="accordion-collapse collapse" data-bs-parent="#header">
-                                <div class="accordion-body">
-                                    <div class="mb-2">
-                                        <div class="form-group mb-3"
-                                            *ngIf="!['products', 'aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
-                                            <label for="widgetView" class="form-label">View</label>
-                                            <select formControlName="view" id="widgetView" class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">
-                                                    {{view}}
-                                                </option>
-                                            </select>
-                                        </div>
+                    <div class="mb-4">
+                        <div class="accordion" id="header">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header m-0">
+                                    <button class="fs-5 accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#displaySettings"
+                                        aria-expanded="false" aria-controls="displaySettings">
+                                        Section display settings
+                                    </button>
+                                </h2>
+                                <div id="displaySettings" class="accordion-collapse collapse" data-bs-parent="#header">
+                                    <div class="accordion-body">
+                                        <div class="mb-2">
+                                            <div class="form-group mb-3"
+                                                *ngIf="!['products', 'aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="widgetView" class="form-label">View</label>
+                                                <select formControlName="view" id="widgetView" class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let view of ['slider', 'grid']" value="{{view}}">
+                                                        {{view}}
+                                                    </option>
+                                                </select>
+                                            </div>
 
-                                        <div class="mb-5"
-                                            *ngIf="form.get('view')?.value == 'slider' || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
-                                            <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
-                                            <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
-                                                    <input type="text" class="form-control" formControlName="desktop"
-                                                        placeholder="3">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
-                                                    <input type="text" class="form-control" formControlName="tablet"
-                                                        placeholder="3">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
-                                                    <input type="text" class="form-control" formControlName="mobile"
-                                                        placeholder="3">
+                                            <div class="mb-5"
+                                                *ngIf="form.get('view')?.value == 'slider' || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
+                                                <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="desktop" placeholder="3">
+                                                    </div>
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                                        <input type="text" class="form-control" formControlName="tablet"
+                                                            placeholder="3">
+                                                    </div>
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                                        <input type="text" class="form-control" formControlName="mobile"
+                                                            placeholder="3">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="mb-5"
-                                            *ngIf="['slider', 'grid'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
-                                            <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
-                                            <div id="slidesPerView" class="row" formGroupName="spacing">
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
-                                                    <input type="text" class="form-control" formControlName="desktop"
-                                                        placeholder="3">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
-                                                    <input type="text" class="form-control" formControlName="tablet"
-                                                        placeholder="3">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
-                                                    <input type="text" class="form-control" formControlName="mobile"
-                                                        placeholder="3">
+                                            <div class="mb-5"
+                                                *ngIf="['slider', 'grid'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="slidesPerView" class="fs-5 mb-2">Spacing</label>
+                                                <div id="slidesPerView" class="row" formGroupName="spacing">
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="desktop" placeholder="3">
+                                                    </div>
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                                        <input type="text" class="form-control" formControlName="tablet"
+                                                            placeholder="3">
+                                                    </div>
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                                        <input type="text" class="form-control" formControlName="mobile"
+                                                            placeholder="3">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="mb-5" *ngIf="form.get('view')?.value == 'grid'">
-                                            <label for="gridsPerView" class="fs-5 mb-2">Grid Per View</label>
-                                            <div id="gridsPerView" class="row" formGroupName="gridsPerCount">
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Web</label>
-                                                    <input type="text" class="form-control" formControlName="desktop"
-                                                        placeholder="3">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Tablet</label>
-                                                    <input type="text" class="form-control" formControlName="tablet"
-                                                        placeholder="3">
-                                                </div>
-                                                <div class="col-lg-4 form-group">
-                                                    <label for="webSlides" class="fs-6 mb-3">Mobile</label>
-                                                    <input type="text" class="form-control" formControlName="mobile"
-                                                        placeholder="3">
+                                            <div class="mb-5" *ngIf="form.get('view')?.value == 'grid'">
+                                                <label for="gridsPerView" class="fs-5 mb-2">Grid Per View</label>
+                                                <div id="gridsPerView" class="row" formGroupName="gridsPerCount">
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Web</label>
+                                                        <input type="text" class="form-control"
+                                                            formControlName="desktop" placeholder="3">
+                                                    </div>
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Tablet</label>
+                                                        <input type="text" class="form-control" formControlName="tablet"
+                                                            placeholder="3">
+                                                    </div>
+                                                    <div class="col-lg-4 form-group">
+                                                        <label for="webSlides" class="fs-6 mb-3">Mobile</label>
+                                                        <input type="text" class="form-control" formControlName="mobile"
+                                                            placeholder="3">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="row">
-                                            <div *ngIf="form.get('view')?.value == 'slider'"
-                                                class="form-group col-lg-6 mb-3">
-                                                <div>
-                                                    <label for="pagination" class="fs-5 mb-3">Pagination</label>
+                                            <div class="row">
+                                                <div *ngIf="form.get('view')?.value == 'slider'"
+                                                    class="form-group col-lg-6 mb-3">
+                                                    <div>
+                                                        <label for="pagination" class="fs-5 mb-3">Pagination</label>
+                                                        <div
+                                                            class="d-flex form-control gap-8 align-items-center justify-content-start">
+                                                            <div
+                                                                class="d-flex gap-4 align-items-center justify-content-start">
+                                                                <div class="fs-5 fw-normal">Web</div>
+                                                                <app-switch id="pagination"
+                                                                    [switchId]="'desktop-pagination'"
+                                                                    (switchToggled)="switchToggled($event)"
+                                                                    [isToggledProps]="form.get('pagination')?.value?.desktop"></app-switch>
+                                                            </div>
+                                                            <div
+                                                                class="d-flex gap-4 align-items-center justify-content-start">
+                                                                <div class="fs-5 fw-normal">Mobile</div>
+                                                                <app-switch id="pagination"
+                                                                    [switchId]="'mobile-pagination'"
+                                                                    (switchToggled)="switchToggled($event)"
+                                                                    [isToggledProps]="form.get('pagination')?.value?.mobile"></app-switch>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="form.get('view')?.value == 'slider'"
+                                                    class="form-group col-lg-6 mb-3">
+                                                    <label for="pagination" class="fs-5 mb-3">Slider Buttons</label>
                                                     <div
                                                         class="d-flex form-control gap-8 align-items-center justify-content-start">
                                                         <div
                                                             class="d-flex gap-4 align-items-center justify-content-start">
-                                                            <div class="fs-5 fw-normal">Web</div>
-                                                            <app-switch id="pagination"
-                                                                [switchId]="'desktop-pagination'"
+                                                            <div class="fs-5 fw-normal">Web </div>
+                                                            <app-switch id="pagination" [switchId]="'desktop-slider'"
                                                                 (switchToggled)="switchToggled($event)"
-                                                                [isToggledProps]="form.get('pagination')?.value?.desktop"></app-switch>
+                                                                [isToggledProps]="form.get('sliderButtons')?.value?.desktop"></app-switch>
                                                         </div>
                                                         <div
                                                             class="d-flex gap-4 align-items-center justify-content-start">
-                                                            <div class="fs-5 fw-normal">Mobile</div>
-                                                            <app-switch id="pagination" [switchId]="'mobile-pagination'"
+                                                            <div class="fs-5 fw-normal">Mobile </div>
+                                                            <app-switch id="pagination" [switchId]="'mobile-slider'"
                                                                 (switchToggled)="switchToggled($event)"
-                                                                [isToggledProps]="form.get('pagination')?.value?.mobile"></app-switch>
+                                                                [isToggledProps]="form.get('sliderButtons')?.value?.mobile"></app-switch>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
-                                            <div *ngIf="form.get('view')?.value == 'slider'"
-                                                class="form-group col-lg-6 mb-3">
-                                                <label for="pagination" class="fs-5 mb-3">Slider Buttons</label>
-                                                <div
-                                                    class="d-flex form-control gap-8 align-items-center justify-content-start">
-                                                    <div class="d-flex gap-4 align-items-center justify-content-start">
-                                                        <div class="fs-5 fw-normal">Web </div>
-                                                        <app-switch id="pagination" [switchId]="'desktop-slider'"
-                                                            (switchToggled)="switchToggled($event)"
-                                                            [isToggledProps]="form.get('sliderButtons')?.value?.desktop"></app-switch>
+                                                <div class="col-lg-6 mb-3">
+                                                    <label for="pagination" class="fs-5 mb-3">Hovering</label>
+                                                    <div
+                                                        class="d-flex form-control gap-8 align-items-center justify-content-start">
+                                                        <div
+                                                            class="d-flex gap-4 align-items-center justify-content-start">
+                                                            <div class="fs-5 fw-normal">Web </div>
+                                                            <app-switch id="pagination" [switchId]="'desktop-hover'"
+                                                                (switchToggled)="switchToggled($event)"
+                                                                [isToggledProps]="form.get('hovering')?.value?.desktop"></app-switch>
+                                                        </div>
+                                                        <div
+                                                            class="d-flex gap-4 align-items-center justify-content-start">
+                                                            <div class="fs-5 fw-normal">Mobile </div>
+                                                            <app-switch id="pagination" [switchId]="'mobile-hover'"
+                                                                (switchToggled)="switchToggled($event)"
+                                                                [isToggledProps]="form.get('hovering')?.value?.mobile"></app-switch>
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex gap-4 align-items-center justify-content-start">
-                                                        <div class="fs-5 fw-normal">Mobile </div>
-                                                        <app-switch id="pagination" [switchId]="'mobile-slider'"
-                                                            (switchToggled)="switchToggled($event)"
-                                                            [isToggledProps]="form.get('sliderButtons')?.value?.mobile"></app-switch>
-                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-lg-6 mb-3"
+                                                    *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                    <label for="sliderButtonPosition" class="fs-5 mb-3">Slider Buttons
+                                                        Position</label>
+                                                    <select id="sliderButtonPosition" class="form-select"
+                                                        formControlName="sliderButtonPosition">
+                                                        <option value="" disabled>-- Select an option --</option>
+                                                        <option *ngFor="let position of ['relative', 'absolute']"
+                                                            value="{{position}}">{{position}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-lg-6 mb-3"
+                                                    *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                    <label for="paginationPosition" class="fs-5 mb-3">Pagination
+                                                        Position</label>
+                                                    <select id="paginationPosition" class="form-select"
+                                                        formControlName="paginationPosition">
+                                                        <option value="" disabled>-- Select an option --</option>
+                                                        <option *ngFor="let position of ['relative', 'absolute']"
+                                                            value="{{position}}">{{position}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-lg-6 mb-3"
+                                                    *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                    <label for="isAutoScroll" class="fs-5 mb-3">Auto Scroll
+                                                        Enabled</label>
+                                                    <select id="isAutoScroll" class="form-select"
+                                                        formControlName="isAutoScroll">
+                                                        <option value="" disabled>-- Select an option --</option>
+                                                        <option *ngFor="let item of ['true', 'false']" value="{{item}}">
+                                                            {{item == 'true' ? 'Yes' : 'No'}}</option>
+                                                    </select>
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-6 mb-3">
-                                                <label for="pagination" class="fs-5 mb-3">Hovering</label>
-                                                <div
-                                                    class="d-flex form-control gap-8 align-items-center justify-content-start">
-                                                    <div class="d-flex gap-4 align-items-center justify-content-start">
-                                                        <div class="fs-5 fw-normal">Web </div>
-                                                        <app-switch id="pagination" [switchId]="'desktop-hover'"
-                                                            (switchToggled)="switchToggled($event)"
-                                                            [isToggledProps]="form.get('hovering')?.value?.desktop"></app-switch>
-                                                    </div>
-                                                    <div class="d-flex gap-4 align-items-center justify-content-start">
-                                                        <div class="fs-5 fw-normal">Mobile </div>
-                                                        <app-switch id="pagination" [switchId]="'mobile-hover'"
-                                                            (switchToggled)="switchToggled($event)"
-                                                            [isToggledProps]="form.get('hovering')?.value?.mobile"></app-switch>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                            <div class="form-group col-lg-6 mb-3"
-                                                *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
-                                                <label for="sliderButtonPosition" class="fs-5 mb-3">Slider Buttons
-                                                    Position</label>
-                                                <select id="sliderButtonPosition" class="form-select"
-                                                    formControlName="sliderButtonPosition">
+                    <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
+                        <p class="mb-3 text-muted">
+                            In this section you can write content and upload images from your
+                            computer or can use from variety of images from web.
+                        </p>
+                        <div *ngIf="widgetDetails?.widgetType == 'text-twirl'">
+                            <div class="form-group mb-3">
+                                <label for="textTwirlTitle" class="fs-6 mb-3">Title</label>
+                                <input type="text" id="textTwirlTitle" formControlName="textTwirlTitle"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="textTwirlDescription" class="fs-6 mb-3">Description</label>
+                                <input type="text" id="textTwirlDescription" formControlName="textTwirlDescription"
+                                    class="form-control">
+                            </div>
+                        </div>
+                        <div class="mb-2 p-4 rounded border border-secondary">
+                            <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
+                                (cdkDropListDropped)="dropWidgetImages($event)">
+
+                                <div class="modal-image rounded border border-secondary ratio ratio-1x1"
+                                    *ngFor="let image of widgetImages; let i = index" cdkDrag
+                                    (click)="getWidgetImagePreview(i)">
+                                    <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}"
+                                        alt="{{image?.url?.title}}">
+                                </div>
+
+                                <div class="modal-image w-100 ratio ratio-1x1 h-auto">
+                                    <app-assets (mediaClicked)="addMediaTriggered($event)"
+                                        [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
+                            <div class="row mx-0">
+                                <div class="col-lg-5 px-0">
+                                    <div class="w-100 ratio ratio-1x1 h-auto">
+                                        <app-assets (mediaClicked)="mediaTriggered($event)"
+                                            [previewDetails]="previewDetails"></app-assets>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <form [formGroup]="widgetForm">
+                                        <div>
+                                            <a target="_blank"
+                                                href="{{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}">
+                                                <svg height="18" width="18" data-slot="icon" fill="none"
+                                                    stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
+                                                    </path>
+                                                </svg> {{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}
+                                            </a>
+                                        </div>
+                                        <div class="mt-2 d-flex align-items-center justify-content-end">
+                                            <div class="d-flex align-items-center justify-content-end gap-2">
+                                                <button class="btn btn-primary" (click)="continueRedirectionQuery()">
+                                                    Save changes
+                                                </button>
+                                                <button class="btn btn-danger"
+                                                    (click)="deleteWidgetImage(widgetImagePreviewIndex, $event)">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group mb-3">
+                                                <label for="title" class="form-label">Title</label>
+                                                <input type="text" formControlName="title" class="form-control">
+                                            </div>
+                                            <div class="form-group mb-3"
+                                                *ngIf="widgetDetails?.widgetType == 'quad-square'">
+                                                <label for="title" class="form-label">Description</label>
+                                                <input type="text" formControlName="description" class="form-control">
+                                            </div>
+                                            <div class="form-group mb-3"
+                                                *ngIf="widgetDetails?.widgetType == 'quad-square'">
+                                                <label for="title" class="form-label">Button</label>
+                                                <input type="text" formControlName="button" class="form-control">
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="redirectionType" class="form-label">Call to action</label>
+                                                <select id="redirectionType" formControlName="redirectionType"
+                                                    class="form-select" (change)="onRedirectionSelected()">
                                                     <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let position of ['relative', 'absolute']"
-                                                        value="{{position}}">{{position}}</option>
+                                                    <option *ngFor="let redirectionItem of redirectionItems"
+                                                        value="{{redirectionItem?.value}}">{{redirectionItem?.key}}
+                                                    </option>
                                                 </select>
                                             </div>
-
-                                            <div class="form-group col-lg-6 mb-3"
-                                                *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
-                                                <label for="paginationPosition" class="fs-5 mb-3">Pagination
-                                                    Position</label>
-                                                <select id="paginationPosition" class="form-select"
-                                                    formControlName="paginationPosition">
+                                        </div>
+                                        <div class="row" *ngIf="widgetForm.get('redirectionType')?.value">
+                                            <div class="form-group mb-3">
+                                                <label for="redirectionSearch" class="form-label">Redirection</label>
+                                                <input
+                                                    *ngIf="widgetForm.get('redirectionType')?.value == 'search-filters'"
+                                                    type="text" id="redirectionSearch" placeholder="Search redirections"
+                                                    class="form-control" [formControl]="redirectionQuery"
+                                                    (ngModelChange)="redirectionQueryChange()">
+                                                <input
+                                                    *ngIf="widgetForm.get('redirectionType')?.value == 'all-products'"
+                                                    type="text" id="redirectionSearch"
+                                                    placeholder="Product redirection to all products"
+                                                    class="form-control" [formControl]="redirectionQuery"
+                                                    [disabled]="true">
+                                                <select
+                                                    *ngIf="widgetForm.get('redirectionType')?.value == 'static-pages'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
                                                     <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let position of ['relative', 'absolute']"
-                                                        value="{{position}}">{{position}}</option>
+                                                    <option *ngFor="let page of staticPages" value="{{page.slug}}">
+                                                        {{page.title}}</option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'cms-pages'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let page of cmsPages" value="{{page.value}}">
+                                                        {{page.title}}
+                                                    </option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'category'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let category of categories"
+                                                        value="{{category.slug}}">
+                                                        {{category.name}}</option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'brand'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let brand of brands" value="{{brand.slug}}">
+                                                        {{brand.name}}
+                                                    </option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'catalog'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let catalogPage of catalogItems"
+                                                        value="{{catalogPage.slug}}">
+                                                        {{catalogPage.title}}
+                                                    </option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'collection'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let collection of collections"
+                                                        value="{{collection.slug}}">
+                                                        {{collection.name}}
+                                                    </option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'blogs'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let blog of blogs" value="{{blog.slug}}">
+                                                        {{blog.title}}</option>
+                                                </select>
+                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'products'"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    class="form-select">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let product of products" value="{{product.slug}}">
+                                                        {{product.name}}</option>
                                                 </select>
                                             </div>
-
-                                            <div class="form-group col-lg-6 mb-3"
-                                                *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
-                                                <label for="isAutoScroll" class="fs-5 mb-3">Auto Scroll
-                                                    Enabled</label>
-                                                <select id="isAutoScroll" class="form-select"
-                                                    formControlName="isAutoScroll">
-                                                    <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let item of ['true', 'false']" value="{{item}}">
-                                                        {{item == 'true' ? 'Yes' : 'No'}}</option>
-                                                </select>
-                                            </div>
                                         </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div *ngIf="widgetDetails?.widgetType == 'html' || widgetDetails?.widgetType == 'delivery-timer'">
+                        <p class="text-muted">You can paste/write your widget code and images in this section.</p>
+                        <div class="form-group">
+                            <textarea formControlName="html" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div *ngIf="widgetDetails?.widgetType == 'blogs'">
+                        
+                    </div>
+
+                    <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
+                        <form [formGroup]="insightHubForm">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="ratio ratio-1x1">
+                                        <app-assets (mediaClicked)="handleInsightHubThumbnail($event, 'small')"
+                                            [previewDetails]="insightHubThumbnailSmall">
+                                        </app-assets>
+                                    </div>
+                                    <button *ngIf="insightHubThumbnailSmall" class="btn btn-danger w-100 my-2"
+                                        (click)="removeInsightHubThumbnail('small')">Remove thumbnail</button>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="ratio ratio-1x1">
+                                        <app-assets (mediaClicked)="handleInsightHubThumbnail($event, 'large')"
+                                            [previewDetails]="insightHubThumbnailLarge">
+                                        </app-assets>
+                                    </div>
+                                    <button *ngIf="insightHubThumbnailLarge" class="btn btn-danger w-100 my-2"
+                                        (click)="removeInsightHubThumbnail('large')">Remove thumbnail</button>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group mb-3">
+                                        <label for="insightHubTitle" class="fs-6">Title</label>
+                                        <input type="text" id="insightHubTitle" formControlName="insightHubTitle"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="insightHubDescription" class="fs-6">Description</label>
+                                        <angular-editor id="insightHubDescription"
+                                            class="form-control fs-6 about-textarea"
+                                            formControlName="insightHubDescription"
+                                            [config]="editorConfig"></angular-editor>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="insightHubButton" class="fs-6">Button Text</label>
+                                        <input type="text" id="insightHubButton" formControlName="insightHubButton"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="insightHubRedirection" class="fs-6">Redirection</label>
+                                        <input type="text" id="insightHubRedirection"
+                                            formControlName="insightHubRedirection" class="form-control">
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </div>
 
-                <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
-                    <p class="mb-3 text-muted">
-                        In this section you can write content and upload images from your
-                        computer or can use from variety of images from web.
-                    </p>
-                    <div *ngIf="widgetDetails?.widgetType == 'text-twirl'">
-                        <div class="form-group mb-3">
-                            <label for="textTwirlTitle" class="fs-6 mb-3">Title</label>
-                            <input type="text" id="textTwirlTitle" formControlName="textTwirlTitle"
-                                class="form-control">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="textTwirlDescription" class="fs-6 mb-3">Description</label>
-                            <input type="text" id="textTwirlDescription" formControlName="textTwirlDescription"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <div class="mb-2 p-4 rounded border border-secondary">
-                        <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
-                            (cdkDropListDropped)="dropWidgetImages($event)">
-
-                            <div class="modal-image rounded border border-secondary ratio ratio-1x1"
-                                *ngFor="let image of widgetImages; let i = index" cdkDrag
-                                (click)="getWidgetImagePreview(i)">
-                                <img class="h-100 w-100" src="{{base}}{{image?.url?.path}}" alt="{{image?.url?.title}}">
-                            </div>
-
-                            <div class="modal-image w-100 ratio ratio-1x1 h-auto">
-                                <app-assets (mediaClicked)="addMediaTriggered($event)"
-                                    [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
-                        <div class="row mx-0">
-                            <div class="col-lg-5 px-0">
-                                <div class="w-100 ratio ratio-1x1 h-auto">
-                                    <app-assets (mediaClicked)="mediaTriggered($event)"
-                                        [previewDetails]="previewDetails"></app-assets>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <form [formGroup]="widgetForm">
-                                    <div>
-                                        <a target="_blank"
-                                            href="{{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}">
-                                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                                                stroke="currentColor" viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
-                                                </path>
-                                            </svg> {{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}
-                                        </a>
+                    <div *ngIf="widgetDetails?.widgetType == 'hyperlinkhero'">
+                        <form [formGroup]="hyperlinkheroForm">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="w-100 ratio ratio-16x9 h-auto">
+                                        <app-assets (mediaClicked)="onHyperlinkHeroTriggered($event)"
+                                            [previewDetails]="hyperLinkHeroThumbnail">
+                                        </app-assets>
                                     </div>
-                                    <div class="mt-2 d-flex align-items-center justify-content-end">
-                                        <div class="d-flex align-items-center justify-content-end gap-2">
-                                            <button class="btn btn-primary" (click)="continueRedirectionQuery()">
-                                                Save changes
-                                            </button>
-                                            <button class="btn btn-danger"
-                                                (click)="deleteWidgetImage(widgetImagePreviewIndex, $event)">
-                                                Remove
-                                            </button>
-                                        </div>
+                                    <button *ngIf="hyperLinkHeroThumbnail" class="btn btn-danger w-100 my-2"
+                                        (click)="removeHyperlinkHeroThumbnail()">Remove thumbnail</button>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="form-group mb-3">
+                                        <label for="alignment" class="form-label">Alignment</label>
+                                        <select id="alignment" formControlName="alignment" class="form-select">
+                                            <option value="" disabled>-- Select an option -- </option>
+                                            <option *ngFor="let key of ['left', 'right', 'center']" value="{{key}}">
+                                                {{key}}
+                                            </option>
+                                        </select>
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group mb-3">
-                                            <label for="title" class="form-label">Title</label>
-                                            <input type="text" formControlName="title" class="form-control">
-                                        </div>
-                                        <div class="form-group mb-3" *ngIf="widgetDetails?.widgetType == 'quad-square'">
-                                            <label for="title" class="form-label">Description</label>
-                                            <input type="text" formControlName="description" class="form-control">
-                                        </div>
-                                        <div class="form-group mb-3" *ngIf="widgetDetails?.widgetType == 'quad-square'">
-                                            <label for="title" class="form-label">Button</label>
-                                            <input type="text" formControlName="button" class="form-control">
-                                        </div>
-                                        <div class="form-group mb-3">
-                                            <label for="redirectionType" class="form-label">Call to action</label>
-                                            <select id="redirectionType" formControlName="redirectionType"
-                                                class="form-select" (change)="onRedirectionSelected()">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let redirectionItem of redirectionItems"
-                                                    value="{{redirectionItem?.value}}">{{redirectionItem?.key}}
-                                                </option>
-                                            </select>
-                                        </div>
+                                    <div class="form-group mb-3">
+                                        <label for="hyperLinkCaption" class="form-label">Caption</label>
+                                        <input type="text" id="hyperLinkCaption" formControlName="hyperLinkCaption"
+                                            class="form-control">
                                     </div>
-                                    <div class="row" *ngIf="widgetForm.get('redirectionType')?.value">
-                                        <div class="form-group mb-3">
-                                            <label for="redirectionSearch" class="form-label">Redirection</label>
-                                            <input *ngIf="widgetForm.get('redirectionType')?.value == 'search-filters'"
-                                                type="text" id="redirectionSearch" placeholder="Search redirections"
-                                                class="form-control" [formControl]="redirectionQuery"
-                                                (ngModelChange)="redirectionQueryChange()">
-                                            <input *ngIf="widgetForm.get('redirectionType')?.value == 'all-products'"
-                                                type="text" id="redirectionSearch"
-                                                placeholder="Product redirection to all products" class="form-control"
-                                                [formControl]="redirectionQuery" [disabled]="true">
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'static-pages'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let page of staticPages" value="{{page.slug}}">
-                                                    {{page.title}}</option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'cms-pages'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let page of cmsPages" value="{{page.value}}">
-                                                    {{page.title}}
-                                                </option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'category'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let category of categories" value="{{category.slug}}">
-                                                    {{category.name}}</option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'brand'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let brand of brands" value="{{brand.slug}}">
-                                                    {{brand.name}}
-                                                </option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'catalog'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let catalogPage of catalogItems"
-                                                    value="{{catalogPage.slug}}">
-                                                    {{catalogPage.title}}
-                                                </option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'collection'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let collection of collections"
-                                                    value="{{collection.slug}}">
-                                                    {{collection.name}}
-                                                </option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'blogs'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let blog of blogs" value="{{blog.slug}}">
-                                                    {{blog.title}}</option>
-                                            </select>
-                                            <select *ngIf="widgetForm.get('redirectionType')?.value == 'products'"
-                                                [formControl]="redirectionQuery" id="redirectionSearch"
-                                                class="form-select">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let product of products" value="{{product.slug}}">
-                                                    {{product.name}}</option>
-                                            </select>
-                                        </div>
+                                    <div class="form-group mb-3">
+                                        <label for="hyperlinkheroTitle" class="form-label">Title</label>
+                                        <input type="text" id="hyperlinkheroTitle" formControlName="hyperlinkTitle"
+                                            class="form-control">
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div *ngIf="widgetDetails?.widgetType == 'html' || widgetDetails?.widgetType == 'delivery-timer'">
-                    <p class="text-muted">You can paste/write your widget code and images in this section.</p>
-                    <div class="form-group">
-                        <textarea formControlName="html" class="form-control"></textarea>
-                    </div>
-                </div>
-
-                <div *ngIf="widgetDetails?.widgetType == 'blogs'">
-
-                </div>
-
-                <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
-                    <form [formGroup]="insightHubForm">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="ratio ratio-1x1">
-                                    <app-assets (mediaClicked)="handleInsightHubThumbnail($event, 'small')"
-                                        [previewDetails]="insightHubThumbnailSmall">
-                                    </app-assets>
-                                </div>
-                                <button *ngIf="insightHubThumbnailSmall" class="btn btn-danger w-100 my-2"
-                                    (click)="removeInsightHubThumbnail('small')">Remove thumbnail</button>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="ratio ratio-1x1">
-                                    <app-assets (mediaClicked)="handleInsightHubThumbnail($event, 'large')"
-                                        [previewDetails]="insightHubThumbnailLarge">
-                                    </app-assets>
-                                </div>
-                                <button *ngIf="insightHubThumbnailLarge" class="btn btn-danger w-100 my-2"
-                                    (click)="removeInsightHubThumbnail('large')">Remove thumbnail</button>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="form-group mb-3">
-                                    <label for="insightHubTitle" class="fs-6">Title</label>
-                                    <input type="text" id="insightHubTitle" formControlName="insightHubTitle"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="insightHubDescription" class="fs-6">Description</label>
-                                    <angular-editor id="insightHubDescription" class="form-control fs-6 about-textarea"
-                                        formControlName="insightHubDescription"
-                                        [config]="editorConfig"></angular-editor>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="insightHubButton" class="fs-6">Button Text</label>
-                                    <input type="text" id="insightHubButton" formControlName="insightHubButton"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="insightHubRedirection" class="fs-6">Redirection</label>
-                                    <input type="text" id="insightHubRedirection"
-                                        formControlName="insightHubRedirection" class="form-control">
+                                    <div class="form-group mb-3">
+                                        <label for="hyperLinkDescription" class="form-label">Description</label>
+                                        <input type="text" id="hyperLinkDescription"
+                                            formControlName="hyperLinkDescription" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="hyperLinkButton" class="form-label">Button Text</label>
+                                        <input type="text" id="hyperLinkButton" formControlName="hyperLinkButton"
+                                            class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="hyperLinkRedirection" class="form-label">Redirection</label>
+                                        <input type="text" id="hyperLinkRedirection"
+                                            formControlName="hyperLinkRedirection" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div *ngIf="widgetDetails?.widgetType == 'hyperlinkhero'">
-                    <form [formGroup]="hyperlinkheroForm">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="w-100 ratio ratio-16x9 h-auto">
-                                    <app-assets (mediaClicked)="onHyperlinkHeroTriggered($event)"
-                                        [previewDetails]="hyperLinkHeroThumbnail">
-                                    </app-assets>
-                                </div>
-                                <button *ngIf="hyperLinkHeroThumbnail" class="btn btn-danger w-100 my-2"
-                                    (click)="removeHyperlinkHeroThumbnail()">Remove thumbnail</button>
-                            </div>
-                            <div class="col-lg-8">
-                                <div class="form-group mb-3">
-                                    <label for="alignment" class="form-label">Alignment</label>
-                                    <select id="alignment" formControlName="alignment" class="form-select">
-                                        <option value="" disabled>-- Select an option -- </option>
-                                        <option *ngFor="let key of ['left', 'right', 'center']" value="{{key}}">
-                                            {{key}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="hyperLinkCaption" class="form-label">Caption</label>
-                                    <input type="text" id="hyperLinkCaption" formControlName="hyperLinkCaption"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="hyperlinkheroTitle" class="form-label">Title</label>
-                                    <input type="text" id="hyperlinkheroTitle" formControlName="hyperlinkTitle"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="hyperLinkDescription" class="form-label">Description</label>
-                                    <input type="text" id="hyperLinkDescription" formControlName="hyperLinkDescription"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="hyperLinkButton" class="form-label">Button Text</label>
-                                    <input type="text" id="hyperLinkButton" formControlName="hyperLinkButton"
-                                        class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="hyperLinkRedirection" class="form-label">Redirection</label>
-                                    <input type="text" id="hyperLinkRedirection" formControlName="hyperLinkRedirection"
-                                        class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div *ngIf="widgetDetails?.widgetType == 'testimonial-cards'">
-                    <div *ngIf="widgetTestimonials.length > 0">
-                        <div class="my-2 fs-4 fw-bold">Widget testimonials</div>
-                        <div *ngFor="let widgetTestimonial of widgetTestimonials; let i = index"
-                            class="p-2 rounded border border-secondary my-2">
-                            <div class="fs-5">
-                                {{widgetTestimonial?.name}}
-                                <span class="text-muted fs-6">{{widgetTestimonial?.place}}</span>
-                            </div>
-                            <div class="text-ellipsis mt-1">{{widgetTestimonial?.message}}</div>
-                            <div class="mt-2">
-                                <app-start-rating [rating]="widgetTestimonial?.rating"></app-start-rating>
-                            </div>
-                        </div>
+                        </form>
                     </div>
 
-                    <div>
-                        <input type="text" id="testimonial" placeholder="Search testimonials" class="form-control"
-                            [formControl]="testimonialKeyword" (ngModelChange)="getTestimonials()">
-                    </div>
-
-                    <div *ngIf="testimonialKeyword.value">
-                        <div class="my-2 fs-5 text-muted">Showing results for
-                            <span class="text-primary">{{testimonialKeyword.value}}</span>
-                        </div>
-                        <div class="testimonials">
-                            <div *ngFor="let testimonial of testimonials; let i  = index"
-                                class="mb-2 py-2 border-bottom border-secondary testimonial"
-                                (click)="toggleTestimonials(testimonial)">
+                    <div *ngIf="widgetDetails?.widgetType == 'testimonial-cards'">
+                        <div *ngIf="widgetTestimonials.length > 0">
+                            <div class="my-2 fs-4 fw-bold">Widget testimonials</div>
+                            <div *ngFor="let widgetTestimonial of widgetTestimonials; let i = index"
+                                class="p-2 rounded border border-secondary my-2">
                                 <div class="fs-5">
-                                    {{testimonial?.name}}
-                                    <span class="text-muted fs-6">{{testimonial?.place}}</span>
+                                    {{widgetTestimonial?.name}}
+                                    <span class="text-muted fs-6">{{widgetTestimonial?.place}}</span>
                                 </div>
-                                <div class="text-ellipsis mt-1">{{testimonial?.message}}</div>
+                                <div class="text-ellipsis mt-1">{{widgetTestimonial?.message}}</div>
                                 <div class="mt-2">
-                                    <app-start-rating [rating]="testimonial?.rating"></app-start-rating>
+                                    <app-start-rating [rating]="widgetTestimonial?.rating"></app-start-rating>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <input type="text" id="testimonial" placeholder="Search testimonials" class="form-control"
+                                [formControl]="testimonialKeyword" (ngModelChange)="getTestimonials()">
+                        </div>
+
+                        <div *ngIf="testimonialKeyword.value">
+                            <div class="my-2 fs-5 text-muted">Showing results for
+                                <span class="text-primary">{{testimonialKeyword.value}}</span>
+                            </div>
+                            <div class="testimonials">
+                                <div *ngFor="let testimonial of testimonials; let i  = index"
+                                    class="mb-2 py-2 border-bottom border-secondary testimonial"
+                                    (click)="toggleTestimonials(testimonial)">
+                                    <div class="fs-5">
+                                        {{testimonial?.name}}
+                                        <span class="text-muted fs-6">{{testimonial?.place}}</span>
+                                    </div>
+                                    <div class="text-ellipsis mt-1">{{testimonial?.message}}</div>
+                                    <div class="mt-2">
+                                        <app-start-rating [rating]="testimonial?.rating"></app-start-rating>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div *ngIf="widgetDetails?.widgetType == 'sale-timer'">
-                    <form [formGroup]="saleForm">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="w-100 ratio ratio-16x9 h-auto">
-                                    <app-assets [image]="'cover'" (mediaClicked)="onSaleThumbnailTriggered($event)"
-                                        [previewDetails]="saleThumbnailDetails">
-                                    </app-assets>
-                                </div>
-                                <button *ngIf="saleForm.get('saleThumbnail')?.value" class="btn btn-danger w-100 my-2"
-                                    (click)="removeSaleThumbnail()">Remove
-                                    thumbnail</button>
-                            </div>
-                            <div class="col-lg-9 row">
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label for="saleTitle" class="form-label">Title</label>
-                                    <input type="text" id="saleTitle" placeholder="Sale timer"
-                                        formControlName="saleTitle" class="form-control">
-                                </div>
+                    <div *ngIf="widgetDetails?.widgetType == 'sale-timer'">
+                        <form [formGroup]="saleForm">
+                            <div class="row">
                                 <div class="col-lg-3">
-                                    <label for="date" class="form-label">Valid from</label>
-                                    <input id="date" type="text" placeholder="-- Select a date --" class="form-control"
-                                        bsDatepicker
-                                        [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
-                                        formControlName="startDate">
+                                    <div class="w-100 ratio ratio-16x9 h-auto">
+                                        <app-assets [image]="'cover'" (mediaClicked)="onSaleThumbnailTriggered($event)"
+                                            [previewDetails]="saleThumbnailDetails">
+                                        </app-assets>
+                                    </div>
+                                    <button *ngIf="saleForm.get('saleThumbnail')?.value"
+                                        class="btn btn-danger w-100 my-2" (click)="removeSaleThumbnail()">Remove
+                                        thumbnail</button>
                                 </div>
-                                <div class="col-lg-3">
-                                    <label for="date" class="form-label">Valid till</label>
-                                    <input id="date" type="text" placeholder="-- Select a date --" class="form-control"
-                                        bsDatepicker
-                                        [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
-                                        formControlName="endDate">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="saleDescription" class="form-label">Description</label>
-                                    <input type="text" id="saleDescription" placeholder=""
-                                        formControlName="saleDescription" class="form-control">
-                                </div>
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label for="saleButtonVisibility" class="form-label">Button visibility</label>
-                                    <select formControlName="saleButtonVisibility" id="saleButtonVisibility"
-                                        class="form-select">
-                                        <option value="" disabled>-- Select an option --</option>
-                                        <option *ngFor="let item of [true, false]" value="{{item}}">
-                                            {{item == true ? 'Visible' : 'Hidden'}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label for="saleButtonText" class="form-label">Button text</label>
-                                    <input type="text" id="saleButtonText" placeholder="Shop now"
-                                        formControlName="saleButtonText" class="form-control">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="saleButtonLink" class="form-label">Button redirection</label>
-                                    <input type="text" id="saleButtonLink" placeholder=""
-                                        formControlName="saleButtonLink" class="form-control">
+                                <div class="col-lg-9 row">
+                                    <div class="col-lg-6 form-group mb-3">
+                                        <label for="saleTitle" class="form-label">Title</label>
+                                        <input type="text" id="saleTitle" placeholder="Sale timer"
+                                            formControlName="saleTitle" class="form-control">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="date" class="form-label">Valid from</label>
+                                        <input id="date" type="text" placeholder="-- Select a date --"
+                                            class="form-control" bsDatepicker
+                                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                                            formControlName="startDate">
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="date" class="form-label">Valid till</label>
+                                        <input id="date" type="text" placeholder="-- Select a date --"
+                                            class="form-control" bsDatepicker
+                                            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-dark-blue' }"
+                                            formControlName="endDate">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="saleDescription" class="form-label">Description</label>
+                                        <input type="text" id="saleDescription" placeholder=""
+                                            formControlName="saleDescription" class="form-control">
+                                    </div>
+                                    <div class="col-lg-6 form-group mb-3">
+                                        <label for="saleButtonVisibility" class="form-label">Button visibility</label>
+                                        <select formControlName="saleButtonVisibility" id="saleButtonVisibility"
+                                            class="form-select">
+                                            <option value="" disabled>-- Select an option --</option>
+                                            <option *ngFor="let item of [true, false]" value="{{item}}">
+                                                {{item == true ? 'Visible' : 'Hidden'}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 form-group mb-3">
+                                        <label for="saleButtonText" class="form-label">Button text</label>
+                                        <input type="text" id="saleButtonText" placeholder="Shop now"
+                                            formControlName="saleButtonText" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="saleButtonLink" class="form-label">Button redirection</label>
+                                        <input type="text" id="saleButtonLink" placeholder=""
+                                            formControlName="saleButtonLink" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div *ngIf="widgetDetails?.widgetType == 'video' || widgetDetails?.widgetType == 'celestial-canvas'">
-                    <div class="form-group">
-                        <label for="video" class="form-label">Past your video link</label>
-                        <input type="text" placeholder="Video" formControlName="video" class="form-control">
-                        <p class="text-muted">Kindly incorporate only the embedded URL.</p>
+                        </form>
                     </div>
-                </div>
 
-                <div *ngIf="widgetProductTypes.includes(widgetDetails?.widgetType)">
-                    <div class="p-3">
-                        <div class="row align-items-center mb-3"
-                            *ngIf="['aurora-grid', 'motion-canvas'].includes(widgetDetails?.widgetType)">
-                            <div class="col-lg-3">
-                                <div class="ratio ratio-1x1">
+                    <div
+                        *ngIf="widgetDetails?.widgetType == 'video' || widgetDetails?.widgetType == 'celestial-canvas'">
+                        <div class="form-group">
+                            <label for="video" class="form-label">Past your video link</label>
+                            <input type="text" placeholder="Video" formControlName="video" class="form-control">
+                            <p class="text-muted">Kindly incorporate only the embedded URL.</p>
+                        </div>
+                    </div>
+
+                    <div *ngIf="widgetProductTypes.includes(widgetDetails?.widgetType)">
+                        <div class="p-3">
+                            <div class="row align-items-center mb-3"
+                                *ngIf="['aurora-grid', 'motion-canvas'].includes(widgetDetails?.widgetType)">
+                                <div class="col-lg-3">
+                                    <div class="ratio ratio-1x1">
+                                        <app-assets [previewDetails]="productsAdThumbnail"
+                                            (mediaClicked)="toggleMotionCanvasThumbnail($event)"></app-assets>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 form-group">
+                                    <label for="" class="form-label">Redirection</label>
+                                    <input type="text" [formControl]="productsAdRedirection" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="mb-3" *ngIf="['aurora-slider'].includes(widgetDetails?.widgetType)">
+                                <div class="ratio ratio-21x9 mb-3">
                                     <app-assets [previewDetails]="productsAdThumbnail"
                                         (mediaClicked)="toggleMotionCanvasThumbnail($event)"></app-assets>
                                 </div>
-                            </div>
-                            <div class="col-lg-9 form-group">
-                                <label for="" class="form-label">Redirection</label>
-                                <input type="text" [formControl]="productsAdRedirection" class="form-control">
-                            </div>
-                        </div>
 
-                        <div class="mb-3" *ngIf="['aurora-slider'].includes(widgetDetails?.widgetType)">
-                            <div class="ratio ratio-21x9 mb-3">
-                                <app-assets [previewDetails]="productsAdThumbnail"
-                                    (mediaClicked)="toggleMotionCanvasThumbnail($event)"></app-assets>
+                                <div class="form-group">
+                                    <label for="" class="form-label">Redirection</label>
+                                    <input type="text" [formControl]="productsAdRedirection" class="form-control">
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="" class="form-label">Redirection</label>
-                                <input type="text" [formControl]="productsAdRedirection" class="form-control">
+                            <div class="alert alert-info">
+                                Kindly note that the widget supports displaying up to 20 products. For adding additional
+                                products, please utilize the 'Collections' section.
                             </div>
-                        </div>
 
-                        <div class="alert alert-info">
-                            Kindly note that the widget supports displaying up to 20 products. For adding additional
-                            products, please utilize the 'Collections' section.
-                        </div>
-
-                        <div class="row">
-                            <ng-container *ngFor="let type of [
+                            <div class="row">
+                                <ng-container *ngFor="let type of [
                                 {type: 'products', title: 'Products', description: 'In this section you can select set of products manually to display.'}, 
                                 {type: 'collections', title: 'Collections', description: 'In this section we will display your products dynamically. Select the collection which you want to display.'},
                                 {type: 'categories', title: 'Categories', description: 'In this section we will display your products dynamically. Select the category which you want to display.'},
                                 {type: 'brands', title: 'Brands', description: 'In this section we will display your products dynamically. Select the brand which you want to display.'}
                                 ]">
-                                <div (click)="toggleProductSelection(type.type)"
-                                    class="col-lg-3 p-3 d-flex align-items-start justify-content-start gap-2"
-                                    [ngClass]="{'border-secondary': type.type != selectedProductType, 'border-primary': type.type == selectedProductType}">
-                                    <div class="checkbox" [ngClass]="{'checked': type.type == selectedProductType}">
+                                    <div (click)="toggleProductSelection(type.type)"
+                                        class="col-lg-3 p-3 d-flex align-items-start justify-content-start gap-2"
+                                        [ngClass]="{'border-secondary': type.type != selectedProductType, 'border-primary': type.type == selectedProductType}">
+                                        <div class="checkbox" [ngClass]="{'checked': type.type == selectedProductType}">
+                                        </div>
+                                        <div style="width: calc(100% - 30px)">
+                                            <div class="fw-bold fs-5">{{type.title}}</div>
+                                            <div class="text-muted">{{type.description}}</div>
+                                        </div>
                                     </div>
-                                    <div style="width: calc(100% - 30px)">
-                                        <div class="fw-bold fs-5">{{type.title}}</div>
-                                        <div class="text-muted">{{type.description}}</div>
-                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedProductType == 'products'">
+                            <ng-container *ngIf="smartTileProducts.length > 0">
+                                <div class="fs-4 fw-bold my-3">Featured products</div>
+                                <div class="my-4 mt-0 smart-tile-products row pt-0 p-3">
+                                    <ng-container *ngFor="let product of smartTileProducts; let i = index">
+                                        <div (click)="toggleTileProducts(product)"
+                                            class="rounded cursor-pointer col-lg-4 p-4 border border-secondary d-flex align-items-center justify-content-start gap-3">
+                                            <div>
+                                                <img class="rounded" height="40" width="40"
+                                                    src="{{base}}{{product.thumbnail}}"
+                                                    onerror="this.src = 'assets/images/default.png'"
+                                                    alt="{{product.name}}">
+                                            </div>
+                                            <div>
+                                                <div class="tile-product">{{product?.name}}</div>
+                                                <div>{{product.sku}}</div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </ng-container>
-                        </div>
-                    </div>
-
-                    <div *ngIf="selectedProductType == 'products'">
-                        <ng-container *ngIf="smartTileProducts.length > 0">
-                            <div class="fs-4 fw-bold my-3">Featured products</div>
-                            <div class="my-4 mt-0 smart-tile-products row pt-0 p-3">
-                                <ng-container *ngFor="let product of smartTileProducts; let i = index">
-                                    <div (click)="toggleTileProducts(product)"
-                                        class="rounded cursor-pointer col-lg-4 p-4 border border-secondary d-flex align-items-center justify-content-start gap-3">
-                                        <div>
-                                            <img class="rounded" height="40" width="40"
-                                                src="{{base}}{{product.thumbnail}}"
-                                                onerror="this.src = 'assets/images/default.png'" alt="{{product.name}}">
-                                        </div>
-                                        <div>
-                                            <div class="tile-product">{{product?.name}}</div>
-                                            <div>{{product.sku}}</div>
-                                        </div>
-                                    </div>
-                                </ng-container>
+                            <div class="form-group">
+                                <label for="tileProducts" class="form-label">Products</label>
+                                <input type="text" class="form-control" placeholder="Search products"
+                                    [formControl]="tileProductsInput" (ngModelChange)="getTileProducts()">
                             </div>
-                        </ng-container>
-                        <div class="form-group">
-                            <label for="tileProducts" class="form-label">Products</label>
-                            <input type="text" class="form-control" placeholder="Search products"
-                                [formControl]="tileProductsInput" (ngModelChange)="getTileProducts()">
+
+                            <ng-container *ngIf="tileProducts.length > 0">
+                                <div class="fs-5 mt-3" *ngIf="tileProductsInput.value">Showing results for <span
+                                        class="text-primary">{{tileProductsInput.value}} ( {{tileProducts.length}}
+                                        products
+                                        found )</span></div>
+                                <div class="my-3 row tile-products pt-0 p-3">
+                                    <ng-container *ngFor="let product of tileProducts; let i = index">
+                                        <div (click)="toggleTileProducts(product)"
+                                            [ngClass]="{'border-primary' : isTileProductExists(product), 'border-secondary':  !isTileProductExists(false)}"
+                                            class="rounded cursor-pointer col-lg-4 p-4 border d-flex align-items-center justify-content-start gap-3">
+                                            <div>
+                                                <img class="rounded" height="40" width="40"
+                                                    src="{{base}}{{product.thumbnail}}"
+                                                    onerror="this.src = 'assets/images/default.png'"
+                                                    alt="{{product.name}}">
+                                            </div>
+                                            <div>
+                                                <div class="tile-product">{{product?.name}}</div>
+                                                <div>{{product.sku}}</div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="tileProducts.length  == 0 && tileProductsInput?.value">
+                                <app-no-results></app-no-results>
+                            </ng-container>
                         </div>
 
-                        <ng-container *ngIf="tileProducts.length > 0">
-                            <div class="fs-5 mt-3" *ngIf="tileProductsInput.value">Showing results for <span
-                                    class="text-primary">{{tileProductsInput.value}} ( {{tileProducts.length}}
-                                    products
-                                    found )</span></div>
-                            <div class="my-3 row tile-products pt-0 p-3">
-                                <ng-container *ngFor="let product of tileProducts; let i = index">
-                                    <div (click)="toggleTileProducts(product)"
-                                        [ngClass]="{'border-primary' : isTileProductExists(product), 'border-secondary':  !isTileProductExists(false)}"
-                                        class="rounded cursor-pointer col-lg-4 p-4 border d-flex align-items-center justify-content-start gap-3">
-                                        <div>
-                                            <img class="rounded" height="40" width="40"
-                                                src="{{base}}{{product.thumbnail}}"
-                                                onerror="this.src = 'assets/images/default.png'" alt="{{product.name}}">
-                                        </div>
-                                        <div>
-                                            <div class="tile-product">{{product?.name}}</div>
-                                            <div>{{product.sku}}</div>
-                                        </div>
-                                    </div>
-                                </ng-container>
+                        <div *ngIf="selectedProductType == 'collections'">
+                            <div class="form-group">
+                                <label for="collections" class="form-label">Collections</label>
+                                <select [formControl]="widgetCollection" id="collections" class="form-select">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option *ngFor="let collection of collections; let i = index"
+                                        value="{{collection._id}}">
+                                        {{collection.name}}
+                                    </option>
+                                </select>
                             </div>
-                        </ng-container>
+                        </div>
 
-                        <ng-container *ngIf="tileProducts.length  == 0 && tileProductsInput?.value">
-                            <app-no-results></app-no-results>
-                        </ng-container>
-                    </div>
+                        <div *ngIf="selectedProductType == 'brands'">
+                            <div class="form-group">
+                                <label for="brands" class="form-label">Brands</label>
+                                <select [formControl]="widgetBrand" id="brands" class="form-select">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option *ngFor="let brand of brands; let i = index" value="{{brand._id}}">
+                                        {{brand.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <div *ngIf="selectedProductType == 'collections'">
-                        <div class="form-group">
-                            <label for="collections" class="form-label">Collections</label>
-                            <select [formControl]="widgetCollection" id="collections" class="form-select">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let collection of collections; let i = index"
-                                    value="{{collection?._id}}">
-                                    {{collection.name}}
-                                </option>
-                            </select>
+                        <div *ngIf="selectedProductType == 'categories'">
+                            <div class="form-group">
+                                <label for="categories" class="form-label">Categories</label>
+                                <select [formControl]="widgetCategory" id="categories" class="form-select">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option *ngFor="let category of categories; let i = index" value="{{category._id}}">
+                                        {{category.name}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <div *ngIf="selectedProductType == 'brands'">
-                        <div class="form-group">
-                            <label for="brands" class="form-label">Brands</label>
-                            <select [formControl]="widgetBrand" id="brands" class="form-select">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let brand of brands; let i = index" value="{{brand._id}}">
-                                    {{brand.name}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div *ngIf="selectedProductType == 'categories'">
-                        <div class="form-group">
-                            <label for="categories" class="form-label">Categories</label>
-                            <select [formControl]="widgetCategory" id="categories" class="form-select">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let category of categories; let i = index" value="{{category._id}}">
-                                    {{category.name}}
-                                </option>
-                            </select>
-                        </div>
+        <div *ngIf="!isWidgetLoaded">
+            <div class="widget-loader">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>

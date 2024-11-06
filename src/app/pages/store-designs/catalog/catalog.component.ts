@@ -292,8 +292,9 @@ export class CatalogComponent implements OnInit {
   insightHubThumbnailSmall: string = '';
   insightHubThumbnailLarge: string = '';
   form: any;
-  hyperlinkheroForm: FormGroup;
-  backgroundDetails: string;
+  hyperlinkheroForm: FormGroup
+  backgroundDetails: string
+  isWidgetLoaded: boolean = false
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -413,7 +414,12 @@ export class CatalogComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private AppSettingsService: AppSettingsService,
     private BlogService: BlogService
-  ) {}
+  ) { }
+
+  onChangeProductType(){
+
+  }
+
 
   //Title image
   onTitleImageTriggered(event: any) {
@@ -545,14 +551,23 @@ export class CatalogComponent implements OnInit {
     this.selectedProductType = type;
     switch (type) {
       case 'collections':
-        this.getCollections();
-        break;
+        this.getCollections()
+        this.widgetBrand.setValue(null)
+        this.widgetCategory.setValue(null)
+        this.smartTileProducts = []
+        break
       case 'brands':
-        this.getBrands();
-        break;
+        this.getBrands()
+        this.widgetCollection.setValue(null)
+        this.widgetCategory.setValue(null)
+        this.smartTileProducts = []
+        break
       case 'categories':
-        this.getCategories();
-        break;
+        this.getCategories()
+        this.widgetBrand.setValue(null)
+        this.widgetCollection.setValue(null)
+        this.smartTileProducts = []
+        break
     }
   }
 
@@ -983,8 +998,20 @@ export class CatalogComponent implements OnInit {
 
   closeUpdate(): void {
     this.updateRef?.hide();
-    this.catalogForm.reset();
-    this.catalogForm.get('isCopy')?.setValue(false);
+    this.widgetImages = []
+    this.widgetImagePreviewIndex = null
+    this.widgetImagePreview = null
+    this.form.reset()
+    this.selectedProductType = 'products'
+    this.widgetCollection.reset()
+    this.widgetBrand.reset()
+    this.widgetCategory.reset()
+    this.brands = []
+    this.categories = []
+    this.collections = []
+    this.smartTileProducts = []
+    this.saleForm.reset()
+    this.saleForm.get('saleButtonVisibility')?.setValue(true)
   }
 
   isExpired(date: string) {
@@ -1119,10 +1146,8 @@ export class CatalogComponent implements OnInit {
 
   //Update widgets starts here
   openWidgetUpdate(template: TemplateRef<any>, widget: any) {
-    this.widgetDetailsRef = this.BsModalService.show(template, {
-      class: 'modal-xl modal-dialog-centered',
-      ignoreBackdropClick: true,
-    });
+    this.isWidgetLoaded = false
+    this.widgetDetailsRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
     this.CatalogService.catalogWidgetDetails(widget?.refid).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -1158,13 +1183,9 @@ export class CatalogComponent implements OnInit {
             'products',
             'motion-canvas',
             'aurora-grid',
-            'aurora-slider',
-          ]?.includes(this.widgetDetails?.widgetType)
-            ? (this.smartTileProducts = [...this.widgetDetails?.products])
-            : null;
-          if (this.widgetDetails?.styles?.backgroundImage)
-            this.backgroundDetails =
-              this.widgetDetails?.styles?.backgroundImage?.path;
+            'aurora-slider'
+          ]?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
+          if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
           this.form.patchValue(this.widgetDetails);
 
           this.getCollections();
@@ -1230,13 +1251,9 @@ export class CatalogComponent implements OnInit {
             this.insightHubThumbnailLarge =
               this.widgetDetails?.insightHubThumbnailLarge?.path;
           }
-          this.widgetDetails?.endDate
-            ? this.saleForm
-                .get('endDate')
-                ?.setValue(new Date(this.widgetDetails?.endDate))
-            : null;
-          this.designForm.patchValue(this.widgetDetails?.styles);
-          this.ChangeDetectorRef.markForCheck();
+          this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
+          this.designForm.patchValue(this.widgetDetails?.styles)
+
 
           if (
             ['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(
@@ -1249,6 +1266,9 @@ export class CatalogComponent implements OnInit {
               this.widgetDetails?.productsAdRedirection
             );
           }
+
+          this.isWidgetLoaded = true
+          this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message);
         }

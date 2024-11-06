@@ -23,7 +23,8 @@ export class OrderSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.getSettings()
     this.form = new FormGroup({
-      isCancelOrderEnabled: new FormControl(false)
+      isCancelOrderEnabled: new FormControl(false),
+      isReorderEnabled: new FormControl(false)
     })
   }
 
