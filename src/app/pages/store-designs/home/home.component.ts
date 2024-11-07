@@ -232,6 +232,13 @@ export class HomeComponent implements OnInit {
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
     },
+    {
+      title: 'Vibrant Banner',
+      type: 'vibrant-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show one full width banner. The widget contains images.',
+    },
   ];
   homeWidgets: Array<any> = [];
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
@@ -286,6 +293,7 @@ export class HomeComponent implements OnInit {
     'slider-spotlight',
     'trending-teasers',
     'text-twirl',
+    'vibrant-banner',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
@@ -672,23 +680,23 @@ export class HomeComponent implements OnInit {
     this.selectedProductType = type;
     switch (type) {
       case 'collections':
-        this.getCollections()
-        this.widgetBrand.setValue(null)
-        this.widgetCategory.setValue(null)
-        this.smartTileProducts = []
-        break
+        this.getCollections();
+        this.widgetBrand.setValue(null);
+        this.widgetCategory.setValue(null);
+        this.smartTileProducts = [];
+        break;
       case 'brands':
-        this.getBrands()
-        this.widgetCollection.setValue(null)
-        this.widgetCategory.setValue(null)
-        this.smartTileProducts = []
-        break
+        this.getBrands();
+        this.widgetCollection.setValue(null);
+        this.widgetCategory.setValue(null);
+        this.smartTileProducts = [];
+        break;
       case 'categories':
-        this.getCategories()
-        this.widgetBrand.setValue(null)
-        this.widgetCollection.setValue(null)
-        this.smartTileProducts = []
-        break
+        this.getCategories();
+        this.widgetBrand.setValue(null);
+        this.widgetCollection.setValue(null);
+        this.smartTileProducts = [];
+        break;
     }
   }
   //Toggle device
@@ -749,9 +757,13 @@ export class HomeComponent implements OnInit {
             'products',
             'motion-canvas',
             'aurora-grid',
-            'aurora-slider'
-          ]?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
-          if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
+            'aurora-slider',
+          ]?.includes(this.widgetDetails?.widgetType)
+            ? (this.smartTileProducts = [...this.widgetDetails?.products])
+            : null;
+          if (this.widgetDetails?.styles?.backgroundImage)
+            this.backgroundDetails =
+              this.widgetDetails?.styles?.backgroundImage?.path;
           this.form.patchValue(this.widgetDetails);
 
           this.getCollections();
@@ -768,13 +780,12 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.productBrands) {
             console.log('Yes');
 
-            this.selectedProductType = 'brands'
+            this.selectedProductType = 'brands';
             console.log(this.widgetDetails?.productBrands?._id);
 
-            this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id)
+            this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id);
 
             console.log(this.widgetBrand.value);
-
           }
 
           if (this.widgetDetails?.productCategories) {
@@ -808,7 +819,9 @@ export class HomeComponent implements OnInit {
               )
             : null;
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
-            this.widgetDetails.products.length > 0 ? this.selectedProductType = 'products' : this.selectedProductType = 'collections'
+            this.widgetDetails.products.length > 0
+              ? (this.selectedProductType = 'products')
+              : (this.selectedProductType = 'collections');
           }
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails);
@@ -1005,20 +1018,20 @@ export class HomeComponent implements OnInit {
 
   closeUpdate() {
     this.updateRef?.hide();
-    this.widgetImages = []
-    this.widgetImagePreviewIndex = null
-    this.widgetImagePreview = null
-    this.form.reset()
-    this.selectedProductType = 'products'
-    this.widgetCollection.reset()
-    this.widgetBrand.reset()
-    this.widgetCategory.reset()
-    this.brands = []
-    this.categories = []
-    this.collections = []
-    this.smartTileProducts = []
-    this.saleForm.reset()
-    this.saleForm.get('saleButtonVisibility')?.setValue(true)
+    this.widgetImages = [];
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
+    this.form.reset();
+    this.selectedProductType = 'products';
+    this.widgetCollection.reset();
+    this.widgetBrand.reset();
+    this.widgetCategory.reset();
+    this.brands = [];
+    this.categories = [];
+    this.collections = [];
+    this.smartTileProducts = [];
+    this.saleForm.reset();
+    this.saleForm.get('saleButtonVisibility')?.setValue(true);
   }
 
   dropWidgetImages(event: any) {
@@ -1442,8 +1455,8 @@ export class HomeComponent implements OnInit {
   }
 
   onRemoveBackground() {
-    this.designForm.get("backgroundImage")?.setValue(null)
-    this.backgroundDetails = ''
+    this.designForm.get('backgroundImage')?.setValue(null);
+    this.backgroundDetails = '';
   }
 
   onSaleThumbnailTriggered(event: any) {
