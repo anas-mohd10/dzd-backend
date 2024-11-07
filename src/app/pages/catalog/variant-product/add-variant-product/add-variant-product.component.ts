@@ -1,6 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators, } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from 'src/app/includes/services/brand.service';
@@ -24,7 +30,7 @@ export class AddVariantProductComponent implements OnInit {
   isSubmitted = false;
 
   filedata: File;
-  fileThumbnaildata: File
+  fileThumbnaildata: File;
   type: any;
   isSingle: boolean = true;
 
@@ -54,33 +60,33 @@ export class AddVariantProductComponent implements OnInit {
   imageChangedEvent: Event | undefined;
   imageThumbnailChangedEvent: Event | undefined;
   filename: any;
-  thumbnailFilename: any
+  thumbnailFilename: any;
 
   //Styling variables
-  background: any
-  border: any
-  color: any
+  background: any;
+  border: any;
+  color: any;
 
-  selectedCategories: any = []
-  selectedBrand: any = ''
-  selectedProducts: any = []
-  imageFiles: any = []
-  files: any = []
+  selectedCategories: any = [];
+  selectedBrand: any = '';
+  selectedProducts: any = [];
+  imageFiles: any = [];
+  files: any = [];
 
-  errors: any
-  validError: any
+  errors: any;
+  validError: any;
   // url: any;
   format: string | undefined;
   url: string | ArrayBuffer | null | undefined;
   playVideo: boolean;
   video: string | ArrayBuffer | null;
-  videoFile: any = {}
+  videoFile: any = {};
   disableButton: boolean = false;
 
-  slug: any
-  parent: any
+  slug: any;
+  parent: any;
   parentName: any;
-  refid: any
+  refid: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -93,7 +99,7 @@ export class AddVariantProductComponent implements OnInit {
     private toastr: ToastrService,
     private cdr: ChangeDetectorRef,
     private VariantProductService: VariantProductService
-  ) { }
+  ) {}
 
   get pf() {
     return this.productForm.controls;
@@ -102,21 +108,23 @@ export class AddVariantProductComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.task = this.route.snapshot.params.task || PageTasks.ADD;
-    this.slug = this.route.snapshot.queryParams.id || ''
+    this.slug = this.route.snapshot.queryParams.id || '';
     this.managePage();
     this.getBrandDetail();
     this.getCategoryDetail();
     this.getTaxClassDetail();
     this.getProducts();
 
-    this.productService.getProductbyId({ prodid: this.slug }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.parent = res?.result[0]?._id
-        this.refid = res?.result[0]?.prodid
-        this.parentName = res?.result[0]?.name
-        this.cdr.markForCheck()
-      }
-    })
+    this.productService
+      .getProductbyId({ prodid: this.slug })
+      .subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.parent = res?.result[0]?._id;
+          this.refid = res?.result[0]?._id;
+          this.parentName = res?.result[0]?.name;
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   initForm() {
@@ -156,7 +164,7 @@ export class AddVariantProductComponent implements OnInit {
       radius: [''],
       color: [''],
       fontSize: [''],
-      fontWeight: ['']
+      fontWeight: [''],
     });
   }
 
@@ -195,7 +203,7 @@ export class AddVariantProductComponent implements OnInit {
 
   //Search keywords input
   tagInput(event: any) {
-    let _value = event.value
+    let _value = event.value;
     if (_value) {
       if (this.productForm.get('searchKeywords')?.value != ' ' || '' || null) {
         this.searchKeyowrds.push(this.productForm.get('searchKeywords')?.value);
@@ -206,31 +214,37 @@ export class AddVariantProductComponent implements OnInit {
 
   //Search keywords remove
   tagRemove(value: any) {
-    this.searchKeyowrds = this.searchKeyowrds.filter((_data: any) => _data != value)
+    this.searchKeyowrds = this.searchKeyowrds.filter(
+      (_data: any) => _data != value
+    );
   }
 
   //Related products tag
   tagProductAdd(event: any) {
-    let rProduct = event.value
+    let rProduct = event.value;
     if (!this.relProductIds.includes(rProduct)) {
-      this.relProductIds.push(rProduct)
+      this.relProductIds.push(rProduct);
       for (let i = 0; i < this.productsData.length; i++) {
-        if (this.productsData[i]._id == rProduct) {
-          this.relProductNames.push(this.productsData[i].name)
+        if (this.productsData[i]?._id == rProduct) {
+          this.relProductNames.push(this.productsData[i].name);
         }
       }
     } else {
       this.toastr.info('Product already added');
     }
-    this.productForm.get("relatedProducts")?.setValue('')
+    this.productForm.get('relatedProducts')?.setValue('');
   }
 
   //Related product remove
   tagProductRemove(_val: any) {
-    this.relProductNames = this.relProductNames.filter((_data: any) => _data != _val)
+    this.relProductNames = this.relProductNames.filter(
+      (_data: any) => _data != _val
+    );
     for (let i = 0; i < this.productsData.length; i++) {
       if (this.productsData[i].name == _val) {
-        this.relProductIds = this.relProductIds.filter((_data: any) => _data != this.productsData[i]._id)
+        this.relProductIds = this.relProductIds.filter(
+          (_data: any) => _data != this.productsData[i]?._id
+        );
       }
     }
   }
@@ -277,53 +291,52 @@ export class AddVariantProductComponent implements OnInit {
       fileString: this.croppedImage,
       filename: this.filename,
       url: this.url,
-      id: this.imageFiles.length
-    })
+      id: this.imageFiles.length,
+    });
 
     this.files.push({
       id: this.files.length,
       file: this.croppedImage,
-      name: this.filename
-    })
+      name: this.filename,
+    });
 
-
-    this.croppedImage = ''
-    this.filename = ''
-    this.loadImage = false
+    this.croppedImage = '';
+    this.filename = '';
+    this.loadImage = false;
   }
 
   removeFile(id: any) {
-    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id)
-    this.files = this.files.filter((_data: any) => _data.id != id)
+    this.imageFiles = this.imageFiles.filter((_data: any) => _data.id != id);
+    this.files = this.files.filter((_data: any) => _data.id != id);
   }
 
   handleInputChange(event: any) {
     if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[0])
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
       reader.onload = (e: any) => {
-        this.url = e.target.result
-      }
+        this.url = e.target.result;
+      };
     }
     this.filedata = <File>event.target.files[0];
-    this.filename = this.filedata.name
+    this.filename = this.filedata.name;
     this.imageChangedEvent = event;
-    this.loadImage = true
-    this.cdr.markForCheck()
+    this.loadImage = true;
+    this.cdr.markForCheck();
   }
 
   handleInputThumbnailChange(event: any) {
     this.fileThumbnaildata = <File>event.target.files[0];
-    this.thumbnailFilename = this.fileThumbnaildata.name
+    this.thumbnailFilename = this.fileThumbnaildata.name;
     this.imageThumbnailChangedEvent = event;
-    this.loadThumbnailImage = true
-    this.cdr.markForCheck()
+    this.loadThumbnailImage = true;
+    this.cdr.markForCheck();
   }
 
   imageCropped(event: ImageCroppedEvent) {
     setTimeout(() => {
       this.croppedImage = event.base64;
-    }, 1500)
+    }, 1500);
   }
 
   imageLoaded() {
@@ -339,14 +352,14 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   removeImage() {
-    this.croppedImage = ''
-    this.loadImage = false
+    this.croppedImage = '';
+    this.loadImage = false;
   }
 
   imageThumbnailCropped(event: ImageCroppedEvent) {
     setTimeout(() => {
       this.thumbnailImage = event.base64;
-    }, 1500)
+    }, 1500);
   }
 
   thumbnailImageLoaded() {
@@ -362,36 +375,38 @@ export class AddVariantProductComponent implements OnInit {
   }
 
   removeThumbnailImage() {
-    this.thumbnailImage = ''
-    this.loadThumbnailImage = false
+    this.thumbnailImage = '';
+    this.loadThumbnailImage = false;
   }
 
   videoUpload(event: any) {
     if (event.target.files.length > 0) {
-      let reader = new FileReader()
-      reader.readAsDataURL(event.target.files[0])
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
       reader.onload = (e: any) => {
-        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 })
+        this.toastr.info('Video Uploading in Progress', '', { timeOut: 2000 });
         setTimeout(() => {
-          this.video = e.target.result
-          this.toastr.success('Video Successfully Uploaded', '', { timeOut: 2000 })
+          this.video = e.target.result;
+          this.toastr.success('Video Successfully Uploaded', '', {
+            timeOut: 2000,
+          });
           this.videoFile = {
             video: this.video,
-            name: event.target.files[0].name
-          }
-          this.cdr.markForCheck()
-        }, 2000)
-      }
+            name: event.target.files[0].name,
+          };
+          this.cdr.markForCheck();
+        }, 2000);
+      };
     }
   }
 
   getColors(type: any, e: any) {
-    if (type == "background") {
-      this.background = e.value
-    } else if (type == "border") {
-      this.border = e.value
-    } else if (type == "color") {
-      this.color = e.value
+    if (type == 'background') {
+      this.background = e.value;
+    } else if (type == 'border') {
+      this.border = e.value;
+    } else if (type == 'color') {
+      this.color = e.value;
     }
   }
 
@@ -404,27 +419,29 @@ export class AddVariantProductComponent implements OnInit {
     }
   }
 
-  updateProduct() { }
+  updateProduct() {}
 
   addProduct() {
     if (!this.productForm.valid) {
       return;
     }
 
-    const payload = this.createPayload()
+    const payload = this.createPayload();
     if (payload) {
-      this.disableButton = true
-      this.toastr.info('Adding product...', '', { timeOut: 2000 })
+      this.disableButton = true;
+      this.toastr.info('Adding product...', '', { timeOut: 2000 });
       setTimeout(() => {
-        this.VariantProductService.addVariantProduct(payload).subscribe((res: any) => {
-          if (res.errorCode != 0) {
-            this.toastr.error(res?.message);
-          } else if (res.errorCode == 0) {
-            this.toastr.success(res?.message);
-            this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+        this.VariantProductService.addVariantProduct(payload).subscribe(
+          (res: any) => {
+            if (res.errorCode != 0) {
+              this.toastr.error(res?.message);
+            } else if (res.errorCode == 0) {
+              this.toastr.success(res?.message);
+              this.router.navigate([this.appRoute.product.PRODUCT_LIST]);
+            }
           }
-        });
-      }, 2000)
+        );
+      }, 2000);
     }
   }
 
@@ -432,7 +449,7 @@ export class AddVariantProductComponent implements OnInit {
     const data = {
       parent: {
         id: this.parent,
-        refid: this.refid
+        refid: this.refid,
       },
       name: this.productForm.get('name')?.value,
       sku: this.productForm.get('sku')?.value,
@@ -475,10 +492,10 @@ export class AddVariantProductComponent implements OnInit {
           color: this.productForm.get('color')?.value,
           fontSize: this.productForm.get('fontSize')?.value,
           fontWeight: this.productForm.get('fontWeight')?.value,
-        }
-      }
-    }
+        },
+      },
+    };
 
-    return data
+    return data;
   }
 }

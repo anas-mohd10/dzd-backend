@@ -10,16 +10,16 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-update-testimonial',
   templateUrl: './update-testimonial.component.html',
-  styleUrls: ['./update-testimonial.component.scss']
+  styleUrls: ['./update-testimonial.component.scss'],
 })
 export class UpdateTestimonialComponent implements OnInit {
   editMode = false;
-  appRoute = appRoutes
-  form: FormGroup = new FormGroup({})
+  appRoute = appRoutes;
+  form: FormGroup = new FormGroup({});
   isSubmitted = false;
   thumbnail: any;
   details: any;
-  base: string = `${environment.base}`
+  base: string = `${environment.base}`;
   id: string;
 
   constructor(
@@ -29,7 +29,7 @@ export class UpdateTestimonialComponent implements OnInit {
     private UploadService: UploadService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -37,14 +37,17 @@ export class UpdateTestimonialComponent implements OnInit {
       profession: new FormControl(''),
       business: new FormControl(''),
       file: new FormControl(''),
-      rating: new FormControl('', [Validators.required, Validators.pattern("^[0-9]$")]),
+      rating: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]$'),
+      ]),
       place: new FormControl('', Validators.required),
       message: new FormControl('', Validators.required),
       isActive: new FormControl(true),
     });
 
-    this.id = this.ActivatedRoute.snapshot.queryParams.id || ''
-    this.getTestimonial()
+    this.id = this.ActivatedRoute.snapshot.queryParams.id || '';
+    this.getTestimonial();
   }
 
   get formControls() {
@@ -55,63 +58,69 @@ export class UpdateTestimonialComponent implements OnInit {
     this.TestimonialService.getTestimonial(this.id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.details = res?.result
-          res?.result?.file ? this.thumbnail = `${environment.base}${res?.result?.file}` : null
-          this.form.patchValue(res?.result)
-          this.ChangeDetectorRef.markForCheck()
+          this.details = res?.result;
+          res?.result?.file
+            ? (this.thumbnail = `${environment.base}${res?.result?.file}`)
+            : null;
+          this.form.patchValue(res?.result);
+          this.ChangeDetectorRef.markForCheck();
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 
   uploadThumbnail(event: any) {
-    let formdata = new FormData()
-    formdata.append("file", event.target.files[0])
+    let formdata = new FormData();
+    formdata.append('file', event.target.files[0]);
     this.UploadService.uploadThumbnail(formdata).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.thumbnail = res?.result?.path
-          this.form.get('file')?.setValue(res?.result?.location)
-          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message);
+          this.thumbnail = res?.result?.path;
+          this.form.get('file')?.setValue(res?.result?.location);
+          this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 
   removeThumbnail() {
-    this.UploadService.removeThumbnail({ location: this.form.get('file')?.value }).subscribe({
+    this.UploadService.removeThumbnail({
+      location: this.form.get('file')?.value,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.thumbnail = null
-          this.form.get('file')?.setValue('')
-          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message);
+          this.thumbnail = null;
+          this.form.get('file')?.setValue('');
+          this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
-
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
+      this.isSubmitted = true;
       return;
     }
 
-    this.TestimonialService.updateTestimonial({ ...this.form.value, _id: this.details._id }).subscribe({
+    this.TestimonialService.updateTestimonial({
+      ...this.form.value,
+      _id: this.details?._id,
+    }).subscribe({
       next: (res: any) => {
         if (res.errorCode != 0) {
           this.HotToastService.error(res?.message);
@@ -119,9 +128,10 @@ export class UpdateTestimonialComponent implements OnInit {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.testimonial.TESTIMONIAL_LIST]);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
-      }
-    })
+      },
+    });
   }
 }

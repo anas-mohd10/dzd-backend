@@ -1,6 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
-import { FormControl, FormGroup, Validators, } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { ProductService } from '../../../../includes/services/product.service';
@@ -17,8 +23,8 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 interface StoreField {
-  title: string,
-  description: string,
+  title: string;
+  description: string;
 }
 
 @Component({
@@ -26,15 +32,14 @@ interface StoreField {
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
 })
-
 export class AddProductComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted = false;
   searchKeyowrds: any = [];
-  tumbnail: any
-  attributes: any = []
+  tumbnail: any;
+  attributes: any = [];
   slug: string = '';
   base: string;
   editorConfig: AngularEditorConfig = {
@@ -59,12 +64,12 @@ export class AddProductComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Manrope' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ]
+    ],
   };
-  settings: any = {}
+  settings: any = {};
   parentForm: FormGroup;
   taxClassDetails: Array<any> = [];
-  brand: FormControl = new FormControl('', Validators.required)
+  brand: FormControl = new FormControl('', Validators.required);
   brands: Array<any> = [];
   productCategories: Array<any> = [];
   images: Array<any> = [];
@@ -87,33 +92,33 @@ export class AddProductComponent implements OnInit {
   tagsForm: FormGroup;
   icons: Array<any> = [];
   productTags: any = {
-    topRightTag: "",
-    topLeftTag: "",
-    bottomRightTag: "",
-    bottomLeftTag: "",
-  }
-  addOnItemsForm: FormGroup
+    topRightTag: '',
+    topLeftTag: '',
+    bottomRightTag: '',
+    bottomLeftTag: '',
+  };
+  addOnItemsForm: FormGroup;
   addOnItems: Array<any> = [];
-  parentCategories: Array<any> = []
-  mainCategories: Array<any> = []
-  existingProducts: Array<any> = []
-  isParentSubmitted: boolean = false
-  activeRelatedProducts: Array<any> = []
-  relatedProduct: FormControl = new FormControl('')
+  parentCategories: Array<any> = [];
+  mainCategories: Array<any> = [];
+  existingProducts: Array<any> = [];
+  isParentSubmitted: boolean = false;
+  activeRelatedProducts: Array<any> = [];
+  relatedProduct: FormControl = new FormControl('');
 
-  storeFields: Array<StoreField> = []
-  storeFieldForm: FormGroup = new FormGroup({})
-  isStoreSubmitted: boolean = false
-  modalRef?: BsModalRef
-  attributeForm: FormGroup = new FormGroup({})
-  isAttributeSubmitted: boolean = false
+  storeFields: Array<StoreField> = [];
+  storeFieldForm: FormGroup = new FormGroup({});
+  isStoreSubmitted: boolean = false;
+  modalRef?: BsModalRef;
+  attributeForm: FormGroup = new FormGroup({});
+  isAttributeSubmitted: boolean = false;
   attributeTypes: Array<any> = [
-    { title: "Text", value: "text" },
-    { title: "Color", value: "color" },
-    { title: "Image", value: "image" },
-  ]
-  languages: Array<string> = []
-  tagIcons: Array<string> = []
+    { title: 'Text', value: 'text' },
+    { title: 'Color', value: 'color' },
+    { title: 'Image', value: 'image' },
+  ];
+  languages: Array<string> = [];
+  tagIcons: Array<string> = [];
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -128,74 +133,80 @@ export class AddProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) { }
+  ) {}
 
   get parentControls() {
-    return this.parentForm.controls
+    return this.parentForm.controls;
   }
 
   get storeFieldControls() {
-    return this.storeFieldForm.controls
+    return this.storeFieldForm.controls;
   }
 
   onProductsTriggered(productId?: any) {
-    let productDetails: any = null
+    let productDetails: any = null;
     if (productId) {
-      productDetails = productId
+      productDetails = productId;
     } else {
-      let productRef = this.activeRelatedProducts.filter((item: any) => item._id == this.relatedProduct.value)
-      productDetails = productRef[0]
+      let productRef = this.activeRelatedProducts.filter(
+        (item: any) => item?._id == this.relatedProduct.value
+      );
+      productDetails = productRef[0];
     }
-    const isIdPresent: boolean = this.relatedProducts.some(product => product._id == productDetails?._id);
+    const isIdPresent: boolean = this.relatedProducts.some(
+      (product) => product?._id == productDetails?._id
+    );
     if (isIdPresent) {
-      this.HotToastService.error('Product removed from list')
-      this.relatedProducts = this.relatedProducts.filter((item: any) => item._id != productDetails?._id)
+      this.HotToastService.error('Product removed from list');
+      this.relatedProducts = this.relatedProducts.filter(
+        (item: any) => item?._id != productDetails?._id
+      );
     } else {
-      this.relatedProducts.push(productDetails)
-      this.HotToastService.success('Product added to list')
+      this.relatedProducts.push(productDetails);
+      this.HotToastService.success('Product added to list');
     }
-    this.relatedProduct.setValue('')
-    this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts)
+    this.relatedProduct.setValue('');
+    this.parentForm.get('relatedProducts')?.setValue(this.relatedProducts);
   }
 
   onTagsTriggered(event: any, type: string, method: string) {
     switch (type) {
       case 'topright':
         if (method == 'add') {
-          this.tagsForm.get('topRightTag')?.setValue(event.path)
-          this.productTags.topRightTag = event.path
+          this.tagsForm.get('topRightTag')?.setValue(event.path);
+          this.productTags.topRightTag = event.path;
         } else {
-          this.tagsForm.get('topRightTag')?.setValue(null)
-          this.productTags.topRightTag = ''
+          this.tagsForm.get('topRightTag')?.setValue(null);
+          this.productTags.topRightTag = '';
         }
-        break
+        break;
       case 'topleft':
         if (method == 'add') {
-          this.tagsForm.get('topLeftTag')?.setValue(event.path)
-          this.productTags.topLeftTag = event.path
+          this.tagsForm.get('topLeftTag')?.setValue(event.path);
+          this.productTags.topLeftTag = event.path;
         } else {
-          this.tagsForm.get('topLeftTag')?.setValue(null)
-          this.productTags.topLeftTag = ''
+          this.tagsForm.get('topLeftTag')?.setValue(null);
+          this.productTags.topLeftTag = '';
         }
-        break
+        break;
       case 'bottomright':
         if (method == 'add') {
-          this.tagsForm.get('bottomRightTag')?.setValue(event.path)
-          this.productTags.bottomRightTag = event.path
+          this.tagsForm.get('bottomRightTag')?.setValue(event.path);
+          this.productTags.bottomRightTag = event.path;
         } else {
-          this.tagsForm.get('bottomRightTag')?.setValue(null)
-          this.productTags.bottomRightTag = ''
+          this.tagsForm.get('bottomRightTag')?.setValue(null);
+          this.productTags.bottomRightTag = '';
         }
-        break
+        break;
       case 'bottomleft':
         if (method == 'add') {
-          this.tagsForm.get('bottomLeftTag')?.setValue(event.path)
-          this.productTags.bottomLeftTag = event.path
+          this.tagsForm.get('bottomLeftTag')?.setValue(event.path);
+          this.productTags.bottomLeftTag = event.path;
         } else {
-          this.tagsForm.get('bottomLeftTag')?.setValue(null)
-          this.productTags.bottomLeftTag = ''
+          this.tagsForm.get('bottomLeftTag')?.setValue(null);
+          this.productTags.bottomLeftTag = '';
         }
-        break
+        break;
     }
   }
 
@@ -203,102 +214,135 @@ export class AddProductComponent implements OnInit {
     this.CategoryService.childCategories({ categories: categories }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.defaultCategories = res?.result
+          this.defaultCategories = res?.result;
           this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 
   handleThumbnail(event: any) {
-    this.parentForm.get('thumbnail')?.setValue(event.path)
-    this.previewDetails = event.path
+    this.parentForm.get('thumbnail')?.setValue(event.path);
+    this.previewDetails = event.path;
   }
 
   removeThumbnail() {
-    this.previewDetails = null
-    this.parentForm.get('thumbnail')?.setValue(null)
+    this.previewDetails = null;
+    this.parentForm.get('thumbnail')?.setValue(null);
   }
 
   productMediaClicked(event: any) {
-    let isExists: boolean = this.images.some((item: any) => item._id == event._id)
+    let isExists: boolean = this.images.some(
+      (item: any) => item?._id == event?._id
+    );
     if (isExists) {
-      this.images = this.images.filter((item: any) => item._id != event._id)
+      this.images = this.images.filter((item: any) => item?._id != event?._id);
     } else {
-      this.images.push(event)
+      this.images.push(event);
     }
   }
 
   productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item == event.path)
+    let isExists: boolean = this.icons.some((item: any) => item == event.path);
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item != event.path)
+      this.icons = this.icons.filter((item: any) => item != event.path);
     } else {
-      this.icons.push(event?.path)
+      this.icons.push(event?.path);
     }
   }
 
   removeProductMedia(image: any) {
-    this.images = this.images.filter((item: any) => item._id != image._id)
+    this.images = this.images.filter((item: any) => item?._id != image?._id);
   }
 
   productThumbnailClicked(event: any) {
-    this.form.get('thumbnail')?.setValue(event.path)
+    this.form.get('thumbnail')?.setValue(event.path);
   }
 
   toggleProductCategory(event: any, type: string) {
     if (type == 'add') {
-      let categoryDetails = this.defaultCategories.filter((item: any) => item._id == event.target.value)
-      this.categories.includes(categoryDetails[0]) ? this.HotToastService.info('Category already added') : this.categories.push(categoryDetails[0])
+      let categoryDetails = this.defaultCategories.filter(
+        (item: any) => item?._id == event.target.value
+      );
+      this.categories.includes(categoryDetails[0])
+        ? this.HotToastService.info('Category already added')
+        : this.categories.push(categoryDetails[0]);
     } else {
-      this.categories = this.categories.filter((item: any) => item?._id != event)
+      this.categories = this.categories.filter(
+        (item: any) => item?._id != event
+      );
     }
-    this.productCategory.setValue('')
+    this.productCategory.setValue('');
   }
 
   removeProductCategory(categoryId: string) {
-    this.categories = this.categories.filter((item: any) => item?._id != categoryId)
+    this.categories = this.categories.filter(
+      (item: any) => item?._id != categoryId
+    );
   }
 
   addCategory() {
-    let isExists = this.parentCategories.some((category: any) => category._id == this.parentForm.get('category')?.value)
+    let isExists = this.parentCategories.some(
+      (category: any) => category?._id == this.parentForm.get('category')?.value
+    );
     if (isExists) {
-      this.parentCategories = this.parentCategories.filter((category: any) => category._id != this.parentForm.get('category')?.value)
-      this.HotToastService.error('Category removed from list')
+      this.parentCategories = this.parentCategories.filter(
+        (category: any) =>
+          category?._id != this.parentForm.get('category')?.value
+      );
+      this.HotToastService.error('Category removed from list');
     } else {
-      let categoryDetails = this.mainCategories.filter((category: any) => category._id == this.parentForm.get('category')?.value)
-      this.parentCategories.push(categoryDetails[0])
-      let categories = this.parentCategories.map((category: any) => category._id)
-      this.getChildCategory(categories)
-      this.HotToastService.success('Category added to list')
+      let categoryDetails = this.mainCategories.filter(
+        (category: any) =>
+          category?._id == this.parentForm.get('category')?.value
+      );
+      this.parentCategories.push(categoryDetails[0]);
+      let categories = this.parentCategories.map(
+        (category: any) => category?._id
+      );
+      this.getChildCategory(categories);
+      this.HotToastService.success('Category added to list');
     }
-    this.parentForm.get('category')?.setValue('')
+    this.parentForm.get('category')?.setValue('');
     if (this.parentCategories.length > 0) {
       let parentCategory = {
-        id: this.parentCategories.map((category: any) => { return category._id }),
-        refid: this.parentCategories.map((category: any) => { return category.catid })
-      }
-      this.parentForm.get('parentCategory')?.setValue(parentCategory)
+        id: this.parentCategories.map((category: any) => {
+          return category?._id;
+        }),
+        refid: this.parentCategories.map((category: any) => {
+          return category.catid;
+        }),
+      };
+      this.parentForm.get('parentCategory')?.setValue(parentCategory);
     }
   }
 
   removeCategory(categoryId: string) {
-    this.parentCategories = this.parentCategories.filter((category: any) => category._id != categoryId)
-    let categories = this.parentCategories.map((category: any) => category._id)
-    this.HotToastService.error('Category removed from list')
-    this.getChildCategory(categories)
+    this.parentCategories = this.parentCategories.filter(
+      (category: any) => category?._id != categoryId
+    );
+    let categories = this.parentCategories.map(
+      (category: any) => category?._id
+    );
+    this.HotToastService.error('Category removed from list');
+    this.getChildCategory(categories);
     if (this.parentCategories.length > 0) {
       let parentCategory = {
-        id: this.parentCategories.map((category: any) => { return category._id }),
-        refid: this.parentCategories.map((category: any) => { return category.catid })
-      }
-      this.parentForm.get('parentCategory')?.setValue(parentCategory)
+        id: this.parentCategories.map((category: any) => {
+          return category?._id;
+        }),
+        refid: this.parentCategories.map((category: any) => {
+          return category.catid;
+        }),
+      };
+      this.parentForm.get('parentCategory')?.setValue(parentCategory);
     } else {
-      this.parentForm.get('parentCategory')?.setValue("")
+      this.parentForm.get('parentCategory')?.setValue('');
     }
   }
 
@@ -306,46 +350,50 @@ export class AddProductComponent implements OnInit {
     this.ProductHeadService.parentDetails(productSlug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.parentDetails = res?.result
-          this.getProducts()
-          this.parentForm.patchValue(res.result)
-          this.brandDetails = res?.result?.brand
-          this.previewDetails = res?.result?.thumbnail?.path
-          this.parentCategories = res?.result?.parentCategory.id
-          let categories = this.parentCategories.map((item: any) => item?._id)
-          this.getChildCategory(categories)
-          res?.result?.brand ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id) : this.parentForm.get('brand')?.setValue('')
-          res?.result?.defaultCategory ? this.parentForm.get('defaultCategory')?.setValue(res?.result?.defaultCategory?.id?._id) : this.parentForm.get('defaultCategory')?.setValue('')
-          this.parentForm.get('tax')?.setValue(res?.result?.tax?._id)
-          this.ChangeDetectorRef.markForCheck()
+          this.parentDetails = res?.result;
+          this.getProducts();
+          this.parentForm.patchValue(res.result);
+          this.brandDetails = res?.result?.brand;
+          this.previewDetails = res?.result?.thumbnail?.path;
+          this.parentCategories = res?.result?.parentCategory.id;
+          let categories = this.parentCategories.map((item: any) => item?._id);
+          this.getChildCategory(categories);
+          res?.result?.brand
+            ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id)
+            : this.parentForm.get('brand')?.setValue('');
+          res?.result?.defaultCategory
+            ? this.parentForm
+                .get('defaultCategory')
+                ?.setValue(res?.result?.defaultCategory?.id?._id)
+            : this.parentForm.get('defaultCategory')?.setValue('');
+          this.parentForm.get('tax')?.setValue(res?.result?.tax?._id);
+          this.ChangeDetectorRef.markForCheck();
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 
-  toggleAddOnItems() {
-
-  }
+  toggleAddOnItems() {}
 
   saveChanges() {
-    let files = this.images.map((item: any) => item.path) || []
-    this.form.get('files')?.setValue(files)
+    let files = this.images.map((item: any) => item.path) || [];
+    this.form.get('files')?.setValue(files);
 
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     let payload = {
       ...this.form.value,
       icons: this.icons.map((icon: any) => icon.path),
       productTags: this.tagsForm.value,
-      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product._id) : [],
-      product: { id: this.parentDetails?._id, refid: this.parentDetails?.prodid },
+      relatedProducts: this.relatedProducts
+        ? this.relatedProducts.map((product: any) => product?._id)
+        : [],
+      product: { id: this.parentDetails?._id, refid: this.parentDetails?._id },
       attributes: this.attributes,
       tagIcons: this.tagIcons,
       parentId: this.parentDetails?._id,
@@ -354,21 +402,22 @@ export class AddProductComponent implements OnInit {
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
-      }
-    }
+      },
+    };
 
     this.ProductService.addProduct(payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Router.navigate(['/app/product'])
-          this.HotToastService.success(res?.message)
+          this.Router.navigate(['/app/product']);
+          this.HotToastService.success(res?.message);
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.error.message);
+      },
+    });
   }
 
   toggleTab(index: number) {
@@ -380,43 +429,61 @@ export class AddProductComponent implements OnInit {
   createParent() {
     if (this.parentCategories.length > 0) {
       let parentCategory = {
-        id: this.parentCategories.map((category: any) => { return category._id }),
-        refid: this.parentCategories.map((category: any) => { return category.catid })
-      }
-      this.parentForm.get('parentCategory')?.setValue(parentCategory)
+        id: this.parentCategories.map((category: any) => {
+          return category?._id;
+        }),
+        refid: this.parentCategories.map((category: any) => {
+          return category.catid;
+        }),
+      };
+      this.parentForm.get('parentCategory')?.setValue(parentCategory);
     }
-
     if (this.parentForm.get('defaultCategory')?.value) {
-      let defaultCategory = {
-        id: this.parentForm.get('defaultCategory')?.value,
-        refid: this.defaultCategories.filter((category: any) => category._id == this.parentForm.get('defaultCategory')?.value)[0]?.catid
-      }
-      this.parentForm.get('defaultCategory')?.setValue(defaultCategory)
-    }
+      // Get the category details
+      const selectedCategory = this.defaultCategories.find(
+        (category: any) =>
+          category?._id === this.parentForm.get('defaultCategory')?.value
+      );
 
+      // Only create the object if we found the category
+      if (selectedCategory) {
+        const defaultCategory = {
+          id: selectedCategory._id,
+          refid: selectedCategory.catid,
+        };
+        this.parentForm.get('defaultCategory')?.setValue(defaultCategory);
+      }
+    }
 
     if (!this.parentForm.valid) {
-      this.isParentSubmitted = true
-      return
+      this.isParentSubmitted = true;
+      return;
     }
 
-    this.parentForm.get('brand')?.value ? null : this.parentForm.get('brand')?.setValue(null)
-    this.parentForm.get('defaultCategory')?.value ? null : this.parentForm.get('defaultCategory')?.setValue(null)
+    this.parentForm.get('brand')?.value
+      ? null
+      : this.parentForm.get('brand')?.setValue(null);
+    this.parentForm.get('defaultCategory')?.value
+      ? null
+      : this.parentForm.get('defaultCategory')?.setValue(null);
 
     this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res.message)
-          this.getParentDetails(res?.result?.slug)
-          this.Router.navigate([appRoutes.product.ADD_PRODUCT], { queryParams: { product: res?.result?.slug } })
-          this.form.get('name')?.setValue(this.parentForm.value.name)
+          this.HotToastService.success(res.message);
+          this.getParentDetails(res?.result?.slug);
+          this.Router.navigate([appRoutes.product.ADD_PRODUCT], {
+            queryParams: { product: res?.result?.slug },
+          });
+          this.form.get('name')?.setValue(this.parentForm.value.name);
         } else {
-          this.HotToastService.error(res.message)
+          this.HotToastService.error(res.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.error.message);
+      },
+    });
   }
 
   toggleSearchKeywords(event: any, type: string) {
@@ -425,147 +492,180 @@ export class AddProductComponent implements OnInit {
     }
     if (type == 'add' && event.target.value) {
       if (this.searchKeywords.includes(event.target.value)) {
-        this.HotToastService.info('Keyword already added')
+        this.HotToastService.info('Keyword already added');
       } else {
-        this.searchKeywords.push(event.target.value)
-        this.searchKeyword?.setValue('')
-        this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+        this.searchKeywords.push(event.target.value);
+        this.searchKeyword?.setValue('');
+        this.form.get('searchKeywords')?.setValue(this.searchKeywords);
       }
     } else {
-      this.searchKeywords = this.searchKeywords.filter((item: any) => item != event)
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords)
+      this.searchKeywords = this.searchKeywords.filter(
+        (item: any) => item != event
+      );
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     }
   }
 
-  searchProducts() {
-
-  }
+  searchProducts() {}
 
   get formControls() {
-    return this.form.controls
+    return this.form.controls;
   }
 
   ngOnInit(): void {
-    this.base = environment.base
+    this.base = environment.base;
 
     this.attributeForm = new FormGroup({
-      type: new FormControl("text"),
-      title: new FormControl("", Validators.required),
-      value: new FormControl("", Validators.required)
-    })
+      type: new FormControl('text'),
+      title: new FormControl('', Validators.required),
+      value: new FormControl('', Validators.required),
+    });
 
     this.storeFieldForm = new FormGroup({
       title: new FormControl('  ', Validators.required),
-      description: new FormControl('  ', Validators.required)
-    })
+      description: new FormControl('  ', Validators.required),
+    });
 
     this.tagsForm = new FormGroup({
       topRightTag: new FormControl(null),
       topLeftTag: new FormControl(null),
       bottomRightTag: new FormControl(null),
-      bottomLeftTag: new FormControl(null)
-    })
+      bottomLeftTag: new FormControl(null),
+    });
 
-    this.slug = this.ActivatedRoute.snapshot.queryParams.product || ''
+    this.slug = this.ActivatedRoute.snapshot.queryParams.product || '';
     if (this.slug) {
-      this.getParentDetails(this.slug)
+      this.getParentDetails(this.slug);
     }
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe(
+      (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
       }
-    })
+    );
 
     this.parentForm = new FormGroup({
-      name: new FormControl("", Validators.required),
-      brand: new FormControl(""),
+      name: new FormControl('', Validators.required),
+      brand: new FormControl(''),
       defaultCategory: new FormControl(null), // Default category
-      parentCategory: new FormControl("", Validators.required), //Main category
-      category: new FormControl(""),
+      parentCategory: new FormControl('', Validators.required), //Main category
+      category: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       isActive: new FormControl(true),
-      sku: new FormControl("", Validators.required),
-      tax: new FormControl(""),
-      hsn: new FormControl(""),
-      cod: new FormGroup({ isPresent: new FormControl(true), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
-      shipping: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
-      return: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
-      replace: new FormGroup({ isPresent: new FormControl(false), value: new FormControl(0, Validators.pattern('^[0-9]+$')) }),
-    })
+      sku: new FormControl('', Validators.required),
+      tax: new FormControl(''),
+      hsn: new FormControl(''),
+      cod: new FormGroup({
+        isPresent: new FormControl(true),
+        value: new FormControl(0, Validators.pattern('^[0-9]+$')),
+      }),
+      shipping: new FormGroup({
+        isPresent: new FormControl(false),
+        value: new FormControl(0, Validators.pattern('^[0-9]+$')),
+      }),
+      return: new FormGroup({
+        isPresent: new FormControl(false),
+        value: new FormControl(0, Validators.pattern('^[0-9]+$')),
+      }),
+      replace: new FormGroup({
+        isPresent: new FormControl(false),
+        value: new FormControl(0, Validators.pattern('^[0-9]+$')),
+      }),
+    });
 
     this.form = new FormGroup({
-      name: new FormControl("", Validators.required),
+      name: new FormControl('', Validators.required),
       price: new FormGroup({
-        mrp: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-        offer: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
-        selling: new FormControl("", Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'))
+        mrp: new FormControl('', [
+          Validators.required,
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+        ]),
+        offer: new FormControl(
+          '',
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+        ),
+        selling: new FormControl(
+          '',
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+        ),
       }),
-      slug: new FormControl("", Validators.required),
-      stock: new FormControl("", [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-      moq: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-      sku: new FormControl("", Validators.required),
-      maxOrderQuantity: new FormControl(1, [Validators.required, Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
-      thumbnail: new FormControl("", Validators.required),
-      files: new FormControl("", Validators.required),
-      video: new FormControl(""),
-      unit: new FormControl(""),
-      origin: new FormControl(""),
-      overview: new FormControl(""),
-      boostScore: new FormControl(0, [Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')]),
+      slug: new FormControl('', Validators.required),
+      stock: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+      ]),
+      moq: new FormControl(1, [
+        Validators.required,
+        Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+      ]),
+      sku: new FormControl('', Validators.required),
+      maxOrderQuantity: new FormControl(1, [
+        Validators.required,
+        Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+      ]),
+      thumbnail: new FormControl('', Validators.required),
+      files: new FormControl('', Validators.required),
+      video: new FormControl(''),
+      unit: new FormControl(''),
+      origin: new FormControl(''),
+      overview: new FormControl(''),
+      boostScore: new FormControl(0, [
+        Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
+      ]),
       details: new FormGroup({
-        additionalButton: new FormControl(""),
-        buttonRedirectUrl: new FormControl(""),
-        description: new FormControl(""),
-        features: new FormControl(""),
-        longDescription: new FormControl("")
+        additionalButton: new FormControl(''),
+        buttonRedirectUrl: new FormControl(''),
+        description: new FormControl(''),
+        features: new FormControl(''),
+        longDescription: new FormControl(''),
       }),
-      metaTitle: new FormControl(""),
-      metaDescription: new FormControl(""),
-      metaKeywords: new FormControl(""),
+      metaTitle: new FormControl(''),
+      metaDescription: new FormControl(''),
+      metaKeywords: new FormControl(''),
       stockWarning: new FormControl(10),
       searchKeywords: new FormControl([]),
-      relatedProducts: new FormControl(""),
+      relatedProducts: new FormControl(''),
       isActive: new FormControl(true),
       isVisible: new FormControl(true),
-    })
+    });
 
     this.CategoryService.getMainCategories().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.mainCategories = res?.result
+          this.mainCategories = res?.result;
           this.ChangeDetectorRef.markForCheck();
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      },
+    });
 
     //Get brands
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.brands = res?.result
-          this.ChangeDetectorRef.markForCheck()
+          this.brands = res?.result;
+          this.ChangeDetectorRef.markForCheck();
         }
-      }
-    })
+      },
+    });
     //Get brands
 
     //Get active products
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.activeRelatedProducts = res?.result
-          this.ChangeDetectorRef.markForCheck()
+          this.activeRelatedProducts = res?.result;
+          this.ChangeDetectorRef.markForCheck();
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
     //Get active products
 
     //Tax class details
@@ -573,22 +673,20 @@ export class AddProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.taxClassDetails = res?.result;
-          this.parentForm.get('tax')?.setValue(this.taxClassDetails[0]?._id)
+          this.parentForm.get('tax')?.setValue(this.taxClassDetails[0]?._id);
         } else {
-
         }
-      }, error: (err: any) => {
-
-      }
+      },
+      error: (err: any) => {},
     });
     //Tax class details
-    
-    this.generateSlug()
+
+    this.generateSlug();
   }
 
   //Auto generate slug starts here
-  autoGenerateSlug(){
-    this.generateSlug()
+  autoGenerateSlug() {
+    this.generateSlug();
   }
 
   generateSlug() {
@@ -598,96 +696,105 @@ export class AddProductComponent implements OnInit {
       .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
       .trim() // Remove any extra spaces at the start and end
       .replace(/\s+/g, '-'); // Replace spaces with '-'
-    this.form.patchValue({ slug })
+    this.form.patchValue({ slug });
   }
   //Auto generate slug ends here
 
   //Get child products for corresponding parentId
   getProducts() {
-    this.ProductService.getProducts({ parentId: this.parentDetails?._id }).subscribe({
+    this.ProductService.getProducts({
+      parentId: this.parentDetails?._id,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.existingProducts = res?.result
+          this.existingProducts = res?.result;
           if (this.existingProducts.length > 0) {
-            this.form.get('isVisible')?.setValue(false)
+            this.form.get('isVisible')?.setValue(false);
           }
-          let latestProducts = this.existingProducts.pop()
-          this.form.get('name')?.setValue(latestProducts?.name)
-          this.ChangeDetectorRef.markForCheck()
+          let latestProducts = this.existingProducts.pop();
+          this.form.get('name')?.setValue(latestProducts?.name);
+          this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
   //Get child products for corresponding parentId
 
   //Store fields
   onSaveStoreField() {
     if (!this.storeFieldForm.valid) {
-      this.isStoreSubmitted = true
-      return
+      this.isStoreSubmitted = true;
+      return;
     }
 
-    this.storeFields.push(this.storeFieldForm.value)
-    this.storeFieldForm.reset()
-    this.isStoreSubmitted = false
+    this.storeFields.push(this.storeFieldForm.value);
+    this.storeFieldForm.reset();
+    this.isStoreSubmitted = false;
   }
 
   removeStoreField(storeFieldIndex: number) {
-    this.storeFields.splice(storeFieldIndex, 1)
+    this.storeFields.splice(storeFieldIndex, 1);
   }
   //Store fields
 
   //Attributes
   removeAttribute(attributeIndex: number) {
-    this.HotToastService.info('Attribute removed successfully')
-    this.attributes.splice(attributeIndex, 1)
+    this.HotToastService.info('Attribute removed successfully');
+    this.attributes.splice(attributeIndex, 1);
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true })
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
   }
 
   close() {
-    this.modalRef?.hide()
-    this.attributeForm.patchValue({ type: "text", title: "", value: "" })
-    this.isAttributeSubmitted = false
+    this.modalRef?.hide();
+    this.attributeForm.patchValue({ type: 'text', title: '', value: '' });
+    this.isAttributeSubmitted = false;
   }
 
   get attributeControls() {
-    return this.attributeForm.controls
+    return this.attributeForm.controls;
   }
 
   submitVariant() {
     if (!this.attributeForm.valid) {
-      this.isAttributeSubmitted = true
-      return
+      this.isAttributeSubmitted = true;
+      return;
     }
 
-    let isExists = this.attributes.some((attribute: any) => attribute.title == this.attributeForm.get('title')?.value)
+    let isExists = this.attributes.some(
+      (attribute: any) =>
+        attribute.title == this.attributeForm.get('title')?.value
+    );
     if (isExists) {
-      this.HotToastService.info('Attribute already exists with same title')
-      return
+      this.HotToastService.info('Attribute already exists with same title');
+      return;
     } else {
-      this.HotToastService.success('Attribute added successfully')
-      this.attributes.push(this.attributeForm.value)
-      this.close()
+      this.HotToastService.success('Attribute added successfully');
+      this.attributes.push(this.attributeForm.value);
+      this.close();
     }
   }
   //Attributes
 
   handleTagIcons(event: any) {
     if (this.tagIcons.includes(event)) {
-      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path)
+      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path);
     } else {
-      this.tagIcons.push(event.path)
+      this.tagIcons.push(event.path);
     }
   }
 
   removeTagIcons(icon: any) {
-    this.tagIcons = this.tagIcons.filter((item: any) => item != icon)
+    this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
   }
 }

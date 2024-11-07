@@ -1011,7 +1011,7 @@
                                 <select [formControl]="widgetCollection" id="collections" class="form-select">
                                     <option value="" disabled>-- Select an option --</option>
                                     <option *ngFor="let collection of collections; let i = index"
-                                        value="{{collection._id}}">
+                                        value="{{collection?._id}}">
                                         {{collection.name}}
                                     </option>
                                 </select>
@@ -1023,7 +1023,7 @@
                                 <label for="brands" class="form-label">Brands</label>
                                 <select [formControl]="widgetBrand" id="brands" class="form-select">
                                     <option value="" disabled>-- Select an option --</option>
-                                    <option *ngFor="let brand of brands; let i = index" value="{{brand._id}}">
+                                    <option *ngFor="let brand of brands; let i = index" value="{{brand?._id}}">
                                         {{brand.name}}
                                     </option>
                                 </select>
@@ -1035,7 +1035,7 @@
                                 <label for="categories" class="form-label">Categories</label>
                                 <select [formControl]="widgetCategory" id="categories" class="form-select">
                                     <option value="" disabled>-- Select an option --</option>
-                                    <option *ngFor="let category of categories; let i = index" value="{{category._id}}">
+                                    <option *ngFor="let category of categories; let i = index" value="{{category?._id}}">
                                         {{category.name}}
                                     </option>
                                 </select>

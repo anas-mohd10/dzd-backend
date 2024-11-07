@@ -32,5 +32,7 @@ export const productEndpoints = {
     getProductDetails: '/get-productdetails',
     getProducts: '/get-products',
     deleteProduct: '/delete-product',
-    manageChildProducts: '/manageChildProducts'
+    manageChildProducts: '/manageChildProducts',
+    productStoreFields: '/productStoreFields',
+    updateProductStoreFields: '/updateProductStoreFields'
 }

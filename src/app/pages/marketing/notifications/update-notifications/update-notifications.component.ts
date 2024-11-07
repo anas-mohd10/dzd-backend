@@ -9,7 +9,7 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
 @Component({
   selector: 'app-update-notifications',
   templateUrl: './update-notifications.component.html',
-  styleUrls: ['./update-notifications.component.scss']
+  styleUrls: ['./update-notifications.component.scss'],
 })
 export class UpdateNotificationsComponent implements OnInit {
   form: FormGroup;
@@ -32,10 +32,10 @@ export class UpdateNotificationsComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.notificationId = this.ActivatedRoute.snapshot.queryParams.id || ''
+    this.notificationId = this.ActivatedRoute.snapshot.queryParams.id || '';
 
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -50,48 +50,56 @@ export class UpdateNotificationsComponent implements OnInit {
       isActive: new FormControl('true'),
     });
 
-    this.form.get('scheduledDate')?.setValue(this.scheduleDate) // set default schedule date
+    this.form.get('scheduledDate')?.setValue(this.scheduleDate); // set default schedule date
 
     this.CustomersService.getActiveCustomers().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.customersData = res?.result
-          for (let customer of this.customersData) customer.title = (customer?.name ? customer?.name : '-- Incomplete Profile --') + " ( " + customer?.mobile + " )"
-          this.ChangeDetectorRef.markForCheck()
+          this.customersData = res?.result;
+          for (let customer of this.customersData)
+            customer.title =
+              (customer?.name ? customer?.name : '-- Incomplete Profile --') +
+              ' ( ' +
+              customer?.mobile +
+              ' )';
+          this.ChangeDetectorRef.markForCheck();
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {},
+    });
 
-      }
-    })
-
-    this.NotificationsService.getNotificationDetails(this.notificationId).subscribe({
+    this.NotificationsService.getNotificationDetails(
+      this.notificationId
+    ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.notificationDetails = res?.result
-          this.form.patchValue(res?.result)
-          this.customers = res?.result?.customers
-          if (this.thumbnail) this.thumbnail = res?.result?.thumbnail?.path
-          if (res?.result?.scheduledDate) this.form.get('scheduledDate')?.setValue(res?.result?.scheduledDate.split('T')[0])
-          this.ChangeDetectorRef.markForCheck()
+          this.notificationDetails = res?.result;
+          this.form.patchValue(res?.result);
+          this.customers = res?.result?.customers;
+          if (this.thumbnail) this.thumbnail = res?.result?.thumbnail?.path;
+          if (res?.result?.scheduledDate)
+            this.form
+              .get('scheduledDate')
+              ?.setValue(res?.result?.scheduledDate.split('T')[0]);
+          this.ChangeDetectorRef.markForCheck();
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 
   compareFn(item: any, selected: any) {
-    return item._id === selected._id;
+    return item?._id === selected?._id;
   }
 
   handleThumbnail(event: any) {
-    this.form.get('thumbnail')?.setValue(event?._id)
-    this.thumbnail = event?.path
+    this.form.get('thumbnail')?.setValue(event?._id);
+    this.thumbnail = event?.path;
   }
 
   removeThumbnail() {
-    this.form.get('thumbnail')?.setValue(null)
-    this.thumbnail = ''
+    this.form.get('thumbnail')?.setValue(null);
+    this.thumbnail = '';
   }
 
   get formControls() {
@@ -120,9 +128,8 @@ export class UpdateNotificationsComponent implements OnInit {
         } else if (res.errorCode == 0) {
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-
-      }
-    })
+      },
+      error: (err: any) => {},
+    });
   }
 }

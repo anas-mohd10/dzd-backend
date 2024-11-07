@@ -54,10 +54,10 @@
                     <td>{{location.name}}</td>
                     <td>{{location.address}}</td>
                     <td>
-                        <app-switch [isToggledProps]="location.isActive" (switchToggled)="onSwitchChange($event)" [switchId]="location._id"></app-switch>
+                        <app-switch [isToggledProps]="location.isActive" (switchToggled)="onSwitchChange($event)" [switchId]="location?._id"></app-switch>
                     </td>
                     <td class="d-flex align-items-center justify-content-center gap-2">
-                        <div class="cursor-pointer" routerLink="{{ appRoute.pickupLocations.update + '/' + location._id }}">
+                        <div class="cursor-pointer" routerLink="{{ appRoute.pickupLocations.update + '/' + location?._id }}">
                             <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                 aria-hidden="true">

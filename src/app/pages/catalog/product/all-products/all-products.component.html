@@ -50,7 +50,7 @@
           <label for="categories" class="form-label">Brands</label>
           <select [formControl]="productBrand" id="brands" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
-            <option *ngFor="let brand of brands" value="{{brand._id}}">{{brand?.name}}</option>
+            <option *ngFor="let brand of brands" value="{{brand?._id}}">{{brand?.name}}</option>
           </select>
         </div>
         <div class="col-lg-4 mb-3 form-group">
@@ -230,7 +230,7 @@
                 <td>{{product?.boostScore}}</td>
                 <td>{{formdateDate(product?.updatedAt)}}</td>
                 <td>
-                  <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.prodid"
+                  <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
                     (switchToggled)="updateProduct($event)"></app-switch>
                 </td>
                 <td routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{product: product?.slug}">

@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -10,9 +15,8 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-payment-settings',
   templateUrl: './payment-settings.component.html',
-  styleUrls: ['./payment-settings.component.scss']
+  styleUrls: ['./payment-settings.component.scss'],
 })
-
 export class PaymentSettingsComponent implements OnInit {
   appRoute = appRoutes;
   details: any;
@@ -23,29 +27,41 @@ export class PaymentSettingsComponent implements OnInit {
   isSubmitted: boolean = false;
   form: FormGroup = new FormGroup({});
   pgs: Array<any> = [
-    { title: "Paytabs", id: "paytabs", icon: `${environment.base}paytabs.png` },
-    { title: "Tabby", id: "tabby", icon: `${environment.base}tabby.png` },
-    { title: "Tap Payments", id: "tap", icon: `${environment.base}tap.png` },
-    { title: "Rak Bank", id: "rakbank", icon: `${environment.base}rakbank.png` },
-    { title: "Qi", id: "qi", icon: `${environment.base}qi.png` },
-    { title: "Network International", id: "network-international", icon: `${environment.base}network-international.png` },
-    { title: "Newtork International (Tokenized)", id: "network-international-tokenized", icon: `${environment.base}network-international.png` }
-  ]
-  displayIcon: string = ''
-  modalRef?: BsModalRef
-  settingsForm: FormGroup = new FormGroup({})
+    { title: 'Paytabs', id: 'paytabs', icon: `${environment.base}paytabs.png` },
+    { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
+    { title: 'Tap Payments', id: 'tap', icon: `${environment.base}tap.png` },
+    {
+      title: 'Rak Bank',
+      id: 'rakbank',
+      icon: `${environment.base}rakbank.png`,
+    },
+    { title: 'Qi', id: 'qi', icon: `${environment.base}qi.png` },
+    {
+      title: 'Network International',
+      id: 'network-international',
+      icon: `${environment.base}network-international.png`,
+    },
+    {
+      title: 'Newtork International (Tokenized)',
+      id: 'network-international-tokenized',
+      icon: `${environment.base}network-international.png`,
+    },
+  ];
+  displayIcon: string = '';
+  modalRef?: BsModalRef;
+  settingsForm: FormGroup = new FormGroup({});
   paymentGatewayConfig: any = {
-    'paytabs': ['profileId', 'serverKey', 'region'],
-    'tabby': ['merchantCode', 'secretKey', 'publicKey'],
-    'tap': ['secretKey', 'publicKey'],
-    'rakbank': ['publicKey', 'privateKey'],
+    paytabs: ['profileId', 'serverKey', 'region'],
+    tabby: ['merchantCode', 'secretKey', 'publicKey'],
+    tap: ['secretKey', 'publicKey'],
+    rakbank: ['publicKey', 'privateKey'],
     'network-international': ['outletReference', 'apiKey'],
     'network-international-tokenized': ['outletReference', 'apiKey'],
-    'qi': ['secretKey']
+    qi: ['secretKey'],
   };
 
   get formControls() {
-    return this.form.controls
+    return this.form.controls;
   }
 
   constructor(
@@ -54,7 +70,7 @@ export class PaymentSettingsComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -75,19 +91,21 @@ export class PaymentSettingsComponent implements OnInit {
       isEnabled: new FormControl(false),
     });
 
-    this.fetchGateways()
-    this.fetchSettings()
+    this.fetchGateways();
+    this.fetchSettings();
 
     this.settingsForm = new FormGroup({
       isOnlinePayment: new FormControl(false),
       isCashOnDelivery: new FormControl(false),
       isCardOnDelivery: new FormControl(false),
-    })
+    });
   }
 
   paymentGatewayEnabled(pgId: string) {
-    let isExists = this.paymentGateways.some((paymentGateway: any) => paymentGateway.paymentGateway == pgId)
-    return isExists
+    let isExists = this.paymentGateways.some(
+      (paymentGateway: any) => paymentGateway.paymentGateway == pgId
+    );
+    return isExists;
   }
 
   fetchGateways() {
@@ -95,27 +113,30 @@ export class PaymentSettingsComponent implements OnInit {
       next: (response: any) => {
         if (response.errorCode == 0) {
           this.paymentGateways = response.result;
-          this.ChangeDetectorRef.markForCheck()
+          this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(response.message);
         }
       },
       error: (error: any) => {
         this.HotToastService.error(error.error.message);
-      }
-    })
+      },
+    });
   }
 
-  onSwitcTriggered(event: { switchId: string, toggleState: boolean }, type: string) {
+  onSwitcTriggered(
+    event: { switchId: string; toggleState: boolean },
+    type: string
+  ) {
     switch (type) {
       case 'online':
-        this.settingsForm.patchValue({ isOnlinePayment: event.toggleState })
+        this.settingsForm.patchValue({ isOnlinePayment: event.toggleState });
         break;
       case 'cash':
-        this.settingsForm.patchValue({ isCashOnDelivery: event.toggleState })
+        this.settingsForm.patchValue({ isCashOnDelivery: event.toggleState });
         break;
       case 'card':
-        this.settingsForm.patchValue({ isCardOnDelivery: event.toggleState })
+        this.settingsForm.patchValue({ isCardOnDelivery: event.toggleState });
         break;
     }
 
@@ -123,14 +144,15 @@ export class PaymentSettingsComponent implements OnInit {
       next: (response: any) => {
         if (response.errorCode == 0) {
           this.HotToastService.success(response.message);
-          this.fetchSettings()
+          this.fetchSettings();
         } else {
           this.HotToastService.error(response.message);
         }
-      }, error: (error: any) => {
+      },
+      error: (error: any) => {
         this.HotToastService.error(error.error.message);
-      }
-    })
+      },
+    });
   }
 
   fetchSettings() {
@@ -138,61 +160,82 @@ export class PaymentSettingsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settingsForm.patchValue(res.result);
-          this.ChangeDetectorRef.markForCheck()
+          this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(res.message);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err.error.message);
-      }
-    })
+      },
+    });
   }
 
-  onPaymentGatewayTriggered(event: { switchId: string, toggleState: boolean }) {
+  onPaymentGatewayTriggered(event: { switchId: string; toggleState: boolean }) {
     this.form.patchValue({ isEnabled: event.toggleState });
   }
 
   onMediaTriggered(event: any) {
-    this.form.patchValue({ displayIcon: event._id });
+    this.form.patchValue({ displayIcon: event?._id });
   }
 
   open(template: TemplateRef<any>, pgId: string) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true });
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
     this.onPaymentGatewayChange(pgId);
   }
 
   close() {
     this.modalRef?.hide();
     this.form.reset();
-    this.displayIcon = ''
+    this.displayIcon = '';
     this.isSubmitted = false;
   }
 
   onPaymentGatewayChange(pgId: string) {
-    this.activePgDetails = this.pgs.filter(pg => pg.id == pgId)[0];
-    this.form.patchValue({ displayName: this.activePgDetails.title, paymentGateway: pgId })
+    this.activePgDetails = this.pgs.filter((pg) => pg.id == pgId)[0];
+    this.form.patchValue({
+      displayName: this.activePgDetails.title,
+      paymentGateway: pgId,
+    });
     this.PaymentDetailsService.getPaymentDetails(pgId).subscribe({
       next: (response: any) => {
         if (response.errorCode == 0) {
           this.pgDetails = response.result;
           this.displayIcon = response.result?.displayIcon?.path;
           this.form.patchValue(this.pgDetails);
-          this.form.patchValue({ displayIcon: response.result?.displayIcon?._id })
-          this.ChangeDetectorRef.markForCheck()
+          this.form.patchValue({
+            displayIcon: response.result?.displayIcon?._id,
+          });
+          this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(response.message);
         }
       },
       error: (error: any) => {
         this.HotToastService.error(error.error.message);
-      }
-    })
+      },
+    });
 
     const paymentGateway = this.form.get('paymentGateway')?.value;
-    const fields = ['profileId', 'apiKey', 'outletReference', 'merchantCode', 'merchantId', 'secretKey', 'displayName', 'displayIcon', 'publicKey', 'region', 'serverKey'];
+    const fields = [
+      'profileId',
+      'apiKey',
+      'outletReference',
+      'merchantCode',
+      'merchantId',
+      'secretKey',
+      'displayName',
+      'displayIcon',
+      'publicKey',
+      'region',
+      'serverKey',
+    ];
 
-    fields.forEach(field => {
-      let pgConfig = this.paymentGatewayConfig[paymentGateway] || []
+    fields.forEach((field) => {
+      let pgConfig = this.paymentGatewayConfig[paymentGateway] || [];
       if (pgConfig?.includes(field)) {
         this.form.get(field)?.setValidators([Validators.required]);
       } else {
@@ -208,19 +251,22 @@ export class PaymentSettingsComponent implements OnInit {
       return;
     }
 
-    this.PaymentDetailsService.manage({ _id: this.pgDetails?._id, ...this.form.value }).subscribe({
+    this.PaymentDetailsService.manage({
+      _id: this.pgDetails?._id,
+      ...this.form.value,
+    }).subscribe({
       next: (response: any) => {
         if (response.errorCode == 0) {
           this.HotToastService.success(response.message);
           this.close();
-          this.fetchGateways()
+          this.fetchGateways();
         } else {
           this.HotToastService.error(response.message);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err.error.message);
-      }
-    })
+      },
+    });
   }
-
 }

@@ -18,31 +18,31 @@ export class AddCollectionComponent implements OnInit {
   appRoute = appRoutes;
   products: Array<any> = [];
   isSubmitted: boolean = false;
-  page: number = 1
-  selectedProducts: any = []
-  product: FormControl = new FormControl('')
-  productSku: FormControl = new FormControl('')
-  searchProducts: Array<any> = []
-  isAutoCompleteEnabled: boolean = true
+  page: number = 1;
+  selectedProducts: any = [];
+  product: FormControl = new FormControl('');
+  productSku: FormControl = new FormControl('');
+  searchProducts: Array<any> = [];
+  isAutoCompleteEnabled: boolean = true;
   productIds: Array<any> = [];
-  productDetails: Array<any> = []
-  base: string = `${environment.base}`
-  cover: string = ''
-  thumbnail: string = ''
+  productDetails: Array<any> = [];
+  base: string = `${environment.base}`;
+  cover: string = '';
+  thumbnail: string = '';
 
   constructor(
     private CollectionService: CollectionService,
     private ProductService: ProductService,
     private Router: Router,
     private HotToastService: HotToastService,
-    private ChangeDetectorRef: ChangeDetectorRef,
-  ) { }
+    private ChangeDetectorRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      name: new FormControl("", Validators.required),
-      description: new FormControl(""),
-      products: new FormControl("", Validators.required),
+      name: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      products: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
@@ -54,37 +54,41 @@ export class AddCollectionComponent implements OnInit {
   }
 
   addIcon(event: any) {
-    this.form.get('icons')?.value.push(event.path)
+    this.form.get('icons')?.value.push(event.path);
   }
 
   removeIcon(icon: string) {
-    this.form.get('icons')?.setValue(this.form.get('icons')?.value.filter((item: string) => item !== icon))
+    this.form
+      .get('icons')
+      ?.setValue(
+        this.form.get('icons')?.value.filter((item: string) => item !== icon)
+      );
   }
 
   handleCollectionCover(event: any) {
-    this.form.get('cover')?.setValue(event.path)
-    this.cover = event.path
+    this.form.get('cover')?.setValue(event.path);
+    this.cover = event.path;
   }
 
   get formControls() {
-    return this.form.controls
+    return this.form.controls;
   }
 
   handleCollectionThumbnail(event: any) {
-    this.form.get('thumbnail')?.setValue(event.path)
-    this.thumbnail = event.path
+    this.form.get('thumbnail')?.setValue(event.path);
+    this.thumbnail = event.path;
   }
 
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
-        this.form.get('cover')?.setValue(null)
-        this.cover = ''
-        break
+        this.form.get('cover')?.setValue(null);
+        this.cover = '';
+        break;
       case 'thumbnail':
-        this.form.get('thumbnail')?.setValue(null)
-        this.thumbnail = ''
-        break
+        this.form.get('thumbnail')?.setValue(null);
+        this.thumbnail = '';
+        break;
     }
   }
 
@@ -95,46 +99,51 @@ export class AddCollectionComponent implements OnInit {
           name: this.product.value,
           isVisible: true,
           isDelete: false,
-          isActive: true
+          isActive: true,
         }).subscribe((res: any) => {
           if (res?.errorCode == 0) {
-            this.searchProducts = res?.result
-            this.ChangeDetectorRef.markForCheck()
+            this.searchProducts = res?.result;
+            this.ChangeDetectorRef.markForCheck();
           }
-        })
-      } else { this.searchProducts = [] }
-    }, 800)
+        });
+      } else {
+        this.searchProducts = [];
+      }
+    }, 800);
   }
 
   toggleProductMethod(type: any) {
-    this.isAutoCompleteEnabled = type
+    this.isAutoCompleteEnabled = type;
   }
 
   addProductSku(product: any) {
     if (!this.productIds.includes(product?._id)) {
-      this.productDetails.push(product)
-      this.productIds.push(product?._id)
+      this.productDetails.push(product);
+      this.productIds.push(product?._id);
     } else {
-      this.productDetails = this.productDetails.filter(item => item?._id !== product?._id)
-      this.productIds = this.productIds.filter(item => item !== product?._id)
+      this.productDetails = this.productDetails.filter(
+        (item) => item?._id !== product?._id
+      );
+      this.productIds = this.productIds.filter((item) => item !== product?._id);
     }
 
-    this.product.setValue('')
-    this.searchProducts = []
+    this.product.setValue('');
+    this.searchProducts = [];
   }
 
   onSubmit() {
-    this.selectedProducts = []
+    this.selectedProducts = [];
     if (this.isAutoCompleteEnabled) {
-      for (let product of this.productDetails) this.selectedProducts.push(product._id)
-      this.form.get('products')?.setValue(this.selectedProducts)
+      for (let product of this.productDetails)
+        this.selectedProducts.push(product?._id);
+      this.form.get('products')?.setValue(this.selectedProducts);
     } else {
-      this.selectedProducts = this.productSku?.value.split(',')
-      this.form.get('products')?.setValue(this.selectedProducts)
+      this.selectedProducts = this.productSku?.value.split(',');
+      this.form.get('products')?.setValue(this.selectedProducts);
     }
 
     if (!this.form.valid) {
-      this.isSubmitted = true
+      this.isSubmitted = true;
       return;
     }
 
@@ -147,29 +156,33 @@ export class AddCollectionComponent implements OnInit {
             this.HotToastService.success(res?.message);
             this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
           }
-        }, error: (err: any) => {
-          this.HotToastService.error(err.error.message)
-        }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err.error.message);
+        },
       });
     } else {
-      this.CollectionService.addCollectionSku({ ...this.form.value }).subscribe({
-        next: (res: any) => {
-          if (res.errorCode != 0) {
-            this.HotToastService.error(res?.messaage);
-          } else if (res.errorCode == 0) {
-            this.HotToastService.success(res?.message);
-            this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-          }
-        }, error: (err: any) => {
-          this.HotToastService.error(err.error.message)
+      this.CollectionService.addCollectionSku({ ...this.form.value }).subscribe(
+        {
+          next: (res: any) => {
+            if (res.errorCode != 0) {
+              this.HotToastService.error(res?.messaage);
+            } else if (res.errorCode == 0) {
+              this.HotToastService.success(res?.message);
+              this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+            }
+          },
+          error: (err: any) => {
+            this.HotToastService.error(err.error.message);
+          },
         }
-      });
+      );
     }
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    let products = [...this.productDetails]
+    let products = [...this.productDetails];
     moveItemInArray(products, event.previousIndex, event.currentIndex);
-    this.productDetails = [...products]
+    this.productDetails = [...products];
   }
 }

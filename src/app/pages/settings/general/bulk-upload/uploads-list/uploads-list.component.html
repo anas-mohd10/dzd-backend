@@ -66,6 +66,7 @@
                         <th>Name</th>
                         <th>Created by</th>
                         <th>Status</th>
+                        <th>Percentage</th>
                         <th>Type</th>
                         <th>Time</th>
                         <th>Date</th>
@@ -108,12 +109,21 @@
                             <td>
                                 <div
                                     class="p-1 w-100 d-flex align-items-center justify-content-center rounded bg-secondary">
+                                   <div class="flex justify-content-center align-items-center">
+                                    {{import?.percentComplete}}%
+                                   </div>
+                                
+                                </div>
+                            </td>
+                            <td>
+                                <div
+                                    class="p-1 w-100 d-flex align-items-center justify-content-center rounded bg-secondary">
                                     {{import?.type}}</div>
                             </td>
                             <td>{{getMinutes(import?.executionTime)}} min</td>
                             <td>{{import?.createdAt}}</td>
                             <td>
-                                <button class="btn btn-secondary p-1" routerLink="{{import._id}}">
+                                <button class="btn btn-secondary p-1" routerLink="{{import?._id}}">
                                     View logs
                                 </button>
                             </td>

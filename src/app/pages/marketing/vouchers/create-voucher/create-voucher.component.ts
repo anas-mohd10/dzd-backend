@@ -12,20 +12,20 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-create-voucher',
   templateUrl: './create-voucher.component.html',
-  styleUrls: ['./create-voucher.component.scss']
+  styleUrls: ['./create-voucher.component.scss'],
 })
 export class CreateVoucherComponent implements OnInit {
-  appRoute = appRoutes
-  form: FormGroup
-  customers: Array<any> = []
+  appRoute = appRoutes;
+  form: FormGroup;
+  customers: Array<any> = [];
   keyword: string;
-  optedCustomer: any
-  isToggle: boolean = false
-  settings: any
-  base: string = environment.base
-  isSubmitted: boolean = false
-  file: any
-  preview: string = ''
+  optedCustomer: any;
+  isToggle: boolean = false;
+  settings: any;
+  base: string = environment.base;
+  isSubmitted: boolean = false;
+  file: any;
+  preview: string = '';
 
   constructor(
     private CustomersService: CustomersService,
@@ -34,30 +34,41 @@ export class CreateVoucherComponent implements OnInit {
     private VouchersService: VouchersService,
     private Toast: HotToastService,
     private Router: Router
-  ) { }
+  ) {}
 
   get formControls() {
-    return this.form.controls
+    return this.form.controls;
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       user: new FormControl('', Validators.required),
-      amount: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/)]),
+      amount: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[0-9]+$/),
+      ]),
       name: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+      ]),
       countryCode: new FormControl('', Validators.required),
-      mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
+      mobile: new FormControl('', [
+        Validators.required,
+        Validators.pattern('^[0-9]{10}$'),
+      ]),
       background: new FormControl(''),
-      message: new FormControl('Hope you enjoy this Gift Card!')
-    })
+      message: new FormControl('Hope you enjoy this Gift Card!'),
+    });
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe(
+      (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
       }
-    })
+    );
   }
 
   updateMobilePattern(newPattern: string) {
@@ -69,65 +80,76 @@ export class CreateVoucherComponent implements OnInit {
   }
 
   handleMobilePattern() {
-    switch (this.form.get("countryCode")?.value) {
-      case "+91":
-        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
+    switch (this.form.get('countryCode')?.value) {
+      case '+91':
+        this.updateMobilePattern(
+          `^[0-9]{${validators.india.validation.maximum}}$`
+        );
         break;
-      case "+971":
-        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+      case '+971':
+        this.updateMobilePattern(
+          `^[0-9]{${validators.uae.validation.maximum}}$`
+        );
         break;
     }
   }
 
   handleMedia(event: any) {
-    this.form.get('background')?.setValue(event?._id)
+    this.form.get('background')?.setValue(event?._id);
   }
 
   toggleDropdown() {
-    this.isToggle = !this.isToggle
+    this.isToggle = !this.isToggle;
   }
 
   getCustomers() {
     if (this.keyword) {
-      this.CustomersService.searchCustomers({ page: 1, limit: 50, keyword: this.keyword }).subscribe({
+      this.CustomersService.searchCustomers({
+        page: 1,
+        limit: 50,
+        keyword: this.keyword,
+      }).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
-            this.customers = res?.result?.data
-            this.ChangeDetectorRef.markForCheck()
+            this.customers = res?.result?.data;
+            this.ChangeDetectorRef.markForCheck();
           }
-        }
-      })
+        },
+      });
     } else {
-      this.customers = []
+      this.customers = [];
     }
   }
 
   optCustomer(customer: any) {
-    this.customers = []
-    this.keyword = ''
-    this.optedCustomer = customer
-    this.form.get('user')?.setValue(customer?.name)
+    this.customers = [];
+    this.keyword = '';
+    this.optedCustomer = customer;
+    this.form.get('user')?.setValue(customer?.name);
   }
 
   onSubmit() {
-    this.form.get('user')?.setValue(this.optedCustomer?._id)
+    this.form.get('user')?.setValue(this.optedCustomer?._id);
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
-    this.VouchersService.createVoucher({ ...this.form.value, paymentStatus: "success" }).subscribe({
+    this.VouchersService.createVoucher({
+      ...this.form.value,
+      paymentStatus: 'success',
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Router.navigate([appRoutes.vouchers.list])
-          this.Toast.success(res.message)
+          this.Router.navigate([appRoutes.vouchers.list]);
+          this.Toast.success(res.message);
         } else {
-          this.Toast.error(res.message)
+          this.Toast.error(res.message);
         }
-      }, error: (err: any) => {
-        this.Toast.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.Toast.error(err.error.message);
+      },
+    });
   }
-
 }

@@ -105,7 +105,7 @@
                         <ng-container *ngFor="let category of categories">
                           <div
                             class="bg-secondary cursor-pointer p-2 rounded d-flex align-items-center justify-content-center gap-2"
-                            (click)="toggleProductCategory(category._id, 'remove')">
+                            (click)="toggleProductCategory(category?._id, 'remove')">
                             <div>
                               {{category.name}}
                             </div>
@@ -511,11 +511,11 @@
           <td>{{sibling.sku}}</td>
           <td>{{sibling.stock}}</td>
           <td>
-            <app-switch [switchId]="sibling.prodid" [isToggledProps]="sibling.isVisible"
+            <app-switch [switchId]="sibling?._id" [isToggledProps]="sibling.isVisible"
               (switchToggled)="onTriggerSiblings($event, 'isVisible')"></app-switch>
           </td>
           <td>
-            <app-switch [switchId]="sibling.prodid" [isToggledProps]="sibling.isActive"
+            <app-switch [switchId]="sibling?._id" [isToggledProps]="sibling.isActive"
               (switchToggled)="onTriggerSiblings($event, 'isActive')"></app-switch>
           </td>
         </tr>

@@ -414,7 +414,7 @@
                      </td>
                      <td>{{product?.boostScore}}</td>
                      <td>
-                        <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.prodid"
+                        <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
                            (switchToggled)="updateChildProduct($event)"></app-switch>
                      </td>
                      <td (click)="closeProducts()" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"

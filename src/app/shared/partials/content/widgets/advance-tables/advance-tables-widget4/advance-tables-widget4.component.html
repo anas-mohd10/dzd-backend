@@ -24,7 +24,7 @@
           <tbody class="fs-6">
             <tr *ngFor="let product of products">
               <td class="productName"><span routerLink="{{appRoutes.product.UPDATE_PRODUCT}}"
-                  [queryParams]="{'id': product?.prodid}">{{product?.name}}</span></td>
+                  [queryParams]="{'id': product?._id}">{{product?.name}}</span></td>
               <td>₹ {{product?.earning[0]?.count ? product?.earning[0]?.count : 0}}</td>
               <td>{{product?.stock}}</td>
               <td>{{product?.orders[0]?.count ? product?.orders[0]?.count : 0}}</td>
