@@ -233,6 +233,35 @@ export class HomeComponent implements OnInit {
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
     },
     {
+      title: 'Full Banner',
+      type: 'full-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+      title: 'Animation Banner',
+      type: 'animation-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+      title: 'Bricks Mansory Grid',
+      type: 'brick-mansory-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+      title: 'Primary Triple Grid',
+      type: 'primary-triple-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+
+    {
       title: 'Vibrant Banner',
       type: 'vibrant-banner',
       icon: 'assets/widgets/text-twirl.png',
@@ -293,7 +322,6 @@ export class HomeComponent implements OnInit {
     'slider-spotlight',
     'trending-teasers',
     'text-twirl',
-    'vibrant-banner',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [

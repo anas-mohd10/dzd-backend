@@ -22,6 +22,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 interface StoreField {
   title: string;
   description: string;
+  isFilter: boolean
 }
 
 @Component({
@@ -460,6 +461,7 @@ export class UpdateProductComponent implements OnInit {
     this.storeFieldForm = new FormGroup({
       title: new FormControl('  ', Validators.required),
       description: new FormControl('  ', Validators.required),
+      isFilter: new FormControl(false)
     });
 
     this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || '';
