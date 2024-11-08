@@ -52,12 +52,12 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   onThumbnailTriggered(event: any) {
-    this.form.get('thumbnail')?.setValue(event?._id);
+    this.form.get('thumbnail')?.setValue(event?.path);
     this.thumbnail = event.path;
   }
 
   onCoverTriggered(event: any) {
-    this.form.get('cover')?.setValue(event?._id);
+    this.form.get('cover')?.setValue(event?.path);
     this.cover = event.path;
   }
 
@@ -86,8 +86,8 @@ export class UpdateCategoryComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.details = res?.result;
-          this.cover = res?.result?.cover?.path;
-          this.thumbnail = res?.result?.thumbnail?.path;
+          this.cover = res?.result?.cover;
+          this.thumbnail = res?.result?.thumbnail;
           this.parentDetails = {
             refid: res?.result?.parent?.refid?._id,
             catid: res?.result?.parent?.catid,
@@ -95,17 +95,6 @@ export class UpdateCategoryComponent implements OnInit {
           res?.result?.root ? (this.root = res?.result?.root?._id) : null;
           this.form.patchValue(res?.result);
           this.path = res?.result?.path;
-          this.form.get('parent')?.setValue(this.path);
-          this.form.get('background')?.setValue(res?.result?.style?.background);
-          this.form.get('border')?.setValue(res?.result?.style?.border);
-          this.form.get('radius')?.setValue(res?.result?.style?.radius);
-          this.form.get('color')?.setValue(res?.result?.style?.text?.color);
-          this.form
-            .get('fontSize')
-            ?.setValue(res?.result?.style?.text?.fontSize);
-          this.form
-            .get('fontWeight')
-            ?.setValue(res?.result?.style?.text?.fontWeight);
           this.ChangeDetectorRef.markForCheck();
         } else {
         }
@@ -124,24 +113,11 @@ export class UpdateCategoryComponent implements OnInit {
       isActive: new FormControl(true),
       isFeatured: new FormControl(false),
       isArchive: new FormControl(false),
-      background: new FormControl(''),
-      border: new FormControl(''),
       description: new FormControl(''),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
-      radius: new FormControl(''),
-      color: new FormControl(''),
-      fontSize: new FormControl(''),
-      fontWeight: new FormControl(''),
     });
-
-    this.form.get('background')?.setValue(AppSettings.BACKGROUND);
-    this.form.get('border')?.setValue(AppSettings.BORDER);
-    this.form.get('color')?.setValue(AppSettings.COLOR);
-    this.form.get('radius')?.setValue(AppSettings.BORDER_RADIUS);
-    this.form.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT);
-    this.form.get('fontSize')?.setValue(AppSettings.FONT_SIZE);
   }
 
   getCategory() {
@@ -241,16 +217,6 @@ export class UpdateCategoryComponent implements OnInit {
       isFeatured: this.form.get('isFeatured')?.value,
       isArchive: this.form.get('isArchive')?.value,
       path: this.path,
-      style: {
-        background: this.form.get('background')?.value,
-        border: this.form.get('border')?.value,
-        radius: this.form.get('radius')?.value,
-        text: {
-          color: this.form.get('color')?.value,
-          fontSize: this.form.get('fontSize')?.value,
-          fontWeight: this.form.get('fontWeight')?.value,
-        },
-      },
     }).subscribe({
       next: (res: any) => {
         if (res.errorCode != 0) {

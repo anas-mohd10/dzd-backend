@@ -62,6 +62,7 @@ export class AddBrandComponent implements OnInit {
       name: new FormControl('', Validators.required),
       isActive: new FormControl('true'),
       isFeatured: new FormControl('false'),
+      isArchive: new FormControl('false'),
       description: new FormControl(''),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
