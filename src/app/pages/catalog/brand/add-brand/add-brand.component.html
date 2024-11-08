@@ -25,7 +25,7 @@
 
     <div class="card">
       <div class="card-body">
-        <form (ngSubmit)="onSubmit()" [formGroup]="brandForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form">
 
           <div>
             <div>
@@ -111,45 +111,6 @@
                         <option value="false" selected>No</option>
                         <option value="true">Yes</option>
                       </select>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Background</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                        formControlName="background" />
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Border</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-6" formControlName="border"
-                        style="height: 50px;" />
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Border Radius</label>
-                      <input type="number" placeholder="2" class="form-control fs-6" formControlName="radius" />
-                    </div>
-                  </div>
-                  <div class="mb-3 col-lg-6">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Color</label>
-                      <input type="color" placeholder="Category name" class="form-control fs-6" style="height: 50px;"
-                        formControlName="color" />
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Font Weight</label>
-                      <input type="number" placeholder="400" class="form-control fs-6" formControlName="fontWeight" />
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Font Size</label>
-                      <input type="number" placeholder="14" class="form-control fs-6" formControlName="fontSize" />
                     </div>
                   </div>
 

@@ -4,7 +4,7 @@ export const brandEndpoints = {
   get_active_brand: '/active-brands',
   brandDetails: '/brand-details',
   restoreBrand: '/restore-brand',
-  update_brand: '/update-brand',
+  updateBrand: '/update-brand',
   deleteBrand: '/delete-brand',
   searchBrands: '/search-brands',
 
