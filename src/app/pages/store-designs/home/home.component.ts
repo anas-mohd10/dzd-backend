@@ -322,6 +322,8 @@ export class HomeComponent implements OnInit {
     'slider-spotlight',
     'trending-teasers',
     'text-twirl',
+    'vibrant-banner',
+    'animation-banner',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
