@@ -134,7 +134,15 @@ export class ReportsListComponent implements OnInit {
     this.salesRef = this.BsModalService.show(template);
   }
 
+  openOrders(template: TemplateRef<any>) {
+    this.salesRef = this.BsModalService.show(template);
+  }
+
   closeSales() {
+    this.salesRef?.hide();
+  }
+
+  closeOrders() {
     this.salesRef?.hide();
   }
   //Open sales modal
@@ -171,6 +179,10 @@ export class ReportsListComponent implements OnInit {
     this.dateRange = dateRange;
   }
 
+  toggleOrderReport(dateRange: string) {
+    this.dateRange = dateRange;
+  }
+
   salesReport() {
     this.ReportsService.salesReport(this.dateRange).subscribe({
       next: (res: any) => {
@@ -186,6 +198,23 @@ export class ReportsListComponent implements OnInit {
       },
     });
   }
+
+  ordersReport() {
+    this.ReportsService.salesReport(this.dateRange).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.closeSales();
+          this.HotToastService.success(res?.message);
+        } else {
+          this.HotToastService.error(res.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.error.message);
+      },
+    });
+  }
+
 
   generateReport(type: string) {
     switch (type) {
@@ -224,6 +253,17 @@ export class ReportsListComponent implements OnInit {
         break;
       case 'unfullfilledStock':
         this.ReportsService.unfullfilledStockReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res);
+            this.ChangeDetectorRef.markForCheck();
+          },
+          error: (err: any) => {
+            this.HotToastService.error(err?.error?.message);
+          },
+        });
+        break;
+      case 'productwisereport':
+        this.ReportsService.productWiseSalesReport().subscribe({
           next: (res: any) => {
             this.onReponse(res);
             this.ChangeDetectorRef.markForCheck();
