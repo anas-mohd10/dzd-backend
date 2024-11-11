@@ -11,6 +11,7 @@ import { ProductDropdownComponent } from './product-dropdown/product-dropdown.co
 import { SwitchComponent } from './switch/switch.component';
 import { StartRatingComponent } from './start-rating/start-rating.component';
 import { NoResultsComponent } from './no-results/no-results.component';
+import { RedirectionResultsComponent } from './redirection-results/redirection-results.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NoResultsComponent } from './no-results/no-results.component';
     ProductDropdownComponent,
     SwitchComponent,
     StartRatingComponent,
-    NoResultsComponent
+    NoResultsComponent,
+    RedirectionResultsComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,8 @@ import { NoResultsComponent } from './no-results/no-results.component';
     ProductDropdownComponent,
     SwitchComponent,
     StartRatingComponent,
-    NoResultsComponent
+    NoResultsComponent,
+    RedirectionResultsComponent
   ]
 })
 export class SharedModule { }
