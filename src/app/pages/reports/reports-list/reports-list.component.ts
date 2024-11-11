@@ -200,7 +200,7 @@ export class ReportsListComponent implements OnInit {
   }
 
   ordersReport() {
-    this.ReportsService.salesReport(this.dateRange).subscribe({
+    this.ReportsService.ordersOverTimeReport(this.dateRange).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.closeSales();

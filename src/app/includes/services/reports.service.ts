@@ -78,8 +78,9 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
-  ordersOverTimeReport() {
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.ordersOverTimeReport);
+
+  ordersOverTimeReport(dateRange: string) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.ordersOverTimeReport + `?dateRange=${dateRange}`);
     return this.http.get(`${url}`);
   }
 }
