@@ -502,7 +502,7 @@ export class UpdateProductComponent implements OnInit {
           });
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
-          this.searchKeywords = res?.result?.searchKeywords;
+          this.searchKeywords = res?.result?.searchKeywords || [];
           this.icons = res?.result?.productIcons
             ? res?.result?.productIcons
             : [];
