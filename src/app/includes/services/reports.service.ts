@@ -53,6 +53,11 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
+  productWiseSalesReport() {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.productwiseSalesReport);
+    return this.http.get(`${url}`);
+  }
+
   enquiryReport() {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.enquiryReport);
     return this.http.get(`${url}`);
@@ -70,6 +75,12 @@ export class ReportsService {
 
   customerReport() {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.customerReport);
+    return this.http.get(`${url}`);
+  }
+
+
+  ordersOverTimeReport(dateRange: string) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.ordersOverTimeReport + `?dateRange=${dateRange}`);
     return this.http.get(`${url}`);
   }
 }

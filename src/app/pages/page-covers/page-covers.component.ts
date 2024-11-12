@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -9,7 +14,7 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-page-covers',
   templateUrl: './page-covers.component.html',
-  styleUrls: ['./page-covers.component.scss']
+  styleUrls: ['./page-covers.component.scss'],
 })
 export class PageCoversComponent implements OnInit {
   appRoute = appRoutes;
@@ -35,21 +40,21 @@ export class PageCoversComponent implements OnInit {
     private PageCoversService: PageCoversService,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   get formControls() {
     return this.form.controls;
   }
 
   ngOnInit(): void {
-    this.fetchPageCovers()
+    this.fetchPageCovers();
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       path: new FormControl('', Validators.required),
       desktopCover: new FormControl(null),
       mobileCover: new FormControl(null),
-      isActive: new FormControl(true)
-    })
+      isActive: new FormControl(true),
+    });
   }
 
   fetchPageCovers() {
@@ -59,45 +64,50 @@ export class PageCoversComponent implements OnInit {
           this.pageCovers = res?.result;
           this.ChangeDetectorRef.detectChanges();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 
   setPath() {
     for (let page of this.pages) {
       if (page.title == this.form.value.title) {
-        this.form.get('path')?.setValue(page.path)
-        this.ChangeDetectorRef.markForCheck()
+        this.form.get('path')?.setValue(page.path);
+        this.ChangeDetectorRef.markForCheck();
       }
     }
   }
 
   delete() {
-    this.PageCoversService.deletePageCover(this.details._id).subscribe({
+    this.PageCoversService.deletePageCover(this.details?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.close()
-          this.fetchPageCovers()
-          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message);
+          this.close();
+          this.fetchPageCovers();
+          this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 
   open(template: TemplateRef<any>, pageCover?: any) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true });
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
     if (pageCover) {
       this.details = pageCover;
-      this.isEditMode = true
+      this.isEditMode = true;
       this.form.patchValue(pageCover);
       this.desktop = pageCover.desktopCover.path;
       this.mobile = pageCover.mobileCover.path;
@@ -107,19 +117,19 @@ export class PageCoversComponent implements OnInit {
   onMediaTriggered(type: string, event: any, method: string) {
     if (method == 'add') {
       if (type == 'desktop') {
-        this.form.get('desktopCover')?.setValue(event._id)
-        this.desktop = event.path
+        this.form.get('desktopCover')?.setValue(event?._id);
+        this.desktop = event.path;
       } else {
-        this.form.get('mobileCover')?.setValue(event._id)
-        this.mobile = event.path
+        this.form.get('mobileCover')?.setValue(event?._id);
+        this.mobile = event.path;
       }
     } else {
       if (type == 'desktop') {
-        this.form.get('desktopCover')?.setValue(null)
-        this.desktop = ''
+        this.form.get('desktopCover')?.setValue(null);
+        this.desktop = '';
       } else {
-        this.form.get('mobileCover')?.setValue(null)
-        this.mobile = ''
+        this.form.get('mobileCover')?.setValue(null);
+        this.mobile = '';
       }
     }
   }
@@ -130,46 +140,51 @@ export class PageCoversComponent implements OnInit {
 
   addPageCover() {
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     this.PageCoversService.createPageCover(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.close()
-          this.fetchPageCovers()
-          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message);
+          this.close();
+          this.fetchPageCovers();
+          this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 
   updatePageCover() {
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
-    this.PageCoversService.updatePageCover({ ...this.form.value, _id: this.details._id }).subscribe({
+    this.PageCoversService.updatePageCover({
+      ...this.form.value,
+      _id: this.details?._id,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.close()
-          this.fetchPageCovers()
-          this.ChangeDetectorRef.markForCheck()
+          this.HotToastService.success(res?.message);
+          this.close();
+          this.fetchPageCovers();
+          this.ChangeDetectorRef.markForCheck();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 
   close() {
@@ -180,22 +195,31 @@ export class PageCoversComponent implements OnInit {
     this.details = null;
     this.isEditMode = false;
     this.isSubmitted = false;
-    this.form.patchValue({ desktopCover: null, mobileCover: null, isActive: true, title: "" })
+    this.form.patchValue({
+      desktopCover: null,
+      mobileCover: null,
+      isActive: true,
+      title: '',
+    });
   }
 
-  onToggled(event: { switchId: string, toggleState: boolean }) {
-    this.PageCoversService.updatePageCover({ _id: event.switchId, isActive: event.toggleState }).subscribe({
+  onToggled(event: { switchId: string; toggleState: boolean }) {
+    this.PageCoversService.updatePageCover({
+      _id: event.switchId,
+      isActive: event.toggleState,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.ChangeDetectorRef.markForCheck()
-          this.fetchPageCovers()
+          this.HotToastService.success(res?.message);
+          this.ChangeDetectorRef.markForCheck();
+          this.fetchPageCovers();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
   }
 }

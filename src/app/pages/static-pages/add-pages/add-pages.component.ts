@@ -9,7 +9,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 @Component({
   selector: 'app-add-pages',
   templateUrl: './add-pages.component.html',
-  styleUrls: ['./add-pages.component.scss']
+  styleUrls: ['./add-pages.component.scss'],
 })
 export class AddPagesComponent implements OnInit {
   appRoute = appRoutes;
@@ -34,18 +34,18 @@ export class AddPagesComponent implements OnInit {
       { class: 'poppins', name: 'Poppins' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
       { class: 'roboto', name: 'Roboto' },
-      { class: 'sora', name: 'Sora' }
-    ]
+      { class: 'sora', name: 'Sora' },
+    ],
   };
 
   constructor(
     private Router: Router,
     private StaticPageService: StaticPageService,
     private HotToastService: HotToastService
-  ) { }
+  ) {}
 
   get formControls() {
-    return this.form.controls
+    return this.form.controls;
   }
 
   ngOnInit(): void {
@@ -56,36 +56,36 @@ export class AddPagesComponent implements OnInit {
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
-      metaThumbnail: new FormControl(null)
-    })
+      metaThumbnail: new FormControl(null),
+    });
   }
 
   onMediaClicked(event: any) {
-    this.form.patchValue({ metaThumbnail: event?._id })
+    this.form.patchValue({ metaThumbnail: event?._id });
   }
 
   onMediaRemoved() {
-    this.form.patchValue({ metaThumbnail: null })
+    this.form.patchValue({ metaThumbnail: null });
   }
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     this.StaticPageService.create(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
-          this.Router.navigate([appRoutes.staticPages.list])
+          this.Router.navigate([appRoutes.staticPages.list]);
         } else {
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err?.message);
-      }
-    })
+      },
+    });
   }
-
 }

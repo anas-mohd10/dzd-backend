@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -10,23 +15,39 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-sms-settings',
   templateUrl: './sms-settings.component.html',
-  styleUrls: ['./sms-settings.component.scss']
+  styleUrls: ['./sms-settings.component.scss'],
 })
 export class SmsSettingsComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup = new FormGroup({});
-  isSmsGatewayEnabled: FormControl = new FormControl(false)
+  isSmsGatewayEnabled: FormControl = new FormControl(false);
   smsGatewayItems: Array<any> = [
-    { title: "Twilio", id: "twilio", logo: `${environment.base}twilio-logo.png` },
-    { title: 'Etisalat', id: 'etisalat', logo: `${environment.base}etisalat-logo.png` }
-  ]
-  selectedSmsGateway: any
-  activeSmsGateway?: any
-  modalRef?: BsModalRef
+    {
+      title: 'Twilio',
+      id: 'twilio',
+      logo: `${environment.base}twilio-logo.png`,
+    },
+    {
+      title: 'Etisalat',
+      id: 'etisalat',
+      logo: `${environment.base}etisalat-logo.png`,
+    },
+  ];
+  selectedSmsGateway: any;
+  activeSmsGateway?: any;
+  modalRef?: BsModalRef;
   smsGateways: Array<any> = [];
   smsGatewayConfig: any = {
-    'etisalat': ['username', 'password', 'senderId', 'usages', 'clientId', 'apiUrl', 'port'],
-    'twilio': ['username', 'password', 'usages', 'fromNumber']
+    etisalat: [
+      'username',
+      'password',
+      'senderId',
+      'usages',
+      'clientId',
+      'apiUrl',
+      'port',
+    ],
+    twilio: ['username', 'password', 'usages', 'fromNumber'],
   };
   usageItems: Array<any> = [
     { title: 'Registration', value: 'registration' },
@@ -38,7 +59,8 @@ export class SmsSettingsComponent implements OnInit {
     { title: 'Guest OTP', value: 'guest-otp' },
     { title: 'Cart', value: 'cart' },
     { title: 'Order Out for Delivery', value: 'order-out-for-delivery' },
-  ]
+    { title: 'Registration OTP', value: 'registration-otp' },
+  ];
 
   constructor(
     private SmsDetailsService: SmsDetailsService,
@@ -46,23 +68,23 @@ export class SmsSettingsComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) { }
+  ) {}
 
   toggleUsageItem(usage: any) {
-    let usages = this.form.get('usages')?.value || []
+    let usages = this.form.get('usages')?.value || [];
     if (usages.includes(usage.value)) {
-      usages = usages.filter((item: any) => item != usage.value)
-      this.HotToastService.success(`${usage.title} removed`)
+      usages = usages.filter((item: any) => item != usage.value);
+      this.HotToastService.success(`${usage.title} removed`);
     } else {
-      usages.push(usage.value)
-      this.HotToastService.success(`${usage.title} added`)
+      usages.push(usage.value);
+      this.HotToastService.success(`${usage.title} added`);
     }
-    this.form.get('usages')?.setValue(usages)
+    this.form.get('usages')?.setValue(usages);
   }
 
   usageItemExists(usage: any) {
-    let usages = this.form.get('usages')?.value || []
-    return usages && usages.includes(usage.value)
+    let usages = this.form.get('usages')?.value || [];
+    return usages && usages.includes(usage.value);
   }
 
   ngOnInit(): void {
@@ -77,81 +99,95 @@ export class SmsSettingsComponent implements OnInit {
       port: new FormControl(''),
       apiUrl: new FormControl(''),
       clientId: new FormControl(''),
-      isEnabled: new FormControl(false)
-    })
+      isEnabled: new FormControl(false),
+    });
 
-    this.getSmsGateways()
+    this.getSmsGateways();
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.isSmsGatewayEnabled?.setValue(res?.result?.isSmsGatewayEnabled)
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+          this.isSmsGatewayEnabled?.setValue(res?.result?.isSmsGatewayEnabled);
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => {},
+    });
   }
 
-  enableSmsSettings(event: { toggleState: boolean, switchId: string }) {
-    this.isSmsGatewayEnabled?.setValue(event.toggleState)
-    this.AppSettingsService.updateSettings({ isSmsGatewayEnabled: this.isSmsGatewayEnabled.value }).subscribe(
+  enableSmsSettings(event: { toggleState: boolean; switchId: string }) {
+    this.isSmsGatewayEnabled?.setValue(event.toggleState);
+    this.AppSettingsService.updateSettings({
+      isSmsGatewayEnabled: this.isSmsGatewayEnabled.value,
+    }).subscribe(
       (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.modalRef?.hide()
+          this.HotToastService.success(res?.message);
+          this.modalRef?.hide();
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
       },
       (error: any) => {
-        this.HotToastService.error('An error occurred')
+        this.HotToastService.error('An error occurred');
       }
-    )
+    );
   }
 
-  enableSmsGateway(event: { toggleState: boolean, switchId: string }) {
-    this.form.get('isEnabled')?.setValue(event.toggleState)
+  enableSmsGateway(event: { toggleState: boolean; switchId: string }) {
+    this.form.get('isEnabled')?.setValue(event.toggleState);
   }
 
   getSmsGateways() {
     this.SmsDetailsService.getSmsGateways().subscribe(
       (res: any) => {
         if (res?.errorCode == 0) {
-          this.smsGateways = res?.result
-          this.ChangeDetectorRef.detectChanges()
-        } else { }
+          this.smsGateways = res?.result;
+          this.ChangeDetectorRef.detectChanges();
+        } else {
+        }
       },
-      (error: any) => { }
-    )
+      (error: any) => {}
+    );
   }
 
   onSubmit() {
-    this.SmsDetailsService.manage({ _id: this.selectedSmsGateway?._id, ...this.form.value }).subscribe({
+    this.SmsDetailsService.manage({
+      _id: this.selectedSmsGateway?._id,
+      ...this.form.value,
+    }).subscribe({
       next: (response: any) => {
         if (response.errorCode == 0) {
-          this.getSmsGateways()
-          this.close()
+          this.getSmsGateways();
+          this.close();
         } else {
-          this.HotToastService.error(response.message)
+          this.HotToastService.error(response.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.error.message);
+      },
+    });
   }
 
   open(template: TemplateRef<any>, smsId: string) {
-    this.getSmsDetails(smsId)
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true })
+    this.getSmsDetails(smsId);
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
   }
 
   smsGatewayEnabled(smsId: string) {
-    let isExists = this.smsGateways?.some((smsItem: any) => smsItem.smsGateway == smsId)
-    return isExists
+    let isExists = this.smsGateways?.some(
+      (smsItem: any) => smsItem.smsGateway == smsId
+    );
+    return isExists;
   }
 
   close() {
-    this.modalRef?.hide()
+    this.modalRef?.hide();
     this.form.patchValue({
       smsGateway: '',
       username: '',
@@ -163,25 +199,39 @@ export class SmsSettingsComponent implements OnInit {
       fromNumber: '',
       usages: [],
       apiKey: '',
-      isEnabled: false
-    })
+      isEnabled: false,
+    });
   }
 
   getSmsDetails(smsId: string) {
-    this.activeSmsGateway = this.smsGatewayItems.filter(sms => sms.id == smsId)[0]
-    this.form.patchValue({ smsGateway: smsId })
+    this.activeSmsGateway = this.smsGatewayItems.filter(
+      (sms) => sms.id == smsId
+    )[0];
+    this.form.patchValue({ smsGateway: smsId });
     this.SmsDetailsService.getSmsDetails(smsId).subscribe(
       (res: any) => {
         if (res?.errorCode == 0) {
-          this.form.patchValue(res?.result)
-          this.ChangeDetectorRef.markForCheck()
-          this.selectedSmsGateway = res?.result
+          this.form.patchValue(res?.result);
+          this.ChangeDetectorRef.markForCheck();
+          this.selectedSmsGateway = res?.result;
           /**
            * This code block is used to dynamically set the validators for the form fields based on the smsGatewayConfig
-          */
-          const fields = ['username', 'password', 'port', 'apiUrl', 'clientId', 'senderId', 'usages', 'fromNumber'];
-          fields.forEach(field => {
-            let smsConfig = this.smsGatewayConfig[res?.result?.smsGateway || this.activeSmsGateway?.id] || []
+           */
+          const fields = [
+            'username',
+            'password',
+            'port',
+            'apiUrl',
+            'clientId',
+            'senderId',
+            'usages',
+            'fromNumber',
+          ];
+          fields.forEach((field) => {
+            let smsConfig =
+              this.smsGatewayConfig[
+                res?.result?.smsGateway || this.activeSmsGateway?.id
+              ] || [];
             if (smsConfig?.includes(field)) {
               this.form.get(field)?.setValidators([Validators.required]);
             } else {
@@ -189,9 +239,10 @@ export class SmsSettingsComponent implements OnInit {
             }
             this.form.get(field)?.updateValueAndValidity();
           });
-        } else { }
+        } else {
+        }
       },
-      (error: any) => { }
-    )
+      (error: any) => {}
+    );
   }
 }

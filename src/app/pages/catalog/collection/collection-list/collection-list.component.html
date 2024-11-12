@@ -54,7 +54,10 @@
               <img height="40" width="40" class="rounded border border-secondary"
                 src="{{base}}{{collection?.thumbnail}}" alt="{{collection?.name}}"
                 onerror="this.src = 'assets/images/default.png'" />
-              <div>{{collection?.name}}</div>
+              <div>
+                <div>{{collection?.name}}</div>
+                <div class="fs-6 text-muted">{{collection.products.length}} products</div>
+              </div>
             </div>
           </td>
           <td>

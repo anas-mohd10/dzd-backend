@@ -90,6 +90,8 @@ import { SmsSettingsComponent } from './pages/settings/general/sms-settings/sms-
 import { AuthenticationComponent } from './pages/settings/general/authentication/authentication.component';
 import { AppKeysComponent } from './pages/settings/general/app-keys/app-keys.component';
 import { CartSettingsComponent } from './pages/settings/general/cart-settings/cart-settings.component';
+import { OrderSettingsComponent } from './pages/settings/general/order-settings/order-settings.component';
+import { FiltersComponent } from './pages/catalog/filters/filters.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -155,6 +157,8 @@ const DragConfig = {
     AuthenticationComponent,
     AppKeysComponent,
     CartSettingsComponent,
+    OrderSettingsComponent,
+    FiltersComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

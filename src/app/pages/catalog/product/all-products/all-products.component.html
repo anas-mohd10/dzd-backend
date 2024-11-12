@@ -38,40 +38,55 @@
           <input type="submit" value="Clear filters" class="btn w-100 btn-secondary" (click)="clearFilters()">
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-lg-3 form-group">
+      <div class="row my-2">
+        <div class="col-lg-4 mb-3 form-group">
           <label for="categories" class="form-label">Category</label>
           <select [formControl]="productCategory" id="categories" class="form-select" (change)="onCategoryTriggered()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let category of categories" value="{{category.catid}}">{{category?.name}}</option>
           </select>
         </div>
-        <div class="col-lg-3 form-group">
+        <div class="col-lg-4 mb-3 form-group">
           <label for="categories" class="form-label">Brands</label>
           <select [formControl]="productBrand" id="brands" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
-            <option *ngFor="let brand of brands" value="{{brand._id}}">{{brand?.name}}</option>
+            <option *ngFor="let brand of brands" value="{{brand?._id}}">{{brand?.name}}</option>
           </select>
         </div>
-        <div class="col-lg-2 form-group">
+        <div class="col-lg-4 mb-3 form-group">
           <label for="status" class="form-label">Status</label>
           <select [formControl]="isActive" id="status" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let statusItem of statusFilters" value="{{statusItem.value}}">{{statusItem?.key}}</option>
           </select>
         </div>
-        <div class="col-lg-2 form-group">
+        <div class="col-lg-3 form-group">
           <label for="stock" class="form-label">Stock</label>
           <select [formControl]="stock" id="stock" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let stockItem of stockFilters" value="{{stockItem.value}}">{{stockItem?.key}}</option>
           </select>
         </div>
-        <div class="col-lg-2 form-group">
+        <div class="col-lg-3 form-group">
+          <label for="status" class="form-label">Visibiltiy</label>
+          <select [formControl]="visibility" id="status" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let statusItem of visibilityFilters" value="{{statusItem.value}}">{{statusItem?.key}}
+            </option>
+          </select>
+        </div>
+        <div class="col-lg-3 form-group">
           <label for="sort" class="form-label">Price</label>
           <select [formControl]="sort" id="sort" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let sortItem of sortFilters" value="{{sortItem.value}}">{{sortItem?.key}}</option>
+          </select>
+        </div>
+        <div class="col-lg-3 form-group">
+          <label for="sort" class="form-label">Boost Score</label>
+          <select [formControl]="sort" id="sort" class="form-select" (change)="getProducts()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let sortItem of boostScoreFilters" value="{{sortItem.value}}">{{sortItem?.key}}</option>
           </select>
         </div>
       </div>
@@ -167,7 +182,8 @@
               <th>Price</th>
               <th>Stock</th>
               <th>Visibility</th>
-              <th>Updated On</th>
+              <th>Score</th>
+              <th>Updated</th>
               <th>Status</th>
               <th>&nbsp;</th>
             </tr>
@@ -176,17 +192,21 @@
             <ng-container *ngFor="let product of products; let i = index">
               <tr>
                 <td>
-                  <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="border border-secondary rounded"
-                    onerror="this.src = 'assets/images/default.png'">
+                  <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
+                    class="border border-secondary rounded" onerror="this.src = 'assets/images/default.png'">
                 </td>
                 <td>
-                  <div>
-                    {{product?.name}}
-                  </div>
-                  <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
-                    <div class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2" *ngFor="let attribute of product?.attributes">
-                      <div>{{attribute?.title}} : </div>
-                      <div>{{attribute?.value}}</div>
+                  <div class="productName">
+                    <div>
+                      {{product?.name}}
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                      <div
+                        class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
+                        *ngFor="let attribute of product?.attributes">
+                        <div>{{attribute?.title}} : </div>
+                        <div>{{attribute?.value}}</div>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -195,22 +215,22 @@
                   {{product?.product?.id?.brand?.name}}
                 </td>
                 <td>
-
                   <ng-container *ngFor="let category of product?.category?.id; let i = index">
                     <div>{{category?.name}}</div>
                   </ng-container>
-
                 </td>
-                <td> {{settings?.currency}} {{product?.price?.offer}}</td>
+                <td>{{product?.price?.offer}}</td>
                 <td>{{product?.stock}}</td>
                 <td>
-                  <span class="p-1 rounded" [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
-                    {{product?.isVisible == true ?  'Visible' : 'Hidden'}}
+                  <span class="p-1 rounded"
+                    [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
+                    {{product?.isVisible == true ? 'Visible' : 'Hidden'}}
                   </span>
                 </td>
+                <td>{{product?.boostScore}}</td>
                 <td>{{formdateDate(product?.updatedAt)}}</td>
                 <td>
-                  <app-switch [isToggledProps]="product?.isActive" [switchId]="product?.prodid"
+                  <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
                     (switchToggled)="updateProduct($event)"></app-switch>
                 </td>
                 <td routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{product: product?.slug}">
@@ -229,7 +249,7 @@
               </tr>
             </ng-container>
             <tr *ngIf="products.length == 0">
-              <td colspan="9">
+              <td colspan="11">
                 <app-no-results></app-no-results>
               </td>
             </tr>

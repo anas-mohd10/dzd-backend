@@ -37,9 +37,7 @@ export class ScreensComponent implements OnInit, OnChanges {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settings = res.result;
-          this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=draft`);
-          console.log(this.catalogId);
-          
+          this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=draft`);          
           if(this.page == 'catalog') {
             this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}/catalogs/${this.catalogId}`);
           }

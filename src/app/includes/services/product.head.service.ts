@@ -31,6 +31,11 @@ export class ProductHeadService {
     return this.http.delete(`${url}`);
   }
 
+  activeParents(){
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.activeParents);
+    return this.http.get(`${url}`);
+  }
+
   getDetails(product: string) {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.getDetails + `/${product}`);
     return this.http.get(`${url}`);
@@ -42,7 +47,7 @@ export class ProductHeadService {
   }
 
   updateProductHead(data: any) {
-    const url = this.commonService.getFullUrl(this.productHeadEndpoints.update_product_head);
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.updateProductHead);
     return this.http.put(`${url}`, data);
   }
 

@@ -49,7 +49,7 @@
                             <div class="fs-4 fw-bold">Product details</div>
                             <div class="d-flex align-items-start my-2 gap-3 justify-content-start">
                                 <a routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
-                                    [queryParams]="{'id': replaceDetails?.product?.prodid}">
+                                    [queryParams]="{'id': replaceDetails?.product?._id}">
                                     <img height="80px" class="rounded cursor-pointer" width="80px"
                                         src="{{base}}{{replaceDetails?.product?.thumbnail}}"
                                         alt="{{replaceDetails?.product?.name}}">

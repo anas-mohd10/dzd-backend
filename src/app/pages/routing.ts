@@ -43,6 +43,8 @@ import { AuthenticationComponent } from './settings/general/authentication/authe
 import { AppKeysComponent } from './settings/general/app-keys/app-keys.component';
 import { CartSettingsComponent } from './settings/general/cart-settings/cart-settings.component';
 import { ProductDesignsComponent } from './store-designs/product-designs/product-designs.component';
+import { OrderSettingsComponent } from './settings/general/order-settings/order-settings.component';
+import { FiltersComponent } from './catalog/filters/filters.component';
 
 export const Routing: Routes = [
   {
@@ -271,6 +273,10 @@ export const Routing: Routes = [
         component: ReferralComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
+        path: 'filters',
+        component: FiltersComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
         path: 'newsletter-subscribers',
         component: NewsletterSubscribersComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -355,6 +361,10 @@ export const Routing: Routes = [
       }, {
         path: 'payment-settings',
         component: PaymentSettingsComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'order-settings',
+        component: OrderSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'seo-details',

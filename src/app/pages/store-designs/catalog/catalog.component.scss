@@ -11,6 +11,33 @@
     width: 82%;
 }
 
+.checkbox {
+    height: 20px;
+    width: 20px;
+    border: 2px solid #aaaaaa;
+    border-radius: 4px;
+    position: relative;
+    background: #ffffff;
+    cursor: pointer;
+
+    &.checked {
+
+        &::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            content: '';
+            height: 10px;
+            width: 10px;
+            background: #00BDAB;
+            border-radius: 2px;
+        }
+
+        border: 2px solid #00BDAB;
+    }
+}
+
 .storedesign-wrapper {
     height: calc(100vh - 70px);
     margin: 70px 0 0 70px;

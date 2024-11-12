@@ -221,6 +221,14 @@
       </a>
     </div>
     <div class="menu-item">
+      <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.filters }}">
+        <span class="menu-bullet">
+          <span class="bullet bullet-dot"></span>
+        </span>
+        <span class="menu-title">Filters</span>
+      </a>
+    </div>
+    <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.collection.COLLECTION_LIST }}">
         <span class="menu-bullet">
           <span class="bullet bullet-dot"></span>
@@ -633,6 +641,20 @@
               </svg>
             </span>
             <span class="menu-title">Payment Settings</span>
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.orderSettings }}">
+            <span class="menu-bullet">
+              <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z">
+                </path>
+              </svg>
+            </span>
+            <span class="menu-title">Order Settings</span>
           </a>
         </div>
 

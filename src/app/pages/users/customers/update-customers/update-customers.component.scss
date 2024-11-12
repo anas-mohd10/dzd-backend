@@ -10,6 +10,50 @@ $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
 
+//Table designs
+.table {
+   background: #ffffff;
+   font-size: 14px;
+
+   tbody {
+
+       tr {
+
+           td {
+               vertical-align: middle;
+           }
+       }
+   }
+
+   thead {
+
+       tr {
+
+           th {
+               font-weight: 400 !important;
+           }
+       }
+
+       background: #E4E7F4;
+   }
+}
+
+//Order status designs
+.accepted-orders {
+   background: #2f6fe5;
+   color: #ffffff;
+ }
+ 
+ .success-orders {
+   background: #2b9e68;
+   color: #ffffff
+ }
+ 
+ .cancelled-orders {
+   background: #bb2b2b;
+   color: #ffffff;
+ }
+
 .md-local {
    background-color: #009688;
    border-color: #00695C;

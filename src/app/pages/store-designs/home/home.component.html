@@ -923,13 +923,19 @@
                                 </div>
                             </div>
 
-                            <div class="row gap-2">
-                                <ng-container
-                                    *ngFor="let type of [
+                            <div class="alert alert-info">
+                                Kindly note that the widget supports displaying up to 20 products. For adding additional products, please utilize the 'Collections' section.
+                            </div>
+
+                            <div class="row">
+                                <ng-container *ngFor="let type of [
                                     {type: 'products', title: 'Products', description: 'In this section you can select set of products manually to display.'}, 
-                                    {type: 'collections', title: 'Collections', description: 'In this section we will display your products dynamically. Select the collection which you want to display.'}]">
+                                    {type: 'collections', title: 'Collections', description: 'In this section we will display your products dynamically. Select the collection which you want to display.'},
+                                    {type: 'categories', title: 'Categories', description: 'In this section we will display your products dynamically. Select the category which you want to display.'},
+                                    {type: 'brands', title: 'Brands', description: 'In this section we will display your products dynamically. Select the brand which you want to display.'}
+                                    ]">
                                     <div (click)="toggleProductSelection(type.type)"
-                                        class="col-lg-5 p-3 rounded border d-flex align-items-start justify-content-start gap-2"
+                                        class="col-lg-3 p-3 d-flex align-items-start justify-content-start gap-2"
                                         [ngClass]="{'border-secondary': type.type != selectedProductType, 'border-primary': type.type == selectedProductType}">
                                         <div class="checkbox" [ngClass]="{'checked': type.type == selectedProductType}">
                                         </div>
@@ -1005,8 +1011,32 @@
                                 <select [formControl]="widgetCollection" id="collections" class="form-select">
                                     <option value="" disabled>-- Select an option --</option>
                                     <option *ngFor="let collection of collections; let i = index"
-                                        value="{{collection._id}}">
+                                        value="{{collection?._id}}">
                                         {{collection.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedProductType == 'brands'">
+                            <div class="form-group">
+                                <label for="brands" class="form-label">Brands</label>
+                                <select [formControl]="widgetBrand" id="brands" class="form-select">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option *ngFor="let brand of brands; let i = index" value="{{brand?._id}}">
+                                        {{brand.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div *ngIf="selectedProductType == 'categories'">
+                            <div class="form-group">
+                                <label for="categories" class="form-label">Categories</label>
+                                <select [formControl]="widgetCategory" id="categories" class="form-select">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option *ngFor="let category of categories; let i = index" value="{{category?._id}}">
+                                        {{category.name}}
                                     </option>
                                 </select>
                             </div>
@@ -1209,7 +1239,9 @@
                                     <app-assets (mediaClicked)="onBackgroundTriggered($event)" [image]="'cover'"
                                         [previewDetails]="backgroundDetails"></app-assets>
                                 </div>
-                                <p class="text-muted mx-2">This image will appear on widget backgrounds.</p>
+                                <div *ngIf="backgroundDetails">
+                                    <button class="btn btn-danger mt-2 p-2" (click)="onRemoveBackground()">Remove</button>
+                                </div>
                             </div>
                         </div>
                     </div>

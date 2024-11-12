@@ -1,52 +1,51 @@
 label,
 .btn-secondary,
 .btn-primary {
-    font-weight: 400 !important;
+  font-weight: 400 !important;
+}
+
+.title {
+  width: 300px;
 }
 
 //Table designs
 .table {
-    background: #ffffff;
-    font-size: 15px;
+  background: #ffffff;
+  font-size: 15px;
 
-    tbody {
+  tbody {
+    tr {
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
 
-        tr {
-
-            td {
-                vertical-align: middle;
-            }
-        }
+  thead {
+    tr {
+      th {
+        font-weight: 400 !important;
+      }
     }
 
-    thead {
-
-        tr {
-
-            th {
-                font-weight: 400 !important;
-            }
-        }
-
-        background: #E4E7F4;
-    }
+    background: #e4e7f4;
+  }
 }
 //Table designs
 
 .file {
+  .file-mask {
+    z-index: 99;
+    pointer-events: none;
+  }
 
-    .file-mask {
-        z-index: 99;
-        pointer-events: none;
-    }
-
-    input {
-        opacity: 0;
-    }
+  input {
+    opacity: 0;
+  }
 }
 
 .remove {
-    top: 50%;
-    right: 5%;
-    transform: translateY(-50%);
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
 }

@@ -12,6 +12,6 @@ export const validators = {
     iraq: {
         countryCode: "+964",
         countryName: "IRAQ",
-        validation: { minimum: 10, maximum: 10 }
+        validation: { minimum: 7, maximum: 10 }
     }
-}
+} 

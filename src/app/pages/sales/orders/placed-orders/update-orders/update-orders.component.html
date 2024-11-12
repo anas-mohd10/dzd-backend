@@ -34,7 +34,8 @@
         </button>
 
         <a class="btn border bg-white text-primary border-primary" *ngIf="isPackingSlipAvailable"
-          href="packing-slip?order={{orderNumber?.split('#')[1]}}" target="_blank">
+          href="{{settings?.domainUrl + '/api/v1/w/admin/auth/generate-packingslip/' + orderNumber?.split('#')[1]}}"
+          target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -43,8 +44,9 @@
           Packing Slip
         </a>
 
-        <a class="btn btn-primary" *ngIf="isInvoiceAvailable"
-          href="generate-invoice?order={{orderNumber?.split('#')[1]}}" target="_blank">
+        <a class="btn btn-primary" 
+          href="{{settings?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/' + orderNumber?.split('#')[1]}}"
+          target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -52,7 +54,6 @@
           </svg>
           Generate Invoice
         </a>
-
       </div>
     </div>
   </div>

@@ -60,6 +60,7 @@
             <th>Email</th>
             <th>ID</th>
             <th>Mobile</th>
+            <th>Source</th>
             <th>Status</th>
             <th>Action</th>
          </tr>
@@ -71,6 +72,7 @@
                <td>{{customer?.email}}</td>
                <td>{{customer?.userid}}</td>
                <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
+               <td>{{customer?.regdType}}</td>
                <td>
                   <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
                      {{customer?.isActive ? 'Active' : 'Inactive'}}

@@ -65,6 +65,12 @@
                   </div>
                 </div>
 
+                <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3">Boost Score</label>
+                  <input type="text" class="form-control fs-6" formControlName="boostScore"
+                    [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
+                </div>
+
                 <div class="my-4">
                   <div class="fs-3 fw-bold">Price Details</div>
                   <p class="text-muted">Easily manage price details to showacse your product</p>
@@ -99,7 +105,7 @@
                         <ng-container *ngFor="let category of categories">
                           <div
                             class="bg-secondary cursor-pointer p-2 rounded d-flex align-items-center justify-content-center gap-2"
-                            (click)="toggleProductCategory(category._id, 'remove')">
+                            (click)="toggleProductCategory(category?._id, 'remove')">
                             <div>
                               {{category.name}}
                             </div>
@@ -219,7 +225,7 @@
                     <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
                     <input id="searchKeywords" class="form-control fs-6"
                       (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
-                    <ng-container *ngIf="searchKeywords.length > 0">
+                    <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
                       <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
                         <ng-container *ngFor="let keyword of searchKeywords">
                           <div
@@ -386,7 +392,7 @@
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
-                          <img src="{{base}}{{image?.path}}" class="h-100 rounded w-100" alt="{{image?.title}}">
+                          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
                         </div>
                       </div>
                     </ng-container>
@@ -466,7 +472,63 @@
   </div>
 </div>
 
-<!-- Attributes modal starts here -->
+<ng-template #siblingsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">List of Variants</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="siblingsRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-items-center justify-content-end">
+      <button class="btn btn-secondary p-3 mb-2" (click)="skipUpdate()">
+        Skip this step
+      </button>
+    </div>
+    <div class="alert alert-warning fs-5">
+      Show at least one version of a product before hiding it.
+    </div>
+    <table class="table">
+      <thead>
+        <th class="p-2">Name</th>
+        <th class="p-2">SKU</th>
+        <th class="p-2">Stock</th>
+        <th class="p-2">Visible</th>
+        <th class="p-2">Status</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sibling of siblings">
+          <td>
+            <div class="d-flex align-items-center justify-content-start gap-2">
+              <img class="rounded border border-secondary" src="{{base + sibling.thumbnail}}" height="30" width="30"
+                alt="{{sibling.name}}">
+              <div>{{sibling.name}}</div>
+            </div>
+            <div class="mt-1" *ngFor="let attribute of sibling.attributes">
+              <div>{{attribute.title}} : {{attribute.value}}</div>
+            </div>
+          </td>
+          <td>{{sibling.sku}}</td>
+          <td>{{sibling.stock}}</td>
+          <td>
+            <app-switch [switchId]="sibling?._id" [isToggledProps]="sibling.isVisible"
+              (switchToggled)="onTriggerSiblings($event, 'isVisible')"></app-switch>
+          </td>
+          <td>
+            <app-switch [switchId]="sibling?._id" [isToggledProps]="sibling.isActive"
+              (switchToggled)="onTriggerSiblings($event, 'isActive')"></app-switch>
+          </td>
+        </tr>
+        <tr *ngIf="siblings.length == 0">
+          <td colspan="5">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Add Variants</h4>
@@ -516,4 +578,3 @@
     </div>
   </div>
 </ng-template>
-<!-- Attributes modal ends here -->

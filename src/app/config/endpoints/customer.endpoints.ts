@@ -30,5 +30,6 @@ export const customerEndpoints = {
   getNewsletterSubscribers: '/newsletter-subscribers',
   customerDetails: '/get-customer-details',
   usersBulkImport: '/import-users',
+  subscribersBulkImport: '/import-subscribers',
   deleteCustomer: '/delete-customer'
 }

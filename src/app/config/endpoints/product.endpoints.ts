@@ -31,5 +31,8 @@ export const productEndpoints = {
     deleteProductIcon: '/delete-product-icon',
     getProductDetails: '/get-productdetails',
     getProducts: '/get-products',
-    deleteProduct: '/delete-product'
+    deleteProduct: '/delete-product',
+    manageChildProducts: '/manageChildProducts',
+    productStoreFields: '/productStoreFields',
+    updateProductStoreFields: '/updateProductStoreFields'
 }

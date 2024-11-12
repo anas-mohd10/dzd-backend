@@ -4,8 +4,9 @@ export const productHeadEndpoints = {
    product_heads: '/product-head',
    getDetails: '/head-details',
    search_product_head: '/search-product-heads',
-   update_product_head: '/update-product-head',
+   updateProductHead: '/update-product-head',
    product_head_images: '/products/head-images',
    parentDetails: '/parent-details',
-   deleteProductHead: '/delete-producthead'
+   deleteProductHead: '/delete-producthead',
+   activeParents: '/activeParents'
 }

@@ -1,5 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { PageTasks } from 'src/app/config/constants';
@@ -10,16 +15,16 @@ import { RolesService } from 'src/app/includes/services/roles.service';
 @Component({
   selector: 'app-add-roles',
   templateUrl: './add-roles.component.html',
-  styleUrls: ['./add-roles.component.scss']
+  styleUrls: ['./add-roles.component.scss'],
 })
 export class AddRolesComponent implements OnInit {
   form: FormGroup;
-  appRoute = appRoutes
+  appRoute = appRoutes;
   task = PageTasks.ADD;
   editMode = false;
   isSubmitted = false;
-  permissions: any = []
-  rolePermissions: Array<any> = []
+  permissions: any = [];
+  rolePermissions: Array<any> = [];
 
   constructor(
     private RolesService: RolesService,
@@ -28,24 +33,24 @@ export class AddRolesComponent implements OnInit {
     private Router: Router,
     private ChangeDetectorRef: ChangeDetectorRef,
     private HotToastService: HotToastService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
       isActive: new FormControl('true'),
-      permissions: new FormControl([], Validators.required)
+      permissions: new FormControl([], Validators.required),
     });
 
     this.PermissionsService.getPermissions().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.permissions = res?.result
-          this.ChangeDetectorRef.markForCheck()
+          this.permissions = res?.result;
+          this.ChangeDetectorRef.markForCheck();
         }
-      }
-    })
+      },
+    });
   }
 
   get roleForm() {
@@ -54,57 +59,70 @@ export class AddRolesComponent implements OnInit {
 
   toggleBulkPermissions(permissions: Array<any>) {
     for (let permission of permissions) {
-      let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission?._id)
+      let isExists = this.rolePermissions.some(
+        (rolePermission: any) => rolePermission == permission?._id
+      );
       if (isExists) {
-        this.rolePermissions = this.rolePermissions.filter((rolePermission: any) => rolePermission != permission?._id)
+        this.rolePermissions = this.rolePermissions.filter(
+          (rolePermission: any) => rolePermission != permission?._id
+        );
       } else {
-        this.rolePermissions.push(permission?._id)
+        this.rolePermissions.push(permission?._id);
       }
     }
   }
 
   rolesExists(permissions: Array<any>) {
-    let count = 0
+    let count = 0;
     for (let permission of permissions) {
-      let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission?._id)
-      isExists ? count++ : null
+      let isExists = this.rolePermissions.some(
+        (rolePermission: any) => rolePermission == permission?._id
+      );
+      isExists ? count++ : null;
     }
 
-    return count > 0 && count == permissions.length ? true : false
+    return count > 0 && count == permissions.length ? true : false;
   }
 
   toggleRolePermissions(permission: string) {
-    let isExists = this.rolePermissions.some((rolePermission: any) => rolePermission == permission)
+    let isExists = this.rolePermissions.some(
+      (rolePermission: any) => rolePermission == permission
+    );
     if (isExists) {
-      this.rolePermissions = this.rolePermissions.filter((rolePermission: any) => rolePermission != permission)
+      this.rolePermissions = this.rolePermissions.filter(
+        (rolePermission: any) => rolePermission != permission
+      );
     } else {
-      this.rolePermissions.push(permission)
+      this.rolePermissions.push(permission);
     }
   }
 
   roleExists(permission: string) {
-    return this.rolePermissions.some((rolePermission: any) => rolePermission == permission)
+    return this.rolePermissions.some(
+      (rolePermission: any) => rolePermission == permission
+    );
   }
 
   onSubmit() {
-    this.form.get('permissions')?.setValue(this.rolePermissions)
+    this.form.get('permissions')?.setValue(this.rolePermissions);
 
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     this.RolesService.addRoles(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.Router.navigate([this.appRoute.roles.ROLES_LIST])
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.roles.ROLES_LIST]);
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      },
+    });
   }
 }

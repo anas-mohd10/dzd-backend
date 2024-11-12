@@ -27,6 +27,7 @@ export class AuthenticationComponent implements OnInit {
       isGoogleLogin: new FormControl(false),
       isOtpForGuestCheckout: new FormControl(false),
       isGuestCheckout: new FormControl(false),
+      isOtpForRegistration: new FormControl(false),
       facebookLogin: new FormGroup({
         text: new FormControl('Login with Facebook'),
         clientId: new FormControl(''),

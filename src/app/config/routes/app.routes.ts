@@ -302,7 +302,7 @@ export const appRoutes = {
   mailerDetails: `${app}/mailer-details`,
   timerSettings: `${app}/timer-settings`,
   bulk: {
-    import: `${app}/bulk-import`,
+    import: `${app}/bulk-upload`,
   },
   pageCovers: `${app}/page-covers`,
   replaceRequests: `${app}/replace-requests`,
@@ -319,6 +319,8 @@ export const appRoutes = {
   smsSettings: `${app}/sms-settings`,
   authSettings: `${app}/auth-settings`,
   cartSettings: `${app}/cart-settings`,
+  orderSettings: `${app}/order-settings`,
+  filters: `${app}/filters`,
   appKeys: `${app}/app-keys`,
   pickupLocations: {
     list: `${app}/pickup-locations`,

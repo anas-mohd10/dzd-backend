@@ -65,6 +65,7 @@
                   <th>Brand</th>
                   <th>Tax</th>
                   <th>Category</th>
+                  <th>Status</th>
                   <th>Updated On</th>
                   <th>&nbsp;</th>
                </tr>
@@ -76,14 +77,22 @@
                         <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="rounded"
                            onerror="this.src = 'assets/images/default.png'">
                      </td>
-                     <td>{{product?.name}}</td>
-                     <td>{{product?.sku}}</td>
+                     <td>
+                        <div class="productName">{{product?.name}}</div>
+                     </td>
+                     <td>
+                        <div class="productSku">{{product?.sku}}</div>
+                     </td>
                      <td>{{product?.brand ? product?.brand?.name : '-'}}</td>
                      <td>{{product?.tax?.name}}</td>
                      <td>
                         <ng-container *ngFor="let category of product?.parentCategory?.id; let i = index">
                            <div>{{category?.name}}</div>
                         </ng-container>
+                     </td>
+                     <td>
+                        <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
+                           (switchToggled)="updateParent($event)"></app-switch>
                      </td>
                      <td>{{formdateDate(product?.updatedAt)}}</td>
                      <td>
@@ -302,25 +311,46 @@
 
 <ng-template #productTemplate>
    <div class="modal-header">
-      <div class="fs-2 fw-bolder pull-left">{{productDetails?.name}} products</div>
-      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeProducts()">
-         <span aria-hidden="true" class="visually-hidden">&times;</span>
-      </button>
+      <div class="fs-2 fw-bolder pull-left"></div>
+      <div class="d-flex align-items-center justify-content-end gap-8">
+         <button class="col-lg-3" (click)="closeProducts()" routerLink="{{appRoute.product.ADD_PRODUCT}}"
+            [queryParams]="{'product': productDetails?.slug}"
+            class="btn btn-primary d-flex align-items-center justify-content-center gap-2 w-100">
+            <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+               viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+            </svg>
+            Add products
+         </button>
+         <button type="button" class="btn-close col-lg-3 close pull-right" aria-label="Close" (click)="closeProducts()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+         </button>
+      </div>
    </div>
 
-   <div class="modal-body">
 
-      <div class="row justify-content-end">
+   <div class="modal-body">
+      <div class="row">
+         <div class="col-lg-7 d-flex jusitfy-content-start align-items-end">
+           <div class="fs-2 fw-bolder">{{productDetails?.name}} ({{childProducts.length}})</div>
+         </div>
+         <div class="form-group col-lg-3 align-items-end">
+            <label for="parentStatus" class="fs-6 mb-3">Status</label>
+            <select [formControl]="parentStatus" id="parentStatus" class="form-select">
+               <option value="" disabled>-- Select an option --</option>
+               <option value="true">Active</option>
+               <option value="false">Inactive</option>
+            </select>
+         </div>
          <div class="col-lg-2">
-            <button (click)="closeProducts()" routerLink="{{appRoute.product.ADD_PRODUCT}}"
-               [queryParams]="{'product': productDetails?.slug}"
-               class="btn btn-primary d-flex align-items-center justify-content-center gap-2 w-100">
-               <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-               </svg>
-               Add products
-            </button>
+            <label for="parentStatus" class="fs-6 mb-3">&nbsp;</label>
+            <button class="btn btn-secondary w-100" (click)="manageChildProducts()">Save changes</button>
+         </div>
+      </div>
+
+      <div class="alert my-4 alert-warning" *ngIf="parentStatus.value == 'false'">
+         <div class="fs-6">
+            Note: Disabling this product will also disable all associated child products on the website.
          </div>
       </div>
 
@@ -331,10 +361,13 @@
                   <th>&nbsp;</th>
                   <th>Name</th>
                   <th>SKU</th>
+                  <th>Brand</th>
                   <th>Category</th>
                   <th>Price</th>
                   <th>Stock</th>
-                  <th>Updated On</th>
+                  <th>Show on PL</th>
+                  <th>Score</th>
+                  <th>Status</th>
                   <th>&nbsp;</th>
                </tr>
             </thead>
@@ -346,29 +379,44 @@
                            class="rounded border border-secondary" onerror="this.src = 'assets/images/default.png'">
                      </td>
                      <td>
-                        <div>
-                           {{product?.name}}
-                        </div>
-                        <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
-                           <div
-                              class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
-                              *ngFor="let attribute of product?.attributes">
-                              <div>{{attribute?.title}} : </div>
-                              <div>{{attribute?.value}}</div>
+                        <div class="productName">
+                           <div>
+                              {{product?.name}}
+                           </div>
+                           <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
+                              <div
+                                 class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
+                                 *ngFor="let attribute of product?.attributes">
+                                 <div>{{attribute?.title}} : </div>
+                                 <div>{{attribute?.value}}</div>
+                              </div>
                            </div>
                         </div>
                      </td>
-                     <td>{{product?.sku}}</td>
                      <td>
-
+                        <div class="productSku">{{product?.sku}}</div>
+                     </td>
+                     <td>
+                        {{product?.product?.id?.brand?.name}}
+                     </td>
+                     <td>
                         <ng-container *ngFor="let category of product?.category?.id; let i = index">
                            <div>{{category?.name}}</div>
                         </ng-container>
-
                      </td>
-                     <td> {{settings?.currency}} {{product?.price?.offer}}</td>
+                     <td>{{product?.price?.offer}}</td>
                      <td>{{product?.stock}}</td>
-                     <td>{{formdateDate(product?.updatedAt)}}</td>
+                     <td>
+                        <span class="p-1 rounded"
+                           [ngClass]="{'alert-success': product?.isVisible == true, 'alert-danger': product?.isVisible == false}">
+                           {{product?.isVisible == true ? 'Visible' : 'Hidden'}}
+                        </span>
+                     </td>
+                     <td>{{product?.boostScore}}</td>
+                     <td>
+                        <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
+                           (switchToggled)="updateChildProduct($event)"></app-switch>
+                     </td>
                      <td (click)="closeProducts()" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
                         [queryParams]="{product: product?.slug}">
                         <div

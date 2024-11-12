@@ -2,14 +2,14 @@
     <div class="page-header d-flex align-items-start justify-content-between">
         <div>
             <div class="page-title">
-                <h1 class="fw-bold">Bulk imports</h1>
+                <h1 class="fw-bold">Bulk Imports</h1>
             </div>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item fs-6">
                     <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.bulk.import }}">Bulk imports</a>
+                    <a routerLink="{{ appRoute.bulk.import }}">Bulk Imports</a>
                 </li>
             </ul>
         </div>
@@ -66,6 +66,7 @@
                         <th>Name</th>
                         <th>Created by</th>
                         <th>Status</th>
+                        <th>Percentage</th>
                         <th>Type</th>
                         <th>Time</th>
                         <th>Date</th>
@@ -75,7 +76,7 @@
                 <tbody class="fs-6">
                     <ng-container *ngFor="let import of fileImports">
                         <tr>
-                            <td>{{import?.title}}</td>
+                            <td class="title">{{import?.title}}</td>
                             <td> {{import?.createdBy}}</td>
                             <td>
                                 <svg *ngIf="import?.status == 'progress'" xmlns="http://www.w3.org/2000/svg" width="16"
@@ -108,14 +109,23 @@
                             <td>
                                 <div
                                     class="p-1 w-100 d-flex align-items-center justify-content-center rounded bg-secondary">
+                                   <div class="flex justify-content-center align-items-center">
+                                    {{import?.percentComplete}}%
+                                   </div>
+                                
+                                </div>
+                            </td>
+                            <td>
+                                <div
+                                    class="p-1 w-100 d-flex align-items-center justify-content-center rounded bg-secondary">
                                     {{import?.type}}</div>
                             </td>
                             <td>{{getMinutes(import?.executionTime)}} min</td>
                             <td>{{import?.createdAt}}</td>
                             <td>
-                                <a class="cursor-pointer btn btn-primary p-1" href="{{baseUrl + import?._id}}" target="_blank">
-                                    Download log
-                                </a>
+                                <button class="btn btn-secondary p-1" routerLink="{{import?._id}}">
+                                    View logs
+                                </button>
                             </td>
                         </tr>
                     </ng-container>

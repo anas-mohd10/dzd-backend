@@ -20,7 +20,7 @@ export class PermissionGuard implements CanActivate {
     let paths = state.url.split('/app/');
     let module = paths[1].split('/')
     let path = ''
-    
+
     switch (module[0]) {
       case 'brands':
         module[1] == 'add' ? path = 'add-brand' : module[1] == 'update' ? path = 'update-brand' : path = 'brand'
@@ -55,6 +55,12 @@ export class PermissionGuard implements CanActivate {
       case 'payment-settings':
         module[0] == 'payment-settings' ? path = 'payment-settings' : null
         break
+      case 'order-settings':
+        module[0] == 'order-settings' ? path = 'order-settings' : null
+        break
+      case 'filters':
+        module[0] == 'filters' ? path = 'filters' : null
+        break
       case 'help-center':
         module[0] == 'help-center' ? path = 'help-center' : null
         break
@@ -64,9 +70,9 @@ export class PermissionGuard implements CanActivate {
       case 'media-library':
         module[0] == 'media-library' ? path = 'media-library' : null
         break
-        case 'guests':
-          module[0] == 'guests' ? path = 'guests' : null
-          break
+      case 'guests':
+        module[0] == 'guests' ? path = 'guests' : null
+        break
       case 'feeds':
         module[0] == 'feeds' ? path = 'feeds' : null
         break
@@ -198,6 +204,12 @@ export class PermissionGuard implements CanActivate {
         break
       case 'shipping-policy':
         module[0] == 'shipping-policy' ? path = 'shipping-policy' : null
+        break
+      case 'shipping-charges':
+        module[0] == 'shipping-charges' ? path = 'shipping-charges' : null
+        break
+      case 'shipping-rules':
+        module[0] == 'shipping-rules' ? path = 'shipping-rules' : null
         break
       case 'shipping-settings':
         module[0] == 'shipping-settings' ? path = 'shipping-settings' : null

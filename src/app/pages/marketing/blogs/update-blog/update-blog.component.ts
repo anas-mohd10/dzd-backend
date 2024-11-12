@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
 import { BlogService } from 'src/app/includes/services/blog.service';
@@ -25,17 +30,17 @@ interface Media {
 @Component({
   selector: 'app-update-blog',
   templateUrl: './update-blog.component.html',
-  styleUrls: ['./update-blog.component.scss']
+  styleUrls: ['./update-blog.component.scss'],
 })
 export class UpdateBlogComponent implements OnInit {
-  appRoute = appRoutes
+  appRoute = appRoutes;
   form: FormGroup;
-  isSubmitted: boolean = false
-  previews: any = { thumbnail: '', cover: '' }
-  files: any = { thumbnail: null, cover: null }
-  blogDetails: any
-  blogQuery: string = ''
-  modalRef: BsModalRef
+  isSubmitted: boolean = false;
+  previews: any = { thumbnail: '', cover: '' };
+  files: any = { thumbnail: null, cover: null };
+  blogDetails: any;
+  blogQuery: string = '';
+  modalRef: BsModalRef;
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -59,7 +64,7 @@ export class UpdateBlogComponent implements OnInit {
       { class: 'manrope', name: 'Manrope' },
       { class: 'sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ]
+    ],
   };
 
   constructor(
@@ -69,7 +74,7 @@ export class UpdateBlogComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
     private BsModalService: BsModalService
-  ) { }
+  ) {}
 
   get formControls() {
     return this.form.controls;
@@ -79,6 +84,7 @@ export class UpdateBlogComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
+      overview: new FormControl(''),
       isActive: new FormControl(true),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
@@ -87,84 +93,92 @@ export class UpdateBlogComponent implements OnInit {
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null, Validators.required),
-    })
+    });
 
-    this.blogQuery = this.ActivatedRoute.snapshot.params.blog || ''
+    this.blogQuery = this.ActivatedRoute.snapshot.params.blog || '';
     this.BlogService.blogDetails(this.blogQuery).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.blogDetails = res?.result
+          this.blogDetails = res?.result;
           for (let key of Object.keys(this.blogDetails)) {
-            this.form.get(key)?.setValue(this.blogDetails[key])
+            this.form.get(key)?.setValue(this.blogDetails[key]);
           }
-          this.previews.thumbnail = this.blogDetails.thumbnail?.path
-          this.previews.cover = this.blogDetails.cover?.path
-          this.ChangeDetectorRef.markForCheck()
+          this.previews.thumbnail = this.blogDetails.thumbnail?.path;
+          this.previews.cover = this.blogDetails.cover?.path;
+          this.ChangeDetectorRef.markForCheck();
         }
-      }
-    })
+      },
+    });
   }
 
   handleCover(event: any) {
-    this.previews.cover = event.path
-    this.form.get('cover')?.setValue(event._id)
+    this.previews.cover = event.path;
+    this.form.get('cover')?.setValue(event?._id);
   }
 
   handleThumbnail(event: any) {
-    this.previews.thumbnail = event.path
-    this.form.get('thumbnail')?.setValue(event._id)
+    this.previews.thumbnail = event.path;
+    this.form.get('thumbnail')?.setValue(event?._id);
   }
 
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
-        this.form.get('cover')?.setValue(null)
-        this.previews.cover = ''
-        break
+        this.form.get('cover')?.setValue(null);
+        this.previews.cover = '';
+        break;
       case 'thumbnail':
-        this.form.get('thumbnail')?.setValue(null)
-        this.previews.thumbnail = ''
-        break
+        this.form.get('thumbnail')?.setValue(null);
+        this.previews.thumbnail = '';
+        break;
     }
   }
 
   open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: "modal-dialog-centered modal-sm", ignoreBackdropClick: true })
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-sm',
+      ignoreBackdropClick: true,
+    });
   }
 
   confirm() {
     this.BlogService.deleteBlog(this.blogQuery).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Router.navigate([appRoutes.blogs.list])
-          this.Toast.success(res.message)
-          this.modalRef?.hide()
+          this.Router.navigate([appRoutes.blogs.list]);
+          this.Toast.success(res.message);
+          this.modalRef?.hide();
         } else {
-          this.Toast.error(res.message)
+          this.Toast.error(res.message);
         }
-      }, error: (err: any) => {
-        this.Toast.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.Toast.error(err.error.message);
+      },
+    });
   }
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
-    this.BlogService.updateBlog({ ...this.form.value, slug: this.blogQuery }).subscribe({
+    this.BlogService.updateBlog({
+      ...this.form.value,
+      slug: this.blogQuery,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Router.navigate([appRoutes.blogs.list])
-          this.Toast.success(res.message)
+          this.Router.navigate([appRoutes.blogs.list]);
+          this.Toast.success(res.message);
         } else {
-          this.Toast.error(res.message)
+          this.Toast.error(res.message);
         }
-      }, error: (err: any) => {
-        this.Toast.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.Toast.error(err.error.message);
+      },
+    });
   }
 }

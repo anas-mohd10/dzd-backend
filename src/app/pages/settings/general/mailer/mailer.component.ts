@@ -41,6 +41,7 @@ export class MailerComponent implements OnInit {
       abandonedCarts: [],
       subscribers: [],
       newsletters: [],
+      enquiries: []
     }
   }
 
@@ -52,6 +53,7 @@ export class MailerComponent implements OnInit {
       abandonedCarts: new FormControl('', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")),
       subscribers: new FormControl('', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")),
       newsletters: new FormControl('', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")),
+      enquiries: new FormControl('', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")),
     })
     this.getMailerDetails()
   }

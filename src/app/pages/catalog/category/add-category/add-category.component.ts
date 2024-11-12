@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { AppSettings, PageTasks } from '../../../../config/constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,7 +14,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 
 interface parentDetails {
   refid: string;
-  catid: string
+  catid: string;
 }
 
 @Component({
@@ -17,51 +23,51 @@ interface parentDetails {
   styleUrls: ['./add-category.component.scss'],
 })
 export class AddCategoryComponent implements OnInit {
-  form: FormGroup = new FormGroup({})
-  isSubmitted: boolean = false
-  appRoute = appRoutes
-  categories: Array<any> = []
-  categoryDetails: Array<any> = []
+  form: FormGroup = new FormGroup({});
+  isSubmitted: boolean = false;
+  appRoute = appRoutes;
+  categories: Array<any> = [];
+  categoryDetails: Array<any> = [];
   root: string = '';
   path: string = '';
   parentDetails: parentDetails = {
     refid: '',
-    catid: ''
-  }
-  cover: string = ''
-  thumbnail: string = ''
+    catid: '',
+  };
+  cover: string = '';
+  thumbnail: string = '';
 
   constructor(
     private Router: Router,
     private CategoryService: CategoryService,
     private HotToastService: HotToastService,
-    private ChangeDetectorRef: ChangeDetectorRef,
-  ) { }
+    private ChangeDetectorRef: ChangeDetectorRef
+  ) {}
 
   get formControls() {
     return this.form.controls;
   }
 
   onThumbnailTriggered(event: any) {
-    this.form.get('thumbnail')?.setValue(event._id)
-    this.thumbnail = event?.path
+    this.form.get('thumbnail')?.setValue(event?.path);
+    this.thumbnail = event?.path;
   }
 
   onCoverTriggered(event: any) {
-    this.form.get('cover')?.setValue(event._id)
-    this.cover = event?.path
+    this.form.get('cover')?.setValue(event?.path);
+    this.cover = event?.path;
   }
 
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
-        this.form.get('cover')?.setValue(null)
-        this.cover = ''
-        break
+        this.form.get('cover')?.setValue(null);
+        this.cover = '';
+        break;
       case 'thumbnail':
-        this.form.get('thumbnail')?.setValue(null)
-        this.thumbnail = ''
-        break
+        this.form.get('thumbnail')?.setValue(null);
+        this.thumbnail = '';
+        break;
     }
   }
 
@@ -80,45 +86,51 @@ export class AddCategoryComponent implements OnInit {
       isActive: new FormControl(true),
       isFeatured: new FormControl(false),
       isArchive: new FormControl(false),
-      background: new FormControl(''),
-      border: new FormControl(''),
-      radius: new FormControl(''),
       description: new FormControl(''),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
-      color: new FormControl(''),
-      fontSize: new FormControl(''),
-      fontWeight: new FormControl(''),
     });
-
-    this.form.get('background')?.setValue(AppSettings.BACKGROUND)
-    this.form.get('border')?.setValue(AppSettings.BORDER)
-    this.form.get('color')?.setValue(AppSettings.COLOR)
-    this.form.get('radius')?.setValue(AppSettings.BORDER_RADIUS)
-    this.form.get('fontWeight')?.setValue(AppSettings.FONT_WEIGHT)
-    this.form.get('fontSize')?.setValue(AppSettings.FONT_SIZE)
   }
 
   getCategory() {
     this.CategoryService.getCategory().subscribe({
       next: (res: any) => {
-        this.categoryDetails = res?.result
-        this.ChangeDetectorRef.markForCheck()
+        this.categoryDetails = res?.result;
+        this.ChangeDetectorRef.markForCheck();
 
         for (let i = 0; i < res?.result.length; i++) {
-          if (res?.result[i]?.isActive == true && res?.result[i]?.isArchive == false) {
+          if (
+            res?.result[i]?.isActive == true &&
+            res?.result[i]?.isArchive == false
+          ) {
             if (res?.result[i]?.parent && !res?.result[i]?.root) {
-              this.categories.push(res?.result[i]?.parent.refid.name + ' > ' + res?.result[i]?.name);
+              this.categories.push(
+                res?.result[i]?.parent.refid.name + ' > ' + res?.result[i]?.name
+              );
             }
             if (!res?.result[i]?.parent && res?.result[i]?.root) {
-              this.categories.push(res?.result[i]?.root.name + ' > ' + res?.result[i]?.name);
+              this.categories.push(
+                res?.result[i]?.root.name + ' > ' + res?.result[i]?.name
+              );
             }
             if (res?.result[i]?.parent && res?.result[i]?.root) {
-              if (res?.result[i]?.parent.refid._id != res?.result[i]?.root._id) {
-                this.categories.push(res?.result[i]?.root.name + ' > ' + res?.result[i]?.parent.refid.name + ' > ' + res?.result[i]?.name);
-              } else if (res?.result[i]?.parent.refid._id == res?.result[i]?.root._id) {
-                this.categories.push(res?.result[i]?.root.name + ' > ' + res?.result[i]?.name);
+              if (
+                res?.result[i]?.parent.refid?._id != res?.result[i]?.root?._id
+              ) {
+                this.categories.push(
+                  res?.result[i]?.root.name +
+                    ' > ' +
+                    res?.result[i]?.parent.refid.name +
+                    ' > ' +
+                    res?.result[i]?.name
+                );
+              } else if (
+                res?.result[i]?.parent.refid?._id == res?.result[i]?.root?._id
+              ) {
+                this.categories.push(
+                  res?.result[i]?.root.name + ' > ' + res?.result[i]?.name
+                );
               }
             }
             if (!res?.result[i]?.parent && !res?.result[i]?.root) {
@@ -126,28 +138,29 @@ export class AddCategoryComponent implements OnInit {
             }
           }
         }
-      }, error: (err: any) => { }
+      },
+      error: (err: any) => {},
     });
   }
 
   getParentDetails(event: any) {
-    this.path = event.value
-    let split = event.value.split(" > ")
-    let len = split.length
+    this.path = event.value;
+    let split = event.value.split(' > ');
+    let len = split.length;
     for (let category of this.categoryDetails) {
       if (len > 1) {
         if (split[0] == category.name) {
-          this.root = category._id
+          this.root = category?._id;
         }
         if (split[len - 1] == category.name) {
-          this.parentDetails.refid = category._id
-          this.parentDetails.catid = category.catid
+          this.parentDetails.refid = category?._id;
+          this.parentDetails.catid = category.catid;
         }
       } else if (len == 1) {
         if (split[0] == category.name) {
-          this.root = category._id
-          this.parentDetails.refid = category._id
-          this.parentDetails.catid = category.catid
+          this.root = category?._id;
+          this.parentDetails.refid = category?._id;
+          this.parentDetails.catid = category.catid;
         }
       }
     }
@@ -155,17 +168,17 @@ export class AddCategoryComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
+      this.isSubmitted = true;
       return;
     }
 
     this.CategoryService.addCategory({
       name: this.form.get('name')?.value,
       isRoot: this.form.get('isRoot')?.value,
-      description: this.form.get("description")?.value,
-      metaTitle: this.form.get("metaTitle")?.value,
-      metaDescription: this.form.get("metaDescription")?.value,
-      metaKeywords: this.form.get("metaKeywords")?.value,
+      description: this.form.get('description')?.value,
+      metaTitle: this.form.get('metaTitle')?.value,
+      metaDescription: this.form.get('metaDescription')?.value,
+      metaKeywords: this.form.get('metaKeywords')?.value,
       root: this.root ? this.root : null,
       thumbnail: this.form.get('thumbnail')?.value,
       cover: this.form.get('cover')?.value,
@@ -174,16 +187,6 @@ export class AddCategoryComponent implements OnInit {
       isFeatured: this.form.get('isFeatured')?.value,
       isArchive: this.form.get('isArchive')?.value,
       path: this.path,
-      style: {
-        background: this.form.get('background')?.value,
-        border: this.form.get('border')?.value,
-        radius: this.form.get('radius')?.value,
-        text: {
-          color: this.form.get('color')?.value,
-          fontSize: this.form.get('fontSize')?.value,
-          fontWeight: this.form.get('fontWeight')?.value,
-        }
-      }
     }).subscribe({
       next: (res: any) => {
         if (res.errorCode != 0) {
@@ -192,9 +195,10 @@ export class AddCategoryComponent implements OnInit {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.category.CATEGORY_LIST]);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
-      }
+      },
     });
   }
 }

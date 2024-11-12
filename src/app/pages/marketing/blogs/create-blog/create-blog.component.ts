@@ -9,14 +9,14 @@ import { HotToastService } from '@ngneat/hot-toast';
 @Component({
   selector: 'app-create-blog',
   templateUrl: './create-blog.component.html',
-  styleUrls: ['./create-blog.component.scss']
+  styleUrls: ['./create-blog.component.scss'],
 })
 export class CreateBlogComponent implements OnInit {
-  appRoute = appRoutes
+  appRoute = appRoutes;
   form: FormGroup;
-  isSubmitted: boolean = false
-  previews: any = { thumbnail: '', cover: '' }
-  files: any = { thumbnail: null, cover: null }
+  isSubmitted: boolean = false;
+  previews: any = { thumbnail: '', cover: '' };
+  files: any = { thumbnail: null, cover: null };
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -40,17 +40,17 @@ export class CreateBlogComponent implements OnInit {
       { class: 'manrope', name: 'Manrope' },
       { class: 'sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ]
+    ],
   };
-  cover: string = ''
-  thumbnail: string = ''
+  cover: string = '';
+  thumbnail: string = '';
 
   constructor(
     private BlogService: BlogService,
     private Router: Router,
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   get formControls() {
     return this.form.controls;
@@ -59,6 +59,7 @@ export class CreateBlogComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
+      overview: new FormControl(''),
       description: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       category: new FormControl('', Validators.required),
@@ -68,49 +69,50 @@ export class CreateBlogComponent implements OnInit {
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null, Validators.required),
-    })
+    });
   }
 
   handleCover(event: any) {
-    this.cover = event.path
-    this.form.get('cover')?.setValue(event._id)
+    this.cover = event.path;
+    this.form.get('cover')?.setValue(event?._id);
   }
 
   handleThumbnail(event: any) {
-    this.thumbnail = event.path
-    this.form.get('thumbnail')?.setValue(event._id)
+    this.thumbnail = event.path;
+    this.form.get('thumbnail')?.setValue(event?._id);
   }
 
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
-        this.form.get('cover')?.setValue(null)
-        this.cover = ''
-        break
+        this.form.get('cover')?.setValue(null);
+        this.cover = '';
+        break;
       case 'thumbnail':
-        this.form.get('thumbnail')?.setValue(null)
-        this.thumbnail = ''
-        break
+        this.form.get('thumbnail')?.setValue(null);
+        this.thumbnail = '';
+        break;
     }
   }
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
-      return
+      this.isSubmitted = true;
+      return;
     }
 
     this.BlogService.createBlog(this.form.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Router.navigate([appRoutes.blogs.list])
-          this.Toast.success(res.message)
+          this.Router.navigate([appRoutes.blogs.list]);
+          this.Toast.success(res.message);
         } else {
-          this.Toast.error(res.message)
+          this.Toast.error(res.message);
         }
-      }, error: (err: any) => {
-        this.Toast.error(err.error.message)
-      }
-    })
+      },
+      error: (err: any) => {
+        this.Toast.error(err.error.message);
+      },
+    });
   }
 }

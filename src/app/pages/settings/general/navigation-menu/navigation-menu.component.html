@@ -1003,6 +1003,8 @@
                         <app-assets [previewDetails]="megaMenuIcon"
                             (mediaClicked)="handleMegaMenuMedia('icon', $event)"></app-assets>
                     </div>
+                    <button *ngIf="megaMenuIcon || megaMenuForm.get('icon')?.value"
+                        class="btn btn-danger w-100 p-1 mt-1" (click)="removeMegaMenuMedia('icon')">Remove</button>
                 </div>
                 <div class="col-lg-10">
                     <div class="form-group mb-3">
@@ -1019,11 +1021,15 @@
             <div class="my-4">
                 <div class="fs-4 mb-2">Menu Details</div>
                 <p class="text-muted">Add items to the menu for display.</p>
-                <div class="row">
+                <div class="row h-100">
                     <div class="col-lg-4">
-                        <div class="h-100 w-100">
+                        <div class="h-100 w-100 position-relative">
                             <app-assets [previewDetails]="megaMenuAdvertisement"
                                 (mediaClicked)="handleMegaMenuMedia('advertisement', $event)"></app-assets>
+                                
+                            <button class="btn btn-danger position-absolute bottom-0 m-2 p-2"
+                                *ngIf="megaMenuAdvertisement || megaMenuForm.get('advertisement')?.value"
+                                (click)="removeMegaMenuMedia('advertisement')">Remove</button>
                         </div>
                     </div>
                     <div class="col-lg-8">
