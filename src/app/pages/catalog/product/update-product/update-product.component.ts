@@ -470,6 +470,9 @@ export class UpdateProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
+          if(!this.form.get('searchKeywords')?.value){
+            this.form.get('searchKeywords')?.setValue([])
+          }
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
