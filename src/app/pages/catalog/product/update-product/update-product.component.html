@@ -225,7 +225,7 @@
                     <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
                     <input id="searchKeywords" class="form-control fs-6"
                       (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
-                    <ng-container *ngIf="searchKeywords.length > 0">
+                    <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
                       <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
                         <ng-container *ngFor="let keyword of searchKeywords">
                           <div
