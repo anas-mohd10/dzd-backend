@@ -1,19 +1,9 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HomeWidgetsService } from 'src/app/includes/services/home-widgets.service';
-import {
-  CdkDragDrop,
-  CdkDropList,
-  CdkDrag,
-  moveItemInArray,
-} from '@angular/cdk/drag-drop';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray, } from '@angular/cdk/drag-drop';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { ProductService } from 'src/app/includes/services/product.service';
@@ -46,230 +36,195 @@ export class HomeComponent implements OnInit {
       icon: 'assets/widgets/rush-lake.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    },
-    {
+    }, {
       title: 'Glamour Glaze',
       type: 'glamour-glaze',
       icon: 'assets/widgets/volta-lake.png',
       description:
         'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button.',
-    },
-    {
+    }, {
       title: 'Dazzle Design',
       type: 'dazzle-design',
       icon: 'assets/widgets/1x4.png',
       description:
         'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.',
-    },
-    {
+    }, {
       title: 'Celestial Canvas',
       type: 'celestial-canvas',
       icon: 'assets/widgets/celestial-canvas.png',
       description: 'This widget is used to showcase banner carousel and video',
-    },
-    {
+    }, {
       title: 'Blogs',
       type: 'blogs',
       icon: 'assets/widgets/blogs.png',
       description:
         'The following widget can be used to display the recent blogs, or categories.The widget contains image and white transluscent descriptive box.The description box contain text and button.',
-    },
-    {
+    }, {
       title: 'Custom HTML',
       type: 'html',
       icon: 'assets/widgets/custom-html.png',
       description: '',
-    },
-    {
+    }, {
       title: 'Image Slider',
       type: 'image-slider',
       icon: 'assets/widgets/image-slider.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    },
-    {
+    }, {
       title: 'Video',
       type: 'video',
       icon: 'assets/widgets/video.png',
       description: 'This widget is used to showcase full width video only.',
-    },
-    {
+    }, {
       title: 'Motion Canvas',
       type: 'motion-canvas',
       icon: 'assets/widgets/regal-rolls.png',
       description:
         'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    },
-    {
+    }, {
       title: 'Products',
       type: 'products',
       icon: 'assets/widgets/blogs.png',
       description:
         'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    },
-    {
+    }, {
       title: 'Noble Nodes',
       type: 'noble-nodes',
       icon: 'assets/widgets/noble-nodes.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    },
-    {
+    }, {
       title: 'Prime Plates',
       type: 'prime-plates',
       icon: 'assets/widgets/prime-plates.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    },
-    {
+    }, {
       title: 'Elite Elements',
       type: 'elite-elements',
       icon: 'assets/widgets/elite-elements.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    },
-    {
+    }, {
       title: 'Sale Timer',
       type: 'sale-timer',
       icon: 'assets/widgets/sale-timer.png',
       description: 'This widget is used to showcase a sale timer.',
-    },
-    {
+    }, {
       title: 'Twin Towers',
       type: 'twin-towers',
       icon: 'assets/widgets/twin-towers.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    },
-    {
+    }, {
       title: 'Slider Spotlight',
       type: 'slider-spotlight',
       icon: 'assets/widgets/slider-spotlight.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Trending Teasers',
       type: 'trending-teasers',
       icon: 'assets/widgets/trending-teasers.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Smart Tiles',
       type: 'smart-tiles',
       icon: 'assets/widgets/smart-tiles.png',
       description:
         'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    },
-    {
+    }, {
       title: 'Stellar Selections',
       type: 'stellar-selections',
       icon: 'assets/widgets/stellar-selections.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Testimonials',
       type: 'testimonial-cards',
       icon: 'assets/widgets/image-slider.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Radiant Rectangles',
       type: 'radiant-rectangles',
       icon: 'assets/widgets/radiant-rectangles.png',
       description:
         'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    },
-    {
+    }, {
       title: 'Quad Squares',
       type: 'quad-square',
       icon: 'assets/widgets/quad-sqaure.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Insight Hub',
       type: 'insight-hub',
       icon: 'assets/widgets/store-chronicles.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Delivery Timer',
       type: 'delivery-timer',
       icon: 'assets/widgets/delivery-timer.png',
       description:
         'The following widget can be used to run a delivery timer with custom designs',
-    },
-    {
+    }, {
       title: 'Hyper Link Hero',
       type: 'hyperlinkhero',
       icon: 'assets/widgets/picture-palette.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Aurora Grid',
       type: 'aurora-grid',
       icon: 'assets/widgets/aurora-grid.png',
       description:
         'The following widget can be used to run a delivery timer with custom designs',
-    },
-    {
+    }, {
       title: 'Aurora Slider',
       type: 'aurora-slider',
       icon: 'assets/widgets/aurora-slider.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Text Twirl',
       type: 'text-twirl',
       icon: 'assets/widgets/text-twirl.png',
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Full Banner',
       type: 'full-banner',
       icon: 'assets/widgets/text-twirl.png',
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Animation Banner',
       type: 'animation-banner',
       icon: 'assets/widgets/text-twirl.png',
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Bricks Mansory Grid',
       type: 'brick-mansory-grid',
       icon: 'assets/widgets/text-twirl.png',
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    },
-    {
+    }, {
       title: 'Primary Triple Grid',
       type: 'primary-triple-grid',
       icon: 'assets/widgets/text-twirl.png',
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    },
-
-    {
+    }, {
       title: 'Vibrant Banner',
       type: 'vibrant-banner',
       icon: 'assets/widgets/text-twirl.png',
       description:
         'The following widget can be used to show one full width banner. The widget contains images.',
-    },
-
-    {
+    }, {
       title: 'Key Points',
       type: 'key-points-grid',
       icon: 'assets/widgets/text-twirl.png',
@@ -302,9 +257,9 @@ export class HomeComponent implements OnInit {
   widgetImagePreview: any;
   widgetImagePreviewIndex: any;
   widgetPreviewDetails: any;
-  smartTileProducts: Array<any> = []; // Smart tiles widgets
-  tileProductsInput: FormControl = new FormControl('', Validators.required); // Smart tiles widgets
-  tileProducts: Array<any> = []; // Smart tiles widgets
+  smartTileProducts: Array<any> = [];
+  tileProductsInput: FormControl = new FormControl('', Validators.required);
+  tileProducts: Array<any> = [];
   widgetProductTypes: Array<any> = [
     'smart-tiles',
     'aurora-slider',
@@ -334,8 +289,6 @@ export class HomeComponent implements OnInit {
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
-    'key-points-grid',
-    'full-banner',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
@@ -365,6 +318,7 @@ export class HomeComponent implements OnInit {
     { title: 'Reviews', value: '/reviews' },
     { title: 'Contact Us', value: '/contact-us' },
   ];
+  keyPoints: Array<any> = []
   searchRedirections: Array<string> = [
     'category',
     'brands',
@@ -374,6 +328,7 @@ export class HomeComponent implements OnInit {
     'blogs',
   ];
   blogs: Array<any> = [];
+  blogsMap: any = {}
   widgetBlogs: Array<any> = [];
   redirections: Array<any> = [];
   productForm: FormGroup;
@@ -400,11 +355,10 @@ export class HomeComponent implements OnInit {
     'key-points-grid',
   ];
   selectedProductType: string = 'products';
-
   widgetCollection: FormControl = new FormControl('');
   widgetBrand: FormControl = new FormControl('');
   widgetCategory: FormControl = new FormControl('');
-
+  widgetBlog: FormControl = new FormControl('');
   redirectionQuery: FormControl = new FormControl('');
   redirectionDetails: any;
   spotlightSliders: Array<any> = [];
@@ -462,7 +416,7 @@ export class HomeComponent implements OnInit {
   productsAdRedirection: FormControl = new FormControl('');
   insightHubThumbnailSmall: string = '';
   insightHubThumbnailLarge: string = '';
-  keyPointThumbnail : string = '';
+  keyPointThumbnail: string = '';
   catalogPages: Array<any> = [];
 
   constructor(
@@ -479,13 +433,12 @@ export class HomeComponent implements OnInit {
     private TestimonialService: TestimonialService,
     private StaticPageService: StaticPageService,
     private BrandService: BrandService
-  ) {}
+  ) { }
 
   getDomain(domain: string) {
     return domain.endsWith('/') ? domain.slice(0, -1) : domain;
   }
 
-  //Motion canvas
   toggleMotionCanvasThumbnail(event: any) {
     this.productAd?.setValue(event.path);
     this.productsAdThumbnail = event.path;
@@ -495,20 +448,14 @@ export class HomeComponent implements OnInit {
     this.productAd?.setValue(null);
     this.productsAdThumbnail = '';
   }
-  //Motion canvas
 
-  //Testimonial widget operations
   getTestimonials() {
     if (!this.testimonialKeyword.valid) {
       this.testimonials = [];
       return;
     }
 
-    this.TestimonialService.searchTestimonials(
-      { keyword: this.testimonialKeyword.value, isActive: true },
-      1,
-      20
-    ).subscribe({
+    this.TestimonialService.searchTestimonials({ keyword: this.testimonialKeyword.value, isActive: true }, 1, 20).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.testimonials = res?.result?.data;
@@ -517,7 +464,7 @@ export class HomeComponent implements OnInit {
           this.Toast.error(res.message);
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -533,9 +480,7 @@ export class HomeComponent implements OnInit {
       this.widgetTestimonials.push(testimonial);
     }
   }
-  //Testimonial widget operations
 
-  //Smart tiles widgets
   getTileProducts() {
     if (!this.tileProductsInput.valid) {
       this.tileProducts = [];
@@ -587,9 +532,7 @@ export class HomeComponent implements OnInit {
       ? true
       : false;
   }
-  //Smart tiles widgets
 
-  //Insight hub
   handleInsightHubThumbnail(event: any, type: string) {
     if (type == 'small') {
       this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(event?._id);
@@ -600,19 +543,44 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  // key point grid 
-
-
-  handleKeyPointThumbnail(event:any){
-      this.keyPointForm.get('keyPointThumbnail')?.setValue(event?._id);
-      this.keyPointThumbnail = event.path;
+  handleKeyPointThumbnail(event: any) {
+    this.keyPointForm.get('icon')?.setValue(event?.path);
+    this.keyPointThumbnail = event.path;
   }
 
-  removeKeyPointThumbnail(){
-    this.keyPointForm.get('keyPointThumbnail')?.setValue(null);
+  removeKeyPointThumbnail() {
+    this.keyPointForm.get('icon')?.setValue(null);
     this.keyPointThumbnail = '';
   }
 
+  saveKeyPoints() {
+    if (!this.keyPointForm.valid) {
+      return
+    }
+
+    this.keyPoints = [...this.keyPoints, this.keyPointForm.value]
+    this.keyPointForm.reset();
+    this.keyPointThumbnail = '';
+    this.Toast.success('Key point added successfully')
+  }
+
+  removeKeyPoints(pointIndex: number) {
+    this.keyPoints.splice(pointIndex, 1)
+    this.Toast.info('Key point removed successfully')
+  }
+
+  saveBlogs() {
+    console.log(this.blogsMap);
+    let blogItem = this.blogsMap[this.widgetBlog.value]
+    this.widgetBlogs.push(blogItem)
+    this.widgetBlog.setValue('')
+    this.Toast.success('Blog added successfully')
+  }
+
+  removeBlog(blogIndex: number) {
+    this.widgetBlogs.splice(blogIndex, 1)
+    this.Toast.info('Blog removed successfully')
+  }
 
   removeInsightHubThumbnail(type: string) {
     if (type == 'small') {
@@ -623,9 +591,7 @@ export class HomeComponent implements OnInit {
       this.insightHubThumbnailLarge = '';
     }
   }
-  //Insight hub
 
-  //Redirections
   onRedirectionSelected() {
     switch (this.widgetForm.value.redirectionType) {
       case 'blogs':
@@ -728,9 +694,7 @@ export class HomeComponent implements OnInit {
     this.widgetForm.reset();
     this.widgetForm.patchValue({ redirectionType: '' });
   }
-  //Redirections
 
-  //Toggle device
   deviceToggled(event: string) {
     this.device = event;
     this.ChangeDetectorRef.markForCheck();
@@ -759,9 +723,7 @@ export class HomeComponent implements OnInit {
         break;
     }
   }
-  //Toggle device
 
-  //Design starts here
   openDesign(template: TemplateRef<any>, widget: any) {
     this.designRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
@@ -805,7 +767,7 @@ export class HomeComponent implements OnInit {
               : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
-          if (this.widgetDetails?.widgetType == 'blog') {
+          if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
             this.getBlogs('');
           }
@@ -838,14 +800,8 @@ export class HomeComponent implements OnInit {
           }
 
           if (this.widgetDetails?.productBrands) {
-            console.log('Yes');
-
             this.selectedProductType = 'brands';
-            console.log(this.widgetDetails?.productBrands?._id);
-
             this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id);
-
-            console.log(this.widgetBrand.value);
           }
 
           if (this.widgetDetails?.productCategories) {
@@ -875,19 +831,22 @@ export class HomeComponent implements OnInit {
           }
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
-                this.widgetDetails?.collection?._id
-              )
+              this.widgetDetails?.collection?._id
+            )
             : null;
+
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
             this.widgetDetails.products.length > 0
               ? (this.selectedProductType = 'products')
               : (this.selectedProductType = 'collections');
           }
+
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails);
             this.hyperLinkHeroThumbnail =
               this.widgetDetails?.hyperLinkThumbnail?.path;
           }
+
           if (this.widgetDetails?.widgetType == 'insight-hub') {
             this.insightHubForm.patchValue(this.widgetDetails);
             this.insightHubThumbnailSmall =
@@ -895,16 +854,15 @@ export class HomeComponent implements OnInit {
             this.insightHubThumbnailLarge =
               this.widgetDetails?.insightHubThumbnailLarge?.path;
           }
-          if(this.widgetDetails?.widgetType == 'key-points-grid'){
-            this.keyPointForm.patchValue(this.widgetDetails);
-            this.keyPointThumbnail = this.widgetDetails?.keyPointThumbnail?.path;
-          }
 
+          if (this.widgetDetails?.widgetType == 'key-points-grid') {
+            this.keyPoints = res?.result?.keyPoints
+          }
 
           this.widgetDetails?.endDate
             ? this.saleForm
-                .get('endDate')
-                ?.setValue(new Date(this.widgetDetails?.endDate))
+              .get('endDate')
+              ?.setValue(new Date(this.widgetDetails?.endDate))
             : null;
           this.designForm.patchValue(this.widgetDetails?.styles);
           this.isWidgetLoaded = true;
@@ -1119,11 +1077,10 @@ export class HomeComponent implements OnInit {
       }
       widgetPayload['widgetImages'] = widgetImages;
     } else if (this.widgetDetails?.widgetType == 'blogs') {
-      let widgetBlogs = [];
+      let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id)
+      widgetPayload = { ...widgetPayload, blogs: blogItems };
     } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
-      let widgetTestimonials = this.widgetTestimonials.map(
-        (testimonial: any) => testimonial?._id
-      );
+      let widgetTestimonials = this.widgetTestimonials.map((testimonial: any) => testimonial?._id);
       widgetPayload['testimonials'] = widgetTestimonials;
     } else if (this.widgetDetails?.widgetType == 'sale-timer') {
       widgetPayload = {
@@ -1139,9 +1096,7 @@ export class HomeComponent implements OnInit {
           ? this.saleForm.get('endDate')?.value
           : new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
       };
-    } else if (
-      this.widgetProductTypes.includes(this.widgetDetails.widgetType)
-    ) {
+    } else if (this.widgetProductTypes.includes(this.widgetDetails.widgetType)) {
       widgetPayload = {
         visibility: this.form.get('visibility')?.value,
         refid: this.widgetDetails?.refid,
@@ -1162,14 +1117,8 @@ export class HomeComponent implements OnInit {
 
     type == 'styles' ? (widgetPayload['styles'] = this.designForm.value) : null;
 
-    if (
-      ['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(
-        this.widgetDetails?.widgetType
-      )
-    ) {
-      widgetPayload['productsAdThumbnail'] = this.productAd.value
-        ? this.productAd.value
-        : null;
+    if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+      widgetPayload['productsAdThumbnail'] = this.productAd.value ? this.productAd.value : null;
       widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value;
     }
 
@@ -1181,8 +1130,8 @@ export class HomeComponent implements OnInit {
       widgetPayload = { ...widgetPayload, ...this.insightHubForm.value };
     }
 
-    if(this.widgetDetails?.widgetType == 'key-points-grid'){
-      widgetPayload = { ...widgetPayload, ...this.keyPointForm.value };
+    if (this.widgetDetails?.widgetType == 'key-points-grid') {
+      widgetPayload = { ...widgetPayload, keyPoints: this.keyPoints };
     }
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
@@ -1199,6 +1148,8 @@ export class HomeComponent implements OnInit {
           this.screenLoad++;
           this.widgetImagePreviewIndex = null;
           this.widgetImagePreview = null;
+          this.keyPointForm.reset();
+          this.keyPointThumbnail = '';
           this.form.reset();
           this.widgetForm.patchValue({
             title: '',
@@ -1388,9 +1339,9 @@ export class HomeComponent implements OnInit {
     });
 
     this.keyPointForm = new FormGroup({
-      keyPointTitle: new FormControl(''),
-      keyPointDescription: new FormControl(''),
-      keyPointIcon: new FormControl(''),
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      icon: new FormControl(''),
     })
 
     this.focusedWidget = this.widgets[0];
@@ -1578,6 +1529,11 @@ export class HomeComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.blogs = res?.result?.data;
+          if (res.result.data && res.result.data.length > 0) {
+            res.result.data.map((blog: any) => {
+              this.blogsMap[blog.slug] = blog;
+            })
+          }
           this.ChangeDetectorRef.markForCheck();
         }
       },
