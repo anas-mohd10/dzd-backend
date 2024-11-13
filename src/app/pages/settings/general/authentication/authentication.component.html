@@ -130,6 +130,19 @@
                     </div>
                 </div>
             </div>
+            <div class="card my-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="fs-5">OTP for Registration</div>
+                        </div>
+                        <div class="col-lg-8">
+                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpForRegistration'"
+                                [isToggledProps]="form.get('isOtpForRegistration')?.value"></app-switch>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>

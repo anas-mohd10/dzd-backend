@@ -55,8 +55,8 @@ export class PaymentSettingsComponent implements OnInit {
     tabby: ['merchantCode', 'secretKey', 'publicKey'],
     tap: ['secretKey', 'publicKey'],
     rakbank: ['publicKey', 'privateKey'],
-    'network-international': ['outletReference', 'apiKey'],
-    'network-international-tokenized': ['outletReference', 'apiKey'],
+    'network-international': ['outletReference', 'apiKey', 'apiUrl'],
+    'network-international-tokenized': ['outletReference', 'apiKey', 'apiUrl'],
     qi: ['secretKey'],
   };
 
@@ -88,6 +88,7 @@ export class PaymentSettingsComponent implements OnInit {
       privateKey: new FormControl(''),
       region: new FormControl(''),
       serverKey: new FormControl(''),
+      apiUrl: new FormControl(''),
       isEnabled: new FormControl(false),
     });
 
@@ -232,6 +233,7 @@ export class PaymentSettingsComponent implements OnInit {
       'publicKey',
       'region',
       'serverKey',
+      'apiUrl'
     ];
 
     fields.forEach((field) => {

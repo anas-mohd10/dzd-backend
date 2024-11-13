@@ -4,46 +4,53 @@ import { appRoutes } from 'src/app/config/routes';
 import { CsvService } from 'src/app/includes/services/csv.service';
 
 interface UploadDetails {
-  estimatedTimeRemaining: number
-  totalRecords: number
-  status: string  
-  processedRecords: number
-  logs: string[]
-  executionTime: number
-  location: string
-  title: string
+  estimatedTimeRemaining: number;
+  totalRecords: number;
+  status: string;
+  processedRecords: number;
+  logs: string[];
+  executionTime: number;
+  file: string;
+  title: string;
 }
 
 @Component({
   selector: 'app-upload-details',
   templateUrl: './upload-details.component.html',
-  styleUrls: ['./upload-details.component.scss']
+  styleUrls: ['./upload-details.component.scss'],
 })
 export class UploadDetailsComponent implements OnInit {
   uploadId: string;
-  appRoute = appRoutes
-  uploadDetails: UploadDetails
+  appRoute = appRoutes;
+  uploadDetails: UploadDetails;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private CsvService: CsvService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.uploadId = this.ActivatedRoute.snapshot.params.uploadId || ''
+    this.uploadId = this.ActivatedRoute.snapshot.params.uploadId || '';
 
     this.CsvService.getFileImportDetails(this.uploadId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.uploadDetails = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+          this.uploadDetails = res?.result;
+          this.uploadDetails.logs = this.uploadDetails.logs.reverse();
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => {},
+    });
+  }
+
+  getMinutes(seconds: number) {
+    return Math.floor(seconds / 60);
   }
 
   formatStatus(status: string) {
-    return `${status[0].toUpperCase()}${status.slice(1)}`
+    return `${status[0].toUpperCase()}${status.slice(1)}`;
   }
 }

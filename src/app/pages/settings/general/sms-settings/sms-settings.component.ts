@@ -59,6 +59,7 @@ export class SmsSettingsComponent implements OnInit {
     { title: 'Guest OTP', value: 'guest-otp' },
     { title: 'Cart', value: 'cart' },
     { title: 'Order Out for Delivery', value: 'order-out-for-delivery' },
+    { title: 'Registration OTP', value: 'registration-otp' },
   ];
 
   constructor(

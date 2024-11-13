@@ -22,6 +22,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 interface StoreField {
   title: string;
   description: string;
+  isFilter: boolean
 }
 
 @Component({
@@ -460,6 +461,7 @@ export class UpdateProductComponent implements OnInit {
     this.storeFieldForm = new FormGroup({
       title: new FormControl('  ', Validators.required),
       description: new FormControl('  ', Validators.required),
+      isFilter: new FormControl(false)
     });
 
     this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || '';
@@ -468,6 +470,9 @@ export class UpdateProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
+          if(!this.form.get('searchKeywords')?.value){
+            this.form.get('searchKeywords')?.setValue([])
+          }
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
@@ -500,7 +505,7 @@ export class UpdateProductComponent implements OnInit {
           });
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
-          this.searchKeywords = res?.result?.searchKeywords;
+          this.searchKeywords = res?.result?.searchKeywords || [];
           this.icons = res?.result?.productIcons
             ? res?.result?.productIcons
             : [];

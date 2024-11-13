@@ -46,9 +46,9 @@ export class BrandService {
     return this.http.get(`${url}`);
   }
 
-  updateBrand(slug: any, data: any) {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.update_brand + "?slug=" + slug);
-    return this.http.put(`${url}`, data);
+  updateBrand(queryData: any) {
+    const url = this.commonService.getFullUrl(this.brandEndpoints.updateBrand);
+    return this.http.put(`${url}`, queryData);
   }
 
   deleteBrand(brandId: string) {

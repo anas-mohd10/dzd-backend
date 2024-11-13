@@ -5,9 +5,9 @@ export const environment = {
   isMockEnabled: true,
 
   // Local
-  // apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  // baseUrl: 'http://localhost:3000/api/v1/w/',
-  // appBaserl: 'http://localhost:3000/api/v1/a/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
   // Local
 
@@ -15,9 +15,9 @@ export const environment = {
   // apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
   // baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
   // appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
-  apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
+  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
   // base: '',
   //Fresh fruit
 
@@ -31,9 +31,9 @@ export const environment = {
   //Mattressland
 
   // Sidco Foods
-  // apiUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://sidcofoods-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://sidcofoods-api.storedada.net/api/v1/a/',
+  // apiUrl: 'https://sidco-01.storedada.net/api/v1/w/admin/auth',
+  // baseUrl: 'https://sidco-01.storedada.net/api/v1/w/',
+  // appBaserl: 'https://sidco-01.storedada.net/api/v1/a/',
   // Sidco Foods
 
   // Fresh Market

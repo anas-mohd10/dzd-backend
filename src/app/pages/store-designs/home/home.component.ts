@@ -262,11 +262,11 @@ export class HomeComponent implements OnInit {
     },
 
     {
-      title: 'Key Points',
-      type: 'key-points-grid',
+      title: 'Vibrant Banner',
+      type: 'vibrant-banner',
       icon: 'assets/widgets/text-twirl.png',
       description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+        'The following widget can be used to show one full width banner. The widget contains images.',
     },
   ];
   homeWidgets: Array<any> = [];
@@ -322,11 +322,8 @@ export class HomeComponent implements OnInit {
     'slider-spotlight',
     'trending-teasers',
     'text-twirl',
-    'full-banner',
+    'vibrant-banner',
     'animation-banner',
-    'brick-mansory-grid',
-    'primary-triple-grid',
-    'key-points-grid',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [

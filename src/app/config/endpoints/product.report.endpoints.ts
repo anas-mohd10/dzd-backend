@@ -4,5 +4,7 @@ export const productReportEndpoints = {
     productWiseDetailedOrderReport: '/productDetailedOrderReport',
     orderMovementReport: '/orderMovementReport',
     customerReport: '/customerReport',
-    enquiryReport: '/enquiryReport'
+    enquiryReport: '/enquiryReport',
+    ordersOverTimeReport: '/order-over-time',
+    productwiseSalesReport: '/productWiseSaleReport'
 }
