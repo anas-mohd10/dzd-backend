@@ -66,6 +66,14 @@
                                 <option value="false">Inactive</option>
                             </select>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="isFeatured" class="form-label">Featured</label>
+                            <select formControlName="isFeatured" class="form-select" id="isFeatured">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
                         <div class="my-6">
                             <button class="w-100 btn btn-danger" (click)="open(template)">
                                 <svg height="24px" width="24px" data-slot="icon" fill="none" stroke-width="1.5"
