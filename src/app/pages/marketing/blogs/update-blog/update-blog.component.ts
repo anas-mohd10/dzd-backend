@@ -86,13 +86,14 @@ export class UpdateBlogComponent implements OnInit {
       description: new FormControl('', Validators.required),
       overview: new FormControl(''),
       isActive: new FormControl(true),
+      isFeatured: new FormControl(false),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
       seoDescription: new FormControl(''),
       seoKeywords: new FormControl(''),
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
-      cover: new FormControl(null, Validators.required),
+      cover: new FormControl(null),
     });
 
     this.blogQuery = this.ActivatedRoute.snapshot.params.blog || '';
@@ -161,6 +162,7 @@ export class UpdateBlogComponent implements OnInit {
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true;
+      this.Toast.error("Form validation failed")
       return;
     }
 
