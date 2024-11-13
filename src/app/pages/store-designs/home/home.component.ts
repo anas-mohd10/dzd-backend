@@ -335,6 +335,7 @@ export class HomeComponent implements OnInit {
     'brick-mansory-grid',
     'primary-triple-grid',
     'key-points-grid',
+    'full-banner',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
