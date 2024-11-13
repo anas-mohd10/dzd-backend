@@ -268,6 +268,14 @@ export class HomeComponent implements OnInit {
       description:
         'The following widget can be used to show one full width banner. The widget contains images.',
     },
+
+    {
+      title: 'Key Points',
+      type: 'key-points-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
   ];
   homeWidgets: Array<any> = [];
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
@@ -324,6 +332,9 @@ export class HomeComponent implements OnInit {
     'text-twirl',
     'vibrant-banner',
     'animation-banner',
+    'brick-mansory-grid',
+    'primary-triple-grid',
+    'key-points-grid',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
