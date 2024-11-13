@@ -232,11 +232,42 @@ export class HomeComponent implements OnInit {
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
     },
-    { title: 'Full Banner', type: 'full-banner', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.' },
-    { title: 'Animation Banner', type: 'animation-banner', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.' },
-    { title: 'Bricks Mansory Grid', type: 'brick-mansory-grid', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.' },
-    { title: 'Primary Triple Grid', type: 'primary-triple-grid', icon: 'assets/widgets/text-twirl.png', description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.' },
-    
+    {
+      title: 'Full Banner',
+      type: 'full-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+      title: 'Animation Banner',
+      type: 'animation-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+      title: 'Bricks Mansory Grid',
+      type: 'brick-mansory-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+      title: 'Primary Triple Grid',
+      type: 'primary-triple-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+
+    {
+      title: 'Key Points',
+      type: 'key-points-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
   ];
   homeWidgets: Array<any> = [];
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
@@ -290,8 +321,12 @@ export class HomeComponent implements OnInit {
     'stellar-selections',
     'slider-spotlight',
     'trending-teasers',
-    'text-twirl',, "full-banner","animation-banner",
-    "brick-mansory-grid","primary-triple-grid"
+    'text-twirl',
+    'full-banner',
+    'animation-banner',
+    'brick-mansory-grid',
+    'primary-triple-grid',
+    'key-points-grid',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
@@ -310,6 +345,7 @@ export class HomeComponent implements OnInit {
   ];
   screenLoad: number = 0;
   hyperlinkheroForm: FormGroup;
+  keyPointForm: FormGroup = new FormGroup({});
   hyperLinkHeroThumbnail: string = '';
   staticPages: Array<any> = [];
   cmsPages: Array<any> = [
@@ -341,6 +377,7 @@ export class HomeComponent implements OnInit {
   designRef?: BsModalRef;
   designForm: FormGroup;
   insightHubForm: FormGroup;
+  keyPointForms: FormGroup;
   backgroundDetails: string;
   isDraft: boolean = false;
   saleForm: FormGroup;
@@ -351,6 +388,7 @@ export class HomeComponent implements OnInit {
     'sale-timer',
     'hyperlinkhero',
     'insight-hub',
+    'key-points-grid',
   ];
   selectedProductType: string = 'products';
 
@@ -415,6 +453,7 @@ export class HomeComponent implements OnInit {
   productsAdRedirection: FormControl = new FormControl('');
   insightHubThumbnailSmall: string = '';
   insightHubThumbnailLarge: string = '';
+  keyPointThumbnail : string = '';
   catalogPages: Array<any> = [];
 
   constructor(
@@ -552,6 +591,20 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // key point grid 
+
+
+  handleKeyPointThumbnail(event:any){
+      this.keyPointForm.get('keyPointThumbnail')?.setValue(event?._id);
+      this.keyPointThumbnail = event.path;
+  }
+
+  removeKeyPointThumbnail(){
+    this.keyPointForm.get('keyPointThumbnail')?.setValue(null);
+    this.keyPointThumbnail = '';
+  }
+
+
   removeInsightHubThumbnail(type: string) {
     if (type == 'small') {
       this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(null);
@@ -678,23 +731,23 @@ export class HomeComponent implements OnInit {
     this.selectedProductType = type;
     switch (type) {
       case 'collections':
-        this.getCollections()
-        this.widgetBrand.setValue(null)
-        this.widgetCategory.setValue(null)
-        this.smartTileProducts = []
-        break
+        this.getCollections();
+        this.widgetBrand.setValue(null);
+        this.widgetCategory.setValue(null);
+        this.smartTileProducts = [];
+        break;
       case 'brands':
-        this.getBrands()
-        this.widgetCollection.setValue(null)
-        this.widgetCategory.setValue(null)
-        this.smartTileProducts = []
-        break
+        this.getBrands();
+        this.widgetCollection.setValue(null);
+        this.widgetCategory.setValue(null);
+        this.smartTileProducts = [];
+        break;
       case 'categories':
-        this.getCategories()
-        this.widgetBrand.setValue(null)
-        this.widgetCollection.setValue(null)
-        this.smartTileProducts = []
-        break
+        this.getCategories();
+        this.widgetBrand.setValue(null);
+        this.widgetCollection.setValue(null);
+        this.smartTileProducts = [];
+        break;
     }
   }
   //Toggle device
@@ -755,9 +808,13 @@ export class HomeComponent implements OnInit {
             'products',
             'motion-canvas',
             'aurora-grid',
-            'aurora-slider'
-          ]?.includes(this.widgetDetails?.widgetType) ? this.smartTileProducts = [...this.widgetDetails?.products] : null
-          if (this.widgetDetails?.styles?.backgroundImage) this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path
+            'aurora-slider',
+          ]?.includes(this.widgetDetails?.widgetType)
+            ? (this.smartTileProducts = [...this.widgetDetails?.products])
+            : null;
+          if (this.widgetDetails?.styles?.backgroundImage)
+            this.backgroundDetails =
+              this.widgetDetails?.styles?.backgroundImage?.path;
           this.form.patchValue(this.widgetDetails);
 
           this.getCollections();
@@ -774,13 +831,12 @@ export class HomeComponent implements OnInit {
           if (this.widgetDetails?.productBrands) {
             console.log('Yes');
 
-            this.selectedProductType = 'brands'
+            this.selectedProductType = 'brands';
             console.log(this.widgetDetails?.productBrands?._id);
 
-            this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id)
+            this.widgetBrand.setValue(this.widgetDetails?.productBrands?._id);
 
             console.log(this.widgetBrand.value);
-
           }
 
           if (this.widgetDetails?.productCategories) {
@@ -814,7 +870,9 @@ export class HomeComponent implements OnInit {
               )
             : null;
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
-            this.widgetDetails.products.length > 0 ? this.selectedProductType = 'products' : this.selectedProductType = 'collections'
+            this.widgetDetails.products.length > 0
+              ? (this.selectedProductType = 'products')
+              : (this.selectedProductType = 'collections');
           }
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails);
@@ -828,6 +886,12 @@ export class HomeComponent implements OnInit {
             this.insightHubThumbnailLarge =
               this.widgetDetails?.insightHubThumbnailLarge?.path;
           }
+          if(this.widgetDetails?.widgetType == 'key-points-grid'){
+            this.keyPointForm.patchValue(this.widgetDetails);
+            this.keyPointThumbnail = this.widgetDetails?.keyPointThumbnail?.path;
+          }
+
+
           this.widgetDetails?.endDate
             ? this.saleForm
                 .get('endDate')
@@ -1011,20 +1075,20 @@ export class HomeComponent implements OnInit {
 
   closeUpdate() {
     this.updateRef?.hide();
-    this.widgetImages = []
-    this.widgetImagePreviewIndex = null
-    this.widgetImagePreview = null
-    this.form.reset()
-    this.selectedProductType = 'products'
-    this.widgetCollection.reset()
-    this.widgetBrand.reset()
-    this.widgetCategory.reset()
-    this.brands = []
-    this.categories = []
-    this.collections = []
-    this.smartTileProducts = []
-    this.saleForm.reset()
-    this.saleForm.get('saleButtonVisibility')?.setValue(true)
+    this.widgetImages = [];
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
+    this.form.reset();
+    this.selectedProductType = 'products';
+    this.widgetCollection.reset();
+    this.widgetBrand.reset();
+    this.widgetCategory.reset();
+    this.brands = [];
+    this.categories = [];
+    this.collections = [];
+    this.smartTileProducts = [];
+    this.saleForm.reset();
+    this.saleForm.get('saleButtonVisibility')?.setValue(true);
   }
 
   dropWidgetImages(event: any) {
@@ -1106,6 +1170,10 @@ export class HomeComponent implements OnInit {
 
     if (this.widgetDetails?.widgetType == 'insight-hub') {
       widgetPayload = { ...widgetPayload, ...this.insightHubForm.value };
+    }
+
+    if(this.widgetDetails?.widgetType == 'key-points-grid'){
+      widgetPayload = { ...widgetPayload, ...this.keyPointForm.value };
     }
 
     this.HomeWidgetsService.updateHomeWidget(widgetPayload).subscribe({
@@ -1310,6 +1378,12 @@ export class HomeComponent implements OnInit {
       insightHubThumbnailLarge: new FormControl(null),
     });
 
+    this.keyPointForm = new FormGroup({
+      keyPointTitle: new FormControl(''),
+      keyPointDescription: new FormControl(''),
+      keyPointIcon: new FormControl(''),
+    })
+
     this.focusedWidget = this.widgets[0];
     this.getHomeWidgets();
     this.form = new FormGroup({
@@ -1448,8 +1522,8 @@ export class HomeComponent implements OnInit {
   }
 
   onRemoveBackground() {
-    this.designForm.get("backgroundImage")?.setValue(null)
-    this.backgroundDetails = ''
+    this.designForm.get('backgroundImage')?.setValue(null);
+    this.backgroundDetails = '';
   }
 
   onSaleThumbnailTriggered(event: any) {

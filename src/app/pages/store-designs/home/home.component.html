@@ -679,7 +679,34 @@
                     <div *ngIf="widgetDetails?.widgetType == 'blogs'">
 
                     </div>
-
+                    
+                    <div *ngIf="widgetDetails?.widgetType == 'key-points-grid">
+                        <form [formGroup] = "keyPointForm">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="ratio ratio-1x1">
+                                        <app-assets (mediaClicked)="handleKeyPointThumbnail($event)"
+                                            [previewDetails]="keyPointThumbnail">
+                                        </app-assets>
+                                    </div>
+                                    <button *ngIf="keyPointThumbnail" class="btn btn-danger w-100 my-2"
+                                    (click)="removeKeyPointThumbnail()">
+                                        Remove thumbnail
+                                    </button>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="form-group mb-3">
+                                        <label for="keyPointTitle" class="form-label required mb-1">Title</label>
+                                        <input type="text" class="form-control" id="keyPointTitle" formControlName="keyPointTitle">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="keyPointDescription"></label>
+                                        <input type="text" name="keyPointDescription" formControlName="keyPointDescription" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                     <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
                         <form [formGroup]="insightHubForm">
                             <div class="row">
