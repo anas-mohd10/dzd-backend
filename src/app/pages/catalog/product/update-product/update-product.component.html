@@ -28,14 +28,21 @@
     <div class="card">
       <div class="card-body">
 
+        <!-- 
+        <div class="mb-6">
+          <div class="d-flex align-items-center justify-content-end gap-2">
+            <button class="btn btn-secondary">Other Variants</button>
+          </div>
+        </div> 
+        -->
 
-        <tabset type="tabs" [justified]="true" #staticTabs>
+        <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
           <tab heading="Product Details">
             <div class="my-6">
               <form [formGroup]="form">
 
                 <div class="row">
-                  <div class="col-lg-8 mb-3 form-group">
+                  <div class="mb-3 form-group">
                     <label class="fs-6 mb-3 required">Name</label>
                     <input type="text" class="form-control fs-6" formControlName="name"
                       [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
@@ -71,7 +78,7 @@
                     [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
                 </div>
 
-                <div class="my-4">
+                <div class="my-8">
                   <div class="fs-3 fw-bold">Price Details</div>
                   <p class="text-muted">Easily manage price details to showacse your product</p>
                   <div class="row" formGroupName="price">
@@ -86,7 +93,7 @@
                   </div>
                 </div>
 
-                <div class="my-4">
+                <div>
                   <div class="fs-3 fw-bold">Product category and attributes</div>
                   <p class="text-muted">Easily manage price details to showacse your product</p>
                   <div class="row mb-3">
@@ -122,7 +129,7 @@
                   </div>
                 </div>
 
-                <div>
+                <div class="my-8">
                   <div class="form-group">
                     <div class="fs-3 fw-bold">
                       Attributes <span class="text-primary cursor-pointer fs-5 ms-4 text-decoration-underline"
@@ -158,7 +165,7 @@
                   </div>
                 </div>
 
-                <div class="my-4">
+                <div>
                   <div class="fs-3 fw-bold">Inventory details</div>
                   <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
                   <div class="row">
@@ -188,7 +195,7 @@
                   </div>
                 </div>
 
-                <div class="my-4">
+                <div class="my-8">
                   <div class="fs-3 fw-bold">Unit and measurement</div>
                   <p class="text-muted">Update the unit of measurement details of the product easily</p>
                   <div class="form-group mb-3 col-lg-6">
@@ -197,7 +204,7 @@
                   </div>
                 </div>
 
-                <div class="my-4">
+                <div>
                   <div class="fs-3 fw-bold">Additional details</div>
                   <p class="text-muted">Update the additional details of the product</p>
                   <div class="row" formGroupName="details">
@@ -219,8 +226,7 @@
                   </div>
                 </div>
 
-                <div class="row">
-
+                <div class="my-8">
                   <div class="col-lg-6 mb-3 form-group">
                     <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
                     <input id="searchKeywords" class="form-control fs-6"
@@ -288,10 +294,9 @@
                   </div>
                 </div>
 
-                <div>
+                <div class="my-8">
                   <div class="fs-3 fw-bold">Store fields</div>
                   <p class="text-muted mb-3">Add dynamic fields to your product which will be shown in PDP pages</p>
-
                   <div class="mb-3">
                     <div class="row mb-3" *ngFor="let storeField of storeFields; let i = index">
                       <div class="col-lg-4 form-group">
@@ -327,7 +332,49 @@
                   </form>
                 </div>
 
-                <div class="row">
+                <!-- 
+                <div class="my-16">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                      <div class="fs-3 fw-bold">Add-Ons Products</div>
+                      <p class="text-muted mb-3">
+                        Manage and configure additional products to enhance main product offerings.
+                      </p>
+                    </div>
+                    <div>
+                      <button class="btn btn-secondary" (click)="openAddOns(addOnsTemplate)">New Products</button>
+                    </div>
+                  </div>
+                  <div class="my-4">
+                    <table class="table">
+                      <thead>
+                        <th class="p-2">Product</th>
+                        <th class="p-2">Price</th>
+                        <th class="p-2">&nbsp;</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let addOn of addOns; let i = index">
+                          <td>
+                            <div>{{addOn.product?.name}}</div>
+                            <div>{{addOn.product?.sku}}</div>
+                          </td>
+                          <td>{{settings.currency}} {{addOn.price}}</td>
+                          <td>
+                            <button class="btn btn-danger">Remove</button>
+                          </td>
+                        </tr>
+                        <tr *ngIf="addOns.length == 0">
+                          <td colspan="3">
+                            <app-no-results></app-no-results>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> 
+                -->
+
+                <div class="row my-8">
                   <div class="col-lg-6 mb-3 form-group">
                     <label class="fs-6 mb-3" for="status">Active status</label>
                     <select formControlName="isActive" id="status" class="form-select">
@@ -474,7 +521,7 @@
 
 <ng-template #siblingsTemplate>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">List of Variants</h4>
+    <h4 class="fs-2 fw-bold pull-left">List of Variants</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="siblingsRef?.hide()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
@@ -531,7 +578,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Add Variants</h4>
+    <h4 class="fs-2 fw-bold pull-left">Add Variants</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
@@ -575,6 +622,23 @@
           </svg>
         </div>
       </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #addOnsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add-On Products</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeAddOns()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div *ngIf="addOns.length > 0">
+
+    </div>
+    <div class="my-4">
+
     </div>
   </div>
 </ng-template>

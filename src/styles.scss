@@ -3,17 +3,32 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+  background: #00BDAB !important;
+  color: #FFFFFF !important;
+}
+
+.nav-pills .nav-link {
+  background: #E4E6EF !important;
+  padding: 12px;
+  color: #3F4254;
+  font-size: 1.1rem;
+}
+
 //Store designs
-.storedesign-container{
+.storedesign-container {
   margin: 70px 0 0 70px;
   width: calc(100% - 70px);
 }
+
 //Store designs
 
 // Toast styles starts here
 .hot-toast-message {
   font-size: 16px !important;
 }
+
 // Toast styles ends here
 
 .bs-datepicker {
@@ -104,6 +119,7 @@
     }
   }
 }
+
 //Media upload styles ---------------
 
 .view-lines.monaco-mouse-cursor-text {
@@ -1110,5 +1126,5 @@ body {
 .mat-typography h4,
 .mat-typography h5,
 .mat-typography h6 {
-  font-family:  'Sen', "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family: 'Sen', "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }

@@ -1,11 +1,11 @@
 <div class="content container-fluid">
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bolder">{{ editMode ? "Update Shipping" : "Add Shipping" }}</h1>
+      <h1 class="fw-bold">{{ editMode ? "Update Shipping" : "Add Shipping" }}</h1>
     </div>
     <div class="row align-items-center">
       <div class="col d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb fw-bolder">
+        <ul class="breadcrumb fw-bold">
           <li class="breadcrumb-item fs-5">
             <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
           </li>
@@ -25,7 +25,7 @@
       <div class="card">
         <div class="card-body">
           <div class="col-12">
-            <h3 class="form-title fw-bolder fs-4"><span>Shipping Details</span></h3>
+            <h3 class="form-title fw-bold fs-4"><span>Shipping Details</span></h3>
           </div>
           <form [formGroup]="shippingform">
             <div class="row">
@@ -93,7 +93,7 @@
                 <input type="text" class="form-control fs-5" formControlName="url" />
               </div>
 
-              <h3 class="form-title fw-bolder fs-4 required"><span>Shipping Logo</span></h3>
+              <h3 class="form-title fw-bold fs-4 required"><span>Shipping Logo</span></h3>
 
               <div class="col-6 form-group">
                 <div class="image-upload">
@@ -104,7 +104,7 @@
                       <img src="assets/media/svg/files/upload.svg" alt="" srcset="">
                     </div>
                     <div class="right-text d-flex flex-column">
-                      <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                      <span class="right-text-title fs-4 fw-bold">Click to upload</span>
                       <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
                         Upload up to 1 file
                       </span>
@@ -153,7 +153,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Charges</h1>
+        <h1 class="fs-2 fw-bold fs-5" id="staticBackdropLabel">Charges</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">

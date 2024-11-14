@@ -1,6 +1,6 @@
 <ng-container *ngIf="title$ | async as title">
   <ng-container *ngIf="showTitle">
-    <h1 class="d-flex align-items-center text-dark fw-bolder my-1 fs-3">{{ title }}</h1>
+    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">{{ title }}</h1>
   </ng-container>
   <ng-container *ngIf="showBC">
     <ng-container *ngIf="bc$ | async as _bc">

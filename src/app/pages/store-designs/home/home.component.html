@@ -19,7 +19,7 @@
             </div>
             <div class="my-5">
                 <div class="mb-2">
-                    <div class="fs-3 fw-bolder">Widgets</div>
+                    <div class="fs-3 fw-bold">Widgets</div>
                 </div>
                 <div cdkDropList class="widget-items rounded" (cdkDropListDropped)="drop($event)">
                     <div class="widget-item mb-2 pb-2 fs-6 border-bottom border-secondary"
@@ -101,7 +101,7 @@
 
 <ng-template #widgetsTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Add new widget</h4>
+        <h4 class="fs-2 fw-bold pull-left">Add New Widget</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeWidgets()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
@@ -131,7 +131,7 @@
             </div>
             <div class="col-lg-5">
                 <div class="d-flex align-items-center justify-content-between">
-                    <div class="fw-bolder fs-4">{{focusedWidget.title}}</div>
+                    <div class="fw-bold fs-4">{{focusedWidget.title}}</div>
                     <div>
                         <button class="btn btn-secondary py-2 px-3 me-1" (click)="closeWidgets()">Cancel</button>
                         <button class="btn btn-primary py-2 px-3 ms-1" (click)="addWidget(focusedWidget)">Add to
@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="my-5">
-                    <div class="mb-2 fw-bolder text-muted fs-5">Description</div>
+                    <div class="mb-2 fw-bold text-muted fs-5">Description</div>
                     <div class="fs-6">{{focusedWidget.description}}</div>
                 </div>
             </div>
@@ -149,7 +149,7 @@
 
 <ng-template #deleteTemplate>
     <div class="modal-body text-center">
-        <div class="fs-3 mb-2 fw-bolder">Delete section?</div>
+        <div class="fs-3 mb-2 fw-bold">Delete section?</div>
         <p>Are you sure you want to proceed?</p>
         <button type="button" class="btn btn-default" (click)="deleteWidget()">Yes</button>
         <button type="button" class="btn btn-primary" (click)="closeConfirmation()">No</button>
@@ -158,7 +158,7 @@
 
 <ng-template #duplicateTemplate>
     <div class="modal-body text-center">
-        <div class="fs-3 mb-2 fw-bolder">Duplicate this section? Section will be added in the last.
+        <div class="fs-3 mb-2 fw-bold">Duplicate this section? Section will be added in the last.
         </div>
         <p>Are you sure you want to proceed?</p>
         <button type="button" class="btn btn-default" (click)="duplicateWidget()">Yes</button>
@@ -170,7 +170,7 @@
     <form [formGroup]="form">
         <div *ngIf="isWidgetLoaded">
             <div class="modal-header">
-                <h4 class="modal-title pull-left">
+                <h4 class="fs-2 fw-bold pull-left">
                     Widget details
                     <p class="text-muted fs-6 fw-normal">You can update your widget data and images in this section.</p>
                 </h4>
@@ -1147,7 +1147,7 @@
 <ng-template #designTemplate>
     <div class="modal-header">
         <div>
-            <h4 class="modal-title pull-left">Widget design</h4>
+            <h4 class="fs-2 fw-bold pull-left">Widget design</h4>
             <div class="text-muted">Type : {{widgetDetails?.widgetName}}</div>
         </div>
         <div class="d-flex align-items-center justify-content-end">

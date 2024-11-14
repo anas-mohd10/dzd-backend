@@ -32,7 +32,7 @@
         </div>
         <div class="col-3 rearrangeWrapper">
             <div class="rearrangeTitle">
-                <div class="fs-3 mb-1 fw-bolder">Homepage</div>
+                <div class="fs-3 mb-1 fw-bold">Homepage</div>
                 <div class="fs-7">Configure your homepage with widgets for desktop & mobile view.</div>
             </div>
 
@@ -150,7 +150,7 @@
                                     <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
-                                <div class="text-center mb-3 fs-4 fw-bolder">{{item?.title?.text}}</div>
+                                <div class="text-center mb-3 fs-4 fw-bold">{{item?.title?.text}}</div>
                                 <div class="categoryGrid mb-2">
                                     <ng-container *ngFor="let product of item?.product_items?.slice(0, 4)">
                                         <div class="categoryCard">
@@ -166,7 +166,7 @@
                                     <img src="assets/icons/editPen.svg" style="filter: invert(1);"
                                         alt="Icon">
                                 </button>
-                                <div class="deliverySlot fw-bolder fs-4 text-white mb-2"
+                                <div class="deliverySlot fw-bold fs-4 text-white mb-2"
                                     [ngStyle]="{'background': settings?.colors?.primary.replace('0xFF', '#')}">
                                     Select location
                                 </div>
@@ -192,11 +192,11 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                <h1 class="fs-2 fw-bold fs-5" id="exampleModalLabel">Confirmation</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body fs-6">
-                Do you want to publish this changes to <span class="fw-bolder text-primary">{{settings?.domain}}</span>?
+                Do you want to publish this changes to <span class="fw-bold text-primary">{{settings?.domain}}</span>?
                 This changes are cannot be
                 recovered
             </div>
@@ -214,47 +214,47 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="widgetLabel">Add New Widget</h1>
+                <h1 class="fs-2 fw-bold fs-5" id="widgetLabel">Add New Widget</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="widgetWrapper mb-3">
-                    <div class="fs-5 fw-bolder">Banner Widgets</div>
+                    <div class="fs-5 fw-bold">Banner Widgets</div>
                     <div class="buttonsWrapper mt-2">
                         <div class="widgetButton">
                             <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
-                                <div class="fs-6 text-muted fw-bolder">Full Banner Layout</div>
+                                <div class="fs-6 text-muted fw-bold">Full Banner Layout</div>
                             </div>
                         </div>
                         <div class="widgetButton">
                             <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
-                                <div class="fs-6 text-muted fw-bolder">2 Banner Layout</div>
+                                <div class="fs-6 text-muted fw-bold">2 Banner Layout</div>
                             </div>
                         </div>
                         <div class="widgetButton">
                             <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
-                                <div class="fs-6 text-muted fw-bolder">3 Banner Layout</div>
+                                <div class="fs-6 text-muted fw-bold">3 Banner Layout</div>
                             </div>
                         </div>
                         <div class="widgetButton">
                             <img src="assets/images/bannerPreview.jpg" alt="Preview">
                             <div class="text">
-                                <div class="fs-6 text-muted fw-bolder">4 Banner Layout</div>
+                                <div class="fs-6 text-muted fw-bold">4 Banner Layout</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="widgetWrapper mb-3">
-                    <div class="fs-5 fw-bolder">Collection Widgets</div>
+                    <div class="fs-5 fw-bold">Collection Widgets</div>
                     <div class="buttonsWrapper mt-2">
                         <div class="widgetButton" data-bs-dismiss="modal" data-bs-toggle="modal"
                             data-bs-target="#collectionModal">
                             <img src="assets/images/sliderPreview.png" alt="Preview">
                             <div class="text">
-                                <div class="fs-6 text-muted fw-bolder">Product Card Layout</div>
+                                <div class="fs-6 text-muted fw-bold">Product Card Layout</div>
                             </div>
                         </div>
                     </div>
@@ -268,7 +268,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="collectionModalLabel">Collection Widget</h1>
+                <h1 class="fs-2 fw-bold fs-5" id="collectionModalLabel">Collection Widget</h1>
             </div>
             <div class="modal-body overflow-scroll">
                 <form [formGroup]="collectionForm">
@@ -358,7 +358,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Category Widget</h1>
+                <h1 class="fs-2 fw-bold fs-5" id="staticBackdropLabel">Category Widget</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

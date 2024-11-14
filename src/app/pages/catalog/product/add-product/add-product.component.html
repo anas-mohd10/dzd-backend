@@ -20,7 +20,7 @@
     <div class="card">
       <div class="card-body">
 
-        <tabset type="tabs" [justified]="true" #staticTabs>
+        <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
           <tab heading="Basic details">
             <form [formGroup]="parentForm">
               <div class="row my-6">
@@ -625,7 +625,7 @@
 <!-- Attributes modal starts here -->
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Add Variants</h4>
+    <h4 class="fs-2 fw-bold pull-left">Add Variants</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>

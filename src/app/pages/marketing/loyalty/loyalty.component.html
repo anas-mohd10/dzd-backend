@@ -25,7 +25,7 @@
                 <h3 class="fs-1" style="font-weight: bold;">How loyalty works?</h3>
                 <div>
                     <div class="p-4 rounded" style="background: #F5F6FA; border: 1px solid #E8E8E8;">
-                        <div class="fs-3 fw-bolder mb-2">Earning points</div>
+                        <div class="fs-3 fw-bold mb-2">Earning points</div>
                         <div class="fs-6">
                             For every <span class="text-primary">{{settings?.currency}}
                                 {{loyaltyDetails?.earning?.amount}}</span>,
@@ -38,7 +38,7 @@
                 </div>
                 <div>
                     <div class="p-4 rounded" rounded style="background: #F5F6FA; border: 1px solid #E8E8E8;">
-                        <div class="fs-3 fw-bolder mb-2">Point conversion</div>
+                        <div class="fs-3 fw-bold mb-2">Point conversion</div>
                         <div class="fs-6">
                             <span class="text-primary">{{loyaltyDetails?.conversion?.points}}</span> wallet points are
                             worth
@@ -55,7 +55,7 @@
 
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Loyalty system</h4>
+        <h4 class="fs-2 fw-bold pull-left">Loyalty system</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
@@ -64,7 +64,7 @@
         <form [formGroup]="form">
             <div class="mb-2">
                 <div class="mb-5">
-                    <div class="modal-title mb-2">Earning</div>
+                    <div class="fs-2 fw-bold mb-2">Earning</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="earningAmount" class="form-label required mb-1">Amount</label>
@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="mb-5">
-                    <div class="modal-title mb-2">Conversion</div>
+                    <div class="fs-2 fw-bold mb-2">Conversion</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="conversionPoints" class="form-label required mb-1">Points</label>
@@ -115,7 +115,7 @@
                 </div>
 
                 <div class="mb-5">
-                    <div class="modal-title mb-2">Welcome points</div>
+                    <div class="fs-2 fw-bold mb-2">Welcome points</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="welcomePoints" class="form-label required mb-1">Points</label>
@@ -130,7 +130,7 @@
                 </div>
 
                 <div class="mb-5">
-                    <div class="modal-title mb-2">Cart settings</div>
+                    <div class="fs-2 fw-bold mb-2">Cart settings</div>
                     <div class="row">
                         <div class="col-lg-4 form-group">
                             <label for="minimumPurchase" class="form-label required mb-1">Minimum purchase</label>
@@ -164,7 +164,7 @@
                 </div>
 
                 <div class="mb-5">
-                    <div class="modal-title mb-2">Loyalty settings</div>
+                    <div class="fs-2 fw-bold mb-2">Loyalty settings</div>
                     <div class="row">
                         <div class="col-lg-6 form-group">
                             <label for="isEnabled" class="form-label mb-1">Enable loyalty points?</label>

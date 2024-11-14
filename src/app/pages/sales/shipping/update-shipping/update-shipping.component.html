@@ -2,7 +2,7 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title fw-bolder fs-2">
+                <h3 class="page-title fw-bold fs-2">
                     {{ editMode ? "Update Shipping" : "Add Shipping" }}
                 </h3>
                 <ul class="breadcrumb">
@@ -25,7 +25,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="col-12">
-                        <h3 class="form-title fw-bolder fs-4"><span>Shipping Details</span></h3>
+                        <h3 class="form-title fw-bold fs-4"><span>Shipping Details</span></h3>
                     </div>
                     <form [formGroup]="shippingform">
                         <div class="row">
@@ -99,7 +99,7 @@
                                 <input type="text" class="form-control fs-5" formControlName="url" />
                             </div>
 
-                            <h3 class="form-title fw-bolder fs-4"><span>Shipping Logo</span></h3>
+                            <h3 class="form-title fw-bold fs-4"><span>Shipping Logo</span></h3>
                             <div class="col-6 form-group">
                                 <div class="image-upload">
                                     <input type="file" class="form-control fs-5" name="image" accept="image/*"
@@ -110,7 +110,7 @@
                                                 srcset="">
                                         </div>
                                         <div class="right-text d-flex flex-column">
-                                            <span class="right-text-title fs-4 fw-bolder">Click to upload</span>
+                                            <span class="right-text-title fs-4 fw-bold">Click to upload</span>
                                             <span class="right-text-note fs-7 text-gray-400" style="font-weight: 500">
                                                 Upload up to 1 file
                                             </span>
@@ -164,7 +164,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Charges</h1>
+                <h1 class="fs-2 fw-bold fs-5" id="staticBackdropLabel">Charges</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

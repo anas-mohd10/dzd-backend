@@ -1,7 +1,7 @@
 <div class="reportsContainer">
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Detailed Orders Report</h1>
+            <h1 class="fw-bold">Detailed Orders Report</h1>
         </div>
         <div class="row">
             <div class="col d-flex align-items-start justify-content-between">
@@ -103,7 +103,7 @@
                     <div *ngIf="orders.length == 0">
                         <div class="emptyNote">
                             <img src="assets/icons/empty.gif" alt="Icon">
-                            <div class="fs-3 fw-bolder">No result found</div>
+                            <div class="fs-3 fw-bold">No result found</div>
                             <div class="fs-5 note">We couldn't find any item based on your search.</div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
 
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">More Filters</h4>
+        <h4 class="fs-2 fw-bold pull-left">More Filters</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
