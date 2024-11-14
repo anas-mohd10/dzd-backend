@@ -3,7 +3,7 @@
     <div class="symbol symbol-75px symbol-circle">
       <ng-container *ngIf="color">
         <span
-          class="symbol-label fs-5 fw-bolder"
+          class="symbol-label fs-5 fw-bold"
           [ngClass]="'bg-light-' + color + ' text-' + color"
         >
           {{ name.charAt(0) }}
@@ -32,7 +32,7 @@
   </div>
 
   <a
-    class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0 cursor-pointer"
+    class="fs-4 text-gray-800 text-hover-primary fw-bold mb-0 cursor-pointer"
   >
     {{ name }}
   </a>
@@ -51,7 +51,7 @@
         mb-3
       "
     >
-      <div class="fs-5 fw-bolder text-gray-700">{{ avgEarnings }}</div>
+      <div class="fs-5 fw-bold text-gray-700">{{ avgEarnings }}</div>
       <div class="fw-bold text-gray-400">Avg. Earnings</div>
     </div>
 
@@ -66,13 +66,13 @@
         mb-3
       "
     >
-      <div class="fs-5 fw-bolder text-gray-700">{{ totalEarnings }}</div>
+      <div class="fs-5 fw-bold text-gray-700">{{ totalEarnings }}</div>
       <div class="fw-bold text-gray-400">Total Sales</div>
     </div>
   </div>
 
   <button
-    class="btn btn-sm btn-light-primary fw-bolder"
+    class="btn btn-sm btn-light-primary fw-bold"
     id="kt_drawer_chat_toggle"
   >
     Send Message

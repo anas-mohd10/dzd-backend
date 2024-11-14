@@ -129,7 +129,7 @@
                                             </ng-container>
                                             <ng-container *ngIf="categories.length == 0">
                                                 <div
-                                                    class="fs-6 fw-bolder d-flex align-items-center justify-content-center mt-4">
+                                                    class="fs-6 fw-bold d-flex align-items-center justify-content-center mt-4">
                                                     No categories available</div>
                                             </ng-container>
                                         </div>
@@ -404,7 +404,7 @@
                                 </ng-container>
                             </ng-container>
                             <ng-container *ngIf="footerCategories.length == 0">
-                                <div class="fs-6 fw-bolder d-flex align-items-center justify-content-center mt-4">
+                                <div class="fs-6 fw-bold d-flex align-items-center justify-content-center mt-4">
                                     No
                                     categories available</div>
                             </ng-container>
@@ -478,7 +478,7 @@
 
 <ng-template #storeFacilityTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Store Facility</h4>
+        <h4 class="fs-2 fw-bold pull-left">Store Facility</h4>
         <div class="d-flex align-items-center justify-content-end gap-2">
             <button class="btn btn-primary" (click)="saveStoreFacility()">Save changes</button>
             <button type="button" class="btn-close close pull-right" aria-label="Close"
@@ -514,7 +514,7 @@
 
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Add Menu Item</h4>
+        <h4 class="fs-2 fw-bold pull-left">Add Menu Item</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
@@ -622,7 +622,7 @@
 
 <ng-template #editTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Edit Menu Item</h4>
+        <h4 class="fs-2 fw-bold pull-left">Edit Menu Item</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
@@ -743,7 +743,7 @@
 
 <ng-template #archivedTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Archived Items</h4>
+        <h4 class="fs-2 fw-bold pull-left">Archived Items</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
@@ -785,7 +785,7 @@
 
 <ng-template #createTitleRef>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Add Advanced Menu Item</h4>
+        <h4 class="fs-2 fw-bold pull-left">Add Advanced Menu Item</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeTitleRef()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
@@ -879,7 +879,7 @@
 
 <ng-template #createMenuItemsRef>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Menu Items</h4>
+        <h4 class="fs-2 fw-bold pull-left">Menu Items</h4>
         <div class="d-flex align-items-center justify-content-end gap-2">
             <button *ngIf="menuItemId" class="btn btn-danger" (click)="onDeleteTitleItemRef()">
                 Delete Changes
@@ -985,7 +985,7 @@
 
 <ng-template #megaMenuTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Add Menu Item</h4>
+        <h4 class="fs-2 fw-bold pull-left">Add Menu Item</h4>
         <div class="d-flex align-items-center justify-content-between gap-2">
             <button type="button" class="btn btn-primary" (click)="saveMegaMenuItem()">
                 Save changes

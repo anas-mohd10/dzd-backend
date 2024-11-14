@@ -1,7 +1,7 @@
 <div>
     <div class="page-header">
         <div class="page-title">
-            <h1 class="fw-bolder">Create catalog</h1>
+            <h1 class="fw-bold">Create catalog</h1>
         </div>
         <div class="row align-items-center">
             <div class="col d-flex align-items-start justify-content-between">
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="col-lg-3">
-                            <div class="fs-4 fw-bolder">Catalog Widgets</div>
+                            <div class="fs-4 fw-bold">Catalog Widgets</div>
                             <div class="mt-2 mb-6">
                                 <div *ngIf="items.length > 0">
                                     <button class="btn btn-primary w-100" (click)="openWidgetRef(widgetTemplate)">
@@ -87,7 +87,7 @@
                                 </div>
 
                                 <div class="my-8" *ngIf="items.length == 0">
-                                    <div class="fs-2 text-center mb-2 fw-bolder text-primary">
+                                    <div class="fs-2 text-center mb-2 fw-bold text-primary">
                                         No widgtes yet.
                                     </div>
                                     <div class="text-center fs-6 mb-4">
@@ -163,7 +163,7 @@
 
 <ng-template #productTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Products</h4>
+        <h4 class="fs-2 fw-bold pull-left">Products</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close"
             (click)="close('products-template')">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
@@ -189,7 +189,7 @@
 
 <ng-template #designTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left"><span class="text-primary">
+        <h4 class="fs-2 fw-bold pull-left"><span class="text-primary">
                 #{{activeDesignWidget.index + 1}}</span> Widget design
         </h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeDesignRef()">
@@ -469,7 +469,7 @@
 
 <ng-template #widgetTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Catalog widgets</h4>
+        <h4 class="fs-2 fw-bold pull-left">Catalog widgets</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="widgetRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>

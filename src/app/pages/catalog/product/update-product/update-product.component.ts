@@ -25,6 +25,11 @@ interface StoreField {
   isFilter: boolean
 }
 
+interface AddOn {
+  product: any;
+  price: number;
+}
+
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
@@ -60,7 +65,7 @@ export class UpdateProductComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Manrope' },
+      { class: 'manrope', name: 'Sen' },
       { class: 'sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
@@ -122,6 +127,8 @@ export class UpdateProductComponent implements OnInit {
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
+  addOns: Array<AddOn> = []
+  addOnsRef?: BsModalRef
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -133,7 +140,15 @@ export class UpdateProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) {}
+  ) { }
+
+  openAddOns(template: TemplateRef<any>) {
+    this.addOnsRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
+  }
+
+  closeAddOns(){
+    this.addOnsRef?.hide()
+  }
 
   onBrandTriggered(event: any) {
     this.parentForm.get('brand')?.setValue(event?._id);
@@ -232,7 +247,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -284,7 +299,7 @@ export class UpdateProductComponent implements OnInit {
     this.productCategory.setValue('');
   }
 
-  toggleAddOnItems() {}
+  toggleAddOnItems() { }
 
   saveChanges() {
     if (
@@ -470,7 +485,7 @@ export class UpdateProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
-          if(!this.form.get('searchKeywords')?.value){
+          if (!this.form.get('searchKeywords')?.value) {
             this.form.get('searchKeywords')?.setValue([])
           }
           this.productDetails = res?.result;
@@ -618,7 +633,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
 
     //Get active products
@@ -630,7 +645,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
     //Get active products
 
@@ -642,7 +657,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
     //Tax class details
   }

@@ -40,7 +40,7 @@ export class AddPrivacyPolicyComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Manrope' },
+      { class: 'manrope', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
       { class: 'poppins', name: 'Poppins' }
     ]

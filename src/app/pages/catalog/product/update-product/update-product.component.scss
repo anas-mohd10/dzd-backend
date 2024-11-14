@@ -3,12 +3,14 @@ label,
   font-weight: 400 !important;
 }
 
-.icons{
+
+
+.icons {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 10px;
 
-  img{
+  img {
     object-fit: contain;
   }
 }
@@ -20,26 +22,27 @@ label,
 
   tbody {
 
-      tr {
+    tr {
 
-          td {
-              vertical-align: middle;
-          }
+      td {
+        vertical-align: middle;
       }
+    }
   }
 
   thead {
 
-      tr {
+    tr {
 
-          th {
-              font-weight: 400 !important;
-          }
+      th {
+        font-weight: 400 !important;
       }
+    }
 
-      background: #E4E7F4;
+    background: #E4E7F4;
   }
 }
+
 //Table designs
 
 .close-icon {

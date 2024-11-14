@@ -59,8 +59,8 @@ export class CreateCatalogComponent implements OnInit {
   families: Array<{ key: String, value: String }> = [
     { key: 'Arial', value: 'arial' },
     { key: 'Hellix', value: 'hellix' },
-    { key: 'Figtree', value: 'figtree' },
-    { key: 'Outfit', value: 'outfit' },
+    { key: 'Sen', value: 'figtree' },
+    { key: 'Sen', value: 'outfit' },
     { key: 'Poppins', value: 'poppins' }
   ]
   base: string = environment.base

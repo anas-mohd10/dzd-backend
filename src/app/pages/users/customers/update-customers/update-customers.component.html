@@ -192,7 +192,7 @@
 
 <ng-template #addressTemplate>
    <div class="modal-header">
-      <h4 class="modal-title pull-left">Address</h4>
+      <h4 class="fs-2 fw-bold pull-left">Address</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -322,7 +322,7 @@
 
 <ng-template #walletTemplate>
    <div class="modal-header">
-      <h4 class="modal-title pull-left">Wallet</h4>
+      <h4 class="fs-2 fw-bold pull-left">Wallet</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeWallet()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -332,7 +332,7 @@
          <div class="col-lg-5 mb-3">
             <div class="mb-4">
                <div class="fs-6 text-primary">Wallet balance</div>
-               <div class="modal-title">{{settings?.currency}} {{customerDetails?.walletBalance}}</div>
+               <div class="fs-2 fw-bold">{{settings?.currency}} {{customerDetails?.walletBalance}}</div>
             </div>
             <div class="form-group mb-3">
                <label for="amount" class="form-label mb-3 required">Amount</label>
@@ -368,7 +368,7 @@
                   <div class="p-4 bg-white rounded border border-secondary my-2"
                      [ngClass]="{'text-muted': transaction.status == 'pending'}">
                      <div class="mb-2 d-flex align-items-center justify-content-start">
-                        <div class="fs-3 fw-bolder"
+                        <div class="fs-3 fw-bold"
                            [ngClass]="{'credited': transaction?.type == 'credit', 'debited': transaction?.type == 'debit'}">
                            {{transaction?.type == 'credit' ? '+' : '-'}}
                            {{settings?.currency}}
@@ -390,7 +390,7 @@
 
 <ng-template #loyaltyTemplate>
    <div class="modal-header">
-      <h4 class="modal-title pull-left">Loyalty points</h4>
+      <h4 class="fs-2 fw-bold pull-left">Loyalty points</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeLoyalty()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -398,7 +398,7 @@
    <div class="modal-body">
       <div>
          <div class="fs-6 text-primary">Loyalty points</div>
-         <div class="modal-title d-flex align-items-center justify-content-start">
+         <div class="fs-2 fw-bold d-flex align-items-center justify-content-start">
             <div>
                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#E1B530" class="bi bi-coin"
                   viewBox="0 0 16 16">
@@ -432,7 +432,7 @@
                <div class="p-4 bg-white rounded border border-secondary my-2"
                   [ngClass]="{'text-muted': transaction?.status == 'pending'}">
                   <div class=" mb-2 d-flex align-items-center justify-content-start">
-                     <div class="fs-3 fw-bolder"
+                     <div class="fs-3 fw-bold"
                         [ngClass]="{'credited': transaction?.type == 'credit', 'debited': transaction?.type == 'debit'}">
                         {{transaction?.type == 'credit' ? '+' : '-'}}{{transaction?.points}} points
                      </div>
@@ -451,7 +451,7 @@
 
 <ng-template #savedCardTemplate>
    <div class="modal-header">
-      <h4 class="modal-title pull-left">Saved Cards</h4>
+      <h4 class="fs-2 fw-bold pull-left">Saved Cards</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeSavedCards()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -486,7 +486,7 @@
 
 <ng-template #ordersTemplate>
    <div class="modal-header">
-      <h4 class="modal-title pull-left">Orders ({{customerOrderDetails.totalResults || 0}})</h4>
+      <h4 class="fs-2 fw-bold pull-left">Orders ({{customerOrderDetails.totalResults || 0}})</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="ordersRef?.hide()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>

@@ -39,7 +39,7 @@ export class UpdatePagesComponent implements OnInit {
     fonts: [
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'manrope', name: 'Manrope' },
+      { class: 'manrope', name: 'Sen' },
       { class: 'sen', name: 'Sen' },
       { class: 'poppins', name: 'Poppins' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },

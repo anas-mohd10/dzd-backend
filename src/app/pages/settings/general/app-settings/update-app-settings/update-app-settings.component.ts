@@ -64,10 +64,10 @@ export class UpdateAppSettingsComponent implements OnInit {
   };
   paymentGateways: Array<string> = []
   fontFamily: Array<any> = [
-    'Manrope',
+    'Sen',
     'Be Vietnam Pro',
     'Poppins',
-    'Figtree',
+    'Sen',
     'GeogrotesqueCyr',
     'BellMT',
     'BookAntiqua',

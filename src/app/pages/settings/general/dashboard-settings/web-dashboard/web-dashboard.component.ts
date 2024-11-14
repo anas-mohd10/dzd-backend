@@ -252,7 +252,7 @@ export class WebDashboardComponent implements OnInit {
           label: {
             text: 'View More',
             color: '0xff00bdab',
-            font: 'Manrope',
+            font: 'Sen',
             'font-style': 0,
             'font-size': 16,
             'font-weight': 4,

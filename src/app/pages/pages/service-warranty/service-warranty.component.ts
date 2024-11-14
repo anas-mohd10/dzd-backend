@@ -36,7 +36,7 @@ export class ServiceWarrantyComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Manrope' },
+      { class: 'manrope', name: 'Sen' },
     ]
   };
 

@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h5 class="page-title page-title fw-bolder fs-2">
+        <h5 class="page-title page-title fw-bold fs-2">
           {{ editMode ? "Update Order" : "Add Order" }}
         </h5>
         <ul class="breadcrumb">
@@ -27,7 +27,7 @@
       <div class="card card-flush py-4 flex-row-fluid">
         <div class="card-header">
           <div class="card-title">
-            <h5 class="fs-3 text-dark fw-bolder">Order Details ({{orderData.orderNo}})</h5>
+            <h5 class="fs-3 text-dark fw-bold">Order Details ({{orderData.orderNo}})</h5>
           </div>
         </div>
         <div class="card-body pt-0">
@@ -50,7 +50,7 @@
                       Date Added
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">{{orderData?.orderDate}}, {{orderData?.orderTime}}</td>
+                  <td class="fw-bold text-end">{{orderData?.orderDate}}, {{orderData?.orderTime}}</td>
                 </tr>
                 <tr>
                   <td class="text-muted">
@@ -71,7 +71,7 @@
                       Payment Method
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">
+                  <td class="fw-bold text-end">
                     {{orderData?.paymentMethod}}
                   </td>
                 </tr>
@@ -91,7 +91,7 @@
                       </span>Payment Status
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">{{orderData?.paymentStatus}}</td>
+                  <td class="fw-bold text-end">{{orderData?.paymentStatus}}</td>
                 </tr>
               </tbody>
             </table>
@@ -101,7 +101,7 @@
       <div class="card card-flush py-4 flex-row-fluid">
         <div class="card-header">
           <div class="card-title">
-            <h5 class="fs-3 text-dark fw-bolder">Customer Details</h5>
+            <h5 class="fs-3 text-dark fw-bold">Customer Details</h5>
           </div>
         </div>
         <div class="card-body pt-0">
@@ -124,7 +124,7 @@
                       Customer
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">
+                  <td class="fw-bold text-end">
                     <div class="d-flex align-items-center justify-content-end">
                       <a class="text-gray-600 text-hover-primary">{{orderData?.customerId?.name}}}</a>
                     </div>
@@ -146,7 +146,7 @@
                       Email
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">
+                  <td class="fw-bold text-end">
                     <a class="text-gray-600 text-hover-primary">{{orderData?.customerId?.email}}</a>
                   </td>
                 </tr>
@@ -164,7 +164,7 @@
                       Phone
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">{{orderData?.customerId?.mobile}}</td>
+                  <td class="fw-bold text-end">{{orderData?.customerId?.mobile}}</td>
                 </tr>
               </tbody>
             </table>
@@ -174,7 +174,7 @@
       <div class="card card-flush py-4 flex-row-fluid">
         <div class="card-header">
           <div class="card-title">
-            <h5 class="fs-3 text-dark fw-bolder">Other Details</h5>
+            <h5 class="fs-3 text-dark fw-bold">Other Details</h5>
           </div>
         </div>
         <div class="card-body pt-0">
@@ -200,7 +200,7 @@
                       Invoice
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">
+                  <td class="fw-bold text-end">
                     <a class="text-gray-600 text-hover-primary">{{orderData?.invoiceNo}}</a>
                   </td>
                 </tr>
@@ -220,7 +220,7 @@
                       Shipping Method
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">
+                  <td class="fw-bold text-end">
                     <a href="#" class="text-gray-600 text-hover-primary">{{orderData?.shippingMethod}}</a>
                   </td>
                 </tr>
@@ -240,7 +240,7 @@
                       Total Amount
                     </div>
                   </td>
-                  <td class="fw-bolder text-end">{{orderData?.total}}</td>
+                  <td class="fw-bold text-end">{{orderData?.total}}</td>
                 </tr>
               </tbody>
             </table>
@@ -252,14 +252,14 @@
       <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
         <div class="card-header">
           <div class="card-title">
-            <h3 class="fs-3 text-dark fw-bolder">Product details</h3>
+            <h3 class="fs-3 text-dark fw-bold">Product details</h3>
           </div>
         </div>
         <div class="card-body pt-0">
           <div class="table-responsive">
             <table class="table align-middle table-row-dashed fs-5 gy-5 mb-0">
               <thead>
-                <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                   <th class="min-w-175px">Product</th>
                   <th class="min-w-100px text-end">SKU</th>
                   <th class="min-w-70px text-end">Qty</th>
@@ -275,7 +275,7 @@
                         <img src="http://localhost:3000/{{product?.productId?.thumbnail}}" alt="" srcset="">
                       </a>
                       <div class="ms-5">
-                        <a class="fw-bolder text-gray-600 text-hover-primary">{{product?.productId?.name}}</a>
+                        <a class="fw-bold text-gray-600 text-hover-primary">{{product?.productId?.name}}</a>
                         <div class="fs-7 text-muted">Delivery Date: {{orderData?.dateExpected}}</div>
                       </div>
                     </div>
@@ -286,12 +286,12 @@
                   <td class="text-end">{{product?.priceAfterTax}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="fs-4 fw-bolder text-dark text-end">Total</td>
+                  <td colspan="4" class="fs-4 fw-bold text-dark text-end">Total</td>
                   <td class="text-end">{{orderData?.priceAfterTax}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="text-end fs-5 text-dark fw-bolder">Items</td>
-                  <td class="text-end fs-5 text-dark fw-bolder">Amount</td>
+                  <td colspan="4" class="text-end fs-5 text-dark fw-bold">Items</td>
+                  <td class="text-end fs-5 text-dark fw-bold">Amount</td>
                 </tr>
                 <tr>
                   <td colspan="4" class="text-end">Subtotal</td>
@@ -310,7 +310,7 @@
                   <td class="text-end">{{orderData?.discount}}</td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="fs-3 text-dark fw-bolder text-end">Grand Total</td>
+                  <td colspan="4" class="fs-3 text-dark fw-bold text-end">Grand Total</td>
                   <td class="text-end">{{orderData?.total}}</td>
                 </tr>
               </tbody>
@@ -329,7 +329,7 @@
                   <div class="card card-flush py-4 flex-row-fluid overflow-hidden">
                     <div class="card-header">
                       <div class="card-title">
-                        <h3 class="fs-3 text-dark fw-bolder">Customer address</h3>
+                        <h3 class="fs-3 text-dark fw-bold">Customer address</h3>
                       </div>
                     </div>
                     <div class="card-body pt-0">
@@ -341,7 +341,7 @@
                     </div>
                     <div class="card-header">
                       <div class="card-title">
-                        <h3 class="page-title fw-bolder fs-2">Shipping address</h3>
+                        <h3 class="page-title fw-bold fs-2">Shipping address</h3>
                       </div>
                     </div>
                     <div class=" card-body pt-0">
@@ -357,7 +357,7 @@
               <div class="col-lg-6">
                 <form (ngSubmit)="onSubmit()" [formGroup]="orderForm">
                   <div class="col-12">
-                    <h3 class="fs-3 text-dark fw-bolder">Orders details</h3>
+                    <h3 class="fs-3 text-dark fw-bold">Orders details</h3>
                   </div>
                   <div class="col-12">
                     <div class="form-group">

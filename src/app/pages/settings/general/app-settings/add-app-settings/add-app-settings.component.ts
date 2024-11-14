@@ -40,12 +40,12 @@ export class AddAppSettingsComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Manrope' },
-      { class: 'Manrope', name: 'Manrope' },
+      { class: 'manrope', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
     ]
   };
 
-  fontFamily: Array<any> = ['Manrope', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
+  fontFamily: Array<any> = ['Sen', 'GeogrotesqueCyr', 'BellMT', 'BookAntiqua', 'Active', 'Hellix']
   logoFile: any
   logoFilePreview: any
   faviconFile: any
