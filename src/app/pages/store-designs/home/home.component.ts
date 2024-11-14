@@ -289,6 +289,7 @@ export class HomeComponent implements OnInit {
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
+    'full-banner',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
@@ -1355,6 +1356,7 @@ export class HomeComponent implements OnInit {
       video: new FormControl(''),
       view: new FormControl('grid'),
       textTwirlTitle: new FormControl(''),
+      isReversed:new FormControl(false),
       textTwirlDescription: new FormControl(''),
       gridsPerCount: new FormGroup({
         mobile: new FormControl(2, [
@@ -1624,6 +1626,9 @@ export class HomeComponent implements OnInit {
         break;
       case 'mobile-hover':
         this.form.get('hovering.mobile')?.setValue(event.toggleState);
+        break;
+        case 'reverse-widget':
+        this.form.get('isReversed')?.setValue(event.toggleState);
         break;
     }
   }
