@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build:prod-new
 
 # Stage 2: Serve the application with Nginx
-FROM 211125565601.dkr.ecr.ap-south-1.amazonaws.com/node-18-alpine:latest
+FROM 211125565601.dkr.ecr.ap-south-1.amazonaws.com/nginx:alpine
 
 # Copy the built application from the previous stage
 COPY --from=build /app/dist/commerce-castle /usr/share/nginx/html
