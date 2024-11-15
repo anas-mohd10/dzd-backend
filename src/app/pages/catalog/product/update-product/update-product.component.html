@@ -332,7 +332,6 @@
                   </form>
                 </div>
 
-                <!-- 
                 <div class="my-16">
                   <div class="d-flex align-items-center justify-content-between">
                     <div>
@@ -371,8 +370,7 @@
                       </tbody>
                     </table>
                   </div>
-                </div> 
-                -->
+                </div>
 
                 <div class="row my-8">
                   <div class="col-lg-6 mb-3 form-group">
@@ -634,11 +632,40 @@
     </button>
   </div>
   <div class="modal-body">
-    <div *ngIf="addOns.length > 0">
-
+    <div class="form-group mb-4">
+      <input type="text" class="form-control" [formControl]="addOnsKeyword" placeholder="Search products">
     </div>
-    <div class="my-4">
-
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <th class="p-2">Name</th>
+          <th class="p-2">SKU</th>
+          <th class="p-2">&nbsp;</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let addOnSearchResult of addOnSearchResults">
+            <td>
+              <div class="d-flex align-items-center justify-content-start gap-2">
+                <img class="rounded border border-secondary" height="40" width="40"
+                  src="{{base}}{{addOnSearchResult.thumbnail}}" alt="{{addOnSearchResult.name}}"
+                  onerror="this.src = 'assets/images/default.png'">
+                <div class="addOnName">{{addOnSearchResult.name}}</div>
+              </div>
+            </td>
+            <td>
+              {{addOnSearchResult.sku}}
+            </td>
+            <td>
+              <button class="btn btn-secondary p-2">Add Product</button>
+            </td>
+          </tr>
+          <tr *ngIf="addOnSearchResults.length == 0">
+            <td colspan="3">
+              <app-no-results></app-no-results>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </ng-template>

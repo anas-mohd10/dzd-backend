@@ -231,7 +231,7 @@
                     </div>
                     <div class="mb-3" *ngIf="settings?.isDeliverySlots == true && address">
                         <label class="fs-6 mb-3">Select a delivery dates</label>
-                        <div class="dates">
+                        <div class="dates" *ngIf="dates.length > 0">
                             <ng-container *ngFor="let date of dates">
                                 <div class="date" (click)="selectDeliveryDate(date)"
                                     [ngClass]="{'active': deliveryDate == date}">
@@ -476,7 +476,7 @@
                 </div>
 
                 <div class="d-flex align-items-center justify-content-end">
-                    <button class="btn btn-primary" (click)=manageAddress()>Save changes</button>
+                    <button class="btn btn-primary" (click)="manageAddress()">Save changes</button>
                 </div>
             </div>
         </form>

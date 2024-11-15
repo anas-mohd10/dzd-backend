@@ -278,8 +278,6 @@ export class AddOrdersComponent implements OnInit {
   getNextSevenDays() {
     const dates = [];
     const today = new Date();
-    console.log(this.settings);
-
     for (let i = 0; i < this.settings?.futureDays; i++) {
       const date = new Date();
       date.setDate(today.getDate() + i).toLocaleString();
@@ -711,6 +709,8 @@ export class AddOrdersComponent implements OnInit {
               if (res?.errorCode == 0) {
                 this.address = res?.result;
                 this.ToastrService.success(res?.message);
+                this.addressForm.reset();
+                this.addressForm.patchValue({ type: 'Home', countryCode: '+971' });
                 this.ChangeDetectorRef.markForCheck();
                 this.customers = [];
               } else {
@@ -747,9 +747,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.manageAddressModalRef?.hide();
-    this.addressForm.reset();
     this.addressModalRef?.hide();
-    this.addressForm.patchValue({ type: 'Home', countryCode: '+971' });
     this.customerService
       .getAddress({ userid: this.customerDetails?.userid })
       .subscribe({

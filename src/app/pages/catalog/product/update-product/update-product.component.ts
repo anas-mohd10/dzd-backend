@@ -17,6 +17,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { HotToastService } from '@ngneat/hot-toast';
+import { debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 interface StoreField {
@@ -129,6 +130,8 @@ export class UpdateProductComponent implements OnInit {
   isSkipUpdate: FormControl = new FormControl(false);
   addOns: Array<AddOn> = []
   addOnsRef?: BsModalRef
+  addOnsKeyword: FormControl = new FormControl('', Validators.required)
+  addOnSearchResults: Array<any> = []
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -140,7 +143,36 @@ export class UpdateProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) { }
+  ) {
+    this.addOnsKeyword.valueChanges
+    .pipe(debounceTime(500))
+    .subscribe(() => {
+      this.searchProducts()
+    })
+   }
+
+   searchProducts(){
+    if(!this.addOnsKeyword.value) {
+      this.addOnSearchResults = []
+    }
+
+    if(!this.addOnsKeyword.valid){
+      return
+    }
+
+    this.ProductService.searchProducts({
+      name: this.addOnsKeyword.value,
+      page: 1,
+      limit: 40
+    }).subscribe({
+      next: (res: any) => {
+        if(res?.errorCode == 0){
+          this.addOnSearchResults = res?.result?.data
+          this.ChangeDetectorRef.markForCheck()
+        }else{ }
+      }, error: (err: any) => { }
+    })
+   }
 
   openAddOns(template: TemplateRef<any>) {
     this.addOnsRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })

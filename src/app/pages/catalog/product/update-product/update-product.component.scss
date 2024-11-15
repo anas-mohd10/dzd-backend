@@ -3,7 +3,14 @@ label,
   font-weight: 400 !important;
 }
 
+.table-wrapper{
+  height: 400px;
+  overflow-y: scroll;
+}
 
+.addOnName{
+  width: 240px;
+}
 
 .icons {
   display: grid;
