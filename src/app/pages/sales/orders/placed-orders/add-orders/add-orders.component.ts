@@ -709,8 +709,6 @@ export class AddOrdersComponent implements OnInit {
               if (res?.errorCode == 0) {
                 this.address = res?.result;
                 this.ToastrService.success(res?.message);
-                this.addressForm.reset();
-                this.addressForm.patchValue({ type: 'Home', countryCode: '+971' });
                 this.ChangeDetectorRef.markForCheck();
                 this.customers = [];
               } else {
@@ -745,7 +743,8 @@ export class AddOrdersComponent implements OnInit {
           });
         break;
     }
-
+    this.addressForm.reset();
+    this.addressForm.patchValue({ type: 'Home', countryCode: '+971' });
     this.manageAddressModalRef?.hide();
     this.addressModalRef?.hide();
     this.customerService
@@ -777,7 +776,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     let payload = {
-      address: this.addressForm.value,
+      address: this.address,
       ...this.orderForm.value,
     };
 
