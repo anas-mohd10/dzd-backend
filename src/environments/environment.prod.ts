@@ -3,58 +3,10 @@ export const environment = {
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-
-  // Local
   apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
   baseUrl: 'http://localhost:3000/api/v1/w/',
   appBaserl: 'http://localhost:3000/api/v1/a/',
   base: '',
-  // Local
-
-  //Fresh fruit
-  // apiUrl: 'https://freshfruitmart.ae/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart.ae/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart.ae/api/v1/a/',
-  // apiUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://freshfruitmart-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://freshfruitmart-api.storedada.net/api/v1/a/',
-  // base: '',
-  //Fresh fruit
-
-  //Mattressland
-  // apiUrl: 'https://mattressland.ae/api/v1/w/admin/auth',
-  // baseUrl: 'https://mattressland.ae/api/v1/w/',
-  // appBaserl: 'https://mattressland.ae/api/v1/a/',
-  // apiUrl: 'https://mattressland-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://mattressland-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://mattressland-api.storedada.net/api/v1/a/',
-  //Mattressland
-
-  // Sidco Foods
-  // apiUrl: 'https://sidco-01.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://sidco-01.storedada.net/api/v1/w/',
-  // appBaserl: 'https://sidco-01.storedada.net/api/v1/a/',
-  // Sidco Foods
-
-  // Fresh Market
-  // apiUrl: 'https://fmrk-01.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://fmrk-01.storedada.net/api/v1/w/',
-  // appBaserl: 'https://fmrk-01.storedada.net/api/v1/a/',
-  // Fresh Market
-
-  //Mamame
-  // apiUrl: 'https://mamame-api.storedada.net/api/v1/w/admin/auth',
-  // baseUrl: 'https://mamame-api.storedada.net/api/v1/w/',
-  // appBaserl: 'https://mamame-api.storedada.net/api/v1/a/',
-  //Mamame
-
-  //Storedada
-  // apiUrl: 'https://api.demo.storedada.com/api/v1/w/admin/auth',
-  // baseUrl: 'https://api.demo.storedada.com/api/v1/w/',
-  // appBaserl: 'https://api.demo.storedada.com/api/v1/a/',
-  // base: 'https://api.demo.storedada.com',
-  //Storedada
-
   loginUrl: 'api',
   firebaseConfig: {
     apiKey: "AIzaSyCzj_q9s6UhfZ-mYSAfRdRWWlI47mOinuE",

@@ -26,6 +26,8 @@ export class OrdersListComponent implements OnInit {
   totalRevenues: string = 'INR 0';
   averageSales: string = 'INR 0';
   currentTab: number = 0;
+  invoiceUrl: string = ''
+  packingSlipUrl: string = ''
   swiperConfig: SwiperOptions = {
     slidesPerView: 'auto',
     spaceBetween: 50,
@@ -247,14 +249,12 @@ export class OrdersListComponent implements OnInit {
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.settings = res?.result
+          this.invoiceUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoices/';
+          this.packingSlipUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-packingslips/'
           this.domainUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/'
           this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
+        } else {  }
+      }, error: (err: any) => { }
     })
     this.type = this.ActivatedRoute.snapshot.queryParams.type || ''
     switch (this.type) {
@@ -289,12 +289,12 @@ export class OrdersListComponent implements OnInit {
 
   bulkPrintInvoice() {
     let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
-    this.Router.navigate([`bulk-invoices`], { queryParams: { 'order': queryString } })
+    window.open(`${this.invoiceUrl}${queryString}`, '_blank')
   }
 
   bulkPrintPackingSlips() {
     let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
-    this.Router.navigate([`bulk-packing-slips`], { queryParams: { 'order': queryString } })
+    window.open(`${this.packingSlipUrl}${queryString}`, '_blank')
   }
 
   exportOrders() {

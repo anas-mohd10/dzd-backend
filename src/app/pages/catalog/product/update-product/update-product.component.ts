@@ -145,18 +145,18 @@ export class UpdateProductComponent implements OnInit {
     private BsModalService: BsModalService
   ) {
     this.addOnsKeyword.valueChanges
-    .pipe(debounceTime(500))
-    .subscribe(() => {
-      this.searchProducts()
-    })
-   }
+      .pipe(debounceTime(500))
+      .subscribe(() => {
+        this.searchProducts()
+      })
+  }
 
-   searchProducts(){
-    if(!this.addOnsKeyword.value) {
+  searchProducts() {
+    if (!this.addOnsKeyword.value) {
       this.addOnSearchResults = []
     }
 
-    if(!this.addOnsKeyword.valid){
+    if (!this.addOnsKeyword.valid) {
       return
     }
 
@@ -166,19 +166,19 @@ export class UpdateProductComponent implements OnInit {
       limit: 40
     }).subscribe({
       next: (res: any) => {
-        if(res?.errorCode == 0){
+        if (res?.errorCode == 0) {
           this.addOnSearchResults = res?.result?.data
           this.ChangeDetectorRef.markForCheck()
-        }else{ }
+        } else { }
       }, error: (err: any) => { }
     })
-   }
+  }
 
   openAddOns(template: TemplateRef<any>) {
     this.addOnsRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
   }
 
-  closeAddOns(){
+  closeAddOns() {
     this.addOnsRef?.hide()
   }
 
@@ -368,6 +368,10 @@ export class UpdateProductComponent implements OnInit {
       storeFrontFields: this.storeFields,
       productIcons: this.icons,
       isSkipUpdate: this.isSkipUpdate.value,
+      localizedNames: {
+        ...this.productDetails.localizedNames,
+        [this.settings.primaryLang]: this.form.get('name')?.value,
+      },
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),

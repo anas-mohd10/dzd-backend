@@ -396,6 +396,9 @@ export class AddProductComponent implements OnInit {
       product: { id: this.parentDetails?._id, refid: this.parentDetails?._id },
       attributes: this.attributes,
       tagIcons: this.tagIcons,
+      localizedNames: {
+        [this.settings.primaryLang]: this.form.get('name')?.value,
+      },
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
