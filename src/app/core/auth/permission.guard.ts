@@ -133,6 +133,9 @@ export class PermissionGuard implements CanActivate {
       case 'store-settings':
         module[0] == 'store-settings' ? path = 'store-settings' : null
         break
+      case 'sitemap-settings':
+        module[0] == 'sitemap-settings' ? path = 'sitemap-settings' : null
+        break
       case 'stores':
         module[1] == 'add' ? path = 'add-stores' : module[1] == 'update' ? path = 'update-stores' : path = 'stores'
         break

@@ -25,7 +25,6 @@ import { SalesAnalyticsComponent } from './sales-analytics/sales-analytics.compo
 import { DeliverySlotsComponent } from './settings/general/delivery-slots/delivery-slots.component';
 import { LoyaltyComponent } from './marketing/loyalty/loyalty.component';
 import { ReferralComponent } from './marketing/referral/referral.component';
-import { SitemapComponent } from './settings/general/sitemap/sitemap.component';
 import { NewsletterSubscribersComponent } from './users/customers/newsletter-subscribers/newsletter-subscribers.component';
 import { GiftWrapComponent } from './marketing/gift-wrap/gift-wrap.component';
 import { BannerImagesComponent } from './marketing/banner-images/banner-images.component';
@@ -45,6 +44,7 @@ import { CartSettingsComponent } from './settings/general/cart-settings/cart-set
 import { ProductDesignsComponent } from './store-designs/product-designs/product-designs.component';
 import { OrderSettingsComponent } from './settings/general/order-settings/order-settings.component';
 import { FiltersComponent } from './catalog/filters/filters.component';
+import { SitemapSettingsComponent } from './settings/general/sitemap-settings/sitemap-settings.component';
 
 export const Routing: Routes = [
   {
@@ -411,6 +411,10 @@ export const Routing: Routes = [
         component: ProductDesignsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
+        path: 'sitemap-settings',
+        component: SitemapSettingsComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
         path: 'time-slots',
         component: TimeslotsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -485,10 +489,6 @@ export const Routing: Routes = [
       }, {
         path: 'navigation',
         component: NavigationMenuComponent,
-        canActivate: [AuthenticationGuard, PermissionGuard]
-      }, {
-        path: 'sitemap',
-        component: SitemapComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'shipping-policy',

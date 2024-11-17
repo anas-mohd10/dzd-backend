@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SitemapComponent } from './sitemap.component';
+import { SitemapSettingsComponent } from './sitemap-settings.component';
 
-describe('SitemapComponent', () => {
-  let component: SitemapComponent;
-  let fixture: ComponentFixture<SitemapComponent>;
+describe('SitemapSettingsComponent', () => {
+  let component: SitemapSettingsComponent;
+  let fixture: ComponentFixture<SitemapSettingsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SitemapComponent ]
+      declarations: [ SitemapSettingsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SitemapComponent);
+    fixture = TestBed.createComponent(SitemapSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

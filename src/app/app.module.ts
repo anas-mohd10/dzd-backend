@@ -69,7 +69,6 @@ import { DeliverySlotsComponent } from './pages/settings/general/delivery-slots/
 import { SharedModule } from './pages/shared/shared.module';
 import { LoyaltyComponent } from './pages/marketing/loyalty/loyalty.component';
 import { ReferralComponent } from './pages/marketing/referral/referral.component';
-import { SitemapComponent } from './pages/settings/general/sitemap/sitemap.component';
 import { GiftWrapComponent } from './pages/marketing/gift-wrap/gift-wrap.component';
 import { BannerImagesComponent } from './pages/marketing/banner-images/banner-images.component';
 import { CustomMailersComponent } from './pages/settings/general/custom-mailers/custom-mailers.component';
@@ -92,6 +91,7 @@ import { AppKeysComponent } from './pages/settings/general/app-keys/app-keys.com
 import { CartSettingsComponent } from './pages/settings/general/cart-settings/cart-settings.component';
 import { OrderSettingsComponent } from './pages/settings/general/order-settings/order-settings.component';
 import { FiltersComponent } from './pages/catalog/filters/filters.component';
+import { SitemapSettingsComponent } from './pages/settings/general/sitemap-settings/sitemap-settings.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -139,7 +139,6 @@ const DragConfig = {
     DeliverySlotsComponent,
     LoyaltyComponent,
     ReferralComponent,
-    SitemapComponent,
     GiftWrapComponent,
     BannerImagesComponent,
     CustomMailersComponent,
@@ -159,6 +158,7 @@ const DragConfig = {
     CartSettingsComponent,
     OrderSettingsComponent,
     FiltersComponent,
+    SitemapSettingsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
