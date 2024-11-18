@@ -234,10 +234,9 @@
                   (click)="removeTag(order.orderNo, tagIndex)">
                   {{tag}}
                   <div class="ms-1">
-                    <svg height="15px" width="15px" data-slot="icon" fill="none" stroke-width="1.5"
-                      stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"></path>
+                    <svg height="14" width="14" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                     </svg>
                   </div>
                 </div>
@@ -264,8 +263,7 @@
                 routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
                 <img src="assets/icons/eye.svg" alt="View order details">
               </div>
-              <a 
-                href="{{domainUrl + order?.orderNo?.split('#')[1]}}" target="_blank"
+              <a href="{{domainUrl + order?.orderNo?.split('#')[1]}}" target="_blank"
                 class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
                 <img src="assets/icons/print.svg" alt="Genarete Invoice">
               </a>
