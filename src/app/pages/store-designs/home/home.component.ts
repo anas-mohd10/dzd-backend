@@ -1453,6 +1453,7 @@ export class HomeComponent implements OnInit {
       description: new FormControl(''),
       button: new FormControl(''),
       redirection: new FormControl(''),
+      customStyles: new FormControl(''),
       redirectionType: new FormControl(''),
       buttonText: new FormControl(''),
       buttonRedirection: new FormControl(''),
