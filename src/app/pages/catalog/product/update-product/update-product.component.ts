@@ -473,10 +473,12 @@ export class UpdateProductComponent implements OnInit {
 
   handleProductBanner(event: any) {
     this.form.get('productBanner')?.setValue(event.path);
+    this.productBannerDetails = event.path
   }
 
   removeProductBanner() {
     this.form.get('productBanner')?.setValue(null);
+    this.productBannerDetails = ''
   }
 
   get formControls() {
