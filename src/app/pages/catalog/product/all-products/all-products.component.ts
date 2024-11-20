@@ -69,6 +69,7 @@ export class AllProductsComponent implements OnInit {
   ]
   brands: Array<any> = []
   base: string = environment.base
+  domainUrl: string = ''
 
   constructor(
     private BrandService: BrandService,
@@ -115,6 +116,7 @@ export class AllProductsComponent implements OnInit {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.settings = res?.result
+        this.domainUrl = res?.result?.domain?.endsWith('/') ? res?.result?.domain : `${res?.result?.domain}/`
         this.ChangeDetectorRef.markForCheck()
       }
     })

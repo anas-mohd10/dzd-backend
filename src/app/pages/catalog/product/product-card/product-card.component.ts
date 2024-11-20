@@ -66,8 +66,6 @@ export class ProductCardComponent implements OnInit {
   isCategoryDropdown: boolean = false;
   brandDetails: any;
   headDetails: any;
-  defaultCategory: any;
-
   parentCategories: Array<any> = [];
   months: Array<string> = [
     'Jan',
@@ -210,7 +208,6 @@ export class ProductCardComponent implements OnInit {
       sku: new FormControl('', Validators.required),
       hsn: new FormControl(''),
       parentCategory: new FormControl('', Validators.required),
-      defaultCategory: new FormControl(''),
       brand: new FormControl(null),
     });
 
@@ -402,9 +399,6 @@ export class ProductCardComponent implements OnInit {
           );
           this.parentCategories = res?.result?.parentCategory?.id;
           this.getChildCategory(categories);
-          this.editForm
-            .get('defaultCategory')
-            ?.setValue(res?.result?.defaultCategory?.id?._id);
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.ToastrService.error(res?.message);
@@ -490,17 +484,6 @@ export class ProductCardComponent implements OnInit {
       }),
     };
 
-    if (this.editForm.get('defaultCategory')?.value) {
-      let defaultCategory = {
-        id: this.editForm.get('defaultCategory')?.value,
-        refid: this.defaultCategories.filter(
-          (category: any) =>
-            category?._id == this.editForm.get('defaultCategory')?.value
-        )[0]?.catid,
-      };
-      this.editForm.get('defaultCategory')?.setValue(defaultCategory);
-    }
-
     this.editForm.get('parentCategory')?.setValue(parentCategory);
 
     if (!this.editForm.valid) {
@@ -522,6 +505,7 @@ export class ProductCardComponent implements OnInit {
         value: this.editForm.value.replaceDays,
         isPresent: this.editForm.value.replace,
       },
+      _id: this.headDetails?._id,
       prodid: this.headDetails?._id,
       return: {
         value: this.editForm.value.returnDays,
