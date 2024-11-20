@@ -255,4 +255,6 @@ export const internationalisationKeys = {
     forgetPassword: 'forgetPassword',
     didYouForgetPassword: 'didYouForgetPassword',
     phoneNumberInvalid: 'phoneNumberInvalid',
+    updatedDefaultAddress: 'updatedDefaultAddress',
+    itemhasBeenRemovedfromCart: 'itemhasBeenRemovedfromCart'
 }
