@@ -18,6 +18,7 @@ import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ProductDesignsComponent } from './product-designs/product-designs.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ProductListingComponent } from './product-listing/product-listing.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     AppImagesComponent,
     ContactComponent,
     AboutComponent,
-    ProductDesignsComponent
+    ProductDesignsComponent,
+    ProductListingComponent
   ],
   imports: [
     CommonModule,

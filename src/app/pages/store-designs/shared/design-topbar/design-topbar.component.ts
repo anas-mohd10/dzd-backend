@@ -16,8 +16,8 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   deviceType: string = 'desktop';
   domain: string = ''
   hideTopbarDetails: boolean = false
-  showDevices: Array<string> = ['home', 'catalog']
-  hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs']
+  showDevices: Array<string> = ['home', 'catalog', 'product-listing']
+  hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs', 'product-listing']
 
   constructor(
     private AppSettingsService: AppSettingsService,

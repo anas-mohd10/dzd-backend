@@ -1,0 +1,13 @@
+w<app-design-topbar [page]="'product-listing'" [isDraft]="isDraft" (device)="deviceToggled($event)"></app-design-topbar>
+<app-design-sidebar></app-design-sidebar>
+
+<div>
+    <div class="row storedesign-wrapper">
+        <div class="w-82 h-100 overflow-auto d-flex align-items-center justify-content-center">
+            <app-screens class="w-100" [page]="'products'" [device]="device" [load]="screenLoad"></app-screens>
+        </div>
+        <div class="w-18 h-100 overflow-auto bg-white p-5">
+            
+        </div>
+    </div>
+    </div>

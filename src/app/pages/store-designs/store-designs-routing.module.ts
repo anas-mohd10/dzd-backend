@@ -7,10 +7,12 @@ import { AppImagesComponent } from './app-images/app-images.component';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ProductDesignsComponent } from './product-designs/product-designs.component';
+import { ProductListingComponent } from './product-listing/product-listing.component';
 
 
 const routes: Routes = [
   { path: "home", component: HomeComponent },
+  { path: "product-listing", component: ProductListingComponent },
   { path: "about-us", component: AboutComponent },
   { path: "catalogs", component: CatalogComponent },
   { path: "theme", component: ThemeComponent },
