@@ -256,5 +256,12 @@ export const internationalisationKeys = {
     didYouForgetPassword: 'didYouForgetPassword',
     phoneNumberInvalid: 'phoneNumberInvalid',
     updatedDefaultAddress: 'updatedDefaultAddress',
-    itemhasBeenRemovedfromCart: 'itemhasBeenRemovedfromCart'
+    itemhasBeenRemovedfromCart: 'itemhasBeenRemovedfromCart',
+    emailVerifiedSuccessfully: 'emailVerifiedSuccessfully',
+    emailVerified: 'emailVerified',
+    yourEmailHasbeenVerifiedSuccessfully: 'yourEmailHasbeenVerifiedSuccessfully',
+    emailVerifiedFailed: 'emailVerifiedFailed',
+    pleaseWait: 'pleaseWait',
+    verifyingYourEmail: 'verifyingYourEmail',
+    gotoHome: 'gotoHome'
 }
