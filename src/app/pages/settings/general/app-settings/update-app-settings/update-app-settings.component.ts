@@ -74,6 +74,36 @@ export class UpdateAppSettingsComponent implements OnInit {
     'Active',
     'Hellix'
   ];
+  defaultSort: Array<any> = [
+    {
+      label: "Low to High",
+      value: "0"
+    },
+    {
+      label: "High to Low",
+      value: "1"
+    },
+    {
+      label: "Popularity",
+      value: "8"
+    },
+    {
+      label: "A to Z",
+      value: "5"
+    },
+    {
+      label: "Z to A",
+      value: "4"
+    },
+    {
+      label: "Newest to Oldest",
+      value: "2"
+    },
+    {
+      label: "Oldest to Newsest",
+      value: "3"
+    }
+  ];
   logo?: string;
   favicon?: string;
   primary: string = '';
@@ -153,6 +183,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('toastError')?.setValue("#" + res?.result?.toast?.error.split('FF')[1])
         this.form.get('toastInfo')?.setValue("#" + res?.result?.toast?.info.split('FF')[1])
         this.form.get('fontFamily')?.setValue(res?.result?.fonts?.family)
+        this.form.get('defaultSort')?.setValue(res?.result?.defaultSort)
         this.form.get('email')?.setValue(res?.result?.email)
         this.form.get('gstNo')?.setValue(res?.result?.gstNo)
         this.form.get('countryCode')?.setValue(res?.result?.countryCode)
@@ -228,6 +259,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       countryCode: ['+971', Validators.required],
       mobile: ['', Validators.required],
       fontFamily: ['', Validators.required],
+      defaultSort: ['', Validators.required], 
       name: ['', Validators.required],
       companyName: [''],
       domain: ['', Validators.required],
@@ -329,6 +361,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       },
       currency: this.form.get('currency')?.value,
       fonts: { family: this.form.get('fontFamily')?.value },
+      defaultSort: this.form.get('defaultSort')?.value,
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
