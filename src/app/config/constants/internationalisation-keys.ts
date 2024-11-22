@@ -265,5 +265,6 @@ export const internationalisationKeys = {
     verifyingYourEmail: 'verifyingYourEmail',
     gotoHome: 'gotoHome',
     updateYourAddress: 'updateYourAddress',
-    addingYourAddress: 'addingYourAddress'
+    addingYourAddress: 'addingYourAddress',
+    addressDeletedSuccessfully: 'addressDeletedSuccessfully'
 }
