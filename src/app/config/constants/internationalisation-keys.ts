@@ -263,5 +263,7 @@ export const internationalisationKeys = {
     emailVerifiedFailed: 'emailVerifiedFailed',
     pleaseWait: 'pleaseWait',
     verifyingYourEmail: 'verifyingYourEmail',
-    gotoHome: 'gotoHome'
+    gotoHome: 'gotoHome',
+    updateYourAddress: 'updateYourAddress',
+    addingYourAddress: 'addingYourAddress'
 }
