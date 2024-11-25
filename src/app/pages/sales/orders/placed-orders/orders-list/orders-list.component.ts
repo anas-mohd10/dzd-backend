@@ -134,25 +134,12 @@ export class OrdersListComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
   ) {
-    this.OrdersService.getOrderCounts({ status: this.orderStatus }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.orderStatus = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.Toast.error(res.message)
-        }
-      }, error: (err: any) => {
-        this.Toast.error(err.message)
-      }
-    })
-
 
     this.keyword.valueChanges
       .pipe(debounceTime(500))
-      .subscribe(() => {
-        this.getOrders()
-      })
+      .subscribe((value) => {
+      this.updateQueryParams({keyword:value, page:1})
+    })
   }
 
   openTag(template: TemplateRef<any>, order: string) {
@@ -244,31 +231,109 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
+
+  private initializeSettings() {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
-          this.settings = res?.result
+          this.settings = res?.result;
           this.invoiceUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoices/';
-          this.packingSlipUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-packingslips/'
-          this.domainUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/'
-          this.ChangeDetectorRef.markForCheck()
-        } else {  }
-      }, error: (err: any) => { }
-    })
-    this.type = this.ActivatedRoute.snapshot.queryParams.type || ''
-    switch (this.type) {
-      case 'pending':
-        this.activeStatus = 'Pending'
-        this.activeValue = 'PENDING'
-        break
-      case 'delivered':
-        this.activeStatus = 'Delivered'
-        this.activeValue = 'DELIVERED'
-        break
-    }
-    this.initForm()
-    this.getOrders()
+          this.packingSlipUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-packingslips/';
+          this.domainUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/';
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err: any) => { }
+    });
+  }
+
+  private updateQueryParams(params: any) {
+    // Get current form values
+    const formValues = this.orderForm.value;
+
+    // Merge with existing query params
+    const queryParams = {
+      status: this.activeValue,
+      page: this.page,
+      limit: this.limit,
+      keyword: this.keyword.value,
+      ...formValues,
+      ...params // Override with new params
+    };
+
+    // Remove empty values
+    Object.keys(queryParams).forEach(key => {
+      if (!queryParams[key] && queryParams[key] !== 0) {
+        delete queryParams[key];
+      }
+    });
+
+    // Update URL without reloading
+    this.Router.navigate([], {
+      relativeTo: this.ActivatedRoute,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge',
+    }).then(() => {
+      // Call getOrders after URL is updated
+      this.getOrders();
+    });
+  }
+
+
+
+  ngOnInit(): void {
+    // Initialize settings
+    this.initializeSettings();
+
+    // Initialize form
+    this.initForm();
+
+    // Get initial order counts
+    this.OrdersService.getOrderCounts({ status: this.orderStatus }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.orderStatus = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.Toast.error(res.message);
+        }
+      },
+      error: (err: any) => {
+        this.Toast.error(err.message);
+      }
+    });
+
+    // Subscribe to query params
+    this.ActivatedRoute.queryParams.subscribe(params => {
+      if (Object.keys(params).length === 0) {
+        // If no params, just get orders with default values
+        this.getOrders();
+        return;
+      }
+
+      // Update status from query params
+      this.activeValue = params['status'] || '';
+      this.activeStatus = this.orderStatus.find(s => s.value === this.activeValue)?.status || 'All Orders';
+
+      // Update page and limit
+      this.page = Number(params['page']) || 1;
+      this.limit = Number(params['limit']) || 20;
+
+      // Update form values from query params without triggering valueChanges
+      this.orderForm.patchValue({
+        fromDate: params['fromDate'] || '',
+        toDate: params['toDate'] || '',
+        paymentMethod: params['paymentMethod'] || '',
+        paymentStatus: params['paymentStatus'] || '',
+        source: params['source'] || ''
+      }, { emitEvent: false });
+
+      // Update keyword without triggering valueChanges
+      this.keyword.setValue(params['keyword'] || '', { emitEvent: false });
+
+      // Get orders with current params
+      this.getOrders();
+    });
   }
 
   toggleOrders(order?: { order: string, status: string }) {
@@ -322,40 +387,42 @@ export class OrdersListComponent implements OnInit {
   }
 
   getStatus(status: any) {
-    this.activeStatus = status?.status
-    this.activeValue = status?.value
-    this.getOrders()
+    this.activeStatus = status?.status;
+    this.activeValue = status?.value;
+    this.updateQueryParams({ status: status?.value, page: 1 }); // Reset page when changing status
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
-    this.page = event.pageIndex
-    this.limit = event.pageSize
-    this.getOrders()
+    this.updateQueryParams({
+      page: event.pageIndex,
+      limit: event.pageSize
+    });
   }
 
   getOrders() {
-    this.isLoading = false
-    let payload = {
+    this.isLoading = false;
+    const payload = {
       status: this.activeValue,
       page: this.page,
       limit: this.limit,
       ...this.orderForm.value,
       keyword: this.keyword.value,
-    }
+    };
+
     this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.orders = res?.result?.orders
-        this.totalOrders = res?.result?.total_orders
-        this.averageSales = res?.result?.average_sales
-        this.totalRevenues = res?.result?.total_revenue
-        this.lastPage = res?.result?.lastPage
-        this.totalResults = res?.result?.totalResults
-        this.totalPages = res?.result?.totalPages
-        this.page = res?.result?.page
-        this.isLoading = true
-        this.ChangeDetectorRef.markForCheck()
+        this.orders = res?.result?.orders;
+        this.totalOrders = res?.result?.total_orders;
+        this.averageSales = res?.result?.average_sales;
+        this.totalRevenues = res?.result?.total_revenue;
+        this.lastPage = res?.result?.lastPage;
+        this.totalResults = res?.result?.totalResults;
+        this.totalPages = res?.result?.totalPages;
+        this.page = res?.result?.page;
+        this.isLoading = true;
+        this.ChangeDetectorRef.markForCheck();
       }
-    })
+    });
   }
 
   convertOrderStatus(status: string) {
@@ -369,6 +436,12 @@ export class OrdersListComponent implements OnInit {
       paymentMethod: new FormControl(''),
       paymentStatus: new FormControl(''),
       source: new FormControl(''),
+    });
+
+    // Subscribe to form value changes
+    this.orderForm.valueChanges.subscribe(values => {
+      // Update query params and trigger API call
+      this.updateQueryParams({ ...values, page: 1 });
     });
   }
 
@@ -391,8 +464,9 @@ export class OrdersListComponent implements OnInit {
     this.initForm()
     this.activeStatus = 'All Orders'
     this.activeValue = ''
-    this.Router.navigate([appRoutes.orders.ORDERS_LIST])
-    this.getOrders()
+    this.Router.navigate([appRoutes.orders.ORDERS_LIST], {
+      queryParams: {}
+    });   
   }
 
   searchOrder() {
