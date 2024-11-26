@@ -26,9 +26,18 @@ interface StoreField {
   isFilter: boolean
 }
 
-interface AddOn {
-  product: any;
+interface AddOnOption {
+  product: string;
+  description: string;
   price: number;
+}
+
+interface AddOns {
+  title: string;
+  description: string;
+  isRequired: boolean;
+  addOnType: string;
+  options: AddOnOption[]
 }
 
 @Component({
@@ -128,7 +137,6 @@ export class UpdateProductComponent implements OnInit {
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
-  addOns: Array<AddOn> = []
   addOnsRef?: BsModalRef
   addOnsKeyword: FormControl = new FormControl('', Validators.required)
   addOnSearchResults: Array<any> = []
@@ -141,6 +149,10 @@ export class UpdateProductComponent implements OnInit {
     { key: 'Radio', value: 'radio' },
     { key: 'Checkbox', value: 'checkbox' },
   ]
+  isOptionSubmitted: boolean = false
+  addOnOptions: AddOnOption[] = []
+  addOns: AddOns[] = []
+  isAddOnForm: boolean = false
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -191,7 +203,87 @@ export class UpdateProductComponent implements OnInit {
     this.addOnsRef?.hide()
   }
 
-  toggleAddOnSwitch(event: {switchId: string, toggleState: boolean}) {
+  get addOnOptionControls() {
+    return this.addOnOptionForm.controls
+  }
+
+  addAddOnOption() {
+    if (!this.addOnOptionForm.valid) {
+      this.isOptionSubmitted = true
+      return
+    }
+
+    this.addOnOptions.push(this.addOnOptionForm.value)
+    this.isOptionSubmitted = false
+    this.HotToastService.success('Option added successfully')
+    this.addOnOptionForm.reset()
+    this.addOnOptionForm.patchValue({ product: "", description: "", price: "" })
+  }
+
+  removeAddOnOption(index: number) {
+    this.HotToastService.error('Option removed successfully')
+    this.addOnOptions.splice(index, 1)
+  }
+
+  removeAddOn(index: number){
+    this.HotToastService.error('AddOn removed successfully')
+    this.addOns.splice(index, 1)
+  }
+
+  editAddOn(index: number){
+    this.addOnForm.patchValue(this.addOns[index])
+    this.addOnOptions = this.addOns[index].options
+    this.isAddOnForm = true
+  }
+
+  closeAddOnItems(){
+    this.addOnForm.reset()
+    this.addOnForm.patchValue({
+      title: "",
+      description: "",
+      isRequired: false,
+      addOnType: "select"
+    })
+    this.isAddOnForm = false
+    this.addOnOptions = []
+    this.addOnOptionForm.reset()
+    this.addOnOptionForm.patchValue({
+      product: "",
+      description: "",
+      price: ""
+    })
+  }
+
+  addAddOnItems() {
+    if (!this.addOnForm.valid) {
+      return
+    }
+
+    const addOn: AddOns = {
+      ...this.addOnForm.value,
+      options: this.addOnOptions
+    }
+
+    this.addOns.push(addOn)
+    this.HotToastService.success('AddOn added successfully')
+    this.addOnForm.reset()
+    this.addOnForm.patchValue({
+      title: "",
+      description: "",
+      isRequired: false,
+      addOnType: "select"
+    })
+    this.isAddOnForm = false
+    this.addOnOptions = []
+    this.addOnOptionForm.reset()
+    this.addOnOptionForm.patchValue({
+      product: "",
+      description: "",
+      price: ""
+    })
+  }
+
+  toggleAddOnSwitch(event: { switchId: string, toggleState: boolean }) {
     this.addOnForm.get('isRequired')?.setValue(event.toggleState)
   }
 
@@ -515,7 +607,6 @@ export class UpdateProductComponent implements OnInit {
       product: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
       description: new FormControl(''),
-      thumbnail: new FormControl(''),
     })
 
     this.addOnForm = new FormGroup({
