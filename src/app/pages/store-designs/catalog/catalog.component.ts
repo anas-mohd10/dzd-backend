@@ -239,6 +239,162 @@ export class CatalogComponent implements OnInit {
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
     },
+    {
+      title: 'Motion Canvas',
+      type: 'motion-canvas',
+      icon: 'assets/widgets/regal-rolls.png',
+      description:
+        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
+    }, {
+      title: 'Products',
+      type: 'products',
+      icon: 'assets/widgets/blogs.png',
+      description:
+        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
+    }, {
+      title: 'Noble Nodes',
+      type: 'noble-nodes',
+      icon: 'assets/widgets/noble-nodes.png',
+      description:
+        'The following widget can be used to show images within a particular category.The widget contains images.',
+    }, {
+      title: 'Prime Plates',
+      type: 'prime-plates',
+      icon: 'assets/widgets/prime-plates.png',
+      description:
+        'The following widget can be used to show images within a particular category.The widget contains images.',
+    }, {
+      title: 'Elite Elements',
+      type: 'elite-elements',
+      icon: 'assets/widgets/elite-elements.png',
+      description:
+        'The following widget can be used to show images within a particular category.The widget contains images.',
+    }, {
+      title: 'Sale Timer',
+      type: 'sale-timer',
+      icon: 'assets/widgets/sale-timer.png',
+      description: 'This widget is used to showcase a sale timer.',
+    }, {
+      title: 'Twin Towers',
+      type: 'twin-towers',
+      icon: 'assets/widgets/twin-towers.png',
+      description:
+        'The following widget can be used to show images within a particular category.The widget contains images.',
+    }, {
+      title: 'Slider Spotlight',
+      type: 'slider-spotlight',
+      icon: 'assets/widgets/slider-spotlight.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Trending Teasers',
+      type: 'trending-teasers',
+      icon: 'assets/widgets/trending-teasers.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Smart Tiles',
+      type: 'smart-tiles',
+      icon: 'assets/widgets/smart-tiles.png',
+      description:
+        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
+    }, {
+      title: 'Stellar Selections',
+      type: 'stellar-selections',
+      icon: 'assets/widgets/stellar-selections.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Testimonials',
+      type: 'testimonial-cards',
+      icon: 'assets/widgets/image-slider.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Radiant Rectangles',
+      type: 'radiant-rectangles',
+      icon: 'assets/widgets/radiant-rectangles.png',
+      description:
+        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
+    }, {
+      title: 'Quad Squares',
+      type: 'quad-square',
+      icon: 'assets/widgets/quad-sqaure.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Insight Hub',
+      type: 'insight-hub',
+      icon: 'assets/widgets/store-chronicles.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Delivery Timer',
+      type: 'delivery-timer',
+      icon: 'assets/widgets/delivery-timer.png',
+      description:
+        'The following widget can be used to run a delivery timer with custom designs',
+    }, {
+      title: 'Hyper Link Hero',
+      type: 'hyperlinkhero',
+      icon: 'assets/widgets/picture-palette.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Aurora Grid',
+      type: 'aurora-grid',
+      icon: 'assets/widgets/aurora-grid.png',
+      description:
+        'The following widget can be used to run a delivery timer with custom designs',
+    }, {
+      title: 'Aurora Slider',
+      type: 'aurora-slider',
+      icon: 'assets/widgets/aurora-slider.png',
+      description:
+        'The following widget can be used to show images within a particular category. The widget contains images.',
+    }, {
+      title: 'Text Twirl',
+      type: 'text-twirl',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    }, {
+      title: 'Full Banner',
+      type: 'full-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    }, {
+      title: 'Animation Banner',
+      type: 'animation-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    }, {
+      title: 'Bricks Mansory Grid',
+      type: 'brick-mansory-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    }, {
+      title: 'Primary Triple Grid',
+      type: 'primary-triple-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    }, {
+      title: 'Vibrant Banner',
+      type: 'vibrant-banner',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show one full width banner. The widget contains images.',
+    }, {
+      title: 'Key Points',
+      type: 'key-points-grid',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
   ];
   homeWidgets: Array<any> = [];
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);

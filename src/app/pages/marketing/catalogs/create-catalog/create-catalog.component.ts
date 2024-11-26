@@ -50,6 +50,7 @@ export class CreateCatalogComponent implements OnInit {
     { name: 'Custom HTML', description: "This widget allows the inclusion of custom HTML to create a display element.", type: 'custom-html' },
     { name: 'Banner', description: "This widget is used to showcase banner and carousel with only image.", type: 'banner' },
     { name: 'Video', description: "This widget is used to showcase full width video only.", type: 'video' },
+    
   ]
   positions: Array<{ key: String, value: String }> = [
     { key: 'Left', value: 'left' },
