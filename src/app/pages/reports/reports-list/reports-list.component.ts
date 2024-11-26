@@ -29,7 +29,9 @@ export class ReportsListComponent implements OnInit {
   productsKeyword: FormControl = new FormControl('');
   products: Array<any> = [];
   productIds: Array<any> = [];
-
+  isCustomRange: boolean = false
+  startDate: string = ''
+  endDate: string = ''
   reportItems: Array<any> = [
     {
       title: 'Product',
@@ -125,9 +127,9 @@ export class ReportsListComponent implements OnInit {
     private ProductService: ProductService,
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   //Open sales modal
   openSales(template: TemplateRef<any>) {
@@ -177,6 +179,12 @@ export class ReportsListComponent implements OnInit {
 
   toggleSalesReport(dateRange: string) {
     this.dateRange = dateRange;
+    // Check if the date range is custom
+    if (dateRange == 'custom') {
+      this.isCustomRange = true
+    } else {
+      this.isCustomRange = false
+    }
   }
 
   toggleOrderReport(dateRange: string) {
@@ -184,10 +192,36 @@ export class ReportsListComponent implements OnInit {
   }
 
   salesReport() {
-    this.ReportsService.salesReport(this.dateRange).subscribe({
+    if (this.dateRange == 'custom') {
+      this.startDate = new Date(this.startDate).toISOString().split('T')[0]
+      this.endDate = new Date(this.endDate).toISOString().split('T')[0]
+
+      if (this.startDate == '' || this.endDate == '') {
+        this.HotToastService.error('Please select a valid date range')
+        this.startDate = ''
+        this.endDate = ''
+        return
+      }
+
+      if (this.startDate > this.endDate) {
+        this.HotToastService.error('Start date cannot be greater than end date')
+        this.startDate = ''
+        this.endDate = ''
+        return
+      }
+    }
+
+    this.ReportsService.salesReport(
+      this.dateRange, 
+      this.startDate, 
+      this.endDate
+    ).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.closeSales();
+          this.startDate = ''
+          this.endDate = ''
+          this.dateRange = '15'
           this.HotToastService.success(res?.message);
         } else {
           this.HotToastService.error(res.message);
@@ -366,7 +400,7 @@ export class ReportsListComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     }, 800);
   }
