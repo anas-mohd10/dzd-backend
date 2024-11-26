@@ -35,7 +35,7 @@ export class AddFaqComponent implements OnInit {
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'sen', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
     ]
   };
   isSubmitted = false;

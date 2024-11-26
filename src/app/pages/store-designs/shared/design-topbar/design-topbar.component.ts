@@ -13,11 +13,14 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   @Input() page: string = '';
   @Input() isDraft?: boolean = false;
   @Output() device = new EventEmitter();
+  @Output() productConfigDraft: EventEmitter<any> = new EventEmitter();
+  @Output() productConfigPublish: EventEmitter<any> = new EventEmitter();
+
   deviceType: string = 'desktop';
   domain: string = ''
   hideTopbarDetails: boolean = false
   showDevices: Array<string> = ['home', 'catalog', 'product-listing']
-  hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs', 'product-listing']
+  hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs']
 
   constructor(
     private AppSettingsService: AppSettingsService,
@@ -50,6 +53,9 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
       case 'home':
         this.saveHomeWidgetsDraft()
         break;
+      case 'product-listing':
+        this.productConfigDraft.emit()
+        break;
       default:
         break;
     }
@@ -59,6 +65,9 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
     switch (this.page) {
       case 'home':
         this.publishHomeWidgets()
+        break;
+      case 'product-listing':
+        this.productConfigPublish.emit()
         break;
       default:
         break;

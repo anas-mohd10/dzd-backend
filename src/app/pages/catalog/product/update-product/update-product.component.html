@@ -19,8 +19,14 @@
       </ul>
     </div>
     <div class="d-flex align-items-start justify-content-end gap-2">
-      <div></div>
-      <button class="btn btn-danger" (click)="onDelete()">Delete product</button>
+      <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2">
+        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"></path>
+        </svg>
+        View History
+      </button>
+      <button class="btn btn-danger" (click)="onDelete()">Delete Product</button>
     </div>
   </div>
 
@@ -28,10 +34,10 @@
     <div class="card">
       <div class="card-body">
 
-        <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
-          <tab heading="Product Details">
-            <div class="my-6">
-              <form [formGroup]="form">
+        <form [formGroup]="form">
+          <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
+            <tab heading="Product Details">
+              <div class="my-6">
 
                 <div class="row">
                   <div class="mb-3 form-group">
@@ -269,23 +275,6 @@
                   </div>
                 </div>
 
-                <div>
-                  <div class="fs-3 fw-bold">SEO Details</div>
-                  <p class="text-muted mb-3">Update the seo details of the product</p>
-                  <div class="form-group mb-3">
-                    <label for="metaTitle" class="fs-6 mb-3">Meta title</label>
-                    <input type="text" formControlName="metaTitle" class="form-control">
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="metaDescription" class="fs-6 mb-3">Meta description</label>
-                    <input type="text" formControlName="metaDescription" class="form-control">
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="metaKeywords" class="fs-6 mb-3">Meta keywords</label>
-                    <input type="text" formControlName="metaKeywords" class="form-control">
-                  </div>
-                </div>
-
                 <div class="my-8">
                   <div class="fs-3 fw-bold">Store fields</div>
                   <p class="text-muted mb-3">Add dynamic fields to your product which will be shown in PDP pages</p>
@@ -324,46 +313,6 @@
                   </form>
                 </div>
 
-                <div class="my-16">
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div>
-                      <div class="fs-3 fw-bold">Add-Ons Products</div>
-                      <p class="text-muted mb-3">
-                        Manage and configure additional products to enhance main product offerings.
-                      </p>
-                    </div>
-                    <div>
-                      <button class="btn btn-secondary" (click)="openAddOns(addOnsTemplate)">New Products</button>
-                    </div>
-                  </div>
-                  <div class="my-4">
-                    <table class="table">
-                      <thead>
-                        <th class="p-2">Product</th>
-                        <th class="p-2">Price</th>
-                        <th class="p-2">&nbsp;</th>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let addOn of addOns; let i = index">
-                          <td>
-                            <div>{{addOn.product?.name}}</div>
-                            <div>{{addOn.product?.sku}}</div>
-                          </td>
-                          <td>{{settings.currency}} {{addOn.price}}</td>
-                          <td>
-                            <button class="btn btn-danger">Remove</button>
-                          </td>
-                        </tr>
-                        <tr *ngIf="addOns.length == 0">
-                          <td colspan="3">
-                            <app-no-results></app-no-results>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
                 <div class="row my-8">
                   <div class="col-lg-6 mb-3 form-group">
                     <label class="fs-6 mb-3" for="status">Active status</label>
@@ -383,127 +332,204 @@
                   </div>
                 </div>
 
-              </form>
-            </div>
-            <div class="d-flex align-items-center justify-content-end gap-2">
-              <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
-            </div>
-          </tab>
 
-          <tab heading="Product Medias">
-            <div class="my-6">
+              </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
+              </div>
+            </tab>
 
-              <form [formGroup]="form">
+            <tab heading="Product Medias">
+              <div class="my-6">
 
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3" id="video">Video</label>
-                  <input type="text" class="form-control" id="video" formControlName="video" />
-                </div>
+                <form [formGroup]="form">
 
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3" id="productBanner">Product banner</label>
-                  <p class="text-muted">
-                    Priority will be given to dedicated product details if a banner has been uploaded here.
-                    The banner for product details can be added from the banner images section, which will be common
-                    throughout all the PDP design.</p>
-                  <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
-                    <app-assets id="productBanner" [previewDetails]="productBannerDetails"
-                      (mediaClicked)="handleProductBanner($event)">
-                    </app-assets>
-                    <div class="position-absolute m-2 top-0 end-0" *ngIf="productBannerDetails">
-                      <button class="btn btn-danger p-2" (click)="removeProductBanner()">Remove banner</button>
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3" id="video">Video</label>
+                    <input type="text" class="form-control" id="video" formControlName="video" />
+                  </div>
+
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3" id="productBanner">Product banner</label>
+                    <p class="text-muted">
+                      Priority will be given to dedicated product details if a banner has been uploaded here.
+                      The banner for product details can be added from the banner images section, which will be common
+                      throughout all the PDP design.</p>
+                    <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
+                      <app-assets id="productBanner" [previewDetails]="productBannerDetails"
+                        (mediaClicked)="handleProductBanner($event)">
+                      </app-assets>
+                      <div class="position-absolute m-2 top-0 end-0" *ngIf="productBannerDetails">
+                        <button class="btn btn-danger p-2" (click)="removeProductBanner()">Remove banner</button>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product images</label>
-                  <div class="row" id="images">
-                    <ng-container *ngFor="let image of images">
+                  <div class="mb-3">
+                    <label for="images" class="fs-6 mb-3">Product images</label>
+                    <div class="row" id="images">
+                      <ng-container *ngFor="let image of images">
+                        <div class="col-lg-2">
+                          <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                            <div class="close-icon rounded bg-danger text-white" (click)="productMediaClicked(image)">
+                              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                              </svg>
+                            </div>
+                            <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
+                          </div>
+                        </div>
+                      </ng-container>
                       <div class="col-lg-2">
+                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                          <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'contain'"
+                            [previewEnabled]="false"></app-assets>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
+                    <div class="row" id="thumbnail">
+                      <div class="col-lg-2">
+                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                          <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
+                            (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="images" class="fs-6 mb-3">Product icons</label>
+                    <div class="icons" id="images">
+                      <ng-container *ngFor="let icon of icons">
                         <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                          <div class="close-icon rounded bg-danger text-white" (click)="productMediaClicked(image)">
+                          <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                               stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                               aria-hidden="true">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
-                          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
+                          <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
                         </div>
-                      </div>
-                    </ng-container>
-                    <div class="col-lg-2">
+                      </ng-container>
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'contain'"
-                          [previewEnabled]="false"></app-assets>
+                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="mb-3">
-                  <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
-                  <div class="row" id="thumbnail">
-                    <div class="col-lg-2">
+                  <div class="mb-3">
+                    <label for="images" class="fs-6 mb-3">Product Tags</label>
+                    <div class="icons" id="images">
+                      <ng-container *ngFor="let icon of tagIcons">
+                        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                          <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                            </svg>
+                          </div>
+                          <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100 ">
+                        </div>
+                      </ng-container>
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
-                          (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
                       </div>
                     </div>
                   </div>
+                </form>
+              </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
+              </div>
+            </tab>
+
+            <tab heading="SEO Details">
+              <div class="my-6">
+                <div class="form-group mb-3">
+                  <label for="metaTitle" class="fs-6 mb-3">Meta title</label>
+                  <input type="text" formControlName="metaTitle" class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="metaDescription" class="fs-6 mb-3">Meta description</label>
+                  <input type="text" formControlName="metaDescription" class="form-control">
+                </div>
+                <div class="form-group mb-3">
+                  <label for="metaKeywords" class="fs-6 mb-3">Meta keywords</label>
+                  <input type="text" formControlName="metaKeywords" class="form-control">
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(3)">Continue</button>
+              </div>
+            </tab>
+
+            <tab heading="Add Ons">
+              <div class="my-6">
+                <div class="alert alert-danger fs-5">
+                  This module is currently under development and will be operational soon.
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="fs-5">Click to new add Add-On</div>
+                  <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Add Ons
+                  </button>
                 </div>
 
-                <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product icons</label>
-                  <div class="icons" id="images">
-                    <ng-container *ngFor="let icon of icons">
-                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
-                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                          </svg>
+                <div>
+                  <form [formGroup]="addOnForm">
+                    <div class="form-group">
+                      <label for="addOnTitle" class="fs-6 mb-3 required">Title</label>
+                      <input type="text" id="addOnTitle" formControlName="title" class="form-control">
+                    </div>
+                    <div class="form-group my-4">
+                      <label for="addOnDescription" class="fs-6 mb-3">Description</label>
+                      <input type="text" id="addOnDescription" formControlName="description" class="form-control">
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="addOnType" class="fs-6 mb-3 required">Type</label>
+                          <select formControlName="addOnType" id="addOnType" class="form-select">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let addOnType of addOnTypes" value="{{addOnType.value}}">
+                              {{addOnType.key}}
+                            </option>
+                          </select>
                         </div>
-                        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
                       </div>
-                    </ng-container>
-                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                      <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product Tags</label>
-                  <div class="icons" id="images">
-                    <ng-container *ngFor="let icon of tagIcons">
-                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
-                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                          </svg>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label for="isRequired" class="fs-6 mb-3">Is Required?</label>
+                          <app-switch [switchId]="''" (switchToggled)="toggleAddOnSwitch($event)"
+                            [isToggledProps]="addOnForm.get('isRequired')?.value"></app-switch>
                         </div>
-                        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100 ">
                       </div>
-                    </ng-container>
-                    <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                      <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
                     </div>
-                  </div>
+                  </form>
                 </div>
-              </form>
-            </div>
-            <div class="d-flex align-items-center justify-content-end gap-2">
-              <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
-              <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
-            </div>
-          </tab>
-        </tabset>
+              </div>
 
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
+                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+              </div>
+            </tab>
+          </tabset>
+        </form>
       </div>
     </div>
   </div>

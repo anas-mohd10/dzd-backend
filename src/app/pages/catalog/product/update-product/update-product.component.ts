@@ -67,7 +67,7 @@ export class UpdateProductComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Sen' },
-      { class: 'sen', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };
@@ -133,6 +133,15 @@ export class UpdateProductComponent implements OnInit {
   addOnsKeyword: FormControl = new FormControl('', Validators.required)
   addOnSearchResults: Array<any> = []
 
+  addOnProducts: Array<any> = []
+  addOnForm: FormGroup = new FormGroup({})
+  addOnOptionForm: FormGroup = new FormGroup({})
+  addOnTypes: Array<{ key: string, value: string }> = [
+    { key: 'Select', value: 'select' },
+    { key: 'Radio', value: 'radio' },
+    { key: 'Checkbox', value: 'checkbox' },
+  ]
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
@@ -180,6 +189,10 @@ export class UpdateProductComponent implements OnInit {
 
   closeAddOns() {
     this.addOnsRef?.hide()
+  }
+
+  toggleAddOnSwitch(event: {switchId: string, toggleState: boolean}) {
+    this.addOnForm.get('isRequired')?.setValue(event.toggleState)
   }
 
   onBrandTriggered(event: any) {
@@ -497,6 +510,21 @@ export class UpdateProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.base = environment.base;
+
+    this.addOnOptionForm = new FormGroup({
+      product: new FormControl('', Validators.required),
+      price: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      thumbnail: new FormControl(''),
+    })
+
+    this.addOnForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      isRequired: new FormControl(false),
+      addOnType: new FormControl('select'),
+      options: new FormControl([]),
+    })
 
     this.attributeForm = new FormGroup({
       type: new FormControl('text'),
