@@ -72,8 +72,7 @@
                   </div>
                   <div class="form-group mb-3">
                      <label class="fs-6 mb-3">Company Name</label>
-                     <input type="text" class="form-control fs-6"
-                        formControlName="companyName" />
+                     <input type="text" class="form-control fs-6" formControlName="companyName" />
                   </div>
                   <div class="col-lg-6 form-group mb-3">
                      <label for="countryCode" class="fs-6 mb-3 required">Country Code</label>
@@ -94,7 +93,7 @@
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3 required">Email</label>
                   <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) &&
-                                       formControls.email.errors?.required}"/>
+                                       formControls.email.errors?.required}" />
                </div>
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">TRN / GST No</label>
@@ -256,6 +255,15 @@
                      <label class="fs-6 mb-3 required">Items Per Page</label>
                      <input type="number" placeholder="14" class="form-control fs-6" formControlName="itemsPerPage" />
                   </div>
+                  <div class="col-lg-4 form-group mb-3">
+                     <label class="fs-6 mb-3">Default Sort</label>
+                     <select class="form-select fs-6" formControlName="defaultSort">
+                        <option value="" disabled>-- Select an sort --</option>
+                        <ng-container *ngFor="let sort of defaultSort">
+                           <option [value]="sort.value">{{sort.label}}</option>
+                        </ng-container>
+                     </select>
+         </div>
                </div>
             </div>
          </div>
@@ -317,11 +325,11 @@
 
 <ng-template #discardTemplate>
    <div class="modal-body text-center">
-     <p>Do you want to discard the cache?</p>
-     <button type="button" class="btn btn-default" (click)="approveDiscard()" >Yes</button>
-     <button type="button" class="btn btn-primary" (click)="declineDiscard()" >No</button>
+      <p>Do you want to discard the cache?</p>
+      <button type="button" class="btn btn-default" (click)="approveDiscard()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineDiscard()">No</button>
    </div>
- </ng-template>
+</ng-template>
 
 <ng-template #template>
    <div class="modal-body text-center">

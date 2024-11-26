@@ -292,6 +292,7 @@ export const appRoutes = {
   designs: {
     home: "/designs/home",
     catalogs: "/designs/catalogs",
+    productListings: "/designs/product-listing",
     theme: "/designs/theme",
     appImages: "/designs/app-images",
     contactUs: "/designs/contact-us",

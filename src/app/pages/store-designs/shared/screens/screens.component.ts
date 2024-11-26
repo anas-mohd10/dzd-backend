@@ -27,7 +27,10 @@ export class ScreensComponent implements OnInit, OnChanges {
       this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=preview`);
       if(this.page == 'catalog') {
         this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}/catalogs/${this.catalogId}`);
+      }else if(this.page == 'products'){
+        this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? `${this.settings?.domain}products` : this.settings?.domain}/products`);
       }
+
       this.reloadFrame()
     }
   }
@@ -40,6 +43,8 @@ export class ScreensComponent implements OnInit, OnChanges {
           this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}?type=draft`);          
           if(this.page == 'catalog') {
             this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? this.settings?.domain?.slice(0, -1) : this.settings?.domain}/catalogs/${this.catalogId}`);
+          }else if(this.page == 'products'){
+            this.websiteLink = this.DomSanitizer.bypassSecurityTrustResourceUrl(`${this.settings?.domain.endsWith('/') ? `${this.settings?.domain}products` : this.settings?.domain}/products`);
           }
           this.ChangeDetectorRef.markForCheck()
         } else { }

@@ -1,0 +1,229 @@
+.widget-form {
+    max-height: 480px;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.w-18{
+    width: 18%;
+}
+
+.w-82{
+    width: 82%;
+}
+
+.widget-loader{
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-ellipsis {
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.cdk-drag-preview {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+    }
+}
+
+.modal-images {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 10px;
+
+    .modal-image {
+        position: relative;
+        cursor: pointer;
+
+        &.cdk-drag {
+            img {
+                object-fit: contain;
+            }
+        }
+
+        &.cdk-drag-dragging {
+            img {
+                object-fit: contain;
+            }
+        }
+
+        img {
+            object-fit: contain;
+        }
+    }
+}
+
+.modal-widgets {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    height: 400px;
+    overflow-y: scroll;
+
+    .modal-widget {
+        cursor: pointer;
+        height: max-content;
+    }
+}
+
+.widget-item {
+    cursor: pointer;
+
+    .widget-name {
+        width: max-content;
+    }
+}
+
+label {
+    font-weight: 400 !important;
+}
+
+.redirections {
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 140px;
+    height: max-content;
+    z-index: 999;
+    overflow-y: scroll;
+    background: #ffffff;
+
+    .redirectionType {
+        cursor: pointer;
+    }
+}
+
+.products,
+.testimonials {
+    max-height: 300px;
+    height: max-content;
+    overflow-y: scroll;
+
+    .product,
+    .testimonial {
+        cursor: pointer;
+    }
+}
+
+.history-frame {
+    height: 80vh;
+
+    iframe {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.widget-products {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+
+    .product {
+        position: relative;
+
+        img {
+            height: auto;
+            width: 100%;
+            aspect-ratio: 1;
+        }
+
+        .product-name {
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .remove-product {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        &:hover {
+
+            .remove-product {
+                display: grid;
+                place-items: center;
+            }
+        }
+    }
+}
+
+.btn {
+    font-weight: 400 !important;
+}
+
+.storedesign-wrapper {
+    height: calc(100vh - 70px);
+    margin: 70px 0 0 70px;
+    overflow-y: auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.tile-products {
+    height: max-content;
+    max-height: 300px;
+    overflow-y: scroll;
+
+    .tile-product {
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+}
+
+.checkbox {
+    height: 20px;
+    width: 20px;
+    border: 2px solid #aaaaaa;
+    border-radius: 4px;
+    position: relative;
+    background: #ffffff;
+    cursor: pointer;
+
+    &.checked {
+
+        &::after {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            content: '';
+            height: 10px;
+            width: 10px;
+            background: #00BDAB;
+            border-radius: 2px;
+        }
+
+        border: 2px solid #00BDAB;
+    }
+}
