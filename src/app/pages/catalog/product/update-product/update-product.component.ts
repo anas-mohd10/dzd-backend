@@ -153,6 +153,7 @@ export class UpdateProductComponent implements OnInit {
   addOnOptions: AddOnOption[] = []
   addOns: AddOns[] = []
   isAddOnForm: boolean = false
+  isAddOnEditable: boolean = false
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -234,6 +235,7 @@ export class UpdateProductComponent implements OnInit {
     this.addOnForm.patchValue(this.addOns[index])
     this.addOnOptions = this.addOns[index].options
     this.isAddOnForm = true
+    this.isAddOnEditable = true
   }
 
   closeAddOnItems(){
@@ -459,6 +461,7 @@ export class UpdateProductComponent implements OnInit {
       ...this.form.value,
       prodid: this.productDetails?._id,
       slug: this.form.get('slug')?.value,
+      addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
       relatedProducts: this.relatedProducts
         ? this.relatedProducts.map((product: any) => product?._id)

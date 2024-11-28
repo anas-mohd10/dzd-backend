@@ -507,7 +507,7 @@
                     *ngFor="let addOn of addOns; let i = index">
                     <div>
                       <div class="fs-4">{{addOn.title}}</div>
-                      <div>{{addOn.description}}</div>
+                      <div class="text-muted">{{addOn.description}}</div>
                     </div>
                     <div class="d-flex align-items-center justify-content-end gap-2">
                       <button (click)="editAddOn(i)" class="d-flex align-items-center justify-content-center gap-2 btn btn-secondary">
