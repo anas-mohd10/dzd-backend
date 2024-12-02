@@ -53,15 +53,15 @@
       </div>
    </div>
 
-   <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+   <table class="table table-bordered">
       <thead>
          <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>ID</th>
             <th>Mobile</th>
             <th>Source</th>
             <th>Status</th>
+            <th>Created</th>
             <th>Action</th>
          </tr>
       </thead>
@@ -70,16 +70,23 @@
             <tr>
                <td>{{customer?.name}}</td>
                <td>{{customer?.email}}</td>
-               <td>{{customer?.userid}}</td>
                <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
-               <td>{{customer?.regdType}}</td>
+               <td>
+                  <span class="{{customer?.regdType}} d-flex align-items-center justify-content-center rounded">{{customer?.regdType}}</span>
+               </td>
                <td>
                   <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
                      {{customer?.isActive ? 'Active' : 'Inactive'}}
                   </span>
                </td>
+               <td>
+                  {{formatDate(customer?.createdAt)}}
+                  {{formatTime(customer?.createdAt)}}
+               </td>
                <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
-                  <img src="assets/icons/editPen.svg" alt="Icon">
+                  <div class="cursor-pointer">
+                     <img src="assets/icons/editPen.svg" alt="Icon">
+                  </div>
                </td>
             </tr>
          </ng-container>

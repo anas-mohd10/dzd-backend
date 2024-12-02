@@ -37,6 +37,14 @@ export class CustomersListComponent implements OnInit {
     this.getCustomers()
   }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   clearFilters() {
     this.keyword.setValue('')
     this.regdType.setValue('')
