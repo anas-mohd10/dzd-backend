@@ -115,7 +115,7 @@ export class OrdersListComponent implements OnInit {
   toggledOrders: Array<any> = [];
   months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-  checkStatusList: Array<any> = ['PENDING', 'PLACED', 'FAILED', 'CANCELLED']
+  checkStatusList: Array<any> = ['PENDING', 'FAILED', 'CANCELLED']
 
   successOrders: Array<string> = ['PLACED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
   acceptedOrders: Array<string> = ['ACCEPTED']
