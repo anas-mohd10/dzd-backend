@@ -431,6 +431,16 @@ export class CatalogComponent implements OnInit {
     'dazzle-design',
     'grandeur-gallery',
     'celestial-canvas',
+    'twin-towers',
+    'stellar-selections',
+    'slider-spotlight',
+    'trending-teasers',
+    'text-twirl',
+    'vibrant-banner',
+    'animation-banner',
+    'brick-mansory-grid',
+    'primary-triple-grid',
+    'full-banner',
   ];
   widgetImages: Array<any> = [];
   widgetBlogs: any;
