@@ -24,7 +24,7 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table">
+            <table class="table table-bordered">
                 <thead>
                     <tr class="text-left fs-6">
                         <th>Title</th>
@@ -67,8 +67,11 @@
                     </tr>
                 </tbody>
             </table>
-            <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page"
-                [pageSize]="limit" (pageTrigger)="onPageTriggered($event)"></app-pagination>
         </div>
+    </div>
+
+    <div class="mt-4">
+        <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"
+            (pageTrigger)="onPageTriggered($event)"></app-pagination>
     </div>
 </div>

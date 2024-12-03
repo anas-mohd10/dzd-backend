@@ -22,7 +22,7 @@
       <div class="card-body">
          <form [formGroup]="form">
             <div class="row justify-content-end">
-               <div class="search-input col-lg-4">
+               <div class="search-input col-lg-7">
                   <label class="fs-6">&nbsp;</label>
                   <input type="search" placeholder="Search products here" class="form-control fs-6"
                      formControlName="name" (ngModelChange)="getProductHeads()">
@@ -35,15 +35,6 @@
                      <option value=false>Inactive</option>
                   </select>
                </div>
-               <div class="col-lg-3">
-                  <label class="fs-6">Categories</label>
-                  <select class="form-select fs-6" formControlName="category" (change)="getProductHeads()">
-                     <option value="" disabled>Select an option</option>
-                     <ng-container *ngFor="let category of categories">
-                        <option value={{category?.catid}}>{{category?.name}}</option>
-                     </ng-container>
-                  </select>
-               </div>
                <div class="col-lg-2">
                   <label class="fs-6">&nbsp;</label>
                   <input type="button" class="w-100 btn btn-secondary" value="Clear filters" (click)="clearFilters()">
@@ -54,84 +45,79 @@
    </div>
 
    <div>
-      <ng-container *ngIf="products.length > 0">
-         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
-            <thead>
-               <tr>
-                  <th>&nbsp;</th>
-                  <th>Name</th>
-                  <th>SKU</th>
-                  <th>Brand</th>
-                  <th>Tax</th>
-                  <th>Category</th>
-                  <th>Status</th>
-                  <th>Updated On</th>
-                  <th>&nbsp;</th>
-               </tr>
-            </thead>
-            <tbody>
-               <ng-container *ngFor="let product of products; let i = index">
-                  <tr>
-                     <td>
-                        <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="rounded"
-                           onerror="this.src = 'assets/images/default.png'">
-                     </td>
-                     <td>
-                        <div class="productName">{{product?.name}}</div>
-                     </td>
-                     <td>
-                        <div class="productSku">{{product?.sku}}</div>
-                     </td>
-                     <td>{{product?.brand ? product?.brand?.name : '-'}}</td>
-                     <td>{{product?.tax?.name}}</td>
-                     <td>
-                        <ng-container *ngFor="let category of product?.parentCategory?.id; let i = index">
-                           <div>{{category?.name}}</div>
-                        </ng-container>
-                     </td>
-                     <td>
-                        <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
-                           (switchToggled)="updateParent($event)"></app-switch>
-                     </td>
-                     <td>{{formdateDate(product?.updatedAt)}}</td>
-                     <td>
-                        <div class="d-flex align-items-center justify-content-center gap-2">
-                           <div (click)="open(template, product)"
-                              class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
-                              <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
-                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125">
-                                 </path>
-                              </svg>
-                           </div>
-                           <div (click)="openProducts(productTemplate, product)"
-                              class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
-                              <svg data-slot="icon" height="20" width="20" fill="none" stroke-width="1.5"
-                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                 aria-hidden="true">
-                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                                 </path>
-                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
-                                 </path>
-                              </svg>
-                           </div>
+      <table class="table table-bordered">
+         <thead>
+            <tr>
+               <th>&nbsp;</th>
+               <th>Name</th>
+               <th>SKU</th>
+               <th>Tax</th>
+               <th>Status</th>
+               <th>Updated On</th>
+               <th>&nbsp;</th>
+            </tr>
+         </thead>
+         <tbody>
+               <tr *ngFor="let product of products; let i = index">
+                  <td>
+                     <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="rounded"
+                        onerror="this.src = 'assets/images/default.png'">
+                  </td>
+                  <td>
+                     <div class="productName">{{product?.name}}</div>
+                  </td>
+                  <td>
+                     <div class="productSku">{{product?.sku}}</div>
+                  </td>
+                  <td>{{product?.tax?.name}}</td>
+                  <td>
+                     <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
+                        (switchToggled)="updateParent($event)"></app-switch>
+                  </td>
+                  <td>
+                     <div>
+                        {{formatDate(product?.updatedAt)}}
+                        <br>
+                        {{formatTime(product?.updatedAt)}}
+                      </div>
+                  </td>
+                  <td>
+                     <div class="d-flex align-items-center justify-content-center gap-2">
+                        <div (click)="open(template, product)"
+                           class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
+                           <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125">
+                              </path>
+                           </svg>
                         </div>
-                     </td>
-                  </tr>
-               </ng-container>
-            </tbody>
-         </table>
-      </ng-container>
+                        <div (click)="openProducts(productTemplate, product)"
+                           class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
+                           <svg data-slot="icon" height="20" width="20" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                              </path>
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
+                              </path>
+                           </svg>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr *ngIf="products.length == 0">
+                  <td colspan="7">
+                     <app-no-results></app-no-results>
+                  </td>
+               </tr>
+         </tbody>
+      </table>
    </div>
 </div>
-
-<ng-container *ngIf="products.length == 0">
-   <app-no-results></app-no-results>
-</ng-container>
 
 <div class="my-4">
    <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"
@@ -322,7 +308,7 @@
    <div class="modal-body">
       <div class="row">
          <div class="col-lg-7 d-flex jusitfy-content-start align-items-end">
-           <div class="fs-2 fw-bold">{{productDetails?.name}} ({{childProducts.length}})</div>
+            <div class="fs-2 fw-bold">{{productDetails?.name}} ({{childProducts.length}})</div>
          </div>
          <div class="form-group col-lg-3 align-items-end">
             <label for="parentStatus" class="fs-6 mb-3">Status</label>

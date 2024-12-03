@@ -43,14 +43,14 @@
           <label for="categories" class="form-label">Category</label>
           <select [formControl]="productCategory" id="categories" class="form-select" (change)="onCategoryTriggered()">
             <option value="" disabled>-- Select an option --</option>
-            <option *ngFor="let category of categories" value="{{category.catid}}">{{category?.name}}</option>
+            <option *ngFor="let category of categories" value="{{category.name}}">{{category?.name}}</option>
           </select>
         </div>
         <div class="col-lg-4 mb-3 form-group">
           <label for="categories" class="form-label">Brands</label>
           <select [formControl]="productBrand" id="brands" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
-            <option *ngFor="let brand of brands" value="{{brand?._id}}">{{brand?.name}}</option>
+            <option *ngFor="let brand of brands" value="{{brand?.name}}">{{brand?.name}}</option>
           </select>
         </div>
         <div class="col-lg-4 mb-3 form-group">
@@ -121,57 +121,8 @@
         </div>
       </div>
 
-      <div class="productCards" *ngIf="loaded && !isTableView">
-        <ng-container *ngFor="let product of products">
-          <div class="product-card card-hover" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
-            [queryParams]="{product: product?.slug}">
-            <div class="product-image">
-              <img src='{{base}}{{product?.thumbnail}}' alt="product image"
-                onerror="this.src = 'assets/images/default.png'" />
-              <div class="p-2 product-status-{{product?.isActive}} fs-6">
-                {{product?.isActive ? 'Active' : 'Inactive'}}
-              </div>
-              <div class="product-offer fs-6 p-2" *ngIf="product?.price?.offer != product?.price?.mrp">
-                {{product?.message?.text}}
-              </div>
-              <div class="product-out-stock fs-6 p-2" *ngIf="product?.stock == 0">
-                Out of Stock
-              </div>
-              <div class="product-limited-stock p-2"
-                *ngIf="product?.stock <= product?.stockWarning && product?.stock > 0">
-                Limited stock
-              </div>
-            </div>
-            <div class="product-details">
-              <div class="product-brand">{{product?.brand?.name}}</div>
-              <div class="product-name mb-1">{{product?.name}}</div>
-              <div class="product-price">
-                <div class="d-flex">
-                  <div class="product-offerprice fs-5" *ngIf="product?.price?.selling != product?.price?.mrp">
-                    {{settings?.currency}} {{product?.price?.selling}}</div>
-                  <div class="product-offerprice fs-5" *ngIf="product?.price?.selling == product?.price?.mrp">
-                    {{settings?.currency}}
-                    {{product?.price?.mrp}}
-                  </div>
-                  <div class="product-mrpprice" *ngIf="product?.price?.selling != product?.price?.mrp"
-                    [ngClass]="{'strike-price fs-5': product?.price?.mrp > product?.price?.selling}">
-                    {{settings?.currency}} {{product?.price?.mrp}}</div>
-                </div>
-                <div class="product-rating fs-6 d-flex align-items-center justify-content-center">
-                  <div>{{product?.rating}}</div>
-                </div>
-              </div>
-              <div class="product-stock fs-6">{{product?.stock}} left in stock</div>
-              <div class="fs-6">
-                <div class="m-0 p-0">SKU: {{product?.sku}}</div>
-              </div>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="productTable" *ngIf="loaded && isTableView">
-        <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+      <div class="productTable" *ngIf="loaded">
+        <table class="table table-bordered">
           <thead>
             <tr>
               <th>&nbsp;</th>
@@ -197,9 +148,7 @@
                 </td>
                 <td>
                   <div class="productName">
-                    <div>
-                      {{product?.name}}
-                    </div>
+                    <div>{{product?.name}}</div>
                     <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
                       <div
                         class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
@@ -212,10 +161,10 @@
                 </td>
                 <td>{{product?.sku}}</td>
                 <td>
-                  {{product?.product?.id?.brand?.name}}
+                  {{product?.brand?.name}}
                 </td>
                 <td>
-                  <ng-container *ngFor="let category of product?.category?.id; let i = index">
+                  <ng-container *ngFor="let category of product?.categories; let i = index">
                     <div>{{category?.name}}</div>
                   </ng-container>
                 </td>
@@ -228,7 +177,13 @@
                   </span>
                 </td>
                 <td>{{product?.boostScore}}</td>
-                <td>{{formdateDate(product?.updatedAt)}}</td>
+                <td>
+                  <div>
+                    {{formatDate(product?.updatedAt)}}
+                    <br>
+                    {{formatTime(product?.updatedAt)}}
+                  </div>
+                </td>
                 <td>
                   <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
                     (switchToggled)="updateProduct($event)"></app-switch>
@@ -247,7 +202,7 @@
                       </svg>
                     </a>
                     <div routerLink="{{appRoute.product.UPDATE_PRODUCT}}" [queryParams]="{product: product?.slug}"
-                      class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border bg-primary text-white border-secondary">
+                      class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
                       <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round"

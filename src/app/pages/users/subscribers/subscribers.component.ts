@@ -90,8 +90,4 @@ export class SubscribersComponent implements OnInit {
       },
     })
   }
-
-  exportSubscribers() {
-    window.open(this.ReportsService.downloadSubscribers(), '_blank')
-  }
 }

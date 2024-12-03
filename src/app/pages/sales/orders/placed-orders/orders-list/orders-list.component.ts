@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { debounceTime } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -126,11 +125,10 @@ export class OrdersListComponent implements OnInit {
 
   constructor(
     private OrdersService: OrdersService,
-    private ToastrService: ToastrService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
-    private Toast: HotToastService,
+    private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
   ) {
@@ -138,8 +136,8 @@ export class OrdersListComponent implements OnInit {
     this.keyword.valueChanges
       .pipe(debounceTime(500))
       .subscribe((value) => {
-      this.updateQueryParams({keyword:value, page:1})
-    })
+        this.updateQueryParams({ keyword: value, page: 1 })
+      })
   }
 
   openTag(template: TemplateRef<any>, order: string) {
@@ -197,12 +195,12 @@ export class OrdersListComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrders()
-          this.Toast.success(res.message)
+          this.HotToastService.success(res.message)
         } else {
-          this.Toast.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.Toast.error(err.message)
+        this.HotToastService.error(err.message)
       }
     })
   }
@@ -218,15 +216,15 @@ export class OrdersListComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getOrders()
           this.tagRef?.hide()
-          this.Toast.success(res.message)
+          this.HotToastService.success(res.message)
           this.tagOrder = ''
           this.isTagSubmitted = false
           this.tag.reset()
         } else {
-          this.Toast.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.Toast.error(err.message)
+        this.HotToastService.error(err.message)
       }
     })
   }
@@ -295,11 +293,11 @@ export class OrdersListComponent implements OnInit {
           this.orderStatus = res?.result;
           this.ChangeDetectorRef.markForCheck();
         } else {
-          this.Toast.error(res.message);
+          this.HotToastService.error(res.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err.message);
+        this.HotToastService.error(err.message);
       }
     });
 
@@ -339,7 +337,7 @@ export class OrdersListComponent implements OnInit {
   toggleOrders(order?: { order: string, status: string }) {
     if (order) {
       if (this.checkStatusList.includes(order?.status)) {
-        this.Toast.error('This order is not accepted yet or has been cancelled. Please accept the order to confirm your selection.')
+        this.HotToastService.error('This order is not accepted yet or has been cancelled. Please accept the order to confirm your selection.')
       } else {
         this.toggledOrders.includes(order.order.split('#')[1]) ?
           this.toggledOrders = this.toggledOrders.filter(o => o != order.order.split('#')[1]) :
@@ -348,7 +346,40 @@ export class OrdersListComponent implements OnInit {
     } else {
       this.toggledOrders.length == this.orders.length ?
         this.toggledOrders = [] :
-        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? this.Toast.error('Please accept orders to confirm your selection') : order.orderNo.split('#')[1])
+        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? this.HotToastService.error('Please accept orders to confirm your selection') : order.orderNo.split('#')[1])
+    }
+  }
+
+  bulkAcceptOrders() {
+    let ordersMap: any = {}
+    let acceptedOrders: number = 0
+    this.orders.forEach((orderItem: any) => ordersMap[orderItem.orderNo.split('#')[1]] = orderItem);
+    let orders = this.toggledOrders.map((order: any) => {
+      if (ordersMap[order]['orderStatus'] == 'PLACED') {
+        return ordersMap[order]
+      } else {
+        acceptedOrders++
+      }
+    });
+
+    if (acceptedOrders > 0) {
+      this.HotToastService.error("Orders in the list are already accepted")
+    } else {
+      let orderIds = orders.map((orderItem: any) => orderItem.orderNo.split('#')[1])
+      this.OrdersService.bulkAcceptOrders({ orderIds: orderIds }).subscribe({
+        next: (res: any) => {
+          if (res.errorCode == 0) {
+            this.getOrders()
+            this.toggledOrders = []
+            this.HotToastService.success(res.message)
+            this.ChangeDetectorRef.markForCheck();
+          } else {
+            this.HotToastService.error(res.message)
+          }
+        }, error: (err: any) => {
+          this.HotToastService.error(err.message)
+        }
+      })
     }
   }
 
@@ -362,6 +393,14 @@ export class OrdersListComponent implements OnInit {
     window.open(`${this.packingSlipUrl}${queryString}`, '_blank')
   }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   exportOrders() {
     this.OrdersService.exportOrderTabs({
       status: this.activeValue,
@@ -372,12 +411,12 @@ export class OrdersListComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Toast.success(res?.message)
+          this.HotToastService.success(res?.message)
         } else {
-          this.Toast.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.Toast.error(err.error.message)
+        this.HotToastService.error(err.error.message)
       }
     })
   }
@@ -451,7 +490,7 @@ export class OrdersListComponent implements OnInit {
     if (toDate) {
       if (toDate < fromDate) {
         this.isDateValid = false
-        this.ToastrService.error("Kindly enter a valid To date")
+        this.HotToastService.error("Kindly enter a valid To date")
       } else {
         this.isDateValid = true
       }
@@ -466,7 +505,7 @@ export class OrdersListComponent implements OnInit {
     this.activeValue = ''
     this.Router.navigate([appRoutes.orders.ORDERS_LIST], {
       queryParams: {}
-    });   
+    });
   }
 
   searchOrder() {

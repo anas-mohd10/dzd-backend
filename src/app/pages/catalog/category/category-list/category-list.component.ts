@@ -17,6 +17,15 @@ import {
 import { AttributeService } from 'src/app/includes/services/attribute.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+
+interface Category {
+  isActive: boolean;
+  slug: string
+  name: string
+  thumbnail: string
+  createdAt: string
+}
 
 @Component({
   selector: 'app-category',
@@ -29,7 +38,7 @@ export class CategoryComponent implements OnInit {
   form: FormGroup;
   attributeForm: FormGroup;
 
-  categories: Array<any> = [];
+  categories: Category[] = [];
   page: number = 1;
   limit: number = 40;
   totalResults: number = 0;
@@ -83,6 +92,7 @@ export class CategoryComponent implements OnInit {
   manageModalRef?: BsModalRef;
   @ViewChild('manageModal') manageModal: any;
   // Modal config ends
+  domainUrl: string = ''
 
   get attributeFormControls() {
     return this.attributeForm.controls;
@@ -92,15 +102,33 @@ export class CategoryComponent implements OnInit {
     private CategoryService: CategoryService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
+    private AppSettingsService: AppSettingsService,
     private AttributeService: AttributeService,
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.base = environment.base;
     this.getCategories();
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.domainUrl = res.result.domain
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }
+    })
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   }
 
   clearFilters() {
@@ -243,10 +271,10 @@ export class CategoryComponent implements OnInit {
     attribute.type == 'text'
       ? (this.isText = true)
       : attribute.type == 'color'
-      ? (this.isColor = true)
-      : attribute.type == 'file'
-      ? (this.isFile = true)
-      : null;
+        ? (this.isColor = true)
+        : attribute.type == 'file'
+          ? (this.isFile = true)
+          : null;
     for (let item of attribute.values) {
       switch (attribute.type) {
         case 'text':
@@ -307,8 +335,8 @@ export class CategoryComponent implements OnInit {
     this.attributeForm.get('type')?.value == 'text'
       ? (this.values = [...this.texts])
       : this.attributeForm.get('type')?.value == 'color'
-      ? (this.values = [...this.colors])
-      : (this.values = []);
+        ? (this.values = [...this.colors])
+        : (this.values = []);
 
     if (!this.attributeForm.valid || this.values.length == 0) {
       this.HotToastService.error(

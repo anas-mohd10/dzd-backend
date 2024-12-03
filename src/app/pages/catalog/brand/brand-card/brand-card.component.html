@@ -51,10 +51,11 @@
   </div>
 
   <div>
-    <table class="table">
+    <table class="table table-bordered">
       <thead>
         <th class="p-2">Name</th>
         <th class="p-2">Status</th>
+        <th class="p-2">Created</th>
         <th class="p-2">&nbsp;</th>
       </thead>
       <tbody>
@@ -73,6 +74,12 @@
             </span>
           </td>
           <td>
+           <div class="d-flex align-items-center gap-2">
+            <div>{{formatDate(brand.createdAt)}}</div>
+            <div>{{formatTime(brand.createdAt)}}</div>
+           </div>
+          </td>
+          <td>
             <div class="cursor-pointer" routerLink="{{appRoute.brand.UPDATE_BRAND}}" [queryParams]="{'brand': brand.slug}">
               <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -85,7 +92,7 @@
           </td>
         </tr>
         <tr *ngIf="brands.length == 0">
-          <td colspan="3">
+          <td colspan="4">
             <app-no-results></app-no-results>
           </td>
         </tr>

@@ -139,4 +139,14 @@ export class OrdersService {
     const url = this.commonService.getFullUrl(this.orderEndpoints.orderPaymentAcceptance + `?order=${order}`);
     return this.http.get(`${url}`)
   }
+
+  bulkAcceptOrders(orderIds: { orderIds: string[] }) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.bulkAcceptOrders);
+    return this.http.post(`${url}`, orderIds)
+  }
+
+  bulkFileUpload(data: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.bulkUpdateOrders);
+    return this.http.post(`${url}`, data);
+  }
 }

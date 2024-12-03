@@ -122,8 +122,12 @@ export class AllProductsComponent implements OnInit {
     })
   }
 
-  formdateDate(date: any) {
-    return `${this.months[new Date(date).getMonth()]} ${new Date(date).getDate()} ${new Date(date).getFullYear()}`
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   }
 
   changeView(type: string) {
@@ -136,7 +140,7 @@ export class AllProductsComponent implements OnInit {
 
 
   getProducts() {
-    let categoryItems = this.categoryItems.map((item: any) => item.catid)
+    let categoryItems = this.categoryItems.map((item: any) => item.name)
     const payload = {
       brand: this.productBrand?.value,
       name: this.name?.value,
@@ -164,8 +168,8 @@ export class AllProductsComponent implements OnInit {
   }
 
   onCategoryTriggered() {
-    let categoryDetails = this.categories.filter((category: any) => category.catid == this.productCategory.value)
-    !this.categoryItems.includes(categoryDetails[0]) ? this.categoryItems.push(categoryDetails[0]) : this.categoryItems = this.categoryItems.filter(item => item.catid !== this.productCategory.value)
+    let categoryDetails = this.categories.filter((category: any) => category.name == this.productCategory.value)
+    !this.categoryItems.includes(categoryDetails[0]) ? this.categoryItems.push(categoryDetails[0]) : this.categoryItems = this.categoryItems.filter(item => item.name !== this.productCategory.value)
     this.getProducts()
     this.productCategory.setValue('')
   }

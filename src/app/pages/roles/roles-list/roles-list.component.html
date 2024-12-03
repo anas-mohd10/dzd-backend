@@ -80,8 +80,11 @@
                          </tr>
                     </tbody>
                </table>
-               <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page"
-                    [pageSize]="limit" (pageTrigger)="onPageTriggered($event)"></app-pagination>
           </div>
+     </div>
+
+     <div class="mt-4">
+          <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"
+               (pageTrigger)="onPageTriggered($event)"></app-pagination>
      </div>
 </div>

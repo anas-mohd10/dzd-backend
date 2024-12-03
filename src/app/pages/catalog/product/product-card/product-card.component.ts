@@ -271,10 +271,12 @@ export class ProductCardComponent implements OnInit {
     this.getProductHeads();
   }
 
-  formdateDate(date: any) {
-    return `${this.months[new Date(date).getMonth()]} ${new Date(
-      date
-    ).getDate()} ${new Date(date).getFullYear()}`;
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   }
 
   getProductHeads() {

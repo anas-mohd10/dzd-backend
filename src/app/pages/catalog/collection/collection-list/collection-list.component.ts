@@ -34,6 +34,14 @@ export class CollectionListComponent implements OnInit {
     this.getCollections()
   }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   clearFilters() {
     this.keyword.setValue("")
     this.isActive.setValue("")

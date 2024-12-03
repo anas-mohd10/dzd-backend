@@ -25,5 +25,7 @@ export const orderEndpoints = {
    exportOrderTabs: '/export-order-tabs',
    orderPaymentAcceptance: '/order-payment-acceptance',
    updateBulkProduct: '/bulk-order-update',
-   customerOrders: '/customerOrders'
+   customerOrders: '/customerOrders',
+   bulkAcceptOrders: '/bulkAcceptOrders',
+   bulkUpdateOrders: '/bulkUpdateOrders'
 };

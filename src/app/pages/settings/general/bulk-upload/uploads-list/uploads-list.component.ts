@@ -4,7 +4,7 @@ import {
   OnInit,
   TemplateRef,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { csvEndpoints } from 'src/app/config/endpoints';
@@ -15,6 +15,7 @@ import { CategoryService } from 'src/app/includes/services/category.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CsvService } from 'src/app/includes/services/csv.service';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { OrdersService } from 'src/app/includes/services/orders.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment';
 
@@ -40,6 +41,7 @@ export class UploadsListComponent implements OnInit {
     { title: 'User', type: 'user' },
     { title: 'Blogs', type: 'blog' },
     { title: 'Collection', type: 'collection' },
+    { title: 'Orders', type: 'order' },
     { title: 'Subscribers', type: 'subscriber' },
   ];
   fileData: any;
@@ -69,8 +71,9 @@ export class UploadsListComponent implements OnInit {
     private CollectionService: CollectionService,
     private ProductService: ProductService,
     private CustomersService: CustomersService,
-    private BlogService: BlogService
-  ) {}
+    private BlogService: BlogService,
+    private OrdersService: OrdersService
+  ) { }
 
   open(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, {
@@ -126,6 +129,20 @@ export class UploadsListComponent implements OnInit {
       switch (this.importType.value) {
         case 'category':
           this.CategoryService.bulkFileUpload(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+                this.onSuccess(res?.message);
+              } else {
+                this.HotToastService.error(res?.message);
+              }
+            },
+            error: (err: any) => {
+              this.HotToastService.error(err?.error?.message);
+            },
+          });
+          break;
+        case 'order':
+          this.OrdersService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
                 this.onSuccess(res?.message);

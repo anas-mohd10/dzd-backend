@@ -25,6 +25,14 @@ export class BrandCardComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
   ) { }
 
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   ngOnInit(): void {
     this.initForm()
     this.base = environment.base

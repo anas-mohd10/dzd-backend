@@ -138,6 +138,17 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
+      case 'userAlerts':
+        this.reportsService.downloadSubscribers().subscribe({
+          next: (res: any) => {
+            this.onReponse(res);
+            this.changeDetectorRef.markForCheck();
+          },
+          error: (err: any) => {
+            this.toastService.error(err?.error?.message);
+          },
+        });
+        break;
       case 'product':
         this.reportsService.productReport().subscribe({
           next: (res: any) => {
@@ -186,7 +197,7 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
-      
+
     }
   }
 

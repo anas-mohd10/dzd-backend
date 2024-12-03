@@ -15,7 +15,8 @@ export class ReportsService {
   ) { }
 
   downloadSubscribers() {
-    return this.commonService.getFullUrl(this.reportsEndpoints.downloadSubscribers);
+    const url = this.commonService.getFullUrl(this.reportsEndpoints.downloadSubscribers);
+    return this.http.get(`${url}`);
   }
   lowStockReport() {
     const url = this.commonService.getFullUrl(productReportEndpoints.lowstockReport);
