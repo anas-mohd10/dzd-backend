@@ -84,4 +84,14 @@ export class ReportsService {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.ordersOverTimeReport + `?dateRange=${dateRange}`);
     return this.http.get(`${url}`);
   }
+
+  basicProductReport() {
+    const url = this.commonService.getFullUrl(reportsEndpoints.basicProductReport);
+    return this.http.get(`${url}`);
+  }
+
+  productOrderReport() {
+    const url = this.commonService.getFullUrl(reportsEndpoints.productOrderReport);
+    return this.http.get(`${url}`);
+  }
 }

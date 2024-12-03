@@ -96,7 +96,26 @@
       </div>
     </a>
 
-    <a class="item rounded" (click)="exportReport('product-order')" [href]="exportUrl" target="_blank">
+    <a class="item rounded" (click)="generateOtherReports('basic-product')">
+      <div class="d-flex align-items-center gap-2">
+        <div class="icon p-2 rounded">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">Basic Product Report</div>
+          <p class="text-muted">Get the basic report of all products</p>
+        </div>
+      </div>
+    </a>
+
+    <a class="item rounded" (click)="generateOtherReports('product-order')" target="_blank">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">

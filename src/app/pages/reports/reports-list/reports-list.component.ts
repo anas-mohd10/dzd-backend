@@ -83,6 +83,11 @@ export class ReportsListComponent implements OnInit {
       description: 'Get the orders over time frame report for the selected date range',
       type: 'orders-time',
     },
+    {
+      title: 'Basic Product Report',
+      description: 'Get the basic report of all products',
+      type: 'basic-product',
+    }
   ];
 
   dateRanges: Array<any> = [
@@ -160,6 +165,17 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
+      case 'basic-product':
+        this.reportsService.basicProductReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res);
+            this.changeDetectorRef.markForCheck();
+          },
+          error: (err: any) => {
+            this.toastService.error(err?.error?.message);
+          },
+        });
+        break;
       case 'unfullfilledStock':
         this.reportsService.unfullfilledStockReport().subscribe({
           next: (res: any) => {
@@ -197,7 +213,19 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
-
+    
+        case 'product-order':
+          this.reportsService.productOrderReport().subscribe({
+          next: (res: any) => {
+            this.onReponse(res);
+            this.changeDetectorRef.markForCheck();
+          },
+          error: (err: any) => {
+            this.toastService.error(err?.error?.message);
+          },
+        });
+        break;
+      
     }
   }
 

@@ -7,5 +7,6 @@ export const reportsEndpoints = {
     unfullfilledStockReport: '/unfullfilledStockReport',
     orderReport: '/order-report',
     productOrderReport: '/product-order-report',
-    salesReport: '/sales-report'
+    salesReport: '/sales-report',
+    basicProductReport: '/product-report/basic'
 }
