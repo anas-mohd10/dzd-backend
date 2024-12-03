@@ -32,8 +32,8 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="form-group">
-                        <input type="button" id="clear" value="Clear filters"
-                            class="w-100 btn btn-secondary" (click)="clear()">
+                        <input type="button" id="clear" value="Clear filters" class="w-100 btn btn-secondary"
+                            (click)="clear()">
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
     </div>
 
     <div>
-        <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Email</th>
@@ -53,7 +53,11 @@
                 <ng-container *ngFor="let email of emails; let i =index">
                     <tr>
                         <td>{{email?.email}}</td>
-                        <td>{{email?.isVerified == true ? 'Verified' : 'Not verified'}}</td>
+                        <td>
+                            <span class="{{email?.isVerified == true ? 'verified' : 'unverified'}} p-1 mw-100 rounded">
+                                {{email?.isVerified == true ? 'Verified' : 'Not verified'}}
+                            </span>
+                        </td>
                         <td>{{email?.createdAt}}</td>
                     </tr>
                 </ng-container>
@@ -68,6 +72,6 @@
 
     <div class="my-4">
         <app-pagination (pageTrigger)="onPageTriggered($event)" [pageSize]="limit" [pageIndex]="page"
-        [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
+            [totalResults]="totalResults" [totalPages]="totalPages"></app-pagination>
     </div>
 </div>

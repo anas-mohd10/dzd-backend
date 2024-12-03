@@ -44,7 +44,7 @@
           Packing Slip
         </a>
 
-        <a class="btn btn-primary" 
+        <a class="btn btn-primary"
           href="{{settings?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/' + orderNumber?.split('#')[1]}}"
           target="_blank">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
@@ -233,20 +233,25 @@
               <div class="fs-3 fw-bold">
                 Customer Address
               </div>
-              <div class="my-2">
-                <p class="my-1 fs-5" *ngIf="order?.customerId">
-                  {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
-                </p>
-                <p class="my-1 fs-5" *ngIf="order?.guestId">
-                  {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
-                </p>
-                <div class="fs-5">
+              <div class="mt-4 fs-5">
+                <div class="fs-4 fw-bold">
+                  <p *ngIf="order?.customerId">
+                    {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
+                  </p>
+                  <p *ngIf="order?.guestId">
+                    {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
+                  </p>
+                </div>
+                <div class="my-2">
                   {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
                   {{order?.address?.area}}, {{order?.address?.landmark}},
                   {{order?.address?.city}}, {{order?.address?.state}},
                   {{order?.address?.pincode}}
                 </div>
-                <div class="mt-4 fs-5">
+                <div>
+                  Location : {{order?.address?.formattedAddress}}
+                </div>
+                <div class="mt-2">
                   <div class="mb-1">Coordinates : </div>
                   <div class="d-flex align-items-center justify-content-start gap-2">
                     <div class="bg-secondary rounded-pill px-2">{{order?.address?.coordinates?.latitude}}</div>
@@ -261,20 +266,25 @@
               <div class="fs-3 fw-bold">
                 Shipping Address
               </div>
-              <div class="my-2">
-                <p class="my-1 fs-5 fw-bold" *ngIf="order?.customerId">
-                  {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
-                </p>
-                <p class="my-1 fs-5 fw-bold" *ngIf="order?.guestId">
-                  {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
-                </p>
-                <div class="fs-6 text-muted">
+              <div class="mt-4 fs-5">
+                <div class="fs-4 fw-bold">
+                  <p *ngIf="order?.customerId">
+                    {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
+                  </p>
+                  <p *ngIf="order?.guestId">
+                    {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
+                  </p>
+                </div>
+                <div class="my-2">
                   {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
                   {{order?.address?.area}}, {{order?.address?.landmark}},
                   {{order?.address?.city}}, {{order?.address?.state}},
                   {{order?.address?.pincode}}
                 </div>
-                <div class="mt-4 fs-5">
+                <div>
+                  Location : {{order?.address?.formattedAddress}}
+                </div>
+                <div class="mt-2">
                   <div class="mb-1">Coordinates : </div>
                   <div class="d-flex align-items-center justify-content-start gap-2">
                     <div class="bg-secondary rounded-pill px-2">{{order?.address?.coordinates?.latitude}}</div>

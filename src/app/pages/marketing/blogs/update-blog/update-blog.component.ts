@@ -62,7 +62,7 @@ export class UpdateBlogComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Sen' },
-      { class: 'sen', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };

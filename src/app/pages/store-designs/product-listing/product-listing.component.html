@@ -1,4 +1,5 @@
-w<app-design-topbar [page]="'product-listing'" [isDraft]="isDraft" (device)="deviceToggled($event)"></app-design-topbar>
+<app-design-topbar [page]="'product-listing'" (productConfigPublish)="saveToPublish()"
+    (productConfigDraft)="saveToDraft()" [isDraft]="isDraft" (device)="deviceToggled($event)"></app-design-topbar>
 <app-design-sidebar></app-design-sidebar>
 
 <div>
@@ -7,7 +8,31 @@ w<app-design-topbar [page]="'product-listing'" [isDraft]="isDraft" (device)="dev
             <app-screens class="w-100" [page]="'products'" [device]="device" [load]="screenLoad"></app-screens>
         </div>
         <div class="w-18 h-100 overflow-auto bg-white p-5">
-            
+            <div class="alert alert-danger fs-5">
+                This module is currently under development and will be operational soon.
+            </div>
+            <div>
+                <div class="fs-5 mb-1">Desktop</div>
+                <div class="ratio ratio-21x9">
+                    <app-assets (mediaClicked)="onMediaChange($event, 'plpBannerDesktop')"></app-assets>
+                </div>
+            </div>
+            <div class="my-4">
+                <div class="fs-5 mb-1">Mobile</div>
+                <div class="ratio ratio-21x9">
+                    <app-assets (mediaClicked)="onMediaChange($event, 'plpBannerMobile')"></app-assets>
+                </div>
+            </div>
+
+            <form [formGroup]="form">
+                <div class="form-group">
+                    <label for="plpSort" class="fs-6 mb-3">Sort Value</label>
+                    <select formControlName="plpSort" class="form-select" (change)="onChange()">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let sortValue of sortValues" value="{{sortValue.value}}">{{sortValue.name}}</option>
+                    </select>
+                </div>
+            </form>
         </div>
     </div>
-    </div>
+</div>

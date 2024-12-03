@@ -14,11 +14,11 @@ export class VoucherListingComponent implements OnInit {
   appRoute = appRoutes
   vouchers: Array<any> = []
   isLastPage: boolean = false
-  page: number = 1
-  limit: FormControl = new FormControl(20)
   totalResults: number = 0
   totalPages: number = 1
   keyword: FormControl = new FormControl('')
+  pageIndex: number = 1
+  pageSize: number = 20
 
   constructor(
     private VouchersService: VouchersService,
@@ -27,37 +27,17 @@ export class VoucherListingComponent implements OnInit {
     private Toast: HotToastService,
   ) { }
 
-  ngOnInit(): void {
-    this.getVouchers()
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.pageIndex = event.pageIndex
+    this.pageSize = event.pageSize
+    this.fetchResults()
   }
 
-  next() {
-    this.page++
-    this.getVouchers()
-  }
-
-  previous() {
-    this.page--
-    this.getVouchers()
-  }
-
-  clear() {
-    this.limit.setValue(20)
-    this.keyword.setValue('')
-    this.page = 1
-    this.getVouchers()
-  }
-
-  copyToClipboard(voucher: string) {
-    this.ClipboardService.copyFromContent(voucher)
-    this.Toast.success('Copied to clipboard')
-  }
-
-  getVouchers(type?: string) {
-    if (type == 'search') this.page = 1
+  fetchResults(type?: string) {
+    if (type == 'search') this.pageIndex = 1
     this.VouchersService.searchVoucher({
-      page: this.page,
-      limit: this.limit.value,
+      page: this.pageIndex,
+      limit: this.pageSize,
       keyword: this.keyword.value
     }).subscribe({
       next: (res: any) => {
@@ -72,4 +52,19 @@ export class VoucherListingComponent implements OnInit {
     })
   }
 
+  ngOnInit(): void {
+    this.fetchResults()
+  }
+
+  clearFilters() {
+    this.keyword.setValue('')
+    this.pageSize = 1
+    this.pageIndex = 1
+    this.fetchResults()
+  }
+
+  copyToClipboard(voucher: string) {
+    this.ClipboardService.copyFromContent(voucher)
+    this.Toast.success('Copied to clipboard')
+  }
 }

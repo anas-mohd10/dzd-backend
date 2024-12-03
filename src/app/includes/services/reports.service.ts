@@ -17,24 +17,28 @@ export class ReportsService {
   downloadSubscribers() {
     return this.commonService.getFullUrl(this.reportsEndpoints.downloadSubscribers);
   }
-
-  customerOrderReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.customerOrderReport);
+  lowStockReport() {
+    const url = this.commonService.getFullUrl(productReportEndpoints.lowstockReport);
     return this.http.get(`${url}`);
   }
 
-  salesReport(dateRange: string) {
-    const url = this.commonService.getFullUrl(reportsEndpoints.salesReport + `?dateRange=${dateRange}`);
+  customerOrderReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.customerOrderReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
+    return this.http.get(`${url}`);
+  }
+
+  salesReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.salesReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
   productReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.productReport);
+    const url = this.commonService.getFullUrl(reportsEndpoints.productReport );
     return this.http.get(`${url}`);
   }
 
-  orderReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.orderReport);
+  orderReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.orderReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
@@ -43,23 +47,19 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
-  lowStockReport() {
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.lowstockReport);
+
+  abandonedOrderReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.abandonedReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
-  abandonedOrderReport() {
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.abandonedReport);
+  productWiseSalesReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.productwiseSalesReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
-  productWiseSalesReport() {
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.productwiseSalesReport);
-    return this.http.get(`${url}`);
-  }
-
-  enquiryReport() {
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.enquiryReport);
+  enquiryReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.enquiryReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
@@ -73,13 +73,13 @@ export class ReportsService {
     return this.http.post(`${url}`, query);
   }
 
-  customerReport() {
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.customerReport);
+  customerReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.customerReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
 
-  ordersOverTimeReport(dateRange: string) {
+  ordersOverTimeReport(dateRange: string, startDate?: string, endDate?: string) {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.ordersOverTimeReport + `?dateRange=${dateRange}`);
     return this.http.get(`${url}`);
   }

@@ -130,7 +130,7 @@ export class NavigationMenuComponent implements OnInit {
     defaultFontSize: '',
     fonts: [
       { class: 'arial', name: 'Arial' },
-      { class: 'sen', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
       { class: 'josefin', name: 'Josefin Sans' },
       { class: 'poppins', name: 'Poppins' },
     ],

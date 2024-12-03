@@ -30,7 +30,7 @@ export class AddPagesComponent implements OnInit {
       { class: 'arial', name: 'Arial' },
       { class: 'times-new-roman', name: 'Times New Roman' },
       { class: 'manrope', name: 'Sen' },
-      { class: 'sen', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
       { class: 'poppins', name: 'Poppins' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
       { class: 'roboto', name: 'Roboto' },

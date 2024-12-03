@@ -1,62 +1,84 @@
-<div>
-  <div class="page-header">
-    <div>
-      <div class="page-title">
-        <h1 class="fw-bold">Reports</h1>
-      </div>
-      <ul class="breadcrumb">
-        <li class="breadcrumb-item fs-6">
-          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.reports.LIST }}">Reports</a>
-        </li>
-      </ul>
+<ng-template #dateRangeModal>
+  <div class="modal-header">
+    <div class="d-flex flex-column">
+      <h4 class="fs-2 fw-bold pull-left">Date Range</h4>
+      <p class="m-0">Select date range for {{currentReportType}} report</p>
     </div>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeDateRangeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-2 border cursor-pointer border-secondary rounded p-2" (click)="toggleDateRange('custom')"
+      [ngClass]="{'border-primary': dateRange == 'custom', 'border-secondary':dateRange != 'custom' }">
+      <div class="fs-4">Custom Range</div>
+      <div class="text-muted">Get the report for custom date range</div>
+      <div *ngIf="isCustomRange">
+        <div class="d-flex mt-2 align-items-center justify-content-between">
+          <div>
+            <label for="startDate" class="fs-6 mb-2">Start Date</label>
+            <input id="startDate" name="date" type="text" readonly placeholder="Select date" class="form-control"
+              bsDatepicker
+              [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+              [(ngModel)]="startDate">
+          </div>
+          <div>
+            <label for="endDate" class="fs-6 mb-2">End Date</label>
+            <input id="endDate" name="date" type="text" readonly placeholder="Select date" class="form-control"
+              bsDatepicker
+              [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+              [(ngModel)]="endDate">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngFor="let dateRangeItem of dateRanges" class="mb-2 border cursor-pointer border-secondary rounded p-2 shadow"
+      (click)="toggleDateRange(dateRangeItem?.dateRange)"
+      [ngClass]="{'border-primary': dateRange == dateRangeItem?.dateRange, 'border-secondary':dateRange != dateRangeItem?.dateRange }">
+      <div class="fs-4">{{dateRangeItem?.title}}</div>
+      <div class="text-muted">{{dateRangeItem?.description}}</div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-end gap-2">
+      <button (click)="generateDateRangeReport()"
+        class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+        <div>
+          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+            </path>
+          </svg>
+        </div>
+        <div>
+          Download Report
+        </div>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Main Reports List -->
+<div class="page-header">
+  <div>
+    <div class="page-title">
+      <h1 class="fw-bold">Reports</h1>
+    </div>
+    <ul class="breadcrumb">
+      <li class="breadcrumb-item fs-6">
+        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item active fs-6">
+        <a routerLink="{{ appRoute.reports.LIST }}">Reports</a>
+      </li>
+    </ul>
   </div>
 </div>
 
 <div class="my-4">
   <div class="items">
-    <a class="item rounded " (click)="openSales(template)">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Sales Report</div>
-          <p class="text-muted">Get the sales report for the selected date range</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('order-report')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Order Report</div>
-          <p class="text-muted">Get the list of orders in your store</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('product')">
+    <a class="item rounded" (click)="generateOtherReports('product')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,121 +116,8 @@
       </div>
     </a>
 
-    <a class="item rounded" (click)="generateReport('customerOrder')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Customer Order Report</div>
-          <p class="text-muted">Get the list of customers with the orders details</p>
-        </div>
-      </div>
-    </a>
 
-    <a class="item rounded" (click)="generateReport('allcustomers')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Customers Report</div>
-          <p class="text-muted">Get the list of current users in the platform</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('lowstock')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Product Low Stock Report</div>
-          <p class="text-muted">Get low stock report with products having stock less than or equal to 10 till date</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('enquiry')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Enquiry Report</div>
-          <p class="text-muted">Get the list of enquiries in the platform</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('abandonedorder')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">Abandoned Order Report</div>
-          <p class="text-muted">Get orders with failed or pending status till date</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('nomovement')">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">No Movement Order Report</div>
-          <p class="text-muted">Get orders which have no movement in 24 hours</p>
-        </div>
-      </div>
-    </a>
-
-    <a class="item rounded" (click)="generateReport('unfullfilledStock')">
+    <a class="item rounded" (click)="generateOtherReports('unfullfilledStock')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -227,7 +136,11 @@
       </div>
     </a>
 
-    <a class="item rounded" (click)="oepnProductsModal(productsTemplate)">
+
+
+
+    <a *ngFor="let report of reportItems" class="item rounded"
+      (click)="openDateRangeModal(report.type, dateRangeModal)">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -240,13 +153,13 @@
           </svg>
         </div>
         <div>
-          <div class="fs-4 mt-2">Product Wise Detailed Order Report</div>
-          <p class="text-muted">Get the product wise detailed order report</p>
+          <div class="fs-4 mt-2">{{report.title}}</div>
+          <p class="text-muted">{{report.description}}</p>
         </div>
       </div>
     </a>
 
-    <a class="item rounded" (click)="generateReport('productwisereport')">
+    <a class="item rounded" (click)="generateOtherReports('lowstock')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -259,13 +172,15 @@
           </svg>
         </div>
         <div>
-          <div class="fs-4 mt-2">Products Sales Report</div>
-          <p class="text-muted">Get the list of products with details</p>
+          <div class="fs-4 mt-2">Product Low Stock Report</div>
+          <p class="text-muted">Get low stock report with products having stock less than or equal to 10 till date</p>
         </div>
       </div>
     </a>
 
-    <a class="item rounded " (click)="openOrders(ordertemplate)">
+
+
+    <a class="item rounded" (click)="generateOtherReports('nomovement')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -278,11 +193,12 @@
           </svg>
         </div>
         <div>
-          <div class="fs-4 mt-2">Orders over time report</div>
-          <p class="text-muted">Get the orders over time frame report for the selected date range</p>
+          <div class="fs-4 mt-2">No Movement Order Report</div>
+          <p class="text-muted">Get orders which have no movement in 24 hours</p>
         </div>
       </div>
     </a>
+
   </div>
 </div>
 
@@ -337,81 +253,6 @@
             stroke-width="1.5" stroke="currentColor" class="size-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
           </svg>
-        </div>
-      </button>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #template>
-  <div class="modal-header">
-    <div class="d-flex flex-column">
-      <h4 class="fs-2 fw-bold pull-left">Date Range</h4>
-      <p class="m-0">Select date range for sales report</p>
-    </div>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeSales()">
-      <span aria-hidden="true" class="visually-hidden">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-
-    <div *ngFor="let dateRangeItem of dateRanges" class="mb-2 border cursor-pointer border-secondary rounded p-2 shadow"
-      (click)="toggleSalesReport(dateRangeItem?.dateRange)"
-      [ngClass]="{'border-primary': dateRange == dateRangeItem?.dateRange, 'border-secondary':dateRange != dateRangeItem?.dateRange }">
-      <div class="fs-4">{{dateRangeItem?.title}}</div>
-      <div class="text-muted">{{dateRangeItem?.description}}</div>
-    </div>
-
-    <div class="d-flex align-items-center justify-content-end gap-2">
-      <button (click)="salesReport()" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
-        <div>
-          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
-            </path>
-          </svg>
-        </div>
-        <div>
-          Download Report
-        </div>
-      </button>
-    </div>
-  </div>
-</ng-template>
-
-
-<ng-template #ordertemplate>
-  <div class="modal-header">
-    <div class="d-flex flex-column">
-      <h4 class="fs-2 fw-bold pull-left">Date Range</h4>
-      <p class="m-0">Select date range for sales report</p>
-    </div>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeOrders()">
-      <span aria-hidden="true" class="visually-hidden">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-
-    <div *ngFor="let dateRangeItem of dateRanges" class="mb-2 border cursor-pointer border-secondary rounded p-2 shadow"
-      (click)="toggleOrderReport(dateRangeItem?.dateRange)"
-      [ngClass]="{'border-primary': dateRange == dateRangeItem?.dateRange, 'border-secondary':dateRange != dateRangeItem?.dateRange }">
-      <div class="fs-4">{{dateRangeItem?.title}}</div>
-      <div class="text-muted">{{dateRangeItem?.description}}</div>
-    </div>
-
-    <div class="d-flex align-items-center justify-content-end gap-2">
-      <button (click)="ordersReport()" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
-        <div>
-          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
-            </path>
-          </svg>
-        </div>
-        <div>
-          Download Report
         </div>
       </button>
     </div>

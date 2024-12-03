@@ -61,7 +61,7 @@ export class CreateCatalogComponent implements OnInit {
     { key: 'Arial', value: 'arial' },
     { key: 'Hellix', value: 'hellix' },
     { key: 'Sen', value: 'figtree' },
-    { key: 'Sen', value: 'outfit' },
+    { key: 'Sen', value: 'Sen' },
     { key: 'Poppins', value: 'poppins' }
   ]
   base: string = environment.base

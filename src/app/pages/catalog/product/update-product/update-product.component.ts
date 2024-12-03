@@ -26,9 +26,18 @@ interface StoreField {
   isFilter: boolean
 }
 
-interface AddOn {
-  product: any;
+interface AddOnOption {
+  product: string;
+  description: string;
   price: number;
+}
+
+interface AddOns {
+  title: string;
+  description: string;
+  isRequired: boolean;
+  addOnType: string;
+  options: AddOnOption[]
 }
 
 @Component({
@@ -67,7 +76,7 @@ export class UpdateProductComponent implements OnInit {
       { class: 'calibri', name: 'Calibri' },
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Sen' },
-      { class: 'sen', name: 'Sen' },
+      { class: 'Sen', name: 'Sen' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };
@@ -128,10 +137,23 @@ export class UpdateProductComponent implements OnInit {
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
-  addOns: Array<AddOn> = []
   addOnsRef?: BsModalRef
   addOnsKeyword: FormControl = new FormControl('', Validators.required)
   addOnSearchResults: Array<any> = []
+
+  addOnProducts: Array<any> = []
+  addOnForm: FormGroup = new FormGroup({})
+  addOnOptionForm: FormGroup = new FormGroup({})
+  addOnTypes: Array<{ key: string, value: string }> = [
+    { key: 'Select', value: 'select' },
+    { key: 'Radio', value: 'radio' },
+    { key: 'Checkbox', value: 'checkbox' },
+  ]
+  isOptionSubmitted: boolean = false
+  addOnOptions: AddOnOption[] = []
+  addOns: AddOns[] = []
+  isAddOnForm: boolean = false
+  isAddOnEditable: boolean = false
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -180,6 +202,91 @@ export class UpdateProductComponent implements OnInit {
 
   closeAddOns() {
     this.addOnsRef?.hide()
+  }
+
+  get addOnOptionControls() {
+    return this.addOnOptionForm.controls
+  }
+
+  addAddOnOption() {
+    if (!this.addOnOptionForm.valid) {
+      this.isOptionSubmitted = true
+      return
+    }
+
+    this.addOnOptions.push(this.addOnOptionForm.value)
+    this.isOptionSubmitted = false
+    this.HotToastService.success('Option added successfully')
+    this.addOnOptionForm.reset()
+    this.addOnOptionForm.patchValue({ product: "", description: "", price: "" })
+  }
+
+  removeAddOnOption(index: number) {
+    this.HotToastService.error('Option removed successfully')
+    this.addOnOptions.splice(index, 1)
+  }
+
+  removeAddOn(index: number){
+    this.HotToastService.error('AddOn removed successfully')
+    this.addOns.splice(index, 1)
+  }
+
+  editAddOn(index: number){
+    this.addOnForm.patchValue(this.addOns[index])
+    this.addOnOptions = this.addOns[index].options
+    this.isAddOnForm = true
+    this.isAddOnEditable = true
+  }
+
+  closeAddOnItems(){
+    this.addOnForm.reset()
+    this.addOnForm.patchValue({
+      title: "",
+      description: "",
+      isRequired: false,
+      addOnType: "select"
+    })
+    this.isAddOnForm = false
+    this.addOnOptions = []
+    this.addOnOptionForm.reset()
+    this.addOnOptionForm.patchValue({
+      product: "",
+      description: "",
+      price: ""
+    })
+  }
+
+  addAddOnItems() {
+    if (!this.addOnForm.valid) {
+      return
+    }
+
+    const addOn: AddOns = {
+      ...this.addOnForm.value,
+      options: this.addOnOptions
+    }
+
+    this.addOns.push(addOn)
+    this.HotToastService.success('AddOn added successfully')
+    this.addOnForm.reset()
+    this.addOnForm.patchValue({
+      title: "",
+      description: "",
+      isRequired: false,
+      addOnType: "select"
+    })
+    this.isAddOnForm = false
+    this.addOnOptions = []
+    this.addOnOptionForm.reset()
+    this.addOnOptionForm.patchValue({
+      product: "",
+      description: "",
+      price: ""
+    })
+  }
+
+  toggleAddOnSwitch(event: { switchId: string, toggleState: boolean }) {
+    this.addOnForm.get('isRequired')?.setValue(event.toggleState)
   }
 
   onBrandTriggered(event: any) {
@@ -354,6 +461,7 @@ export class UpdateProductComponent implements OnInit {
       ...this.form.value,
       prodid: this.productDetails?._id,
       slug: this.form.get('slug')?.value,
+      addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
       relatedProducts: this.relatedProducts
         ? this.relatedProducts.map((product: any) => product?._id)
@@ -497,6 +605,20 @@ export class UpdateProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.base = environment.base;
+
+    this.addOnOptionForm = new FormGroup({
+      product: new FormControl('', Validators.required),
+      price: new FormControl('', Validators.required),
+      description: new FormControl(''),
+    })
+
+    this.addOnForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      isRequired: new FormControl(false),
+      addOnType: new FormControl('select'),
+      options: new FormControl([]),
+    })
 
     this.attributeForm = new FormGroup({
       type: new FormControl('text'),
